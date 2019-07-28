@@ -1,0 +1,14 @@
+﻿@model SpeedRunApp.WebUI.Models.SpeedRunListViewModel
+
+@{
+    ViewBag.Title = "SpeedRunList";
+}
+
+<h2>Game List</h2>
+
+@{
+    foreach (var run in Model.SpeedRuns)
+    {
+        @Html.Partial("SpeedRunSummary", run)
+    }
+}

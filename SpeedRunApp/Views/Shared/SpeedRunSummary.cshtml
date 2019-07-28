@@ -1,0 +1,30 @@
+﻿@model SpeedRunApp.WebUI.Models.SpeedRunViewModel
+
+<div class="well">
+    <h3>
+        <strong>@Model.SpeedRun.Game.Name</strong>
+    </h3>
+    @{
+        using (Html.BeginForm("ViewSpeedRunDetails", "SpeedRun", FormMethod.Post))
+        {
+            <div>
+                <div class="col-md-3">
+                    <strong>@Model.SpeedRun.Player.Name</strong>
+                </div>
+                <div class="col-md-2">
+                    @Model.SpeedRun.Platform.Name
+                </div>
+                <div class="col-md-3">
+                    @Model.SpeedRun.Category.Name
+                </div>
+                <div class="col-md-2">
+                    @Model.SpeedRun.Times.Primary.ToString();
+                </div>
+                <div class="col-md-2">
+                    <input id="viewDetailsBtn" name="viewDetailsBtn" type="submit" class="btn btn-success" value="Details" />
+                </div>
+            </div>
+        }
+    }
+</div>
+

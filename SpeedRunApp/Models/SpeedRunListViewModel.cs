@@ -8,7 +8,7 @@ namespace SpeedRunApp.WebUI.Models
 {
     public class SpeedRunListViewModel
     {
-        public IEnumerable<SpeedrunComSharp.Run> SpeedRuns
+        public IEnumerable<SpeedRunViewModel> SpeedRuns
         {
             get;
             set;

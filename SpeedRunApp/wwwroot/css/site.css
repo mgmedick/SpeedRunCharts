@@ -23,6 +23,14 @@ body {
     width: 100%;
 }
 
+.left {
+    float:left;
+}
+
+.inline {
+    display:inline-block;
+}
+
 /* QR code generator */
 #qrCode {
     margin: 15px;
@@ -34,4 +42,5 @@ body {
     .carousel-caption {
         display: none;
     }
+
 }

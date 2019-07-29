@@ -16,7 +16,16 @@ namespace SpeedRunApp.WebUI.Controllers
             SpeedRunListViewModel speedRunListVM = new SpeedRunListViewModel();
 
             var speedRunComClient = new SpeedrunComClient();
-            IEnumerable<Run> runs = speedRunComClient.Runs.GetRuns(orderBy: RunsOrdering.DateSubmittedDescending);
+            //IEnumerable<Run> runs = speedRunComClient.Runs.GetRuns(orderBy: RunsOrdering.DateSubmittedDescending);
+            List<SpeedRunViewModel> runs = new List<SpeedRunViewModel>();
+            runs.Add(new SpeedRunViewModel(speedRunComClient.Runs.GetRun("y8198j5z")));
+
+            List<string> links = new List<string>();
+            foreach (Uri videolink in runs.FirstOrDefault().SpeedRun.Videos.Links)
+            {
+                links.Add(videolink.ToString());
+            }
+
             speedRunListVM.SpeedRuns = runs;
 
             return View(speedRunListVM);

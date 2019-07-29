@@ -8,6 +8,11 @@ namespace SpeedRunApp.WebUI.Models
 {
     public class SpeedRunViewModel
     {
+        public SpeedRunViewModel(Run speedRun)
+        {
+            SpeedRun = speedRun;
+        }
+
         public Run SpeedRun
         {
             get;

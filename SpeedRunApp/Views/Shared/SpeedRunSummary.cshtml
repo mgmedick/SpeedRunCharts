@@ -1,28 +1,40 @@
-﻿@using SpeedRunApp.WebUI
-@model SpeedRunApp.WebUI.Models.SpeedRunViewModel
+﻿@using System
+@using SpeedRunApp.WebUI
+@model SpeedRunApp.Model.SpeedRunViewModel
 
-    <div style="min-width:640px;">
-        <div>
-            <div class="inline">
-                <h3>
-                    <strong>@Model.SpeedRun.Game.Name</strong>
-                </h3>
+<div style="width:598px; margin-top:10px;">
+    <div class="container d-flex h-100">
+        <div class="mr-auto">
+            <div>
+                <small class="text-muted">Posted @Model.RealtiveSubmittedDateString</small>
             </div>
-            <div class="inline" sstyle="margin-left:10px;">
-                <h4>
-                    <strong>@Model.SpeedRun.Times.Primary.ToString()</strong>
-                </h4>
+            <div>
+                <h4>@Model.GameName <small class="text-secondary">@Model.CategoryName</small></h4>
+            </div>
+            <div class="row no-gutters text-secondary">
+                <div class="col-xs-4">
+                    @Model.PlayerName
+                </div>
+                <div class="col-xs-4 ml-1">
+                    - @Model.PrimaryRunTimeString
+                </div>
+                <div class="col-xs-4 ml-1">
+                </div>
             </div>
         </div>
-        <div>
-            <iframe src="@Model.SpeedRun.Videos.Links.FirstOrDefault().ToEmbeddedURI().ToString()"
-                    height="512"
-                    width="100%"
-                    frameborder="0"
-                    scrolling="no"
-                    allowfullscreen="true"></iframe>
+        <div class="align-self-center">
+            @Html.ActionLink("Details", "SpeedRunDetails", "SpeedRun", null, new { @class = "btn btn-primary btn-large" })
         </div>
     </div>
+    <div>
+        <iframe src="@Model.VideoLinkEmbedded"
+                height="337"
+                width="100%"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen="true"></iframe>
+    </div>
+</div>
 
 
 

@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SpeedRunApp.WebUI.Models;
-using SpeedrunComSharp;
+using SpeedRunApp.Model;
+using SpeedRunApp.Service;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -14,19 +14,16 @@ namespace SpeedRunApp.WebUI.Controllers
         public ViewResult SpeedRunList()
         {
             SpeedRunListViewModel speedRunListVM = new SpeedRunListViewModel();
+            RunsService service = new RunsService();
+            IEnumerable<RunDTO> runs = service.GetLatestRuns();
+            List<SpeedRunViewModel> runList = new List<SpeedRunViewModel>();
 
-            var speedRunComClient = new SpeedrunComClient();
-            //IEnumerable<Run> runs = speedRunComClient.Runs.GetRuns(orderBy: RunsOrdering.DateSubmittedDescending);
-            List<SpeedRunViewModel> runs = new List<SpeedRunViewModel>();
-            runs.Add(new SpeedRunViewModel(speedRunComClient.Runs.GetRun("y8198j5z")));
-
-            List<string> links = new List<string>();
-            foreach (Uri videolink in runs.FirstOrDefault().SpeedRun.Videos.Links)
+            foreach (var run in runs)
             {
-                links.Add(videolink.ToString());
+                runList.Add(new SpeedRunViewModel(run));
             }
 
-            speedRunListVM.SpeedRuns = runs;
+            speedRunListVM.SpeedRuns = runList;
 
             return View(speedRunListVM);
         }

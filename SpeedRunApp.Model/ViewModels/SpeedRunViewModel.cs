@@ -14,8 +14,8 @@ namespace SpeedRunApp.Model
             ID = run.ID;
             PlayerID = run.PlayerID;
             PlayerName = run.PlayerName;
-            GameID = run.GameID;
-            GameName = run.GameName;
+            GameID = run.Game.ID;
+            GameName = run.Game.Name;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
             RealtiveSubmittedDateString = run.DateSubmitted?.ToRealtiveDateString();

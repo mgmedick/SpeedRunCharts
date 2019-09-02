@@ -10,13 +10,13 @@ namespace SpeedRunApp.Service
 {
     public class RunsService
     {
-        public IEnumerable<RunDTO> GetLatestRuns()
+        public IEnumerable<RunDTO> GetLatestRuns(int? elementsOffset = null)
         {
             List<RunDTO> runs = new List<RunDTO>();
             ClientContainer clientContainer = new ClientContainer();
-            IEnumerable<Run> clientRuns = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 5, embeds: new RunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true}); ;
-            
-            foreach(var run in clientRuns)
+            IEnumerable<Run> clientRuns = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: new RunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true }, elementsOffset: elementsOffset); ;
+
+            foreach (var run in clientRuns)
             {
                 runs.Add(new RunDTO(run));
             }

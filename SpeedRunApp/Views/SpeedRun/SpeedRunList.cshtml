@@ -4,11 +4,33 @@
     ViewBag.Title = "SpeedRunList";
 }
 
+@section Scripts {
+    <script src="@Url.Content("~/Scripts/SpeedRunList.js")" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(InitializeClient)
+    </script>
+}
+
 <h2>Latest Games</h2>
 
-@{
-    foreach (var run in Model.SpeedRuns)
-    {
-        @Html.Partial("SpeedRunSummary", run)
-    }
-}
+<div>
+    <div id="divSpeedRunList">
+        @{ foreach (var run in Model.SpeedRuns)
+            {
+                @Html.Partial("SpeedRunSummary", run)
+            }
+        }
+    </div>
+    <div id="loading">
+        <div class="d-flex">
+            <div class="mx-auto">
+                <i class="fas fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\font-awesome\**" />
+    <Content Remove="wwwroot\lib\font-awesome\**" />
+    <EmbeddedResource Remove="wwwroot\lib\font-awesome\**" />
+    <None Remove="wwwroot\lib\font-awesome\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
@@ -20,6 +27,16 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Scripts\SpeedRunList.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\SpeedRun\SpeedRunListMore.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

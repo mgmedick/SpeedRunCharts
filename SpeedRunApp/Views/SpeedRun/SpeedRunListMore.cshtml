@@ -1,0 +1,8 @@
+﻿@model SpeedRunApp.Model.SpeedRunListViewModel
+
+@foreach (var run in Model.SpeedRuns)
+{
+    @Html.Partial("SpeedRunSummary", run)
+}
+
+

@@ -14,8 +14,9 @@ namespace SpeedRunApp.Model
             ID = run.ID;
             PlayerID = run.PlayerID;
             PlayerName = run.PlayerName;
-            GameID = run.Game.ID;
-            GameName = run.Game.Name;
+            GameID = run.GameID;
+            GameName = run.GameName;
+            GameCoverImageUri = run.GameCoverImageUri;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
             RealtiveSubmittedDateString = run.DateSubmitted?.ToRealtiveDateString();
@@ -29,6 +30,7 @@ namespace SpeedRunApp.Model
         public string PlayerName { get; set; }
         public string GameID { get; set; }
         public string GameName { get; set; }
+        public Uri GameCoverImageUri { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
         public string RealtiveSubmittedDateString { get; set; }

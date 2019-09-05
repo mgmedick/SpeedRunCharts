@@ -61,6 +61,38 @@ body {
     background-color: #FFFFFF;
 }
 
+.fakeLink {
+    border: 0px;
+    background-color: transparent;
+    color: blue;
+    cursor: pointer;
+}
+
+.fakelink:hover {
+    text-decoration: underline;
+}
+
+.img-round {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.img-round > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+
+
+
+
 
 
 

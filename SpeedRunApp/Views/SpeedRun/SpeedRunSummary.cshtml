@@ -2,14 +2,22 @@
 @using SpeedRunApp.WebUI
 @model SpeedRunApp.Model.SpeedRunViewModel
 
-<div class="bg-white mx-auto speedRunSummary" style="width:598px; margin-bottom:20px; padding:20px 10px 0px 10px;">
-    <div class="container d-flex h-100">
-        <div class="mr-auto">
+<div class="bg-white mx-auto speedRunSummary" style="width:598px; margin-bottom:20px;">
+    <div class="container d-flex p-0">
+        <div class="p2 col-2 align-self-center">
+            <div class="img-round">
+                <img src="@Model.GameCoverImageUri" class="img-fluid" alt="Responsive image">
+            </div>
+        </div>
+        <div class="p-2 align-self-center">
             <div>
                 <small class="text-muted">Posted @Model.RealtiveSubmittedDateString</small>
             </div>
             <div>
-                <h5>@Model.GameName <small class="text-secondary">@Model.CategoryName</small></h5>
+                <h5>
+                    @Html.ActionLink(@Model.GameName, "GameDetails", "Game", new { gameID = @Model.GameID }, new { @class = "text-dark" })
+                    <small class="text-secondary">@Model.CategoryName</small>
+                </h5>
             </div>
             <div class="row no-gutters text-secondary">
                 <div class="col-xs-4">
@@ -22,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="align-self-end" style="padding-bottom:5px;">
+        <div class="p-2 ml-auto align-self-center">
             @Html.ActionLink("Details", "SpeedRunDetails", "SpeedRun", null, new { @class = "btn btn-primary btn-large" })
         </div>
     </div>

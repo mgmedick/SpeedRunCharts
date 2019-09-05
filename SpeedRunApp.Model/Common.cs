@@ -12,9 +12,5 @@ namespace SpeedRunApp.Model
         {
             return runs.Value.Select(i => new RunDTO(i));
         }
-        public static GameDTO GetGameFromLazy(Lazy<Game> game)
-        {
-            return new GameDTO(game.Value);
-        }
     }
 }

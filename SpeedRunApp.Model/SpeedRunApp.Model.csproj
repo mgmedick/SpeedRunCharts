@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\SpeedrunComSharp\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Common\SpeedRunApp.Common.csproj" />
   </ItemGroup>

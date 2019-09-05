@@ -11,9 +11,10 @@ namespace SpeedRunApp.Model
         public RunDTO(Run run)
         {
             ID = run.ID;
-            WebLink = run.WebLink;
             DateSubmitted = run.DateSubmitted;
-            game = new Lazy<GameDTO>(() => Common.GetGameFromLazy(run.game));
+            GameID = run.GameID;
+            GameName = run.Game.Name;
+            GameCoverImageUri = run.Game.Assets?.CoverLarge?.Uri;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             CategoryID = run.CategoryID;
@@ -29,10 +30,10 @@ namespace SpeedRunApp.Model
         }
 
         public string ID { get; set; }
-        public Uri WebLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
-        private Lazy<GameDTO> game { get; set; }
-        public GameDTO Game { get { return game.Value; } }
+        public string GameID { get; set; }
+        public string GameName { get; set; }
+        public Uri GameCoverImageUri { get; set; }
         public string LevelID { get; set; }
         public string LevelName { get; set; }
         public string CategoryID { get; set; }

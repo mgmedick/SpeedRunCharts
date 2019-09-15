@@ -15,29 +15,26 @@
       ]
     },
     {
+      "library": "free-jqgrid@4.15.5",
+      "destination": "wwwroot/lib/free-jqgrid/",
+      "files": [
+        "jquery.jqgrid.min.js",
+        "jquery.jqgrid.src.js",
+        "css/ui.jqgrid.min.css",
+        "css/ui.jqgrid.css"
+      ]
+    },
+    {
       "library": "font-awesome@5.10.2",
-      "destination": "wwwroot/lib/font-awesome/",
+      "destination": "wwwroot/font-awesome/",
       "files": [
         "css/all.min.css",
         "css/all.css",
+        "js/all.js",
+        "js/all.min.js",
         "sprites/brands.svg",
         "sprites/regular.svg",
-        "sprites/solid.svg",
-        "webfonts/fa-brands-400.eot",
-        "webfonts/fa-brands-400.svg",
-        "webfonts/fa-brands-400.ttf",
-        "webfonts/fa-brands-400.woff",
-        "webfonts/fa-brands-400.woff2",
-        "webfonts/fa-regular-400.eot",
-        "webfonts/fa-regular-400.svg",
-        "webfonts/fa-regular-400.ttf",
-        "webfonts/fa-regular-400.woff",
-        "webfonts/fa-regular-400.woff2",
-        "webfonts/fa-solid-900.eot",
-        "webfonts/fa-solid-900.svg",
-        "webfonts/fa-solid-900.ttf",
-        "webfonts/fa-solid-900.woff",
-        "webfonts/fa-solid-900.woff2"
+        "sprites/solid.svg"
       ]
     }
   ]

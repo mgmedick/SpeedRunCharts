@@ -56,7 +56,8 @@ namespace SpeedRunApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=SpeedRun}/{action=SpeedRunList}/{id?}");
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "SpeedRun", action = "SpeedRunList" });
             });
         }
     }

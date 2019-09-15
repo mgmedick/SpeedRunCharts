@@ -4,9 +4,64 @@
     ViewBag.Title = "GameDetails";
 }
 
-<h2>Game Details</h2>
+@section Styles {
+    <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="~/css/scroller-tab.css" />
+}
 
-<div></div>
+@section Scripts {
+    <script src="@Url.Content("~/lib/free-jqgrid/jquery.jqgrid.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/jquery.jqgrid-common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/game-details.js")" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(InitializeClient)
+    </script>
+}
+
+<div>
+    <div class="container-fluid d-flex p-0">
+        <div class="p2 col-sm-2 align-self-center">
+            <div class="img-round">
+                <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
+            </div>
+        </div>
+        <div class="p2 align-self-end">
+            <h2>@Model.Name</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+        <div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+        <div class="scroller-wrapper">
+            <ul class="nav nav-tabs scroller-list" role="tablist">
+                @for (int i = 0; i < Model.GameCategories.Count(); i++)
+                {
+                    <li class="nav-item">
+                        <a id="ankCategory@(i)-tab" class="nav-link @(i == 0 ? "active" : string.Empty)" data-toggle="tab" href="#divCategory@(i)" role="tab" aria-controls="divCategory@(i)" aria-selected="@(i == 0 ? "true" : "false")">@Model.GameCategories[i].Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="tab-content">
+            @for (int i = 0; i < Model.GameCategories.Count(); i++)
+            {
+                <div id="divCategory@(i)" class="gridContainer tab-pane fade @(i == 0 ? "show active": string.Empty)" role="tabpanel" data-gameid="@Model.ID" data-categoryid="@Model.GameCategories[i].ID">
+                    <table class="grid"></table>
+                    <div class="pager"></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 
 

@@ -13,31 +13,23 @@ namespace SpeedRunApp.WebUI.Controllers
     {
         public ViewResult SpeedRunList()
         {
-            SpeedRunListViewModel speedRunListVM = GetSpeedRunList();
-            return View(speedRunListVM);
+            var runListVM = GetSpeedRunListVM();
+            return View(runListVM);
         }
 
         public PartialViewResult SpeedRunListMore(int elementsOffset)
         {
-            SpeedRunListViewModel speedRunListVM = GetSpeedRunList(elementsOffset);
-            return PartialView("SpeedRunListMore", speedRunListVM);
+            var runListVM = GetSpeedRunListVM(elementsOffset);
+            return PartialView("SpeedRunListMore", runListVM);
         }
 
-        private SpeedRunListViewModel GetSpeedRunList(int? elementsOffset = null)
+        private SpeedRunListViewModel GetSpeedRunListVM(int? elementsOffset = null)
         {
-            SpeedRunListViewModel speedRunListVM = new SpeedRunListViewModel();
-            RunsService service = new RunsService();
-            IEnumerable<RunDTO> runs = service.GetLatestRuns(elementsOffset);
-            List<SpeedRunViewModel> runList = new List<SpeedRunViewModel>();
+            SpeedRunsService service = new SpeedRunsService();
+            var runs = service.GetLatestSpeedRuns(elementsOffset);
+            var runsVM = runs.Select(i => new SpeedRunViewModel(i));
 
-            foreach (var run in runs)
-            {
-                runList.Add(new SpeedRunViewModel(run));
-            }
-
-            speedRunListVM.SpeedRuns = runList;
-
-            return speedRunListVM;
+            return new SpeedRunListViewModel() { SpeedRuns = runsVM };
         }
     }
 }

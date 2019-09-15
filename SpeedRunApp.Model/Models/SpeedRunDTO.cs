@@ -6,21 +6,23 @@ using SpeedrunComSharp.Model;
 
 namespace SpeedRunApp.Model
 {
-    public class RunDTO
+    public class SpeedRunDTO
     {
-        public RunDTO(Run run)
+        public SpeedRunDTO(Run run)
         {
             ID = run.ID;
             DateSubmitted = run.DateSubmitted;
+            PlayerID = run.Player?.UserID;
+            PlayerName = run.Player?.Name;
             GameID = run.GameID;
             GameName = run.Game.Name;
             GameCoverImageUri = run.Game.Assets?.CoverLarge?.Uri;
-            LevelID = run.LevelID;
-            LevelName = run.Level?.Name;
             CategoryID = run.CategoryID;
             CategoryName = run.Category.Name;
-            PlayerID = run.Player.UserID;
-            PlayerName = run.Player.Name;
+            LevelID = run.LevelID;
+            LevelName = run.Level?.Name;
+            PlatformID = run.Platform?.ID;
+            PlatformName = run.Platform?.Name;
             VideoLink = run.Videos?.Links.FirstOrDefault();
 
             if (run.Times.Primary.HasValue)
@@ -38,6 +40,8 @@ namespace SpeedRunApp.Model
         public string LevelName { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public string PlatformID { get; set; }
+        public string PlatformName { get; set; }
         public string PlayerID { get; set; }
         public string PlayerName { get; set; }
         public Uri VideoLink { get; set; }

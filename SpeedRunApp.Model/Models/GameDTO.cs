@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Linq;
-using SpeedRunCommon;
+using SpeedrunComSharp.Model;
 
 namespace SpeedRunApp.Model
 {
-    public class GameDetailsViewModel
+    public class GameDTO
     {
-        public GameDetailsViewModel(GameDTO game)
+        public GameDTO(Game game)
         {
             ID = game.ID;
             Name = game.Name;
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
-            CoverImageUri = game.CoverImageUri;
-            Categories = game.Categories;
+            CoverImageUri = game.Assets?.CoverLarge?.Uri;
+            Categories = game.Categories.Select(i => new CategoryDTO(i));
         }
 
         public string ID { get; set; }
@@ -23,7 +24,5 @@ namespace SpeedRunApp.Model
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
         public IEnumerable<CategoryDTO> Categories { get; set; }
-        public List<CategoryDTO> GameCategories { get { return Categories.Where(i => i.Type == CategoryType.PerGame).ToList(); } }
-        public List<CategoryDTO> LevelCategories { get { return Categories.Where(i => i.Type == CategoryType.PerLevel).ToList(); } }
     }
 }

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SpeedRunApp.Common;
+using SpeedRunCommon;
 using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Model
 {
     public class SpeedRunViewModel
     {
-        public SpeedRunViewModel(RunDTO run)
+        public SpeedRunViewModel(SpeedRunDTO run)
         {
             ID = run.ID;
             PlayerID = run.PlayerID;
@@ -19,10 +19,13 @@ namespace SpeedRunApp.Model
             GameCoverImageUri = run.GameCoverImageUri;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
-            RealtiveSubmittedDateString = run.DateSubmitted?.ToRealtiveDateString();
+            PlatformID = run.PlatformID;
+            PlatformName = run.PlatformName;
+            DateSubmittedString = run.DateSubmitted?.ToString("MM/dd/yyyy HH:mm:ss");
+            RelativeDateSubmittedString = run.DateSubmitted?.ToRealtiveDateString();
             VideoLink = run.VideoLink?.ToString();
             VideoLinkEmbedded = run.VideoLink?.ToEmbeddedURIString();
-            PrimaryRunTimeString = run.PrimaryRunTime.ToString("h'h 'm'm 's's'");
+            PrimaryRunTimeString = run.PrimaryRunTime.ToShortString();            
         }
 
         public string ID { get; set; }
@@ -33,7 +36,10 @@ namespace SpeedRunApp.Model
         public Uri GameCoverImageUri { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
-        public string RealtiveSubmittedDateString { get; set; }
+        public string PlatformID { get; set; }
+        public string PlatformName { get; set; }
+        public string DateSubmittedString { get; set; }
+        public string RelativeDateSubmittedString { get; set; }
         public string VideoLink { get; set; }
         public string VideoLinkEmbedded { get; set; }
         public string PrimaryRunTimeString { get; set; }

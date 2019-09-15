@@ -8,9 +8,9 @@ namespace SpeedRunApp.Model
 {
     public static class Common
     {
-        public static IEnumerable<RunDTO> GetRunsFromLazy(Lazy<IEnumerable<Run>> runs)
+        public static IEnumerable<SpeedRunDTO> GetRunsFromLazy(Lazy<IEnumerable<Run>> runs)
         {
-            return runs.Value.Select(i => new RunDTO(i));
+            return runs.Value.Select(i => new SpeedRunDTO(i));
         }
     }
 }

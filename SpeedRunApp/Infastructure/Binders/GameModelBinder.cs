@@ -7,7 +7,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SpeedRunApp.Model;
-using SpeedRunApp.Common;
+using SpeedRunCommon;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
@@ -31,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Scripts\SpeedRunList.js" />
+    <None Include="wwwroot\js\speedrun-list.js" />
   </ItemGroup>
 
   <ItemGroup>

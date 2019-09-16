@@ -1,4 +1,4 @@
-﻿.scroller-wrapper {
+﻿.scroller-tab-wrapper {
     position: relative;
     margin: 0 auto;
     overflow: hidden;
@@ -6,7 +6,7 @@
     height: 50px;
 }
 
-.scroller-list {
+.scroller-tab-list {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -15,7 +15,7 @@
     margin-top: 0px;
 }
 
-.scroller-list li {
+.scroller-tab-list li {
     display: table-cell;
     position: relative;
     text-align: center;
@@ -25,7 +25,7 @@
     vertical-align: middle;
 }
 
-.scroller {
+.scroller-tab {
     text-align: center;
     cursor: pointer;
     display: none;
@@ -36,11 +36,11 @@
     background-color: #fff;
 }
 
-.scroller-right {
+.scroller-tab-right {
     float: right;
 }
 
-.scroller-left {
+.scroller-tab-left {
     float: left;
 }
 

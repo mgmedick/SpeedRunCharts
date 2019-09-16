@@ -22,10 +22,26 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLeaderboardRecords(string gameID, string categoryID)
+        public JsonResult GetLeaderboardRecords(string gameID, string categoryID, CategoryType categoryType)
         {
-            LeaderboardService service = new LeaderboardService();
-            var runs = service.GetLeaderboardRecordsForCategory(gameID, categoryID);
+            GamesService gameService = new GamesService();
+            LeaderboardService leaderboardService = new LeaderboardService();
+            List<SpeedRunRecordDTO> runs = new List<SpeedRunRecordDTO>();
+
+            switch (categoryType)
+            {
+                case CategoryType.PerGame:
+                    runs.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
+                    break;
+                case CategoryType.PerLevel:
+                    var game = gameService.GetGame(gameID);
+                    foreach (var level in game.Levels)
+                    {
+                        runs.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, level.ID));
+                    }
+                    break;
+            }
+
             var recordVMs = runs.Select(i => new RecordViewModel(i));
 
             return Json(recordVMs);

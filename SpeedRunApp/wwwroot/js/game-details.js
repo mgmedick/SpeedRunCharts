@@ -1,35 +1,50 @@
 ﻿
 function InitializeClient() {
-    var $selectedGridContainer = $('.gridContainer.active');
-    InitializeGrid($selectedGridContainer);
+    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+    OnCategoryTypeTabSingleClick($activeCategoryTypeTab);
 
     InitializeEvents();
 }
 
 function InitializeEvents() {
-    $('.nav-item a').one('click', OnNavItemSingleClick);
+    $('.nav-item.categoryType a').one('shown.bs.tab', function () {
+        OnCategoryTypeTabSingleClick(this);
+    });
+
+    $('.nav-item.category a').one('shown.bs.tab', function () {
+        OnCategoryTabSingleClick(this);
+    });
 }
 
-function OnNavItemSingleClick() {
-    var jqGridContainerID = $(this).attr("href");
-    var $gridContainer = $(jqGridContainerID);
+function OnCategoryTypeTabSingleClick(element) {
+    var jqCategoryTypeContainerID = $(element).attr("href");
+    var $activeCategoryTab = $(jqCategoryTypeContainerID).find('.category a.active');
+
+    OnCategoryTabSingleClick($activeCategoryTab);
+}
+
+function OnCategoryTabSingleClick(element) {
+    var jqCategoryContainerID = $(element).attr("href");
+    var $gridContainer = $(jqCategoryContainerID);
     InitializeGrid($gridContainer);
 }
 
 function InitializeGrid(element) {
     var $grid = $(element).find('.grid');
-    var $pager = $(element).find('.pager');
-    var gameid = $(element).data('gameid');
-    var categoryid = $(element).data('categoryid');
+    var pagerID = $(element).find('.pager').attr("id");
+    var gameID = $(element).data('gameid');
+    var categoryID = $(element).data('categoryid');
+    var categoryType = $(element).data('categorytype');
 
     $grid.jqGrid({
-        url: 'GetLeaderboardRecords?gameID=' + gameid + '&categoryID=' + categoryid,
+        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryID=' + categoryID + '&categoryType=' + categoryType,
         datatype: "json",
         mtype: "GET",
         height: '100%',
         autowidth: true,
-        resizeStop: resizeGrid,
-        rowNum: 10,
+        //resizeStop: resizeGrid,
+        rowNum: 50,
+        pager: pagerID,
         colNames: ["Player", "Category", "Platform", "Time", "Date"],
         colModel: [
             { name: "playerName" },
@@ -50,6 +65,9 @@ function InitializeGrid(element) {
             $(this).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
         }
     });
+
+    //var width = $grid.parent().width();
+    //$grid.setGridWidth(width);
 
     function setSearchSelect(grid, columnName) {
         grid.jqGrid("setColProp", columnName, {

@@ -21,28 +21,35 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(new GameDetailsViewModel(game));
         }
 
+        public PartialViewResult SpeedRunSummary(string speedRunID)
+        {
+            SpeedRunsService service = new SpeedRunsService();
+            var speedRun = service.GetSpeedRun(speedRunID);
+            return PartialView("_SpeedRunSummary", new SpeedRunViewModel(speedRun));
+        }
+
         [HttpGet]
         public JsonResult GetLeaderboardRecords(string gameID, string categoryID, CategoryType categoryType)
         {
             GamesService gameService = new GamesService();
             LeaderboardService leaderboardService = new LeaderboardService();
-            List<SpeedRunRecordDTO> runs = new List<SpeedRunRecordDTO>();
+            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
 
             switch (categoryType)
             {
                 case CategoryType.PerGame:
-                    runs.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
+                    records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
                     break;
                 case CategoryType.PerLevel:
                     var game = gameService.GetGame(gameID);
                     foreach (var level in game.Levels)
                     {
-                        runs.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, level.ID));
+                        records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, level.ID));
                     }
                     break;
             }
 
-            var recordVMs = runs.Select(i => new RecordViewModel(i));
+            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
 
             return Json(recordVMs);
         }

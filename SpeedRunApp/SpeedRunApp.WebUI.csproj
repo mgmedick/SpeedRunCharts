@@ -39,7 +39,7 @@
     <Content Update="Views\Game\GameDetails.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\SpeedRun\SpeedRunListMore.cshtml">
+    <Content Update="Views\SpeedRun\_SpeedRunListMore.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

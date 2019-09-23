@@ -16,7 +16,7 @@ namespace SpeedRunApp.Model
             PlayerName = run.Player?.Name;
             GameID = run.GameID;
             GameName = run.Game.Name;
-            GameCoverImageUri = run.Game.Assets?.CoverLarge?.Uri;
+            GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
             CategoryName = run.Category.Name;
             LevelID = run.LevelID;
@@ -35,7 +35,7 @@ namespace SpeedRunApp.Model
         public DateTime? DateSubmitted { get; set; }
         public string GameID { get; set; }
         public string GameName { get; set; }
-        public Uri GameCoverImageUri { get; set; }
+        public Uri GameCoverImageLink { get; set; }
         public string LevelID { get; set; }
         public string LevelName { get; set; }
         public string CategoryID { get; set; }

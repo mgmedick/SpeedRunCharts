@@ -42,13 +42,14 @@ function InitializeGrid(element) {
         mtype: "GET",
         height: '100%',
         autowidth: true,
-        //resizeStop: resizeGrid,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["Player", "Category", "Platform", "Time", "Date"],
+        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Date"],
         colModel: [
+            { name: "id", search: false, formatter: OptionsFormatter, align: "center" },
+            { name: "levelName" },
+            { name: "rankString", sorttype: "number", align: "center" },
             { name: "playerName" },
-            { name: "categoryName" },
             { name: "platformName" },
             { name: "primaryRunTimeString", search: false },
             { name: "relativeDateSubmittedString", search: false }
@@ -58,28 +59,51 @@ function InitializeGrid(element) {
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
-        loadComplete: function () {
-            setSearchSelect($(this), 'playerName');
-            setSearchSelect($(this), 'categoryName');
-            setSearchSelect($(this), 'platformName');
-            $(this).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
-        }
+        loadComplete: GridLoadComplete
     });
 
-    //var width = $grid.parent().width();
-    //$grid.setGridWidth(width);
+    function GridLoadComplete() {
+        InitializeGridEvents();
+        InitializeGridFilters(this);
 
-    function setSearchSelect(grid, columnName) {
+        if (categoryType != 1) {
+            $(this).jqGrid('hideCol', ["levelName"]);
+        }
+    }
+
+    function InitializeGridEvents() {
+        $('[data-toggle="modal"]').click(function () {
+            $($(this).data("target") + ' .modal-body').load($(this).attr("href"));
+        });
+    }
+
+    function InitializeGridFilters(element) {
+        var gridData = $(element).jqGrid("getGridParam", "data");
+        var levelNames = GetUniqueValues($.map(gridData, function (item) { return item.levelName; }));
+        var rankStrings = GetUniqueValues($.map(gridData, function (item) { return item.rankString; }));
+        var playerNames = GetUniqueValues($.map(gridData, function (item) { return item.playerName; }));
+        var categoryNames = GetUniqueValues($.map(gridData, function (item) { return item.categoryName; }));
+        var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; }));
+
+        SetSearchSelect($(element), 'levelName', levelNames);
+        SetSearchSelect($(element), 'rankString', rankStrings);
+        SetSearchSelect($(element), 'playerName', playerNames);
+        SetSearchSelect($(element), 'categoryName', categoryNames);
+        SetSearchSelect($(element), 'platformName', platformNames);
+        $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
+    }
+
+    function SetSearchSelect(grid, columnName, searchData) {
         grid.jqGrid("setColProp", columnName, {
             stype: "select",
             searchoptions: {
-                value: buildSearchSelect(getUniqueNames(grid, columnName)),
+                value: BuildSearchSelect(searchData),
                 sopt: ["eq"]
             }
         });
     }
 
-    function buildSearchSelect(uniqueNames) {
+    function BuildSearchSelect(uniqueNames) {
         var values = ":All";
         $.each(uniqueNames, function () {
             values += ";" + this + ":" + this;
@@ -87,20 +111,8 @@ function InitializeGrid(element) {
         return values;
     }
 
-    function getUniqueNames(grid, columnName) {
-        var texts = grid.jqGrid("getCol", columnName);
-        var uniqueTexts = [];
-        var textsMap = {}
-
-        for (var i = 0; i < texts.length; i++) {
-            var text = texts[i];
-            if (text !== undefined && textsMap[text] === undefined) {
-                textsMap[text] = true;
-                uniqueTexts.push(text);
-            }
-        }
-
-        return uniqueTexts;
+    function OptionsFormatter(cellvalue, options, rowObject) {
+        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 }
 

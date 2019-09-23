@@ -20,7 +20,7 @@ namespace SpeedRunApp.WebUI.Controllers
         public PartialViewResult SpeedRunListMore(int elementsOffset)
         {
             var runListVM = GetSpeedRunListVM(elementsOffset);
-            return PartialView("SpeedRunListMore", runListVM);
+            return PartialView("_SpeedRunListMore", runListVM);
         }
 
         private SpeedRunListViewModel GetSpeedRunListVM(int? elementsOffset = null)

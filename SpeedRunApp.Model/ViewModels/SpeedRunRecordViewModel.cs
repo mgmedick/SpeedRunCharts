@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SpeedRunCommon;
-using SpeedRunApp.Model;
+﻿using SpeedRunCommon;
 
 namespace SpeedRunApp.Model
 {
-    public class RecordViewModel : SpeedRunViewModel
+    public class SpeedRunRecordViewModel : SpeedRunViewModel
     {
-        public RecordViewModel(SpeedRunRecordDTO record) : base((SpeedRunDTO)record)
+        public SpeedRunRecordViewModel(SpeedRunRecordDTO record) : base((SpeedRunDTO)record)
         {
-            Rank = record.Rank;
+            RankString = record.Rank.ToOrdinalString();
         }
 
-        public int Rank { get; set; }
+        public string RankString { get; set; }
     }
 }

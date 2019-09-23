@@ -1,8 +1,6 @@
 ﻿var hidWidth;
 var scrollBarWidths = 40;
 
-
-
 function InitializeScroller() {
     InitializeScrollerEvents();
     reAdjust();

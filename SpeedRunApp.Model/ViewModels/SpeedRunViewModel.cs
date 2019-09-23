@@ -16,16 +16,17 @@ namespace SpeedRunApp.Model
             PlayerName = run.PlayerName;
             GameID = run.GameID;
             GameName = run.GameName;
-            GameCoverImageUri = run.GameCoverImageUri;
+            GameCoverImageLinkString = run.GameCoverImageLink.ToString();
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
             PlatformID = run.PlatformID;
             PlatformName = run.PlatformName;
-            DateSubmittedString = run.DateSubmitted?.ToString("MM/dd/yyyy HH:mm:ss");
+            LevelID = run.LevelID;
+            LevelName = run.LevelName;
             RelativeDateSubmittedString = run.DateSubmitted?.ToRealtiveDateString();
-            VideoLink = run.VideoLink?.ToString();
-            VideoLinkEmbedded = run.VideoLink?.ToEmbeddedURIString();
-            PrimaryRunTimeString = run.PrimaryRunTime.ToShortString();            
+            VideoLinkString = run.VideoLink?.ToString();
+            VideoLinkEmbeddedString = run.VideoLink?.ToEmbeddedURIString();
+            PrimaryRunTimeString = run.PrimaryRunTime.ToShortString();
         }
 
         public string ID { get; set; }
@@ -33,15 +34,17 @@ namespace SpeedRunApp.Model
         public string PlayerName { get; set; }
         public string GameID { get; set; }
         public string GameName { get; set; }
-        public Uri GameCoverImageUri { get; set; }
+        public string GameCoverImageLinkString { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
         public string PlatformID { get; set; }
         public string PlatformName { get; set; }
+        public string LevelID { get; set; }
+        public string LevelName { get; set; }
         public string DateSubmittedString { get; set; }
         public string RelativeDateSubmittedString { get; set; }
-        public string VideoLink { get; set; }
-        public string VideoLinkEmbedded { get; set; }
+        public string VideoLinkString { get; set; }
+        public string VideoLinkEmbeddedString { get; set; }
         public string PrimaryRunTimeString { get; set; }
     }
 }

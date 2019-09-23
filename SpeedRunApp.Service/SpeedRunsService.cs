@@ -36,6 +36,12 @@ namespace SpeedRunApp.Service
             return runs;
         }
 
+        public SpeedRunDTO GetSpeedRun(string runId, RunEmbeds embeds = default(RunEmbeds))
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var clientRun = clientContainer.Runs.GetRun(runId, embeds);
 
+            return new SpeedRunDTO(clientRun);
+        }
     }
 }

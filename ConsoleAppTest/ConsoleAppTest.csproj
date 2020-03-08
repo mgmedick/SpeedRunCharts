@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
+    <ProjectReference Include="..\SpeedrunComSharp.Client\SpeedrunComSharp.Client.csproj" />
+    <ProjectReference Include="..\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
+  </ItemGroup>
+
+</Project>

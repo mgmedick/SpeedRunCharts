@@ -339,5 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /SpeedrunComSharp.Common
-/ConsoleAppTest
-/SpeedrunComSharp.sln
+

@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SpeedRunCommon\SpeedRunCommon.csproj" />
-    <ProjectReference Include="..\..\SpeedrunComSharp\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
+    <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
+    <ProjectReference Include="..\SpeedrunComSharp\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
   </ItemGroup>
 
 </Project>

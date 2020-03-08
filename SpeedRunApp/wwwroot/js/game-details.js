@@ -112,7 +112,8 @@ function InitializeGrid(element) {
     }
 
     function OptionsFormatter(cellvalue, options, rowObject) {
-        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+        //return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+        return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 }
 

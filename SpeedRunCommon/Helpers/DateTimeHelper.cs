@@ -9,6 +9,7 @@ namespace SpeedRunCommon
         #region DateTime
         public static string ToRealtiveDateString(this DateTime DateSubmitted)
         {
+
             string submittedTimeAgo = null;
 
             const int second = 1;

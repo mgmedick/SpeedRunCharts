@@ -9,6 +9,7 @@ namespace SpeedRunCommon
 {
     public static class UriHelper
     {
+
         public static string ToEmbeddedURIString(this Uri uri)
         {
             return uri.ToEmbeddedURI()?.ToString();

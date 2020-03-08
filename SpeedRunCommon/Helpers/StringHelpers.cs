@@ -6,6 +6,7 @@ namespace SpeedRunCommon
 {
     public static class StringHelpers
     {
+
         public static string ToParameters(this string parameters)
         {
             if (string.IsNullOrEmpty(parameters))

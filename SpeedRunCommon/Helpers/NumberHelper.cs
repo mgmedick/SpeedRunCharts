@@ -8,6 +8,7 @@ namespace SpeedRunCommon
     {
         public static string ToOrdinalString(this int num)
         {
+
             if (num <= 0) return num.ToString();
 
             switch (num % 100)

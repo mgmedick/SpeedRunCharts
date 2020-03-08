@@ -10,6 +10,7 @@ namespace SpeedRunCommon
         //Cateogries
         public static IEnumerable<string> ToParameters(this CategoriesOrdering ordering)
         {
+
             var isDescending = ((int)ordering & 1) == 1;
             if (isDescending)
                 ordering = (CategoriesOrdering)((int)ordering - 1);

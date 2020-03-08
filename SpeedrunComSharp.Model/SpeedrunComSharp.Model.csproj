@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
-    <ProjectReference Include="..\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
   </ItemGroup>
 
 </Project>

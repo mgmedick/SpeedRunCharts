@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Service", "Spee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunCommon", "SpeedRunCommon\SpeedRunCommon.csproj", "{0AFCEE7C-79CF-440C-9B94-17C30442B648}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Client", "SpeedrunComSharp\SpeedrunComSharp.Client\SpeedrunComSharp.Client.csproj", "{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Client", "SpeedrunComSharp.Client\SpeedrunComSharp.Client.csproj", "{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Model", "SpeedrunComSharp\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj", "{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Model", "SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj", "{BA321ECB-BDAD-4529-B262-33C288C693EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,18 +46,18 @@ Global
 		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD0490DF-3453-40AD-BA42-8105FCB2EAEE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABD1A81A-7EA3-497E-9ACD-3EBB726474B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FEFB5AD-4B10-42C8-B73D-B5AADA989B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA321ECB-BDAD-4529-B262-33C288C693EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

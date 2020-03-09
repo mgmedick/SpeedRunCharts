@@ -22,9 +22,7 @@ namespace SpeedRunApp.Model
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        //public List<string> CategoryTypes { get { return Enum.GetNames(typeof(CategoryType)).ToList(); } }
         public IEnumerable<CategoryDTO> Categories { get; set; }
-        //public List<CategoryDTO> GameCategories { get { return Categories.Where(i => i.Type == CategoryType.PerGame).ToList(); } }
-        //public List<CategoryDTO> LevelCategories { get { return Categories.Where(i => i.Type == CategoryType.PerLevel).ToList(); } }
+        public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).Distinct(); } }
     }
 }

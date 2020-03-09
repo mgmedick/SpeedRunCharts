@@ -44,7 +44,7 @@ function InitializeGrid(element) {
         autowidth: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Date"],
+        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Date", "Hidden"],
         colModel: [
             { name: "id", search: false, formatter: OptionsFormatter, align: "center" },
             { name: "levelName" },
@@ -52,7 +52,8 @@ function InitializeGrid(element) {
             { name: "playerName" },
             { name: "platformName" },
             { name: "primaryRunTimeString", search: false },
-            { name: "relativeDateSubmittedString", search: false }
+            { name: "dateSubmitted", search: false, sorttype: "date", formatter: DateSubmittedFormatter },
+            { name: "relativeDateSubmittedString", hidden: true }
         ],
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
@@ -112,8 +113,13 @@ function InitializeGrid(element) {
     }
 
     function OptionsFormatter(cellvalue, options, rowObject) {
-        //return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
-        return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+        //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+    }
+
+    function DateSubmittedFormatter(cellvalue, options, rowObject) {
+        return rowObject.relativeDateSubmittedString;
+        //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 }
 

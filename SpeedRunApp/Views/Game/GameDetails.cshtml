@@ -34,11 +34,12 @@
         </div>
     </div>
     <div class="container">
-        <div>
-            <ul class="nav nav-pills float-right pl-2" role="tablist">
+        <div class="row no-gutters p-1 d-flex">
+            <label class="align-self-end font-weight-bold">Cateogry Type:</label>
+            <ul class="nav nav-pills pl-2" role="tablist">
                 @{
                     int n = 0;
-                    @foreach (CategoryType categoryType in Enum.GetValues(typeof(CategoryType)))
+                    @foreach (CategoryType categoryType in Model.CategoryTypes)
                     {
                         <li class="nav-item categoryType">
                             <a id="pills-ankCategoryType-@(n)-tab" class="nav-link @(n == 0 ? "active" : string.Empty)" data-toggle="pill" href="#divCategoryType-@(n)" role="tab" aria-controls="divCategoryType-@(n)" aria-selected="@(n == 0 ? "true" : "false")">@categoryType.ToString()</a>
@@ -51,13 +52,14 @@
         <div class="tab-content">
             @{
                 int i = 0;
-                @foreach (CategoryType categoryType in Enum.GetValues(typeof(CategoryType)))
+                @foreach (CategoryType categoryType in Model.CategoryTypes)
                 {
                     <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">
                         <div class="scroller-tab scroller-tab-left"><i class="fa fa-angle-left"></i></div>
                         <div class="scroller-tab scroller-tab-right"><i class="fa fa-angle-right"></i></div>
-                        <div class="scroller-tab-wrapper">
-                            <ul class="nav nav-tabs scroller-tab-list" role="tablist">
+                        <div class="row no-gutters d-flex scroller-tab-wrapper">
+                            <label class="align-self-end font-weight-bold">Cateogry:</label>
+                            <ul class="nav nav-tabs scroller-tab-list" style="left:85px;" role="tablist">
                                 @{
                                     int g = 0;
                                     @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))

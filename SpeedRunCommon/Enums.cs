@@ -30,7 +30,8 @@
 
     public enum CategoryType
     {
-        PerGame, PerLevel
+        PerGame,
+        PerLevel
     }
 
     //Common

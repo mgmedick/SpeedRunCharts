@@ -10,8 +10,8 @@ namespace SpeedRunApp.Model
     {
         public static IEnumerable<SpeedRunDTO> GetRunsFromLazy(Lazy<IEnumerable<Run>> runs)
         {
-            return runs.Value.Select(i => new SpeedRunDTO(i));
-                 
+            //return dto
+            return runs.Value.Select(i => new SpeedRunDTO(i));             
         }
     }
 }

@@ -42,16 +42,18 @@ function InitializeGrid(element) {
         mtype: "GET",
         height: '100%',
         autowidth: true,
+        shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Date", "Hidden"],
+        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
-            { name: "id", search: false, formatter: OptionsFormatter, align: "center" },
+            { name: "id", width: 50, resizable:false, search: false, formatter: OptionsFormatter, align: "center" },
             { name: "levelName" },
-            { name: "rankString", sorttype: "number", align: "center" },
+            { name: "rankString", sorttype: "number" },
             { name: "playerName" },
             { name: "platformName" },
             { name: "primaryRunTimeString", search: false },
+            { name: "examinerName" },
             { name: "dateSubmitted", search: false, sorttype: "date", formatter: DateSubmittedFormatter },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
@@ -85,12 +87,14 @@ function InitializeGrid(element) {
         var playerNames = GetUniqueValues($.map(gridData, function (item) { return item.playerName; }));
         var categoryNames = GetUniqueValues($.map(gridData, function (item) { return item.categoryName; }));
         var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; }));
+        var examinerNames = GetUniqueValues($.map(gridData, function (item) { return item.examinerName; }));
 
         SetSearchSelect($(element), 'levelName', levelNames);
         SetSearchSelect($(element), 'rankString', rankStrings);
         SetSearchSelect($(element), 'playerName', playerNames);
         SetSearchSelect($(element), 'categoryName', categoryNames);
         SetSearchSelect($(element), 'platformName', platformNames);
+        SetSearchSelect($(element), 'examinerName', examinerNames);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
 
@@ -113,7 +117,7 @@ function InitializeGrid(element) {
     }
 
     function OptionsFormatter(cellvalue, options, rowObject) {
-        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
         //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 

@@ -14,7 +14,7 @@ namespace SpeedrunComSharp.Model
 
         #region Links
         public Lazy<User> examiner { get; set; }
-        public User Examiner { get { return examiner.Value; } }
+        public User Examiner { get { return examiner?.Value; } }
         #endregion
 
         public RunStatus() { }

@@ -23,6 +23,7 @@ namespace SpeedRunApp.Model
             LevelName = run.Level?.Name;
             PlatformID = run.Platform?.ID;
             PlatformName = run.Platform?.Name;
+            Status = new SpeedRunStatusDTO(run.Status);
             VideoLink = run.Videos?.Links.FirstOrDefault();
 
             if (run.Times.Primary.HasValue)
@@ -44,6 +45,7 @@ namespace SpeedRunApp.Model
         public string PlatformName { get; set; }
         public string PlayerID { get; set; }
         public string PlayerName { get; set; }
+        public SpeedRunStatusDTO Status { get; set; }
         public Uri VideoLink { get; set; }
         public TimeSpan PrimaryRunTime { get; set; }
     }

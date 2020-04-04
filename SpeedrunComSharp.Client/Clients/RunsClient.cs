@@ -380,7 +380,10 @@ namespace SpeedrunComSharp.Client
                 || status.Type == RunStatusType.Verified)
             {
                 status.ExaminerUserID = statusElement.examiner as string;
-                status.examiner = new Lazy<User>(() => Client.Users.GetUser(status.ExaminerUserID));
+                if (!string.IsNullOrWhiteSpace(status.ExaminerUserID))
+                {
+                    status.examiner = new Lazy<User>(() => Client.Users.GetUser(status.ExaminerUserID));
+                }
 
                 if (status.Type == RunStatusType.Verified)
                 {

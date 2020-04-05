@@ -105,12 +105,18 @@ namespace SpeedrunComSharp.Client
 
         public User GetUser(string userId)
         {
+            User user = null;
             var uri = GetUsersUri(string.Format("/{0}",
                 Uri.EscapeDataString(userId)));
 
             var result = DoRequest(uri);
 
-            return Parse(result.data);
+            if(result != null)
+            {
+                user = Parse(result.data);
+            }
+
+            return user;
         }
 
         public ReadOnlyCollection<Record> GetPersonalBests(

@@ -1,13 +1,47 @@
 ﻿.scroller-tab-wrapper {
-    position: relative;
-    margin: 0 auto;
-    overflow: hidden;
-    padding: 5px;
+    overflow:hidden; 
+    white-space:nowrap; 
+    flex-wrap:nowrap; 
     height: 50px;
 }
 
 .scroller-tab-list {
-    position: absolute;
+    overflow:hidden;
+    white-space:nowrap;
+    flex-wrap:nowrap;
+}
+
+.scroller-tab-list li {
+    display: table-cell;
+    text-align: center;
+    cursor: grab;
+    cursor: -webkit-grab;
+    color: #efefef;
+    vertical-align: middle;
+}
+
+.scroller-tab {
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    padding: 7px;
+    padding-top: 11px;
+    white-space: no-wrap;
+    vertical-align: middle;
+    background-color: #fff;
+}
+
+/* 
+.scroller-tab-wrapper {
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 5px;
+    height: 42px;
+}
+
+ .scroller-tab-list {
+    position: absolute; 
     left: 0px;
     top: 0px;
     min-width: 3000px;
@@ -41,6 +75,6 @@
 
 .scroller-tab-left {
     float: left;
-}
+} */
 
 

@@ -36,7 +36,7 @@
     </div>
     <div class="container">
         <div class="row no-gutters p-1 d-flex">
-            <label class="align-self-end font-weight-bold">Cateogry Type:</label>
+            <label class="align-self-end font-weight-bold">Category Type:</label>
             <ul class="nav nav-pills pl-2" role="tablist">
                 @{
                     int n = 0;
@@ -54,24 +54,26 @@
             @{
                 int i = 0;
                 @foreach (CategoryType categoryType in Model.CategoryTypes)
-                {
-                    <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">
-                        <div class="scroller-tab scroller-tab-left"><i class="fa fa-angle-left"></i></div>
-                        <div class="scroller-tab scroller-tab-right"><i class="fa fa-angle-right"></i></div>
-                        <div class="row no-gutters d-flex scroller-tab-wrapper">
-                            <label class="align-self-end font-weight-bold">Cateogry:</label>
-                            <ul class="nav nav-tabs scroller-tab-list" style="left:85px;" role="tablist">
-                                @{
-                                    int g = 0;
-                                    @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))
-                                    {
-                                        <li class="nav-item category">
-                                            <a id="ankCategory-@(category.Type.ToString() + "-" + g.ToString())-tab" class="nav-link @((g == 0) ? "active" : string.Empty)" data-toggle="tab" href="#divCategory-@(category.Type.ToString() + "-" + g.ToString())" role="tab" aria-controls="divCategory-@(category.Type.ToString() + "-" + g.ToString())" aria-selected="@(g == 0 ? "true" : "false")">@category.Name</a>
-                                        </li>
-                                        g++;
+                {                        
+                    <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">                                                                
+                        <div class="row no-gutters d-flex px-1 pt-1 pb-0">
+                            <div class="col-1 align-self-end"><label class="font-weight-bold">Category:</label></div>                            
+                            <div class="col scroller-tab-wrapper">        
+                                <div class="float-left scroller-tab scroller-tab-left" style="width:40px;"><i class="fa fa-angle-left"></i></div>                     
+                                <ul class="nav nav-tabs float-left scroller-tab-list" role="tablist">
+                                    @{
+                                        int g = 0;
+                                        @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))
+                                        {
+                                            <li class="nav-item category">
+                                                <a id="ankCategory-@(category.Type.ToString() + "-" + g.ToString())-tab" class="nav-link @((g == 0) ? "active" : string.Empty)" data-toggle="tab" href="#divCategory-@(category.Type.ToString() + "-" + g.ToString())" role="tab" aria-controls="divCategory-@(category.Type.ToString() + "-" + g.ToString())" aria-selected="@(g == 0 ? "true" : "false")">@category.Name</a>
+                                            </li>
+                                            g++;
+                                        }
                                     }
-                                }
-                            </ul>
+                                </ul>                                
+                            </div>
+                            <div class="float-left scroller-tab scroller-tab-right" style="width:40px;"><i class="fa fa-angle-right"></i></div>
                         </div>
                         <div class="tab-content">
                             @{

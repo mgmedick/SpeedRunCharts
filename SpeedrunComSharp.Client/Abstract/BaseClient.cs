@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using SpeedrunComSharp.Model;
+using System.Text.RegularExpressions;
 
 namespace SpeedrunComSharp.Client 
 {
@@ -147,7 +148,7 @@ namespace SpeedrunComSharp.Client
         {
             lock (this)
             {
-                dynamic result;
+                dynamic result = null;
 
                 if (Cache.ContainsKey(uri))
                 {
@@ -167,17 +168,21 @@ namespace SpeedrunComSharp.Client
                         result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
                     }
                     catch (WebException ex)
-                    {
+                    { 
                         try
                         {
                             using (var stream = ex.Response.GetResponseStream())
                             {
-                                throw ParseAPIException(stream);
+                                var apiException = ParseAPIException(stream);
+                                if(!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
+                                {
+                                    throw apiException;
+                                }
                             }
                         }
                         catch (APIException ex2)
                         {
-                            throw ex2;
+                            throw ex2;                   
                         }
                         catch
                         {

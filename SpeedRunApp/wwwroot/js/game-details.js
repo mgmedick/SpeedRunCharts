@@ -54,7 +54,7 @@ function InitializeGrid(element) {
             { name: "platformName" },
             { name: "primaryRunTimeString", search: false },
             { name: "examinerName" },
-            { name: "dateSubmitted", search: false, sorttype: "date", formatter: DateSubmittedFormatter },
+            { name: "dateSubmitted", search: false, sorttype: "date", formatter: "date", formatoptions: {srcformat: "ISO8601Long", newformat: "m/d/Y H:i"}, cellattr: DateSubmittedCellAttr },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
         iconSet: "fontAwesome",
@@ -124,6 +124,10 @@ function InitializeGrid(element) {
     function DateSubmittedFormatter(cellvalue, options, rowObject) {
         return rowObject.relativeDateSubmittedString;
         //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
+    }
+
+    function DateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
+        return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
 }
 

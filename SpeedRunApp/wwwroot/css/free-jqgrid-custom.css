@@ -8,11 +8,15 @@
     color: #080C10;
 }
 
-.ui-jqgrid tr.ui-row-ltr td {
-    padding: 5px;
+.ui-jqgrid tr.ui-row-ltr:not(.jqgfirstrow) td {
+    padding: 5px !important;
     font-size: 14px;
     text-overflow: ellipsis;
 }
+
+/* .ui-jqgrid tr.jqgfirstrow td {
+    padding: 0px !important;
+} */
 
 /*.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
     border-bottom: 1px #95d6d8 solid;

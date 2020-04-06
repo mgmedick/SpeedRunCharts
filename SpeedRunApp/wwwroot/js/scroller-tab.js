@@ -1,5 +1,5 @@
 ﻿var hidWidth;
-var scrollBarWidths = 40;
+var scrollBarWidths = 25;
 
 function InitializeScroller() {
     InitializeScrollerEvents();
@@ -12,71 +12,75 @@ function InitializeScrollerEvents() {
     });
 
     $('.scroller-tab-right').click(function () {
-        var scrollerTabWapper = $(this).closest('.scroller-tab-wrapper');
-        var scrollerTabList = $(scrollerTabWapper).find('.scroller-tab-list');        
-        var scrollerTabRight = $(scrollerTabWapper).find('.scroller-tab-right');
-        var scrollerTabLeft = $(scrollerTabWapper).find('.scroller-tab-left');
+        var scrollerTabWrapper = $(this).closest('.scroller-tab-wrapper');
+        var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');        
+        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
+        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
 
         $(scrollerTabLeft).fadeIn('slow');
         $(scrollerTabRight).fadeOut('slow');
 
-        $(scrollerTabList).animate({ marginLeft: "+=" + widthOfHidden(scrollerTabWapper) + "px" }, 'slow', function () {
+        $(scrollerTabList).animate({ marginLeft: "+=" + widthOfHidden(scrollerTabWrapper, scrollerTabList) + "px" }, 'slow', function () {
         });
     });
 
     $('.scroller-tab-left').click(function () {
-        var scrollerTabWapper = $(this).closest('.scroller-tab-wrapper');
-        var scrollerTabList = $(scrollerTabWapper).find('.scroller-tab-list');        
-        var scrollerTabRight = $(scrollerTabWapper).find('.scroller-tab-right');
-        var scrollerTabLeft = $(scrollerTabWapper).find('.scroller-tab-left'); 
+        var scrollerTabWrapper = $(this).closest('.scroller-tab-wrapper');
+        var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');        
+        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
+        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left'); 
     
         $(scrollerTabRight).fadeIn('slow');
         $(scrollerTabLeft).fadeOut('slow');
 
-        $(scrollerTabList).animate({ marginLeft: "-=" + getLeftPosi(scrollerTabWapper) + "px" }, 'slow', function () {
+        $(scrollerTabList).animate({ marginLeft: "-=" + getLeftPositionOfList(scrollerTabList) + "px" }, 'slow', function () {
         });
     });
 }
 
-var widthOfHidden = function (element) {
-    return (($(element).outerWidth()) - widthOfList(element) - getLeftPosi(element)) - scrollBarWidths;
+var widthOfHidden = function (scrollerTabWrapper, scrollerTabList) {
+    return (($(scrollerTabWrapper).outerWidth()) - widthOfList(scrollerTabList) - getLeftPositionOfList(scrollerTabList)) - scrollBarWidths;
 };
 
-var widthOfList = function (element) {
+var widthOfList = function (scrollerTabList) {
     var itemsWidth = 0;
-    $(element).find('.scroller-tab-list li').each(function () {
+    $(scrollerTabList).find('li').each(function () {
         var itemWidth = $(this).outerWidth();
         itemsWidth += itemWidth;
     });
     return itemsWidth;
 };
 
-var getLeftPosi = function (element) {
-    return $(element).find('.scroller-tab-list').position().left;
+var getLeftPositionOfList = function (scrollerTabList) {
+    return parseInt($(scrollerTabList).css("marginLeft"));
 };
 
 var reAdjust = function () {
-    $('.scroller-tab-wrapper').each(function() {
-        var scrollerTabWapper = this;
-        var scrollerTabList = $(scrollerTabWapper).find('.scroller-tab-list'); 
-        var scrollerTabRight = $(scrollerTabWapper).find('.scroller-tab-right');
-        var scrollerTabLeft = $(scrollerTabWapper).find('.scroller-tab-left');
+    $('.scroller-tab-wrapper').each(function () {
+        var scrollerTabWrapper = $(this);
+        var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');
+        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
+        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
 
-        if (($(this).outerWidth()) < widthOfList(scrollerTabWapper)) {
+        if (($(scrollerTabWrapper).outerWidth()) < widthOfList(scrollerTabList)) {
             $(scrollerTabRight).show();
         }
         else {
             $(scrollerTabRight).hide();
         }
 
-        if (getLeftPosi(scrollerTabWapper) < 0) {
+        if (getLeftPositionOfList(scrollerTabList) < 0) {
             $(scrollerTabLeft).show();
         }
         else {
-            $(scrollerTabList).animate({ left: "-=" + getLeftPosi(scrollerTabWapper) + "px" }, 'slow');
+            $(scrollerTabList).animate({ left: "-=" + getLeftPositionOfList(scrollerTabList) + "px" }, 'slow');
             $(scrollerTabLeft).hide();
         }
     });
 }
+
+
+
+
 
 

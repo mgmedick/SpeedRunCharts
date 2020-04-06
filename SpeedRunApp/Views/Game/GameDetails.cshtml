@@ -36,31 +36,37 @@
     </div>
     <div class="container">
         <div class="row no-gutters p-1 d-flex">
-            <label class="align-self-end font-weight-bold">Category Type:</label>
-            <ul class="nav nav-pills pl-2" role="tablist">
-                @{
-                    int n = 0;
-                    @foreach (CategoryType categoryType in Model.CategoryTypes)
-                    {
-                        <li class="nav-item categoryType">
-                            <a id="pills-ankCategoryType-@(n)-tab" class="nav-link @(n == 0 ? "active" : string.Empty)" data-toggle="pill" href="#divCategoryType-@(n)" role="tab" aria-controls="divCategoryType-@(n)" aria-selected="@(n == 0 ? "true" : "false")">@categoryType.ToString()</a>
-                        </li>
-                        n++;
+            <div class="col-auto align-self-end ">
+                <label class="font-weight-bold">Category Type:</label>
+            </div>
+            <div class="col pl-2">
+                <ul class="nav nav-pills" role="tablist">
+                    @{
+                        int n = 0;
+                        @foreach (CategoryType categoryType in Model.CategoryTypes)
+                        {
+                            <li class="nav-item categoryType">
+                                <a id="pills-ankCategoryType-@(n)-tab" class="nav-link @(n == 0 ? "active" : string.Empty)" data-toggle="pill" href="#divCategoryType-@(n)" role="tab" aria-controls="divCategoryType-@(n)" aria-selected="@(n == 0 ? "true" : "false")">@categoryType.ToString()</a>
+                            </li>
+                            n++;
+                        }
                     }
-                }
-            </ul>
+                </ul>
+            </div>
         </div>
         <div class="tab-content">
             @{
                 int i = 0;
                 @foreach (CategoryType categoryType in Model.CategoryTypes)
                 {                        
-                    <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">                                                                
-                        <div class="row no-gutters d-flex px-1 pt-1 pb-0">
-                            <div class="col-1 align-self-end"><label class="font-weight-bold">Category:</label></div>                            
-                            <div class="col scroller-tab-wrapper">        
-                                <div class="float-left scroller-tab scroller-tab-left" style="width:40px;"><i class="fa fa-angle-left"></i></div>                     
-                                <ul class="nav nav-tabs float-left scroller-tab-list" role="tablist">
+            <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">
+                <div class="row no-gutters d-flex px-1 pt-1 pb-0">
+                    <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
+                    <div class="col-11 pl-2">
+                        <div class="row no-gutters scroller-tab-wrapper">
+                            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                            <div class="col scroller-tab-list-container">
+                                <ul class="nav nav-tabs scroller-tab-list" role="tablist">
                                     @{
                                         int g = 0;
                                         @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))
@@ -71,24 +77,26 @@
                                             g++;
                                         }
                                     }
-                                </ul>                                
+                                </ul>
                             </div>
-                            <div class="float-left scroller-tab scroller-tab-right" style="width:40px;"><i class="fa fa-angle-right"></i></div>
-                        </div>
-                        <div class="tab-content">
-                            @{
-                                int b = 0;
-                                @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)i)))
-                                {
-                                    <div id="divCategory-@(category.Type.ToString() + "-" + b.ToString())" class="tab-pane fade @((b == 0) ? "show active" : string.Empty)" role="tabpanel" data-gameid="@Model.ID" data-categoryid="@category.ID" data-categorytype="@(((int)category.Type))">
-                                        <table class="grid"></table>
-                                        <div id="divPager-@(category.Type.ToString() + "-" + b.ToString())" class="pager"></div>
-                                    </div>
-                                    b++;
-                                }
-                            }
+                            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
                         </div>
                     </div>
+                </div>
+                <div class="tab-content">
+                    @{
+                        int b = 0;
+                        @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)i)))
+                        {
+                            <div id="divCategory-@(category.Type.ToString() + "-" + b.ToString())" class="tab-pane fade @((b == 0) ? "show active" : string.Empty)" role="tabpanel" data-gameid="@Model.ID" data-categoryid="@category.ID" data-categorytype="@(((int)category.Type))">
+                                <table class="grid"></table>
+                                <div id="divPager-@(category.Type.ToString() + "-" + b.ToString())" class="pager"></div>
+                            </div>
+                            b++;
+                        }
+                    }
+                </div>
+            </div>
                     i++;
                 }
             }

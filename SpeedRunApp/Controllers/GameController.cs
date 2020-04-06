@@ -53,5 +53,13 @@ namespace SpeedRunApp.WebUI.Controllers
 
             return Json(recordVMs);
         }
+
+        [HttpGet]
+        public JsonResult GameDetailsCharts()
+        {
+            List<string> charts = new List<string>() { "SpeedRunSummaryByMonth" };
+
+            return Json(charts.Select((v, i) => new { name = v, index = i }));
+        }
     }
 }

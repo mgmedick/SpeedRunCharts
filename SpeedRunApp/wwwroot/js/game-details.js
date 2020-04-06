@@ -1,5 +1,4 @@
-﻿
-function InitializeClient() {
+﻿function InitializeClient() {
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
     OnCategoryTypeTabSingleClick($activeCategoryTypeTab);
 
@@ -27,6 +26,7 @@ function OnCategoryTabSingleClick(element) {
     var jqCategoryContainerID = $(element).attr("href");
     var $gridContainer = $(jqCategoryContainerID);
     InitializeGrid($gridContainer);
+    //InitializeCharts()
 }
 
 function InitializeGrid(element) {
@@ -130,6 +130,54 @@ function InitializeGrid(element) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
 }
+
+function InitializeCharts() {
+    var templateLoader = function () {
+        return {
+            load: function (path, params, callback, failCallback) {
+                templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
+            },
+        };
+    }();
+ 
+    var dashboardLoader = new dashboardLoader($('div#summaryCharts'), 'div[data-index]', _);
+ 
+    speedRun.ajaxHelper.get('GameDetailsCharts', {},
+        function (charts) {
+            var chartHandler = function(chartLoader, selector, graphObj) {
+                var _selector = $(selector);
+                var _graphObj = graphObj;
+                var _chartLoader = chartLoader;
+ 
+                templateLoader.load('../Templates/ChartPlaceholder.html', { }, function(html) {
+                    var controller = _graphObj.controller(_selector, new dateHelper());
+ 
+                    _chartLoader.RenderComponent(_selector, html);
+ 
+                    controller.preRender($.Deferred()).then(function () {
+                        controller.postRender($.Deferred()).then(function () {
+                        });
+                    });
+                });
+            };
+ 
+            var noChartHandler = function (chartLoader, selector) {
+                templateLoader.load('../Templates/ChartPlaceholder.html', { msg: 'No Chart Found' }, function (html) {
+                    chartLoader.RenderComponent(selector, html);
+                });
+            };
+ 
+            dashboardLoader.AddComponents(sft.graphObjects, charts, chartHandler, noChartHandler);
+        }
+    , function () {
+        var html = templateLoader.load('../Templates/ChartsError.html', undefined, function (html) {
+            $('div#summaryCharts').html(html);
+        }, $.noop);
+    }, $.noop);
+ }
+
+ 
+
 
 
 

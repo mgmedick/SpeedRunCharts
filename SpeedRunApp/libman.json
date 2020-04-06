@@ -36,6 +36,28 @@
         "sprites/regular.svg",
         "sprites/solid.svg"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "fcharts@3.11.2",
+      "destination": "wwwroot/lib/fcharts/",
+      "files": [
+        "maps/fusioncharts.usa.js",
+        "maps/fusioncharts.world.js",
+        "themes/fusioncharts.theme.carbon.js",
+        "themes/fusioncharts.theme.fint.js",
+        "themes/fusioncharts.theme.ocean.js",
+        "themes/fusioncharts.theme.zune.js",
+        "fusioncharts.charts.js",
+        "fusioncharts.gantt.js",
+        "fusioncharts.js",
+        "fusioncharts.maps.js",
+        "fusioncharts.powercharts.js",
+        "fusioncharts.ssgrid.js",
+        "fusioncharts.treemap.js",
+        "fusioncharts.widgets.js",
+        "fusioncharts.zoomscatter.js"
+      ]
     }
   ]
 }

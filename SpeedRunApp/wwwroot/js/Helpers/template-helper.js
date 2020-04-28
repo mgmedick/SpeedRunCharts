@@ -65,13 +65,7 @@ var templateHelper = function (ajax, templateStorageHelper) {
        }
        else
        {
-            //$ajax.get(url, {}, onSuccess, _failCallback);
-            $.ajax({
-                url: url,
-                data: data,
-                success: onSuccess,
-                dataType: dataType
-            });
+            $ajax.get(url, {}, onSuccess, _failCallback);
         }
    };
 

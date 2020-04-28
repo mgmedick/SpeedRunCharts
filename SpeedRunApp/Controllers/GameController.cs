@@ -29,11 +29,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLeaderboardRecords(string gameID, string categoryID, CategoryType categoryType)
+        public JsonResult GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelIDs)
         {
-            GamesService gameService = new GamesService();
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+            var levels = levelIDs.Split(',').ToList();
 
             switch (categoryType)
             {
@@ -41,10 +41,9 @@ namespace SpeedRunApp.WebUI.Controllers
                     records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
                     break;
                 case CategoryType.PerLevel:
-                    var game = gameService.GetGame(gameID);
-                    foreach (var level in game.Levels)
+                    foreach (var levelID in levels)
                     {
-                        records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, level.ID));
+                        records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, levelID));
                     }
                     break;
             }
@@ -55,11 +54,27 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GameDetailsCharts()
+        public JsonResult GetGameDetailsCharts()
         {
             List<string> charts = new List<string>() { "SpeedRunSummaryByMonth" };
 
             return Json(charts.Select((v, i) => new { name = v, index = i }));
+        }
+
+        public JsonResult GetLeaderboardChartData(string gameID, string categoryIDs, int top)
+        {
+            LeaderboardService leaderboardService = new LeaderboardService();
+            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+            var categorys = categoryIDs.Split(',').ToList();
+
+            foreach (var categoryID in categorys)
+            {
+                records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, null, top));
+            }
+
+            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+
+            return Json(recordVMs);
         }
     }
 }

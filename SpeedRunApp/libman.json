@@ -58,6 +58,52 @@
         "fusioncharts.widgets.js",
         "fusioncharts.zoomscatter.js"
       ]
+    },
+    {
+      "library": "underscore.js@1.9.1",
+      "destination": "wwwroot/lib/underscore.js/"
+    },
+    {
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment.js/",
+      "files": [
+        "moment.min.js",
+        "moment.js"
+      ]
     }
+  ,
+{
+  "provider": "unpkg",
+  "library": "jquery-fusioncharts@1.2.1",
+  "destination": "wwwroot/lib/jquery-fusioncharts/",
+  "files": [
+    "dist/fusioncharts.jqueryplugin.js",
+    "dist/fusioncharts.jqueryplugin.min.js",
+    "dist/fusioncharts.jqueryplugin.min.js.map"
   ]
+}
+,
+{
+  "provider": "unpkg",
+  "library": "jquery-fusioncharts@1.2.1",
+  "destination": "wwwroot/lib/jquery-fusioncharts/jquery-fusioncharts/"
+}
+,
+{
+  "provider": "unpkg",
+  "library": "jquery-fusioncharts@1.2.1",
+  "destination": "wwwroot/lib/jquery-fusioncharts/"
+}
+,
+{
+  "provider": "unpkg",
+  "library": "jquery-fusioncharts@1.2.1",
+  "destination": "wwwroot/lib/jquery-fusioncharts/",
+  "files": [
+    "dist/fusioncharts.jqueryplugin.js",
+    "dist/fusioncharts.jqueryplugin.min.js",
+    "dist/fusioncharts.jqueryplugin.min.js.map"
+  ]
+}
+]
 }

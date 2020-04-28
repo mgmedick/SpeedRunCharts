@@ -62,6 +62,19 @@ namespace SpeedRunCommon
 
             return submittedTimeAgo;
         }
+
+        public static List<DateTime> GetDateRange(DateTime startDate, DateTime endDate)
+        {
+            List<DateTime> dates = new List<DateTime>();
+
+            while (startDate <= endDate)
+            {
+                dates.Add(startDate);
+                startDate = startDate.AddDays(1);
+            }
+
+            return dates;
+        }
         #endregion
 
         #region TimeSpan

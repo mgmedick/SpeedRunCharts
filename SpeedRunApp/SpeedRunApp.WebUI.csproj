@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\speedrun-list.js" />
+    <None Include="wwwroot\templates\ChartError.html" />
+    <None Include="wwwroot\templates\ChartPlaceholder.html" />
   </ItemGroup>
 
   <ItemGroup>

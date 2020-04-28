@@ -3,6 +3,8 @@
     OnCategoryTypeTabSingleClick($activeCategoryTypeTab);
 
     InitializeEvents();
+    InitializeCharts();
+    InitializeScroller();
 }
 
 function InitializeEvents() {
@@ -26,18 +28,21 @@ function OnCategoryTabSingleClick(element) {
     var jqCategoryContainerID = $(element).attr("href");
     var $gridContainer = $(jqCategoryContainerID);
     InitializeGrid($gridContainer);
-    //InitializeCharts()
 }
 
 function InitializeGrid(element) {
     var $grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
     var gameID = $(element).data('gameid');
-    var categoryID = $(element).data('categoryid');
     var categoryType = $(element).data('categorytype');
+    var categoryID = $(element).data('categoryid');
+    var levelIDs = '';
+    $(_levels).each(function () {
+        levelIDs += $(this).val() + ',';
+    })
 
     $grid.jqGrid({
-        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryID=' + categoryID + '&categoryType=' + categoryType,
+        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelIDs=' + levelIDs,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -129,28 +134,39 @@ function InitializeGrid(element) {
     function DateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
+
+    //var data = $grid.getGridParam('data');
+    //return data;
 }
 
 function InitializeCharts() {
+    var gameID = _gameID;
+    var categoryIDs = '';
+    var top = 20;
+
+    $(_categories).each(function () {
+        categoryIDs += $(this).val() + ',';
+    })
+
     var templateLoader = function () {
         return {
             load: function (path, params, callback, failCallback) {
-                templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
+                speedRun.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
             },
         };
     }();
  
-    var dashboardLoader = new dashboardLoader($('div#summaryCharts'), 'div[data-index]', _);
+    var dashload = new dashboardLoader($('div#summaryCharts'), 'div[data-index]', _);
  
-    speedRun.ajaxHelper.get('GameDetailsCharts', {},
+    speedRun.ajaxHelper.get('GetGameDetailsCharts', {},
         function (charts) {
             var chartHandler = function(chartLoader, selector, graphObj) {
                 var _selector = $(selector);
                 var _graphObj = graphObj;
                 var _chartLoader = chartLoader;
  
-                templateLoader.load('../Templates/ChartPlaceholder.html', { }, function(html) {
-                    var controller = _graphObj.controller(_selector, new dateHelper());
+                templateLoader.load('../templates/ChartPlaceholder.html', { }, function(html) {
+                    var controller = _graphObj.controller(_selector, gameID, categoryIDs, top);
  
                     _chartLoader.RenderComponent(_selector, html);
  
@@ -162,19 +178,22 @@ function InitializeCharts() {
             };
  
             var noChartHandler = function (chartLoader, selector) {
-                templateLoader.load('../Templates/ChartPlaceholder.html', { msg: 'No Chart Found' }, function (html) {
+                templateLoader.load('../templates/ChartPlaceholder.html', { msg: 'No Chart Found' }, function (html) {
                     chartLoader.RenderComponent(selector, html);
                 });
             };
  
-            dashboardLoader.AddComponents(sft.graphObjects, charts, chartHandler, noChartHandler);
+            dashload.AddComponents(speedRun.graphObjects, charts, chartHandler, noChartHandler);
         }
     , function () {
-        var html = templateLoader.load('../Templates/ChartsError.html', undefined, function (html) {
+        var html = templateLoader.load('../templates/ChartError.html', undefined, function (html) {
             $('div#summaryCharts').html(html);
         }, $.noop);
     }, $.noop);
- }
+}
+
+
+
 
  
 

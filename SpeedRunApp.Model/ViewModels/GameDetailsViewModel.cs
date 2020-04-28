@@ -15,6 +15,7 @@ namespace SpeedRunApp.Model
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUri;
             Categories = game.Categories;
+            Levels = game.Levels;
         }
 
         public string ID { get; set; }
@@ -23,6 +24,7 @@ namespace SpeedRunApp.Model
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
         public IEnumerable<CategoryDTO> Categories { get; set; }
+        public IEnumerable<LevelDTO> Levels { get; set; }
         public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).Distinct(); } }
     }
 }

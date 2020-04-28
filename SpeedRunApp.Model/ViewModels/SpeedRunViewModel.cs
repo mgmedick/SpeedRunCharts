@@ -25,6 +25,7 @@ namespace SpeedRunApp.Model
             LevelName = run.LevelName;
             ExaminerName = run.Status.Examiner?.Name;
             DateSubmitted = run.DateSubmitted;
+            DateSubmittedString = run.DateSubmitted?.ToString("MM/dd/yyyy");
             RelativeDateSubmittedString = run.DateSubmitted?.ToRealtiveDateString();
             VideoLinkString = run.VideoLink?.ToString();
             VideoLinkEmbeddedString = run.VideoLink?.ToEmbeddedURIString();
@@ -45,6 +46,7 @@ namespace SpeedRunApp.Model
         public string LevelName { get; set; }
         public string ExaminerName { get; set; }
         public DateTime? DateSubmitted { get; set; }
+        public string DateSubmittedString { get; set; }
         public string RelativeDateSubmittedString { get; set; }
         public string VideoLinkString { get; set; }
         public string VideoLinkEmbeddedString { get; set; }

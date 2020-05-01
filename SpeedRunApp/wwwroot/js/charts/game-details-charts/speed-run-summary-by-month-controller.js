@@ -14,11 +14,10 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
    };
 
    var renderResults = function (that, data, promise) {
-       var _data = that._.chain(data.Data).clone().value();
+       var _data = that._.chain(data).clone().value();
 
-       var allData = that._.chain(_data).groupBy('DateSubmittedString').value();
-
-       var categories = that._.chain(data.TimePeriods).value();
+       var allCategoryData = that._.chain(_data).groupBy('categoryName').value();
+       var categories = that._.chain(_data).groupBy('dateSubmitted').map(function(item) { return item[0].dateSubmitted }).value();
 
        var chartElem = that.container.find(that.chartConfig.selector);
        var config = that.chartConfig;
@@ -33,7 +32,15 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
                         promise.resolve();
                    });
 
-       lineChart.addDataSet('Speed Runs', that._.chain(Object.entries(allData)).map(function (x) { return { category: x[0], value: x[1].length } }).value(), 1);
+    //    lineChart.addDataSet("test", that._.chain(Object.entries(allCategoryData)).map(function (x) 
+    //    { return { category: x[0], value: x[1].length } }).value(), 1);
+                   
+       that._.chain(allCategoryData).each(function(item) {
+            lineChart.addDataSet(item[0].categoryName, that._.chain(Object.entries(item)).map(function (x) 
+            { 
+                return { category: x[1].dateSubmitted, value: x[1].primaryRunTimeString } 
+            }).value(), 1);
+       });
 
        lineChart.render(that.chartLoader);
 

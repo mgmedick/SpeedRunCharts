@@ -38,8 +38,9 @@ function InitializeGrid(element) {
     var categoryID = $(element).data('categoryid');
     var levelIDs = '';
     $(_levels).each(function () {
-        levelIDs += $(this).val() + ',';
+        levelIDs += this.id + ',';
     })
+    levelIDs = levelIDs.replace(/,\s*$/, "");
 
     $grid.jqGrid({
         url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelIDs=' + levelIDs,
@@ -141,13 +142,16 @@ function InitializeGrid(element) {
 
 function InitializeCharts() {
     var gameID = _gameID;
-    var categoryIDs = '';
-    var top = 20;
-
+    var top = 20; 
+    var gameCategoryIDs = '';
     $(_categories).each(function () {
-        categoryIDs += $(this).val() + ',';
-    })
+        if(this.type == "0") {
+            gameCategoryIDs += this.id + ',';
+        }
+    });
+    gameCategoryIDs = gameCategoryIDs.replace(/,\s*$/, "");
 
+    
     var templateLoader = function () {
         return {
             load: function (path, params, callback, failCallback) {
@@ -166,7 +170,7 @@ function InitializeCharts() {
                 var _chartLoader = chartLoader;
  
                 templateLoader.load('../templates/ChartPlaceholder.html', { }, function(html) {
-                    var controller = _graphObj.controller(_selector, gameID, categoryIDs, top);
+                    var controller = _graphObj.controller(_selector, gameID, gameCategoryIDs, top);
  
                     _chartLoader.RenderComponent(_selector, html);
  

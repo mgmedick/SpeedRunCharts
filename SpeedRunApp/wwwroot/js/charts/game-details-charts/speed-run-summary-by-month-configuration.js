@@ -13,7 +13,7 @@ speedRun.graphObjects['SpeedRunSummaryByMonth'] = {
                caption: 'Speed Run Summary by Month',
                subCaption: 'Last 6 Months',
                xAxis: 'Date',
-               yAxis: 'Count of Speed Runs',
+               yAxis: 'Time',
                exportEnabled: 1,
                showValues: 1,
                formatNumberScale: 0,

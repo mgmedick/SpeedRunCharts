@@ -33,7 +33,7 @@ namespace SpeedRunApp.WebUI.Controllers
         {
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-            var levels = levelIDs.Split(',').ToList();
+            var levels = !string.IsNullOrWhiteSpace(levelIDs) ? levelIDs.Split(',').ToList() : new List<string>();
 
             switch (categoryType)
             {
@@ -65,7 +65,7 @@ namespace SpeedRunApp.WebUI.Controllers
         {
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-            var categorys = categoryIDs.Split(',').ToList();
+            var categorys = !string.IsNullOrWhiteSpace(categoryIDs) ? categoryIDs.Split(',').ToList() : new List<string>();
 
             foreach (var categoryID in categorys)
             {

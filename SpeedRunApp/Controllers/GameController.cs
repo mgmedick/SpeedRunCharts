@@ -61,7 +61,7 @@ namespace SpeedRunApp.WebUI.Controllers
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }
 
-        public JsonResult GetLeaderboardChartData(string gameID, string categoryIDs, int top)
+        public JsonResult GetLeaderboardChartData(string gameID, string categoryIDs, DateTime startDate, DateTime endDate)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
@@ -69,12 +69,13 @@ namespace SpeedRunApp.WebUI.Controllers
 
             foreach (var categoryID in categorys)
             {
-                records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, null, top));
+                records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
             }
 
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = records.Where(i=>i.DateSubmitted >= startDate && i.DateSubmitted <= endDate).Select(i => new SpeedRunRecordViewModel(i));
+            var dates = DateTimeHelper.GetDateRange(startDate, endDate).Select(i => i.ToString("MM/dd/yyyy"));
 
-            return Json(recordVMs);
+            return Json(new { Data = recordVMs, DatePeriods = dates });
         }
     }
 }

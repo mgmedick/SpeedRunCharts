@@ -1,7 +1,7 @@
 ﻿if (!speedRun)
    var speedRun = {};
 
-var templateStorage = function (storage) {
+function templateStorage (storage) {
    storage = (typeof storage == 'undefined') ? {} : storage;
 
    var get = function (identifier) {
@@ -18,7 +18,7 @@ var templateStorage = function (storage) {
    };
 };
 
-var templateHelper = function (ajax, templateStorageHelper) {
+function templateHelper (ajax, templateStorageHelper) {
    var $ajax = ajax;
    var _templateStorageHelper = templateStorageHelper;
 

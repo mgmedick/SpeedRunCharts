@@ -1,7 +1,7 @@
 ﻿ if (!speedRun)
     var speedRun = {};
  
- var ajaxHelper = function () {
+function ajaxHelper() {
     var postJSON = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _antiforgeryToken) {
         post(_url, _parameters, _successCallback, _failCallback, _completeCallback, "json", "application/json; charset=utf-8", _antiforgeryToken);
     };

@@ -5,19 +5,37 @@ if (!speedRun['graphObjects'])
 speedRun.graphObjects = {};
 
 speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
-    var mapToRequest = function (that, gameID, categoryIDs, top) {
+    var mapToRequest = function (that, gameID, categoryIDs, startDate, endDate) {
        return {
            gameID: gameID,
            categoryIDs: categoryIDs,
-           top: top
+           startDate: startDate,
+           endDate: endDate
        };
    };
 
    var renderResults = function (that, data, promise) {
-       var _data = that._.chain(data).clone().value();
+       var _data = that._.chain(data.data).clone().value();
 
-       var allCategoryData = that._.chain(_data).groupBy('categoryName').value();
-       var categories = that._.chain(_data).groupBy('dateSubmitted').map(function(item) { return item[0].dateSubmitted }).value();
+       var categoryData = {};
+       that._.chain(_data).each(function (item) {
+           var category = item.categoryName;
+           var date = item.dateSubmittedString;
+
+           categoryData[category] = categoryData[category] || {};
+           categoryData[category][date] = categoryData[category][date] || [];
+           categoryData[category][date].push(item);
+       });
+
+       //var categories = that._.chain(data.datePeriods).value();
+       var categories = [];
+       that._.chain(_data).each(function (item) {
+           if (categories.indexOf(item.dateSubmittedString) == -1) {
+               categories.push(item.dateSubmittedString);
+           }
+       });
+
+       categories = that._.sortBy(categories, function (item) { return item });
 
        var chartElem = that.container.find(that.chartConfig.selector);
        var config = that.chartConfig;
@@ -32,15 +50,24 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
                         promise.resolve();
                    });
 
-    //    lineChart.addDataSet("test", that._.chain(Object.entries(allCategoryData)).map(function (x) 
-    //    { return { category: x[0], value: x[1].length } }).value(), 1);
-                   
-       that._.chain(allCategoryData).each(function(item) {
-            lineChart.addDataSet(item[0].categoryName, that._.chain(Object.entries(item)).map(function (x) 
-            { 
-                return { category: x[1].dateSubmitted, value: x[1].primaryRunTimeString } 
-            }).value(), 1);
-       });
+
+       for (var key in categoryData) {
+           if (categoryData.hasOwnProperty(key)) {
+               lineChart.addDataSet(key, that._.chain(Object.entries(categoryData[key])).map(function (x) {
+                   return { category: x[0], value: x[1][0].primaryRunTimeMinutes }
+                }).value());
+           }
+       }
+
+       //that._.chain(groupedData).each(function (item) {
+       //    lineChart.addDataSet(item.categoryName, that._.chain(Object.entries(item.items)).map(function (x) {
+       //        return { category: x[1].dateSubmittedString, value: x[1].primaryRunTimeMinutes }
+       //    }).value());
+       //});
+
+       //that._.chain(categoryData).each(function(item) {
+       //    lineChart.addDataSet(item[0], that._.chain(Object.entries(item.value)).map(function (x) { return { category: x[0], value: x[1].primaryRunTimeMinutes } }).value());
+       //});
 
        lineChart.render(that.chartLoader);
 
@@ -61,7 +88,7 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
    SpeedRunSummaryByMonthController.prototype.preRender = function (promise) {
        var that = this;
 
-       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryIDs, that.inputs.top);
+       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryIDs, that.inputs.startDate, that.inputs.endDate);
 
        that.$ajax.getWithPromise(promise, 'GetLeaderboardChartData', parameters)
                     .then(function (result) {

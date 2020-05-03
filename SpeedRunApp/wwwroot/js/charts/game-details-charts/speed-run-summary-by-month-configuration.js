@@ -7,7 +7,7 @@ if (!speedRun['graphObjects'])
 speedRun.graphObjects['SpeedRunSummaryByMonth'] = {
    templatePath: 'SpeedRunSummaryByMonth.html',
    title: 'Speed Run Summary by Month Last 1 Months',
-    controller: function (container, gameID, categoryIDs, top) {
+    controller: function (container, gameID, categoryIDs, startDate, endDate) {
        var chartConfig = {
                selector: 'div#placeholder',
                caption: 'Speed Run Summary by Month',
@@ -21,7 +21,7 @@ speedRun.graphObjects['SpeedRunSummaryByMonth'] = {
                useRoundEdges: 1,
        };
       
-        return new speedRun.graphObjects.SpeedRunSummaryByMonthController(speedRun.ajaxHelper, _, container, { gameID: gameID, categoryIDs: categoryIDs, top: top }, new chartLoader(), chartConfig);
+        return new speedRun.graphObjects.SpeedRunSummaryByMonthController(speedRun.ajaxHelper, _, container, { gameID: gameID, categoryIDs: categoryIDs, startDate: startDate, endDate: endDate }, new chartLoader(), chartConfig);
    }
 };
 

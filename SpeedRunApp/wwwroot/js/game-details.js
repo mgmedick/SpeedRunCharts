@@ -142,8 +142,10 @@ function InitializeGrid(element) {
 
 function InitializeCharts() {
     var gameID = _gameID;
-    var top = 20; 
     var gameCategoryIDs = '';
+    var startDate = speedRun.dateHelper.monthsAgo(1); 
+    var endDate = speedRun.dateHelper.today();
+
     $(_categories).each(function () {
         if(this.type == "0") {
             gameCategoryIDs += this.id + ',';
@@ -151,7 +153,6 @@ function InitializeCharts() {
     });
     gameCategoryIDs = gameCategoryIDs.replace(/,\s*$/, "");
 
-    
     var templateLoader = function () {
         return {
             load: function (path, params, callback, failCallback) {
@@ -169,8 +170,8 @@ function InitializeCharts() {
                 var _graphObj = graphObj;
                 var _chartLoader = chartLoader;
  
-                templateLoader.load('../templates/ChartPlaceholder.html', { }, function(html) {
-                    var controller = _graphObj.controller(_selector, gameID, gameCategoryIDs, top);
+                templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
+                    var controller = _graphObj.controller(_selector, gameID, gameCategoryIDs, startDate, endDate);
  
                     _chartLoader.RenderComponent(_selector, html);
  

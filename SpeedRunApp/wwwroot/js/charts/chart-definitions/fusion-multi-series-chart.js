@@ -46,9 +46,11 @@
         return this;
     };
 
-    fusionMultiSeriesChart.prototype.setAxis = function (xAxis, yAxis) {
+    fusionMultiSeriesChart.prototype.setAxis = function (xAxis, yAxis, makeXAxisSlanted) {
         this._fusionChart.dataSource.chart.xAxisName = xAxis;
         this._fusionChart.dataSource.chart.yAxisName = yAxis;
+        this._fusionChart.dataSource.chart.labelDisplay = (makeXAxisSlanted) ? 'ROTATE' : 'AUTO';
+        this._fusionChart.dataSource.chart.slantLabels = (makeXAxisSlanted) ? 1 : 0;
 
         return this;
     };

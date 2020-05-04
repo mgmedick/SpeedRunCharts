@@ -5,17 +5,17 @@ if (!speedRun['graphObjects'])
 speedRun.graphObjects = {};
 
 speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
-    var mapToRequest = function (that, gameID, categoryIDs, startDate, endDate) {
+    var mapToRequest = function (that, gameID, categoryID, startDate, endDate) {
        return {
            gameID: gameID,
-           categoryIDs: categoryIDs,
+           categoryID: categoryID,
            startDate: startDate,
            endDate: endDate
        };
    };
 
    var renderResults = function (that, data, promise) {
-       var _data = that._.chain(data.data).clone().value();
+       var _data = that._.chain(data).clone().value();
 
        var categoryData = {};
        that._.chain(_data).each(function (item) {
@@ -27,7 +27,6 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
            categoryData[category][date].push(item);
        });
 
-       //var categories = that._.chain(data.datePeriods).value();
        var categories = [];
        that._.chain(_data).each(function (item) {
            if (categories.indexOf(item.dateSubmittedString) == -1) {
@@ -35,7 +34,7 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
            }
        });
 
-       categories = that._.sortBy(categories, function (item) { return item });
+       categories = that._.sortBy(categories, function (item) { return moment(item) });
 
        var chartElem = that.container.find(that.chartConfig.selector);
        var config = that.chartConfig;
@@ -43,8 +42,8 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
        var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), '');
 
        lineChart.setCaption(config.caption, config.subCaption)
-                  .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-                  .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges)
+                  .setAxis(config.xAxis, config.yAxis, true)
+           .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined)
                   .setCategories(categories)
                   .onRenderComplete(function (evt, d) {
                         promise.resolve();
@@ -54,20 +53,13 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
        for (var key in categoryData) {
            if (categoryData.hasOwnProperty(key)) {
                lineChart.addDataSet(key, that._.chain(Object.entries(categoryData[key])).map(function (x) {
-                   return { category: x[0], value: x[1][0].primaryRunTimeMinutes }
-                }).value());
+                   return {
+                       category: x[0],
+                       value: Math.min.apply(Math, that._.chain(x[1]).map(function (i) { return i.primaryRunTimeMinutes }).value())
+                   }
+               }).value());
            }
        }
-
-       //that._.chain(groupedData).each(function (item) {
-       //    lineChart.addDataSet(item.categoryName, that._.chain(Object.entries(item.items)).map(function (x) {
-       //        return { category: x[1].dateSubmittedString, value: x[1].primaryRunTimeMinutes }
-       //    }).value());
-       //});
-
-       //that._.chain(categoryData).each(function(item) {
-       //    lineChart.addDataSet(item[0], that._.chain(Object.entries(item.value)).map(function (x) { return { category: x[0], value: x[1].primaryRunTimeMinutes } }).value());
-       //});
 
        lineChart.render(that.chartLoader);
 
@@ -88,7 +80,7 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
    SpeedRunSummaryByMonthController.prototype.preRender = function (promise) {
        var that = this;
 
-       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryIDs, that.inputs.startDate, that.inputs.endDate);
+       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.startDate, that.inputs.endDate);
 
        that.$ajax.getWithPromise(promise, 'GetLeaderboardChartData', parameters)
                     .then(function (result) {

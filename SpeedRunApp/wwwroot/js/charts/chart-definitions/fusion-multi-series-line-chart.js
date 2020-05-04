@@ -17,8 +17,8 @@
         return this;
     };
 
-    fusionMultiSeriesLineChart.prototype.setAxis = function (xAxis, yAxis) {
-        this._multiSeriesChart.setAxis(xAxis, yAxis);
+    fusionMultiSeriesLineChart.prototype.setAxis = function (xAxis, yAxis, makeXAxisSlanted) {
+        this._multiSeriesChart.setAxis(xAxis, yAxis, makeXAxisSlanted);
 
         return this;
     };

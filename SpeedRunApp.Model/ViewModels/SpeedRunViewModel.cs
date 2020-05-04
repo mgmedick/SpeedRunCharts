@@ -57,7 +57,7 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return DateSubmitted?.ToString("MM/dd/yyyy hh:mm:ss");
+                return DateSubmitted?.ToString("MM/dd/yyyy");
             }
         }
         public string RelativeDateSubmittedString

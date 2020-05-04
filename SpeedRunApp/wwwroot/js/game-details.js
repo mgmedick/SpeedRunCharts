@@ -1,37 +1,51 @@
 ﻿function InitializeClient() {
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-    OnCategoryTypeTabSingleClick($activeCategoryTypeTab);
 
     InitializeEvents();
-    InitializeCharts();
     InitializeScroller();
+
+    $activeCategoryTypeTab.trigger('click');
 }
 
 function InitializeEvents() {
-    $('.nav-item.categoryType a').one('shown.bs.tab', function () {
+    //shown.bs.tab
+    $('.nav-item.categoryType a').one('click', function () {
         OnCategoryTypeTabSingleClick(this);
     });
 
-    $('.nav-item.category a').one('shown.bs.tab', function () {
+    $('.nav-item.category a').one('click', function () {
         OnCategoryTabSingleClick(this);
+    });
+
+    $('.nav-item.category a').click(function (e) {
+        e.preventDefault();
+        var gridContainerID = $(this).attr('href');
+
+        $('.charts-container').hide();
+        $(gridContainerID + '-Charts').fadeIn();
+
+        $(this).tab('show');
     });
 }
 
 function OnCategoryTypeTabSingleClick(element) {
-    var jqCategoryTypeContainerID = $(element).attr("href");
-    var $activeCategoryTab = $(jqCategoryTypeContainerID).find('.category a.active');
+    var categoryTypeContainerID = $(element).attr("href");
+    var $activeCategoryTab = $(categoryTypeContainerID).find('.category a.active');
 
-    OnCategoryTabSingleClick($activeCategoryTab);
+    $activeCategoryTab.trigger('click');
 }
 
 function OnCategoryTabSingleClick(element) {
-    var jqCategoryContainerID = $(element).attr("href");
-    var $gridContainer = $(jqCategoryContainerID);
+    var gridContainerID = $(element).attr("href");
+    var $gridContainer = $(gridContainerID);
+    var $chartsContainer = $(gridContainerID + "-Charts");
+
     InitializeGrid($gridContainer);
+    InitializeCharts($chartsContainer);
 }
 
 function InitializeGrid(element) {
-    var $grid = $(element).find('.grid');
+    var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
@@ -42,7 +56,7 @@ function InitializeGrid(element) {
     })
     levelIDs = levelIDs.replace(/,\s*$/, "");
 
-    $grid.jqGrid({
+    grid.jqGrid({
         url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelIDs=' + levelIDs,
         datatype: "json",
         mtype: "GET",
@@ -124,34 +138,21 @@ function InitializeGrid(element) {
 
     function OptionsFormatter(cellvalue, options, rowObject) {
         return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-        //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 
     function DateSubmittedFormatter(cellvalue, options, rowObject) {
         return rowObject.relativeDateSubmittedString;
-        //return "<a href='' data-toggle='modal' data-target='#videoLinkModal'><i class='fas fa-video'></i></a>";
     }
 
     function DateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
-
-    //var data = $grid.getGridParam('data');
-    //return data;
 }
 
-function InitializeCharts() {
-    var gameID = _gameID;
-    var gameCategoryIDs = '';
-    var startDate = speedRun.dateHelper.monthsAgo(1); 
-    var endDate = speedRun.dateHelper.today();
-
-    $(_categories).each(function () {
-        if(this.type == "0") {
-            gameCategoryIDs += this.id + ',';
-        }
-    });
-    gameCategoryIDs = gameCategoryIDs.replace(/,\s*$/, "");
+function InitializeCharts(element) {
+    var $chartsContainer = $(element);
+    var gameID = $(element).data('gameid');
+    var categoryID = $(element).data('categoryid');
 
     var templateLoader = function () {
         return {
@@ -161,17 +162,18 @@ function InitializeCharts() {
         };
     }();
  
-    var dashload = new dashboardLoader($('div#summaryCharts'), 'div[data-index]', _);
+    var dashload = new dashboardLoader($chartsContainer, 'div[data-index]', _);
  
     speedRun.ajaxHelper.get('GetGameDetailsCharts', {},
         function (charts) {
             var chartHandler = function(chartLoader, selector, graphObj) {
+                var _chartLoader = chartLoader;
                 var _selector = $(selector);
                 var _graphObj = graphObj;
-                var _chartLoader = chartLoader;
- 
+
+                _selector.empty();
                 templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, gameID, gameCategoryIDs, startDate, endDate);
+                    var controller = _graphObj.controller(_selector, gameID, categoryID, speedRun.dateHelper.monthsAgo(6), speedRun.dateHelper.today());
  
                     _chartLoader.RenderComponent(_selector, html);
  
@@ -192,10 +194,12 @@ function InitializeCharts() {
         }
     , function () {
         var html = templateLoader.load('../templates/ChartError.html', undefined, function (html) {
-            $('div#summaryCharts').html(html);
+            $chartsContainer.html(html);
         }, $.noop);
     }, $.noop);
 }
+
+
 
 
 

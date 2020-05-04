@@ -55,102 +55,114 @@
             <h2>@Model.Name</h2>
         </div>
     </div>
-    <div class="container">
-        <div id="summaryCharts">
-            <div class="chart-container" data-index="0"></div>
-            <div class="chart-container" data-index="1"></div>
-            <div class="chart-container" data-index="2"></div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row no-gutters p-1 d-flex">
-            <div class="col-auto align-self-end ">
-                <label class="font-weight-bold">Category Type:</label>
-            </div>
-            <div class="col pl-2">
-                <ul class="nav nav-pills" role="tablist">
-                    @{
-                        int n = 0;
-                        @foreach (CategoryType categoryType in Model.CategoryTypes)
-                        {
-                            <li class="nav-item categoryType">
-                                <a id="pills-ankCategoryType-@(n)-tab" class="nav-link @(n == 0 ? "active" : string.Empty)" data-toggle="pill" href="#divCategoryType-@(n)" role="tab" aria-controls="divCategoryType-@(n)" aria-selected="@(n == 0 ? "true" : "false")">@categoryType.ToString()</a>
-                            </li>
-                            n++;
-                        }
-                    }
-                </ul>
-            </div>
-        </div>
-        <div class="tab-content">
-            @{
-                int i = 0;
-                @foreach (CategoryType categoryType in Model.CategoryTypes)
+    <div class="container pt-3 pb-3">
+        @{
+            int t = 0;
+            foreach (CategoryType categoryType in Model.CategoryTypes)
+            {
+                int g = 0;
+                foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)t)))
                 {
-                    <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">
-                        <div class="row no-gutters d-flex px-1 pt-1 pb-0">
-                            <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
-                            <div class="col-11 pl-2">
-                                <div class="row no-gutters scroller-tab-wrapper">
-                                    <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
-                                    <div class="col scroller-tab-list-container">
-                                        <ul class="nav nav-tabs scroller-tab-list" role="tablist">
-                                            @{
-                                                int g = 0;
-                                                @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))
-                                                {
-                                                    <li class="nav-item category">
-                                                        <a id="ankCategory-@(category.Type.ToString() + "-" + g.ToString())-tab" class="nav-link @((g == 0) ? "active" : string.Empty)" data-toggle="tab" href="#divCategory-@(category.Type.ToString() + "-" + g.ToString())" role="tab" aria-controls="divCategory-@(category.Type.ToString() + "-" + g.ToString())" aria-selected="@(g == 0 ? "true" : "false")">@category.Name</a>
-                                                    </li>
-                                                    g++;
+                    <div id="divCategory-@(category.Type.ToString() + "-" + g.ToString())-Charts" class="charts-container @((g == 0) ? "show" : "hide")" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
+                        <div class="chart-container" data-index="0"></div>
+                        <div class="chart-container" data-index="1"></div>
+                        <div class="chart-container" data-index="2"></div>
+                    </div>
+                    g++;
+                }
+                t++;
+            }
+        }
+    </div>
+        <div class="container">
+            <div class="row no-gutters p-1 d-flex">
+                <div class="col-auto align-self-end ">
+                    <label class="font-weight-bold">Category Type:</label>
+                </div>
+                <div class="col pl-2">
+                    <ul class="nav nav-pills" role="tablist">
+                        @{
+                            int n = 0;
+                            @foreach (CategoryType categoryType in Model.CategoryTypes)
+                            {
+                                <li class="nav-item categoryType">
+                                    <a id="pills-ankCategoryType-@(n)-tab" class="nav-link @(n == 0 ? "active" : string.Empty)" data-toggle="pill" href="#divCategoryType-@(n)" role="tab" aria-controls="divCategoryType-@(n)" aria-selected="@(n == 0 ? "true" : "false")">@categoryType.ToString()</a>
+                                </li>
+                                n++;
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                @{
+                    int i = 0;
+                    @foreach (CategoryType categoryType in Model.CategoryTypes)
+                    {
+                        <div id="divCategoryType-@(i)" class="container p-0 tab-pane fade @(i == 0 ? "show active" : string.Empty)" role="tabpanel">
+                            <div class="row no-gutters d-flex px-1 pt-1 pb-0">
+                                <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
+                                <div class="col-11 pl-2">
+                                    <div class="row no-gutters scroller-tab-wrapper">
+                                        <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                                        <div class="col scroller-tab-list-container">
+                                            <ul class="nav nav-tabs scroller-tab-list" role="tablist">
+                                                @{
+                                                    int g = 0;
+                                                    @foreach (var category in Model.Categories?.Where(h => h.Type == categoryType))
+                                                    {
+                                                        <li class="nav-item category">
+                                                            <a id="ankCategory-@(category.Type.ToString() + "-" + g.ToString())-tab" class="nav-link @((g == 0) ? "active" : string.Empty)" role="tab" href="#divCategory-@(category.Type.ToString() + "-" + g.ToString())" aria-controls="divCategory-@(category.Type.ToString() + "-" + g.ToString())" aria-selected="@(g == 0 ? "true" : "false")" data-toggle="tab">@category.Name</a>
+                                                        </li>
+                                                        g++;
+                                                    }
                                                 }
-                                            }
-                                        </ul>
+                                            </ul>
+                                        </div>
+                                        <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
                                     </div>
-                                    <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                @{
+                                    int b = 0;
+                                    @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)i)))
+                                    {
+                                        <div id="divCategory-@(category.Type.ToString() + "-" + b.ToString())" class="tab-pane fade @((b == 0) ? "show active" : string.Empty)" role="tabpanel" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
+                                            <table class="grid"></table>
+                                            <div id="divPager-@(category.Type.ToString() + "-" + b.ToString())" class="pager"></div>
+                                        </div>
+                                        b++;
+                                    }
+                                }
+                            </div>
+                        </div>
+                        i++;
+                    }
+                }
+            </div>
+        </div>
+        <div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height:700px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div id="loading">
+                            <div class="d-flex">
+                                <div class="mx-auto">
+                                    <i class="fas fa-spinner fa-spin fa-lg"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-content">
-                            @{
-                                int b = 0;
-                                @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)i)))
-                                {
-                                    <div id="divCategory-@(category.Type.ToString() + "-" + b.ToString())" class="tab-pane fade @((b == 0) ? "show active" : string.Empty)" role="tabpanel" data-gameid="@Model.ID" data-categoryid="@category.ID" data-categorytype="@(((int)category.Type))">
-                                        <table class="grid"></table>
-                                        <div id="divPager-@(category.Type.ToString() + "-" + b.ToString())" class="pager"></div>
-                                    </div>
-                                    b++;
-                                }
-                            }
-                        </div>
-                    </div>
-                    i++;
-                }
-            }
-        </div>
-    </div>
-    <div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height:700px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body p-0">
-                    <div id="loading">
-                        <div class="d-flex">
-                            <div class="mx-auto">
-                                <i class="fas fa-spinner fa-spin fa-lg"></i>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 

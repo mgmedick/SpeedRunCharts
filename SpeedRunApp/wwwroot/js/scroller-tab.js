@@ -1,12 +1,12 @@
 ﻿var hidWidth;
 var scrollBarWidths = 25;
 
-function InitializeScroller() {
-    InitializeScrollerEvents();
+function initializeScroller() {
+    initializeScrollerEvents();
     reAdjust();
 }
 
-function InitializeScrollerEvents() {
+function initializeScrollerEvents() {
     $(window).on('resize', function (e) {
         reAdjust();
     });

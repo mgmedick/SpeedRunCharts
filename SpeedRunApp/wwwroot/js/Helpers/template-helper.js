@@ -1,28 +1,23 @@
-﻿if (!speedRun)
-   var speedRun = {};
+﻿if (!sra)
+    var sra = {};
 
 function templateStorage (storage) {
-   storage = (typeof storage == 'undefined') ? {} : storage;
+    storage = (typeof storage == 'undefined') ? {} : storage;
 
-   var get = function (identifier) {
-       return storage[identifier];
-   };
+    templateStorage.prototype.get = function (identifier) {
+        return storage[identifier];
+    };
 
-   var set = function (identifier, value) {
-       storage[identifier] = value;
-   }
-
-   return {
-       get: get,
-       set: set,
-   };
+    templateStorage.prototype.set = function (identifier, value) {
+        storage[identifier] = value;
+    }
 };
 
 function templateHelper (ajax, templateStorageHelper) {
    var $ajax = ajax;
    var _templateStorageHelper = templateStorageHelper;
 
-   var renderTemplate = function (html, data) {
+    templateHelper.prototype.getTemplateFromHtml = function (html, data) {
        var myTemplate = _.template(html);
 
        return myTemplate({
@@ -30,7 +25,7 @@ function templateHelper (ajax, templateStorageHelper) {
        });
    };
 
-   var getUnderscoreTemplateContents = function (templateID, data) {
+    templateHelper.prototype.getUnderscoreTemplateContents = function (templateID, data) {
        var that = this;
 
        var template = $('#' + templateID).html();
@@ -38,7 +33,7 @@ function templateHelper (ajax, templateStorageHelper) {
        return that.getTemplateFromHtml(template, data);
    };
 
-   var getTemplateContentsAsJQuery = function (templateID, data) {
+    templateHelper.prototype.getTemplateContentsAsJQuery = function (templateID, data) {
        var that = this;
 
        var html = that.getUnderscoreTemplateContents(templateID, data);
@@ -46,7 +41,7 @@ function templateHelper (ajax, templateStorageHelper) {
        return $(html);
    };
 
-   var getTemplate = function (url, data, callback, failCallback) {
+    templateHelper.prototype.getTemplateFromUrl = function (url, data, callback, failCallback) {
        var that = this;
        var _url = url;
        var _data = data;
@@ -68,18 +63,11 @@ function templateHelper (ajax, templateStorageHelper) {
             $ajax.get(url, {}, onSuccess, _failCallback);
         }
    };
-
-   return {
-       getUnderscoreTemplateContents: getUnderscoreTemplateContents,
-       getTemplateContentsAsJQuery: getTemplateContentsAsJQuery,
-       getTemplateFromUrl: getTemplate,
-       getTemplateFromHtml: renderTemplate,
-   }
 };
 
-speedRun["templates"] = (typeof speedRun["templates"] !== 'undefined') ? speedRun["templates"] : {};
-speedRun["templateHelperStorage"] = templateStorage(speedRun["templates"]);
-speedRun["templateHelper"] = templateHelper(speedRun.ajaxHelper, speedRun.templateHelperStorage);
+sra["templates"] = (typeof sra["templates"] !== 'undefined') ? sra["templates"] : {};
+sra["templateHelperStorage"] = new templateStorage(sra["templates"]);
+sra["templateHelper"] = new templateHelper(sra.ajaxHelper, sra.templateHelperStorage);
 
 
 

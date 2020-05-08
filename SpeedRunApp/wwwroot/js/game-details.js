@@ -1,20 +1,20 @@
-﻿function InitializeClient() {
+﻿function initializeClient() {
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
 
-    InitializeEvents();
-    InitializeScroller();
+    initializeEvents();
+    initializeScroller();
 
     $activeCategoryTypeTab.trigger('click');
 }
 
-function InitializeEvents() {
+function initializeEvents() {
     //shown.bs.tab
     $('.nav-item.categoryType a').one('click', function () {
-        OnCategoryTypeTabSingleClick(this);
+        onCategoryTypeTabSingleClick(this);
     });
 
     $('.nav-item.category a').one('click', function () {
-        OnCategoryTabSingleClick(this);
+        onCategoryTabSingleClick(this);
     });
 
     $('.nav-item.category a').click(function (e) {
@@ -28,23 +28,23 @@ function InitializeEvents() {
     });
 }
 
-function OnCategoryTypeTabSingleClick(element) {
+function onCategoryTypeTabSingleClick(element) {
     var categoryTypeContainerID = $(element).attr("href");
     var $activeCategoryTab = $(categoryTypeContainerID).find('.category a.active');
 
     $activeCategoryTab.trigger('click');
 }
 
-function OnCategoryTabSingleClick(element) {
+function onCategoryTabSingleClick(element) {
     var gridContainerID = $(element).attr("href");
     var $gridContainer = $(gridContainerID);
     var $chartsContainer = $(gridContainerID + "-Charts");
 
-    InitializeGrid($gridContainer);
-    InitializeCharts($chartsContainer);
+    initializeGrid($gridContainer);
+    initializeCharts($chartsContainer);
 }
 
-function InitializeGrid(element) {
+function initializeGrid(element) {
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
     var gameID = $(element).data('gameid');
@@ -67,14 +67,14 @@ function InitializeGrid(element) {
         pager: pagerID,
         colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
-            { name: "id", width: 50, resizable:false, search: false, formatter: OptionsFormatter, align: "center" },
+            { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "levelName" },
             { name: "rankString", sorttype: "number" },
             { name: "playerName" },
             { name: "platformName" },
             { name: "primaryRunTimeString", search: false },
             { name: "examinerName" },
-            { name: "dateSubmitted", search: false, sorttype: "date", formatter: "date", formatoptions: {srcformat: "ISO8601Long", newformat: "m/d/Y H:i"}, cellattr: DateSubmittedCellAttr },
+            { name: "dateSubmitted", search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
         iconSet: "fontAwesome",
@@ -82,25 +82,25 @@ function InitializeGrid(element) {
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
-        loadComplete: GridLoadComplete
+        loadComplete: gridLoadComplete
     });
 
-    function GridLoadComplete() {
-        InitializeGridEvents();
-        InitializeGridFilters(this);
+    function gridLoadComplete() {
+        initializeGridEvents();
+        initializeGridFilters(this);
 
         if (categoryType != 1) {
             $(this).jqGrid('hideCol', ["levelName"]);
         }
     }
 
-    function InitializeGridEvents() {
+    function initializeGridEvents() {
         $('[data-toggle="modal"]').click(function () {
             $($(this).data("target") + ' .modal-body').load($(this).attr("href"));
         });
     }
 
-    function InitializeGridFilters(element) {
+    function initializeGridFilters(element) {
         var gridData = $(element).jqGrid("getGridParam", "data");
         var levelNames = GetUniqueValues($.map(gridData, function (item) { return item.levelName; }));
         var rankStrings = GetUniqueValues($.map(gridData, function (item) { return item.rankString; }));
@@ -109,26 +109,26 @@ function InitializeGrid(element) {
         var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; }));
         var examinerNames = GetUniqueValues($.map(gridData, function (item) { return item.examinerName; }));
 
-        SetSearchSelect($(element), 'levelName', levelNames);
-        SetSearchSelect($(element), 'rankString', rankStrings);
-        SetSearchSelect($(element), 'playerName', playerNames);
-        SetSearchSelect($(element), 'categoryName', categoryNames);
-        SetSearchSelect($(element), 'platformName', platformNames);
-        SetSearchSelect($(element), 'examinerName', examinerNames);
+        setSearchSelect($(element), 'levelName', levelNames);
+        setSearchSelect($(element), 'rankString', rankStrings);
+        setSearchSelect($(element), 'playerName', playerNames);
+        setSearchSelect($(element), 'categoryName', categoryNames);
+        setSearchSelect($(element), 'platformName', platformNames);
+        setSearchSelect($(element), 'examinerName', examinerNames);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
 
-    function SetSearchSelect(grid, columnName, searchData) {
+    function setSearchSelect(grid, columnName, searchData) {
         grid.jqGrid("setColProp", columnName, {
             stype: "select",
             searchoptions: {
-                value: BuildSearchSelect(searchData),
+                value: buildSearchSelect(searchData),
                 sopt: ["eq"]
             }
         });
     }
 
-    function BuildSearchSelect(uniqueNames) {
+    function buildSearchSelect(uniqueNames) {
         var values = ":All";
         $.each(uniqueNames, function () {
             values += ";" + this + ":" + this;
@@ -136,20 +136,20 @@ function InitializeGrid(element) {
         return values;
     }
 
-    function OptionsFormatter(cellvalue, options, rowObject) {
+    function optionsFormatter(cellvalue, options, rowObject) {
         return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
     }
 
-    function DateSubmittedFormatter(cellvalue, options, rowObject) {
+    function dateSubmittedFormatter(cellvalue, options, rowObject) {
         return rowObject.relativeDateSubmittedString;
     }
 
-    function DateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
+    function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
 }
 
-function InitializeCharts(element) {
+function initializeCharts(element) {
     var $chartsContainer = $(element);
     var gameID = $(element).data('gameid');
     var categoryID = $(element).data('categoryid');
@@ -157,14 +157,14 @@ function InitializeCharts(element) {
     var templateLoader = function () {
         return {
             load: function (path, params, callback, failCallback) {
-                speedRun.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
+                sra.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
             },
         };
     }();
  
     var dashload = new dashboardLoader($chartsContainer, 'div[data-index]', _);
  
-    speedRun.ajaxHelper.get('GetGameDetailsCharts', {},
+    sra.ajaxHelper.get('GetGameDetailsCharts', {},
         function (charts) {
             var chartHandler = function(chartLoader, selector, graphObj) {
                 var _chartLoader = chartLoader;
@@ -173,7 +173,7 @@ function InitializeCharts(element) {
 
                 _selector.empty();
                 templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, gameID, categoryID, speedRun.dateHelper.monthsAgo(6), speedRun.dateHelper.today());
+                    var controller = _graphObj.controller(_selector, gameID, categoryID, sra.dateHelper.monthsAgo(6), sra.dateHelper.today());
  
                     _chartLoader.RenderComponent(_selector, html);
  
@@ -190,7 +190,7 @@ function InitializeCharts(element) {
                 });
             };
  
-            dashload.AddComponents(speedRun.graphObjects, charts, chartHandler, noChartHandler);
+            dashload.AddComponents(sra.graphObjects, charts, chartHandler, noChartHandler);
         }
     , function () {
         var html = templateLoader.load('../templates/ChartError.html', undefined, function (html) {

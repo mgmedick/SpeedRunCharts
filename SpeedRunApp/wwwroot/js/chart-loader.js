@@ -1,17 +1,17 @@
-﻿var chartLoader = (function () {
-    function chartLoader() { };
-    
-    chartLoader.prototype.LoadChart = function (elem, chartObj) {
+﻿function chartLoader() {
+    chartLoader.prototype.loadChart = function (elem, chartObj) {
         if (typeof chartObj == 'undefined') return;
         if (typeof elem == 'undefined') return;
 
-        //elem.parent().empty();
-        elem.insertFusionCharts(chartObj);
+        $(elem).insertFusionCharts(chartObj);
         return;
     };
- 
-    return chartLoader;
- }());
+}
+
+
+
+
+
 
 
 

@@ -38,28 +38,6 @@
       ]
     },
     {
-      "provider": "unpkg",
-      "library": "fcharts@3.11.2",
-      "destination": "wwwroot/lib/fcharts/",
-      "files": [
-        "maps/fusioncharts.usa.js",
-        "maps/fusioncharts.world.js",
-        "themes/fusioncharts.theme.carbon.js",
-        "themes/fusioncharts.theme.fint.js",
-        "themes/fusioncharts.theme.ocean.js",
-        "themes/fusioncharts.theme.zune.js",
-        "fusioncharts.charts.js",
-        "fusioncharts.gantt.js",
-        "fusioncharts.js",
-        "fusioncharts.maps.js",
-        "fusioncharts.powercharts.js",
-        "fusioncharts.ssgrid.js",
-        "fusioncharts.treemap.js",
-        "fusioncharts.widgets.js",
-        "fusioncharts.zoomscatter.js"
-      ]
-    },
-    {
       "library": "underscore.js@1.9.1",
       "destination": "wwwroot/lib/underscore.js/"
     },
@@ -70,40 +48,26 @@
         "moment.min.js",
         "moment.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "fusioncharts@3.15.1",
+      "destination": "wwwroot/lib/fusioncharts/",
+      "files": [
+        "fusioncharts.charts.js",
+        "fusioncharts.js",
+        "fusioncharts.widgets.js",
+        "themes/fusioncharts.theme.fusion.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery-fusioncharts@1.2.1",
+      "destination": "wwwroot/lib/jquery-fusioncharts/",
+      "files": [
+        "dist/fusioncharts.jqueryplugin.js",
+        "dist/fusioncharts.jqueryplugin.min.js"
+      ]
     }
-  ,
-{
-  "provider": "unpkg",
-  "library": "jquery-fusioncharts@1.2.1",
-  "destination": "wwwroot/lib/jquery-fusioncharts/",
-  "files": [
-    "dist/fusioncharts.jqueryplugin.js",
-    "dist/fusioncharts.jqueryplugin.min.js",
-    "dist/fusioncharts.jqueryplugin.min.js.map"
   ]
-}
-,
-{
-  "provider": "unpkg",
-  "library": "jquery-fusioncharts@1.2.1",
-  "destination": "wwwroot/lib/jquery-fusioncharts/jquery-fusioncharts/"
-}
-,
-{
-  "provider": "unpkg",
-  "library": "jquery-fusioncharts@1.2.1",
-  "destination": "wwwroot/lib/jquery-fusioncharts/"
-}
-,
-{
-  "provider": "unpkg",
-  "library": "jquery-fusioncharts@1.2.1",
-  "destination": "wwwroot/lib/jquery-fusioncharts/",
-  "files": [
-    "dist/fusioncharts.jqueryplugin.js",
-    "dist/fusioncharts.jqueryplugin.min.js",
-    "dist/fusioncharts.jqueryplugin.min.js.map"
-  ]
-}
-]
 }

@@ -1,10 +1,10 @@
-﻿if (!speedRun)
-speedRun = {};
+﻿if (!sra)
+    sra = {};
 
-if (!speedRun['graphObjects'])
-speedRun.graphObjects = {};
+if (!sra['graphObjects'])
+    sra.graphObjects = {};
 
-speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
+sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
     var mapToRequest = function (that, gameID, categoryID, startDate, endDate) {
        return {
            gameID: gameID,
@@ -39,7 +39,7 @@ speedRun.graphObjects.SpeedRunSummaryByMonthController = (function () {
        var chartElem = that.container.find(that.chartConfig.selector);
        var config = that.chartConfig;
 
-       var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), '');
+       var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
        lineChart.setCaption(config.caption, config.subCaption)
                   .setAxis(config.xAxis, config.yAxis, true)

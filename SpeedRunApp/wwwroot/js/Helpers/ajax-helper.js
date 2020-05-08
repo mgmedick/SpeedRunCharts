@@ -1,16 +1,16 @@
-﻿ if (!speedRun)
-    var speedRun = {};
+﻿if (!sra)
+    var sra = {};
  
 function ajaxHelper() {
-    var postJSON = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _antiforgeryToken) {
+    ajaxHelper.prototype.postJSON = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _antiforgeryToken) {
         post(_url, _parameters, _successCallback, _failCallback, _completeCallback, "json", "application/json; charset=utf-8", _antiforgeryToken);
     };
  
-    var getJSON = function (_url, _parameters, _successCallback, _failCallback, _completeCallback) {
+    ajaxHelper.prototype.getJSON = function (_url, _parameters, _successCallback, _failCallback, _completeCallback) {
         get(_url, _parameters, _successCallback, _failCallback, _completeCallback, "json", "application/json; charset=utf-8");
     };
  
-    var get = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _dataType, _contentType) {
+    ajaxHelper.prototype.get = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _dataType, _contentType) {
         $.ajax({
             type: "GET",
             cache: false,
@@ -24,7 +24,7 @@ function ajaxHelper() {
         });
     };
  
-    var post = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _dataType, _contentType, _antiforgeryToken) {
+    ajaxHelper.prototype.post = function (_url, _parameters, _successCallback, _failCallback, _completeCallback, _dataType, _contentType, _antiforgeryToken) {
         $.ajax({
             type: "POST",
             cache: false,
@@ -40,7 +40,7 @@ function ajaxHelper() {
     };
  
     //Ajax post to the server within a Promise
-    var getWithPromise = function (Promise, _url, _parameters, _dataType, _contentType) {
+    ajaxHelper.prototype.getWithPromise = function (Promise, _url, _parameters, _dataType, _contentType) {
         var onSuccess = function (data) {
             Promise.resolve(data);
         };
@@ -64,7 +64,7 @@ function ajaxHelper() {
         return Promise.promise();
     };
  
-    var postWithPromise = function (Promise, _url, _parameters, _dataType, _contentType) {
+    ajaxHelper.prototype.postWithPromise = function (Promise, _url, _parameters, _dataType, _contentType) {
         var onSuccess = function (data) {
             Promise.resolve(data);
         };
@@ -87,18 +87,11 @@ function ajaxHelper() {
  
         return Promise.promise();
     };
- 
-    return {
-        postJSON: postJSON,
-        getJSON: getJSON,
-        post: post,
-        get: get,
-        postWithPromise: postWithPromise,
-        getWithPromise: getWithPromise,
-    };
  };
  
- speedRun["ajaxHelper"] = ajaxHelper();
+sra["ajaxHelper"] = new ajaxHelper();
+
+
 
  
 

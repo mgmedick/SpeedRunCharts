@@ -109,7 +109,7 @@
 
     fusionMultiSeriesChart.prototype.render = function (loader) {
 
-        loader.LoadChart(this._chartContainer, this._fusionChart);
+        loader.loadChart(this._chartContainer, this._fusionChart);
     }
 
     return fusionMultiSeriesChart;

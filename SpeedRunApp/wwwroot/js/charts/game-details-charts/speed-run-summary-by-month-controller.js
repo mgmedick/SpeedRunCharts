@@ -6,7 +6,7 @@ if (!sra['graphObjects'])
 
 sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
     var mapToRequest = function (that, gameID, categoryID, startDate, endDate) {
-       return {
+        return {
            gameID: gameID,
            categoryID: categoryID,
            startDate: startDate,

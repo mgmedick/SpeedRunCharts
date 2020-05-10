@@ -96,7 +96,7 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return PrimaryRunTime.TotalMinutes;
+                return Math.Round(PrimaryRunTime.TotalMinutes, 2);
             }
         }
     }

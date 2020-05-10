@@ -173,7 +173,7 @@ function initializeCharts(element) {
 
                 _selector.empty();
                 templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, gameID, categoryID, sra.dateHelper.monthsAgo(6), sra.dateHelper.today());
+                    var controller = _graphObj.controller(_selector, sra.dateHelper, gameID, categoryID);
  
                     _chartLoader.RenderComponent(_selector, html);
  

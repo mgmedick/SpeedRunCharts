@@ -7,7 +7,7 @@ if (!sra['graphObjects'])
 sra.graphObjects['SpeedRunSummaryByMonth'] = {
    templatePath: 'SpeedRunSummaryByMonth.html',
    title: 'Speed Run Summary',
-    controller: function (container, gameID, categoryID, startDate, endDate) {
+    controller: function (container, dateHelper, gameID, categoryID) {
        var chartConfig = {
                selector: 'div#placeholder',
                caption: 'Speed Run Summary',
@@ -21,7 +21,7 @@ sra.graphObjects['SpeedRunSummaryByMonth'] = {
                useRoundEdges: 1,
        };
       
-        return new sra.graphObjects.SpeedRunSummaryByMonthController(sra.ajaxHelper, _, container, { gameID: gameID, categoryID: categoryID, startDate: startDate, endDate: endDate }, new chartLoader(), chartConfig);
+        return new sra.graphObjects.SpeedRunSummaryByMonthController(sra.ajaxHelper, _, container, { gameID: gameID, categoryID: categoryID, startDate: dateHelper.monthsAgo(6), endDate: dateHelper.today() }, new chartLoader(), chartConfig);
    }
 };
 

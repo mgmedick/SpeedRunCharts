@@ -14,6 +14,14 @@ function dateHelper () {
         return moment().subtract(value, 'months').format('MM/DD/YYYY');
     };
 
+    dateHelper.prototype.yearsAgo = function (value) {
+        if ((typeof value == 'undefined') || (isNaN(value))) {
+            return this.today();
+        }
+
+        return moment().subtract(value, 'years').format('MM/DD/YYYY');
+    };
+
     dateHelper.prototype.beginningOfYear = function (year) {
         if ((typeof year == 'undefined') || (isNaN(year)))
             return moment().startOf('year').format('MM/DD/YYYY');

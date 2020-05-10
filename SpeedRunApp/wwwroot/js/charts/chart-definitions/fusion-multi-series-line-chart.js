@@ -1,9 +1,7 @@
-﻿var fusionMultiSeriesLineChart = (function () {
+﻿function fusionMultiSeriesLineChart(multiSeriesChart, theme) {
     //constructor
-    function fusionMultiSeriesLineChart(multiSeriesChart, theme) {
-        this._multiSeriesChart = multiSeriesChart; // new FusionMultiSeriesChart(elem, height, width, 'msline');
-        this._multiSeriesChart.setChartType('msline', theme);
-    }
+    this._multiSeriesChart = multiSeriesChart;
+    this._multiSeriesChart.setChartType('msline', theme);
 
     fusionMultiSeriesLineChart.prototype.setCaption = function (caption, subCaption) {
         this._multiSeriesChart.setCaption(caption, subCaption);
@@ -53,7 +51,10 @@
         this._multiSeriesChart.render(loader);
     }
 
-    return fusionMultiSeriesLineChart;
-}());
+    //return fusionMultiSeriesLineChart;
+};
+
+
+
 
 

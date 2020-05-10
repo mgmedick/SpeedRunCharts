@@ -1,19 +1,17 @@
-﻿var fusionMultiSeriesChart = (function () {
-    //constructor
-    function fusionMultiSeriesChart(elem, height, width) {
-        this._chartContainer = elem; //element that chart will render in
+﻿function fusionMultiSeriesChart(elem, height, width) {
+    this._chartContainer = elem; //element that chart will render in
 
-        this._fusionChart = {};
-        this._fusionChart.width = width;
-        this._fusionChart.height = height;
-        this._fusionChart.dataFormat = 'JSON';
+    this._fusionChart = {};
+    this._fusionChart.width = width;
+    this._fusionChart.height = height;
+    this._fusionChart.dataFormat = 'JSON';
 
-        this._fusionChart.dataSource = {};
-        this._fusionChart.dataSource.chart = {};
-        this._fusionChart.dataSource.categories = [];
-        this._fusionChart.dataSource.dataset = [];
-        this._fusionChart.events = {};
-    }
+    this._fusionChart.dataSource = {};
+    this._fusionChart.dataSource.chart = {};
+    this._fusionChart.dataSource.categories = [];
+    this._fusionChart.dataSource.dataset = [];
+    this._fusionChart.events = {};
+
 
     fusionMultiSeriesChart.prototype.setChartType = function (chartType, theme) {
         this._fusionChart.type = chartType;
@@ -112,6 +110,6 @@
         loader.loadChart(this._chartContainer, this._fusionChart);
     }
 
-    return fusionMultiSeriesChart;
-}());
+    //return fusionMultiSeriesChart;
+};
 

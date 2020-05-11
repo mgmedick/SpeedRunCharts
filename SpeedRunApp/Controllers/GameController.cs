@@ -69,8 +69,9 @@ namespace SpeedRunApp.WebUI.Controllers
             records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
 
             var recordVMs = records.Where(i=>i.DateSubmitted >= startDate && i.DateSubmitted <= endDate).Select(i => new SpeedRunRecordViewModel(i));
+            var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
 
-            return Json(recordVMs);
+            return Json(new { Data = recordVMs, TimePeriods = timePeriods });
         }
     }
 }

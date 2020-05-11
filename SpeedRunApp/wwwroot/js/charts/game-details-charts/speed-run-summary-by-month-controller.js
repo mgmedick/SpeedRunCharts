@@ -15,18 +15,50 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
    };
 
    var renderResults = function (that, data, promise) {
-       var _data = that._.chain(data).clone().value();
+       var _data = that._.chain(data.data).clone().value();
+       var _timePeriods = that._.chain(data.timePeriods).clone().value();
 
-       var categoryData = {};
-       that._.chain(_data).each(function (item) {
-           var category = item.categoryName;
-           var date = item.dateSubmittedString;
-
-           categoryData[category] = categoryData[category] || {};
-           categoryData[category][date] = categoryData[category][date] || [];
-           categoryData[category][date].push(item);
+       /*
+       var groupedData = that._.chain(_data).groupBy('monthYearSubmitted');
+       var chartData = {};
+       that._.chain(groupedData).each(function (x) {
+           var average = sra.mathHelper.getAverage(x[1]);
+           chartData[x[0]] = average;
        });
 
+       var categories = _timePeriods;
+       */
+
+       var groupedObj = {};
+       that._.chain(_data).each(function (item) {
+           var category = item.categoryName;
+           var monthYear = item.monthYearSubmitted;
+
+           groupedObj[category] = groupedObj[category] || {};
+           groupedObj[category][monthYear] = groupedObj[category][monthYear] || [];
+           groupedObj[category][monthYear].push(item.primaryRunTimeMinutes);
+       });
+
+       var chartDataObj = {};
+       for (var key in groupedObj) {
+           if (groupedObj.hasOwnProperty(key)) {
+               chartDataObj[key] = chartDataObj[key] || {};
+               for (var subkey in groupedObj[key]) {
+                   chartDataObj[key][subkey] = chartDataObj[key][subkey] || [];
+                   chartDataObj[key][subkey].push(sra.mathHelper.getAverage(groupedObj[key][subkey]));
+               }
+
+               //that._.chain(groupedObj[key]).each(function (x) {
+               //    chartDataObj[key][x[0]] = chartDataObj[key][x[0]] || [];
+               //    chartDataObj[key][x[0]].push(sra.mathHelper.getAverage(x[1]));
+               //});
+           }
+       }
+
+       var categories = _timePeriods;
+
+
+       /*
        var categories = [];
        that._.chain(_data).each(function (item) {
            if (categories.indexOf(item.dateSubmittedString) == -1) {
@@ -35,6 +67,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
        });
 
        categories = that._.sortBy(categories, function (item) { return moment(item) });
+       */
 
        var chartElem = that.container.find(that.chartConfig.selector);
        var config = that.chartConfig;
@@ -42,20 +75,19 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
        var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
        lineChart.setCaption(config.caption, config.subCaption)
-                  .setAxis(config.xAxis, config.yAxis, true)
+           .setAxis(config.xAxis, config.yAxis, true)
            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined)
-                  .setCategories(categories)
-                  .onRenderComplete(function (evt, d) {
-                        promise.resolve();
-                   });
+           .setCategories(categories)
+           .onRenderComplete(function (evt, d) {
+               promise.resolve();
+           });
 
-
-       for (var key in categoryData) {
-           if (categoryData.hasOwnProperty(key)) {
-               lineChart.addDataSet(key, that._.chain(Object.entries(categoryData[key])).map(function (x) {
+       for (var key in chartDataObj) {
+           if (chartDataObj.hasOwnProperty(key)) {
+               lineChart.addDataSet(key, that._.chain(Object.entries(chartDataObj[key])).map(function (x) {
                    return {
                        category: x[0],
-                       value: Math.min.apply(Math, that._.chain(x[1]).map(function (i) { return i.primaryRunTimeMinutes }).value())
+                       value: x[1]
                    }
                }).value());
            }

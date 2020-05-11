@@ -14,53 +14,67 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
        };
    };
 
-   var renderResults = function (that, data, promise) {
-       var speedRunTimes = that._.chain(data).map(function (item) {
-           return item.primaryRunTimeMinutes
-       }).sortBy(function (item) {
-           return item;
-       }).value();
+    var renderResults = function (that, data, promise) {
+        var _data = that._.chain(data.data).clone().value();
 
-       var midIndex = Math.ceil(speedRunTimes.length / 2);
-       var median = sra.mathHelper.getAverage(speedRunTimes);
-       var firstHalfMedian = sra.mathHelper.getAverage(speedRunTimes.slice(0, midIndex));
-       var secondHalfMedian = sra.mathHelper.getAverage(speedRunTimes.slice(midIndex, speedRunTimes.length));
+        var allSpeedRunTimes = that._.chain(_data).map(function (item) {
+            return item.primaryRunTimeMinutes;
+        }).sortBy(function (item) {
+            return item;
+        }).value();
 
-       var firstQtrData = that._.chain(data).filter(function (item) { return item.primaryRunTimeMinutes <= firstHalfMedian }).value();
-       var secondQtrData = that._.chain(data).filter(function (item) { return item.primaryRunTimeMinutes > firstHalfMedian && item.primaryRunTimeMinutes <= median }).value();
-       var thirdQtrData = that._.chain(data).filter(function (item) { return item.primaryRunTimeMinutes > median && item.primaryRunTimeMinutes <= secondHalfMedian }).value();
-       var fourthQtrData = that._.chain(data).filter(function (item) { return item.primaryRunTimeMinutes > secondHalfMedian }).value();
+        var chartDataObj = {};
+        var numCategories = 4;
+        var speedRunTimes = that._.chain(allSpeedRunTimes).clone().value();
+        for (var i = 1; i < numCategories; i++) {
+            if (i > 1) {
+                var midIndex = Math.ceil(speedRunTimes.length / 2);
+                speedRunTimes = speedRunTimes.slice(0, midIndex);
+            }
 
-       var categoryData = {};
-       categoryData['<= ' + firstHalfMedian + ' min'] = firstQtrData;
-       categoryData['<= ' + median + ' min'] = secondQtrData;
-       categoryData['<= ' + secondHalfMedian + ' min'] = thirdQtrData;
-       categoryData['> ' + secondHalfMedian + ' min'] = fourthQtrData;
+            var average = sra.mathHelper.getAverage(speedRunTimes);
+            var values = that._.chain(allSpeedRunTimes).filter(function (x) { return x <= average }).value();
+            var key = '<= ' + average + ' min';
 
-       var chartElem = that.container.find(that.chartConfig.selector);
-       var config = that.chartConfig;
+            chartDataObj[key] = chartDataObj[key] || {};
+            chartDataObj[key] = { items: values, sort: numCategories - i };
 
-       var pieChart = new fusionPieChart(chartElem, chartElem.height(), chartElem.width(), true);
+            if (i == 1) {
+                key = '> ' + average + ' min';
+                values = that._.chain(allSpeedRunTimes).filter(function (x) { return x > average }).value();
+
+                chartDataObj[key] = chartDataObj[key] || {};
+                chartDataObj[key] = { items: values, sort: numCategories };
+            }
+        }
+
+        var chartElem = that.container.find(that.chartConfig.selector);
+        var config = that.chartConfig;
+
+        var pieChart = new fusionPieChart(chartElem, chartElem.height(), chartElem.width(), true);
       
-       var subCaption = that.chartConfig.subCaption;
-       that._.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x])}).value();
+        var subCaption = that.chartConfig.subCaption;
+        that._.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x])}).value();
 
-       pieChart.setCaption(that.chartConfig.caption, subCaption)
-                           .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme)
-                           .onRenderComplete(function (evt, d) {
-                               promise.resolve();
-                           });
+        pieChart.setCaption(that.chartConfig.caption, subCaption)
+                            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme)
+                            .onRenderComplete(function (evt, d) {
+                                promise.resolve();
+                            });
 
-       that._.chain(Object.entries(categoryData))
-           .map(function (x) { return { label: x[0], value: x[1].length } })
-           .each(function (item, idx) {
-               pieChart.addData(item.label, item.value, idx == 0);
-           })
-           .value();
+        that._.chain(Object.entries(chartDataObj))
+            .map(function (x) {
+                return { label: x[0], value: x[1].items.length, sort: x[1].sort }
+            })
+            .sortBy('sort')
+            .each(function (item, idx) {
+                pieChart.addData(item.label, item.value, idx == 0);
+            })
+            .value();
 
-       pieChart.render(that.chartLoader);
+        pieChart.render(that.chartLoader);
 
-       return promise.promise();
+        return promise.promise();
    };
 
    //constructor

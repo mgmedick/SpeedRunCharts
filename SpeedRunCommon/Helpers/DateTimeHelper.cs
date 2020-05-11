@@ -63,15 +63,30 @@ namespace SpeedRunCommon
             return submittedTimeAgo;
         }
 
-        public static List<DateTime> GetDateRange(DateTime startDate, DateTime endDate)
+        public static List<DateTime> DateDiff(string datePart, DateTime startDate, DateTime endDate)
         {
             List<DateTime> dates = new List<DateTime>();
 
-            while (startDate <= endDate)
+            switch (datePart.ToLower())
             {
-                dates.Add(startDate);
-                startDate = startDate.AddDays(1);
+                case "day":
+                    while (startDate <= endDate)
+                    {
+                        dates.Add(startDate);
+                        startDate = startDate.AddDays(1);
+                    }
+                    break;
+                case "month":
+                    var startMonthYear = new DateTime(startDate.Year, startDate.Month, 1);
+                    var endMonthYear = new DateTime(endDate.Year, endDate.Month, 1);
+                    while (startMonthYear <= endMonthYear)
+                    {
+                        dates.Add(startMonthYear);
+                        startMonthYear = startMonthYear.AddMonths(1);
+                    }
+                    break;
             }
+
 
             return dates;
         }

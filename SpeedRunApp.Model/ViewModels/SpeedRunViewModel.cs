@@ -60,6 +60,15 @@ namespace SpeedRunApp.Model
                 return DateSubmitted?.ToString("MM/dd/yyyy");
             }
         }
+
+        public string MonthYearSubmitted
+        {
+            get
+            {
+                return DateSubmitted?.ToString("MM/yyyy");
+            }
+        }
+
         public string RelativeDateSubmittedString
         {
             get
@@ -96,7 +105,7 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return Math.Round(PrimaryRunTime.TotalMinutes, 2);
+                return PrimaryRunTime.TotalMinutes;
             }
         }
     }

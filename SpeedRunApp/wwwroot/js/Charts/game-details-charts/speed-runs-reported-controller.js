@@ -27,17 +27,12 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         var numCategories = 4;
         var speedRunTimes = that._.chain(allSpeedRunTimes).clone().value();
         for (var i = 1; i < numCategories; i++) {
-            if (i > 1) {
-                var midIndex = Math.ceil(speedRunTimes.length / 2);
-                speedRunTimes = speedRunTimes.slice(0, midIndex);
-            }
-
             var average = sra.mathHelper.getAverage(speedRunTimes);
-            var values = that._.chain(allSpeedRunTimes).filter(function (x) { return x <= average }).value();
+            var speedRunTimes = that._.chain(speedRunTimes).filter(function (x) { return x <= average }).value();
             var key = '<= ' + average + ' min';
 
             chartDataObj[key] = chartDataObj[key] || {};
-            chartDataObj[key] = { items: values, sort: numCategories - i };
+            chartDataObj[key] = { items: speedRunTimes, sort: numCategories - i };
 
             if (i == 1) {
                 key = '> ' + average + ' min';

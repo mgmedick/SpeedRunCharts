@@ -61,8 +61,9 @@ function initializeGrid(element) {
         datatype: "json",
         mtype: "GET",
         height: '100%',
-        autowidth: true,
-        shrinkToFit: true,
+        width: '1520',
+        //autowidth: true,
+        //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
         colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
@@ -88,10 +89,13 @@ function initializeGrid(element) {
     function gridLoadComplete() {
         initializeGridEvents();
         initializeGridFilters(this);
+        initializeGridStyles(this);
 
         if (categoryType != 1) {
             $(this).jqGrid('hideCol', ["levelName"]);
         }
+
+        //$(this).closest('.grid-container').show();
     }
 
     function initializeGridEvents() {
@@ -116,6 +120,11 @@ function initializeGrid(element) {
         setSearchSelect($(element), 'platformName', platformNames);
         setSearchSelect($(element), 'examinerName', examinerNames);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
+    }
+
+    function initializeGridStyles(element) {
+        var $grid = $(element);
+        $grid.closest('.grid-container').css('width', $grid.width());
     }
 
     function setSearchSelect(grid, columnName, searchData) {

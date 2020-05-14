@@ -56,7 +56,7 @@ namespace SpeedRunApp.WebUI.Controllers
         [HttpGet]
         public JsonResult GetGameDetailsCharts()
         {
-            List<string> charts = new List<string>() { "SpeedRunSummaryByMonth", "SpeedRunsReported" };
+            List<string> charts = new List<string>() { "SpeedRunSummaryByMonth", "SpeedRunsReported", "SpeedRunsByUser" };
 
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }

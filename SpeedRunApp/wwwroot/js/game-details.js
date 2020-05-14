@@ -95,7 +95,7 @@ function initializeGrid(element) {
             $(this).jqGrid('hideCol', ["levelName"]);
         }
 
-        //$(this).closest('.grid-container').show();
+        //$('.grid-container').show();
     }
 
     function initializeGridEvents() {

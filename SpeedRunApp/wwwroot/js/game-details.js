@@ -61,7 +61,6 @@ function initializeGrid(element) {
         datatype: "json",
         mtype: "GET",
         height: '100%',
-        width: '1520',
         //autowidth: true,
         //shrinkToFit: true,
         rowNum: 50,
@@ -69,13 +68,13 @@ function initializeGrid(element) {
         colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "levelName" },
-            { name: "rankString", sorttype: "number" },
-            { name: "playerName" },
-            { name: "platformName" },
-            { name: "primaryRunTimeString", search: false },
-            { name: "examinerName" },
-            { name: "dateSubmitted", search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
+            { name: "levelName", width: 50, hidden: categoryType != 1},
+            { name: "rankString", width: 75, sorttype: "number" },
+            { name: "playerName", width: 160 },
+            { name: "platformName", width: 160 },
+            { name: "primaryRunTimeString", width: 160 , search: false },
+            { name: "examinerName", width: 160  },
+            { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
         iconSet: "fontAwesome",
@@ -90,10 +89,11 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
+        //initializeScroller();
 
-        if (categoryType != 1) {
-            $(this).jqGrid('hideCol', ["levelName"]);
-        }
+        //if (categoryType != 1) {
+        //    $(this).jqGrid('hideCol', ["levelName"]);
+        //}
 
         //$('.grid-container').show();
     }
@@ -124,7 +124,8 @@ function initializeGrid(element) {
 
     function initializeGridStyles(element) {
         var $grid = $(element);
-        $grid.closest('.grid-container').css('width', $grid.width());
+        var $gridContainer = $grid.closest('.grid-container');
+        $gridContainer.css('width', $gridContainer.find('.ui-jqgrid-view').width());
     }
 
     function setSearchSelect(grid, columnName, searchData) {

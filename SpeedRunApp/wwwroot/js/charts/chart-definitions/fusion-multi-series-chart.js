@@ -30,7 +30,7 @@
         return this;
     };
 
-    fusionMultiSeriesChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay) {
+    fusionMultiSeriesChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator) {
         this._fusionChart.dataSource.chart.showValues = showValues;
         this._fusionChart.dataSource.chart.exportEnabled = exportEnabled;
         this._fusionChart.dataSource.chart.formatNumberScale = formatNumberScale;
@@ -40,6 +40,24 @@
 
         if (typeof forceDecimalDisplay !== 'undefined')
             this._fusionChart.dataSource.chart.forceDecimals = forceDecimalDisplay;
+
+        if (typeof numberscalevalue !== 'undefined')
+            this._fusionChart.dataSource.chart.numberscalevalue = numberscalevalue;
+
+        if (typeof numberscaleunit !== 'undefined')
+            this._fusionChart.dataSource.chart.numberscaleunit = numberscaleunit;
+
+        if (typeof defaultnumberscale !== 'undefined')
+            this._fusionChart.dataSource.chart.defaultnumberscale = defaultnumberscale;
+
+        if (typeof scalerecursively !== 'undefined')
+            this._fusionChart.dataSource.chart.scalerecursively = scalerecursively;
+
+        if (typeof maxscalerecursion !== 'undefined')
+            this._fusionChart.dataSource.chart.maxscalerecursion = maxscalerecursion;
+
+        if (typeof scaleseparator !== 'undefined')
+            this._fusionChart.dataSource.chart.scaleseparator = scaleseparator;
 
         return this;
     };

@@ -36,7 +36,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
 
            groupedObj[category] = groupedObj[category] || {};
            groupedObj[category][monthYear] = groupedObj[category][monthYear] || [];
-           groupedObj[category][monthYear].push(item.primaryRunTimeMinutes);
+           groupedObj[category][monthYear].push(item.primaryRunTimeSeconds);
        });
 
        var chartDataObj = {};
@@ -45,7 +45,8 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
                chartDataObj[key] = chartDataObj[key] || {};
                for (var subkey in groupedObj[key]) {
                    chartDataObj[key][subkey] = chartDataObj[key][subkey] || [];
-                   chartDataObj[key][subkey].push(sra.mathHelper.getAverage(groupedObj[key][subkey]));
+                   var average = sra.mathHelper.getAverage(groupedObj[key][subkey]);
+                   chartDataObj[key][subkey].push(average);
                }
 
                //that._.chain(groupedObj[key]).each(function (x) {
@@ -76,7 +77,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
 
        lineChart.setCaption(config.caption, config.subCaption)
            .setAxis(config.xAxis, config.yAxis, true)
-           .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined)
+           .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
            .setCategories(categories)
            .onRenderComplete(function (evt, d) {
                promise.resolve();
@@ -114,7 +115,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
 
        var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.startDate, that.inputs.endDate);
 
-       that.$ajax.getWithPromise(promise, 'GetLeaderboardChartData', parameters)
+       that.$ajax.getWithPromise(promise, 'GetSpeedRunSummaryByMonthChartData', parameters)
                     .then(function (result) {
                         that.viewModel = result;
 

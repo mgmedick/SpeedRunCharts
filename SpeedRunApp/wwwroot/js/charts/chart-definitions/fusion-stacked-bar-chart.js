@@ -10,8 +10,8 @@ function fusionStackedBarChart(multiSeriesChart, theme) {
         return this;
     };
 
-    fusionStackedBarChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, showSum, useRoundEdges) {
-        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay);
+    fusionStackedBarChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, showSum, useRoundEdges, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator) {
+        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator);
         this._multiSeriesChart._fusionChart.dataSource.chart.showSum = (typeof showSum !== 'undefined') ? showSum : 0;
         this._multiSeriesChart._fusionChart.dataSource.chart.useroundedges = (typeof useRoundEdges !== 'undefined') ? useRoundEdges : 0;
 

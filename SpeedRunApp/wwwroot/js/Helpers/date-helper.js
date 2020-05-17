@@ -35,6 +35,42 @@ function dateHelper () {
 
         return moment(year, 'YYYY').endOf('year').format('MM/DD/YYYY');
     };
+
+    dateHelper.prototype.formatTime = function (timepart, value, format) {
+        var result;
+        var date = moment().startOf('day');
+
+        switch (timepart) {
+            case 'seconds':
+                result = date.seconds(value).format(format);
+                break;
+            case 'minutes':
+                result = date.minutes(value).format(format);
+                break;
+            case 'hours':
+                result = date.hours(value).format(format);
+                break;
+        }
+
+        return result;
+    }
+
+    /*
+    dateHelper.prototype.convertToHHMMSS = function (value) {
+        var result;
+        var date = moment().startOf('day').seconds(value);
+
+        if (date.hours() > 0) {
+            result = date.format("HH [hr] mm [min] ss [sec]")
+        } else if (date.minutes() > 0) {
+            result = date.format("mm [min] ss [sec]")
+        } else {
+            result = date.format("ss [sec]")
+        }
+
+        return result;
+    };
+    */
 };
 
 sra["dateHelper"] = new dateHelper();

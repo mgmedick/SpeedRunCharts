@@ -5,12 +5,11 @@ if (!sra['graphObjects'])
     sra.graphObjects = {};
 
 sra.graphObjects.SpeedRunsByUserController = (function () {
-    var mapToRequest = function (that, gameID, categoryID, startDate, endDate) {
+    var mapToRequest = function (that, gameID, categoryID, topAmount) {
         return {
             gameID: gameID,
             categoryID: categoryID,
-            startDate: startDate,
-            endDate: endDate
+            topAmount: topAmount
         };
     };
 
@@ -22,7 +21,7 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
             var playerName = item.playerName;
 
             chartDataObj[playerName] = chartDataObj[playerName] || [];
-            chartDataObj[playerName].push(item.primaryRunTimeMinutes);
+            chartDataObj[playerName].push(item.primaryRunTimeSeconds);
         });
 
         var categories = _.chain(_data).map(function (item) { return item.playerName }).value();
@@ -33,7 +32,7 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
 
         columnChart.setCaption(config.caption, config.subCaption)
             .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges)
+            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
             .setCategories(categories)
             .onRenderComplete(function (evt, d) {
                 promise.resolve();
@@ -65,9 +64,9 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
     SpeedRunsByUserController.prototype.preRender = function (promise) {
         var that = this;
 
-        var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.startDate, that.inputs.endDate);
+        var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.topAmount);
 
-        that.$ajax.getWithPromise(promise, 'GetLeaderboardChartData', parameters)
+        that.$ajax.getWithPromise(promise, 'GetSpeedRunsByUserChartData', parameters)
             .then(function (result) {
                 that.viewModel = result;
 

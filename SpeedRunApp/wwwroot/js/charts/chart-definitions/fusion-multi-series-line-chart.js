@@ -9,15 +9,25 @@
         return this;
     };
 
-    fusionMultiSeriesLineChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay) {
-        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay);
+    fusionMultiSeriesLineChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator) {
+        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator);
+
+        //if (typeof scalerecursively !== 'undefined')
+        //    this._multiSeriesChart._fusionChart.dataSource.chart.scaleRecursively = scalerecursively;
+
+        //if (typeof maxscalerecursion !== 'undefined')
+        //    this._multiSeriesChart._fusionChart.dataSource.chart.maxScaleRecursion = maxscalerecursion;
+
+        //if (typeof scaleseparator !== 'undefined')
+        //    this._multiSeriesChart._fusionChart.dataSource.chart.scaleSeparator = scaleseparator;
 
         return this;
     };
 
     fusionMultiSeriesLineChart.prototype.setAxis = function (xAxis, yAxis, makeXAxisSlanted) {
         this._multiSeriesChart.setAxis(xAxis, yAxis, makeXAxisSlanted);
-
+        //this._multiSeriesChart._fusionChart.dataSource.chart.xAxisLabelMode = 'AUTO';
+        
         return this;
     };
 

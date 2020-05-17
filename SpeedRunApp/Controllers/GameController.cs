@@ -61,14 +61,38 @@ namespace SpeedRunApp.WebUI.Controllers
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }
 
-        public JsonResult GetLeaderboardChartData(string gameID, string categoryID, DateTime startDate, DateTime endDate)
+        public JsonResult GetSpeedRunsByUserChartData(string gameID, string categoryID, int topAmount)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
 
             records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
 
-            var recordVMs = records.Where(i=>i.DateSubmitted >= startDate && i.DateSubmitted <= endDate).Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime).Take(topAmount);
+
+            return Json(new { Data = recordVMs });
+        }
+
+        public JsonResult GetSpeedRunsReportedChartData(string gameID, string categoryID)
+        {
+            LeaderboardService leaderboardService = new LeaderboardService();
+            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+
+            records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
+
+            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+
+            return Json(new { Data = recordVMs });
+        }
+
+        public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, string categoryID, DateTime startDate, DateTime endDate)
+        {
+            LeaderboardService leaderboardService = new LeaderboardService();
+            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+
+            records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
+
+            var recordVMs = records.Where(i => i.DateSubmitted >= startDate && i.DateSubmitted <= endDate).Select(i => new SpeedRunRecordViewModel(i));
             var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
 
             return Json(new { Data = recordVMs, TimePeriods = timePeriods });

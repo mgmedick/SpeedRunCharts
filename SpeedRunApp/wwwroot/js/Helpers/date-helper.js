@@ -42,14 +42,22 @@ function dateHelper () {
 
         switch (timepart) {
             case 'seconds':
-                result = date.seconds(value).format(format);
+                result = date.seconds(value);
                 break;
             case 'minutes':
-                result = date.minutes(value).format(format);
+                result = date.minutes(value);
                 break;
             case 'hours':
-                result = date.hours(value).format(format);
+                result = date.hours(value);
                 break;
+        }
+
+        if (date.hours() > 0) {
+            result = date.format("hh[h] mm[m] ss[s]")
+        } else if (date.minutes() > 0) {
+            result = date.format("mm[m] ss[s]")
+        } else {
+            result = date.format("ss[s]")
         }
 
         return result;

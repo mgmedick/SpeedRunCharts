@@ -93,25 +93,11 @@ namespace SpeedRunApp.Model
             }
         }
 
-        string _primaryRunTimeString;
         public string PrimaryRunTimeString
         {
             get
             {
-                if (PrimaryRunTime.Days > 0)
-                {
-                    _primaryRunTimeString = PrimaryRunTime.ToString(@"dd\hh\:mm\:ss");
-                }
-                else if (PrimaryRunTime.Hours > 0)
-                {
-                    _primaryRunTimeString = PrimaryRunTime.ToString(@"hh\:mm\:ss");
-                }
-                else
-                {
-                    _primaryRunTimeString = PrimaryRunTime.ToString(@"mm\:ss");
-                }
-
-                return _primaryRunTimeString;
+                return PrimaryRunTime.ToShortString();
             }
         }
 

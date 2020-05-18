@@ -19,9 +19,9 @@ sra.graphObjects['SpeedRunSummaryByMonth'] = {
                formatNumberScale: 1,
                numberOfDecimals: 0,
                useRoundEdges: 1,
-               numberscalevalue: "60",
-               numberscaleunit: " :",
-               defaultnumberscale: "",
+               numberscalevalue: "60,60",
+               numberscaleunit: "m,h",
+               defaultnumberscale: "s",
                scalerecursively: "1",
                maxscalerecursion: "-1",
                scaleseparator: " "

@@ -30,7 +30,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
             var times = that._.chain(speedRunTimes).map(function (item) { return item.primaryRunTimeSeconds; }).value();
             var average = sra.mathHelper.getAverage(times);
             var speedRunTimes = that._.chain(speedRunTimes).filter(function (x) { return x.primaryRunTimeSeconds <= average }).value();
-            var key = '<= ' + sra.dateHelper.formatTime("seconds", average, "mm:ss");
+            var key = '<= ' + sra.dateHelper.formatTime("seconds", average, "hh[h] mm[m] ss[s]");
 
             chartDataObj[key] = chartDataObj[key] || {};
             chartDataObj[key] = { items: speedRunTimes, sort: numCategories - i };

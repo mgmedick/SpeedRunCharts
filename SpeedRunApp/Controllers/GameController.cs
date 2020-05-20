@@ -29,11 +29,10 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelIDs)
+        public JsonResult GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-            var levels = !string.IsNullOrWhiteSpace(levelIDs) ? levelIDs.Split(',').ToList() : new List<string>();
 
             switch (categoryType)
             {
@@ -41,10 +40,7 @@ namespace SpeedRunApp.WebUI.Controllers
                     records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
                     break;
                 case CategoryType.PerLevel:
-                    foreach (var levelID in levels)
-                    {
-                        records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, levelID));
-                    }
+                    records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, levelID));
                     break;
             }
 

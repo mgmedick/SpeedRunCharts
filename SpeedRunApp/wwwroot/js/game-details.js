@@ -13,10 +13,27 @@ function initializeEvents() {
         onCategoryTypeTabSingleClick(this);
     });
 
+    $('.nav-item.categoryType a').click(function () {
+        onCategoryTypeTabClick(this);
+    });
+
     $('.nav-item.category a').one('click', function () {
         onCategoryTabSingleClick(this);
     });
 
+    $('.nav-item.category a').click(function () {
+        onCategoryTabClick(this);
+    });
+
+    $('.nav-item.level a').one('click', function () {
+        onLevelTabSingleClick(this);
+    });
+
+    $('.nav-item.level a').click(function () {
+        onLevelTabClick(this);
+    });
+
+    /*
     $('.nav-item.category a').click(function (e) {
         e.preventDefault();
         var gridContainerID = $(this).attr('href');
@@ -26,6 +43,8 @@ function initializeEvents() {
 
         $(this).tab('show');
     });
+    */
+
 }
 
 function onCategoryTypeTabSingleClick(element) {
@@ -35,13 +54,68 @@ function onCategoryTypeTabSingleClick(element) {
     $activeCategoryTab.trigger('click');
 }
 
-function onCategoryTabSingleClick(element) {
-    var gridContainerID = $(element).attr("href");
-    var $gridContainer = $(gridContainerID);
-    var $chartsContainer = $(gridContainerID + "-Charts");
+function onCategoryTypeTabClick(element) {
+    var containerID = $(element).attr('href');
 
-    initializeGrid($gridContainer);
-    initializeCharts($chartsContainer);
+    if ($(element).data('categorytype') == 1) {
+        $('#divLevelTabs').show();
+    } else {
+        $('#divLevelTabs').hide();
+    }
+    
+    $('.categoryType-tab-pane').hide();
+    $(containerID).fadeIn();
+
+
+}
+
+function onCategoryTabSingleClick(element) {
+    var containerID = $(element).attr("href");
+    var $container = $(containerID);
+
+    if ($(element).data('categorytype') == 1) {
+        var $activeLevelTab = $('.level a.active');
+        $activeLevelTab.trigger('click');
+    } else {
+        initializeGrid($container);
+    }
+
+    //var $chartsContainer = $(gridContainerID + "-Charts");
+    //initializeCharts($chartsContainer);
+}
+
+function onCategoryTabClick(element) {
+    var containerID = $(element).attr('href');
+
+    if ($(element).data('categorytype') == 1) {
+        var $activeLevelTab = $('.level a.active');
+        levelindex= $activeLevelTab.data("index");
+        containerID += '-level-' + levelindex;
+    }
+
+    $('.category-tab-pane').hide();
+    $(containerID).fadeIn();
+}
+
+function onLevelTabSingleClick(element) {
+    var containerID = $(element).attr("href");
+    var categoryindex = $('.category a.active').data("index");
+    var containerID = containerID.replace(/{0}/g, categoryindex);
+    var $gridcontainer = $(containerID);
+
+    initializeGrid($gridcontainer);
+
+    //var $chartsContainer = $(gridContainerID + "-Charts");
+    //initializeCharts($chartsContainer);
+}
+
+function onLevelTabClick(element) {
+    var containerID = $(element).attr("href");
+    var categoryindex = $container.find('.category a.active').data("index");
+    var containerID = containerID.replace(/{0}/g, categoryindex);
+
+    $('.category-tab-pane').hide();
+    $(containerID).fadeIn();
 }
 
 function initializeGrid(element) {
@@ -50,14 +124,10 @@ function initializeGrid(element) {
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
-    var levelIDs = '';
-    $(_levels).each(function () {
-        levelIDs += this.id + ',';
-    })
-    levelIDs = levelIDs.replace(/,\s*$/, "");
+    var levelID = $(element).data('levelid');
 
     grid.jqGrid({
-        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelIDs=' + levelIDs,
+        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
         datatype: "json",
         mtype: "GET",
         height: '100%',

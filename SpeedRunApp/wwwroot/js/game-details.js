@@ -49,36 +49,58 @@ function initializeEvents() {
 
 function onCategoryTypeTabSingleClick(element) {
     var categoryTypeContainerID = $(element).attr("href");
-    var $activeCategoryTab = $(categoryTypeContainerID).find('.category a.active');
+    var $container = $(categoryTypeContainerID);
+
+    if ($(element).data('categorytype') == 1) {
+        $container.find('.level.first-item a').removeClass('active');
+        $container.find('.level:not(.first-item):first a').addClass('active');
+        $container.find('.level-tabs').show();
+    } else {
+        $container.find('.level:not(.first-item):first a').removeClass('active');
+        $container.find('.level.first-item a').addClass('active');
+        $container.find('.level-tabs').hide();
+    }
+
+    var $activeCategoryTab = $container.find('.category a.active');
 
     $activeCategoryTab.trigger('click');
 }
 
 function onCategoryTypeTabClick(element) {
-    var containerID = $(element).attr('href');
+    var categoryTypeContainerID = $(element).attr('href');
+    var $container = $(categoryTypeContainerID);
+    var $activeCategoryTab = $container.find('.category a.active');
 
     if ($(element).data('categorytype') == 1) {
-        $('#divLevelTabs').show();
+        $container.find('.level.first-item a').removeClass('active');
+        $container.find('.level:not(.first-item):first a').addClass('active');
+        $container.find('.level-tabs').show();
     } else {
-        $('#divLevelTabs').hide();
+        $container.find('.level:not(.first-item):first a').removeClass('active');
+        $container.find('.level.first-item a').addClass('active');
+        $container.find('.level-tabs').hide();
     }
-    
+
     $('.categoryType-tab-pane').hide();
-    $(containerID).fadeIn();
-
-
+    $container.fadeIn();
+    onCategoryTabClick($activeCategoryTab);
 }
 
 function onCategoryTabSingleClick(element) {
-    var containerID = $(element).attr("href");
-    var $container = $(containerID);
+    var categoryContainerID = $(element).attr("href");
+    var $activeLevelTab = $(categoryContainerID).find('.level a.active');
 
-    if ($(element).data('categorytype') == 1) {
-        var $activeLevelTab = $('.level a.active');
-        $activeLevelTab.trigger('click');
-    } else {
-        initializeGrid($container);
-    }
+    $activeLevelTab.trigger('click');
+
+    //var containerID = $(element).attr("href");
+    //var $container = $(containerID);
+
+    //if ($(element).data('categorytype') == 1) {
+    //    var $activeLevelTab = $('.level a.active');
+    //    $activeLevelTab.trigger('click');
+    //} else {
+    //    initializeGrid($container);
+    //}
 
     //var $chartsContainer = $(gridContainerID + "-Charts");
     //initializeCharts($chartsContainer);
@@ -86,35 +108,27 @@ function onCategoryTabSingleClick(element) {
 
 function onCategoryTabClick(element) {
     var containerID = $(element).attr('href');
-
-    if ($(element).data('categorytype') == 1) {
-        var $activeLevelTab = $('.level a.active');
-        levelindex= $activeLevelTab.data("index");
-        containerID += '-level-' + levelindex;
-    }
+    var $activeLevelTab = $(containerID).find('.level a.active');
 
     $('.category-tab-pane').hide();
     $(containerID).fadeIn();
+    onLevelTabClick($activeLevelTab);
 }
 
 function onLevelTabSingleClick(element) {
-    var containerID = $(element).attr("href");
-    var categoryindex = $('.category a.active').data("index");
-    var containerID = containerID.replace(/{0}/g, categoryindex);
-    var $gridcontainer = $(containerID);
+    var gridContainerID = $(element).attr("href");
+    var $gridContainer = $(gridContainerID);
 
-    initializeGrid($gridcontainer);
+    initializeGrid($gridContainer);
 
     //var $chartsContainer = $(gridContainerID + "-Charts");
     //initializeCharts($chartsContainer);
 }
 
 function onLevelTabClick(element) {
-    var containerID = $(element).attr("href");
-    var categoryindex = $container.find('.category a.active').data("index");
-    var containerID = containerID.replace(/{0}/g, categoryindex);
+    var containerID = $(element).attr('href');
 
-    $('.category-tab-pane').hide();
+    $('.level-tab-pane').hide();
     $(containerID).fadeIn();
 }
 

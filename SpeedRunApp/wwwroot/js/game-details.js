@@ -48,17 +48,29 @@ function initializeEvents() {
 }
 
 function onCategoryTypeTabSingleClick(element) {
-    var categoryTypeContainerID = $(element).attr("href");
+    var categoryTypeContainerID = $(element).attr('href');
+    var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
     var $container = $(categoryTypeContainerID);
+    var $chartContainer = $(chartCategoryTypeContainerID);
+
+    var $activeCategoryTab = $container.find('.category a.active');
 
     if ($(element).data('categorytype') == 1) {
         $container.find('.level.first-item a').removeClass('active');
         $container.find('.level:not(.first-item):first a').addClass('active');
         $container.find('.level-tabs').show();
+
+        $chartContainer.find('.level.first-item a').removeClass('active');
+        $chartContainer.find('.level:not(.first-item):first a').addClass('active');
+        $chartContainer.find('.level-tabs').show();
     } else {
         $container.find('.level:not(.first-item):first a').removeClass('active');
         $container.find('.level.first-item a').addClass('active');
         $container.find('.level-tabs').hide();
+
+        $chartContainer.find('.level:not(.first-item):first a').removeClass('active');
+        $chartContainer.find('.level.first-item a').addClass('active');
+        $chartContainer.find('.level-tabs').hide();
     }
 
     var $activeCategoryTab = $container.find('.category a.active');
@@ -68,8 +80,10 @@ function onCategoryTypeTabSingleClick(element) {
 
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
-    var chartCategoryTypeContainerID = $(element).attr('href');
+    var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
     var $container = $(categoryTypeContainerID);
+    var $chartContainer = $(chartCategoryTypeContainerID);
+
     var $activeCategoryTab = $container.find('.category a.active');
 
     if ($(element).data('categorytype') == 1) {
@@ -77,15 +91,25 @@ function onCategoryTypeTabClick(element) {
         $container.find('.level:not(.first-item):first a').addClass('active');
         $container.find('.level-tabs').show();
 
-
+        $chartContainer.find('.level.first-item a').removeClass('active');
+        $chartContainer.find('.level:not(.first-item):first a').addClass('active');
+        $chartContainer.find('.level-tabs').show();
     } else {
         $container.find('.level:not(.first-item):first a').removeClass('active');
         $container.find('.level.first-item a').addClass('active');
         $container.find('.level-tabs').hide();
+
+        $chartContainer.find('.level:not(.first-item):first a').removeClass('active');
+        $chartContainer.find('.level.first-item a').addClass('active');
+        $chartContainer.find('.level-tabs').hide();
     }
 
     $('.categoryType-tab-pane').hide();
     $container.fadeIn();
+
+    $('.categoryType-tab-pane-charts').hide();
+    $chartContainer.fadeIn();
+
     onCategoryTabClick($activeCategoryTab);
 }
 
@@ -110,29 +134,38 @@ function onCategoryTabSingleClick(element) {
 }
 
 function onCategoryTabClick(element) {
-    var containerID = $(element).attr('href');
-    var $activeLevelTab = $(containerID).find('.level a.active');
+    var categoryContainerID = $(element).attr('href');
+    var chartCategoryContainerID = categoryContainerID + '-charts';
+    var $activeLevelTab = $(categoryContainerID).find('.level a.active');
 
     $('.category-tab-pane').hide();
-    $(containerID).fadeIn();
+    $(categoryContainerID).fadeIn();
+
+    $('.category-tab-pane-charts').hide();
+    $(chartCategoryContainerID).fadeIn();
+
     onLevelTabClick($activeLevelTab);
 }
 
 function onLevelTabSingleClick(element) {
     var gridContainerID = $(element).attr("href");
+    var chartsContainerID = gridContainerID + '-charts'
     var $gridContainer = $(gridContainerID);
+    var $chartsContainer = $(chartsContainerID);
 
     initializeGrid($gridContainer);
-
-    //var $chartsContainer = $(gridContainerID + "-Charts");
-    //initializeCharts($chartsContainer);
+    initializeCharts($chartsContainer);
 }
 
 function onLevelTabClick(element) {
-    var containerID = $(element).attr('href');
+    var levelContainerID = $(element).attr('href');
+    var chartLevelContainerID = levelContainerID + '-charts';
 
     $('.level-tab-pane').hide();
-    $(containerID).fadeIn();
+    $(levelContainerID).fadeIn();
+
+    $('.level-tab-pane-charts').hide();
+    $(chartLevelContainerID).fadeIn();
 }
 
 function initializeGrid(element) {

@@ -64,25 +64,43 @@
             </div>
         </div>
     </div>
-    @*<div class="mx-auto" style="width:1520px;">
-            @{
-                int t = 0;
-                foreach (CategoryType categoryType in Model.CategoryTypes)
-                {
-                    int g = 0;
-                    foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)t)))
-                    {
-                        <div id="divCategory-@(category.Type.ToString() + "-" + g.ToString())-Charts" class="row charts-container @((g == 0) ? "show" : "hide")" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
-                            <div class="chart-container" data-index="0"></div>
-                            <div class="chart-container pl-2" data-index="1"></div>
-                            <div class="chart-container pl-2" data-index="2"></div>
-                        </div>
-                        g++;
+    <div class="mx-auto" style="width:1520px;">
+        @{
+            int t = 0;
+            foreach (CategoryType categoryType in Model.CategoryTypes)
+            {
+                <div id="divCategoryType-@(t)-Charts">
+                    @{
+                        int g = 0;
+                        @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)t)))
+                        {
+                            <div id="divCategory-@(category.Type.ToString() + "-category-" + g.ToString())-Charts">
+                                <div id="divCategory-@(category.Type.ToString() + "-category-" + g.ToString() + "-level-")-Charts" class="row charts-container show" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
+                                    <div class="chart-container" data-index="0"></div>
+                                    <div class="chart-container pl-2" data-index="1"></div>
+                                    <div class="chart-container pl-2" data-index="2"></div>
+                                </div>
+                                @{
+                                    int h = 0;
+                                    @foreach (var level in Model.Levels)
+                                    {
+                                        <div id="divCategory-@(category.Type.ToString() + "-category-" + g.ToString() + "-level-" + h.ToString())-Charts" class="row charts-container" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID" data-levelid="@level.ID">
+                                            <div class="chart-container" data-index="0"></div>
+                                            <div class="chart-container pl-2" data-index="1"></div>
+                                            <div class="chart-container pl-2" data-index="2"></div>
+                                        </div>
+                                        h++;
+                                    }
+                                }
+                            </div>
+                            g++;
+                        }
                     }
-                    t++;
-                }
+                </div>
+                t++;
             }
-        </div>*@
+        }
+    </div>
     <div class="grid-container mx-auto" style="width:50%;">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">

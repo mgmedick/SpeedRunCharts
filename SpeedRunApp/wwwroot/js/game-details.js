@@ -68,6 +68,7 @@ function onCategoryTypeTabSingleClick(element) {
 
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
+    var chartCategoryTypeContainerID = $(element).attr('href');
     var $container = $(categoryTypeContainerID);
     var $activeCategoryTab = $container.find('.category a.active');
 
@@ -75,6 +76,8 @@ function onCategoryTypeTabClick(element) {
         $container.find('.level.first-item a').removeClass('active');
         $container.find('.level:not(.first-item):first a').addClass('active');
         $container.find('.level-tabs').show();
+
+
     } else {
         $container.find('.level:not(.first-item):first a').removeClass('active');
         $container.find('.level.first-item a').addClass('active');

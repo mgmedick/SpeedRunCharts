@@ -5,12 +5,14 @@ if (!sra['graphObjects'])
     sra.graphObjects = {};
 
 sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
-    var mapToRequest = function (that, gameID, categoryID, startDate, endDate) {
+    var mapToRequest = function (that, gameID, categoryType, categoryID, levelID) {
         return {
-           gameID: gameID,
-           categoryID: categoryID,
-           startDate: startDate,
-           endDate: endDate
+            gameID: gameID,
+            categoryType: categoryType,
+            categoryID: categoryID,
+            levelID: levelID//,
+            //startDate: startDate,
+            //endDate: endDate
        };
    };
 
@@ -42,11 +44,26 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
        var chartDataObj = {};
        for (var key in groupedObj) {
            if (groupedObj.hasOwnProperty(key)) {
-               chartDataObj[key] = chartDataObj[key] || {};
+               var minKey = key + ' - Min Time';
+               var maxKey = key + ' - Max Time';
+               var averageKey = key + ' - Avg Time';
+
+               chartDataObj[minKey] = chartDataObj[minKey] || {};
+               chartDataObj[maxKey] = chartDataObj[maxKey] || {};
+               chartDataObj[averageKey] = chartDataObj[averageKey] || {};
                for (var subkey in groupedObj[key]) {
-                   chartDataObj[key][subkey] = chartDataObj[key][subkey] || [];
+                   chartDataObj[minKey][subkey] = chartDataObj[minKey][subkey] || [];
+                   chartDataObj[maxKey][subkey] = chartDataObj[maxKey][subkey] || [];
+                   chartDataObj[averageKey][subkey] = chartDataObj[averageKey][subkey] || [];
+
+                   var min = sra.mathHelper.getMin(groupedObj[key][subkey]);
+                   chartDataObj[minKey][subkey].push(min);
+
+                   var max = sra.mathHelper.getMax(groupedObj[key][subkey]);
+                   chartDataObj[maxKey][subkey].push(max);
+
                    var average = sra.mathHelper.getAverage(groupedObj[key][subkey]);
-                   chartDataObj[key][subkey].push(average);
+                   chartDataObj[averageKey][subkey].push(average);
                }
 
                //that._.chain(groupedObj[key]).each(function (x) {
@@ -77,7 +94,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
 
        lineChart.setCaption(config.caption, config.subCaption)
            .setAxis(config.xAxis, config.yAxis, true)
-           .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
+           .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData)
            .setCategories(categories)
            .onRenderComplete(function (evt, d) {
                promise.resolve();
@@ -113,7 +130,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
    SpeedRunSummaryByMonthController.prototype.preRender = function (promise) {
        var that = this;
 
-       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.startDate, that.inputs.endDate);
+       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryType, that.inputs.categoryID, that.inputs.levelID);
 
        that.$ajax.getWithPromise(promise, 'GetSpeedRunSummaryByMonthChartData', parameters)
                     .then(function (result) {

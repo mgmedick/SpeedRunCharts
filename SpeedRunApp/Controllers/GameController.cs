@@ -29,22 +29,10 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public JsonResult GameDetails_Read(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
-            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-
-            switch (categoryType)
-            {
-                case CategoryType.PerGame:
-                    records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
-                    break;
-                case CategoryType.PerLevel:
-                    records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID, levelID));
-                    break;
-            }
-
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(recordVMs);
         }
@@ -57,38 +45,32 @@ namespace SpeedRunApp.WebUI.Controllers
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }
 
-        public JsonResult GetSpeedRunsByUserChartData(string gameID, string categoryID, int topAmount)
+        public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
-            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-
-            records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
-
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime).Take(topAmount);
+            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            recordVMs = recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds).Take(topAmount);
 
             return Json(new { Data = recordVMs });
         }
 
-        public JsonResult GetSpeedRunsReportedChartData(string gameID, string categoryID)
+        public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
-            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
-
-            records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
-
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(new { Data = recordVMs });
         }
 
-        public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, string categoryID, DateTime startDate, DateTime endDate)
+        public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
             LeaderboardService leaderboardService = new LeaderboardService();
-            List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
-            records.AddRange(leaderboardService.GetLeaderboardRecordsForCategory(gameID, categoryID));
+            //DateTime startDate = recordVMs.Where(i=>i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).FirstOrDefault();
+            DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
+            DateTime startDate = (endDate != DateTime.MinValue) ? endDate.AddMonths(-6) : DateTime.MinValue;
 
-            var recordVMs = records.Where(i => i.DateSubmitted >= startDate && i.DateSubmitted <= endDate).Select(i => new SpeedRunRecordViewModel(i));
             var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
 
             return Json(new { Data = recordVMs, TimePeriods = timePeriods });

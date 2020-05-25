@@ -5,10 +5,12 @@ if (!sra['graphObjects'])
     sra.graphObjects = {};
 
 sra.graphObjects.SpeedRunsReportedController = (function () {
-   var mapToRequest = function (that, gameID, categoryID) {
+    var mapToRequest = function (that, gameID, categoryType, categoryID, levelID) {
        return {
            gameID: gameID,
-           categoryID: categoryID
+           categoryType: categoryType,
+           categoryID: categoryID,
+           levelID: levelID
        };
    };
 
@@ -18,53 +20,52 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         var allSpeedRunTimes = that._.chain(_data).map(function (item) {
             return item;
         }).sortBy(function (item) {
-            return item;
+            return item.primaryRunTimeSeconds;
         }).value();
 
         var chartDataObj = {};
-        var numCategories = 4;
-        var speedRunTimes = that._.chain(allSpeedRunTimes).clone().value();
+        var percIncrement = 5;
+        var maxPerc = 35;
+        var showEvery = 2;
+        var maxNumCategories = Math.round((100 / percIncrement) / showEvery) + 1;
 
-        var i = 1;
-        while (i < numCategories && speedRunTimes.length > 0) {
-            var times = that._.chain(speedRunTimes).map(function (item) { return item.primaryRunTimeSeconds; }).value();
-            var average = sra.mathHelper.getAverage(times);
-            var speedRunTimes = that._.chain(speedRunTimes).filter(function (x) { return x.primaryRunTimeSeconds <= average }).value();
-            var key = '<= ' + sra.dateHelper.formatTime("seconds", average, "hh[h] mm[m] ss[s]");
+        var prevPercNum = null;
+        var prevIndex = null;
+        var prevTime = null;
 
-            chartDataObj[key] = chartDataObj[key] || {};
-            chartDataObj[key] = { items: speedRunTimes, sort: numCategories - i };
+        for (var i = 0; i < maxNumCategories; i++) {
+            var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
+            var index = Math.floor((allSpeedRunTimes.length + 1) * (percNum / 100));
+            index = ((index > 0) ? index - 1 : 0);// + ((prevIndex > 0) ? prevIndex - 1 : 0)
+            var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
+            var sum = that._.chain(Object.entries(chartDataObj)).reduce(function (m, x) { return m + x[1].length; }, 0).value();
 
-            if (i == 1) {
-                key = '> ' + sra.dateHelper.formatTime("seconds", average, "mm:ss");
-                values = that._.chain(allSpeedRunTimes).filter(function (x) { return x.primaryRunTimeSeconds > average }).value();
+            var time;
+            var key;
+            var values;
+            if ((sum + (values.length - 1)) >= allSpeedRunTimes.length - 1 || index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
+                //index = allSpeedRunTimes.length - 1;
+                //time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+                key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (Remainder)";
+                values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i > sum - 1 }).value();
+                chartDataObj[key] = values;
 
-                if (values.length > 0) {
-                    chartDataObj[key] = chartDataObj[key] || {};
-                    chartDataObj[key] = { items: values, sort: numCategories };
+                break;
+            } else {
+                time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+                key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (Top " + percNum + "%)";
+                //values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return (prevIndex == null || i > prevIndex) && i <= index }).value();
+                //values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
+
+                if (index != prevIndex) {
+                    chartDataObj[key] = values;
                 }
             }
 
-            i++;
+            prevPercNum = percNum;
+            prevIndex = index;
+            prevTime = time;
         }
-        /*
-        for (var i = 1; i < numCategories; i++) {
-            var average = sra.mathHelper.getAverage(speedRunTimes);
-            var speedRunTimes = that._.chain(speedRunTimes).filter(function (x) { return x <= average }).value();
-            var key = '<= ' + average + ' min';
-
-            chartDataObj[key] = chartDataObj[key] || {};
-            chartDataObj[key] = { items: speedRunTimes, sort: numCategories - i };
-
-            if (i == 1) {
-                key = '> ' + average + ' min';
-                values = that._.chain(allSpeedRunTimes).filter(function (x) { return x > average }).value();
-
-                chartDataObj[key] = chartDataObj[key] || {};
-                chartDataObj[key] = { items: values, sort: numCategories };
-            }
-        }
-        */
 
         var chartElem = that.container.find(that.chartConfig.selector);
         var config = that.chartConfig;
@@ -75,16 +76,15 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         that._.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x])}).value();
 
         pieChart.setCaption(that.chartConfig.caption, subCaption)
-            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
+            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip)
                             .onRenderComplete(function (evt, d) {
                                 promise.resolve();
                             });
 
         that._.chain(Object.entries(chartDataObj))
             .map(function (x) {
-                return { label: x[0], value: x[1].items.length, sort: x[1].sort }
+                return { label: x[0], value: x[1].length }
             })
-            .sortBy('sort')
             .each(function (item, idx) {
                 pieChart.addData(item.label, item.value, idx == 0);
             })
@@ -109,7 +109,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
    SpeedRunsReportedController.prototype.preRender = function (promise) {
        var that = this;
 
-       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID);
+       var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryType, that.inputs.categoryID, that.inputs.levelID);
 
        that.$ajax.getWithPromise(promise, 'GetSpeedRunsReportedChartData', parameters)
                     .then(function (result) {

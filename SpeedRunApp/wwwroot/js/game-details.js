@@ -32,19 +32,6 @@ function initializeEvents() {
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
-
-    /*
-    $('.nav-item.category a').click(function (e) {
-        e.preventDefault();
-        var gridContainerID = $(this).attr('href');
-
-        $('.charts-container').hide();
-        $(gridContainerID + '-Charts').fadeIn();
-
-        $(this).tab('show');
-    });
-    */
-
 }
 
 function onCategoryTypeTabSingleClick(element) {
@@ -53,24 +40,12 @@ function onCategoryTypeTabSingleClick(element) {
     var $container = $(categoryTypeContainerID);
     var $chartContainer = $(chartCategoryTypeContainerID);
 
-    var $activeCategoryTab = $container.find('.category a.active');
+    //var $activeCategoryTab = $container.find('.category a.active');
 
     if ($(element).data('categorytype') == 1) {
-        $container.find('.level.first-item a').removeClass('active');
-        $container.find('.level:not(.first-item):first a').addClass('active');
         $container.find('.level-tabs').show();
-
-        $chartContainer.find('.level.first-item a').removeClass('active');
-        $chartContainer.find('.level:not(.first-item):first a').addClass('active');
-        $chartContainer.find('.level-tabs').show();
     } else {
-        $container.find('.level:not(.first-item):first a').removeClass('active');
-        $container.find('.level.first-item a').addClass('active');
         $container.find('.level-tabs').hide();
-
-        $chartContainer.find('.level:not(.first-item):first a').removeClass('active');
-        $chartContainer.find('.level.first-item a').addClass('active');
-        $chartContainer.find('.level-tabs').hide();
     }
 
     var $activeCategoryTab = $container.find('.category a.active');
@@ -87,21 +62,9 @@ function onCategoryTypeTabClick(element) {
     var $activeCategoryTab = $container.find('.category a.active');
 
     if ($(element).data('categorytype') == 1) {
-        $container.find('.level.first-item a').removeClass('active');
-        $container.find('.level:not(.first-item):first a').addClass('active');
         $container.find('.level-tabs').show();
-
-        $chartContainer.find('.level.first-item a').removeClass('active');
-        $chartContainer.find('.level:not(.first-item):first a').addClass('active');
-        $chartContainer.find('.level-tabs').show();
     } else {
-        $container.find('.level:not(.first-item):first a').removeClass('active');
-        $container.find('.level.first-item a').addClass('active');
         $container.find('.level-tabs').hide();
-
-        $chartContainer.find('.level:not(.first-item):first a').removeClass('active');
-        $chartContainer.find('.level.first-item a').addClass('active');
-        $chartContainer.find('.level-tabs').hide();
     }
 
     $('.categoryType-tab-pane').hide();
@@ -115,28 +78,27 @@ function onCategoryTypeTabClick(element) {
 
 function onCategoryTabSingleClick(element) {
     var categoryContainerID = $(element).attr("href");
-    var $activeLevelTab = $(categoryContainerID).find('.level a.active');
+
+    var $activeLevelTab;
+    if ($(element).data('categorytype') == 0) {
+        $activeLevelTab = $(categoryContainerID).find('.level:first a');
+    } else {
+        $activeLevelTab = $(categoryContainerID).find('.level a.active');
+    }
 
     $activeLevelTab.trigger('click');
-
-    //var containerID = $(element).attr("href");
-    //var $container = $(containerID);
-
-    //if ($(element).data('categorytype') == 1) {
-    //    var $activeLevelTab = $('.level a.active');
-    //    $activeLevelTab.trigger('click');
-    //} else {
-    //    initializeGrid($container);
-    //}
-
-    //var $chartsContainer = $(gridContainerID + "-Charts");
-    //initializeCharts($chartsContainer);
 }
 
 function onCategoryTabClick(element) {
     var categoryContainerID = $(element).attr('href');
     var chartCategoryContainerID = categoryContainerID + '-charts';
-    var $activeLevelTab = $(categoryContainerID).find('.level a.active');
+
+    var $activeLevelTab;
+    if ($(element).data('categorytype') == 0) {
+        $activeLevelTab = $(categoryContainerID).find('.level:first a');
+    } else {
+        $activeLevelTab = $(categoryContainerID).find('.level a.active');
+    }
 
     $('.category-tab-pane').hide();
     $(categoryContainerID).fadeIn();
@@ -158,14 +120,14 @@ function onLevelTabSingleClick(element) {
 }
 
 function onLevelTabClick(element) {
-    var levelContainerID = $(element).attr('href');
-    var chartLevelContainerID = levelContainerID + '-charts';
+    var gridContainerID = $(element).attr('href');
+    var chartContainerID = gridContainerID + '-charts';
 
     $('.level-tab-pane').hide();
-    $(levelContainerID).fadeIn();
+    $(gridContainerID).fadeIn();
 
     $('.level-tab-pane-charts').hide();
-    $(chartLevelContainerID).fadeIn();
+    $(chartContainerID).fadeIn();
 }
 
 function initializeGrid(element) {
@@ -177,7 +139,7 @@ function initializeGrid(element) {
     var levelID = $(element).data('levelid');
 
     grid.jqGrid({
-        url: 'GetLeaderboardRecords?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
+        url: 'GameDetails_Read?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -210,12 +172,6 @@ function initializeGrid(element) {
         initializeGridFilters(this);
         initializeGridStyles(this);
         //initializeScroller();
-
-        //if (categoryType != 1) {
-        //    $(this).jqGrid('hideCol', ["levelName"]);
-        //}
-
-        //$('.grid-container').show();
     }
 
     function initializeGridEvents() {
@@ -282,7 +238,9 @@ function initializeGrid(element) {
 function initializeCharts(element) {
     var $chartsContainer = $(element);
     var gameID = $(element).data('gameid');
+    var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
+    var levelID = $(element).data('levelid');
 
     var templateLoader = function () {
         return {
@@ -303,7 +261,7 @@ function initializeCharts(element) {
 
                 _selector.empty();
                 templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, sra.dateHelper, gameID, categoryID);
+                    var controller = _graphObj.controller(_selector, sra.dateHelper, gameID, categoryType, categoryID, levelID);
  
                     _chartLoader.RenderComponent(_selector, html);
  

@@ -5,10 +5,12 @@ if (!sra['graphObjects'])
     sra.graphObjects = {};
 
 sra.graphObjects.SpeedRunsByUserController = (function () {
-    var mapToRequest = function (that, gameID, categoryID, topAmount) {
+    var mapToRequest = function (that, gameID, categoryType, categoryID, levelID, topAmount) {
         return {
             gameID: gameID,
+            categoryType: categoryType,
             categoryID: categoryID,
+            levelID: levelID,
             topAmount: topAmount
         };
     };
@@ -64,7 +66,7 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
     SpeedRunsByUserController.prototype.preRender = function (promise) {
         var that = this;
 
-        var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryID, that.inputs.topAmount);
+        var parameters = mapToRequest(that, that.inputs.gameID, that.inputs.categoryType, that.inputs.categoryID, that.inputs.levelID, that.inputs.topAmount);
 
         that.$ajax.getWithPromise(promise, 'GetSpeedRunsByUserChartData', parameters)
             .then(function (result) {

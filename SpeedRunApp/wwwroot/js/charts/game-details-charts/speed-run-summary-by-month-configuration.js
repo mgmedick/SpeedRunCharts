@@ -6,16 +6,16 @@ if (!sra['graphObjects'])
 
 sra.graphObjects['SpeedRunSummaryByMonth'] = {
    templatePath: 'SpeedRunSummaryByMonth.html',
-    title: 'Speed Run Monthly Average',
-    controller: function (container, dateHelper, gameID, categoryID) {
+    title: 'Speed Runs Per Month',
+    controller: function (container, dateHelper, gameID, categoryType, categoryID, levelID) {
        var chartConfig = {
                selector: 'div#placeholder',
-               caption: 'Speed Run Monthly Average',
-               subCaption: 'Last 6 Months',
+               caption: 'Speed Runs Per Month',
+               subCaption: 'Last 6 Months of activity',
                xAxis: 'Date',
                yAxis: 'Time (Minutes)',
                exportEnabled: 1,
-               showValues: 1,
+               showValues: 0,
                formatNumberScale: 1,
                numberOfDecimals: 0,
                useRoundEdges: 1,
@@ -24,10 +24,11 @@ sra.graphObjects['SpeedRunSummaryByMonth'] = {
                defaultnumberscale: "s",
                scalerecursively: "1",
                maxscalerecursion: "-1",
-               scaleseparator: " "
+               scaleseparator: " ",
+               connectNullData: 1
        };
       
-        return new sra.graphObjects.SpeedRunSummaryByMonthController(sra.ajaxHelper, _, container, { gameID: gameID, categoryID: categoryID, startDate: dateHelper.monthsAgo(6), endDate: dateHelper.today() }, new chartLoader(), chartConfig);
+        return new sra.graphObjects.SpeedRunSummaryByMonthController(sra.ajaxHelper, _, container, { gameID: gameID, categoryType: categoryType, categoryID: categoryID, levelID: levelID }, new chartLoader(), chartConfig);
    }
 };
 

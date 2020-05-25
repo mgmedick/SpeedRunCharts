@@ -24,6 +24,14 @@ function mathHelper () {
         return this.round((total / data.length), 2);
     }
 
+    mathHelper.prototype.getMin = function (data) {
+        return Math.min.apply(null, data);
+    }
+
+    mathHelper.prototype.getMax = function (data) {
+        return Math.max.apply(null, data);
+    }
+
     mathHelper.prototype.round = function (num, decimals) {
         return parseFloat(num.toFixed(decimals));
     }

@@ -7,7 +7,7 @@ if (!sra['graphObjects'])
 sra.graphObjects['SpeedRunsByUser'] = {
     templatePath: 'SpeedRunsByUser.html',
     title: 'Top 10 Speed Runs',
-    controller: function (container, dateHelper, gameID, categoryID)  {
+    controller: function (container, dateHelper, gameID, categoryType, categoryID, levelID)  {
         var chartConfig = {
             selector: 'div#placeholder',
             caption: 'Top 10 Speed Runs',
@@ -27,7 +27,7 @@ sra.graphObjects['SpeedRunsByUser'] = {
             scaleseparator: ""
         };
 
-        return new sra.graphObjects.SpeedRunsByUserController(sra.ajaxHelper, _, container, { gameID: gameID, categoryID: categoryID, topAmount: 10 }, new chartLoader(), chartConfig);
+        return new sra.graphObjects.SpeedRunsByUserController(sra.ajaxHelper, _, container, { gameID: gameID, categoryType: categoryType, categoryID: categoryID, levelID: levelID, topAmount: 10 }, new chartLoader(), chartConfig);
     }
 };
 

@@ -69,7 +69,7 @@
             int t = 0;
             foreach (CategoryType categoryType in Model.CategoryTypes)
             {
-                <div id="divCategoryType-@(t)-Charts" class="categoryType-tab-pane-charts p-0 @(t == 0 ? "show" : string.Empty)">
+                <div id="divCategoryType-@(t)-charts" class="categoryType-tab-pane-charts p-0 @(t == 0 ? "show" : string.Empty)">
                     @{
                         int g = 0;
                         @foreach (var category in Model.Categories?.Where(h => h.Type == ((CategoryType)t)))
@@ -163,13 +163,13 @@
                                                 <ul class="nav nav-tabs scroller-tab-list">
                                                     @{
                                                         <li class="nav-item level first-item" style="display:none;">
-                                                            <a id="ankCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")-tab" class="nav-link active" href="#divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")" data-toggle="tab"></a>
+                                                            <a id="ankCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")-tab" class="nav-link" href="#divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")" data-toggle="tab"></a>
                                                         </li>
                                                         int l = 0;
                                                         @foreach (var level in Model.Levels)
                                                         {
                                                             <li class="nav-item level">
-                                                                <a id="ankCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-" + l.ToString())-tab" class="nav-link" href="#divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-" + l.ToString())" data-toggle="tab">@level.Name</a>
+                                                                <a id="ankCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-" + l.ToString())-tab" class="nav-link @((l == 0) ? "active" : string.Empty)" href="#divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-" + l.ToString())" data-toggle="tab">@level.Name</a>
                                                             </li>
                                                             l++;
                                                         }
@@ -180,7 +180,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")" class="level-tab-pane show" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
+                                <div id="divCategory-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")" class="level-tab-pane" data-gameid="@Model.ID" data-categorytype="@(((int)category.Type))" data-categoryid="@category.ID">
                                     <table class="grid"></table>
                                     <div id="divPager-@(category.Type.ToString() + "-category-" + c.ToString() + "-level-")" class="pager"></div>
                                 </div>

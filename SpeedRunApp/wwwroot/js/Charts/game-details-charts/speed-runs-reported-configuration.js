@@ -16,7 +16,7 @@ sra.graphObjects['SpeedRunsReported'] = {
             formatNumberScale: 0,
             numberOfDecimals: 0,
             showPercentValues: 0,
-            showPercentInTooltip: 0,
+            showPercentInTooltip: 1,
             exportEnabled: 1,
             showLegend: 1,
             showLabels: 0,

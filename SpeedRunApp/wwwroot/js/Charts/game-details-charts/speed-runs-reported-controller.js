@@ -25,7 +25,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
 
         var chartDataObj = {};
         var percIncrement = 5;
-        var maxPerc = 35;
+        var maxPerc = 55;
         var showEvery = 2;
         var maxNumCategories = Math.round((100 / percIncrement) / showEvery) + 1;
 
@@ -33,35 +33,81 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         var prevIndex = null;
         var prevTime = null;
 
+        /*
+        for (var i = 0; i < maxNumCategories; i++) {
+            var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
+            var index = Math.floor((allSpeedRunTimes.length + 1) * (percNum / 100));
+            index = ((index > 0) ? index - 1 : 0);
+
+            if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
+                percNum = 100;
+                index = allSpeedRunTimes.length - 1;
+            }
+
+            var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return (prevIndex == null || i > prevIndex) && i <= index }).value();
+            var time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+            var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "%)";
+
+            if (index != prevIndex) {
+                chartDataObj[key] = values;
+            }
+
+            prevPercNum = percNum;
+            prevIndex = index;
+            prevTime = time;
+        }
+        */
+        /*
+        for (var i = 0; i < maxNumCategories; i++) {
+            var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
+            var index = Math.floor((allSpeedRunTimes.length + 1) * (percNum / 100));
+            index = ((index > 0) ? index - 1 : 0);
+
+            if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
+                percNum = 100;
+                index = allSpeedRunTimes.length - 1;
+            }
+
+            var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
+            var time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+            var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "%)";
+
+            if (index != prevIndex) {
+                chartDataObj[key] = values;
+            }
+
+            prevPercNum = percNum;
+            prevIndex = index;
+            prevTime = time;
+        }
+        */
+
+        var percTotal = 0;
         for (var i = 0; i < maxNumCategories; i++) {
             var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
             var index = Math.floor((allSpeedRunTimes.length + 1) * (percNum / 100));
             index = ((index > 0) ? index - 1 : 0);// + ((prevIndex > 0) ? prevIndex - 1 : 0)
-            var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
             var sum = that._.chain(Object.entries(chartDataObj)).reduce(function (m, x) { return m + x[1].length; }, 0).value();
 
             var time;
             var key;
-            var values;
+            var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
+
             if ((sum + (values.length - 1)) >= allSpeedRunTimes.length - 1 || index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                //index = allSpeedRunTimes.length - 1;
-                //time = allSpeedRunTimes[index].primaryRunTimeSeconds;
-                key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (Remainder)";
+                key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (" + (100 - percTotal) + "%)";
                 values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i > sum - 1 }).value();
                 chartDataObj[key] = values;
-
                 break;
             } else {
                 time = allSpeedRunTimes[index].primaryRunTimeSeconds;
-                key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (Top " + percNum + "%)";
-                //values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return (prevIndex == null || i > prevIndex) && i <= index }).value();
-                //values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
+                key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "%)";
 
                 if (index != prevIndex) {
                     chartDataObj[key] = values;
                 }
             }
 
+            percTotal += percNum;
             prevPercNum = percNum;
             prevIndex = index;
             prevTime = time;
@@ -76,7 +122,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         that._.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x])}).value();
 
         pieChart.setCaption(that.chartConfig.caption, subCaption)
-            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip)
+            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
                             .onRenderComplete(function (evt, d) {
                                 promise.resolve();
                             });

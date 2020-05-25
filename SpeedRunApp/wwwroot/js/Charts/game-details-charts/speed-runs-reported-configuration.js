@@ -10,7 +10,7 @@ sra.graphObjects['SpeedRunsReported'] = {
     controller: function (container, dateHelper, gameID, categoryType, categoryID, levelID)  {
         var chartConfig = {
             selector: 'div#placeholder',
-            caption: 'Speed Runs Per Percentile',
+            caption: 'Speed Run Percentiles',
             subCaption: 'All Time',
             showValues: 1,
             formatNumberScale: 0,

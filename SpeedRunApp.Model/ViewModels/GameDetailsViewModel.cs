@@ -25,6 +25,6 @@ namespace SpeedRunApp.Model
         public Uri CoverImageUri { get; set; }
         public IEnumerable<CategoryDTO> Categories { get; set; }
         public IEnumerable<LevelDTO> Levels { get; set; }
-        public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).Distinct(); } }
+        public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i=>i).Distinct(); } }
     }
 }

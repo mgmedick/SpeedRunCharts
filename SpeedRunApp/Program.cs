@@ -7,6 +7,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using Lamar;
+using Lamar.Microsoft.DependencyInjection;
 
 namespace SpeedRunApp
 {
@@ -19,6 +22,8 @@ namespace SpeedRunApp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseLamar()
                 .UseStartup<Startup>();
+
     }
 }

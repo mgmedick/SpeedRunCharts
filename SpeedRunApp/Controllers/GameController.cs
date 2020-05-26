@@ -8,31 +8,40 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SpeedRunApp.Model;
 using SpeedRunApp.Service;
 using SpeedRunCommon;
+using SpeedRunApp.Interfaces.Services;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
     public class GameController : Controller
     {
+        private readonly IGamesService _gamesService = null;
+        private readonly ISpeedRunsService _speedRunService = null;
+        private readonly ILeaderboardService _leaderboardService = null;
+
+        public GameController(IGamesService gamesService, ISpeedRunsService speedRunService, ILeaderboardService leaderboardService)
+        {
+            _gamesService = gamesService;
+            _speedRunService = speedRunService;
+            _leaderboardService = leaderboardService;
+        }
+
         public ViewResult GameDetails(string gameID)
         {
-            GamesService service = new GamesService();
-            var game = service.GetGame(gameID);
+            var game = _gamesService.GetGame(gameID);
 
             return View(new GameDetailsViewModel(game));
         }
 
         public PartialViewResult SpeedRunSummary(string speedRunID)
         {
-            SpeedRunsService service = new SpeedRunsService();
-            var speedRun = service.GetSpeedRun(speedRunID);
+            var speedRun = _speedRunService.GetSpeedRun(speedRunID);
             return PartialView("_SpeedRunSummary", new SpeedRunViewModel(speedRun));
         }
 
         [HttpGet]
         public JsonResult GameDetails_Read(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            LeaderboardService leaderboardService = new LeaderboardService();
-            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(recordVMs);
         }
@@ -47,8 +56,7 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {
-            LeaderboardService leaderboardService = new LeaderboardService();
-            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
             recordVMs = recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds).Take(topAmount);
 
             return Json(new { Data = recordVMs });
@@ -56,16 +64,14 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            LeaderboardService leaderboardService = new LeaderboardService();
-            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(new { Data = recordVMs });
         }
 
         public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            LeaderboardService leaderboardService = new LeaderboardService();
-            var recordVMs = leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
 
             //DateTime startDate = recordVMs.Where(i=>i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).FirstOrDefault();
             DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();

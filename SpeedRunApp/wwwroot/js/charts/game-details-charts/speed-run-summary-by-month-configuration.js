@@ -11,7 +11,7 @@ sra.graphObjects['SpeedRunSummaryByMonth'] = {
        var chartConfig = {
                selector: 'div#placeholder',
                caption: 'Speed Runs Per Month',
-               subCaption: 'Last 6 Months of activity',
+               subCaption: 'Most recent 6 Months of activity',
                xAxis: 'Date',
                yAxis: 'Time (Minutes)',
                exportEnabled: 1,

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
+    <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
+    <ProjectReference Include="..\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
+  </ItemGroup>
+</Project>

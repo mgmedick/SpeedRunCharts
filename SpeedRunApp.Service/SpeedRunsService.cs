@@ -4,11 +4,17 @@ using SpeedRunApp.Model;
 using SpeedrunComSharp.Client;
 using SpeedrunComSharp.Model;
 using SpeedRunCommon;
+using SpeedRunApp.Interfaces.Services;
 
 namespace SpeedRunApp.Service
 {
-    public class SpeedRunsService
+    public class SpeedRunsService : ISpeedRunsService
     {
+        public SpeedRunsService()
+        {
+
+        }
+
         public IEnumerable<SpeedRunDTO> GetLatestSpeedRuns(int? elementsOffset = null)
         {
             var runEmbeds = new RunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };

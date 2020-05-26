@@ -8,6 +8,7 @@
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
     <ProjectReference Include="..\SpeedrunComSharp.Client\SpeedrunComSharp.Client.csproj" />
     <ProjectReference Include="..\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
+    <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

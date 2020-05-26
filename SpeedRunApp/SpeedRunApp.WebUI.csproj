@@ -23,11 +23,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.3.0" />
+    <PackageReference Include="Lamar" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Service\SpeedRunApp.Service.csproj" />
+    <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

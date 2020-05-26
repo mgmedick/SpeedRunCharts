@@ -1,10 +1,11 @@
 ﻿using SpeedRunApp.Model;
 using SpeedrunComSharp.Client;
 using SpeedrunComSharp.Model;
+using SpeedRunApp.Interfaces.Services;
 
 namespace SpeedRunApp.Service
 {
-    public class GamesService
+    public class GamesService : IGamesService
     {
         public GameDTO GetGame(string gameID)
         {

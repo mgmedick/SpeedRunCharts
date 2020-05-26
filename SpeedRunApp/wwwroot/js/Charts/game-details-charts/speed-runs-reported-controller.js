@@ -57,7 +57,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
             prevTime = time;
         }
         */
-        /*
+
         for (var i = 0; i < maxNumCategories; i++) {
             var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
             var index = Math.floor((allSpeedRunTimes.length + 1) * (percNum / 100));
@@ -70,7 +70,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
 
             var values = that._.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
             var time = allSpeedRunTimes[index].primaryRunTimeSeconds;
-            var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "%)";
+            var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "% - " + values.length + "/" + allSpeedRunTimes.length + ")"
 
             if (index != prevIndex) {
                 chartDataObj[key] = values;
@@ -80,8 +80,8 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
             prevIndex = index;
             prevTime = time;
         }
-        */
 
+        /*
         var prevTotal = 0;
         for (var i = 0; i < maxNumCategories; i++) {
             var percNum = (i == 0) ? percIncrement : prevPercNum + (percIncrement * showEvery);
@@ -112,6 +112,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
             prevIndex = index;
             prevTime = time;
         }
+        */
 
         var chartElem = that.container.find(that.chartConfig.selector);
         var config = that.chartConfig;

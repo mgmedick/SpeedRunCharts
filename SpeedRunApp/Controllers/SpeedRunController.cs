@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SpeedRunApp.Model;
 using SpeedRunApp.Service;
+using SpeedRunApp.Interfaces.Services;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
     public class SpeedRunController : Controller
     {
+        private readonly ISpeedRunsService _speedRunService = null;
+
+        public SpeedRunController(ISpeedRunsService speedRunService)
+        {
+            _speedRunService = speedRunService;
+        }
+
         public ViewResult SpeedRunList()
         {
             var runListVM = GetSpeedRunListVM();
@@ -25,8 +33,7 @@ namespace SpeedRunApp.WebUI.Controllers
 
         private SpeedRunListViewModel GetSpeedRunListVM(int? elementsOffset = null)
         {
-            SpeedRunsService service = new SpeedRunsService();
-            var runs = service.GetLatestSpeedRuns(elementsOffset);
+            var runs = _speedRunService.GetLatestSpeedRuns(elementsOffset);
             var runsVM = runs.Select(i => new SpeedRunViewModel(i));
 
             return new SpeedRunListViewModel() { SpeedRuns = runsVM };

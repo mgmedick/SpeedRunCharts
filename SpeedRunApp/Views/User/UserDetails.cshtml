@@ -1,0 +1,85 @@
+﻿@using SpeedRunCommon;
+@model SpeedRunApp.Model.UserDetailsViewModel
+
+@{
+    ViewBag.Title = "UserDetails";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
+    <link rel="stylesheet" href="~/css/free-jqgrid-custom.css" />
+    <link rel="stylesheet" href="~/css/scroller-tab.css" />
+    <link rel="stylesheet" href="~/css/game-details.css" />
+    
+    <style>
+        .brand-logo {
+            width:25px;
+        }
+    </style>
+
+}
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/free-jqgrid/jquery.jqgrid.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/common.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/user-details.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
+    <script>
+        $().ready(initializeClient());
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="container ml-0">
+        <div class="row no-gutters p-0 d-flex">
+            <div class="pr-4">
+                <h2>@Model.Name</h2>
+            </div>
+            <div class="p-1 align-self-center" style="@((Model.TwitterProfile == null) ? "display:none" : "")">
+                <a href="@Model.TwitterProfile"><img src="@Url.Content("~/images/Twitter_Logo_WhiteOnBlue.svg")" class="img-fluid brand-logo" alt="Responsive image"></a>
+            </div>
+            <div class="p-1 align-self-center" style="@((Model.TwitchProfile == null) ? "display:none" : "")">
+                <a href="@Model.TwitchProfile"><img src="@Url.Content("~/images/TwitchGlitchPurple.svg")" class="img-fluid brand-logo" alt="Responsive image"></a>
+            </div>
+            <div class="p-1 align-self-center" style="@((Model.YoutubeProfile == null) ? "display:none" : "")">
+                <a href="@Model.YoutubeProfile"><img src="@Url.Content("~/images/youtube_social_square_red.svg")" class="img-fluid brand-logo" alt="Responsive image"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div id="loading">
+                    <div class="d-flex">
+                        <div class="mx-auto">
+                            <i class="fas fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

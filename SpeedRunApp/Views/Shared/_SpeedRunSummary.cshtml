@@ -19,7 +19,7 @@
             </div>
             <div class="row no-gutters text-secondary">
                 <div class="col-xs-4">
-                    @Model.PlayerName
+                    @Html.ActionLink(Model.PlayerName, "UserDetails", "User", new { userID = @Model.PlayerID })
                 </div>
                 <div class="col-xs-4 ml-1">
                     - @Model.PrimaryRunTimeString

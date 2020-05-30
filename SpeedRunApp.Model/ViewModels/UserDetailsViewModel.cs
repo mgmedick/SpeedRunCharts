@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpeedrunComSharp.Model;
 using SpeedRunCommon;
 
 namespace SpeedRunApp.Model
 {
-    public class UserDTO
+    public class UserDetailsViewModel
     {
-        public UserDTO(User user)
+        public UserDetailsViewModel(UserDTO user)
         {
             ID = user.ID;
             Name = user.Name;
@@ -21,8 +20,11 @@ namespace SpeedRunApp.Model
             YoutubeProfile = user.YoutubeProfile;
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
-            //Runs = user.Runs.Select(i => new SpeedRunDTO(i));
-            //PersonalBests = user.PersonalBests.Select(i => new SpeedRunRecordDTO(i));
+            //Abbreviation = game.Abbreviation;
+            //YearOfRelease = game.YearOfRelease;
+            //CoverImageUri = game.CoverImageUri;
+            //Categories = game.Categories;
+            //Levels = game.Levels;
         }
 
         public string ID { get; set; }
@@ -36,7 +38,5 @@ namespace SpeedRunApp.Model
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
-        //public IEnumerable<SpeedRunDTO> Runs { get; set; }
-        //public IEnumerable<SpeedRunRecordDTO> PersonalBests { get; set; }
     }
 }

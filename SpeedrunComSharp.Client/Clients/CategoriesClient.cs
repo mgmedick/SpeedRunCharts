@@ -43,9 +43,9 @@ namespace SpeedrunComSharp.Client
             return elementDescription.ID;
         }
 
-        public Category GetCategory(string categoryId, CategoryEmbeds embeds = default(CategoryEmbeds))
+        public Category GetCategory(string categoryId, CategoryEmbeds embeds = null)
         {
-            var uri = GetCategoriesUri(string.Format("/{0}{1}", Uri.EscapeDataString(categoryId), embeds.ToString().ToParameters()));
+            var uri = GetCategoriesUri(string.Format("/{0}{1}", Uri.EscapeDataString(categoryId), embeds?.ToString().ToParameters()));
             var result = DoRequest(uri);
 
             return Parse(result.data);
@@ -67,9 +67,9 @@ namespace SpeedrunComSharp.Client
         public IEnumerable<Leaderboard> GetRecords(string categoryId,
             int? top = null, bool skipEmptyLeaderboards = false,
             int? elementsPerPage = null,
-            LeaderboardEmbeds embeds = default(LeaderboardEmbeds))
+            LeaderboardEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (top.HasValue)
                 parameters.Add(string.Format("top={0}", top.Value));

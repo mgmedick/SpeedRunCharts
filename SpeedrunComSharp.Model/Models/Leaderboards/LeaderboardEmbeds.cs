@@ -1,50 +1,50 @@
 ﻿namespace SpeedrunComSharp.Model
 {
-    public struct LeaderboardEmbeds
+    public class LeaderboardEmbeds : Embeds
     {
-        private Embeds embeds;
+        //private Embeds embeds;
         private bool isConstructed;
 
         public bool EmbedGame 
         { 
-            get { return embeds["game"]; } 
-            set { embeds["game"] = value; } 
+            get { return base["game"]; } 
+            set { base["game"] = value; } 
         }
 
         public bool EmbedCategory
         {
-            get { return embeds["category"]; }
-            set { embeds["category"] = value; }
+            get { return base["category"]; }
+            set { base["category"] = value; }
         }
 
         public bool EmbedLevel
         {
-            get { return embeds["level"]; }
-            set { embeds["level"] = value; }
+            get { return base["level"]; }
+            set { base["level"] = value; }
         }
 
         public bool EmbedPlayers
         {
-            get { return embeds["players"]; }
-            set { embeds["players"] = value; }
+            get { return base["players"]; }
+            set { base["players"] = value; }
         }
 
         public bool EmbedRegions
         {
-            get { return embeds["regions"]; }
-            set { embeds["regions"] = value; }
+            get { return base["regions"]; }
+            set { base["regions"] = value; }
         }
 
         public bool EmbedPlatforms
         {
-            get { return embeds["platforms"]; }
-            set { embeds["platforms"] = value; }
+            get { return base["platforms"]; }
+            set { base["platforms"] = value; }
         }
 
         public bool EmbedVariables
         {
-            get { return embeds["variables"]; }
-            set { embeds["variables"] = value; }
+            get { return base["variables"]; }
+            set { base["variables"] = value; }
         }
 
         public LeaderboardEmbeds(
@@ -58,7 +58,7 @@
         {
             isConstructed = true;
 
-            embeds = new Embeds();
+            //embeds = new Embeds();
             EmbedGame = embedGame;
             EmbedCategory = embedCategory;
             EmbedLevel = embedLevel;
@@ -75,7 +75,7 @@
                 EmbedPlayers = true;
             }
 
-            return embeds.ToString();
+            return base.ToString();
         }
     }
 }

@@ -1,38 +1,38 @@
 ﻿namespace SpeedrunComSharp.Model
 {
-    public struct GameEmbeds
+    public class GameEmbeds : Embeds
     {
-        private Embeds embeds;
+        //private Embeds embeds;
 
         public bool EmbedLevels
         {
-            get { return embeds["levels"]; }
-            set { embeds["levels"] = value; }
+            get { return base["levels"]; }
+            set { base["levels"] = value; }
         }
         public bool EmbedCategories
         {
-            get { return embeds["categories"]; }
-            set { embeds["categories"] = value; }
+            get { return base["categories"]; }
+            set { base["categories"] = value; }
         }
         public bool EmbedModerators
         {
-            get { return embeds["moderators"]; }
-            set { embeds["moderators"] = value; }
+            get { return base["moderators"]; }
+            set { base["moderators"] = value; }
         }
         public bool EmbedPlatforms
         {
-            get { return embeds["platforms"]; }
-            set { embeds["platforms"] = value; }
+            get { return base["platforms"]; }
+            set { base["platforms"] = value; }
         }
         public bool EmbedRegions
         {
-            get { return embeds["regions"]; }
-            set { embeds["regions"] = value; }
+            get { return base["regions"]; }
+            set { base["regions"] = value; }
         }
         public bool EmbedVariables
         {
-            get { return embeds["variables"]; }
-            set { embeds["variables"] = value; }
+            get { return base["variables"]; }
+            set { base["variables"] = value; }
         }
 
         public GameEmbeds(
@@ -43,7 +43,7 @@
             bool embedRegions = false,
             bool embedVariables = false)
         {
-            embeds = new Embeds();
+            //embeds = new Embeds();
             EmbedLevels = embedLevels;
             EmbedCategories = embedCategories;
             EmbedModerators = embedModerators;
@@ -52,9 +52,9 @@
             EmbedVariables = embedVariables;
         }
 
-        public override string ToString()
-        {
-            return embeds.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return embeds.ToString();
+        //}
     }
 }

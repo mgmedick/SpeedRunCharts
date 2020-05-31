@@ -28,9 +28,9 @@ namespace SpeedrunComSharp.Client
             EmulatorsFilter emulatorsFilter = EmulatorsFilter.NotSet, bool filterOutRunsWithoutVideo = false,
             TimingMethod? orderBy = null, DateTime? filterOutRunsAfter = null,
             IEnumerable<VariableValue> variableFilters = null,
-            LeaderboardEmbeds embeds = default(LeaderboardEmbeds))
+            LeaderboardEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (top.HasValue)
                 parameters.Add(string.Format("top={0}", top.Value));

@@ -46,10 +46,10 @@ namespace SpeedrunComSharp.Client
         public IEnumerable<Series> GetMultipleSeries(
            string name = null, string abbreviation = null,
            string moderatorId = null, int? elementsPerPage = null,
-           SeriesEmbeds embeds = default(SeriesEmbeds),
+           SeriesEmbeds embeds = null,
            SeriesOrdering orderBy = default(SeriesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -70,9 +70,9 @@ namespace SpeedrunComSharp.Client
                 x => Parse(x) as Series);
         }
 
-        public Series GetSingleSeries(string seriesId, SeriesEmbeds embeds = default(SeriesEmbeds))
+        public Series GetSingleSeries(string seriesId, SeriesEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             var uri = GetSeriesUri(string.Format("/{0}{1}",
                 Uri.EscapeDataString(seriesId),
@@ -88,10 +88,10 @@ namespace SpeedrunComSharp.Client
             string name = null, int? yearOfRelease = null,
             string platformId = null, string regionId = null,
             string moderatorId = null, int? elementsPerPage = null,
-            GameEmbeds embeds = default(GameEmbeds),
+            GameEmbeds embeds = null,
             GamesOrdering orderBy = default(GamesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 

@@ -48,10 +48,10 @@ namespace SpeedrunComSharp.Client
             string name = null, int? yearOfRelease = null, 
             string platformId = null, string regionId = null, 
             string moderatorId = null, int? elementsPerPage = null,
-            GameEmbeds embeds = default(GameEmbeds),
+            GameEmbeds embeds = null,
             GamesOrdering orderBy = default(GamesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -92,9 +92,9 @@ namespace SpeedrunComSharp.Client
                 x => ParseGameHeader(x) as GameHeader);
         }
 
-        public Game GetGame(string gameId, GameEmbeds embeds = default(GameEmbeds))
+        public Game GetGame(string gameId, GameEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             var uri = GetGamesUri(string.Format("/{0}{1}", 
                 Uri.EscapeDataString(gameId), 
@@ -121,10 +121,10 @@ namespace SpeedrunComSharp.Client
 
         public ReadOnlyCollection<Category> GetCategories(
             string gameId, bool miscellaneous = true,
-            CategoryEmbeds embeds = default(CategoryEmbeds),
+            CategoryEmbeds embeds = null,
             CategoriesOrdering orderBy = default(CategoriesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -140,10 +140,10 @@ namespace SpeedrunComSharp.Client
         }
 
         public ReadOnlyCollection<Level> GetLevels(string gameId,
-            LevelEmbeds embeds = default(LevelEmbeds),
+            LevelEmbeds embeds = null,
             LevelsOrdering orderBy = default(LevelsOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -169,10 +169,10 @@ namespace SpeedrunComSharp.Client
         }
 
         public ReadOnlyCollection<Game> GetRomHacks(string gameId,
-            GameEmbeds embeds = default(GameEmbeds),
+            GameEmbeds embeds = null,
             GamesOrdering orderBy = default(GamesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -188,9 +188,9 @@ namespace SpeedrunComSharp.Client
             int? top = null, LeaderboardScope scope = LeaderboardScope.All,
             bool includeMiscellaneousCategories = true, bool skipEmptyLeaderboards = false,
             int? elementsPerPage = null,
-            LeaderboardEmbeds embeds = default(LeaderboardEmbeds))
+            LeaderboardEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (top.HasValue)
                 parameters.Add(string.Format("top={0}", top.Value));

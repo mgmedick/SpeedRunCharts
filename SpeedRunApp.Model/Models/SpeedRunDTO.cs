@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using SpeedrunComSharp.Model;
+using SpeedRunCommon;
 
 namespace SpeedRunApp.Model
 {
@@ -19,6 +20,7 @@ namespace SpeedRunApp.Model
             GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
             CategoryName = run.Category.Name;
+            CategoryType = run.Category.Type;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             PlatformID = run.Platform?.ID;
@@ -41,6 +43,7 @@ namespace SpeedRunApp.Model
         public string LevelName { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public CategoryType CategoryType { get; set; }
         public string PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string PlayerID { get; set; }

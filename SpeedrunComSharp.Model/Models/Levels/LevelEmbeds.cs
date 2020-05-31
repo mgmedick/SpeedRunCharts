@@ -1,32 +1,32 @@
 ﻿namespace SpeedrunComSharp.Model
 {
-    public struct LevelEmbeds
+    public class LevelEmbeds : Embeds
     {
-        private Embeds embeds;
+        //private Embeds embeds;
 
         public bool EmbedCategories
         {
-            get { return embeds["categories"]; }
-            set { embeds["categories"] = value; }
+            get { return base["categories"]; }
+            set { base["categories"] = value; }
         }
         public bool EmbedVariables
         {
-            get { return embeds["variables"]; }
-            set { embeds["variables"] = value; }
+            get { return base["variables"]; }
+            set { base["variables"] = value; }
         }
 
         public LevelEmbeds(
             bool embedCategories = false,
             bool embedVariables = false)
         {
-            embeds = new Embeds();
+            //embeds = new Embeds();
             EmbedCategories = embedCategories;
             EmbedVariables = embedVariables;
         }
 
-        public override string ToString()
-        {
-            return embeds.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return embeds.ToString();
+        //}
     }
 }

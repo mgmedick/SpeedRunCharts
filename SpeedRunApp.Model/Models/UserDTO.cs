@@ -21,7 +21,7 @@ namespace SpeedRunApp.Model
             YoutubeProfile = user.YoutubeProfile;
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
-            //Runs = user.Runs.Select(i => new SpeedRunDTO(i));
+            SpeedRuns = user.Runs.Select(i => new SpeedRunDTO(i));
             //PersonalBests = user.PersonalBests.Select(i => new SpeedRunRecordDTO(i));
         }
 
@@ -36,7 +36,7 @@ namespace SpeedRunApp.Model
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
-        //public IEnumerable<SpeedRunDTO> Runs { get; set; }
+        public IEnumerable<SpeedRunDTO> SpeedRuns { get; set; }
         //public IEnumerable<SpeedRunRecordDTO> PersonalBests { get; set; }
     }
 }

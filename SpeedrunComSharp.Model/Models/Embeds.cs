@@ -5,7 +5,7 @@ using SpeedRunCommon;
 
 namespace SpeedrunComSharp.Model
 {
-    internal struct Embeds
+    public abstract class Embeds
     {
         private Dictionary<string, bool> embedDictionary;
 

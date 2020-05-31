@@ -44,9 +44,9 @@ namespace SpeedrunComSharp.Client
         }
 
         public Level GetLevel(string levelId, 
-            LevelEmbeds embeds = default(LevelEmbeds))
+            LevelEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             var uri = GetLevelsUri(string.Format("/{0}{1}",
                 Uri.EscapeDataString(levelId), 
@@ -59,10 +59,10 @@ namespace SpeedrunComSharp.Client
 
         public ReadOnlyCollection<Category> GetCategories(
             string levelId, bool miscellaneous = true,
-            CategoryEmbeds embeds = default(CategoryEmbeds),
+            CategoryEmbeds embeds = null,
             CategoriesOrdering orderBy = default(CategoriesOrdering))
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             parameters.AddRange(orderBy.ToParameters());
 
@@ -93,9 +93,9 @@ namespace SpeedrunComSharp.Client
         public IEnumerable<Leaderboard> GetRecords(string levelId,
            int? top = null, bool skipEmptyLeaderboards = false,
            int? elementsPerPage = null,
-           LeaderboardEmbeds embeds = default(LeaderboardEmbeds))
+           LeaderboardEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (top.HasValue)
                 parameters.Add(string.Format("top={0}", top.Value));

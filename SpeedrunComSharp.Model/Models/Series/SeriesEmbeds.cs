@@ -1,25 +1,25 @@
 ﻿namespace SpeedrunComSharp.Model
 {
-    public struct SeriesEmbeds
+    public class SeriesEmbeds : Embeds
     {
-        private Embeds embeds;
+        //private Embeds embeds;
 
         public bool EmbedModerators
         {
-            get { return embeds["moderators"]; }
-            set { embeds["moderators"] = value; }
+            get { return base["moderators"]; }
+            set { base["moderators"] = value; }
         }
 
         public SeriesEmbeds(
             bool embedModerators = false)
         {
-            embeds = new Embeds();
+            //embeds = new Embeds();
             EmbedModerators = embedModerators;
         }
 
-        public override string ToString()
-        {
-            return embeds.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return embeds.ToString();
+        //}
     }
 }

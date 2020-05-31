@@ -1,43 +1,43 @@
 ﻿namespace SpeedrunComSharp.Model
 {
-    public struct RunEmbeds
+    public class RunEmbeds : Embeds
     {
-        private Embeds embeds;
+        //private Embeds embeds;
 
         public bool EmbedGame 
-        { 
-            get { return embeds["game"]; } 
-            set { embeds["game"] = value; } 
+        {
+            get { return base["game"]; } 
+            set { base["game"] = value; }             
         }
 
         public bool EmbedCategory
         {
-            get { return embeds["category"]; }
-            set { embeds["category"] = value; }
+            get { return base["category"]; }
+            set { base["category"] = value; }
         }
 
         public bool EmbedLevel
         {
-            get { return embeds["level"]; }
-            set { embeds["level"] = value; }
+            get { return base["level"]; }
+            set { base["level"] = value; }
         }
 
         public bool EmbedPlayers
         {
-            get { return embeds["players"]; }
-            set { embeds["players"] = value; }
+            get { return base["players"]; }
+            set { base["players"] = value; }
         }
 
         public bool EmbedRegion
         {
-            get { return embeds["region"]; }
-            set { embeds["region"] = value; }
+            get { return base["region"]; }
+            set { base["region"] = value; }
         }
 
         public bool EmbedPlatform
         {
-            get { return embeds["platform"]; }
-            set { embeds["platform"] = value; }
+            get { return base["platform"]; }
+            set { base["platform"] = value; }
         }
 
         public RunEmbeds(
@@ -48,7 +48,7 @@
             bool embedRegion = false,
             bool embedPlatform = false)
         {
-            embeds = new Embeds();
+            //embeds = new Embeds();
             EmbedGame = embedGame;
             EmbedCategory = embedCategory;
             EmbedLevel = embedLevel;
@@ -57,9 +57,9 @@
             EmbedPlatform = embedPlatform;
         }
 
-        public override string ToString()
-        {
-            return embeds.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return embeds.ToString();
+        //}
     }
 }

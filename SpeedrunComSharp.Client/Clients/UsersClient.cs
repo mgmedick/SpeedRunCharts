@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -103,7 +104,7 @@ namespace SpeedrunComSharp.Client
                 x => Parse(x) as User);
         }
 
-        public User GetUser(string userId)
+        public User GetUser(string userId, IEnumerable<Embeds> embeds = null)
         {
             User user = null;
             var uri = GetUsersUri(string.Format("/{0}",
@@ -113,7 +114,7 @@ namespace SpeedrunComSharp.Client
 
             if(result != null)
             {
-                user = Parse(result.data);
+                user = Parse(result.data, embeds);
             }
 
             return user;
@@ -122,9 +123,9 @@ namespace SpeedrunComSharp.Client
         public ReadOnlyCollection<Record> GetPersonalBests(
             string userId, int? top = null,
             string seriesId = null, string gameId = null,
-            RunEmbeds embeds = default(RunEmbeds))
+            RunEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (top.HasValue)
                 parameters.Add(string.Format("top={0}", top.Value));
@@ -141,7 +142,7 @@ namespace SpeedrunComSharp.Client
                 x => Client.Common.ParseRecord(x) as Record);
         }
 
-        public User Parse(dynamic userElement)
+        public User Parse(dynamic userElement, IEnumerable<Embeds> embeds = null)
         {
             var user = new User();
 
@@ -183,8 +184,9 @@ namespace SpeedrunComSharp.Client
                 user.SpeedRunsLiveProfile = new Uri(speedRunsLiveLink.uri as string);
 
             //Parse Links
-
-            user.runs = new Lazy<IEnumerable<Run>>(() => Client.Runs.GetRuns(userId: user.ID));
+            var runEmbeds = (RunEmbeds)embeds?.FirstOrDefault(i => i is RunEmbeds);
+            //runEmbeds = (RunEmbeds)runEmbeds ?? null;
+            user.runs = new Lazy<IEnumerable<Run>>(() => Client.Runs.GetRuns(userId: user.ID, embeds: runEmbeds));
             user.ModeratedGames = Client.Games.GetGames(moderatorId: user.ID);
             user.personalBests = new Lazy<ReadOnlyCollection<Record>>(() =>
             {

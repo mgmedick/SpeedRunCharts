@@ -49,11 +49,11 @@ namespace SpeedrunComSharp.Client
             string platformId = null, string regionId = null,
             bool onlyEmulatedRuns = false, RunStatusType? status = null,
             int? elementsPerPage = null,
-            RunEmbeds embeds = default(RunEmbeds),
+            RunEmbeds embeds = null,
             RunsOrdering orderBy = default(RunsOrdering),
             int? elementsOffset = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             if (!string.IsNullOrEmpty(userId))
                 parameters.Add(string.Format("user={0}", Uri.EscapeDataString(userId)));
@@ -98,9 +98,9 @@ namespace SpeedrunComSharp.Client
         }
 
         public Run GetRun(string runId,
-            RunEmbeds embeds = default(RunEmbeds))
+            RunEmbeds embeds = null)
         {
-            var parameters = new List<string>() { embeds.ToString() };
+            var parameters = new List<string>() { embeds?.ToString() };
 
             var uri = GetRunsUri(string.Format("/{0}{1}",
                 Uri.EscapeDataString(runId),

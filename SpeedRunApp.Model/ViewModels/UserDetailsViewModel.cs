@@ -20,6 +20,7 @@ namespace SpeedRunApp.Model
             YoutubeProfile = user.YoutubeProfile;
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
+            SpeedRuns = user.SpeedRuns;
             //Abbreviation = game.Abbreviation;
             //YearOfRelease = game.YearOfRelease;
             //CoverImageUri = game.CoverImageUri;
@@ -38,5 +39,30 @@ namespace SpeedRunApp.Model
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
+        public IEnumerable<SpeedRunDTO> SpeedRuns { get; set; }
+        public IEnumerable<IDNamePair> Games {
+            get
+            {
+                return SpeedRuns.GroupBy(g => new { g.GameID, g.GameName })
+                                .Select(i => new IDNamePair { ID = i.Key.GameID, Name = i.Key.GameName })
+                                .OrderBy(i => i.Name);
+            }            
+        }
+        public IEnumerable<CategoryType> CategoryTypes
+        {
+            get
+            {
+                return SpeedRuns.Select(i => i.CategoryType).OrderBy(i => i).Distinct();
+            }
+        }
+        public IEnumerable<IDNamePair> Categories
+        {
+            get
+            {
+                return SpeedRuns.GroupBy(g => new { g.CategoryID, g.CategoryName })
+                                .Select(i => new IDNamePair { ID = i.Key.CategoryID, Name = i.Key.CategoryName })
+                                .OrderBy(i => i.Name);
+            }
+        }
     }
 }

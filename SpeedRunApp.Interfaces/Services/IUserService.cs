@@ -7,5 +7,6 @@ namespace SpeedRunApp.Interfaces.Services
     public interface IUserService
     {
         UserDTO GetUser(string userID);
+        IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID);
     }
 }

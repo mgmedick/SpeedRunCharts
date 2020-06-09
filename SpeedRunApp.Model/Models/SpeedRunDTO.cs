@@ -13,18 +13,11 @@ namespace SpeedRunApp.Model
         {
             ID = run.ID;
             DateSubmitted = run.DateSubmitted;
-            PlayerID = run.Player?.UserID;
-            PlayerName = run.Player?.Name;
+            Player = new PlayerDTO(run.Player);
             GameID = run.GameID;
-            GameName = run.Game.Name;
-            GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
-            CategoryName = run.Category.Name;
-            CategoryType = run.Category.Type;
             LevelID = run.LevelID;
-            LevelName = run.Level?.Name;
             PlatformID = run.Platform?.ID;
-            PlatformName = run.Platform?.Name;
             Status = new SpeedRunStatusDTO(run.Status);
             VideoLink = run.Videos?.Links.FirstOrDefault();
 
@@ -32,24 +25,33 @@ namespace SpeedRunApp.Model
             {
                 PrimaryRunTime = run.Times.Primary.Value;
             }
+
+            //links
+            _game = run.game;
+            _category = run.category;
+            _level = run.level;
+            _platform = run.System.platform;
         }
 
         public string ID { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public string GameID { get; set; }
-        public string GameName { get; set; }
-        public Uri GameCoverImageLink { get; set; }
         public string LevelID { get; set; }
-        public string LevelName { get; set; }
         public string CategoryID { get; set; }
-        public string CategoryName { get; set; }
-        public CategoryType CategoryType { get; set; }
         public string PlatformID { get; set; }
-        public string PlatformName { get; set; }
-        public string PlayerID { get; set; }
-        public string PlayerName { get; set; }
         public SpeedRunStatusDTO Status { get; set; }
         public Uri VideoLink { get; set; }
         public TimeSpan PrimaryRunTime { get; set; }
+        public PlayerDTO Player { get; set; }
+
+        //links
+        private Lazy<Game> _game { get; set; }
+        public GameDTO Game { get { return _game.Value != null ? new GameDTO(_game.Value) : null; } }
+        private Lazy<Category> _category { get; set; }
+        public CategoryDTO Category { get { return _category.Value != null ? new CategoryDTO(_category.Value) : null; } }
+        private Lazy<Level> _level { get; set; }
+        public LevelDTO Level { get { return _level.Value != null ? new LevelDTO(_level.Value) : null; } }
+        private Lazy<Platform> _platform { get; set; }
+        public PlatformDTO Platform { get { return _platform.Value != null ? new PlatformDTO(_platform.Value): null; } }
     }
 }

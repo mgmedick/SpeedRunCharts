@@ -13,7 +13,7 @@ namespace SpeedRunApp.Model
             Name = game.Name;
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
-            CoverImageUri = game.CoverImageUri;
+            CoverImageUri = game.Assets?.CoverLarge?.Uri;
             Categories = game.Categories;
             Levels = game.Levels;
         }

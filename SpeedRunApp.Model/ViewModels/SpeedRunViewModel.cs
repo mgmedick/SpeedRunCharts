@@ -12,17 +12,18 @@ namespace SpeedRunApp.Model
         public SpeedRunViewModel(SpeedRunDTO run)
         {
             ID = run.ID;
-            PlayerID = run.PlayerID;
-            PlayerName = run.PlayerName;
+            PlayerID = run.Player?.ID;
+            PlayerName = run.Player?.Name;
             GameID = run.GameID;
-            GameName = run.GameName;
-            GameCoverImageLink = run.GameCoverImageLink;
+            GameName = run.Game.Name;
+            GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
-            CategoryName = run.CategoryName;
+            CategoryName = run.Category.Name;
+            CategoryType = run.Category.Type;
             PlatformID = run.PlatformID;
-            PlatformName = run.PlatformName;
+            PlatformName = run.Platform?.Name;
             LevelID = run.LevelID;
-            LevelName = run.LevelName;
+            LevelName = run.Level?.Name;
             ExaminerName = run.Status.Examiner?.Name;
             DateSubmitted = run.DateSubmitted;
             VideoLink = run.VideoLink;
@@ -37,6 +38,7 @@ namespace SpeedRunApp.Model
         public Uri GameCoverImageLink { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public CategoryType CategoryType { get; set; }
         public string PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string LevelID { get; set; }

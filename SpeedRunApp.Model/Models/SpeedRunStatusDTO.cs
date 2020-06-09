@@ -9,20 +9,22 @@ namespace SpeedRunApp.Model
         public SpeedRunStatusDTO(RunStatus runStatus)
         {
             Type = runStatus.Type;
+            ExaminerUserID = runStatus.ExaminerUserID;
             Reason = runStatus.Reason;
             VerifyDate = runStatus.VerifyDate;
 
-            if(runStatus.Examiner != null)
-            {
-                Examiner = new UserDTO(runStatus.Examiner);
-            }
+            //links
+            _examiner = runStatus.examiner;
         }
 
         public RunStatusType Type { get; set; }
-        //public string ExaminerUserID { get; set; }
+        public string ExaminerUserID { get; set; }
         public string Reason { get; set; }
         public DateTime? VerifyDate { get; set; }
-        public UserDTO Examiner { get; set; }
+
+        //links
+        private Lazy<User> _examiner { get; set; }
+        public UserDTO Examiner { get { return _examiner.Value != null ? new UserDTO(_examiner.Value) : null; } }
     }
 }
 

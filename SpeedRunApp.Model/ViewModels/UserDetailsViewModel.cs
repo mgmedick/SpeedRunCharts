@@ -21,11 +21,6 @@ namespace SpeedRunApp.Model
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
             SpeedRuns = user.SpeedRuns;
-            //Abbreviation = game.Abbreviation;
-            //YearOfRelease = game.YearOfRelease;
-            //CoverImageUri = game.CoverImageUri;
-            //Categories = game.Categories;
-            //Levels = game.Levels;
         }
 
         public string ID { get; set; }
@@ -39,29 +34,41 @@ namespace SpeedRunApp.Model
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
+
         public IEnumerable<SpeedRunDTO> SpeedRuns { get; set; }
-        public IEnumerable<IDNamePair> Games {
-            get
-            {
-                return SpeedRuns.GroupBy(g => new { g.GameID, g.GameName })
-                                .Select(i => new IDNamePair { ID = i.Key.GameID, Name = i.Key.GameName })
-                                .OrderBy(i => i.Name);
-            }            
-        }
-        public IEnumerable<CategoryType> CategoryTypes
+
+        public List<GameDTO> Games
         {
             get
             {
-                return SpeedRuns.Select(i => i.CategoryType).OrderBy(i => i).Distinct();
+                return SpeedRuns.Select(i => i.Game).OrderBy(i => i.Name).Distinct().ToList();
+                //return SpeedRuns.GroupBy(g => new { g.GameID, g.Game.Name })
+                //                .Select(i => new IDNamePair { ID = i.Key.GameID, Name = i.Key.Name })
+                //                .OrderBy(i => i.Name);
             }
         }
-        public IEnumerable<IDNamePair> Categories
+
+        public List<CategoryType> CategoryTypes
         {
             get
             {
-                return SpeedRuns.GroupBy(g => new { g.CategoryID, g.CategoryName })
-                                .Select(i => new IDNamePair { ID = i.Key.CategoryID, Name = i.Key.CategoryName })
-                                .OrderBy(i => i.Name);
+                return SpeedRuns.Select(i => i.Category.Type).OrderBy(i => i).Distinct().ToList();
+            }
+        }
+
+        public List<CategoryDTO> Categories
+        {
+            get
+            {
+                return SpeedRuns.Select(i => i.Category).OrderBy(i => i.Name).Distinct().ToList();
+            }
+        }
+
+        public List<LevelDTO> Levels
+        {
+            get
+            {
+                return SpeedRuns.Select(i => i.Level).OrderBy(i => i.ID).Distinct().ToList();
             }
         }
     }

@@ -16,14 +16,15 @@ namespace SpeedRunApp.Service
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
             List<SpeedRunRecordDTO> records = new List<SpeedRunRecordDTO>();
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = true, EmbedCategory = true, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
 
             if (categoryType == CategoryType.PerGame)
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, embeds: new LeaderboardEmbeds(true, false, false, true, false, false, false));
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, embeds: leaderboardEmbeds);
             }
             else
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, levelId: levelID, categoryId: categoryID, embeds: new LeaderboardEmbeds(true, false, false, true, false, false, false));
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, levelId: levelID, categoryId: categoryID, embeds: leaderboardEmbeds);
             }
 
             var dtoRecords = leaderboard.Records.Select(i => new SpeedRunRecordDTO(i));

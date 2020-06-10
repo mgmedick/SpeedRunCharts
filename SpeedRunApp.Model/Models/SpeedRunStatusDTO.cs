@@ -24,7 +24,7 @@ namespace SpeedRunApp.Model
 
         //links
         private Lazy<User> _examiner { get; set; }
-        public UserDTO Examiner { get { return _examiner.Value != null ? new UserDTO(_examiner.Value) : null; } }
+        public UserDTO Examiner { get { return (_examiner != null && _examiner.Value != null) ? new UserDTO(_examiner.Value) : null; } }
     }
 }
 

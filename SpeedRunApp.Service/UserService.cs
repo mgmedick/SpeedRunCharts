@@ -12,17 +12,19 @@ namespace SpeedRunApp.Service
         public UserDTO GetUser(string userID)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var runEmbeds = new RunEmbeds { EmbedCategory = true, EmbedLevel = true, EmbedGame = true, EmbedPlatform = true, EmbedPlayers = true };
-            var user = clientContainer.Users.GetUser(userID, new List<Embeds> { runEmbeds });
+            //var runEmbeds = new RunEmbeds { EmbedCategory = true, EmbedLevel = true, EmbedGame = true, EmbedPlatform = true, EmbedPlayers = true };
+            var user = clientContainer.Users.GetUser(userID);
+            var userDTO = new UserDTO(user);
+            //var runs = userDTO._runs.Value;
 
-            return new UserDTO(user);
+            return userDTO;
         }
 
         public IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var runEmbeds = new RunEmbeds { EmbedCategory = true, EmbedLevel = true, EmbedGame = true, EmbedPlatform = true, EmbedPlayers = true} ;
-            var runs = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds);
+            //var runEmbeds = new RunEmbeds { EmbedCategory = true, EmbedLevel = true, EmbedGame = true, EmbedPlatform = true, EmbedPlayers = true} ;
+            var runs = clientContainer.Runs.GetRuns(userId: userID);
             var dtoRecords = runs.Select(i => new SpeedRunDTO(i));
             //var recordVMs = dtoRecords.Select(i => new SpeedRunViewModel(i)).OrderBy(i => i.PrimaryRunTime);
 

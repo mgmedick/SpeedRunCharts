@@ -26,10 +26,7 @@
 
         public override string ToString()
         {
-            if (Region == null)
-                return Country.Name;
-            else
-                return Country.Name + " " + Region.Name;
+            return (Country?.Name + " " + Region?.Name).Trim();
         }
     }
 }

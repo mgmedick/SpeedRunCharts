@@ -41,10 +41,12 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return SpeedRuns.Select(i => i.Game).OrderBy(i => i.Name).Distinct().ToList();
-                //return SpeedRuns.GroupBy(g => new { g.GameID, g.Game.Name })
-                //                .Select(i => new IDNamePair { ID = i.Key.GameID, Name = i.Key.Name })
-                //                .OrderBy(i => i.Name);
+                var games = SpeedRuns.Select(i => i.Game)
+                                     .GroupBy(g => new { g.ID })
+                                     .Select(i => i.First())
+                                     .OrderBy(i => i.Name)
+                                     .ToList();
+                return games;
             }
         }
 
@@ -52,7 +54,13 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return SpeedRuns.Select(i => i.Category.Type).OrderBy(i => i).Distinct().ToList();
+                var categoryTypes = SpeedRuns.Select(i => i.Category.Type)
+                                     .GroupBy(g => new { g })
+                                     .Select(i => i.First())
+                                     .OrderBy(i => i)
+                                     .ToList();
+
+                return categoryTypes;
             }
         }
 
@@ -60,7 +68,13 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return SpeedRuns.Select(i => i.Category).OrderBy(i => i.Name).Distinct().ToList();
+                var categories = SpeedRuns.Select(i => i.Category)
+                                     .GroupBy(g => new { g.ID })
+                                     .Select(i => i.First())
+                                     .OrderBy(i => i.Name)
+                                     .ToList();
+
+                return categories;
             }
         }
 
@@ -68,7 +82,14 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                return SpeedRuns.Select(i => i.Level).OrderBy(i => i.ID).Distinct().ToList();
+                var levels = SpeedRuns.Where(i=>i.Level != null)
+                                     .Select(i => i.Level)
+                                     .GroupBy(g => new { g.ID })
+                                     .Select(i => i.First())
+                                     .OrderBy(i => i.Name)
+                                     .ToList();
+
+                return levels;
             }
         }
     }

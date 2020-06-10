@@ -23,7 +23,7 @@ namespace SpeedRunApp.Model
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
 
             //links
-            _speedRuns = user.runs;
+            _runs = user.runs;
         }
 
         public string ID { get; set; }
@@ -39,7 +39,19 @@ namespace SpeedRunApp.Model
         public Uri SpeedRunsLiveProfile { get; set; }
 
         //links
-        private Lazy<IEnumerable<Run>> _speedRuns { get; set; }
-        public IEnumerable<SpeedRunDTO> SpeedRuns { get { return _speedRuns.Value?.Select(i => new SpeedRunDTO(i)); } }
+        public Lazy<IEnumerable<Run>> _runs { get; set; }
+        //public IEnumerable<SpeedRunDTO> SpeedRuns {
+        //    get {
+        //            List<SpeedRunDTO> runs = new List<SpeedRunDTO>();
+        //            foreach (var run in _runs.Value)
+        //            {
+        //                runs.Add(new SpeedRunDTO(run));
+        //            }
+
+        //            return runs.AsEnumerable();
+        //        }
+        //}
+        //private IEnumerable<Run> runs { get { return _runs.Value; } }
+        public IEnumerable<SpeedRunDTO> SpeedRuns { get { return _runs.Value.Select(i => new SpeedRunDTO(i)).ToList(); } }
     }
 }

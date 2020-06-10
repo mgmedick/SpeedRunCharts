@@ -24,15 +24,16 @@ namespace SpeedRunApp.WebUI.Controllers
         public ViewResult UserDetails(string userID)
         {
             var user = _userService.GetUser(userID);
-
-            return View(new UserDetailsViewModel(user));
+            var userDetailsVM = new UserDetailsViewModel(user);
+            return View(userDetailsVM);
         }
 
         [HttpGet]
         public JsonResult UserDetails_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var recordVMs = _userService.GetUserSpeedRuns(userID);
-            recordVMs = recordVMs.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID && i.Level.ID == levelID);
+            var records = _userService.GetUserSpeedRuns(userID);
+            records = records.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID);
+            var recordVMs = records.Select(i => new SpeedRunViewModel(i));
 
             return Json(recordVMs);
         }

@@ -80,7 +80,7 @@
                                     @for (int c = 0; c < games.Count; c++)
                                     {
                                         <li class="nav-item game">
-                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + c.ToString())-tab" class="nav-link @((c == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + c.ToString())" data-toggle="tab" data-categorytype="@((int)Model.CategoryTypes[b])">@games[c].Name</a>
+                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + c.ToString())-tab" class="nav-link @((c == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + c.ToString())" data-toggle="tab">@games[c].Name</a>
                                         </li>
                                     }
                                 </ul>
@@ -91,7 +91,7 @@
                 </div>
                 @for (int d = 0; d < games.Count; d++)
                 {
-                    var categories = games[d].Categories.Where(i => i.Type == Model.CategoryTypes[b]).ToList();
+                    var categories = Model.Categories.Where(i => games[d].Categories.Any(n => n.ID == i.ID) && i.Type == Model.CategoryTypes[b]).ToList();
                     <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString())" class="game-tab-pane @((d == 0) ? "show" : string.Empty)">
                         <div class="category-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
                             <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
@@ -102,7 +102,7 @@
                                         <ul class="nav nav-tabs scroller-tab-list">
                                             @for (int e = 0; e < categories.Count; e++)
                                             {
-                                                <li class="nav-item level">
+                                                <li class="nav-item category">
                                                     <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + e.ToString())-tab" class="nav-link @((e == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + e.ToString())" data-toggle="tab">@categories[e].Name</a>
                                                 </li>
                                             }
@@ -114,7 +114,8 @@
                         </div>
                         @for (int g = 0; g < categories.Count; g++)
                         {
-                            var levels = games[d].Levels.ToList();
+                            //var levels = games[d].Levels.ToList();
+                            var levels = Model.Levels.Where(i => games[d].Levels.Any(n => n.ID == i.ID)).ToList();
                             <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString())" class="category-tab-pane @((g == 0) ? "show" : string.Empty)">
                                 <div class="level-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
                                     <div class="col align-self-end"><label class="font-weight-bold">Level:</label></div>
@@ -123,13 +124,10 @@
                                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                             <div class="col scroller-tab-list-container">
                                                 <ul class="nav nav-tabs scroller-tab-list">
-                                                    <li class="nav-item level first-item" style="display:none;">
-                                                        <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")-tab" class="nav-link" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" data-toggle="tab"></a>
-                                                    </li>
                                                     @for (int h = 0; h < levels.Count; h++)
                                                     {
                                                         <li class="nav-item level">
-                                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())-tab" class="nav-link @((h == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())" data-toggle="tab">@levels[h].Name</a>
+                                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())-tab" class="nav-link @((h == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())" data-toggle="tab" data-categorytype="@((int)Model.CategoryTypes[b])">@levels[h].Name</a>
                                                         </li>
                                                         h++;
                                                     }
@@ -139,17 +137,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="level-tab-pane" data-userid="@Model.ID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID">
+                                <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="category-tab-pane" data-userid="@Model.ID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID">
                                     <table class="grid"></table>
                                     <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="pager"></div>
                                 </div>
-                                @for (int i = 0; i < levels.Count; i++)
-                                {
-                                    <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="level-tab-pane" data-userid="@Model.ID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID" data-levelid="@levels[i].ID">
-                                        <table class="grid"></table>
-                                        <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="pager"></div>
-                                    </div>
-                                }
+                                <div class="level-results">
+                                    @for (int i = 0; i < levels.Count; i++)
+                                    {
+                                        <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="level-tab-pane" data-userid="@Model.ID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID" data-levelid="@levels[i].ID">
+                                            <table class="grid"></table>
+                                            <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="pager"></div>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         }
                     </div>

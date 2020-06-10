@@ -9,155 +9,148 @@
 
 function initializeEvents() {
     //shown.bs.tab
-    $('.nav-item.categoryType a').one('click', function () {
-        onCategoryTypeTabSingleClick(this);
-    });
+    //$('.nav-item.categoryType a').one('click', function () {
+    //    onCategoryTypeTabSingleClick(this);
+    //});
 
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
 
-    $('.nav-item.game a').one('click', function () {
-        onGameTabSingleClick(this);
-    });
+    //$('.nav-item.game a').one('click', function () {
+    //    onGameTabSingleClick(this);
+    //});
 
     $('.nav-item.game a').click(function () {
         onGameTabClick(this);
     });
 
-    $('.nav-item.category a').one('click', function () {
-        onCategoryTabSingleClick(this);
-    });
+    //$('.nav-item.category a').one('click', function () {
+    //    onCategoryTabSingleClick(this);
+    //});
 
     $('.nav-item.category a').click(function () {
         onCategoryTabClick(this);
     });
 
-    $('.nav-item.level a').one('click', function () {
-        onLevelTabSingleClick(this);
-    });
+    //$('.nav-item.level a').one('click', function () {
+    //    onLevelTabSingleClick(this);
+    //});
 
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
 }
 
-function onCategoryTypeTabSingleClick(element) {
-    var categoryTypeContainerID = $(element).attr('href');
-    var $container = $(categoryTypeContainerID);
-    //var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
-    //var $chartContainer = $(chartCategoryTypeContainerID);
+//function onCategoryTypeTabSingleClick(element) {
+//    var categoryTypeContainerID = $(element).attr('href');
+//    var $container = $(categoryTypeContainerID);
 
-    var $activeCategoryTab = $container.find('.category a.active');
+//    $('.categoryType-tab-pane').hide();
+//    $container.fadeIn();
 
-    if ($(element).data('categorytype') == 1) {
-        $container.find('.level-tabs').show();
-    } else {
-        $container.find('.level-tabs').hide();
-    }
-
-    var $activeGameTab = $container.find('.game a.active');
-
-    $activeGameTab.trigger('click');
-}
+//    var $activeGameTab = $container.find('.game a.active');
+//    $activeGameTab.trigger('click');
+//}
 
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
     var $container = $(categoryTypeContainerID);
-    //var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
-    //var $chartContainer = $(chartCategoryTypeContainerID);
-
-    var $activeGameTab = $container.find('.game a.active');
-
-    if ($(element).data('categorytype') == 1) {
-        $container.find('.level-tabs').show();
-    } else {
-        $container.find('.level-tabs').hide();
-    }
 
     $('.categoryType-tab-pane').hide();
     $container.fadeIn();
 
-    //$('.categoryType-tab-pane-charts').hide();
-    //$chartContainer.fadeIn();
-
+    var $activeGameTab = $container.find('.game a.active');
     onGameTabClick($activeGameTab);
 }
 
-function onGameTabSingleClick(element) {
-    var categoryContainerID = $(element).attr("href");
-    var $activeCategoryTab = $(categoryContainerID).find('.category a.active');
+//function onGameTabSingleClick(element) {
+//    var gameContainerID = $(element).attr("href");
+//    var $container = $(gameContainerID);
 
-    $activeCategoryTab.trigger('click');
-}
+//    $('.game-tab-pane').hide();
+//    $container.fadeIn();
+
+//    var $activeCategoryTab = $container.find('.category a.active');
+//    $activeCategoryTab.trigger('click');
+//}
 
 function onGameTabClick(element) {
-    var categoryContainerID = $(element).attr('href');
-    //var chartCategoryContainerID = categoryContainerID + '-charts';
+    var gameContainerID = $(element).attr('href');
+    var $container = $(gameContainerID);
 
-    var $activeCategoryTab = $(categoryContainerID).find('.category a.active');
+    $('.game-tab-pane').hide();
+    $container.fadeIn();
 
-    $('.category-tab-pane').hide();
-    $(categoryContainerID).fadeIn();
-
-    //$('.category-tab-pane-charts').hide();
-    //$(chartCategoryContainerID).fadeIn();
-
+    var $activeCategoryTab = $container.find('.category a.active');
     onCategoryTabClick($activeCategoryTab);
 }
 
-function onCategoryTabSingleClick(element) {
-    var categoryContainerID = $(element).attr("href");
+//function onCategoryTabSingleClick(element) {
+//    var categoryContainerID = $(element).attr("href");
+//    var $container = $(categoryContainerID);
 
-    var $activeLevelTab;
-    if ($(element).data('categorytype') == 0) {
-        $activeLevelTab = $(categoryContainerID).find('.level:first a');
-    } else {
-        $activeLevelTab = $(categoryContainerID).find('.level a.active');
-    }
+//    $('.category-tab-pane').hide();
+//    $container.fadeIn();
 
-    $activeLevelTab.trigger('click');
-}
+//    if ($(element).data('categorytype') == 1) {
+//        $container.find('.level-tabs').show();
+//        $container.find('.level-results').show();
+//        $container.find('.category-results').hide();
+
+//        var $activeLevelTab = $container.find('.level a.active');
+//        $activeLevelTab.trigger('click');
+//    } else {
+//        $container.find('.level-tabs').hide();
+//        $container.find('.level-results').hide();
+//        $container.find('.category-results').show();
+//    }
+//}
 
 function onCategoryTabClick(element) {
     var categoryContainerID = $(element).attr('href');
-    //var chartCategoryContainerID = categoryContainerID + '-charts';
-
-    var $activeLevelTab;
-    if ($(element).data('categorytype') == 0) {
-        $activeLevelTab = $(categoryContainerID).find('.level:first a');
-    } else {
-        $activeLevelTab = $(categoryContainerID).find('.level a.active');
-    }
+    var $container = $(categoryContainerID);
 
     $('.category-tab-pane').hide();
-    $(categoryContainerID).fadeIn();
+    $container.fadeIn();
 
-    //$('.category-tab-pane-charts').hide();
-    //$(chartCategoryContainerID).fadeIn();
+    if ($(element).data('categorytype') == 1) {
+        $container.find('.level-tabs').show();
+        $container.find('.level-results').show();
+        $container.find('.category-tab-pane').hide();
 
-    onLevelTabClick($activeLevelTab);
+        var $activeLevelTab = $container.find('.level a.active');
+        onLevelTabClick($activeLevelTab);
+    } else {
+        var $activeCategoryPane = $container.find('.category-tab-pane');
+        if (!$activeCategoryPane.find('.grid')[0].grid) {
+            initializeGrid($activeCategoryPane);
+        }
+
+        $container.find('.level-tabs').hide();
+        $container.find('.level-results').hide();
+        $activeCategoryPane.show();
+    }
 }
 
-function onLevelTabSingleClick(element) {
-    var gridContainerID = $(element).attr("href");
-    var $gridContainer = $(gridContainerID);
-    //var chartsContainerID = gridContainerID + '-charts'
-    //var $chartsContainer = $(chartsContainerID);
+//function onLevelTabSingleClick(element) {
+//    var levelContainerID = $(element).attr("href");
+//    var $container = $(levelContainerID);
 
-    initializeGrid($gridContainer);
-    //initializeCharts($chartsContainer);
-}
+
+
+//}
 
 function onLevelTabClick(element) {
-    var gridContainerID = $(element).attr('href');
-    //var chartContainerID = gridContainerID + '-charts';
+    var levelContainerID = $(element).attr('href');
+    var $container = $(levelContainerID);
+
+    if (!$container.find('.grid')[0].grid) {
+        initializeGrid($container);
+    }
 
     $('.level-tab-pane').hide();
-    $(gridContainerID).fadeIn();
-
-    //$('.level-tab-pane-charts').hide();
-    //$(chartContainerID).fadeIn();
+    $container.fadeIn();
 }
 
 function initializeGrid(element) {
@@ -167,7 +160,7 @@ function initializeGrid(element) {
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
-    var levelID = $(element).data('levelid');
+    var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
 
     grid.jqGrid({
         url: 'UserDetails_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,

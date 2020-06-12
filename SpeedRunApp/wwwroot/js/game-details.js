@@ -8,25 +8,12 @@
 }
 
 function initializeEvents() {
-    //shown.bs.tab
-    $('.nav-item.categoryType a').one('click', function () {
-        onCategoryTypeTabSingleClick(this);
-    });
-
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
 
-    $('.nav-item.category a').one('click', function () {
-        onCategoryTabSingleClick(this);
-    });
-
     $('.nav-item.category a').click(function () {
         onCategoryTabClick(this);
-    });
-
-    $('.nav-item.level a').one('click', function () {
-        onLevelTabSingleClick(this);
     });
 
     $('.nav-item.level a').click(function () {
@@ -34,38 +21,11 @@ function initializeEvents() {
     });
 }
 
-function onCategoryTypeTabSingleClick(element) {
-    var categoryTypeContainerID = $(element).attr('href');
-    var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
-    var $container = $(categoryTypeContainerID);
-    var $chartContainer = $(chartCategoryTypeContainerID);
-
-    //var $activeCategoryTab = $container.find('.category a.active');
-
-    if ($(element).data('categorytype') == 1) {
-        $container.find('.level-tabs').show();
-    } else {
-        $container.find('.level-tabs').hide();
-    }
-
-    var $activeCategoryTab = $container.find('.category a.active');
-
-    $activeCategoryTab.trigger('click');
-}
-
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
-    var chartCategoryTypeContainerID = categoryTypeContainerID + '-charts';
     var $container = $(categoryTypeContainerID);
-    var $chartContainer = $(chartCategoryTypeContainerID);
-
-    var $activeCategoryTab = $container.find('.category a.active');
-
-    if ($(element).data('categorytype') == 1) {
-        $container.find('.level-tabs').show();
-    } else {
-        $container.find('.level-tabs').hide();
-    }
+    var categoryTypeChartContainerID = categoryTypeContainerID + '-charts';
+    var $chartContainer = $(categoryTypeChartContainerID);
 
     $('.categoryType-tab-pane').hide();
     $container.fadeIn();
@@ -73,61 +33,65 @@ function onCategoryTypeTabClick(element) {
     $('.categoryType-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
+    var $activeCategoryTab = $container.find('.category a.active');
     onCategoryTabClick($activeCategoryTab);
-}
-
-function onCategoryTabSingleClick(element) {
-    var categoryContainerID = $(element).attr("href");
-
-    var $activeLevelTab;
-    if ($(element).data('categorytype') == 0) {
-        $activeLevelTab = $(categoryContainerID).find('.level:first a');
-    } else {
-        $activeLevelTab = $(categoryContainerID).find('.level a.active');
-    }
-
-    $activeLevelTab.trigger('click');
 }
 
 function onCategoryTabClick(element) {
     var categoryContainerID = $(element).attr('href');
-    var chartCategoryContainerID = categoryContainerID + '-charts';
-
-    var $activeLevelTab;
-    if ($(element).data('categorytype') == 0) {
-        $activeLevelTab = $(categoryContainerID).find('.level:first a');
-    } else {
-        $activeLevelTab = $(categoryContainerID).find('.level a.active');
-    }
+    var $container = $(categoryContainerID);
+    var categoryChartContainerID = categoryContainerID + '-charts';
+    var $chartContainer = $(categoryChartContainerID);
 
     $('.category-tab-pane').hide();
-    $(categoryContainerID).fadeIn();
+    $container.fadeIn();
 
     $('.category-tab-pane-charts').hide();
-    $(chartCategoryContainerID).fadeIn();
+    $chartContainer.fadeIn();
 
-    onLevelTabClick($activeLevelTab);
-}
+    if ($(element).data('categorytype') == 1) {
+        $container.find('.level-tabs').show();
+        $container.find('.level-results').show();
+        $container.find('.category-results').hide();
 
-function onLevelTabSingleClick(element) {
-    var gridContainerID = $(element).attr("href");
-    var chartsContainerID = gridContainerID + '-charts'
-    var $gridContainer = $(gridContainerID);
-    var $chartsContainer = $(chartsContainerID);
+        $chartContainer.find('.level-results-charts').show();
 
-    initializeGrid($gridContainer);
-    initializeCharts($chartsContainer);
+        var $activeLevelTab = $container.find('.level a.active');
+        onLevelTabClick($activeLevelTab);
+    } else {
+        var $activeCategoryPane = $container.find('.category-results');
+        var $activeCategoryChartsPane = $chartContainer.find('.category-results-charts');
+
+        if (!$activeCategoryPane.find('.grid')[0].grid) {
+            initializeGrid($activeCategoryPane);
+            initializeCharts($activeCategoryChartsPane);
+        }
+
+        $container.find('.level-tabs').hide();
+        $container.find('.level-results').hide();
+        $activeCategoryPane.show();
+
+        $chartContainer.find('.level-results-charts').hide();
+        $activeCategoryChartsPane.show();
+    }
 }
 
 function onLevelTabClick(element) {
-    var gridContainerID = $(element).attr('href');
-    var chartContainerID = gridContainerID + '-charts';
+    var levelContainerID = $(element).attr('href');
+    var $container = $(levelContainerID);
+    var levelChartContainerID = levelContainerID + '-charts';
+    var $chartContainer = $(levelChartContainerID);
+
+    if (!$container.find('.grid')[0].grid) {
+        initializeGrid($container);
+        initializeCharts($chartContainer);
+    }
 
     $('.level-tab-pane').hide();
-    $(gridContainerID).fadeIn();
+    $container.fadeIn();
 
     $('.level-tab-pane-charts').hide();
-    $(chartContainerID).fadeIn();
+    $chartContainer.fadeIn();
 }
 
 function initializeGrid(element) {
@@ -150,7 +114,7 @@ function initializeGrid(element) {
         colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "levelName", width: 50, hidden: categoryType != 1},
+            { name: "levelName", width: 125, hidden: categoryType != 1},
             { name: "rankString", width: 75, sorttype: "number" },
             { name: "playerName", width: 160 },
             { name: "platformName", width: 160 },

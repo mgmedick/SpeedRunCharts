@@ -30,7 +30,8 @@ namespace SpeedrunComSharp.Model
         public IEnumerable<Game> ModeratedGames { get; set; }
         public Lazy<ReadOnlyCollection<Record>> personalBests { get; set; }
         public ReadOnlyCollection<Record> PersonalBests { get { return personalBests.Value; } }
-
+        public Lazy<Uri> profileImageUri { get; set; }
+        public Uri ProfileImageUri { get { return profileImageUri.Value; } }
         #endregion
 
         public User() { }

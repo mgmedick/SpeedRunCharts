@@ -12,6 +12,7 @@ namespace SpeedRunApp.Model
             ID = user.ID;
             Name = user.Name;
             JapaneseName = user.JapaneseName;
+            ProfileImageUri = user.ProfileImageUri;
             Role = user.Role;
             SignUpDate = user.SignUpDate;
             Location = user.Location.ToString();
@@ -26,6 +27,7 @@ namespace SpeedRunApp.Model
         public string ID { get; set; }
         public string Name { get; set; }
         public string JapaneseName { get; set; }
+        public Uri ProfileImageUri { get; set; }
         public UserRole Role { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }
@@ -46,6 +48,7 @@ namespace SpeedRunApp.Model
                                      .Select(i => i.First())
                                      .OrderBy(i => i.Name)
                                      .ToList();
+
                 return games;
             }
         }
@@ -82,7 +85,7 @@ namespace SpeedRunApp.Model
         {
             get
             {
-                var levels = SpeedRuns.Where(i=>i.Level != null)
+                var levels = SpeedRuns.Where(i => i.Level != null)
                                      .Select(i => i.Level)
                                      .GroupBy(g => new { g.ID })
                                      .Select(i => i.First())

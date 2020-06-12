@@ -14,8 +14,8 @@ namespace SpeedRunApp.Model
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
-            Categories = game.Categories;
-            Levels = game.Levels;
+            Categories = game.Categories.ToList();
+            Levels = game.Levels.ToList();
         }
 
         public string ID { get; set; }
@@ -23,8 +23,8 @@ namespace SpeedRunApp.Model
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        public IEnumerable<CategoryDTO> Categories { get; set; }
-        public IEnumerable<LevelDTO> Levels { get; set; }
-        public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i=>i).Distinct(); } }
+        public List<CategoryDTO> Categories { get; set; }
+        public List<LevelDTO> Levels { get; set; }
+        public List<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i => i).Distinct().ToList(); } }
     }
 }

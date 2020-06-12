@@ -117,12 +117,12 @@ function onCategoryTabClick(element) {
     if ($(element).data('categorytype') == 1) {
         $container.find('.level-tabs').show();
         $container.find('.level-results').show();
-        $container.find('.category-tab-pane').hide();
+        $container.find('.category-results').hide();
 
         var $activeLevelTab = $container.find('.level a.active');
         onLevelTabClick($activeLevelTab);
     } else {
-        var $activeCategoryPane = $container.find('.category-tab-pane');
+        var $activeCategoryPane = $container.find('.category-results');
         if (!$activeCategoryPane.find('.grid')[0].grid) {
             initializeGrid($activeCategoryPane);
         }

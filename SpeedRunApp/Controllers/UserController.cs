@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SpeedRunApp.Model;
 using SpeedRunApp.Service;
@@ -15,15 +16,17 @@ namespace SpeedRunApp.WebUI.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService = null;
+        private readonly IMemoryCache _cache = null;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMemoryCache cache)
         {
             _userService = userService;
+            _cache = cache;
         }
 
         public ViewResult UserDetails(string userID)
         {
-            var user = _userService.GetUser(userID);
+            var user = _userService.GetUser(userID, true);
             var userDetailsVM = new UserDetailsViewModel(user);
             return View(userDetailsVM);
         }
@@ -31,8 +34,7 @@ namespace SpeedRunApp.WebUI.Controllers
         [HttpGet]
         public JsonResult UserDetails_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var records = _userService.GetUserSpeedRuns(userID);
-            records = records.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID);
+            var records = _userService.GetUserSpeedRuns(userID, gameID, categoryType, categoryID, levelID);
             var recordVMs = records.Select(i => new SpeedRunViewModel(i));
 
             return Json(recordVMs);

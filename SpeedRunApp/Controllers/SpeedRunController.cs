@@ -25,6 +25,12 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(runListVM);
         }
 
+        public PartialViewResult SpeedRunSummary(string speedRunID)
+        {
+            var speedRun = _speedRunService.GetSpeedRun(speedRunID);
+            return PartialView("_SpeedRunSummary", new SpeedRunViewModel(speedRun));
+        }
+
         public PartialViewResult SpeedRunListMore(int elementsOffset)
         {
             var runListVM = GetSpeedRunListVM(elementsOffset);

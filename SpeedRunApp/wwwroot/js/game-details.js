@@ -187,7 +187,7 @@ function initializeGrid(element) {
     }
 
     function optionsFormatter(cellvalue, options, rowObject) {
-        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
     }
 
     function dateSubmittedFormatter(cellvalue, options, rowObject) {

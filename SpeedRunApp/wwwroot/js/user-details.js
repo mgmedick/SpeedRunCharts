@@ -8,50 +8,22 @@
 }
 
 function initializeEvents() {
-    //shown.bs.tab
-    //$('.nav-item.categoryType a').one('click', function () {
-    //    onCategoryTypeTabSingleClick(this);
-    //});
-
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
-
-    //$('.nav-item.game a').one('click', function () {
-    //    onGameTabSingleClick(this);
-    //});
 
     $('.nav-item.game a').click(function () {
         onGameTabClick(this);
     });
 
-    //$('.nav-item.category a').one('click', function () {
-    //    onCategoryTabSingleClick(this);
-    //});
-
     $('.nav-item.category a').click(function () {
         onCategoryTabClick(this);
     });
-
-    //$('.nav-item.level a').one('click', function () {
-    //    onLevelTabSingleClick(this);
-    //});
 
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
 }
-
-//function onCategoryTypeTabSingleClick(element) {
-//    var categoryTypeContainerID = $(element).attr('href');
-//    var $container = $(categoryTypeContainerID);
-
-//    $('.categoryType-tab-pane').hide();
-//    $container.fadeIn();
-
-//    var $activeGameTab = $container.find('.game a.active');
-//    $activeGameTab.trigger('click');
-//}
 
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
@@ -64,17 +36,6 @@ function onCategoryTypeTabClick(element) {
     onGameTabClick($activeGameTab);
 }
 
-//function onGameTabSingleClick(element) {
-//    var gameContainerID = $(element).attr("href");
-//    var $container = $(gameContainerID);
-
-//    $('.game-tab-pane').hide();
-//    $container.fadeIn();
-
-//    var $activeCategoryTab = $container.find('.category a.active');
-//    $activeCategoryTab.trigger('click');
-//}
-
 function onGameTabClick(element) {
     var gameContainerID = $(element).attr('href');
     var $container = $(gameContainerID);
@@ -85,27 +46,6 @@ function onGameTabClick(element) {
     var $activeCategoryTab = $container.find('.category a.active');
     onCategoryTabClick($activeCategoryTab);
 }
-
-//function onCategoryTabSingleClick(element) {
-//    var categoryContainerID = $(element).attr("href");
-//    var $container = $(categoryContainerID);
-
-//    $('.category-tab-pane').hide();
-//    $container.fadeIn();
-
-//    if ($(element).data('categorytype') == 1) {
-//        $container.find('.level-tabs').show();
-//        $container.find('.level-results').show();
-//        $container.find('.category-results').hide();
-
-//        var $activeLevelTab = $container.find('.level a.active');
-//        $activeLevelTab.trigger('click');
-//    } else {
-//        $container.find('.level-tabs').hide();
-//        $container.find('.level-results').hide();
-//        $container.find('.category-results').show();
-//    }
-//}
 
 function onCategoryTabClick(element) {
     var categoryContainerID = $(element).attr('href');
@@ -132,14 +72,6 @@ function onCategoryTabClick(element) {
         $activeCategoryPane.show();
     }
 }
-
-//function onLevelTabSingleClick(element) {
-//    var levelContainerID = $(element).attr("href");
-//    var $container = $(levelContainerID);
-
-
-
-//}
 
 function onLevelTabClick(element) {
     var levelContainerID = $(element).attr('href');
@@ -171,11 +103,10 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
+        colNames: ["", "Level", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "levelName", width: 50, hidden: categoryType != 1},
-            { name: "rankString", width: 75, sorttype: "number" },
+            { name: "levelName", width: 125, hidden: categoryType != 1},
             { name: "playerName", width: 160 },
             { name: "platformName", width: 160 },
             { name: "primaryRunTimeString", width: 160 , search: false },
@@ -247,7 +178,7 @@ function initializeGrid(element) {
     }
 
     function optionsFormatter(cellvalue, options, rowObject) {
-        return "<a href='SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
     }
 
     function dateSubmittedFormatter(cellvalue, options, rowObject) {

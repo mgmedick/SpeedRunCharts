@@ -37,7 +37,7 @@ namespace SpeedRunApp
                 // Here you can add various assembly scans
                 // to ensure Lamar finds all your classes
                 // and registers your project conventions.
-                //scanner.TheCallingAssembly();
+                scanner.TheCallingAssembly();
                 scanner.Assembly("SpeedRunApp.Interfaces");
                 scanner.Assembly("SpeedRunApp.Service");
                 scanner.WithDefaultConventions();

@@ -11,7 +11,7 @@ namespace SpeedRunApp.Service
 {
     public class LeaderboardService : ILeaderboardService
     {
-        public IEnumerable<SpeedRunRecordViewModel> GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelID = null)
+        public IEnumerable<SpeedRunRecordDTO> GetLeaderboardRecords(string gameID, CategoryType categoryType, string categoryID, string levelID = null)
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
@@ -27,10 +27,10 @@ namespace SpeedRunApp.Service
                 leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, levelId: levelID, categoryId: categoryID, embeds: leaderboardEmbeds);
             }
 
-            var dtoRecords = leaderboard.Records.Select(i => new SpeedRunRecordDTO(i));
-            var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime);
+            var dtoRecords = leaderboard.Records.Select(i => new SpeedRunRecordDTO(i)).OrderBy(i => i.PrimaryRunTime);
+            //var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime);
 
-            return recordVMs;
+            return dtoRecords;
         }
     }
 }

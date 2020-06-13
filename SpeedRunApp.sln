@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Client", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedrunComSharp.Model", "SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj", "{BA321ECB-BDAD-4529-B262-33C288C693EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunApp.Interfaces", "SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj", "{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Interfaces", "SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj", "{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

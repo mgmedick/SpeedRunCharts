@@ -73,7 +73,7 @@
         </div>
         @for (int b = 0; b < Model.CategoryTypes.Count; b++)
         {
-            var games = Model.Games?.Where(i => i.CategoryTypes.Contains(Model.CategoryTypes[b])).ToList();
+            var games = Model.Games?.Where(i => Model.SpeedRuns.Any(x=> x.Category.Type == Model.CategoryTypes[b] &&  x.GameID == i.ID)).ToList();
             <div id="divCategoryType-@(b)" class="categoryType-tab-pane p-0 @(b == 0 ? "show" : string.Empty)">
                 <div class="game-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
                     <div class="col align-self-end"><label class="font-weight-bold">Game:</label></div>
@@ -96,7 +96,7 @@
                 </div>
                 @for (int d = 0; d < games.Count; d++)
                 {
-                    var categories = Model.Categories.Where(i => games[d].Categories.Any(n => n.ID == i.ID) && i.Type == Model.CategoryTypes[b]).ToList();
+                    var categories = Model.Categories.Where(i => Model.SpeedRuns.Any(x => x.GameID == games[d].ID && x.Category.Type == Model.CategoryTypes[b] && x.CategoryID == i.ID)).ToList();
                     <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString())" class="game-tab-pane @((d == 0) ? "show" : string.Empty)">
                         <div class="category-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
                             <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
@@ -119,7 +119,7 @@
                         </div>
                         @for (int g = 0; g < categories.Count; g++)
                         {
-                            var levels = Model.Levels.Where(i => games[d].Levels.Any(n => n.ID == i.ID)).ToList();
+                            var levels = Model.Levels.Where(i => Model.SpeedRuns.Any(x=> x.GameID == games[d].ID && x.Category.Type == Model.CategoryTypes[b] && x.CategoryID == categories[g].ID && x.LevelID == i.ID)).ToList();
                             <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString())" class="category-tab-pane @((g == 0) ? "show" : string.Empty)">
                                 <div class="level-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
                                     <div class="col align-self-end"><label class="font-weight-bold">Level:</label></div>

@@ -25,16 +25,16 @@ namespace SpeedRunApp.Service
             var user = clientContainer.Users.GetUser(userID);
             var userDTO = new UserDTO(user);
 
-            if (cacheSpeedRuns)
-            {
-                var userSpeedRunsCacheKey = "userSpeedRuns_" + userID;
-                var userSpeedRuns = (IEnumerable<SpeedRunDTO>)_cache.Get(userSpeedRunsCacheKey);
-                if (userSpeedRuns == null)
-                {
-                    userSpeedRuns = userDTO.SpeedRuns;
-                    _cache.Set(userSpeedRunsCacheKey, userSpeedRuns, new DateTimeOffset(DateTime.Now.AddMinutes(5)));
-                }
-            }
+            //if (cacheSpeedRuns)
+            //{
+            //    var userSpeedRunsCacheKey = "userSpeedRuns_" + userID;
+            //    var userSpeedRuns = (IEnumerable<SpeedRunDTO>)_cache.Get(userSpeedRunsCacheKey);
+            //    if (userSpeedRuns == null)
+            //    {
+            //        userSpeedRuns = userDTO.SpeedRuns;
+            //        _cache.Set(userSpeedRunsCacheKey, userSpeedRuns, new DateTimeOffset(DateTime.Now.AddMinutes(5)));
+            //    }
+            //}
 
             return userDTO;
         }

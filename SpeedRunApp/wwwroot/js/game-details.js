@@ -1,4 +1,5 @@
 ﻿function initializeClient() {
+    _speedRuns = speedRuns;
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
 
     initializeEvents();

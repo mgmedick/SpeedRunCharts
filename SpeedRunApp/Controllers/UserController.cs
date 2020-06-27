@@ -28,6 +28,9 @@ namespace SpeedRunApp.WebUI.Controllers
         {
             var user = _userService.GetUser(userID, true);
             var userDetailsVM = new UserDetailsViewModel(user);
+
+
+
             return View(userDetailsVM);
         }
 

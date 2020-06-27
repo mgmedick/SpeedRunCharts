@@ -9,13 +9,19 @@ namespace SpeedRunApp.Model
 {
     public class PlayerDTO
     {
-        public PlayerDTO(Player player)
+        public PlayerDTO()
         {
-            ID = player.UserID;
-            Name = player.Name;
+
         }
 
-        public string ID { get; set; }
-        public string Name { get; set; }
+        //public PlayerDTO(Player player)
+        //{
+        //    ID = player.UserID;
+        //    Name = player.Name;
+        //}
+
+        public bool IsUser { get { return string.IsNullOrEmpty(GuestName); } }
+        public string UserID { get; set; }
+        public string GuestName { get; set; }
     }
 }

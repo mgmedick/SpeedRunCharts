@@ -21,7 +21,8 @@ namespace SpeedRunApp.Model
             YoutubeProfile = user.YoutubeProfile;
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
-            SpeedRuns = user.SpeedRuns;
+            var speedRuns = user.SpeedRuns.ToList();
+            SpeedRuns = speedRuns;
         }
 
         public string ID { get; set; }
@@ -37,7 +38,7 @@ namespace SpeedRunApp.Model
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
 
-        public IEnumerable<SpeedRunDTO> SpeedRuns { get; set; }
+        public List<SpeedRunDTO> SpeedRuns { get; set; }
 
         public List<GameDTO> Games
         {

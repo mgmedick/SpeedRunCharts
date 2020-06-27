@@ -224,9 +224,25 @@ namespace SpeedrunComSharp.Client
                 user.SpeedRunsLiveProfile = new Uri(speedRunsLiveLink.uri as string);
 
             //Parse Links
-            var runEmbeds = (RunEmbeds)embeds?.FirstOrDefault(i => i is RunEmbeds);
+            //var runEmbeds = (RunEmbeds)embeds?.FirstOrDefault(i => i is RunEmbeds);
             //runEmbeds = (RunEmbeds)runEmbeds ?? null;
-            user.runs = new Lazy<IEnumerable<Run>>(() => Client.Runs.GetRuns(userId: user.ID, embeds: runEmbeds));
+            //user.runs = new Lazy<IEnumerable<Run>>(() => Client.Runs.GetRuns(userId: user.ID, embeds: runEmbeds));
+            user.runs = new Lazy<IEnumerable<Run>>(() =>
+            {
+                var runs = Client.Runs.GetRuns(userId: user.ID);
+                var lazy = new Lazy<User>(() => user);
+
+                foreach (var run in runs)
+                {
+                    var player = run.Players.FirstOrDefault(x => x.UserID == user.ID);
+                    if (player != null)
+                    {
+                        player.user = lazy;
+                    }
+                }
+
+                return runs;
+            });
             user.ModeratedGames = Client.Games.GetGames(moderatorId: user.ID);
             user.personalBests = new Lazy<ReadOnlyCollection<Record>>(() =>
             {

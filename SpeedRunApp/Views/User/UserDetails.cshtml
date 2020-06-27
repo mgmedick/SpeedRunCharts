@@ -30,7 +30,7 @@
     <script src="@Url.Content("~/js/user-details.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
 
-    <script>$().ready(initializeClient());</script>
+    <script>$().ready(initializeClient(@Html.Raw(Json.Serialize(Model.SpeedRuns))));</script>
 }
 
 <div class="container-fluid">

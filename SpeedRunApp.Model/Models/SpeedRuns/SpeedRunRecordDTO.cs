@@ -8,6 +8,10 @@ namespace SpeedRunApp.Model
 {
     public class SpeedRunRecordDTO : SpeedRunDTO
     {
+        public SpeedRunRecordDTO()
+        {
+        }
+
         public SpeedRunRecordDTO(Record record) : base((Run)record)
         {
             Rank = record.Rank;

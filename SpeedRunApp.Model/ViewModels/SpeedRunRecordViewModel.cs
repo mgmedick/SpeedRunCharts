@@ -1,10 +1,11 @@
-﻿using SpeedRunCommon;
+﻿using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
 
-namespace SpeedRunApp.Model
+namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunRecordViewModel : SpeedRunViewModel
     {
-        public SpeedRunRecordViewModel(SpeedRunRecordDTO record) : base((SpeedRunDTO)record)
+        public SpeedRunRecordViewModel(SpeedRunRecord record) : base((SpeedRun)record)
         {
             RankString = record.Rank.ToOrdinalString();
         }

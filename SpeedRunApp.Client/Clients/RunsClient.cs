@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model;
 using SpeedRunCommon;
 
@@ -21,14 +22,14 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        public IEnumerable<SpeedRunDTO> GetRuns(
+        public IEnumerable<SpeedRun> GetRuns(
             string userId = null, string guestName = null,
             string examerUserId = null, string gameId = null,
             string levelId = null, string categoryId = null,
             string platformId = null, string regionId = null,
             bool onlyEmulatedRuns = false, RunStatusType? status = null,
             int? elementsPerPage = null,
-            SpeedRunEmbedsDTO embeds = null,
+            SpeedRunEmbeds embeds = null,
             RunsOrdering orderBy = default(RunsOrdering),
             int? elementsOffset = null)
         {
@@ -73,11 +74,11 @@ namespace SpeedRunApp.Client
 
             var uri = GetRunsUri(parameters.ToParameters());
 
-            return DoRequest(uri, x => Parse(x) as SpeedRunDTO);
+            return DoRequest(uri, x => Parse(x) as SpeedRun);
         }
 
-        public SpeedRunDTO GetRun(string runId,
-            SpeedRunEmbedsDTO embeds = null)
+        public SpeedRun GetRun(string runId,
+            SpeedRunEmbeds embeds = null)
         {
             var parameters = new List<string>() { embeds?.ToString() };
 
@@ -90,38 +91,39 @@ namespace SpeedRunApp.Client
             return Parse(result.data);
         }
 
-        public SpeedRunRecordDTO Parse(dynamic runElement)
+        public SpeedRunRecord Parse(dynamic runElement)
         {
-            SpeedRunRecordDTO record = new SpeedRunRecordDTO();
+            SpeedRunRecord record = new SpeedRunRecord();
             Parse(runElement, record);
 
-            return (SpeedRunRecordDTO)record;
+            return (SpeedRunRecord)record;
         }
 
-        public SpeedRunDTO Parse(dynamic runElement, SpeedRunDTO run = null)
+        public SpeedRun Parse(dynamic runElement, SpeedRun run = null)
         {
             if (run == null)
             {
-                run = new SpeedRunDTO();
+                run = new SpeedRun();
             }
+            var properties = runElement.Properties as IDictionary<string, dynamic>;
 
             //Parse Attributes
             run.ID = runElement.id as string;
             run.WebLink = new Uri(runElement.weblink as string);
-            run.Videos = ParseRunVideos(runElement.videos) as SpeedRunVideosDTO;
+            run.Videos = ParseRunVideos(runElement.videos) as SpeedRunVideos;
             run.Comment = runElement.comment as string;
-            run.Status = ParseRunStatus(runElement.status) as SpeedRunStatusDTO;
+            run.Status = ParseRunStatus(runElement.status) as SpeedRunStatus;
 
-            Func<dynamic, PlayerDTO> parsePlayer = x => Client.Common.ParsePlayer(x) as PlayerDTO;
+            //Func<dynamic, Player> parsePlayer = x => Client.Common.ParsePlayer(x) as Player;
 
-            if (runElement.players is IEnumerable<dynamic>)
-            {
-                run.Players = ParseCollection(runElement.players, parsePlayer);
-            }
-            else
-            {
-                run.Players = ParseCollection(runElement.players.data, parsePlayer);
-            }
+            //if (runElement.players is IEnumerable<dynamic>)
+            //{
+            //    run.Players = ParseCollection(runElement.players, parsePlayer);
+            //}
+            //else
+            //{
+            //    run.Players = ParseCollection(runElement.players.data, parsePlayer);
+            //}
 
             var runDate = runElement.date;
             if (!string.IsNullOrWhiteSpace(runDate))
@@ -132,8 +134,8 @@ namespace SpeedRunApp.Client
                 run.DateSubmitted = runElement.submitted;
             }
 
-            run.Times = ParseRunTimes(runElement.times) as SpeedRunTimesDTO;
-            run.System = ParseRunSystem(runElement.system) as SpeedRunSystemDTO;
+            run.Times = ParseRunTimes(runElement.times) as SpeedRunTimes;
+            run.System = ParseRunSystem(runElement.system, properties) as SpeedRunSystem;
 
             var splits = runElement.splits;
             if (splits != null)
@@ -144,15 +146,21 @@ namespace SpeedRunApp.Client
             if (runElement.values is DynamicJsonObject)
             {
                 var valueProperties = runElement.values.Properties as IDictionary<string, dynamic>;
-                run.VariableValues = valueProperties.Select(x => Client.Variables.ParseValueDescriptor(x) as VariableValue).ToList().AsReadOnly();
+                run.VariableValueMappings = valueProperties.Select(x => Client.Variables.ParseVariableValueMapping(x) as VariableValueMapping).ToList().AsReadOnly();
+            }
+
+            //Parse embeds
+            if (runElement.players is IEnumerable<dynamic>)
+            {
+                Func<dynamic, Player> parsePlayer = x => Client.Common.ParsePlayer(x) as Player;
+                run.Players = ParseCollection(runElement.players, parsePlayer);
             }
             else
             {
-                run.VariableValues = new List<VariableValue>().AsReadOnly();
+                Func<dynamic, User> userParser = x => Client.Users.Parse(x) as User;
+                IEnumerable<User> users = ParseCollection(runElement.players.data, userParser);
+                run.PlayerUsers = users;
             }
-
-            //Parse Links
-            var properties = runElement.Properties as IDictionary<string, dynamic>;
 
             if (properties["game"] is string)
             {
@@ -172,11 +180,8 @@ namespace SpeedRunApp.Client
             else
             {
                 var category = Client.Categories.Parse(properties["category"].data) as Category;
-                if (category != null)
-                {
-                    run.Category = category;
-                    run.CategoryID = category.ID;
-                }
+                run.Category = category;
+                run.CategoryID = category.ID;
             }
 
             if (properties["level"] is string)
@@ -193,24 +198,14 @@ namespace SpeedRunApp.Client
                 }
             }
 
-            if (properties.ContainsKey("platform"))
-            {
-                var platform = Client.Platforms.Parse(properties["platform"].data) as Platform;
-                run.System.Platform = platform;
-            }
 
-            if (properties.ContainsKey("region"))
-            {
-                var region = Client.Regions.Parse(properties["region"].data) as Region;
-                run.System.Region = region;
-            }
 
             return run;
         }
 
-        private SpeedRunStatusDTO ParseRunStatus(dynamic statusElement)
+        private SpeedRunStatus ParseRunStatus(dynamic statusElement)
         {
-            var status = new SpeedRunStatusDTO();
+            var status = new SpeedRunStatus();
             var properties = statusElement.Properties as IDictionary<string, dynamic>;
 
             status.Type = ParseRunStatusType(statusElement.status as string);
@@ -250,20 +245,32 @@ namespace SpeedRunApp.Client
             throw new ArgumentException("type");
         }
 
-        private SpeedRunSystemDTO ParseRunSystem(dynamic systemElement)
+        private SpeedRunSystem ParseRunSystem(dynamic systemElement, IDictionary<string, dynamic> properties)
         {
-            var system = new SpeedRunSystemDTO();
+            var system = new SpeedRunSystem();
 
             system.IsEmulated = (bool)systemElement.emulated;
             system.PlatformID = systemElement.platform as string;
             system.RegionID = systemElement.region as string;
 
+            if (properties.ContainsKey("platform"))
+            {
+                var platform = Client.Platforms.Parse(properties["platform"].data) as Platform;
+                system.Platform = platform;
+            }
+
+            if (properties.ContainsKey("region"))
+            {
+                var region = Client.Regions.Parse(properties["region"].data) as Region;
+                system.Region = region;
+            }
+
             return system;
         }
 
-        private SpeedRunTimesDTO ParseRunTimes(dynamic timesElement)
+        private SpeedRunTimes ParseRunTimes(dynamic timesElement)
         {
-            var times = new SpeedRunTimesDTO();
+            var times = new SpeedRunTimes();
 
             if (timesElement.primary != null)
                 times.Primary = TimeSpan.FromSeconds((double)timesElement.primary_t);
@@ -280,12 +287,16 @@ namespace SpeedRunApp.Client
             return times;
         }
 
-        private SpeedRunVideosDTO ParseRunVideos(dynamic videosElement)
+        private SpeedRunVideos ParseRunVideos(dynamic videosElement)
         {
-            SpeedRunVideosDTO videos = null;
+            SpeedRunVideos videos = new SpeedRunVideos();
 
             if (videosElement != null)
             {
+                //if (videosElement.text != null)
+                //{
+                //    videos.Text = videosElement.text as string;
+                //}
                 videos.Text = videosElement.text as string;
                 videos.Links = ParseCollection(videosElement.links, new Func<dynamic, Uri>(parseVideoLink));
             }

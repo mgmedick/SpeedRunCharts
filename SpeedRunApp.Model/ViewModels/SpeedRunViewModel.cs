@@ -3,31 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SpeedRunCommon;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
 
-namespace SpeedRunApp.Model
+namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunViewModel
     {
-        public SpeedRunViewModel(SpeedRunDTO run)
+        public SpeedRunViewModel(SpeedRun run)
         {
             ID = run.ID;
-            PlayerID = run.Player?.ID;
-            PlayerName = run.Player?.Name;
+            PlayerID = run.PlayerUser?.ID;
+            PlayerName = run.PlayerUser?.Name;
             GameID = run.GameID;
             GameName = run.Game.Name;
             GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
             CategoryName = run.Category.Name;
             CategoryType = run.Category.Type;
-            PlatformID = run.PlatformID;
+            PlatformID = run.Platform?.ID;
             PlatformName = run.Platform?.Name;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
-            ExaminerName = run.Status.Examiner?.Name;
             DateSubmitted = run.DateSubmitted;
-            VideoLink = run.VideoLink;
-            PrimaryRunTime = run.PrimaryRunTime;
+            VideoLink = run.Videos?.Links?.FirstOrDefault();
+            PrimaryRunTime = run.Times.Primary.Value;
         }
 
         public string ID { get; set; }

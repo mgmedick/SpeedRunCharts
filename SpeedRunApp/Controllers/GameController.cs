@@ -16,27 +16,24 @@ namespace SpeedRunApp.WebUI.Controllers
     {
         private readonly IGamesService _gamesService = null;
         private readonly ISpeedRunsService _speedRunService = null;
-        private readonly ILeaderboardService _leaderboardService = null;
 
-        public GameController(IGamesService gamesService, ISpeedRunsService speedRunService, ILeaderboardService leaderboardService)
+        public GameController(IGamesService gamesService, ISpeedRunsService speedRunService)
         {
             _gamesService = gamesService;
             _speedRunService = speedRunService;
-            _leaderboardService = leaderboardService;
         }
 
         public ViewResult GameDetails(string gameID)
         {
-            var game = _gamesService.GetGame(gameID);
+            var gameVM = _gamesService.GetGame(gameID);
 
-            return View(new GameDetailsViewModel(game));
+            return View(gameVM);
         }
 
         [HttpGet]
         public JsonResult GameDetails_Read(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var dtoRecords = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
-            var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(recordVMs);
         }
@@ -51,30 +48,26 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {
-            var dtoRecords = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
-            var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i)).Take(topAmount);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(new { Data = recordVMs });
         }
 
         public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var dtoRecords = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
-            var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(new { Data = recordVMs });
         }
 
         public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var dtoRecords = _leaderboardService.GetLeaderboardRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
 
-            //DateTime startDate = recordVMs.Where(i=>i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).FirstOrDefault();
-            DateTime endDate = dtoRecords.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
+            DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
             DateTime startDate = (endDate != DateTime.MinValue) ? endDate.AddMonths(-6) : DateTime.MinValue;
 
             var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
-            var recordVMs = dtoRecords.Select(i => new SpeedRunRecordViewModel(i));
 
             return Json(new { Data = recordVMs, TimePeriods = timePeriods });
         }

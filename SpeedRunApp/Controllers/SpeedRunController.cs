@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Service;
 using SpeedRunApp.Interfaces.Services;
 
@@ -21,28 +21,20 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public ViewResult SpeedRunList()
         {
-            var runListVM = GetSpeedRunListVM();
+            var runListVM = _speedRunService.GetLatestSpeedRuns();
             return View(runListVM);
         }
 
         public PartialViewResult SpeedRunSummary(string speedRunID)
         {
-            var speedRun = _speedRunService.GetSpeedRun(speedRunID);
-            return PartialView("_SpeedRunSummary", new SpeedRunViewModel(speedRun));
+            var runVM = _speedRunService.GetSpeedRun(speedRunID);
+            return PartialView("_SpeedRunSummary", runVM);
         }
 
         public PartialViewResult SpeedRunListMore(int elementsOffset)
         {
-            var runListVM = GetSpeedRunListVM(elementsOffset);
+            var runListVM = _speedRunService.GetLatestSpeedRuns(elementsOffset);
             return PartialView("_SpeedRunListMore", runListVM);
-        }
-
-        private SpeedRunListViewModel GetSpeedRunListVM(int? elementsOffset = null)
-        {
-            var runs = _speedRunService.GetLatestSpeedRuns(elementsOffset);
-            var runsVM = runs.Select(i => new SpeedRunViewModel(i));
-
-            return new SpeedRunListViewModel() { SpeedRuns = runsVM };
         }
     }
 }

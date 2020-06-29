@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.ViewModels;
+using SpeedRunCommon;
 
 namespace SpeedRunApp.Interfaces.Services
 {
     public interface IGamesService
     {
-        GameDTO GetGame(string gameID);
+        GameDetailsViewModel GetGame(string gameID);
+        IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID);
     }
 }

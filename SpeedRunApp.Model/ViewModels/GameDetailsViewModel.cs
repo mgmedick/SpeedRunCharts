@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon;
+using SpeedRunApp.Model.Data;
 
-namespace SpeedRunApp.Model
+namespace SpeedRunApp.Model.ViewModels
 {
     public class GameDetailsViewModel
     {
-        public GameDetailsViewModel(GameDTO game)
+        public GameDetailsViewModel(Game game)
         {
             ID = game.ID;
             Name = game.Name;
@@ -16,6 +17,7 @@ namespace SpeedRunApp.Model
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
             Categories = game.Categories.ToList();
             Levels = game.Levels.ToList();
+            CategoryTypes = game.CategoryTypes.ToList();
         }
 
         public string ID { get; set; }
@@ -23,8 +25,8 @@ namespace SpeedRunApp.Model
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        public List<CategoryDTO> Categories { get; set; }
-        public List<LevelDTO> Levels { get; set; }
-        public List<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i => i).Distinct().ToList(); } }
+        public List<Category> Categories { get; set; }
+        public List<Level> Levels { get; set; }
+        public List<CategoryType> CategoryTypes { get; set; }
     }
 }

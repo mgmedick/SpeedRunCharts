@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpeedRunApp.Model.Data;
 using SpeedRunCommon;
 
-namespace SpeedRunApp.Model
+namespace SpeedRunApp.Model.ViewModels
 {
     public class UserDetailsViewModel
     {
-        public UserDetailsViewModel(UserDTO user)
+        public UserDetailsViewModel(User user)
         {
             ID = user.ID;
             Name = user.Name;
             JapaneseName = user.JapaneseName;
-            ProfileImageUri = user.ProfileImageUri;
+            //ProfileImageUri = user.ProfileImageUri;
             Role = user.Role;
             SignUpDate = user.SignUpDate;
             Location = user.Location.ToString();
@@ -21,8 +22,6 @@ namespace SpeedRunApp.Model
             YoutubeProfile = user.YoutubeProfile;
             TwitterProfile = user.TwitterProfile;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
-            var speedRuns = user.SpeedRuns.ToList();
-            SpeedRuns = speedRuns;
         }
 
         public string ID { get; set; }
@@ -38,9 +37,9 @@ namespace SpeedRunApp.Model
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
 
-        public List<SpeedRunDTO> SpeedRuns { get; set; }
+        public List<SpeedRun> SpeedRuns { get; set; }
 
-        public List<GameDTO> Games
+        public List<Game> Games
         {
             get
             {
@@ -68,7 +67,7 @@ namespace SpeedRunApp.Model
             }
         }
 
-        public List<CategoryDTO> Categories
+        public List<Category> Categories
         {
             get
             {
@@ -82,7 +81,7 @@ namespace SpeedRunApp.Model
             }
         }
 
-        public List<LevelDTO> Levels
+        public List<Level> Levels
         {
             get
             {

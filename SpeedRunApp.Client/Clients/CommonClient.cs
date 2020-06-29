@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Collections.ObjectModel;
 using System.Linq;
-using SpeedrunComSharp.Model;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
 using SpeedRunCommon;
 using System.IO;
 
@@ -12,30 +9,29 @@ namespace SpeedRunApp.Client
 {
     public class CommonClient : BaseClient
     {
-
         public const string Name = "common";
 
         public CommonClient(ClientContainer client) : base(client)
         {
         }
 
-        public ReadOnlyCollection<T> ParseCollection<T>(dynamic collection, Func<dynamic, T> parser)
-        {
-            var enumerable = collection as IEnumerable<dynamic>;
-            if (enumerable == null)
-                return new List<T>(new T[0]).AsReadOnly();
+        //public IEnumerable<T> ParseCollection<T>(dynamic collection, Func<dynamic, T> parser)
+        //{
+        //    var enumerable = collection as IEnumerable<dynamic>;
+        //    if (enumerable == null)
+        //        return new List<T>(new T[0]);
 
-            return enumerable.Select(parser).ToList().AsReadOnly();
-        }
+        //    return enumerable.Select(parser).ToList();
+        //}
 
-        public ReadOnlyCollection<T> ParseCollection<T>(dynamic collection)
-        {
-            var enumerable = collection as IEnumerable<dynamic>;
-            if (enumerable == null)
-                return new List<T>(new T[0]).AsReadOnly();
+        //public IEnumerable<T> ParseCollection<T>(dynamic collection)
+        //{
+        //    var enumerable = collection as IEnumerable<dynamic>;
+        //    if (enumerable == null)
+        //        return new List<T>(new T[0]);
 
-            return enumerable.OfType<T>().ToList().AsReadOnly();
-        }
+        //    return enumerable.OfType<T>().ToList();
+        //}
 
         public Assets ParseAssets(dynamic assetsElement)
         {
@@ -83,32 +79,36 @@ namespace SpeedRunApp.Client
                 ? ModeratorType.Moderator
                 : ModeratorType.SuperModerator;
 
-            moderator.user = new Lazy<User>(() => Client.Users.GetUser(moderator.UserID));
-
             return moderator;
         }
 
-        public PlayerDTO ParsePlayer(dynamic playerElement)
+        public Player ParsePlayer(dynamic playerElement)
         {
-            var player = new PlayerDTO();
-
+            var player = new Player();
             var properties = playerElement.Properties as IDictionary<string, dynamic>;
 
-            if (playerElement.rel as string == "user")
+            if (properties.ContainsKey("uri"))
             {
-                player.UserID = playerElement.id as string;
+                if (playerElement.rel as string == "user")
+                {
+                    player.UserID = playerElement.id as string;
+                }
+                else
+                {
+                    player.GuestName = playerElement.name as string;
+                }
             }
             else
             {
-                player.GuestName = playerElement.name as string;
+
             }
 
             return player;
         }
 
-        public Record ParseRecord(dynamic recordElement)
+        public SpeedRunRecord ParseRecord(dynamic recordElement)
         {
-            Record record = new Record();
+            SpeedRunRecord record = new SpeedRunRecord();
 
             record.Rank = (int)recordElement.place;
 
@@ -163,20 +163,20 @@ namespace SpeedRunApp.Client
                     return ElementType.Category;
                 case GamesClient.Name:
                     return ElementType.Game;
-                case GuestsClient.Name:
-                    return ElementType.Guest;
+                //case GuestsClient.Name:
+                //    return ElementType.Guest;
                 case LevelsClient.Name:
                     return ElementType.Level;
-                case NotificationsClient.Name:
-                    return ElementType.Notification;
+                //case NotificationsClient.Name:
+                //    return ElementType.Notification;
                 case PlatformsClient.Name:
                     return ElementType.Platform;
                 case RegionsClient.Name:
                     return ElementType.Region;
                 case RunsClient.Name:
                     return ElementType.Run;
-                case SeriesClient.Name:
-                    return ElementType.Series;
+                //case SeriesClient.Name:
+                //    return ElementType.Series;
                 case UsersClient.Name:
                     return ElementType.User;
                 case VariablesClient.Name:
@@ -185,13 +185,12 @@ namespace SpeedRunApp.Client
             throw new ArgumentException("type");
         }
 
-        public ReadOnlyCollection<HttpWebLink> ParseLinks(string linksString)
+        public IEnumerable<HttpWebLink> ParseLinks(string linksString)
         {
             return (linksString ?? string.Empty)
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => ParseLink(x.Trim(' ')))
-                .ToList()
-                .AsReadOnly();
+                .ToList();
         }
 
         private HttpWebLink ParseLink(string linkString)
@@ -250,17 +249,17 @@ namespace SpeedRunApp.Client
             return link;
         }
 
-        public APIException ParseAPIException(Stream stream)
-        {
-            var json = JSONHelper.FromStream(stream);
-            var properties = json.Properties as IDictionary<string, dynamic>;
-            if (properties.ContainsKey("errors"))
-            {
-                var errors = json.errors as IList<dynamic>;
-                return new APIException(json.message as string, errors.Select(x => x as string));
-            }
-            else
-                return new APIException(json.message as string);
-        }
+        //public APIException ParseAPIException(Stream stream)
+        //{
+        //    var json = JSONHelper.FromStream(stream);
+        //    var properties = json.Properties as IDictionary<string, dynamic>;
+        //    if (properties.ContainsKey("errors"))
+        //    {
+        //        var errors = json.errors as IList<dynamic>;
+        //        return new APIException(json.message as string, errors.Select(x => x as string));
+        //    }
+        //    else
+        //        return new APIException(json.message as string);
+        //}
     }
 }

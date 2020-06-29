@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SpeedRunApp.Model;
-using SpeedrunComSharp.Client;
-using SpeedrunComSharp.Model;
+using SpeedRunApp.Client;
+using SpeedRunApp.Model.Data;
+using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon;
 using SpeedRunApp.Interfaces.Services;
 
@@ -15,39 +15,36 @@ namespace SpeedRunApp.Service
 
         }
 
-        public IEnumerable<SpeedRunDTO> GetLatestSpeedRuns(int? elementsOffset = null)
+        public SpeedRunListViewModel GetLatestSpeedRuns(int? elementsOffset = null)
         {
-            var runEmbeds = new RunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
-            var runs = GetSpeedRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset); ; ;
+            //SpeedRunListViewModel runListVM = null;
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
+            ClientContainer clientContainer = new ClientContainer();
+            var runs = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var runListVM = new SpeedRunListViewModel(runVMs);
+            //foreach (var run in runs)
+            //{
+            //    var runVM = new SpeedRunViewModel(run);
+            //    if (!string.IsNullOrWhiteSpace(run.Status.ExaminerUserID))
+            //    {
+            //        var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
+            //        runVM.ExaminerName = examiner.Name;
+            //    }
 
-            return runs;
+            //    runVMs.Add(runVM);
+            //}
+
+            return runListVM;
         }
 
-        public IEnumerable<SpeedRunDTO> GetSpeedRuns(
-            string userId = null, string guestName = null,
-            string examerUserId = null, string gameId = null,
-            string levelId = null, string categoryId = null,
-            string platformId = null, string regionId = null,
-            bool onlyEmulatedRuns = false, RunStatusType? status = null,
-            int? elementsPerPage = null,
-            RunEmbeds embeds = default(RunEmbeds),
-            RunsOrdering orderBy = default(RunsOrdering),
-            int? elementsOffset = null)
+        public SpeedRunViewModel GetSpeedRun(string runId, SpeedRunEmbeds embeds = default(SpeedRunEmbeds))
         {
             ClientContainer clientContainer = new ClientContainer();
-            var clientRuns = clientContainer.Runs.GetRuns(userId, guestName, examerUserId, gameId, levelId, categoryId, platformId, regionId, onlyEmulatedRuns,
-                                                    status, elementsPerPage, embeds, orderBy, elementsOffset);
-            var runs = clientRuns.Select(i => new SpeedRunDTO(i));
+            var run = clientContainer.Runs.GetRun(runId, embeds);
+            var runVM = new SpeedRunViewModel(run);
 
-            return runs;
-        }
-
-        public SpeedRunDTO GetSpeedRun(string runId, RunEmbeds embeds = default(RunEmbeds))
-        {
-            ClientContainer clientContainer = new ClientContainer();
-            var clientRun = clientContainer.Runs.GetRun(runId, embeds);
-
-            return new SpeedRunDTO(clientRun);
+            return runVM;
         }
     }
 }

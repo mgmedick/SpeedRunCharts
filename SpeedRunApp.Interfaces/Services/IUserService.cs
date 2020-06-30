@@ -8,7 +8,6 @@ namespace SpeedRunApp.Interfaces.Services
     public interface IUserService
     {
         UserDetailsViewModel GetUser(string userID, bool cacheSpeedRuns);
-        //IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID);
-        //IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID);
+        IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID);
     }
 }

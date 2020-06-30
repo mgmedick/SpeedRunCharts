@@ -31,14 +31,13 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(userVM);
         }
 
-        //[HttpGet]
-        //public JsonResult UserDetails_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
-        //{
-        //    var records = _userService.GetUserSpeedRuns(userID, gameID, categoryType, categoryID, levelID);
-        //    var recordVMs = records.Select(i => new SpeedRunViewModel(i));
+        [HttpGet]
+        public JsonResult UserDetails_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
+        {
+            var recordVMs = _userService.GetUserSpeedRuns(userID, gameID, categoryType, categoryID, levelID);
 
-        //    return Json(recordVMs);
-        //}
+            return Json(recordVMs);
+        }
     }
 }
 

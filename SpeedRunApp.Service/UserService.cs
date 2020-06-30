@@ -26,48 +26,30 @@ namespace SpeedRunApp.Service
             var user = clientContainer.Users.GetUser(userID);
             var userVM = new UserDetailsViewModel(user);
 
-            //if (cacheSpeedRuns)
-            //{
-            //    var userSpeedRunsCacheKey = "userSpeedRuns_" + userID;
-            //    var userSpeedRuns = (IEnumerable<SpeedRunDTO>)_cache.Get(userSpeedRunsCacheKey);
-            //    if (userSpeedRuns == null)
-            //    {
-            //        userSpeedRuns = userDTO.SpeedRuns;
-            //        _cache.Set(userSpeedRunsCacheKey, userSpeedRuns, new DateTimeOffset(DateTime.Now.AddMinutes(5)));
-            //    }
-            //}
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
+            userVM.SpeedRuns = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds).ToList();
 
             return userVM;
         }
 
-        //public IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
-        //{
-        //    var speedRuns = GetUserSpeedRuns(userID);
+        public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
+            var runs = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds);
 
-        //    if (categoryType == CategoryType.PerGame)
-        //    {
-        //        speedRuns = speedRuns.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID);
-        //    }
-        //    else
-        //    {
-        //        speedRuns = speedRuns.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID && i.LevelID == levelID);
-        //    }
+            if (categoryType == CategoryType.PerGame)
+            {
+                runs = runs.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID);
+            }
+            else
+            {
+                runs = runs.Where(i => i.Game.ID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID && i.LevelID == levelID);
+            }
 
-        //    return speedRuns;
-        //}
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
 
-        //public IEnumerable<SpeedRunDTO> GetUserSpeedRuns(string userID)
-        //{
-        //    var userSpeedRunsCacheKey = "userSpeedRuns_" + userID;
-        //    var userSpeedRuns = (IEnumerable<SpeedRunDTO>)_cache.Get(userSpeedRunsCacheKey);
-        //    if (userSpeedRuns == null)
-        //    {
-        //        ClientContainer clientContainer = new ClientContainer();
-        //        var runs = clientContainer.Runs.GetRuns(userId: userID);
-        //        userSpeedRuns = runs.Select(i => new SpeedRunDTO(i));
-        //    }
-
-        //    return userSpeedRuns.OrderBy(i => i.PrimaryRunTime);
-        //}
+            return runVMs;
+        }
     }
 }

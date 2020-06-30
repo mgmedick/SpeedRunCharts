@@ -22,6 +22,7 @@ namespace SpeedRunApp.Client
             UserAgent = client.UserAgent;
             MaxCacheElements = client.MaxCacheElements;
             AccessToken = client.AccessToken;
+            Cache = new Dictionary<Uri, dynamic>();
             Client = client;
         }
 
@@ -30,6 +31,7 @@ namespace SpeedRunApp.Client
         public int MaxCacheElements { get; private set; }
         public TimeSpan Timeout { get; private set; }
         public ClientContainer Client { get; private set; }
+        private Dictionary<Uri, dynamic> Cache { get; set; }
 
         public static Uri GetSiteUri(string subUri)
         {
@@ -89,37 +91,111 @@ namespace SpeedRunApp.Client
 
         public dynamic DoRequest(Uri uri)
         {
-            dynamic result = null;
+            lock (this)
+            {
+                dynamic result = null;
 
-            try
-            {
-                result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
-            }
-            catch (WebException ex)
-            {
-                try
+                if (Cache.ContainsKey(uri))
                 {
-                    using (var stream = ex.Response.GetResponseStream())
+                    result = Cache[uri];
+                    Cache.Remove(uri);
+                }
+                else
+                {
+                    try
                     {
-                        var apiException = ParseAPIException(stream);
-                        if (!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
+                        result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
+                    }
+                    catch (WebException ex)
+                    {
+                        try
                         {
-                            throw apiException;
+                            using (var stream = ex.Response.GetResponseStream())
+                            {
+                                var apiException = ParseAPIException(stream);
+                                if (!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
+                                {
+                                    throw apiException;
+                                }
+                            }
+                        }
+                        catch (APIException ex2)
+                        {
+                            throw ex2;
+                        }
+                        catch
+                        {
+                            throw ex;
                         }
                     }
                 }
-                catch (APIException ex2)
-                {
-                    throw ex2;
-                }
-                catch
-                {
-                    throw ex;
-                }
-            }
 
-            return result;
+                Cache.Add(uri, result);
+
+                while (Cache.Count > MaxCacheElements)
+                {
+                    Cache.Remove(Cache.Keys.First());
+                }
+
+                return result;
+            }
         }
+
+//        internal dynamic DoRequest(Uri uri)
+//        {
+//            lock (this)
+//            {
+//                dynamic result = null;
+
+//                if (Cache.ContainsKey(uri))
+//                {
+//#if DEBUG_WITH_API_CALLS
+//                Console.WriteLine("Cached API Call: {0}", uri.AbsoluteUri);
+//#endif
+//                    result = Cache[uri];
+//                    Cache.Remove(uri);
+//                }
+//                else
+//                {
+//#if DEBUG_WITH_API_CALLS
+//                Console.WriteLine("Uncached API Call: {0}", uri.AbsoluteUri);
+//#endif
+//                    try
+//                    {
+//                        result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
+//                    }
+//                    catch (WebException ex)
+//                    {
+//                        try
+//                        {
+//                            using (var stream = ex.Response.GetResponseStream())
+//                            {
+//                                var apiException = ParseAPIException(stream);
+//                                if (!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
+//                                {
+//                                    throw apiException;
+//                                }
+//                            }
+//                        }
+//                        catch (APIException ex2)
+//                        {
+//                            throw ex2;
+//                        }
+//                        catch
+//                        {
+//                            throw ex;
+//                        }
+//                    }
+//                }
+
+//                Cache.Add(uri, result);
+
+//                while (Cache.Count > MaxCacheElements)
+//                    Cache.Remove(Cache.Keys.First());
+
+//                return result;
+//            }
+//        }
 
         public IEnumerable<T> DoRequest<T>(Uri uri, Func<dynamic, T> parser)
         {

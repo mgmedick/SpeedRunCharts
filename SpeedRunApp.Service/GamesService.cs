@@ -5,6 +5,7 @@ using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunCommon;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpeedRunApp.Service
 {
@@ -33,18 +34,25 @@ namespace SpeedRunApp.Service
             }
             else
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, levelId: levelID, categoryId: categoryID, embeds: leaderboardEmbeds);
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
             foreach (var record in leaderboard.Records)
             {
                 var recordVM = new SpeedRunRecordViewModel(record);
-                var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
-                recordVM.ExaminerName = examiner.Name;
+                if (!string.IsNullOrWhiteSpace(record.Status.ExaminerUserID))
+                {
+                    var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
+                    if (examiner != null)
+                    {
+                        recordVM.ExaminerName = examiner.Name;
+                    }
+                }
+
                 recordVMs.Add(recordVM);
             }
 
-            return recordVMs;
+            return recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds);
         }
     }
 }

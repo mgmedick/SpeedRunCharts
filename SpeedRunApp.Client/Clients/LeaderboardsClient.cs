@@ -9,7 +9,6 @@ using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {
-
     public class LeaderboardsClient : BaseClient
     {
         public const string Name = "leaderboards";
@@ -156,6 +155,11 @@ namespace SpeedRunApp.Client
                 var game = Client.Games.Parse(properties["game"].data) as Game;
                 leaderboard.Game = game;
                 leaderboard.GameID = game.ID;
+
+                foreach (var record in leaderboard.Records)
+                {
+                    record.Game = leaderboard.Game;
+                }
             }
 
             if (properties["category"] is string)
@@ -167,9 +171,18 @@ namespace SpeedRunApp.Client
                 var category = Client.Categories.Parse(properties["category"].data) as Category;
                 leaderboard.Category = category;
                 leaderboard.CategoryID = category.ID;
+
+                foreach (var record in leaderboard.Records)
+                {
+                    record.Category = leaderboard.Category;
+                }
             }
 
-            if (properties["level"] is string)
+            if (properties["level"] == null)
+            {
+                leaderboard.LevelID = null;
+            }
+            else if (properties["level"] is string)
             {
                 leaderboard.LevelID = leaderboardElement.level as string;
             }
@@ -180,10 +193,19 @@ namespace SpeedRunApp.Client
                 {
                     leaderboard.Level = level;
                     leaderboard.LevelID = level.ID;
+
+                    foreach (var record in leaderboard.Records)
+                    {
+                        record.Level = leaderboard.Level;
+                    }
                 }
             }
 
-            if (properties["platform"] is string)
+            if (properties["platform"] == null)
+            {
+                leaderboard.PlatformFilterID = null;
+            }
+            else if (properties["platform"] is string)
             {
                 leaderboard.PlatformFilterID = properties["platform"] as string;
             }
@@ -197,7 +219,11 @@ namespace SpeedRunApp.Client
                 }
             }
 
-            if (properties["region"] is string)
+            if (properties["region"] == null)
+            {
+                leaderboard.RegionFilterID = null;
+            }
+            else if (properties["region"] is string)
             {
                 leaderboard.RegionFilterID = properties["region"] as string;
             }
@@ -213,15 +239,26 @@ namespace SpeedRunApp.Client
 
             if (properties.ContainsKey("players"))
             {
-                Func<dynamic, Player> playerParser = x => Client.Common.ParsePlayer(x) as Player;
-                var players = ParseCollection(leaderboardElement.players.data, playerParser) as IEnumerable<Player>;
-
-                foreach (var record in leaderboard.Records)
+                var data = (leaderboardElement.players.data as IEnumerable<dynamic>);
+                if(data !=null && data.Any())
                 {
-                    record.Players = record.Players.Select(x => players.FirstOrDefault(y => x.Equals(y))).ToList();
-                }
+                    Func<dynamic, User> userParser = x => Client.Users.Parse(x) as User;
+                    var userData = data.Where(i => i.Properties["rel"] == "user");
+                    IEnumerable<User> users = ParseCollection(userData, userParser);
 
-                leaderboard.Players = players;
+                    Func<dynamic, Guest> guestParser = x => Client.Guests.Parse(x) as Guest;
+                    var guestData = (leaderboardElement.players.data as IEnumerable<dynamic>).Where(i => i.Properties["rel"] == "guest");
+                    IEnumerable<Guest> guests = ParseCollection(guestData, guestParser);
+
+                    foreach (var record in leaderboard.Records)
+                    {
+                        record.PlayerUsers = users.Where(x => record.Players.Any(i => i.IsUser && i.UserID == x.ID));
+                        record.PlayerGuests = guests.Where(x => record.Players.Any(i => !i.IsUser && i.GuestName == x.Name));
+                    }
+
+                    leaderboard.PlayerUsers = users;
+                    leaderboard.PlayerGuests = guests;
+                }
             }
             else
             {
@@ -283,7 +320,7 @@ namespace SpeedRunApp.Client
             }
             else if (!string.IsNullOrWhiteSpace(leaderboard.LevelID))
             {
-                var variables = leaderboard.Category.Variables.Concat(leaderboard.Level.Variables).ToList().Distinct().ToList();
+                var variables = (leaderboard.Category.Variables ?? new List<Variable>()).Concat(leaderboard.Level.Variables ?? new List<Variable>());
 
                 //patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;

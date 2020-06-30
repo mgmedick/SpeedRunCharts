@@ -31,6 +31,8 @@ namespace SpeedRunApp.Model.Data
         public Level Level { get; set; }
         public Platform PlatformFilter { get; set; }
         public Region RegionFilter { get; set; }
+        public IEnumerable<User> PlayerUsers { get; set; }
+        public IEnumerable<Guest> PlayerGuests { get; set; }
 
         //public string GameID { get; set; }
         //public Lazy<Game> game { get; set; }

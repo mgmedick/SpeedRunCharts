@@ -157,9 +157,20 @@ namespace SpeedRunApp.Client
             }
             else
             {
-                Func<dynamic, User> userParser = x => Client.Users.Parse(x) as User;
-                IEnumerable<User> users = ParseCollection(runElement.players.data, userParser);
-                run.PlayerUsers = users;
+                var data = (runElement.players.data as IEnumerable<dynamic>);
+                if (data != null && data.Any())
+                {
+                    Func<dynamic, User> userParser = x => Client.Users.Parse(x) as User;
+                    var userData = data.Where(i => i.Properties["rel"] == "user");
+                    IEnumerable<User> users = ParseCollection(userData, userParser);
+
+                    Func<dynamic, Guest> guestParser = x => Client.Guests.Parse(x) as Guest;
+                    var guestData = data.Where(i => i.Properties["rel"] == "guest");
+                    IEnumerable<Guest> guests = ParseCollection(guestData, guestParser);
+
+                    run.PlayerUsers = users;
+                    run.PlayerGuests = guests;
+                }
             }
 
             if (properties["game"] is string)
@@ -173,7 +184,11 @@ namespace SpeedRunApp.Client
                 run.GameID = game.ID;
             }
 
-            if (properties["category"] is string)
+            if (properties["category"] == null)
+            {
+                run.CategoryID = null;
+            }
+            else if (properties["category"] is string)
             {
                 run.CategoryID = runElement.category as string;
             }
@@ -184,7 +199,11 @@ namespace SpeedRunApp.Client
                 run.CategoryID = category.ID;
             }
 
-            if (properties["level"] is string)
+            if (properties["level"] == null)
+            {
+                run.LevelID = null;
+            }
+            else if (properties["level"] is string)
             {
                 run.LevelID = runElement.level as string;
             }

@@ -7,7 +7,7 @@ if (!sra['graphObjects'])
 sra.graphObjects['SpeedRunSummaryByMonth'] = {
    templatePath: 'SpeedRunSummaryByMonth.html',
     title: 'Speed Runs Per Month',
-    controller: function (container, dateHelper, gameID, categoryType, categoryID, levelID) {
+    controller: function (container, gameID, categoryType, categoryID, levelID) {
        var chartConfig = {
                selector: 'div#placeholder',
                caption: 'Speed Runs Per Month',

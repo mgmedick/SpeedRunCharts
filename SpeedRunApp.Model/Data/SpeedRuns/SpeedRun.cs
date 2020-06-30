@@ -68,7 +68,9 @@ namespace SpeedRunApp.Model.Data
 
         //embeds
         public IEnumerable<User> PlayerUsers { get; set; }
-        public User PlayerUser { get { return PlayerUsers.FirstOrDefault(); } }
+        public User PlayerUser { get { return PlayerUsers?.FirstOrDefault(); } }
+        public IEnumerable<Guest> PlayerGuests { get; set; }
+        public Guest PlayerGuest { get { return PlayerGuests?.FirstOrDefault(); } }
         public Game Game { get; set; }
         public Category Category { get; set; }
         public Level Level { get; set; }

@@ -1,5 +1,4 @@
 ﻿function initializeClient() {
-    _speedRuns = speedRuns;
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
 
     initializeEvents();
@@ -226,7 +225,7 @@ function initializeCharts(element) {
 
                 _selector.empty();
                 templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, sra.dateHelper, gameID, categoryType, categoryID, levelID);
+                    var controller = _graphObj.controller(_selector, gameID, categoryType, categoryID, levelID);
  
                     _chartLoader.RenderComponent(_selector, html);
  

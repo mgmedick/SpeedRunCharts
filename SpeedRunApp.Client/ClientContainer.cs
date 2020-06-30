@@ -19,7 +19,7 @@ namespace SpeedRunApp.Client
         public CategoriesClient Categories { get; private set; }
         public CommonClient Common { get; private set; }
         public GamesClient Games { get; private set; }
-        //public GuestsClient Guests { get; private set; }
+        public GuestsClient Guests { get; private set; }
         public LeaderboardsClient Leaderboards { get; private set; }
         public LevelsClient Levels { get; private set; }
         //public NotificationsClient Notifications { get; private set; }
@@ -42,7 +42,7 @@ namespace SpeedRunApp.Client
             Categories = new CategoriesClient(this);
             Common = new CommonClient(this);
             Games = new GamesClient(this);
-            //Guests = new GuestsClient(this);
+            Guests = new GuestsClient(this);
             Leaderboards = new LeaderboardsClient(this);
             Levels = new LevelsClient(this);
             //Notifications = new NotificationsClient(this);

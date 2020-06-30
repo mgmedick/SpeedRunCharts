@@ -10,9 +10,7 @@ sra.graphObjects.SpeedRunSummaryByMonthController = (function () {
             gameID: gameID,
             categoryType: categoryType,
             categoryID: categoryID,
-            levelID: levelID//,
-            //startDate: startDate,
-            //endDate: endDate
+            levelID: levelID
        };
    };
 

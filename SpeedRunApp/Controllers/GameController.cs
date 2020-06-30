@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Service;
 using SpeedRunCommon;
 using SpeedRunApp.Interfaces.Services;
@@ -49,6 +49,7 @@ namespace SpeedRunApp.WebUI.Controllers
         public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {
             var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+            recordVMs = recordVMs.Take(topAmount);
 
             return Json(new { Data = recordVMs });
         }

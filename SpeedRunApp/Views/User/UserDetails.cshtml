@@ -55,6 +55,22 @@
             </div>
         </div>
     </div>
+    <div class="container ml-0">
+        <div class="row no-gutters p-0">
+            <div class="left">
+                <label>Category Type</label>
+                @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1))
+            </div>
+            <div class="left">
+                <label>Game</label>
+                @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1))
+            </div>
+            <div class="left">
+                <label>Category</label>
+                @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1))
+            </div>
+        </div>
+    </div>
     <div class="grid-container mx-auto" style="width:50%;">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">

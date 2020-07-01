@@ -94,5 +94,45 @@ namespace SpeedRunApp.Model.ViewModels
                 return levels;
             }
         }
+
+        public List<IDNamePair> SearchCategoryTypes
+        {
+            get
+            {
+                var categoryTypes = CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
+                categoryTypes.Insert(0, new IDNamePair { ID = "-1", Name = "All CateogryTypes" });
+                return categoryTypes;
+            }
+        }
+
+        public List<IDNamePair> SearchGames
+        {
+            get
+            {
+                var games = Games.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
+                games.Insert(0, new IDNamePair { ID = "-1", Name = "All Games" });
+                return games;
+            }
+        }
+
+        public List<IDNamePair> SearchCategories
+        {
+            get
+            {
+                var categories = Categories.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
+                categories.Insert(0, new IDNamePair { ID = "-1", Name = "All Categories" });
+                return categories;
+            }
+        }
+
+        public List<IDNamePair> SearchLevels
+        {
+            get
+            {
+                var levels = Levels.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
+                levels.Insert(0, new IDNamePair { ID = "-1", Name = "All Levels" });
+                return levels;
+            }
+        }
     }
 }

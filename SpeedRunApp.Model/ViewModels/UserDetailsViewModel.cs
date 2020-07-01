@@ -13,7 +13,6 @@ namespace SpeedRunApp.Model.ViewModels
             ID = user.ID;
             Name = user.Name;
             JapaneseName = user.JapaneseName;
-            //ProfileImageUri = user.ProfileImageUri;
             Role = user.Role;
             SignUpDate = user.SignUpDate;
             Location = user.Location.ToString();
@@ -27,7 +26,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string ID { get; set; }
         public string Name { get; set; }
         public string JapaneseName { get; set; }
-        public Uri ProfileImageUri { get; set; }
+        public Uri ProfileImage { get; set; }
         public UserRole Role { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }

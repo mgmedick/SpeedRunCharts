@@ -7,6 +7,9 @@ using System.Linq;
 using System.Net;
 using SpeedRunApp.Model.Data;
 using SpeedRunCommon;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace SpeedRunApp.Client
 {
@@ -24,24 +27,29 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        public static Uri GetUserProfileImageUri(string subUri)
+        public static Uri GetUsersSiteUri(string subUri)
         {
-            var profileImageUri = new UriBuilder(BaseUri);
-            profileImageUri.Path = string.Format("/themes/user/{0}/image.png", subUri);
-            var uri = profileImageUri.Uri;
-
-            try
-            {
-                var request = (HttpWebRequest)WebRequest.Create(uri);
-                request.GetResponse();
-            }
-            catch (Exception ex)
-            {
-                uri = null;
-            }
-
-            return uri;
+            return GetSiteUri(string.Format("{0}{1}", Name, subUri));
         }
+
+        //public static Uri GetUserProfileImageUri(string subUri)
+        //{
+        //    var profileImageUri = new UriBuilder(BaseUri);
+        //    var subUri = string.Format("/themes/user/{0}/image.png", subUri);
+        //    var uri = GetUsersSiteUri(subUri);
+
+        //    try
+        //    {
+        //        var request = (HttpWebRequest)WebRequest.Create(uri);
+        //        request.GetResponse();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        uri = null;
+        //    }
+
+        //    return uri;
+        //}
 
         //public User GetUserFromSiteUri(string siteUri)
         //{
@@ -160,22 +168,10 @@ namespace SpeedRunApp.Client
             return DoRequest(uri, x => Client.Common.ParseRecord(x) as SpeedRunRecord);
         }
 
-        //public Uri GetUserProfileImage(string userName, IEnumerable<Embeds> embeds = null)
-        //{
-        //    var uri = GetUserProfileImageUri(userName);
-
-        //    try
-        //    {
-        //        var request = (HttpWebRequest)WebRequest.Create(uri);
-        //        request.GetResponse();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        uri = null;
-        //    }
-
-        //    return uri;
-        //}
+        public Uri GetUserProfileImageUri(string userName)
+        {
+            return Task.Run(async () => await ParseProfileImageUri(userName)).Result;
+        }
 
         public User Parse(dynamic userElement, IEnumerable<Embeds> embeds = null)
         {
@@ -305,15 +301,23 @@ namespace SpeedRunApp.Client
             return region;
         }
 
-        //private ImageAsset ParseUserImage(dynamic userElement)
-        //{
-        //    var image = new ImageAsset();
+        private async Task<Uri> ParseProfileImageUri(string userName)
+        {
+            var subUri = string.Format("/themes/user/{0}/image.png", userName);
+            var uri = GetSiteUri(subUri);
 
-        //    var webLink = new Uri(userElement.weblink as string);
-        //    var userName = userElement.names.international as string;
-        //    var domain = webLink.GetLeftPart(UriPartial.Authority);
-        //    image.Uri = new UriBuilder(webLink.Scheme, webLink.Host, webLink.Port, "/themes/user/" + userName + "/image.png").Uri;
+            using (HttpClient client = new HttpClient())
+            {
+                using (var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        uri = null;
+                    }
+                }
+            }
 
-        //}
+            return uri;
+        }
     }
 }

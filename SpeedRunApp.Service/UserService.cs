@@ -25,6 +25,7 @@ namespace SpeedRunApp.Service
             ClientContainer clientContainer = new ClientContainer();
             var user = clientContainer.Users.GetUser(userID);
             var userVM = new UserDetailsViewModel(user);
+            userVM.ProfileImage = clientContainer.Users.GetUserProfileImageUri(user.Name);
 
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
             userVM.SpeedRuns = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds).ToList();

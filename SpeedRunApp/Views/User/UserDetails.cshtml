@@ -57,39 +57,40 @@
             </div>
         </div>
     </div>
-    <div class="container ml-0">
-        <div class="row no-gutters p-0">
-            <div class="left">
-                <label>Start Date</label>
-                <span class="date-wrapper"><input id="txtStartDate" type="text" class="date" value="" /></span>
+    <form>
+        <div class="container ml-0 form">
+            <div class="row no-gutters p-0">
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <span class="date-icon-wrapper"><input id="txtStartDate" type="text" class="date" value="" /></span>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <span class="date-icon-wrapper"><input id="txtEndDate" type="text" class="date" value="" /></span>
+                </div>
             </div>
-            <div class="left">
-                <label>End Date</label>
-                <span class="date-wrapper"><input id="txtEndDate" type="text" class="date" value="" /></span>
+            <div class="row no-gutters p-0">
+                <div class="left">
+                    <label>Category Type</label>
+                    @Html.DropDownList("drpCategoryTypes", new SelectList(Model.SearchCategoryTypes, "ID", "Name", -1), new { @class = "chosen" })
+                </div>
+                <div class="left">
+                    <label>Game</label>
+                    @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1), new { @class = "chosen" })
+                </div>
+            </div>
+            <div class="row no-gutters p-0">
+                <div class="left">
+                    <label>Category</label>
+                    @Html.DropDownList("drpCategories", new SelectList(Model.SearchCategories, "ID", "Name", -1), new { @class = "chosen" })
+                </div>
+                <div class="left">
+                    <label>Category</label>
+                    @Html.DropDownList("drpLevels", new SelectList(Model.SearchLevels, "ID", "Name", -1), new { @class = "chosen" })
+                </div>
             </div>
         </div>
-        <div class="row no-gutters p-0">
-            <div class="left">
-                <label>Category Type</label>
-                <i class="fa fa-calendar-times"></i>
-                @Html.DropDownList("drpCategoryTypes", new SelectList(Model.SearchCategoryTypes, "ID", "Name", -1), new { @class = "chosen" })
-            </div>
-            <div class="left">
-                <label>Game</label>
-                @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1), new { @class = "chosen" })
-            </div>
-        </div>
-        <div class="row no-gutters p-0">
-            <div class="left">
-                <label>Category</label>
-                @Html.DropDownList("drpCategories", new SelectList(Model.SearchCategories, "ID", "Name", -1), new { @class = "chosen" })
-            </div>
-            <div class="left">
-                <label>Category</label>
-                @Html.DropDownList("drpLevels", new SelectList(Model.SearchLevels, "ID", "Name", -1), new { @class = "chosen" })
-            </div>
-        </div>
-    </div>
+    </form>
     <div class="grid-container mx-auto" style="width:50%;">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">

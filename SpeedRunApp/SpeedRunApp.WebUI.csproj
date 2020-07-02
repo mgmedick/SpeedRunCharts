@@ -8,13 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\lib\font-awesome\**" />
-    <Content Remove="wwwroot\lib\font-awesome\**" />
-    <EmbeddedResource Remove="wwwroot\lib\font-awesome\**" />
-    <None Remove="wwwroot\lib\font-awesome\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App">
       <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
       <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
@@ -41,6 +34,11 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\speedrun-list.js" />
+    <None Include="wwwroot\lib\font-awesome\js\all.js" />
+    <None Include="wwwroot\lib\font-awesome\js\all.min.js" />
+    <None Include="wwwroot\lib\font-awesome\sprites\brands.svg" />
+    <None Include="wwwroot\lib\font-awesome\sprites\regular.svg" />
+    <None Include="wwwroot\lib\font-awesome\sprites\solid.svg" />
     <None Include="wwwroot\templates\ChartError.html" />
     <None Include="wwwroot\templates\ChartPlaceholder.html" />
   </ItemGroup>

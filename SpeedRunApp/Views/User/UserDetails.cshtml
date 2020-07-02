@@ -61,16 +61,17 @@
         <div class="row no-gutters p-0">
             <div class="left">
                 <label>Start Date</label>
-                <input id="txtStartDate" type="text" class="date" value="" />
+                <span class="date-wrapper"><input id="txtStartDate" type="text" class="date" value="" /></span>
             </div>
             <div class="left">
                 <label>End Date</label>
-                <input id="txtEndDate" type="text" class="date" value="" />
+                <span class="date-wrapper"><input id="txtEndDate" type="text" class="date" value="" /></span>
             </div>
         </div>
         <div class="row no-gutters p-0">
             <div class="left">
                 <label>Category Type</label>
+                <i class="fa fa-calendar-times"></i>
                 @Html.DropDownList("drpCategoryTypes", new SelectList(Model.SearchCategoryTypes, "ID", "Name", -1), new { @class = "chosen" })
             </div>
             <div class="left">

@@ -25,6 +25,21 @@
       ]
     },
     {
+      "library": "font-awesome@5.10.2",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css",
+        "js/all.js",
+        "js/all.min.js",
+        "sprites/brands.svg",
+        "sprites/regular.svg",
+        "sprites/solid.svg",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-regular-400.ttf"
+      ]
+    },
+    {
       "library": "underscore.js@1.9.1",
       "destination": "wwwroot/lib/underscore.js/"
     },
@@ -76,19 +91,6 @@
         "chosen-sprite@2x.png",
         "chosen.css",
         "chosen.min.css"
-      ]
-    },
-    {
-      "library": "font-awesome@5.13.1",
-      "destination": "wwwroot/lib/font-awesome/",
-      "files": [
-        "css/all.min.css",
-        "css/all.css",
-        "js/all.min.js",
-        "js/all.js",
-        "sprites/brands.svg",
-        "sprites/regular.svg",
-        "sprites/solid.svg"
       ]
     }
   ]

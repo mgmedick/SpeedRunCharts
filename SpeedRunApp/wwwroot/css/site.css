@@ -14,7 +14,7 @@ body {
 
 @font-face {
     font-family: 'Font Awesome 5 Free';
-    src: url('font-awesome/fontawesome-webfont.ttf') format('truetype');
+    src: url('../lib/font-awesome/fa-solid-900.ttf') format('truetype');
 }
 
 /* Carousel */
@@ -201,21 +201,55 @@ body {
     width: unset !important;
 }
 
+
+input, textarea, select, option {
+    font-family: "proxima-nova", Arial,Helvetica, sans-serif;
+    border-radius: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    -moz-appearance: none;
+}
+
+/*input:not(.button):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+select:not(.ui-pg-selbox) {
+    display: block;
+    color: #415463;
+    font-size: 16px;
+    box-sizing: border-box;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    border: solid 1px #c0c0c0;
+}*/
+
 input.date {
-    font-size: 16px !important;
-    padding: 2px 10px 0px 40px !important;
+    font-size: 20px !important;
+    padding: 2px 10px 0 40px !important;
+    font-weight: 200;
+    cursor: pointer
+}
+
+/*input.date:focus {
+    background: #fff url(../images/calendar-active.png)10px center no-repeat
+}*/
+
+.date-wrapper {
     position: relative;
+    font-size: 20px;
 }
 
-input.date:after {
-    content: '\f1ec';
+/*input { font-family: 'Font Awesome 5 Free'; }*/
+
+.date-wrapper:before {
+    content: "\f133";
     font-family: 'Font Awesome 5 Free';
-    /*left: -5px;
+    left: 10px;
+    top: 0;
     position: absolute;
-    top: 0;*/
 }
 
-/*input.date:focus { background: #fff url() 10px center no-repeat}*/
+
 
 
 

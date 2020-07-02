@@ -25,6 +25,9 @@ function initializeEvents() {
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
+
+    $('.chosen').chosen();
+    $('.date').datepicker();
 }
 
 function onCategoryTypeTabClick(element) {

@@ -12,6 +12,11 @@ body {
     padding-right: 15px;
 }
 
+@font-face {
+    font-family: 'Font Awesome 5 Free';
+    src: url('font-awesome/fontawesome-webfont.ttf') format('truetype');
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
@@ -86,6 +91,134 @@ body {
     height: 100%;
     object-fit: cover;
 }
+
+/** Chosen */
+.blueForm .chosen-choices {
+    background-color: #def0f3;
+}
+
+.chosen-choices {
+    min-height: 32px;
+}
+
+/**
+
+.chosen-container .chosen-choices {
+
+    border: 1px solid transparent;
+
+}
+
+*/
+
+.chosen-container-multi .chosen-choices li.search-choice {
+    margin: 5px 0 5px 5px;
+    font-size: 16px;
+    color: #405363;
+}
+
+.chosen-container-multi .chosen-choices li.search-field {
+    margin: 5px 0 5px 0px;
+    color: #405363;
+    font-size: 14px
+}
+
+.chosen-container-multi .chosen-choices {
+    background-image: none;
+    border: 1px solid #c0c0c0;
+}
+
+.chosen-container-active .chosen-choices {
+    box-shadow: none;
+    border: 1px solid #037798;
+}
+
+.chosen-container .chosen-drop {
+    border: 1px solid #037798;
+}
+
+.chosen-container-multi .chosen-choices li.search-fieldinput[type="text"] {
+    font-size: 14px;
+    height: 15px;
+    padding: 0;
+    padding-left: 5px;
+}
+
+.chosen-container-multi .chosen-choices li.search-field {
+    width: unset !important;
+}
+
+/**
+.chosen-container-multi .chosen-choices {
+
+    background-image: none;
+
+    border: 1px solid #FFFFFF;
+
+}
+*/
+
+.chosen-container-multi .chosen-choices li.search-choice {
+    font-size: 16px;
+    border-radius: 0px;
+    background-image: unset;
+    background-color: #f4f4f4;
+    box-shadow: unset;
+    color: #405363;
+    /**border: 1px solid #037799;*/
+}
+
+.chosen-container-single .chosen-single {
+    font-size: 16px;
+    border-radius: 0px;
+    height: 32px;
+    color: #405363;
+    line-height: 32px;
+    background-color: #fff !important;
+    background: #def0f3 url(../images/select.png) right center no-repeat;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single {
+    background-color: #fff !important;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single div b, .chosen-container-single .chosen-single div b {
+    display: none;
+}
+
+.chosen-container-single .chosen-single .chosen-choices li.search-choice {
+    margin: 5px 0 5px 5px;
+    font-size: 16px;
+    color: #405363;
+}
+
+.chosen-container-single .chosen-single .chosen-choices {
+    background-image: none;
+    border: 1px solid #FFFFFF;
+}
+
+.chosen-container-single .chosen-single .chosen-choices li.search-field {
+    width: unset !important;
+}
+
+input.date {
+    font-size: 16px !important;
+    padding: 2px 10px 0px 40px !important;
+    position: relative;
+}
+
+input.date:after {
+    content: '\f1ec';
+    font-family: 'Font Awesome 5 Free';
+    /*left: -5px;
+    position: absolute;
+    top: 0;*/
+}
+
+/*input.date:focus { background: #fff url() 10px center no-repeat}*/
+
+
+
 
 
 

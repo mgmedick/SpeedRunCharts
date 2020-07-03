@@ -48,7 +48,7 @@ namespace SpeedRunApp.Model.Data
         public IEnumerable<Level> Levels { get; set; }
         public IEnumerable<Variable> Variables { get; set; }
         public IEnumerable<Category> Categories { get; set; }
-        public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i => i).Distinct(); } }
+        public IEnumerable<CategoryType> CategoryTypes { get { return Categories?.Select(i => i.Type).OrderBy(i => i).Distinct(); } }
 
         //private Lazy<ReadOnlyCollection<Category>> _categories { get; set; }
         //public IEnumerable<CategoryType> CategoryTypes { get { return Categories.Select(i => i.Type).OrderBy(i => i).Distinct(); } }

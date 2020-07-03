@@ -100,7 +100,7 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 var categoryTypes = CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
-                categoryTypes.Insert(0, new IDNamePair { ID = "-1", Name = "All CateogryTypes" });
+                //categoryTypes.Insert(0, new IDNamePair { ID = "-1", Name = "All CateogryTypes" });
                 return categoryTypes;
             }
         }
@@ -110,7 +110,7 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 var games = Games.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
-                games.Insert(0, new IDNamePair { ID = "-1", Name = "All Games" });
+                //games.Insert(0, new IDNamePair { ID = "-1", Name = "All Games" });
                 return games;
             }
         }
@@ -120,7 +120,7 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 var categories = Categories.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
-                categories.Insert(0, new IDNamePair { ID = "-1", Name = "All Categories" });
+                //categories.Insert(0, new IDNamePair { ID = "-1", Name = "All Categories" });
                 return categories;
             }
         }
@@ -130,7 +130,7 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 var levels = Levels.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).ToList();
-                levels.Insert(0, new IDNamePair { ID = "-1", Name = "All Levels" });
+                //levels.Insert(0, new IDNamePair { ID = "-1", Name = "All Levels" });
                 return levels;
             }
         }

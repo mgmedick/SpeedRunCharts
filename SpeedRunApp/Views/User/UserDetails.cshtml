@@ -32,7 +32,10 @@
     <script src="@Url.Content("~/js/user-details.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
 
-    <script>$().ready(initializeClient());</script>
+    <script>$().ready(
+            initializeClient(@Html.Raw(Json.Serialize(Model.CategoryTypes)), @Html.Raw(Json.Serialize(Model.Games)), @Html.Raw(Json.Serialize(Model.Categories)), @Html.Raw(Json.Serialize(Model.Levels)))
+        );
+    </script>
 }
 
 <div class="container-fluid">
@@ -57,41 +60,43 @@
             </div>
         </div>
     </div>
-    <form>
-        <div class="container ml-0 form">
-            <div class="row no-gutters p-0">
-                <div class="form-group">
-                    <label>Start Date</label>
-                    <span class="date-icon-wrapper"><input id="txtStartDate" type="text" class="date" value="" /></span>
+    <div class="container ml-0 pt-4 form">
+        <div id="divSearch">
+            <form>
+                <div class="row no-gutters">
+                    <div class="formgroup">
+                        <label>Start Date</label>
+                        <span class="date-icon-wrapper"><input id="txtStartDate" type="text" class="date" value="" /></span>
+                    </div>
+                    <div class="formgroup">
+                        <label for="txtEndDate">End Date</label>
+                        <span class="date-icon-wrapper"><input id="txtEndDate" type="text" class="date" value="" /></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>End Date</label>
-                    <span class="date-icon-wrapper"><input id="txtEndDate" type="text" class="date" value="" /></span>
+                <div class="row no-gutters">
+                    <div class="formgroup">
+                        <label for="drpCategoryTypes">Category Type</label>
+                        @Html.ListBox("drpCategoryTypes", new SelectList(Model.SearchCategoryTypes, "ID", "Name", -1), new { @style = "width:250px", @class = "chosen" })
+                    </div>
+                    <div class="formgroup">
+                        <label for="drpGames">Game</label>
+                        @Html.ListBox("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1), new { @style = "width:250px", @class = "chosen" })
+                    </div>
                 </div>
-            </div>
-            <div class="row no-gutters p-0">
-                <div class="left">
-                    <label>Category Type</label>
-                    @Html.DropDownList("drpCategoryTypes", new SelectList(Model.SearchCategoryTypes, "ID", "Name", -1), new { @class = "chosen" })
+                <div class="row no-gutters">
+                    <div class="formgroup">
+                        <label for="drpCategories">Category</label>
+                        @Html.ListBox("drpCategories", new SelectList(Model.SearchCategories, "ID", "Name", -1), new { @style = "width:250px", @class = "chosen" })
+                    </div>
+                    <div class="formgroup">
+                        <label for="drpLevels">Level</label>
+                        @Html.ListBox("drpLevels", new SelectList(Model.SearchLevels, "ID", "Name", -1), new { @style = "width:250px", @class = "chosen" })
+                    </div>
                 </div>
-                <div class="left">
-                    <label>Game</label>
-                    @Html.DropDownList("drpGames", new SelectList(Model.SearchGames, "ID", "Name", -1), new { @class = "chosen" })
-                </div>
-            </div>
-            <div class="row no-gutters p-0">
-                <div class="left">
-                    <label>Category</label>
-                    @Html.DropDownList("drpCategories", new SelectList(Model.SearchCategories, "ID", "Name", -1), new { @class = "chosen" })
-                </div>
-                <div class="left">
-                    <label>Category</label>
-                    @Html.DropDownList("drpLevels", new SelectList(Model.SearchLevels, "ID", "Name", -1), new { @class = "chosen" })
-                </div>
-            </div>
+            </form>
         </div>
-    </form>
-    <div class="grid-container mx-auto" style="width:50%;">
+    </div>
+    <div class="grid-container pt-4 pl-3" style="width:50%">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">
                 <label class="font-weight-bold">Category Type:</label>

@@ -2,6 +2,10 @@
 for details on configuring this project to bundle and minify static web assets. */
 body {
     padding-bottom: 20px;
+    font-size: 15px;
+    line-height: 22px;
+    font-weight: 500 !important;
+    /*font-family:"proxima-nova", Arial, Helvetica, sans-serif;*/
 }
 
 /* Wrapping element */
@@ -12,10 +16,11 @@ body {
     padding-right: 15px;
 }
 
-@font-face {
+/*@font-face {
     font-family: 'Font Awesome 5 Free';
-    src: url('../lib/font-awesome/fa-solid-900.ttf') format('truetype');
-}
+    src: url('../lib/font-awesome/webfonts/fa-regular-400.ttf') format('truetype');
+    src: url('../lib/font-awesome/webfonts/fa-solid-900.ttf') format('truetype');
+}*/
 
 /* Carousel */
 .carousel-caption p {
@@ -93,8 +98,9 @@ body {
 }
 
 /** Chosen */
-.blueForm .chosen-choices {
-    background-color: #def0f3;
+
+.chosen-container {
+    display:block;
 }
 
 .chosen-choices {
@@ -150,7 +156,7 @@ body {
     border: 1px solid #037798;
 }
 
-.chosen-container-multi .chosen-choices li.search-fieldinput[type="text"] {
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
     font-size: 14px;
     height: 15px;
     padding: 0;
@@ -215,6 +221,34 @@ select:not(.ui-pg-selbox) {
     border: solid 1px #c0c0c0;
 }
 
+input, textarea, select, option:focus {
+    outline: none;
+}
+
+/*.form label, form label {
+    font-size: 13px;
+    display: block;
+    position: relative;
+    line-height: 14px;
+    padding-bottom: 2px;
+}
+
+.form.row > div {
+    padding-left: 5px;
+    padding-right: 5px;
+}*/
+
+.formgroup {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.formgroup label {
+    font-size: 14px;
+    line-height: 15px;
+    margin-bottom:0px;
+}
+
 input.date {
     font-size: 20px !important;
     padding: 0px 10px 0 40px !important;
@@ -225,7 +259,8 @@ input.date {
 .date-icon-wrapper {
     position: relative;
     font-size: 20px;
-    display:block;
+    display: block;
+    line-height:32px;
 }
 
 .date-icon-wrapper:before {
@@ -239,23 +274,33 @@ input.date {
     width: 170px !important;
 }
 
-input, textarea, select, option:focus {
-    outline: none;
+.form .row {
+    padding-bottom:5px;
 }
 
-.form label, form label {
-    font-size: 13px;
-    display: block;
-    position: relative;
-    line-height: 14px;
-    padding-bottom: 2px;
+a {
+    text-decoration: none;
 }
 
-form label label {
-    display: inline-block;
-    padding-left: 30px;
-    font-size: 11px;
+a:hover {
+    text-decoration: none;
 }
+
+
+a.linkToggle:before {
+    content: "\f054";
+    font-family: 'Font Awesome 5 Free';
+    padding-right: 5px;
+    font-weight: 900;
+}
+
+a.linkToggle.expanded:before {
+    content: "\f078";
+    font-family: 'Font Awesome 5 Free';
+    padding-right: 5px;
+    font-weight: 900;
+}
+
 
 
 

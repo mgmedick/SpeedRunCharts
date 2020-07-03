@@ -165,7 +165,7 @@ function initializeGrid(element) {
     function initializeGridStyles(element) {
         var $grid = $(element);
         var $gridContainer = $grid.closest('.grid-container');
-        $gridContainer.css('width', $gridContainer.find('.ui-jqgrid-view').width());
+        $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
     function setSearchSelect(grid, columnName, searchData) {

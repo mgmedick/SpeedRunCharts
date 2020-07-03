@@ -1,6 +1,14 @@
-﻿var _speedRuns;
-function initializeClient(speedRuns) {
-    _speedRuns = speedRuns;
+﻿var _categoryTypes;
+var _games;
+var _categories;
+var _levels;
+
+function initializeClient(categoryTypes, games, categories, levels) {
+    _categoryTypes = categoryTypes;
+    _games = games;
+    _categories = categories;
+    _levels = levels;
+
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
 
     initializeEvents();
@@ -10,6 +18,10 @@ function initializeClient(speedRuns) {
 }
 
 function initializeEvents() {
+    $('.chosen').chosen();
+    $('.date').datepicker();
+    $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
+
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
@@ -26,8 +38,52 @@ function initializeEvents() {
         onLevelTabClick(this);
     });
 
-    $('.chosen').chosen();
-    $('.date').datepicker();
+    $('#drpCategoryTypes').change(function () {
+        onCategoryTypeChange(this);
+    });
+}
+
+function onCategoryTypeChange(element) {
+    var selectedCategoryTypeID = $(element).val();
+    var $categories = $(_categories).filter(function () {
+        return this.type == selectedCategoryTypeID;
+    });
+    var $games = $(_games).filter(function () {
+        var gameID = this.id;
+        return categories.filter(function () { return this.gameID == gameID; }).length > 0
+    });
+    var $levels = $(_levels).filter(function () {
+        var gameID = this.gameID;
+        return selectedCategoryTypeID == 1 && games.filter(function () { return this.id == gameID; }).length > 0
+    });
+
+    populateDropDown($('#drpCategories'), $categories);
+    populateDropDown($('#drpGames'), $games);
+    populateDropDown($('#drpLevels'), $levels);
+}
+
+function onGameChange(element) {
+    var selectedGameID = $(element).val();
+    var selectedCategoryTypeID = $('#drpCategoryTypes :selected').val();
+
+    var $categories = $(_categories).filter(function () {
+        return this.gameID == selectedGameID && this.type == selectedCategoryTypeID;
+    });
+    var $levels = $(_levels).filter(function () {
+        var gameID = this.gameID;
+        return selectedCategoryTypeID == 1 && games.filter(function () { return this.id == gameID; }).length > 0
+    });
+
+    populateDropDown($('#drpCategories'), $categories);
+    populateDropDown($('#drpGames'), $games);
+    populateDropDown($('#drpLevels'), $levels);
+}
+
+function populateDropDown(element, items) {
+    $(element).empty();
+    $(items).each(function () {
+        $(element).append($('<option>').text(this.name).attr('value', this.id));
+    });
 }
 
 function onCategoryTypeTabClick(element) {
@@ -161,7 +217,7 @@ function initializeGrid(element) {
     function initializeGridStyles(element) {
         var $grid = $(element);
         var $gridContainer = $grid.closest('.grid-container');
-        $gridContainer.css('width', $gridContainer.find('.ui-jqgrid-view').width());
+        $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
     function setSearchSelect(grid, columnName, searchData) {

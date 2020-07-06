@@ -10,6 +10,8 @@ using SpeedRunApp.Model;
 using SpeedRunApp.Service;
 using SpeedRunCommon;
 using SpeedRunApp.Interfaces.Services;
+using SpeedRunApp.Model.ViewModels;
+using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -24,20 +26,55 @@ namespace SpeedRunApp.WebUI.Controllers
             _cache = cache;
         }
 
+        [HttpGet]
         public ViewResult UserDetails(string userID)
         {
-            var userVM = _userService.GetUser(userID, true);
+            var userVM = _userService.GetUser(userID);
 
             return View(userVM);
         }
 
+        //[HttpPost]
+        //public ViewResult UserDetails(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        //{
+        //    var userVM = _userService.GetUser(userID, true);
+        //    userVM.SpeedRuns = userVM.SpeedRuns.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
+        //                                                && (!drpGames.Any() | drpGames.Contains(i.GameID))
+        //                                                && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
+        //                                                && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
+        //                                        .ToList();
+
+        //    return View(userVM);
+        //}
+
+        //[HttpGet]
+        //public PartialViewResult UserDetailsGrid(string userID, IEnumerable<SpeedRun> speedRuns)
+        //{
+        //    var userGridVM = new UserDetailsGridViewModel(userID, speedRuns); //_userService.GetUserGrid(userID);
+        //    return PartialView("_UserDetailsGrid", userGridVM);
+        //}
+
+        [HttpPost]
+        public PartialViewResult UserDetailsGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        {
+            var userGridVM = _userService.GetUserGrid(userID);
+            userGridVM.SpeedRuns = userGridVM.SpeedRuns.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
+                                                        && (!drpGames.Any() | drpGames.Contains(i.GameID))
+                                                        && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
+                                                        && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
+                                                        .ToList();
+
+            return PartialView("_UserDetailsGrid", userGridVM);
+        }
+
         [HttpGet]
-        public JsonResult UserDetails_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public JsonResult UserDetailsGrid_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
             var recordVMs = _userService.GetUserSpeedRuns(userID, gameID, categoryType, categoryID, levelID);
 
             return Json(recordVMs);
         }
+
     }
 }
 

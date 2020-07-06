@@ -209,7 +209,7 @@ input, textarea, select, option {
     -moz-appearance: none;
 }
 
-input:not(.button):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     display:block;
     color: #415463;
@@ -238,6 +238,7 @@ input, textarea, select, option:focus {
     padding-right: 5px;
 }*/
 
+/*
 .formgroup {
     padding-left: 5px;
     padding-right: 5px;
@@ -247,6 +248,20 @@ input, textarea, select, option:focus {
     font-size: 14px;
     line-height: 15px;
     margin-bottom:0px;
+}
+*/
+
+.form-group {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+}
+
+.form-group label {
+    font-size: 14px;
+    line-height: 15px;
+    margin-bottom: 0px;
 }
 
 input.date {

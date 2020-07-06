@@ -1,4 +1,6 @@
-﻿namespace SpeedRunCommon
+﻿using System.Runtime.Serialization;
+
+namespace SpeedRunCommon
 {
     //Base
     public enum ElementType
@@ -30,7 +32,9 @@
 
     public enum CategoryType
     {
+        [EnumMember(Value = "PerGame")]
         PerGame,
+        [EnumMember(Value = "PerLevel")]
         PerLevel
     }
 

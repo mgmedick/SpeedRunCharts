@@ -14,7 +14,6 @@
 }
 
 $.fn.setupCollapsible = function (callerSettings) {
-    //setup defaults
     var settings = $.extend({
         toggleLink: null,
         linkHiddenText: "Show Search",

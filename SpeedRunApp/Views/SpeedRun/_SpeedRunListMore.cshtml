@@ -3,7 +3,7 @@
 @foreach (var run in Model.SpeedRuns)
 {
     <div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
-        @Html.Partial("_SpeedRunSummary", run)
+        @await Html.PartialAsync("_SpeedRunSummary", run)
     </div>
 }
 

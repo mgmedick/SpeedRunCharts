@@ -60,9 +60,7 @@ namespace SpeedRunApp.Model.ViewModels
                                      .Select(i => new
                                      {
                                          ID = ((int)i.First()).ToString(),
-                                         Name = i.First().ToString()//,
-                                         //GameIDs = Categories.Where(g => g.Type == i.First()).Select(i => i.GameID).Distinct(),
-                                         //CategoryIDs = Categories.Where(g => g.Type == i.First()).Select(i => i.ID).Distinct()
+                                         Name = i.First().ToString()
                                      })
                                      .OrderBy(i => (Convert.ToInt32(i.ID)));
 
@@ -80,7 +78,6 @@ namespace SpeedRunApp.Model.ViewModels
                                      {
                                          i.First().ID,
                                          i.First().Name,
-                                         //CategoryIDs = i.First().Categories.Select(i => i.ID).Distinct(),
                                          CategoryTypeIDs = Categories.Where(g => g.GameID == i.First().ID).Select(g => ((int)g.Type).ToString()).Distinct()
                                      })
                                      .OrderBy(i => i.Name);
@@ -119,7 +116,7 @@ namespace SpeedRunApp.Model.ViewModels
                                      {
                                          i.First().ID,
                                          i.First().Name,
-                                         i.First().GameID//Categories.Where(g => g.Type == CategoryType.PerLevel).Select(i => i.GameID).Distinct()
+                                         i.First().GameID
                                      })
                                      .OrderBy(i => i.Name);
 
@@ -127,7 +124,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public UserDetailsGridViewModel UserDetailsGridVM { get { return new UserDetailsGridViewModel(ID, SpeedRuns); } }
+        //public SpeedRunGridViewModel SpeedRunGridVM { get { return new SpeedRunGridViewModel(ID, SpeedRuns); } }
 
         //To be removed:
         //public List<Game> Games

@@ -32,10 +32,10 @@ namespace SpeedRunApp.Service
             return userVM;
         }
 
-        public UserDetailsGridViewModel GetUserGrid(string userID)
+        public SpeedRunGridViewModel GetUserSpeedRunGrid(string userID, string sender)
         {
             var runs = GetUserSpeedRuns(userID);
-            var userGridVM = new UserDetailsGridViewModel(userID, runs);
+            var userGridVM = new SpeedRunGridViewModel(userID, runs, sender);
 
             return userGridVM;
         }

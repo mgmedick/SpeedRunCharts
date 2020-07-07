@@ -1,13 +1,16 @@
 ﻿function initializeClient() {
-    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-
     initializeEvents();
     initializeScroller();
 
-    $activeCategoryTypeTab.trigger('click');
+    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+    onCategoryTypeTabClick($activeCategoryTypeTab);
 }
 
 function initializeEvents() {
+    initializeGridContainerEvents();
+}
+
+function initializeGridContainerEvents() {
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });

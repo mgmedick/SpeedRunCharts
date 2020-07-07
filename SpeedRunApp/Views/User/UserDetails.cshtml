@@ -1,7 +1,9 @@
-﻿@model SpeedRunApp.Model.ViewModels.UserDetailsViewModel
+﻿@using SpeedRunApp.Model.ViewModels;
+@model SpeedRunApp.Model.ViewModels.UserDetailsViewModel
 
 @{
     ViewBag.Title = "UserDetails";
+    var pageName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 @section Styles {
@@ -101,8 +103,8 @@
             </form>
         </div>
     </div>
-    <div id="divUserDetailsGrid" class="pt-4 pl-3">
-        @await Html.PartialAsync("_UserDetailsGrid", Model.UserDetailsGridVM)
+    <div id="divUserSpeedRunGrid" class="pt-4 pl-3">
+        @await Html.PartialAsync("_SpeedRunGrid", new SpeedRunGridViewModel(Model.ID, Model.SpeedRuns, pageName))
     </div>
 </div>
 <div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

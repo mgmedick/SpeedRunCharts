@@ -1,0 +1,139 @@
+﻿@model SpeedRunApp.Model.ViewModels.SpeedRunGridViewModel
+
+<div>
+    <div class="mx-auto" style="width:1520px; @(Model.Sender == "User" ? "display:none;" : "")">
+        @for (int a = 0; a < Model.CategoryTypes.Count; a++)
+        {
+            var categories = Model.Categories?.Where(x => (int)x.Type == a).ToList();
+            <div id="divCategoryType-@(a)-charts" class="categoryType-tab-pane-charts p-0 @(a == 0 ? "show" : string.Empty)">
+                @for (int b = 0; b < categories.Count; b++)
+                {
+                    <div id="divCategoryType-@(a.ToString() + "-category-" + b.ToString())-charts" class="category-tab-pane-charts @((b == 0) ? "show" : string.Empty)">
+                        <div id="divCategoryType-@(a.ToString() + "-category-" + b.ToString() + "-level-NA")-charts" class="row charts-container category-results-charts" data-gameid="@Model.Games.First().ID" data-categorytype="@(((int)categories[b].Type))" data-categoryid="@categories[b].ID">
+                            <div class="chart-container" data-index="0"></div>
+                            <div class="chart-container pl-2" data-index="1"></div>
+                            <div class="chart-container pl-2" data-index="2"></div>
+                        </div>
+                        <div class="level-results-charts">
+                            @for (int c = 0; c < Model.Levels.Count; c++)
+                            {
+                                <div id="divCategoryType-@(a.ToString() + "-category-" + b.ToString() + "-level-" + c.ToString())-charts" class="row charts-container level-tab-pane-charts" data-gameid="@Model.Games.First().ID" data-categorytype="@(((int)categories[b].Type))" data-categoryid="@categories[b].ID" data-levelid="@Model.Levels[c].ID">
+                                    <div class="chart-container" data-index="0"></div>
+                                    <div class="chart-container pl-2" data-index="1"></div>
+                                    <div class="chart-container pl-2" data-index="2"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="grid-container">
+        <div class="row no-gutters p-1">
+            <div class="col-auto align-self-end ">
+                <label class="font-weight-bold">Category Type:</label>
+            </div>
+            <div class="col pl-2">
+                <ul class="nav nav-pills">
+                    @for (int a = 0; a < Model.CategoryTypes.Count; a++)
+                    {
+                        <li class="nav-item categoryType">
+                            <a id="ankCategoryType-@(a)-tab" class="nav-link @(a == 0 ? "active" : string.Empty)" href="#divCategoryType-@(a)" data-toggle="pill">@Model.CategoryTypes[a].ToString()</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        @for (int b = 0; b < Model.CategoryTypes.Count; b++)
+        {
+            var games = Model.Games?.Where(i => Model.Sender == "Game" || Model.SpeedRuns.Any(x => ((int)x.Category.Type).ToString() == ((int)Model.CategoryTypes[b]).ToString() && x.GameID == i.ID)).ToList();
+            <div id="divCategoryType-@(b)" class="categoryType-tab-pane p-0 @(b == 0 ? "show" : string.Empty)">
+                <div class="game-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper" style="@(Model.Sender == "Game" ? "display:none;" : "")">
+                    <div class="col align-self-end"><label class="font-weight-bold">Game:</label></div>
+                    <div class="col-11 pl-2">
+                        <div class="row no-gutters">
+                            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                            <div class="col scroller-tab-list-container">
+                                <ul class="nav nav-tabs scroller-tab-list">
+                                    @for (int c = 0; c < games.Count; c++)
+                                    {
+                                        <li class="nav-item game">
+                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + c.ToString())-tab" class="nav-link @((c == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + c.ToString())" data-toggle="tab">@games[c].Name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                @for (int d = 0; d < games.Count; d++)
+                {
+                    var categories = Model.Categories.Where(i => Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == ((int)Model.CategoryTypes[b]).ToString() && x.CategoryID == i.ID)).ToList();
+                    <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString())" class="game-tab-pane @((d == 0) ? "show" : string.Empty)">
+                        <div class="category-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
+                            <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
+                            <div class="col-11 pl-2">
+                                <div class="row no-gutters">
+                                    <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                                    <div class="col scroller-tab-list-container">
+                                        <ul class="nav nav-tabs scroller-tab-list">
+                                            @for (int e = 0; e < categories.Count; e++)
+                                            {
+                                                <li class="nav-item category">
+                                                    <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + e.ToString())-tab" class="nav-link @((e == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + e.ToString())" data-toggle="tab" data-categorytype="@(((int)categories[e].Type))">@categories[e].Name</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        @for (int g = 0; g < categories.Count; g++)
+                        {
+                            var levels = Model.Levels.Where(i => Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == ((int)Model.CategoryTypes[b]).ToString() && x.CategoryID == categories[g].ID && x.LevelID == i.ID)).ToList();
+                            <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString())" class="category-tab-pane @((g == 0) ? "show" : string.Empty)">
+                                <div class="level-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
+                                    <div class="col align-self-end"><label class="font-weight-bold">Level:</label></div>
+                                    <div class="col-11 pl-2">
+                                        <div class="row no-gutters">
+                                            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                                            <div class="col scroller-tab-list-container">
+                                                <ul class="nav nav-tabs scroller-tab-list">
+                                                    @for (int h = 0; h < levels.Count; h++)
+                                                    {
+                                                        <li class="nav-item level">
+                                                            <a id="ankCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())-tab" class="nav-link @((h == 0) ? "active" : string.Empty)" href="#divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + h.ToString())" data-toggle="tab">@levels[h].Name</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="category-results" data-userid="@Model.UserID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID">
+                                    <table class="grid"></table>
+                                    <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="pager"></div>
+                                </div>
+                                <div class="level-results">
+                                    @for (int i = 0; i < levels.Count; i++)
+                                    {
+                                        <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="level-tab-pane" data-userid="@Model.UserID" data-gameid="@games[d].ID" data-categorytype="@(((int)categories[g].Type))" data-categoryid="@categories[g].ID" data-levelid="@levels[i].ID">
+                                            <table class="grid"></table>
+                                            <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="pager"></div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+

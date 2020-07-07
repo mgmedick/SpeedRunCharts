@@ -3,18 +3,18 @@ var _games;
 var _categories;
 var _levels;
 
+/**Initialize Functions**/
 function initializeClient(categoryTypes, games, categories, levels) {
     _categoryTypes = categoryTypes;
     _games = games;
     _categories = categories;
     _levels = levels;
 
-    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-
     initializeEvents();
     initializeScroller();
 
-    $activeCategoryTypeTab.trigger('click');
+    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+    onCategoryTypeTabClick($activeCategoryTypeTab);
 }
 
 function initializeEvents() {
@@ -22,6 +22,10 @@ function initializeEvents() {
     $('.date').datepicker();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
 
+    initializeGridContainerEvents();
+}
+
+function initializeGridContainerEvents() {
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
@@ -47,181 +51,8 @@ function initializeEvents() {
     });
 }
 
-function runSearch() {
-    var formData = new FormData($('#frmSearch')[0]);
-
-    $.ajax({
-        url: 'UserDetailsGrid',
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if (data != null) {
-               $('#divUserDetailsGrid').html(data);
-            }
-        }
-    });
-}
-
-function onCategoryTypeChange(element) {
-    var selectedCategoryTypeIDs = $(element).val();
-    //var selectedGameIDs = $('#drpGames').val();
-
-    var $games = $(_games).filter(function () {
-        return (selectedCategoryTypeIDs.length == 0 || $(selectedCategoryTypeIDs).filter(this.categoryTypeIDs).length > 0);
-    });
-
-    var $categories = $(_categories).filter(function () {
-        return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
-    });
-
-    //var $games = $(_games).filter(function () {
-    //    var gameID = this.id;
-    //    return $categories.filter(function () { return this.gameID == gameID; }).length > 0
-    //});
-
-    //var $categoryTypes = $(_categoryTypes).filter(function () {
-    //    var categoryTypeID = this.id;
-    //    return $categories.filter(function () { return this.type == categoryTypeID; }).length > 0
-    //});
-
-
-    populateDropDown($('#drpGames'), $games);
-    populateDropDown($('#drpCategories'), $categories);
-
-    //if (selectedCategoryTypeIDs.length == 0) {
-    //    populateDropDown($('#drpCategoryTypes'), $categoryTypes);
-    //}
-
-    if (selectedCategoryTypeIDs.indexOf("1") > -1) {
-        $('#divLevels').show();
-    } else {
-        $('#divLevels').hide();
-        $('#drpLevels').val([]);
-    }
-}
-
-function onGameChange(element) {
-    var selectedGameIDs = $(element).val();
-    var selectedCategoryTypeIDs = $('#drpCategoryTypes').val();
-
-    var $categories = $(_categories).filter(function () {
-        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
-    });
-
-    var $levels = $(_levels).filter(function () {
-        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1);
-    });
-
-    //var $categories = $(_categories).filter(function () {
-    //    return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type.toString()) > -1);
-    //});
-
-    //var $categoryTypes = $(_categoryTypes).filter(function () {
-    //    var categoryTypeID = this.id;
-    //    return $categories.filter(function () { return this.type == categoryTypeID; }).length > 0
-    //});
-
-    //var $games = $(_games).filter(function () {
-    //    var gameID = this.id;
-    //    return $categories.filter(function () { return this.gameID == gameID; }).length > 0
-    //});
-
-    //var $levels = $(_levels).filter(function () {
-    //    var gameID = this.id;
-    //    return $games.filter(function () { return this.gameID == gameID; }).length > 0
-    //});
-
-    populateDropDown($('#drpCategories'), $categories);
-    populateDropDown($('#drpLevels'), $levels);
-
-    //if (selectedGameIDs.length == 0) {
-    //    populateDropDown($('#drpGames'), $games);
-    //}
-}
-
-/*
-function onCategoryChange(element) {
-    var selectedCategoryIDs = $(element).val();
-    var selectedGameIDs = $('#drpGames').val();
-    var selectedCategoryTypeIDs = $('#drpCategoryTypes').val();
-
-    var $selectedCategories = $(_categories).filter(function () {
-        return (selectedCategoryIDs.length == 0 || selectedCategoryIDs.indexOf(this.id) > -1);
-    });
-
-    var $categories = $(_categories).filter(function () {
-        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type.toString()) > -1);
-    });
-
-    var $categoryTypes = $(_categoryTypes).filter(function () {
-        var categoryTypeID = this.id;
-        return $selectedCategories.filter(function () { return this.type == categoryTypeID; }).length > 0
-    });
-
-    var $games = $(_games).filter(function () {
-        var gameID = this.id;
-        return $selectedCategories.filter(function () { return this.gameID == gameID; }).length > 0
-    });
-
-    populateDropDown($('#drpCategoryTypes'), $categoryTypes);
-    populateDropDown($('#drpGames'), $games);
-
-    if (selectedCategoryIDs.length == 0) {
-        populateDropDown($('#drpCategories'), $categories);
-    }
-}
-*/
-
-/*
-function onSearchListChange() {
-    var selectedCategoryIDs = $('#drpCategories').val();
-    var selectedCategoryTypeIDs = $('#drpCategoryTypes').val();
-    var selectedGameIDs = $('#drpGames').val();
-
-    var $categories = $(_categories).filter(function () {
-        return (selectedCategoryIDs.length == 0 || selectedCategoryIDs.indexOf(this.id) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type.toString()) > -1) && (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1);
-    });
-
-    var $categoryTypes = $(_categoryTypes).filter(function () {
-        var categoryTypeID = this.id;
-        return $categories.filter(function () { return this.type == categoryTypeID }).length > 0
-    });
-
-    var $games = $(_games).filter(function () {
-        var gameID = this.id;
-        return $categories.filter(function () { return this.gameID == gameID }).length > 0
-    });
-
-    //var $levels = $(_levels).filter(function () {
-    //    var gameID = this.gameID;
-    //    return selectedCategoryTypeID == 1 && $games.filter(function () { return this.id == gameID; }).length > 0
-    //});
-
-    populateDropDown($('#drpCategories'), $categories);
-    populateDropDown($('#drpCategoryTypes'), $categoryTypes);
-    populateDropDown($('#drpGames'), $games);
-}
-*/
-
-function populateDropDown(element, items) {
-    var selectedItems = $(element).val();
-
-    $(element).empty();
-    $(items).each(function () {
-        if (selectedItems.length > 0 && selectedItems.indexOf(this.id.toString()) > -1) {
-            $(element).append($('<option>').text(this.name).attr('value', this.id).attr('selected', 'selected'));
-        } else {
-            $(element).append($('<option>').text(this.name).attr('value', this.id));
-        }
-    });
-
-    if ($(element).hasClass('chosen')) {
-        $(element).trigger('chosen:updated');
-    }
-}
-
+/*Event Handlers*/
+//Grid Container Handlers
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
     var $container = $(categoryTypeContainerID);
@@ -282,6 +113,46 @@ function onLevelTabClick(element) {
     $container.fadeIn();
 }
 
+//Search Handlers
+function onCategoryTypeChange(element) {
+    var selectedCategoryTypeIDs = $(element).val();
+
+    var $games = $(_games).filter(function () {
+        return (selectedCategoryTypeIDs.length == 0 || $(selectedCategoryTypeIDs).filter(this.categoryTypeIDs).length > 0);
+    });
+
+    var $categories = $(_categories).filter(function () {
+        return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
+    });
+
+    repopulateDropDown($('#drpGames'), $games);
+    repopulateDropDown($('#drpCategories'), $categories);
+
+    if (selectedCategoryTypeIDs.indexOf("1") > -1) {
+        $('#divLevels').show();
+    } else {
+        $('#divLevels').hide();
+        $('#drpLevels').val([]);
+    }
+}
+
+function onGameChange(element) {
+    var selectedGameIDs = $(element).val();
+    var selectedCategoryTypeIDs = $('#drpCategoryTypes').val();
+
+    var $categories = $(_categories).filter(function () {
+        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
+    });
+
+    var $levels = $(_levels).filter(function () {
+        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1);
+    });
+
+    repopulateDropDown($('#drpCategories'), $categories);
+    repopulateDropDown($('#drpLevels'), $levels);
+}
+
+/**Grid functions**/
 function initializeGrid(element) {
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
@@ -292,7 +163,7 @@ function initializeGrid(element) {
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
 
     grid.jqGrid({
-        url: 'UserDetailsGrid_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
+        url: 'UserSpeedRunGrid_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -303,11 +174,11 @@ function initializeGrid(element) {
         colNames: ["", "Level", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "levelName", width: 125, hidden: categoryType != 1},
+            { name: "levelName", width: 125, hidden: categoryType != 1 },
             { name: "playerName", width: 160 },
             { name: "platformName", width: 160 },
-            { name: "primaryRunTimeString", width: 160 , search: false },
-            { name: "examinerName", width: 160  },
+            { name: "primaryRunTimeString", width: 160, search: false },
+            { name: "examinerName", width: 160 },
             { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
@@ -323,7 +194,6 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
-        //initializeScroller();
     }
 
     function initializeGridEvents() {
@@ -385,6 +255,28 @@ function initializeGrid(element) {
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
+}
+
+/**Search functions **/
+function runSearch() {
+    var formData = new FormData($('#frmSearch')[0]);
+
+    $.ajax({
+        url: 'SearchUserSpeedRunGrid',
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if (data != null) {
+                $('#divUserSpeedRunGrid').html(data);
+                initializeGridContainerEvents();
+
+                var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+                onCategoryTypeTabClick($activeCategoryTypeTab);
+            }
+        }
+    });
 }
 
 /*

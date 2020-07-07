@@ -11,6 +11,6 @@ namespace SpeedRunApp.Interfaces.Services
         UserDetailsViewModel GetUser(string userID);
         IEnumerable<SpeedRun> GetUserSpeedRuns(string userID);
         IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID);
-        UserDetailsGridViewModel GetUserGrid(string userID);
+        SpeedRunGridViewModel GetUserSpeedRunGrid(string userID, string sender);
     }
 }

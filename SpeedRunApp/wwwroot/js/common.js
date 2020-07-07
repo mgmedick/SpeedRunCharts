@@ -86,6 +86,25 @@ $.fn.setupCollapsible = function (callerSettings) {
     return this;
 };
 
+function repopulateDropDown(element, items) {
+    var selectedItems = $(element).val();
+
+    $(element).empty();
+    $(items).each(function () {
+        if (selectedItems.length > 0 && selectedItems.indexOf(this.id.toString()) > -1) {
+            $(element).append($('<option>').text(this.name).attr('value', this.id).attr('selected', 'selected'));
+        } else {
+            $(element).append($('<option>').text(this.name).attr('value', this.id));
+        }
+    });
+
+    if ($(element).hasClass('chosen')) {
+        $(element).trigger('chosen:updated');
+    }
+}
+
+
+
 
 
 

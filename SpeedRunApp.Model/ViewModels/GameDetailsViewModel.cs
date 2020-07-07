@@ -15,9 +15,10 @@ namespace SpeedRunApp.Model.ViewModels
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
-            Categories = game.Categories.ToList();
-            Levels = game.Levels.ToList();
-            CategoryTypes = game.CategoryTypes.ToList();
+            Game = game;
+            //Categories = game.Categories.ToList();
+            //Levels = game.Levels.ToList();
+            //CategoryTypes = game.CategoryTypes.ToList();
         }
 
         public string ID { get; set; }
@@ -25,8 +26,9 @@ namespace SpeedRunApp.Model.ViewModels
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        public List<Category> Categories { get; set; }
-        public List<Level> Levels { get; set; }
-        public List<CategoryType> CategoryTypes { get; set; }
+        public Game Game { get; set; }
+        //public List<Category> Categories { get; set; }
+        //public List<Level> Levels { get; set; }
+        //public List<CategoryType> CategoryTypes { get; set; }
     }
 }

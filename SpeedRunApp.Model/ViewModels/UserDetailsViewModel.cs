@@ -38,26 +38,13 @@ namespace SpeedRunApp.Model.ViewModels
 
         public IEnumerable<SpeedRun> SpeedRuns { get; set; }
 
-        private IEnumerable<Category> Categories
-        {
-            get
-            {
-                var categories = SpeedRuns.Select(i => i.Category)
-                                     .GroupBy(g => new { g.ID })
-                                     .Select(i => i.First())
-                                     .OrderBy(i => i.Name);
-
-                return categories;
-            }
-        }
-
-        public IEnumerable<dynamic> SearchCategoryTypes
+        public IEnumerable<IDNamePair> SearchCategoryTypes
         {
             get
             {
                 var categoryTypes = SpeedRuns.Select(i => i.Category.Type)
                                      .GroupBy(g => new { g })
-                                     .Select(i => new
+                                     .Select(i => new IDNamePair
                                      {
                                          ID = ((int)i.First()).ToString(),
                                          Name = i.First().ToString()
@@ -68,36 +55,18 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public IEnumerable<dynamic> SearchGames
-        {
-            get
-            {
-                var games = SpeedRuns.Select(i => i.Game)
-                                     .GroupBy(g => new { g.ID })
-                                     .Select(i => new
-                                     {
-                                         i.First().ID,
-                                         i.First().Name,
-                                         CategoryTypeIDs = Categories.Where(g => g.GameID == i.First().ID).Select(g => ((int)g.Type).ToString()).Distinct()
-                                     })
-                                     .OrderBy(i => i.Name);
-
-                return games;
-            }
-        }
-
-        public IEnumerable<dynamic> SearchCategories
+        public IEnumerable<CategoryDisplay> SearchCategories
         {
             get
             {
                 var categories = SpeedRuns.Select(i => i.Category)
                                      .GroupBy(g => new { g.ID })
-                                     .Select(i => new
+                                     .Select(i => new CategoryDisplay
                                      {
-                                         i.First().ID,
-                                         i.First().Name,
-                                         i.First().GameID,
-                                         Type = ((int)i.First().Type).ToString()
+                                         ID = i.First().ID,
+                                         Name = i.First().Name,
+                                         GameID = i.First().GameID,
+                                         CategoryTypeID = ((int)i.First().Type).ToString()
                                      })
                                      .OrderBy(i => i.Name);
 
@@ -105,84 +74,42 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public IEnumerable<dynamic> SearchLevels
+        public IEnumerable<GameDisplay> SearchGames
+        {
+            get
+            {
+                var games = SpeedRuns.Select(i => i.Game)
+                                     .GroupBy(g => new { g.ID })
+                                     .Select(i => new GameDisplay
+                                     {
+                                         ID = i.First().ID,
+                                         Name = i.First().Name,
+                                         CategoryTypeIDs = SearchCategories.Where(g => g.GameID == i.First().ID).Select(g => g.CategoryTypeID).Distinct()
+                                     })
+                                     .OrderBy(i => i.Name);
+
+                return games;
+            }
+        }
+
+        public IEnumerable<LevelDisplay> SearchLevels
         {
             get
             {
                 var levels = SpeedRuns.Where(i => i.Level != null)
                                      .Select(i => i.Level)
                                      .GroupBy(g => new { g.ID })
-                                     .Select(i => new
+                                     .Select(i => new LevelDisplay
                                      {
-                                         i.First().ID,
-                                         i.First().Name,
-                                         i.First().GameID
+                                         ID = i.First().ID,
+                                         Name = i.First().Name,
+                                         GameID = i.First().GameID
                                      })
                                      .OrderBy(i => i.Name);
 
                 return levels;
             }
         }
-
-        //public SpeedRunGridViewModel SpeedRunGridVM { get { return new SpeedRunGridViewModel(ID, SpeedRuns); } }
-
-        //To be removed:
-        //public List<Game> Games
-        //{
-        //    get
-        //    {
-        //        var games = SpeedRuns.Select(i => i.Game)
-        //                             .GroupBy(g => new { g.ID })
-        //                             .Select(i => i.First())
-        //                             .OrderBy(i => i.Name)
-        //                             .ToList();
-
-        //        return games;
-        //    }
-        //}
-
-        //public List<IDNamePair> CategoryTypes
-        //{
-        //    get
-        //    {
-        //        var categoryTypes = SpeedRuns.Select(i => i.Category.Type)
-        //                             .GroupBy(g => new { g })
-        //                             .Select(i => new IDNamePair { ID = ((int)i.First()).ToString(), Name = i.First().ToString() })
-        //                             .OrderBy(i => (Convert.ToInt32(i.ID)))
-        //                             .ToList();
-
-        //        return categoryTypes;
-        //    }
-        //}
-
-        //public List<Category> Categories
-        //{
-        //    get
-        //    {
-        //        var categories = SpeedRuns.Select(i => i.Category)
-        //                             .GroupBy(g => new { g.ID })
-        //                             .Select(i => i.First())
-        //                             .OrderBy(i => i.Name)
-        //                             .ToList();
-
-        //        return categories;
-        //    }
-        //}
-
-        //public List<Level> Levels
-        //{
-        //    get
-        //    {
-        //        var levels = SpeedRuns.Where(i => i.Level != null)
-        //                             .Select(i => i.Level)
-        //                             .GroupBy(g => new { g.ID })
-        //                             .Select(i => i.First())
-        //                             .OrderBy(i => i.Name)
-        //                             .ToList();
-
-        //        return levels;
-        //    }
-        //}
     }
 }
 

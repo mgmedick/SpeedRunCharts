@@ -122,7 +122,7 @@ function onCategoryTypeChange(element) {
     });
 
     var $categories = $(_categories).filter(function () {
-        return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
+        return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.categoryTypeID) > -1);
     });
 
     repopulateDropDown($('#drpGames'), $games);
@@ -141,7 +141,7 @@ function onGameChange(element) {
     var selectedCategoryTypeIDs = $('#drpCategoryTypes').val();
 
     var $categories = $(_categories).filter(function () {
-        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.type) > -1);
+        return (selectedGameIDs.length == 0 || selectedGameIDs.indexOf(this.gameID) > -1) && (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.categoryTypeID) > -1);
     });
 
     var $levels = $(_levels).filter(function () {

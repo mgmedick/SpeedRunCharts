@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "GameDetails";
-    var pageName = ViewContext.RouteData.Values["controller"].ToString();
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
 }
 
 @section Styles {
@@ -62,7 +62,7 @@
         </div>
     </div>
     <div id="divGameSpeedRunGrid" class="pt-4 pl-3">
-        @await Html.PartialAsync("_SpeedRunGrid", new SpeedRunGridViewModel(Model.Game, pageName))
+        @await Html.PartialAsync("_SpeedRunGrid", new SpeedRunGridViewModel(Model.Game, controllerName))
     </div>
 </div>
 <div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

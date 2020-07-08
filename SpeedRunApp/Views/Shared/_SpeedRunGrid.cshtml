@@ -50,9 +50,9 @@
             var games = Model.Games.Where(i => (i.CategoryTypeIDs.Contains(Model.CategoryTypes[b].ID) && (Model.Sender == "Game" || Model.SpeedRuns.Any(x => ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.GameID == i.ID)))).ToList();
             //var games = Model.Games.Where(i => (Model.Sender == "Game" || Model.SpeedRuns.Any(x => ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.GameID == i.ID))).ToList();
             <div id="divCategoryType-@(b)" class="categoryType-tab-pane p-0 @(b == 0 ? "show" : string.Empty)">
-                <div class="game-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper" style="@(Model.Sender == "Game" ? "display:none;" : "")">
+                <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="@(Model.Sender == "Game" ? "display:none;" : "")">
                     <div class="col align-self-end"><label class="font-weight-bold">Game:</label></div>
-                    <div class="col-11 pl-2">
+                    <div class="col-11 pl-2 scroller-tab-wrapper">
                         <div class="row no-gutters">
                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                             <div class="col scroller-tab-list-container">
@@ -74,9 +74,9 @@
                     var categories = Model.Categories.Where(i => i.GameID == games[d].ID && i.CategoryTypeID == Model.CategoryTypes[b].ID && (Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.CategoryID == i.ID))).ToList();
                     //var categories = Model.Categories.Where(i => (Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.CategoryID == i.ID))).ToList();
                     <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString())" class="game-tab-pane @((d == 0) ? "show" : string.Empty)">
-                        <div class="category-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
+                        <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
                             <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
-                            <div class="col-11 pl-2">
+                            <div class="col-11 pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
                                     <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                     <div class="col scroller-tab-list-container">
@@ -98,9 +98,9 @@
                             var levels = Model.Levels.Where(i => i.GameID == games[d].ID && (Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.CategoryID == categories[g].ID && x.LevelID == i.ID))).ToList();
                             //var levels = Model.Levels.Where(i => (Model.Sender == "Game" || Model.SpeedRuns.Any(x => x.GameID == games[d].ID && ((int)x.Category.Type).ToString() == Model.CategoryTypes[b].ID && x.CategoryID == categories[g].ID && x.LevelID == i.ID))).ToList();
                             <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString())" class="category-tab-pane @((g == 0) ? "show" : string.Empty)">
-                                <div class="level-tabs row no-gutters px-1 pt-1 pb-0 scroller-tab-wrapper">
+                                <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
                                     <div class="col align-self-end"><label class="font-weight-bold">Level:</label></div>
-                                    <div class="col-11 pl-2">
+                                    <div class="col-11 pl-2 scroller-tab-wrapper">
                                         <div class="row no-gutters">
                                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                             <div class="col scroller-tab-list-container">

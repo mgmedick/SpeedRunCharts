@@ -32,9 +32,16 @@ namespace SpeedRunApp.Service
             return userVM;
         }
 
-        public SpeedRunGridViewModel GetUserSpeedRunGrid(string userID, string sender)
+        public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels, string sender)
         {
             var runs = GetUserSpeedRuns(userID);
+            runs = runs.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
+                                                        && (!drpGames.Any() || drpGames.Contains(i.GameID))
+                                                        && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
+                                                        && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
+                                                        .ToList();
+
+
             var userGridVM = new SpeedRunGridViewModel(userID, runs, sender);
 
             return userGridVM;

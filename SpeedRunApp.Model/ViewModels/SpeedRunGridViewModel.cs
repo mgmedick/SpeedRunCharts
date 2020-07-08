@@ -10,8 +10,8 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunGridViewModel(Game game, string sender)
         {
             Sender = sender;
-            UserID = string.Empty;
-            SpeedRuns = new List<SpeedRun>();
+            //UserID = string.Empty;
+            //SpeedRuns = new List<SpeedRun>();
 
             CategoryTypes = game.CategoryTypes
                                 .Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() })
@@ -78,7 +78,6 @@ namespace SpeedRunApp.Model.ViewModels
                             })
                             .OrderBy(i => i.Name)
                             .ToList();
-
         }
 
         public string UserID { get; set; }

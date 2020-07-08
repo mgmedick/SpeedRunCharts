@@ -57,12 +57,8 @@ namespace SpeedRunApp.WebUI.Controllers
         [HttpPost]
         public PartialViewResult SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
         {
-            var userGridVM = _userService.GetUserSpeedRunGrid(userID, "User");
-            userGridVM.SpeedRuns = userGridVM.SpeedRuns.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
-                                                        && (!drpGames.Any() | drpGames.Contains(i.GameID))
-                                                        && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
-                                                        && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
-                                                        .ToList();
+            var controllerName = this.ControllerContext.RouteData.Values["controller"].ToString();
+            var userGridVM = _userService.SearchUserSpeedRunGrid(userID, drpCategoryTypes, drpGames, drpCategories, drpLevels, controllerName);
 
             return PartialView("_SpeedRunGrid", userGridVM);
         }

@@ -11,7 +11,6 @@ function initializeClient(categoryTypes, games, categories, levels) {
     _levels = levels;
 
     initializeEvents();
-    initializeScroller();
 
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
     onCategoryTypeTabClick($activeCategoryTypeTab);
@@ -194,6 +193,7 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
+        initializeScroller();
     }
 
     function initializeGridEvents() {

@@ -21,6 +21,16 @@ function initializeEvents() {
     $('.date').datepicker();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
 
+    $('#btnSearch').click(runSearch);
+
+    $('#drpCategoryTypes').change(function () {
+        onCategoryTypeChange(this);
+    });
+
+    $('#drpGames').change(function () {
+        onGameChange(this);
+    });
+
     initializeGridContainerEvents();
 }
 
@@ -39,14 +49,6 @@ function initializeGridContainerEvents() {
 
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
-    });
-
-    $('#drpCategoryTypes').change(function () {
-        onCategoryTypeChange(this);
-    });
-
-    $('#drpGames').change(function () {
-        onGameChange(this);
     });
 }
 
@@ -151,18 +153,21 @@ function onGameChange(element) {
     repopulateDropDown($('#drpLevels'), $levels);
 }
 
-/**Grid functions**/
+/**Initialize Component functions**/
+//Initialize Grids
 function initializeGrid(element) {
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
-    var userID = $(element).data('userid');
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
+    var userID = $('#hdnUserID').val();
+    var startDate = $('#txtStartDate').val();
+    var endDate = $('#txtEndDate').val();
 
     grid.jqGrid({
-        url: 'UserSpeedRunGrid_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
+        url: 'UserSpeedRunGrid_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID + '&startDate=' + startDate + '&endDate=' + endDate,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -222,7 +227,7 @@ function initializeGrid(element) {
 
     function initializeGridStyles(element) {
         var $grid = $(element);
-        var $gridContainer = $grid.closest('.grid-container');
+        var $gridContainer = $('#divGridContainer'); //$grid.closest('.grid-container');
         $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
@@ -257,9 +262,11 @@ function initializeGrid(element) {
     }
 }
 
-/**Search functions **/
+/**Ajax functions **/
+//Search
 function runSearch() {
     var formData = new FormData($('#frmSearch')[0]);
+    formData.append("userID", $('#hdnUserID').val());
 
     $.ajax({
         url: 'SearchUserSpeedRunGrid',

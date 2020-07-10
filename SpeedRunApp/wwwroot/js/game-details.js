@@ -1,12 +1,33 @@
-﻿function initializeClient() {
+﻿var _categoryTypes;
+var _games;
+var _categories;
+var _levels;
+
+/**Initialize Event Functions**/
+function initializeClient(categoryTypes, games, categories, levels) {
+    _categoryTypes = categoryTypes;
+    _games = games;
+    _categories = categories;
+    _levels = levels;
+
     initializeEvents();
-    initializeScroller();
 
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
     onCategoryTypeTabClick($activeCategoryTypeTab);
 }
 
 function initializeEvents() {
+    $('.chosen').chosen({ width: "250px" });
+    $('.date').datepicker();
+    $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
+    $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
+
+    $('#btnSearch').click(runSearch);
+
+    $('#drpCategoryTypes').change(function () {
+        onCategoryTypeChange(this);
+    });
+
     initializeGridContainerEvents();
 }
 
@@ -24,6 +45,8 @@ function initializeGridContainerEvents() {
     });
 }
 
+/*Event Handlers*/
+//Grid Container Handlers
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
     var $container = $(categoryTypeContainerID);
@@ -97,6 +120,31 @@ function onLevelTabClick(element) {
     $chartContainer.fadeIn();
 }
 
+//Search Handlers
+function onCategoryTypeChange(element) {
+    var selectedCategoryTypeIDs = $(element).val();
+
+    var $games = $(_games).filter(function () {
+        return (selectedCategoryTypeIDs.length == 0 || $(selectedCategoryTypeIDs).filter(this.categoryTypeIDs).length > 0);
+    });
+
+    var $categories = $(_categories).filter(function () {
+        return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.categoryTypeID) > -1);
+    });
+
+    repopulateDropDown($('#drpGames'), $games);
+    repopulateDropDown($('#drpCategories'), $categories);
+
+    if (selectedCategoryTypeIDs.indexOf("1") > -1) {
+        $('#divLevels').show();
+    } else {
+        $('#divLevels').hide();
+        $('#drpLevels').val([]);
+    }
+}
+
+/**Initialize component functions**/
+//Initialize Grids
 function initializeGrid(element) {
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
@@ -104,9 +152,11 @@ function initializeGrid(element) {
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid');
+    var startDate = $('#txtStartDate').val();
+    var endDate = $('#txtEndDate').val();
 
     grid.jqGrid({
-        url: 'GameDetails_Read?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID,
+        url: 'GameSpeedRunGrid_Read?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID + '&startDate=' + startDate + '&endDate=' + endDate,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -138,7 +188,7 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
-        //initializeScroller();
+        initializeScroller();
     }
 
     function initializeGridEvents() {
@@ -167,7 +217,7 @@ function initializeGrid(element) {
 
     function initializeGridStyles(element) {
         var $grid = $(element);
-        var $gridContainer = $grid.closest('.grid-container');
+        var $gridContainer = $('#divGridContainer'); //$grid.closest('.grid-container');
         $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
@@ -202,6 +252,7 @@ function initializeGrid(element) {
     }
 }
 
+//Initialize Charts
 function initializeCharts(element) {
     var $chartsContainer = $(element);
     var gameID = $(element).data('gameid');
@@ -253,6 +304,31 @@ function initializeCharts(element) {
         }, $.noop);
     }, $.noop);
 }
+
+/**Ajax functions **/
+//Search
+function runSearch() {
+    var formData = new FormData($('#frmSearch')[0]);
+    formData.append("gameID", $('#hdnGameID').val());
+
+    $.ajax({
+        url: 'SearchGameSpeedRunGrid',
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if (data != null) {
+                $('#divGameSpeedRunGrid').html(data);
+                initializeGridContainerEvents();
+
+                var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+                onCategoryTypeTabClick($activeCategoryTypeTab);
+            }
+        }
+    });
+}
+
 
 
 

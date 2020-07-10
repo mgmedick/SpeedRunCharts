@@ -1,7 +1,7 @@
 ﻿@model SpeedRunApp.Model.ViewModels.SpeedRunGridViewModel
 
 <div>
-    <div class="mx-auto" style="width:1520px; @(Model.Sender == "User" ? "display:none;" : "")">
+    <div id="divChartContainer" class ="container-fluid ml-0" style="width:1520px; @(Model.Sender == "User" ? "display:none;" : "")">
         @for (int a = 0; a < Model.CategoryTypes.Count; a++)
         {
             var categories = Model.Categories.Where(x => x.CategoryTypeID == a.ToString()).ToList();
@@ -29,7 +29,7 @@
             </div>
         }
     </div>
-    <div class="grid-container">
+    <div id="divGridContainer" class="pt-4">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">
                 <label class="font-weight-bold">Category Type:</label>
@@ -117,14 +117,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="category-results" data-userid="@Model.UserID" data-gameid="@games[d].ID" data-categorytype="@(Model.CategoryTypes[b].ID)" data-categoryid="@categories[g].ID">
+                                <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="category-results" data-gameid="@games[d].ID" data-categorytype="@(Model.CategoryTypes[b].ID)" data-categoryid="@categories[g].ID">
                                     <table class="grid"></table>
                                     <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-NA")" class="pager"></div>
                                 </div>
                                 <div class="level-results">
                                     @for (int i = 0; i < levels.Count; i++)
                                     {
-                                        <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="level-tab-pane" data-userid="@Model.UserID" data-gameid="@games[d].ID" data-categorytype="@(Model.CategoryTypes[b].ID)" data-categoryid="@categories[g].ID" data-levelid="@levels[i].ID">
+                                        <div id="divCategoryType-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="level-tab-pane" data-gameid="@games[d].ID" data-categorytype="@(Model.CategoryTypes[b].ID)" data-categoryid="@categories[g].ID" data-levelid="@levels[i].ID">
                                             <table class="grid"></table>
                                             <div id="divPager-@(b.ToString() + "-Game-" + d.ToString() + "-Category-" + g.ToString() + "-Level-" + i.ToString())" class="pager"></div>
                                         </div>

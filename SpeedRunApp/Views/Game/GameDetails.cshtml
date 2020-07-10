@@ -44,7 +44,9 @@
     <script src="@Url.Content("~/js/charts/game-details-charts/speed-run-summary-by-month-configuration.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/speed-run-summary-by-month-controller.js")" type="text/javascript"></script>
     <script>
-        $().ready(initializeClient());
+        $().ready(
+            initializeClient(@Html.Raw(Json.Serialize(Model.SpeedRunGridVM.CategoryTypes)), @Html.Raw(Json.Serialize(Model.SpeedRunGridVM.Games)), @Html.Raw(Json.Serialize(Model.SpeedRunGridVM.Categories)), @Html.Raw(Json.Serialize(Model.SpeedRunGridVM.Levels)))
+        );
     </script>
 }
 
@@ -61,9 +63,13 @@
             </div>
         </div>
     </div>
-    <div id="divGameSpeedRunGrid" class="pt-4 pl-3">
-        @await Html.PartialAsync("_SpeedRunGrid", new SpeedRunGridViewModel(Model.Game, controllerName))
+    <div class="container ml-0 pt-4">
+        @await Html.PartialAsync("_SearchSpeedRunGrid", Model.SpeedRunGridVM)
     </div>
+    <div id="divGameSpeedRunGrid" class="pt-4 pl-3">
+        @await Html.PartialAsync("_SpeedRunGrid", Model.SpeedRunGridVM)
+    </div>
+    <input type="hidden" id="hdnGameID" name="gameID" value="@Html.DisplayFor(i=>i.ID)" />
 </div>
 <div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height:700px;">

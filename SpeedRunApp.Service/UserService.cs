@@ -20,19 +20,72 @@ namespace SpeedRunApp.Service
             _cache = cache;
         }
 
-        public UserDetailsViewModel GetUser(string userID)
+        public UserDetailsViewModel GetUserDetails(string userID)
         {
-            ClientContainer clientContainer = new ClientContainer();
-            var user = clientContainer.Users.GetUser(userID);
+            var user = GetUser(userID);
             var userVM = new UserDetailsViewModel(user);
-            userVM.ProfileImage = clientContainer.Users.GetUserProfileImageUri(user.Name);
-
-            userVM.SpeedRuns = GetUserSpeedRuns(userID);
+            var runs = GetUserSpeedRuns(userID);
+            userVM.SpeedRunGridVM = GetUserSpeedRunGrid(runs);
 
             return userVM;
         }
 
-        public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels, string sender)
+        public User GetUser(string userID)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var user = clientContainer.Users.GetUser(userID);
+            user.ProfileImage = clientContainer.Users.GetUserProfileImageUri(user.Name);
+
+            return user;
+        }
+
+        public SpeedRunGridViewModel GetUserSpeedRunGrid(IEnumerable<SpeedRun> speedRuns)
+        {
+            var categoryTypes = speedRuns.Select(i => i.Category.Type)
+                        .GroupBy(g => new { g })
+                        .Select(i => new IDNamePair
+                        {
+                            ID = ((int)i.First()).ToString(),
+                            Name = i.First().ToString()
+                        })
+                        .OrderBy(i => Convert.ToInt32(i.ID));
+
+            var categories = speedRuns.Select(i => i.Category)
+                                .GroupBy(g => new { g.ID })
+                                .Select(i => new CategoryDisplay
+                                {
+                                    ID = i.First().ID,
+                                    Name = i.First().Name,
+                                    GameID = i.First().GameID,
+                                    CategoryTypeID = ((int)i.First().Type).ToString()
+                                })
+                                .OrderBy(i => i.Name);
+
+            var games = speedRuns.Select(i => i.Game)
+                            .GroupBy(g => new { g.ID })
+                            .Select(i => new GameDisplay
+                            {
+                                ID = i.First().ID,
+                                Name = i.First().Name,
+                                CategoryTypeIDs = categories.Where(g => g.GameID == i.First().ID).Select(g => g.CategoryTypeID).Distinct()
+                            })
+                            .OrderBy(i => i.Name);
+
+            var levels = speedRuns.Where(i => i.Level != null)
+                            .Select(i => i.Level)
+                            .GroupBy(g => new { g.ID })
+                            .Select(i => new LevelDisplay
+                            {
+                                ID = i.First().ID,
+                                Name = i.First().Name,
+                                GameID = i.First().GameID
+                            })
+                            .OrderBy(i => i.Name);
+
+            return new SpeedRunGridViewModel("User", categoryTypes, games, categories, levels, speedRuns);
+        }
+
+        public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
         {
             var runs = GetUserSpeedRuns(userID);
             runs = runs.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
@@ -41,23 +94,34 @@ namespace SpeedRunApp.Service
                                                         && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
                                                         .ToList();
 
+            var userSpeedRunGridVM = GetUserSpeedRunGrid(runs);
 
-            var userGridVM = new SpeedRunGridViewModel(userID, runs, sender);
-
-            return userGridVM;
+            return userSpeedRunGridVM;
         }
 
-        public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate, DateTime? endDate)
         {
-            var runs = GetUserSpeedRuns(userID);
+            IEnumerable<SpeedRun> runs = null;
+            ClientContainer clientContainer = new ClientContainer();
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
 
             if (categoryType == CategoryType.PerGame)
             {
-                runs = runs.Where(i => i.GameID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID);
+                runs = clientContainer.Runs.GetRuns(userId: userID, gameId: gameID, categoryId: categoryID, embeds: runEmbeds);
             }
             else
             {
-                runs = runs.Where(i => i.GameID == gameID && i.Category.Type == categoryType && i.CategoryID == categoryID && i.LevelID == levelID);
+                runs = clientContainer.Runs.GetRuns(userId: userID, gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: runEmbeds);
+            }
+
+            if (startDate.HasValue)
+            {
+                runs = runs.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                runs = runs.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value <= endDate.Value);
             }
 
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));

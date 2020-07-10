@@ -25,15 +25,15 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public ViewResult GameDetails(string gameID)
         {
-            var gameVM = _gamesService.GetGame(gameID);
+            var gameVM = _gamesService.GetGameDetails(gameID);
 
             return View(gameVM);
         }
 
         [HttpGet]
-        public JsonResult GameDetails_Read(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public JsonResult GameSpeedRunGrid_Read(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, startDate, endDate);
 
             return Json(recordVMs);
         }
@@ -46,9 +46,17 @@ namespace SpeedRunApp.WebUI.Controllers
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }
 
+        [HttpPost]
+        public PartialViewResult SearchGameSpeedRunGrid(string gameID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        {
+            var gameGridVM = _gamesService.SearchGameSpeedRunGrid(gameID, drpCategoryTypes, drpGames, drpCategories, drpLevels);
+
+            return PartialView("_SpeedRunGrid", gameGridVM);
+        }
+
         public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
             recordVMs = recordVMs.Take(topAmount);
 
             return Json(new { Data = recordVMs });
@@ -56,14 +64,14 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
 
             return Json(new { Data = recordVMs });
         }
 
         public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
 
             DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
             DateTime startDate = (endDate != DateTime.MinValue) ? endDate.AddMonths(-6) : DateTime.MinValue;

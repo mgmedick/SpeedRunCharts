@@ -36,11 +36,13 @@ namespace SpeedRunApp.Model.Data
         public DateTime? SignUpDate { get; set; }
         public Location Location { get; set; }
 
+        public Uri ProfileImage { get; set; }
         public Uri TwitchProfile { get; set; }
         public Uri HitboxProfile { get; set; }
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
+
 
         //links
         //public IEnumerable<Run> Runs { get; set; }

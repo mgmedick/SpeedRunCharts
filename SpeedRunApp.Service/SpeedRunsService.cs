@@ -22,6 +22,7 @@ namespace SpeedRunApp.Service
             ClientContainer clientContainer = new ClientContainer();
             var runs = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            runVMs = runVMs.Where(i => !string.IsNullOrWhiteSpace(i.VideoLinkEmbeddedString));
             var runListVM = new SpeedRunListViewModel(runVMs);
             //foreach (var run in runs)
             //{

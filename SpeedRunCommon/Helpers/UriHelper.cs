@@ -32,7 +32,7 @@ namespace SpeedRunCommon
                     if (path.StartsWith(@"/videos/"))
                     {
                         videoIDString = uri.Segments.Last();
-                        uriString = string.Format(@"https://player.twitch.tv/?video={0}&autoplay=false&muted=true", videoIDString);
+                        uriString = string.Format(@"https://player.twitch.tv/?video={0}&parent=localhost&autoplay=false&muted=true", videoIDString);
                     }
                 }
                 else if (domain.Contains("youtube.com") || domain.Contains("youtu.be"))
@@ -41,7 +41,14 @@ namespace SpeedRunCommon
                     videoIDString = queryDictionary.ContainsKey("v") ? queryDictionary["v"].ToString() : uri.Segments.Last();
                     uriString = string.Format(@"https://www.youtube.com/embed/{0}", videoIDString);
                 }
-
+                else if (domain.Contains("vimeo.com"))
+                {
+                    if (path.StartsWith(@"/video/"))
+                    {
+                        videoIDString = uri.Segments.Last();
+                        uriString = string.Format(@"https://player.vimeo.com/video/{0}?autoplay=0&muted=1", videoIDString);
+                    }
+                }
 
                 if (!string.IsNullOrWhiteSpace(uriString))
                 {

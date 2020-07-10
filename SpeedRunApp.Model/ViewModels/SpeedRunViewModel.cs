@@ -25,7 +25,7 @@ namespace SpeedRunApp.Model.ViewModels
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             DateSubmitted = run.DateSubmitted;
-            VideoLink = run.Videos?.Links?.FirstOrDefault();
+            VideoLink = run.Videos?.Links?.FirstOrDefault(i => i != null);
             PrimaryRunTime = run.Times.Primary.Value;
         }
 

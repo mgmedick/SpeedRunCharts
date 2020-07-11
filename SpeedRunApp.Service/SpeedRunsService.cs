@@ -21,8 +21,7 @@ namespace SpeedRunApp.Service
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
             ClientContainer clientContainer = new ClientContainer();
             var runs = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
-            runVMs = runVMs.Where(i => !string.IsNullOrWhiteSpace(i.VideoLinkEmbeddedString));
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i)).Where(i => !string.IsNullOrWhiteSpace(i.VideoLinkEmbeddedString));
             var runListVM = new SpeedRunListViewModel(runVMs);
             //foreach (var run in runs)
             //{

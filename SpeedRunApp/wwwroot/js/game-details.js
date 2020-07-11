@@ -29,6 +29,7 @@ function initializeEvents() {
     });
 
     initializeGridContainerEvents();
+    initializeScrollerGlobalEvents();
 }
 
 function initializeGridContainerEvents() {
@@ -164,15 +165,15 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
+        colNames: ["", "Level", "Rank", "Players", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "levelName", width: 125, hidden: categoryType != 1},
+            { name: "levelName", width: 125, hidden: categoryType != 1 },
             { name: "rankString", width: 75, sorttype: "number" },
-            { name: "playerName", width: 160 },
+            { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platformName", width: 160 },
-            { name: "primaryRunTimeString", width: 160 , search: false },
-            { name: "examinerName", width: 160  },
+            { name: "primaryRunTimeString", width: 160, search: false },
+            { name: "examinerName", width: 160 },
             { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
             { name: "relativeDateSubmittedString", hidden: true }
         ],
@@ -188,7 +189,8 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
-        initializeScroller();
+        var $gridContainer = $(this).closest('.grid-container');
+        initializeScroller($gridContainer);
     }
 
     function initializeGridEvents() {
@@ -217,7 +219,7 @@ function initializeGrid(element) {
 
     function initializeGridStyles(element) {
         var $grid = $(element);
-        var $gridContainer = $('#divGridContainer'); //$grid.closest('.grid-container');
+        var $gridContainer = $grid.closest('.grid-container');
         $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
@@ -243,8 +245,15 @@ function initializeGrid(element) {
         return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
     }
 
-    function dateSubmittedFormatter(cellvalue, options, rowObject) {
-        return rowObject.relativeDateSubmittedString;
+    function playerFormatter(value, options, rowObject) {
+        var html = '';
+        var items = value;
+        $(items).each(function () {
+            var user = this;
+            html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+        });
+
+        return html;
     }
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {

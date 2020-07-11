@@ -316,6 +316,17 @@ a.linkToggle.expanded:before {
     font-weight: 900;
 }
 
+/**Chart Container**/
+div.chart-placeholder {
+    height: 500px;
+    width: 500px;
+}
+
+.nav-tabs {
+    border-bottom:none;
+}
+
+
 
 
 

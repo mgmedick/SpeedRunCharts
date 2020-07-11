@@ -14,6 +14,7 @@ namespace SpeedRunApp.Model.ViewModels
             ID = run.ID;
             PlayerID = run.PlayerUser?.ID;
             PlayerName = run.PlayerUser?.Name;
+            PlayerUsers = run.PlayerUsers;
             GameID = run.GameID;
             GameName = run.Game.Name;
             GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
@@ -32,6 +33,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string ID { get; set; }
         public string PlayerID { get; set; }
         public string PlayerName { get; set; }
+        public IEnumerable<User> PlayerUsers { get; set; }
         public string GameID { get; set; }
         public string GameName { get; set; }
         public Uri GameCoverImageLink { get; set; }

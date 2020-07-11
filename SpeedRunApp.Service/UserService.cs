@@ -133,7 +133,8 @@ namespace SpeedRunApp.Service
         {
             ClientContainer clientContainer = new ClientContainer();
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
-            var runs = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds);
+            var runs = clientContainer.Runs.GetRuns(userId: userID, embeds: runEmbeds).ToList();
+            runs.AddRange(clientContainer.Runs.GetRuns(userId: userID, status: RunStatusType.New, embeds: runEmbeds));
 
             return runs;
         }

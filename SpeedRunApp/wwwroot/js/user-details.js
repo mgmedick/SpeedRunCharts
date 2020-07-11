@@ -32,6 +32,7 @@ function initializeEvents() {
     });
 
     initializeGridContainerEvents();
+    initializeScrollerGlobalEvents();
 }
 
 function initializeGridContainerEvents() {
@@ -175,11 +176,11 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Player", "Platform", "Time", "Examiner", "Date", "Hidden"],
+        colNames: ["", "Level", "Players", "Platform", "Time", "Examiner", "Date", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "levelName", width: 125, hidden: categoryType != 1 },
-            { name: "playerName", width: 160 },
+            { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platformName", width: 160 },
             { name: "primaryRunTimeString", width: 160, search: false },
             { name: "examinerName", width: 160 },
@@ -198,7 +199,8 @@ function initializeGrid(element) {
         initializeGridEvents();
         initializeGridFilters(this);
         initializeGridStyles(this);
-        initializeScroller();
+        var $gridContainer = $(this).closest('.grid-container');
+        initializeScroller($gridContainer);
     }
 
     function initializeGridEvents() {
@@ -227,7 +229,7 @@ function initializeGrid(element) {
 
     function initializeGridStyles(element) {
         var $grid = $(element);
-        var $gridContainer = $('#divGridContainer'); //$grid.closest('.grid-container');
+        var $gridContainer = $grid.closest('.grid-container');
         $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
 
@@ -249,12 +251,24 @@ function initializeGrid(element) {
         return values;
     }
 
-    function optionsFormatter(cellvalue, options, rowObject) {
-        return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+    function optionsFormatter(value, options, rowObject) {
+        return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + value + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
     }
 
-    function dateSubmittedFormatter(cellvalue, options, rowObject) {
-        return rowObject.relativeDateSubmittedString;
+    function playerFormatter(value, options, rowObject) {
+        var html = '';
+        var items = value;
+        var currentUserID = $('#hdnUserID').val();
+        $(items).each(function () {
+            var user = this;
+            if (user.id == currentUserID) {
+                html += user.name + "<br/>";
+            } else {
+                html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+            }
+        });
+
+        return html;
     }
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {

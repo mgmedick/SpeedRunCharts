@@ -92,22 +92,23 @@ namespace SpeedRunApp.Service
                 leaderboard.Records = leaderboard.Records.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value >= startDate.Value);
             }
 
-            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i));
+            List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
+            //var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
 
-            //foreach (var record in leaderboard.Records)
-            //{
-            //    var recordVM = new SpeedRunRecordViewModel(record);
-            //    if (!string.IsNullOrWhiteSpace(record.Status.ExaminerUserID))
-            //    {
-            //        var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
-            //        if (examiner != null)
-            //        {
-            //            recordVM.ExaminerName = examiner.Name;
-            //        }
-            //    }
+            foreach (var record in leaderboard.Records)
+            {
+                var recordVM = new SpeedRunRecordViewModel(record);
+                if (!string.IsNullOrWhiteSpace(record.Status.ExaminerUserID))
+                {
+                    var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
+                    if (examiner != null)
+                    {
+                        recordVM.ExaminerName = examiner.Name;
+                    }
+                }
 
-            //    recordVMs.Add(recordVM);
-            //}
+                recordVMs.Add(recordVM);
+            }
 
             return recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds);
         }

@@ -176,16 +176,22 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Players", "Platform", "Time", "Examiner", "Date", "Hidden"],
+        colNames: ["", "Level", "Players", "Platform", "Emulated", "Time", "Status", "Examiner", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "levelName", width: 125, hidden: categoryType != 1 },
             { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platformName", width: 160 },
+            { name: "isEmulated", width: 125 },
             { name: "primaryRunTimeString", width: 160, search: false },
+            { name: "statusTypeString", width: 125 },
             { name: "examinerName", width: 160 },
+            { name: "rejectedReason", width: 160, hidden: true },
             { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
-            { name: "relativeDateSubmittedString", hidden: true }
+            { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
+            { name: "relativeDateSubmittedString", hidden: true },
+            { name: "relativeVerifyDateString", hidden: true },
+            { name: "playerGuests", hidden: true }
         ],
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
@@ -211,24 +217,51 @@ function initializeGrid(element) {
 
     function initializeGridFilters(element) {
         var gridData = $(element).jqGrid("getGridParam", "data");
-        var levelNames = GetUniqueValues($.map(gridData, function (item) { return item.levelName; }));
-        var rankStrings = GetUniqueValues($.map(gridData, function (item) { return item.rankString; }));
-        var playerNames = GetUniqueValues($.map(gridData, function (item) { return item.playerName; }));
-        var categoryNames = GetUniqueValues($.map(gridData, function (item) { return item.categoryName; }));
-        var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; }));
-        var examinerNames = GetUniqueValues($.map(gridData, function (item) { return item.examinerName; }));
+        var levelNames = GetUniqueValues($.map(gridData, function (item) { return item.levelName; })).sort();
+        var rankStrings = GetUniqueValues($.map(gridData, function (item) { return item.rankString; })).sort();
+        var categoryNames = GetUniqueValues($.map(gridData, function (item) { return item.categoryName; })).sort();
+        var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; })).sort();
+        var emulatorStrings = GetUniqueValues($.map(gridData, function (item) { return item.isEmulated; })).sort();
+        var examinerNames = GetUniqueValues($.map(gridData, function (item) { return item.examinerName; })).sort();
+        var statuses = GetUniqueValues($.map(gridData, function (item) { return item.statusTypeString; })).sort();
+        var playerNames = [];
+        $(gridData).each(function () {
+            var playerUsers = this.playerUsers;
+            var playerGuests = this.playerGuests;
+
+            $(playerUsers).each(function () {
+                if (!playerNames.indexOf(this.name) > -1) {
+                    playerNames.push(this.name);
+                }
+            });
+
+            $(playerGuests).each(function () {
+                if (!playerNames.indexOf(this.name)) {
+                    playerNames.push(this.name);
+                }
+            });
+        });
+        playerNames = playerNames.sort();
 
         setSearchSelect($(element), 'levelName', levelNames);
         setSearchSelect($(element), 'rankString', rankStrings);
-        setSearchSelect($(element), 'playerName', playerNames);
+        setSearchSelect($(element), 'playerUsers', playerNames);
         setSearchSelect($(element), 'categoryName', categoryNames);
         setSearchSelect($(element), 'platformName', platformNames);
+        setSearchSelect($(element), 'isEmulated', emulatorStrings);
         setSearchSelect($(element), 'examinerName', examinerNames);
+        setSearchSelect($(element), 'statusTypeString', statuses);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
 
     function initializeGridStyles(element) {
         var $grid = $(element);
+        var gridData = $grid.jqGrid("getGridParam", "data");
+        var $rejectedItems = $(gridData).filter(function (item) { return item.statusTypeString == "Rejected"; })
+        if ($rejectedItems.length > 0) {
+            $grid.jqGrid("showCol", ["rejectedReason"]);
+        }
+
         var $gridContainer = $grid.closest('.grid-container');
         $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
     }
@@ -257,9 +290,11 @@ function initializeGrid(element) {
 
     function playerFormatter(value, options, rowObject) {
         var html = '';
-        var items = value;
+        var users = value;
+        var guests = rowObject.playerGuests;
         var currentUserID = $('#hdnUserID').val();
-        $(items).each(function () {
+
+        $(users).each(function () {
             var user = this;
             if (user.id == currentUserID) {
                 html += user.name + "<br/>";
@@ -268,11 +303,20 @@ function initializeGrid(element) {
             }
         });
 
+        $(guests).each(function () {
+            var guest = this;
+            html += guest.name + "<br/>";
+        });
+
         return html;
     }
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
+    }
+
+    function verifyDateCellAttr(rowId, val, rowObject, cm, rdata) {
+        return ' title="' + rowObject.relativeVerifyDateString + '"';
     }
 }
 

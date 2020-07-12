@@ -41,7 +41,7 @@ namespace SpeedRunApp.Service
 
         public SpeedRunGridViewModel GetUserSpeedRunGrid(IEnumerable<SpeedRun> speedRuns)
         {
-            var categoryTypes = speedRuns.Select(i => i.Category.Type)
+            var categoryTypes = speedRuns?.Select(i => i.Category.Type)
                         .GroupBy(g => new { g })
                         .Select(i => new IDNamePair
                         {
@@ -50,7 +50,7 @@ namespace SpeedRunApp.Service
                         })
                         .OrderBy(i => Convert.ToInt32(i.ID));
 
-            var categories = speedRuns.Select(i => i.Category)
+            var categories = speedRuns?.Select(i => i.Category)
                                 .GroupBy(g => new { g.ID })
                                 .Select(i => new CategoryDisplay
                                 {
@@ -61,7 +61,7 @@ namespace SpeedRunApp.Service
                                 })
                                 .OrderBy(i => i.Name);
 
-            var games = speedRuns.Select(i => i.Game)
+            var games = speedRuns?.Select(i => i.Game)
                             .GroupBy(g => new { g.ID })
                             .Select(i => new GameDisplay
                             {
@@ -71,7 +71,7 @@ namespace SpeedRunApp.Service
                             })
                             .OrderBy(i => i.Name);
 
-            var levels = speedRuns.Where(i => i.Level != null)
+            var levels = speedRuns?.Where(i => i.Level != null)
                             .Select(i => i.Level)
                             .GroupBy(g => new { g.ID })
                             .Select(i => new LevelDisplay
@@ -101,6 +101,7 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate, DateTime? endDate)
         {
+            List<SpeedRunViewModel> runVMs = new List<SpeedRunViewModel>();
             IEnumerable<SpeedRun> runs = null;
             ClientContainer clientContainer = new ClientContainer();
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
@@ -124,7 +125,20 @@ namespace SpeedRunApp.Service
                 runs = runs.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value <= endDate.Value);
             }
 
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            foreach (var run in runs)
+            {
+                var runVM = new SpeedRunViewModel(run);
+                if (!string.IsNullOrWhiteSpace(run.Status.ExaminerUserID))
+                {
+                    var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
+                    if (examiner != null)
+                    {
+                        runVM.ExaminerName = examiner.Name;
+                    }
+                }
+
+                runVMs.Add(runVM);
+            }
 
             return runVMs;
         }

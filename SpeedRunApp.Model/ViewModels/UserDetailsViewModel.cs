@@ -13,7 +13,7 @@ namespace SpeedRunApp.Model.ViewModels
             ID = user.ID;
             Name = user.Name;
             JapaneseName = user.JapaneseName;
-            Role = user.Role;
+            Role = new IDNamePair() { ID = ((int)user.Role).ToString(), Name = user.Role.ToString() };
             SignUpDate = user.SignUpDate;
             Location = user.Location.ToString();
             TwitchProfile = user.TwitchProfile;
@@ -27,7 +27,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string Name { get; set; }
         public string JapaneseName { get; set; }
         public Uri ProfileImage { get; set; }
-        public UserRole Role { get; set; }
+        public IDNamePair Role { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }
         public Uri TwitchProfile { get; set; }

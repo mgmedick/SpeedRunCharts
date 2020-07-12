@@ -23,6 +23,7 @@ namespace SpeedRunApp.Model.Data
         public SpeedRunStatus Status { get; set; }
         public DateTime? Date { get; set; }
         public DateTime? DateSubmitted { get; set; }
+        public DateTime? VerifyDate { get; set; }
         public SpeedRunTimes Times { get; set; }
         public SpeedRunSystem System { get; set; }
         public Uri SplitsUri { get; set; }

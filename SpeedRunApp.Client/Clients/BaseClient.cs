@@ -203,10 +203,24 @@ namespace SpeedRunApp.Client
 
             var elements = result.data as IEnumerable<dynamic>;
 
-            foreach (var element in elements)
+            if (elements != null)
             {
-                yield return parser(element);
+                foreach (var element in elements)
+                {
+                    yield return parser(element);
+                }
             }
+
+            //if (elements != null)
+            //{
+            //    foreach (var element in elements)
+            //    {
+            //        yield return parser(element);
+            //    }
+            //} else
+            //{
+            //    yield return default(T);
+            //}
         }
     }
 }

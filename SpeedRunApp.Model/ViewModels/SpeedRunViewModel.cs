@@ -21,15 +21,20 @@ namespace SpeedRunApp.Model.ViewModels
             GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
             CategoryName = run.Category.Name;
-            CategoryType = run.Category.Type;
+            CategoryType = new IDNamePair { ID = ((int)run.Category.Type).ToString(), Name = run.Category.Type.ToString() };
             PlatformID = run.Platform?.ID;
             PlatformName = run.Platform?.Name;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
+            IsEmulated = run.System.IsEmulated;
             DateSubmitted = run.DateSubmitted;
             //VideoLink = run.Videos?.Links?.FirstOrDefault(i => i != null);
             VideoLinkEmbeded = run.Videos?.EmbededLinks?.FirstOrDefault(i => i != null);
             PrimaryRunTime = run.Times.Primary.Value;
+            StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
+            VerifyDate = run.Status.VerifyDate;
+            RejectedReason = run.Status.Reason;
+            Comment = run.Comment;
         }
 
         public string ID { get; set; }
@@ -42,13 +47,18 @@ namespace SpeedRunApp.Model.ViewModels
         public Uri GameCoverImageLink { get; set; }
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
-        public CategoryType CategoryType { get; set; }
+        public IDNamePair CategoryType { get; set; }
         public string PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string LevelID { get; set; }
         public string LevelName { get; set; }
+        public bool IsEmulated { get; set; }
         public string ExaminerName { get; set; }
+        public IDNamePair StatusType { get; set; }
         public DateTime? DateSubmitted { get; set; }
+        public DateTime? VerifyDate { get; set; }
+        public string RejectedReason { get; set; }
+        public string Comment { get; set; }
         public Uri VideoLinkEmbeded { get; set; }
         public TimeSpan PrimaryRunTime { get; set; }
         public string GameCoverImageLinkString
@@ -113,6 +123,22 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return PrimaryRunTime.TotalSeconds;
+            }
+        }
+
+        public string StatusTypeString
+        {
+            get
+            {
+                return StatusType.Name;
+            }
+        }
+
+        public string RelativeVerifyDateString
+        {
+            get
+            {
+                return VerifyDate?.ToRealtiveDateString();
             }
         }
     }

@@ -218,8 +218,6 @@ namespace SpeedRunApp.Client
                 }
             }
 
-
-
             return run;
         }
 
@@ -237,9 +235,7 @@ namespace SpeedRunApp.Client
 
             if (status.Type == RunStatusType.Verified)
             {
-                var date = properties["verify-date"] as string;
-                if (!string.IsNullOrEmpty(date))
-                    status.VerifyDate = DateTime.Parse(date, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+                status.VerifyDate = properties["verify-date"] as DateTime?;
             }
 
             if (status.Type == RunStatusType.Rejected)

@@ -13,8 +13,9 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             PlayerID = run.PlayerUser?.ID;
-            PlayerName = run.PlayerUser?.Name;
+            PlayerName = run.PlayerUser != null ? run.PlayerUser.Name : run.PlayerGuest?.Name;
             PlayerUsers = run.PlayerUsers;
+            PlayerGuests = run.PlayerGuests;
             GameID = run.GameID;
             GameName = run.Game.Name;
             GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
@@ -26,7 +27,8 @@ namespace SpeedRunApp.Model.ViewModels
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             DateSubmitted = run.DateSubmitted;
-            VideoLink = run.Videos?.Links?.FirstOrDefault(i => i != null);
+            //VideoLink = run.Videos?.Links?.FirstOrDefault(i => i != null);
+            VideoLinkEmbeded = run.Videos?.EmbededLinks?.FirstOrDefault(i => i != null);
             PrimaryRunTime = run.Times.Primary.Value;
         }
 
@@ -34,6 +36,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string PlayerID { get; set; }
         public string PlayerName { get; set; }
         public IEnumerable<User> PlayerUsers { get; set; }
+        public IEnumerable<Guest> PlayerGuests { get; set; }
         public string GameID { get; set; }
         public string GameName { get; set; }
         public Uri GameCoverImageLink { get; set; }
@@ -46,7 +49,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public string ExaminerName { get; set; }
         public DateTime? DateSubmitted { get; set; }
-        public Uri VideoLink { get; set; }
+        public Uri VideoLinkEmbeded { get; set; }
         public TimeSpan PrimaryRunTime { get; set; }
         public string GameCoverImageLinkString
         {
@@ -80,19 +83,12 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string VideoLinkString
-        {
-            get
-            {
-                return VideoLink?.AbsoluteUri;
-            }
-        }
-
         public string VideoLinkEmbeddedString
         {
             get
             {
-                return VideoLink?.ToEmbeddedURIString();
+                return VideoLinkEmbeded?.AbsoluteUri;
+                //VideoLinkEmbeded?.AbsoluteUri;
             }
         }
 

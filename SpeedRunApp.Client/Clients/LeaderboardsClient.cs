@@ -252,12 +252,24 @@ namespace SpeedRunApp.Client
 
                     foreach (var record in leaderboard.Records)
                     {
-                        record.PlayerUsers = users.Where(x => record.Players.Any(i => i.IsUser && i.UserID == x.ID));
-                        record.PlayerGuests = guests.Where(x => record.Players.Any(i => !i.IsUser && i.GuestName == x.Name));
+                        record.PlayerUsers = users.Where(x => record.Players.Any(i => i.IsUser && i.UserID == x.ID))
+                                                  .GroupBy(g => new { g.ID })
+                                                  .Select(i => i.First())
+                                                  .OrderBy(i => i.Name);
+
+                        record.PlayerGuests = guests.Where(x => record.Players.Any(i => !i.IsUser && i.GuestName == x.Name))
+                                                    .GroupBy(g => new { g.Name })
+                                                    .Select(i => i.First())
+                                                    .OrderBy(i => i.Name);
                     }
 
-                    leaderboard.PlayerUsers = users;
-                    leaderboard.PlayerGuests = guests;
+                    leaderboard.PlayerUsers = users.GroupBy(g => new { g.ID })
+                                                   .Select(i => i.First())
+                                                   .OrderBy(i => i.Name);
+
+                    leaderboard.PlayerGuests = guests.GroupBy(g => new { g.Name })
+                                                     .Select(i => i.First())
+                                                     .OrderBy(i => i.Name);
                 }
             }
             else

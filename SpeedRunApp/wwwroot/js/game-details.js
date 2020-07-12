@@ -165,7 +165,7 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Players", "Platform", "Time", "Examiner", "Date", "Hidden"],
+        colNames: ["", "Level", "Rank", "Players", "Platform", "Time", "Examiner", "Date", "Hidden", "Hidden"],
         colModel: [
             { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "levelName", width: 125, hidden: categoryType != 1 },
@@ -175,7 +175,8 @@ function initializeGrid(element) {
             { name: "primaryRunTimeString", width: 160, search: false },
             { name: "examinerName", width: 160 },
             { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
-            { name: "relativeDateSubmittedString", hidden: true }
+            { name: "relativeDateSubmittedString", hidden: true },
+            { name: "playerGuests", hidden: true }
         ],
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
@@ -247,10 +248,18 @@ function initializeGrid(element) {
 
     function playerFormatter(value, options, rowObject) {
         var html = '';
-        var items = value;
-        $(items).each(function () {
+        var isUser = value != null;
+        var users = value;
+        var guests = rowObject.playerGuests;
+
+        $(users).each(function () {
             var user = this;
             html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+        });
+
+        $(guests).each(function () {
+            var guest = this;
+            html += guest.name + "<br/>";
         });
 
         return html;

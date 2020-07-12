@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.WebUtilities;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model;
 using SpeedRunCommon;
@@ -168,8 +169,8 @@ namespace SpeedRunApp.Client
                     var guestData = data.Where(i => i.Properties["rel"] == "guest");
                     IEnumerable<Guest> guests = ParseCollection(guestData, guestParser);
 
-                    run.PlayerUsers = users;
-                    run.PlayerGuests = guests;
+                    run.PlayerUsers = users.GroupBy(g => new { g.ID }).Select(i => i.First()).OrderBy(i => i.Name);
+                    run.PlayerGuests = guests.GroupBy(g => new { g.Name }).Select(i => i.First()).OrderBy(i => i.Name);
                 }
             }
 
@@ -316,8 +317,9 @@ namespace SpeedRunApp.Client
                 //{
                 //    videos.Text = videosElement.text as string;
                 //}
-                videos.Text = videosElement.text as string;
+                videos.Text = videosElement.text as string; 
                 videos.Links = ParseCollection(videosElement.links, new Func<dynamic, Uri>(parseVideoLink));
+                videos.EmbededLinks = ParseCollection(videosElement.links, new Func<dynamic, Uri>(parseEmbededVideoLink));
             }
 
             return videos;
@@ -342,6 +344,51 @@ namespace SpeedRunApp.Client
             }
 
             return videoUri;
+        }
+
+        public Uri parseEmbededVideoLink(dynamic element)
+        {
+            Uri embededURI = null;
+            Uri videoUri = parseVideoLink(element);
+
+            if (videoUri != null)
+            {
+                string domain = videoUri.GetLeftPart(UriPartial.Authority);
+                string path = videoUri.AbsolutePath;
+                string query = videoUri.Query;
+                string videoIDString = null;
+                string uriString = null;
+
+                if (domain.Contains("twitch.tv"))
+                {
+                    if (path.StartsWith(@"/videos/"))
+                    {
+                        videoIDString = videoUri.Segments.Last();
+                        uriString = string.Format(@"https://player.twitch.tv/?video={0}&parent=localhost&autoplay=false&muted=true", videoIDString);
+                    }
+                }
+                else if (domain.Contains("youtube.com") || domain.Contains("youtu.be"))
+                {
+                    var queryDictionary = QueryHelpers.ParseQuery(query);
+                    videoIDString = queryDictionary.ContainsKey("v") ? queryDictionary["v"].ToString() : videoUri.Segments.Last();
+                    uriString = string.Format(@"https://www.youtube.com/embed/{0}", videoIDString);
+                }
+                else if (domain.Contains("vimeo.com"))
+                {
+                    if (path.StartsWith(@"/video/"))
+                    {
+                        videoIDString = videoUri.Segments.Last();
+                        uriString = string.Format(@"https://player.vimeo.com/video/{0}?autoplay=0&muted=1", videoIDString);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(uriString))
+                {
+                    embededURI = new Uri(uriString);
+                }
+            }
+
+            return embededURI;
         }
     }
 }

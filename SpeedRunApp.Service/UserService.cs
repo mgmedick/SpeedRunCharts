@@ -125,15 +125,26 @@ namespace SpeedRunApp.Service
                 runs = runs.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value <= endDate.Value);
             }
 
+            var gameService = new GamesService();
+            var game = gameService.GetGame(gameID);
+
             foreach (var run in runs)
             {
                 var runVM = new SpeedRunViewModel(run);
                 if (!string.IsNullOrWhiteSpace(run.Status.ExaminerUserID))
                 {
-                    var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
-                    if (examiner != null)
+                    var user = game.ModeratorUsers?.FirstOrDefault(i => i.ID == run.Status.ExaminerUserID);
+                    if (user != null)
                     {
-                        runVM.ExaminerName = examiner.Name;
+                        runVM.ExaminerName = user.Name;
+                    }
+                    else
+                    {
+                        var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
+                        if (examiner != null)
+                        {
+                            runVM.ExaminerName = examiner.Name;
+                        }
                     }
                 }
 

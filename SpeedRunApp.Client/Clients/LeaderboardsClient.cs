@@ -337,7 +337,7 @@ namespace SpeedRunApp.Client
                 //patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;
             }
-            else
+            else if(leaderboard.Category != null)
             {
                 var variables = leaderboard.Category.Variables;
 

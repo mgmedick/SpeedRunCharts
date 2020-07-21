@@ -326,6 +326,13 @@ div.chart-placeholder {
     border-bottom:none;
 }
 
+.tooltip {
+    pointer-events: none;
+}
+
+
+
+
 
 
 

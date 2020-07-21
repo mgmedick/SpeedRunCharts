@@ -56,6 +56,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelID { get; set; }
         public string LevelName { get; set; }
         public bool IsEmulated { get; set; }
+        public string ModeratorName { get; set; }
         public string ExaminerName { get; set; }
         public IDNamePair StatusType { get; set; }
         public DateTime? DateSubmitted { get; set; }

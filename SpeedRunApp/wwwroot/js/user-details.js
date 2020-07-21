@@ -19,6 +19,7 @@ function initializeClient(categoryTypes, games, categories, levels) {
 function initializeEvents() {
     $('.chosen').chosen({ width: "250px" });
     $('.date').datepicker();
+    $('[data-toggle="tooltip"]').tooltip();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
 
     $('#btnSearch').click(runSearch);
@@ -201,18 +202,21 @@ function initializeGrid(element) {
         loadComplete: gridLoadComplete
     });
 
-    function gridLoadComplete() {
-        initializeGridEvents();
+    function gridLoadComplete(element) {
+        initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
         var $gridContainer = $(this).closest('.grid-container');
         initializeScroller($gridContainer);
     }
 
-    function initializeGridEvents() {
-        $('[data-toggle="modal"]').click(function () {
+    function initializeGridEvents(element) {
+        $grid = $(element);
+        $grid.find('[data-toggle="modal"]').click(function () {
             $($(this).data("target") + ' .modal-body').load($(this).attr("href"));
         });
+
+        $grid.find('[data-toggle="tooltip"]').tooltip();
     }
 
     function initializeGridFilters(element) {
@@ -307,6 +311,15 @@ function initializeGrid(element) {
             var guest = this;
             html += guest.name + "<br/>";
         });
+
+        return html;
+    }
+
+    function commentFormatter(value, options, rowObject) {
+        var html = '';
+        if (value != null) {
+            html = '<i class="far fa-comment" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' + value + '"></i>'
+        }
 
         return html;
     }

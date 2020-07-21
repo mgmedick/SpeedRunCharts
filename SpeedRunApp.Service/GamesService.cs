@@ -76,7 +76,7 @@ namespace SpeedRunApp.Service
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = true, EmbedCategory = true, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
 
             if (categoryType == CategoryType.PerGame)
             {
@@ -93,17 +93,25 @@ namespace SpeedRunApp.Service
             }
 
             List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
-            //var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
+            var game = GetGame(gameID);
 
             foreach (var record in leaderboard.Records)
             {
                 var recordVM = new SpeedRunRecordViewModel(record);
                 if (!string.IsNullOrWhiteSpace(record.Status.ExaminerUserID))
                 {
-                    var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
-                    if (examiner != null)
+                    var user = game.ModeratorUsers?.FirstOrDefault(i => i.ID == record.Status.ExaminerUserID);
+                    if (user != null)
                     {
-                        recordVM.ExaminerName = examiner.Name;
+                        recordVM.ExaminerName = user.Name;
+                    }
+                    else
+                    {
+                        var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
+                        if (examiner != null)
+                        {
+                            recordVM.ExaminerName = examiner.Name;
+                        }
                     }
                 }
 

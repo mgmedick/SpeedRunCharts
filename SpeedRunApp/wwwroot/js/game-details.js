@@ -19,20 +19,9 @@ function initializeClient(categoryTypes, games, categories, levels) {
 function initializeEvents() {
     $('.chosen').chosen({ width: "250px" });
     $('.date').datepicker();
-    //$('[data-toggle="tooltip"]').tooltip();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
-    //$('#videoLinkModal').on('show.bs.modal', function (event) {
-    //    var $header = $('#videoLinkModal').find('.modal-body .header');
-    //    var $modalHeader = $('#videoLinkModal').find('.modal-header');
-    //    $modalHeader.find('.close').prevAll().remove();
-    //    $modalHeader.prepend($header);
-    //    //if ($modalHeader.find('.close').prev().length > 0) {
-    //    //    $modalHeader.find('.close').prev().html($header);
-    //    //} else {
-    //    //    $modalHeader.prepend($header);
-    //    //}
-    //});
+
 
     $('#btnSearch').click(runSearch);
 
@@ -42,8 +31,6 @@ function initializeEvents() {
 
     initializeGridContainerEvents();
     initializeScrollerGlobalEvents();
-    //$('[data-toggle="tooltip"]').tooltip();
-    //$grid.find('[data-toggle="tooltip"]').tooltip();
 }
 
 function initializeGridContainerEvents() {
@@ -215,7 +202,8 @@ function initializeGrid(element) {
         $grid = $(element);
         $grid.find('[data-toggle="modal"]').click(function () {
             var $target = $($(this).data("target"));
-            //$($(this).data("target") + ' .modal-body').load($(this).attr("href"));
+            $target.find('.modal-body').hide();
+            $target.find('.modal-loading').show();
 
             $.get($(this).attr("href"), function (data) {
                 var $header = $(data).find('.header');
@@ -223,16 +211,10 @@ function initializeGrid(element) {
                 $target.find('.modal-header .close').prevAll().remove();
                 $target.find('.modal-header').prepend($header);
                 $target.find('.modal-body').html($body);
+
+                $target.find('.modal-loading').hide();
+                $target.find('.modal-body').show();
             });
-
-            //$($(this).data("target") + ' .modal-body').load($(this).attr("href"));
-
-
-            //var $modalBody = $($(this).data("target") + ' .modal-body');
-            //var $header = $modalBody.find('.header');
-            //var $modalHeader = $($(this).data("target") + ' .modal-header');
-            //$modalHeader.find('.close').prevAll().remove();
-            //$modalHeader.prepend($header);
         });
 
         $grid.find('[data-toggle="tooltip"]').tooltip();

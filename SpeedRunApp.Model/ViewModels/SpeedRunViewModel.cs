@@ -17,24 +17,27 @@ namespace SpeedRunApp.Model.ViewModels
             PlayerUsers = run.PlayerUsers;
             PlayerGuests = run.PlayerGuests;
             GameID = run.GameID;
-            GameName = run.Game.Name;
-            GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
+            GameName = run.Game?.Name;
+            GameCoverImageLink = run.Game?.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
-            CategoryName = run.Category.Name;
-            CategoryType = new IDNamePair { ID = ((int)run.Category.Type).ToString(), Name = run.Category.Type.ToString() };
+            CategoryName = run.Category?.Name;
             PlatformID = run.Platform?.ID;
             PlatformName = run.Platform?.Name;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             IsEmulated = run.System.IsEmulated;
             DateSubmitted = run.DateSubmitted;
-            //VideoLink = run.Videos?.Links?.FirstOrDefault(i => i != null);
-            VideoLinkEmbeded = run.Videos?.EmbededLinks?.FirstOrDefault(i => i != null);
+            VideoLinkEmbeded = run.Videos.EmbededLinks?.FirstOrDefault(i => i != null);
             PrimaryRunTime = run.Times.Primary.Value;
             StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
             VerifyDate = run.Status.VerifyDate;
             RejectedReason = run.Status.Reason;
             Comment = run.Comment;
+
+            if (run.Category != null)
+            {
+                CategoryType = new IDNamePair { ID = ((int)run.Category?.Type).ToString(), Name = run.Category?.Type.ToString() };
+            }
         }
 
         public string ID { get; set; }
@@ -98,7 +101,6 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return VideoLinkEmbeded?.AbsoluteUri;
-                //VideoLinkEmbeded?.AbsoluteUri;
             }
         }
 

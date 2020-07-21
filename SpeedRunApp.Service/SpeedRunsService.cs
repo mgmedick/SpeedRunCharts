@@ -38,10 +38,11 @@ namespace SpeedRunApp.Service
             return runListVM;
         }
 
-        public SpeedRunViewModel GetSpeedRun(string runId, SpeedRunEmbeds embeds = default(SpeedRunEmbeds))
+        public SpeedRunViewModel GetSpeedRun(string runID)
         {
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = false, EmbedLevel = false, EmbedPlatform = false };
             ClientContainer clientContainer = new ClientContainer();
-            var run = clientContainer.Runs.GetRun(runId, embeds);
+            var run = clientContainer.Runs.GetRun(runID, runEmbeds);
             var runVM = new SpeedRunViewModel(run);
 
             return runVM;

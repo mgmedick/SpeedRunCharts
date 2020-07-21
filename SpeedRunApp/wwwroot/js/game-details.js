@@ -21,6 +21,17 @@ function initializeEvents() {
     $('.date').datepicker();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
+    //$('#videoLinkModal').on('show.bs.modal', function (event) {
+    //    var $header = $('#videoLinkModal').find('.modal-body .header');
+    //    var $modalHeader = $('#videoLinkModal').find('.modal-header');
+    //    $modalHeader.find('.close').prevAll().remove();
+    //    $modalHeader.prepend($header);
+    //    //if ($modalHeader.find('.close').prev().length > 0) {
+    //    //    $modalHeader.find('.close').prev().html($header);
+    //    //} else {
+    //    //    $modalHeader.prepend($header);
+    //    //}
+    //});
 
     $('#btnSearch').click(runSearch);
 
@@ -199,7 +210,25 @@ function initializeGrid(element) {
 
     function initializeGridEvents() {
         $('[data-toggle="modal"]').click(function () {
-            $($(this).data("target") + ' .modal-body').load($(this).attr("href"));
+            var $target = $($(this).data("target"));
+            //$($(this).data("target") + ' .modal-body').load($(this).attr("href"));
+
+            $.get($(this).attr("href"), function (data) {
+                var $header = $(data).find('.header');
+                var $body = $(data).find('.header').next();
+                $target.find('.modal-header .close').prevAll().remove();
+                $target.find('.modal-header').prepend($header);
+                $target.find('.modal-body').html($body);
+            });
+
+            //$($(this).data("target") + ' .modal-body').load($(this).attr("href"));
+
+
+            //var $modalBody = $($(this).data("target") + ' .modal-body');
+            //var $header = $modalBody.find('.header');
+            //var $modalHeader = $($(this).data("target") + ' .modal-header');
+            //$modalHeader.find('.close').prevAll().remove();
+            //$modalHeader.prepend($header);
         });
     }
 

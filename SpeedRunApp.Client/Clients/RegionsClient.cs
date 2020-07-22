@@ -20,27 +20,6 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        //public Region GetRegionFromSiteUri(string siteUri)
-        //{
-        //    var id = GetRegionIDFromSiteUri(siteUri);
-
-        //    if (string.IsNullOrEmpty(id))
-        //        return null;
-
-        //    return GetRegion(id);
-        //}
-
-        //public string GetRegionIDFromSiteUri(string siteUri)
-        //{
-        //    var elementDescription = GetElementDescriptionFromSiteUri(siteUri);
-
-        //    if (elementDescription == null
-        //        || elementDescription.Type != ElementType.Region)
-        //        return null;
-
-        //    return elementDescription.ID;
-        //}
-
         public IEnumerable<Region> GetRegions(int? elementsPerPage = null,
             RegionsOrdering orderBy = default(RegionsOrdering))
         {

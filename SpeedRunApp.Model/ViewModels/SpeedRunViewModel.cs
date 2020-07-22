@@ -33,6 +33,7 @@ namespace SpeedRunApp.Model.ViewModels
             VerifyDate = run.Status.VerifyDate;
             RejectedReason = run.Status.Reason;
             Comment = run.Comment;
+            SplitsLink = run.SplitsUri;
 
             if (run.Category != null)
             {
@@ -64,6 +65,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string RejectedReason { get; set; }
         public string Comment { get; set; }
         public Uri VideoLinkEmbeded { get; set; }
+        public Uri SplitsLink { get; set; }
         public TimeSpan PrimaryRunTime { get; set; }
         public string GameCoverImageLinkString
         {
@@ -102,6 +104,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return VideoLinkEmbeded?.AbsoluteUri;
+            }
+        }
+
+        public string SplitsLinkString
+        {
+            get
+            {
+                return SplitsLink?.AbsoluteUri;
             }
         }
 

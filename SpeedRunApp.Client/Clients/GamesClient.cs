@@ -24,27 +24,6 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        //public Game GetGameFromSiteUri(string siteUri, GameEmbeds embeds = default(GameEmbeds))
-        //{
-        //    var id = GetGameIDFromSiteUri(siteUri);
-
-        //    if (string.IsNullOrEmpty(id))
-        //        return null;
-
-        //    return GetGame(id, embeds);
-        //}
-
-        //public string GetGameIDFromSiteUri(string siteUri)
-        //{
-        //    var elementDescription = GetElementDescriptionFromSiteUri(siteUri);
-
-        //    if (elementDescription == null
-        //        || elementDescription.Type != ElementType.Game)
-        //        return null;
-
-        //    return elementDescription.ID;
-        //}
-
         public IEnumerable<Game> GetGames(
             string name = null, int? yearOfRelease = null, 
             string platformId = null, string regionId = null, 

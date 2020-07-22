@@ -22,27 +22,6 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        //public Variable GetVariableFromSiteUri(string siteUri)
-        //{
-        //    var id = GetVariableIDFromSiteUri(siteUri);
-
-        //    if (string.IsNullOrEmpty(id))
-        //        return null;
-
-        //    return GetVariable(id);
-        //}
-
-        //public string GetVariableIDFromSiteUri(string siteUri)
-        //{
-        //    var elementDescription = GetElementDescriptionFromSiteUri(siteUri);
-
-        //    if (elementDescription == null
-        //        || elementDescription.Type != ElementType.Variable)
-        //        return null;
-
-        //    return elementDescription.ID;
-        //}
-
         public Variable GetVariable(string variableId)
         {
             var uri = GetVariablesUri(string.Format("/{0}",

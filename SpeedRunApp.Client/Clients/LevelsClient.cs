@@ -22,27 +22,6 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        //public Level GetLevelFromSiteUri(string siteUri, LevelEmbeds embeds = default(LevelEmbeds))
-        //{
-        //    var id = GetLevelIDFromSiteUri(siteUri);
-
-        //    if (string.IsNullOrEmpty(id))
-        //        return null;
-
-        //    return GetLevel(id, embeds);
-        //}
-
-        //public string GetLevelIDFromSiteUri(string siteUri)
-        //{
-        //    var elementDescription = GetElementDescriptionFromSiteUri(siteUri);
-
-        //    if (elementDescription == null
-        //        || elementDescription.Type != ElementType.Level)
-        //        return null;
-
-        //    return elementDescription.ID;
-        //}
-
         public Level GetLevel(string levelId, 
             LevelEmbeds embeds = null)
         {

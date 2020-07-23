@@ -98,5 +98,6 @@ namespace SpeedRunApp.Model.ViewModels
         public List<GameDisplay> Games { get; set; }
         public List<CategoryDisplay> Categories { get; set; }
         public List<LevelDisplay> Levels { get; set; }
+        public bool ShowDataOnly { get; set; }
     }
 }

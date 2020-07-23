@@ -1,14 +1,12 @@
-﻿var _categoryTypes;
-var _games;
+﻿var _games;
 var _categories;
-var _levels;
+var _speedRuns;
 
 /**Initialize Event Functions**/
-function initializeClient(categoryTypes, games, categories, levels) {
-    _categoryTypes = categoryTypes;
+function initializeClient(games, categories, speedRuns) {
     _games = games;
     _categories = categories;
-    _levels = levels;
+    _speedRuns = speedRuns;
 
     initializeEvents();
 
@@ -123,6 +121,7 @@ function onLevelTabClick(element) {
 }
 
 //Search Handlers
+
 function onCategoryTypeChange(element) {
     var selectedCategoryTypeIDs = $(element).val();
 
@@ -154,12 +153,13 @@ function initializeGrid(element) {
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid');
-    var startDate = $('#txtStartDate').val();
-    var endDate = $('#txtEndDate').val();
+    //var startDate = $('#txtStartDate').val();
+    //var endDate = $('#txtEndDate').val();
+    var localData = $(_speedRuns).filter(function () { return this.gameID == gameID && this.categoryType == categoryType && this.categoryID == categoryID && this.levelID == levelID });
 
     grid.jqGrid({
-        url: 'GameSpeedRunGrid_Read?gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID + '&startDate=' + startDate + '&endDate=' + endDate,
-        datatype: "json",
+        datatype: "local",
+        data: localData,
         mtype: "GET",
         height: '100%',
         //autowidth: true,

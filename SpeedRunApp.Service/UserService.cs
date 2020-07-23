@@ -39,6 +39,21 @@ namespace SpeedRunApp.Service
             return user;
         }
 
+
+        public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        {
+            var runs = GetUserSpeedRuns(userID);
+            runs = runs.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
+                                                        && (!drpGames.Any() || drpGames.Contains(i.GameID))
+                                                        && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
+                                                        && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
+                                                        .ToList();
+
+            var userSpeedRunGridVM = GetUserSpeedRunGrid(runs);
+
+            return userSpeedRunGridVM;
+        }
+
         public SpeedRunGridViewModel GetUserSpeedRunGrid(IEnumerable<SpeedRun> speedRuns)
         {
             var categoryTypes = speedRuns?.Select(i => i.Category.Type)
@@ -83,20 +98,6 @@ namespace SpeedRunApp.Service
                             .OrderBy(i => i.Name);
 
             return new SpeedRunGridViewModel("User", categoryTypes, games, categories, levels, speedRuns);
-        }
-
-        public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
-        {
-            var runs = GetUserSpeedRuns(userID);
-            runs = runs.Where(i => (!drpCategoryTypes.Any() || drpCategoryTypes.Contains(((int)i.Category.Type).ToString()))
-                                                        && (!drpGames.Any() || drpGames.Contains(i.GameID))
-                                                        && (!drpCategories.Any() || drpCategories.Contains(i.CategoryID))
-                                                        && (!drpLevels.Any() || drpLevels.Contains(i.LevelID)))
-                                                        .ToList();
-
-            var userSpeedRunGridVM = GetUserSpeedRunGrid(runs);
-
-            return userSpeedRunGridVM;
         }
 
         public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate, DateTime? endDate)

@@ -301,8 +301,14 @@ function initializeGrid(element) {
         return values;
     }
 
-    function optionsFormatter(value, options, rowObject) {
-        return "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + value + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+    function optionsFormatter(cellvalue, options, rowObject) {
+        var html = "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+
+        if (rowObject.splitsLink) {
+            html += "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>";
+        }
+
+        return html;
     }
 
     function playerFormatter(value, options, rowObject) {

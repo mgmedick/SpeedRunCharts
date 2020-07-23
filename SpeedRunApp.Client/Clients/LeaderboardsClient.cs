@@ -332,7 +332,7 @@ namespace SpeedRunApp.Client
             }
             else if (!string.IsNullOrWhiteSpace(leaderboard.LevelID))
             {
-                var variables = (leaderboard.Category.Variables ?? new List<Variable>()).Concat(leaderboard.Level.Variables ?? new List<Variable>());
+                var variables = (leaderboard.Category?.Variables ?? new List<Variable>()).Concat(leaderboard.Level?.Variables ?? new List<Variable>());
 
                 //patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;

@@ -30,29 +30,10 @@ namespace SpeedRunApp.Service
             return game;
         }
 
-        public SpeedRunGridViewModel GetGameSpeedRunGrid(Game game)
-        {
-            var categoryTypes = game.CategoryTypes
-                    .Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() })
-                    .ToList();
-
-            var games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
-
-            var categories = game.Categories
-                            .Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID })
-                            .ToList();
-
-            var levels = game.Levels
-                         .Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID })
-                         .ToList();
-
-            return new SpeedRunGridViewModel("Game", categoryTypes, games, categories, levels);
-        }
-
-        public SpeedRunGridViewModel SearchGameSpeedRunGrid(string gameID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        public SpeedRunGridViewModel SearchGameSpeedRunGrid(string gameID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels, DateTime? startDate = null, DateTime? endDate = null)
         {
             var game = GetGame(gameID);
-            var gameSpeedRunGridVM = GetGameSpeedRunGrid(game);
+            var gameSpeedRunGridVM = GetGameSpeedRunGrid(game, startDate, endDate);
 
             if (drpCategoryTypes.Any())
             {
@@ -72,30 +53,36 @@ namespace SpeedRunApp.Service
             return gameSpeedRunGridVM;
         }
 
+        public SpeedRunGridViewModel GetGameSpeedRunGrid(Game game, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var categoryTypes = game.CategoryTypes
+                    .Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() })
+                    .ToList();
+
+            var games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
+
+            var categories = game.Categories
+                            .Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID })
+                            .ToList();
+
+            var levels = game.Levels
+                         .Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID })
+                         .ToList();
+
+            var records = GetGameSpeedRuns(game);
+
+            return new SpeedRunGridViewModel("Game", categoryTypes, games, categories, levels, records.Cast<SpeedRun>());
+        }
+
+        /*
         public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate, DateTime? endDate)
         {
-            Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
-
-            if (categoryType == CategoryType.PerGame)
-            {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, filterOutRunsAfter: endDate, embeds: leaderboardEmbeds);
-            }
-            else
-            {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, filterOutRunsAfter: endDate, embeds: leaderboardEmbeds);
-            }
-
-            if (startDate.HasValue)
-            {
-                leaderboard.Records = leaderboard.Records.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value >= startDate.Value);
-            }
-
+            var records = GetGameSpeedRuns(gameID, categoryType, categoryID, levelID, startDate, endDate);
             List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
             var game = GetGame(gameID);
 
-            foreach (var record in leaderboard.Records)
+            foreach (var record in records)
             {
                 var recordVM = new SpeedRunRecordViewModel(record);
                 if (!string.IsNullOrWhiteSpace(record.Status.ExaminerUserID))
@@ -119,6 +106,51 @@ namespace SpeedRunApp.Service
             }
 
             return recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds);
+        }
+        */
+
+        public IEnumerable<SpeedRunRecord> GetGameSpeedRuns(Game game, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            //var game = GetGame(gameID);
+
+            List<SpeedRunRecord> records = new List<SpeedRunRecord>();
+            foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerGame))
+            {
+                records.AddRange(GetGameSpeedRuns(game.ID, CategoryType.PerGame, category.ID, null, startDate, endDate));
+            }
+
+            //foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerLevel))
+            //{
+            //    foreach (var level in game.Levels)
+            //    {
+            //        records.AddRange(GetGameSpeedRuns(game.ID, CategoryType.PerLevel, category.ID, level.ID, startDate, endDate));
+            //    }
+            //}
+
+            return records;
+        }
+
+        public IEnumerable<SpeedRunRecord> GetGameSpeedRuns(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            Leaderboard leaderboard = null;
+            ClientContainer clientContainer = new ClientContainer();
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+
+            if (categoryType == CategoryType.PerGame)
+            {
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, filterOutRunsAfter: endDate, embeds: leaderboardEmbeds);
+            }
+            else
+            {
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, filterOutRunsAfter: endDate, embeds: leaderboardEmbeds);
+            }
+
+            if (startDate.HasValue)
+            {
+                leaderboard.Records = leaderboard.Records.Where(i => i.DateSubmitted.HasValue && i.DateSubmitted.Value >= startDate.Value);
+            }
+
+            return leaderboard.Records;
         }
     }
 }

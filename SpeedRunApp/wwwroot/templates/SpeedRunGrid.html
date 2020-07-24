@@ -1,0 +1,124 @@
+﻿<div>
+    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px; display:<%= (item.sender == 'User') ? 'none' : 'block' %>">
+        <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+        <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
+            <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+            <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
+                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.CategoryTypeID %>" data-categoryid="<%= category.id %>">
+                    <div class="chart-container" data-index="0"></div>
+                    <div class="chart-container pl-2" data-index="1"></div>
+                    <div class="chart-container pl-2" data-index="2"></div>
+                </div>
+                <div class="level-results-charts">
+                    <% _.each(item.levels, function(level, levelIndex) { %>
+                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.CategoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
+                        <div class="chart-container" data-index="0"></div>
+                        <div class="chart-container pl-2" data-index="1"></div>
+                        <div class="chart-container pl-2" data-index="2"></div>
+                    </div>
+                    <% }) %>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+        <% }) %>
+    </div>
+    <div id="divGridContainer" class="pt-4">
+        <div class="row no-gutters p-1">
+            <div class="col-auto align-self-end ">
+                <label class="font-weight-bold">Category Type:</label>
+            </div>
+            <div class="col pl-2">
+                <ul class="nav nav-pills">
+                    <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+                    <li class="nav-item categoryType">
+                        <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-tab" class="nav-link <%= (categoryTypeIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>" data-toggle="pill"><%= categoryType.name %></a>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+        <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+        <div class="grid-container">
+            <div id="divCategoryType-<%= categoryTypeIndex.toString() %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
+                <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="display:<%= (item.sender == 'Game') ? 'none' : 'block' %>">
+                    <div class="col align-self-end"><label class="font-weight-bold">Game:</label></div>
+                    <div class="col-11 pl-2 scroller-tab-wrapper">
+                        <div class="row no-gutters">
+                            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                            <div class="col scroller-tab-list-container">
+                                <ul class="nav nav-tabs scroller-tab-list">
+                                    <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
+                                    <li class="nav-item game">
+                                        <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-tab" class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>" data-toggle="tab"><%= game.name %></a>
+                                    </li>
+                                    <% }) %>
+                                </ul>
+                            </div>
+                            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
+                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
+                    <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
+                        <div class="col align-self-end"><label class="font-weight-bold">Category:</label></div>
+                        <div class="col-11 pl-2 scroller-tab-wrapper">
+                            <div class="row no-gutters">
+                                <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                                <div class="col scroller-tab-list-container">
+                                    <ul class="nav nav-tabs scroller-tab-list">
+                                        <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+                                        <li class="nav-item category">
+                                            <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-tab" class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" data-toggle="tab" data-categorytype="<%= category.CategoryTypeID %>"><%= category.name %></a>
+                                        </li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
+                        <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
+                            <div class="col align-self-end"><label class="font-weight-bold">Level:</label></div>
+                            <div class="col-11 pl-2 scroller-tab-wrapper">
+                                <div class="row no-gutters">
+                                    <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+                                    <div class="col scroller-tab-list-container">
+                                        <ul class="nav nav-tabs scroller-tab-list">
+                                            <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id }), function(level, levelIndex) { %>
+                                            <li class="nav-item level">
+                                                <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-tab" class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>" data-toggle="tab"><%= level.name %></a>
+                                            </li>
+                                            <% }) %>
+                                        </ul>
+                                    </div>
+                                    <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-NA" class="category-results" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>">
+                            <table class="grid"></table>
+                            <div id="divPager-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-NA" class="pager"></div>
+                        </div>
+                        <div class="level-results">
+                            <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id }), function(level, levelIndex) { %>
+                            <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>" class="level-tab-pane" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
+                                <table class="grid"></table>
+                                <div id="divPager-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>" class="pager"></div>
+                            </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+

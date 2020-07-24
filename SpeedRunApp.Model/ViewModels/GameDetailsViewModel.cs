@@ -15,6 +15,10 @@ namespace SpeedRunApp.Model.ViewModels
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
+            SearchGames = new List<GameDisplay>();
+            SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
+            SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
+            SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
         }
 
         public string ID { get; set; }
@@ -22,6 +26,9 @@ namespace SpeedRunApp.Model.ViewModels
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        public SpeedRunGridViewModel SpeedRunGridVM { get; set; }
+        public IEnumerable<IDNamePair> SearchCategoryTypes { get; set; }
+        public IEnumerable<GameDisplay> SearchGames { get; set; }
+        public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
+        public IEnumerable<LevelDisplay> SearchLevels { get; set; }
     }
 }

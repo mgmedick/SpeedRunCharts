@@ -49,7 +49,7 @@
     <script src="@Url.Content("~/js/charts/game-details-charts/speed-run-summary-by-month-controller.js")" type="text/javascript"></script>
     <script>
         $().ready(
-            initializeClient(@Html.Raw(Json.Serialize(Model.SpeedRunGridVM.Games)), @Html.Raw(Json.Serialize(Model.SpeedRunGridVM.Categories)), @Html.Raw(Json.Serialize(Model.SpeedRunGridVM.SpeedRuns)))
+            initializeClient(@Html.Raw(Json.Serialize(Model.SearchCategories)))
         );
     </script>
 }
@@ -68,10 +68,9 @@
         </div>
     </div>
     <div class="container ml-0 pt-4">
-        @await Html.PartialAsync("_SearchSpeedRunGrid", Model.SpeedRunGridVM)
+        @await Html.PartialAsync("_SearchSpeedRunGrid", new SearchSpeedRunGridViewModel("Game", Model.SearchCategoryTypes, Model.SearchGames, Model.SearchCategories, Model.SearchLevels))
     </div>
-    <div id="divGameSpeedRunGrid" class="pt-4 pl-3">
-        @await Html.PartialAsync("_SpeedRunGrid", Model.SpeedRunGridVM)
+    <div id="divSpeedRunGrid" class="pt-4 pl-3">
     </div>
     <input type="hidden" id="hdnGameID" name="gameID" value="@Html.DisplayFor(i=>i.ID)" />
 </div>

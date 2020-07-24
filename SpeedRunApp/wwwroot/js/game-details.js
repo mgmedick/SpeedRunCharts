@@ -1,17 +1,14 @@
-﻿var _games;
-var _categories;
-var _speedRuns;
+﻿var sra = {};
 
 /**Initialize Event Functions**/
-function initializeClient(games, categories, speedRuns) {
-    _games = games;
-    _categories = categories;
-    _speedRuns = speedRuns;
+function initializeClient(searchCategories) {
+    if (!sra) {
+        sra = {};
+    }
+
+    sra['searchCategories'] = searchCategories;
 
     initializeEvents();
-
-    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-    onCategoryTypeTabClick($activeCategoryTypeTab);
 }
 
 function initializeEvents() {
@@ -20,18 +17,41 @@ function initializeEvents() {
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 
-
     $('#btnSearch').click(runSearch);
 
     $('#drpCategoryTypes').change(function () {
         onCategoryTypeChange(this);
     });
 
-    initializeGridContainerEvents();
+    loadSpeedRunGridTemplate();
     initializeScrollerGlobalEvents();
 }
 
-function initializeGridContainerEvents() {
+function loadSpeedRunGridTemplate() {
+    $.get('GetGameSpeedRunGrid?gameID=' + $('#hdnGameID').val(), function (data, status) {
+        sra['speedRunGridModel'] = data;
+        $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (template, status) {
+            sra['speedRunGridTemplate'] = template;
+            renderTemplate(template, data, $('#divSpeedRunGrid'));
+            initializeSpeedRunGridEvents();
+
+            var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+            onCategoryTypeTabClick($activeCategoryTypeTab);
+        });
+    });
+}
+
+function renderTemplate(template, data, element) {
+    var _template = _.template(template);
+
+    var html = _template({
+        item: data
+    });
+
+    $(element).html(html);
+}
+
+function initializeSpeedRunGridEvents() {
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
@@ -90,7 +110,7 @@ function onCategoryTabClick(element) {
 
         if (!$activeCategoryPane.find('.grid')[0].grid) {
             initializeGrid($activeCategoryPane);
-            initializeCharts($activeCategoryChartsPane);
+            //initializeCharts($activeCategoryChartsPane);
         }
 
         $container.find('.level-tabs').hide();
@@ -110,7 +130,7 @@ function onLevelTabClick(element) {
 
     if (!$container.find('.grid')[0].grid) {
         initializeGrid($container);
-        initializeCharts($chartContainer);
+        //initializeCharts($chartContainer);
     }
 
     $('.level-tab-pane').hide();
@@ -125,15 +145,10 @@ function onLevelTabClick(element) {
 function onCategoryTypeChange(element) {
     var selectedCategoryTypeIDs = $(element).val();
 
-    var $games = $(_games).filter(function () {
-        return (selectedCategoryTypeIDs.length == 0 || $(selectedCategoryTypeIDs).filter(this.categoryTypeIDs).length > 0);
-    });
-
-    var $categories = $(_categories).filter(function () {
+    var $categories = $(sra.searchCategories).filter(function () {
         return (selectedCategoryTypeIDs.length == 0 || selectedCategoryTypeIDs.indexOf(this.categoryTypeID) > -1);
     });
 
-    repopulateDropDown($('#drpGames'), $games);
     repopulateDropDown($('#drpCategories'), $categories);
 
     if (selectedCategoryTypeIDs.indexOf("1") > -1) {
@@ -153,14 +168,11 @@ function initializeGrid(element) {
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid');
-    //var startDate = $('#txtStartDate').val();
-    //var endDate = $('#txtEndDate').val();
-    var localData = $(_speedRuns).filter(function () { return this.gameID == gameID && this.categoryType == categoryType && this.categoryID == categoryID && this.levelID == levelID });
+    var localData = $(sra.speedRunGridModel.speedRunRecordVMs).filter(function () { return this.gameID == gameID && this.categoryType.id == categoryType && this.categoryID == categoryID && this.levelID == levelID }).toArray();
 
     grid.jqGrid({
         datatype: "local",
         data: localData,
-        mtype: "GET",
         height: '100%',
         //autowidth: true,
         //shrinkToFit: true,

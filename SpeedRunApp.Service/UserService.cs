@@ -97,7 +97,7 @@ namespace SpeedRunApp.Service
                             })
                             .OrderBy(i => i.Name);
 
-            return new SpeedRunGridViewModel("User", categoryTypes, games, categories, levels, speedRuns);
+            return new SpeedRunGridViewModel("User", categoryTypes, games, categories, levels, speedRuns.Select(i => new SpeedRunViewModel(i)));
         }
 
         public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate, DateTime? endDate)

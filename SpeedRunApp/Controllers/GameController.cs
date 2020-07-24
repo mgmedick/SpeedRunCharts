@@ -31,12 +31,20 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GameSpeedRunGrid_Read(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
+        public JsonResult GetGameSpeedRunGrid(string gameID)
         {
-            var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, startDate, endDate);
+            var speedRunGridVM = _gamesService.GetGameSpeedRunGrid(gameID);
 
-            return Json(recordVMs);
+            return Json(speedRunGridVM);
         }
+
+        //[HttpGet]
+        //public JsonResult GameSpeedRunGrid_Read(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
+        //{
+        //    var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, startDate, endDate);
+
+        //    return Json(recordVMs);
+        //}
 
         [HttpGet]
         public JsonResult GetGameDetailsCharts()
@@ -46,13 +54,13 @@ namespace SpeedRunApp.WebUI.Controllers
             return Json(charts.Select((v, i) => new { name = v, index = i }));
         }
 
-        [HttpPost]
-        public PartialViewResult SearchGameSpeedRunGrid(string gameID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
-        {
-            var gameGridVM = _gamesService.SearchGameSpeedRunGrid(gameID, drpCategoryTypes, drpGames, drpCategories, drpLevels);
+        //[HttpPost]
+        //public PartialViewResult SearchGameSpeedRunGrid(string gameID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
+        //{
+        //    var gameGridVM = new SpeedRunGridViewModel();//_gamesService.SearchGameSpeedRunGrid(gameID, drpCategoryTypes, drpGames, drpCategories, drpLevels);
 
-            return PartialView("_SpeedRunGrid", gameGridVM);
-        }
+        //    return PartialView("_SpeedRunGrid", gameGridVM);
+        //}
 
         public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
         {

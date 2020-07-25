@@ -15,7 +15,7 @@ namespace SpeedRunApp.Model.ViewModels
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
-            SearchGames = new List<GameDisplay>();
+            SearchGames = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();

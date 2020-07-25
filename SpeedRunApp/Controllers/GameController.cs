@@ -47,6 +47,14 @@ namespace SpeedRunApp.WebUI.Controllers
         //}
 
         [HttpGet]
+        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false)
+        {
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
+
+            return Json(new { Data = recordVMs });
+        }
+
+        [HttpGet]
         public JsonResult GetGameDetailsCharts()
         {
             List<string> charts = new List<string>() { "SpeedRunSummaryByMonth", "SpeedRunsReported", "SpeedRunsByUser" };

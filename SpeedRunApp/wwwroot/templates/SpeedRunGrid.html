@@ -4,14 +4,14 @@
         <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
             <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
             <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
-                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.CategoryTypeID %>" data-categoryid="<%= category.id %>">
+                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
                     <div class="chart-container" data-index="0"></div>
                     <div class="chart-container pl-2" data-index="1"></div>
                     <div class="chart-container pl-2" data-index="2"></div>
                 </div>
                 <div class="level-results-charts">
                     <% _.each(item.levels, function(level, levelIndex) { %>
-                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.CategoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
+                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
                         <div class="chart-container" data-index="0"></div>
                         <div class="chart-container pl-2" data-index="1"></div>
                         <div class="chart-container pl-2" data-index="2"></div>
@@ -23,7 +23,7 @@
         </div>
         <% }) %>
     </div>
-    <div id="divGridContainer" class="pt-4">
+    <div id="divGridContainer" class="pt-2">
         <div class="row no-gutters p-1">
             <div class="col-auto align-self-end ">
                 <label class="font-weight-bold">Category Type:</label>
@@ -70,7 +70,7 @@
                                     <ul class="nav nav-tabs scroller-tab-list">
                                         <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                                         <li class="nav-item category">
-                                            <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-tab" class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" data-toggle="tab" data-categorytype="<%= category.CategoryTypeID %>"><%= category.name %></a>
+                                            <a id="ankCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-tab" class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" data-toggle="tab" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %></a>
                                         </li>
                                         <% }) %>
                                     </ul>

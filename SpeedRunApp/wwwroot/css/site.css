@@ -262,6 +262,7 @@ input, textarea, select, option:focus {
     font-size: 14px;
     line-height: 15px;
     margin-bottom: 0px;
+    display: block;
 }
 
 input.date {

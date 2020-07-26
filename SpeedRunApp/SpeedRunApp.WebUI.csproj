@@ -26,6 +26,7 @@
     <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
   </ItemGroup>
 
   <ItemGroup>

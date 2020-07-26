@@ -28,7 +28,7 @@ function initalizeConstants(searchCategoryTypes, searchGames, searchCategories, 
 function initializeEvents() {
     $('.chosen').chosen({ width: "250px" });
     $('.date').datepicker();
-    $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
+    $('#divSearch').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 
     $('#btnSearch').click(runSearch);
@@ -64,7 +64,6 @@ function loadSpeedRunGridTemplate() {
             $('#divSpeedRunGridProgressBar').css('width', '100%');
             $('#divSpeedRunGrid').show();
             $('#divSpeedRunGridLoading').hide();
-
         });
     });
 }
@@ -73,17 +72,16 @@ function getSpeedRunGridData() {
     var promises = [];
     var items = [];
     var def = $.Deferred();
-    var dataCount = (sra.searchCategories.length); //+ (sra.searchLevels.length);
+    var dataCount = ((sra.searchCategories.length) + ($(sra.searchCategories).filter(function () { return this.categoryTypeID == 1 }).length * sra.searchLevels.length)) * 2;
     var progressCount = 0;
-    var progressPercent = 0;
 
     $(sra.searchCategories).each(function () {
         if (this.categoryTypeID == 0) {
+            updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
+
             var request = $.get('GetGameSpeedRunRecords?gameID=' + this.gameID + "&categoryType=" + this.categoryTypeID + "&categoryID=" + this.id, function (data, status) {
                 items.push(data.data);
-                progressPercent = Math.ceil((++progressCount / dataCount) * 100);
-                $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-                $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
+                updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
             });
 
             promises.push(request)
@@ -92,16 +90,16 @@ function getSpeedRunGridData() {
             var categoryTypeID = this.categoryTypeID;
             var categoryID = this.id;
 
-            //$(sra.searchLevels).each(function () {
-            //    var request = $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + this.id, function (data, status) {
-            //        items.push(data.data);
-            //        progressPercent = Math.ceil((++progressCount / dataCount) * 100);
-            //        $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-            //        $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
-            //    });
+            $(sra.searchLevels).each(function () {
+                updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
 
-            //    promises.push(request);
-            //});
+                var request = $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + this.id, function (data, status) {
+                    items.push(data.data);
+                    updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
+                });
+
+                promises.push(request);
+            });
         }
     });
 
@@ -111,6 +109,37 @@ function getSpeedRunGridData() {
 
     return def.promise();
 }
+
+function updateProgressBar(currentCount, fullCount, element) {
+    var progressPercent = Math.ceil(((currentCount / fullCount) * 100));
+    $(element).attr('aria-valuenow', progressPercent).css('width', progressPercent + '%');
+}
+
+//function getSpeedRunGridDataByCategory(gameID, categoryTypeID, categoryID, progressCount, dataCount, items) {
+//    var progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
+//    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
+//    $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
+
+//    $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID, function (data, status) {
+//        items.push(data.data);
+//        progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
+//        $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
+//        $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
+//    });
+//}
+
+//function getSpeedRunGridDataByLevel(gameID, categoryTypeID, categoryID, levelID, progressCount, dataCount, items) {
+//    var progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
+//    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
+//    $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
+
+//    $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + levelID, function (data, status) {
+//        items.push(data.data);
+//        progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
+//        $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
+//        $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
+//    });
+//}
 
 //function loadSpeedRunGridTemplate() {
 //    $('#divSpeedRunGrid').hide();
@@ -231,7 +260,6 @@ function onLevelTabClick(element) {
 }
 
 //Search Handlers
-
 function onCategoryTypeChange(element) {
     var selectedCategoryTypeIDs = $(element).val();
 
@@ -268,10 +296,9 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Level", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden"],
+        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden"],
         colModel: [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center", classes: 'options' },
-            { name: "levelName", width: 125, hidden: categoryType != 1 },
             { name: "rankString", width: 75, sorttype: "number" },
             { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platformName", width: 160 },
@@ -324,7 +351,6 @@ function initializeGrid(element) {
 
     function initializeGridFilters(element) {
         var gridData = $(element).jqGrid("getGridParam", "data");
-        var levelNames = GetUniqueValues($.map(gridData, function (item) { return item.levelName; })).sort();
         var rankStrings = GetUniqueValues($.map(gridData, function (item) { return item.rankString; })).sort();
         var categoryNames = GetUniqueValues($.map(gridData, function (item) { return item.categoryName; })).sort();
         var platformNames = GetUniqueValues($.map(gridData, function (item) { return item.platformName; })).sort();
@@ -349,7 +375,6 @@ function initializeGrid(element) {
         });
         playerNames = playerNames.sort();
 
-        setSearchSelect($(element), 'levelName', levelNames);
         setSearchSelect($(element), 'rankString', rankStrings);
         setSearchSelect($(element), 'playerUsers', playerNames);
         setSearchSelect($(element), 'categoryName', categoryNames);

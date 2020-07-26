@@ -19,6 +19,7 @@ function initializeScrollerEvents(element) {
         var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
         var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
 
+        $(scrollerTabRight).off('click');
         $(scrollerTabRight).on('click', function () {
             $(scrollerTabLeft).fadeIn('slow');
             $(scrollerTabRight).fadeOut('slow');
@@ -27,6 +28,7 @@ function initializeScrollerEvents(element) {
 
         });
 
+        $(scrollerTabLeft).off('click');
         $(scrollerTabLeft).on('click', function () {
             $(scrollerTabRight).fadeIn('slow');
             $(scrollerTabLeft).fadeOut('slow');

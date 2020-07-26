@@ -16,7 +16,7 @@ namespace SpeedRunApp.WebUI.Controllers
     {
         private readonly IGamesService _gamesService = null;
         private readonly ISpeedRunsService _speedRunService = null;
-
+        
         public GameController(IGamesService gamesService, ISpeedRunsService speedRunService)
         {
             _gamesService = gamesService;
@@ -26,7 +26,7 @@ namespace SpeedRunApp.WebUI.Controllers
         public ViewResult GameDetails(string gameID)
         {
             var gameVM = _gamesService.GetGameDetails(gameID);
-
+            
             return View(gameVM);
         }
 

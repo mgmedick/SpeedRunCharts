@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon;
 using SpeedRunApp.Model.Data;
+using Microsoft.AspNetCore.Html;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -12,9 +13,12 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = game.ID;
             Name = game.Name;
+            JapaneseName = game.JapaneseName;
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
+            ModeratorUsers = game.ModeratorUsers.OrderBy(i => i.Name);
+            Platforms = game.Platforms;
             SearchGames = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
@@ -23,12 +27,29 @@ namespace SpeedRunApp.Model.ViewModels
 
         public string ID { get; set; }
         public string Name { get; set; }
+        public string JapaneseName { get; set; }
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
+        public IEnumerable<User> ModeratorUsers { get; set; }
+        public IEnumerable<Platform> Platforms { get; set; }
         public IEnumerable<IDNamePair> SearchCategoryTypes { get; set; }
         public IEnumerable<GameDisplay> SearchGames { get; set; }
         public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
         public IEnumerable<LevelDisplay> SearchLevels { get; set; }
+        //public string ModeratorsString
+        //{
+        //    get
+        //    {
+        //        return string.Join(", ", ModeratorUsers.Select(i => string.Format("<a href='../User/UserDetails?userID={0}'>{1}</a>", i.ID, i.Name))).ToHtmlString();
+        //    }
+        //}
+        //public string PlatformsString
+        //{
+        //    get
+        //    {
+        //        return string.Join(", ", Platforms.Select(i => i.Name));
+        //    }
+        //}
     }
 }

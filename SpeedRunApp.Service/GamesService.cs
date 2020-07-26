@@ -73,7 +73,7 @@ namespace SpeedRunApp.Service
             List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
             ClientContainer clientContainer = new ClientContainer();
             Leaderboard leaderboard = null;
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = true, EmbedLevel = true, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
 
             if (categoryType == CategoryType.PerGame)
             {
@@ -84,20 +84,33 @@ namespace SpeedRunApp.Service
                 leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
-            if (includeExaminer)
+            foreach (var record in leaderboard.Records)
             {
-                foreach (var record in leaderboard.Records)
+                var recordVM = new SpeedRunRecordViewModel(record);
+                if (includeExaminer)
                 {
-                    var recordVM = new SpeedRunRecordViewModel(record);
                     var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
                     recordVM.ExaminerName = examiner?.Name;
-                    recordVMs.Add(recordVM);
                 }
+
+                recordVM.CategoryType = new IDNamePair { ID = ((int)categoryType).ToString(), Name = categoryType.ToString() };
+                recordVMs.Add(recordVM);
             }
-            else
-            {
-                recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
-            }
+
+            //if (includeExaminer)
+            //{
+            //    foreach (var record in leaderboard.Records)
+            //    {
+            //        var recordVM = new SpeedRunRecordViewModel(record);
+            //        var examiner = clientContainer.Users.GetUser(record.Status.ExaminerUserID);
+            //        recordVM.ExaminerName = examiner?.Name;
+            //        recordVMs.Add(recordVM);
+            //    }
+            //}
+            //else
+            //{
+            //    recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
+            //}
 
             return recordVMs;
         }

@@ -17,7 +17,7 @@ namespace SpeedRunApp.Client
 
         public BaseClient(ClientContainer client)
         {
-            Timeout = client.Timeout ?? TimeSpan.FromSeconds(30);
+            Timeout = client.Timeout ?? TimeSpan.FromSeconds(120);
 
             UserAgent = client.UserAgent;
             MaxCacheElements = client.MaxCacheElements;

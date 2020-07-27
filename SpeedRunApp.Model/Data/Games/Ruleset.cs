@@ -52,7 +52,7 @@ namespace SpeedRunApp.Model.Data
             if (!list.Any())
                 list.Add("No Rules");
 
-            return list.Aggregate(", ");
+            return string.Join(",", list);//.Aggregate(", ");
         }
     }
 }

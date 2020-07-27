@@ -46,11 +46,7 @@ function loadSpeedRunGridTemplate() {
     $('#divSpeedRunGridLoading').show();
 
     getSpeedRunGridData().then(function (data) {
-        var results = [];
-        for (i = 0; i < data.length; i++) {
-            results = results.concat(data[i]);
-        }
-        var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, results);
+        var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, data);
 
         sra['speedRunGridModel'] = gridModel;
         $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (template, status) {
@@ -69,96 +65,79 @@ function loadSpeedRunGridTemplate() {
 }
 
 function getSpeedRunGridData() {
+    var def1 = $.Deferred();
     var promises = [];
     var items = [];
-    var def = $.Deferred();
-    var dataCount = ((sra.searchCategories.length) + ($(sra.searchCategories).filter(function () { return this.categoryTypeID == 1 }).length * sra.searchLevels.length)) * 2;
+    var maxCount = 100;
+    var gameCategoryCount = $(sra.searchCategories).filter(function () { return this.categoryTypeID == 0 }).length;
+    var levelCategoryCount = $(sra.searchCategories).filter(function () { return this.categoryTypeID == 1 }).length;
+    var dataCount = (gameCategoryCount + (levelCategoryCount * sra.searchLevels.length));
     var progressCount = 0;
+
+    if (dataCount > maxCount) {
+        dataCount = maxCount;
+    }
+
+    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressCount);
+    $('#divSpeedRunGridProgressBar').attr('aria-valuemax', dataCount);
 
     $(sra.searchCategories).each(function () {
         if (this.categoryTypeID == 0) {
-            updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
-
-            var request = $.get('GetGameSpeedRunRecords?gameID=' + this.gameID + "&categoryType=" + this.categoryTypeID + "&categoryID=" + this.id, function (data, status) {
-                items.push(data.data);
-                updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
-            });
-
-            promises.push(request)
+            promises.push(getGameSpeedRunRecords(this.gameID, this.categoryTypeID, this.id, null, (progressCount == 0)));
+            progressCount++;
         } else {
             var gameID = this.gameID;
             var categoryTypeID = this.categoryTypeID;
             var categoryID = this.id;
 
             $(sra.searchLevels).each(function () {
-                updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
+                promises.push(getGameSpeedRunRecords(gameID, categoryTypeID, categoryID, this.id, (progressCount == 0)));
+                progressCount++;
 
-                var request = $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + this.id, function (data, status) {
-                    items.push(data.data);
-                    updateProgressBar(++progressCount, dataCount, $('#divSpeedRunGridProgressBar'));
-                });
-
-                promises.push(request);
+                if (progressCount >= maxCount) {
+                    return false;
+                }
             });
+        }
+
+        if (progressCount >= maxCount) {
+            return false;
         }
     });
 
-    $.when.apply($, promises).then(function () {
-        def.resolve(items);
+    $.when.apply($, promises).then(function (data) {
+        for (i = 0; i < arguments.length; i++) {
+            items = items.concat(arguments[i]);
+        }
+
+        def1.resolve(items);
     });
 
-    return def.promise();
+    return def1.promise();
 }
 
-function updateProgressBar(currentCount, fullCount, element) {
+function getGameSpeedRunRecords(gameID, categoryTypeID, categoryID, levelID, isFirst) {
+    var def = new $.Deferred();
+    var timeout = isFirst ? 0 : 10000;
+
+    setTimeout(function () {
+        $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + levelID, function (data, status) {
+            def.resolve(data.data);
+            updateProgressBar($('#divSpeedRunGridProgressBar'));
+        });
+    }, timeout);
+
+    return def;
+}
+
+function updateProgressBar(element) {
+    var currentCount = parseFloat($(element).attr('aria-valuenow'));
+    currentCount++;
+    var fullCount = parseFloat($(element).attr('aria-valuemax'));
     var progressPercent = Math.ceil(((currentCount / fullCount) * 100));
-    $(element).attr('aria-valuenow', progressPercent).css('width', progressPercent + '%');
+
+    $(element).attr('aria-valuenow', currentCount).css('width', progressPercent + '%');
 }
-
-//function getSpeedRunGridDataByCategory(gameID, categoryTypeID, categoryID, progressCount, dataCount, items) {
-//    var progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
-//    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-//    $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
-
-//    $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID, function (data, status) {
-//        items.push(data.data);
-//        progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
-//        $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-//        $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
-//    });
-//}
-
-//function getSpeedRunGridDataByLevel(gameID, categoryTypeID, categoryID, levelID, progressCount, dataCount, items) {
-//    var progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
-//    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-//    $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
-
-//    $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryTypeID + "&categoryID=" + categoryID + "&levelID=" + levelID, function (data, status) {
-//        items.push(data.data);
-//        progressPercent = parseFloat(((++progressCount / dataCount) * 100) / 2);
-//        $('#divSpeedRunGridProgressBar').attr('aria-valuenow', progressPercent);
-//        $('#divSpeedRunGridProgressBar').css('width', progressPercent + '%');
-//    });
-//}
-
-//function loadSpeedRunGridTemplate() {
-//    $('#divSpeedRunGrid').hide();
-//    $('#divSpeedRunGridLoading').show();
-//    $.get('GetGameSpeedRunGrid?gameID=' + $('#hdnGameID').val(), function (data, status) {
-//        sra['speedRunGridModel'] = data;
-//        $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (template, status) {
-//            sra['speedRunGridTemplate'] = template;
-//            renderTemplate(template, data, $('#divSpeedRunGrid'));
-//            initializeSpeedRunGridEvents();
-
-//            var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-//            onCategoryTypeTabClick($activeCategoryTypeTab);
-
-//            $('#divSpeedRunGrid').show();
-//            $('#divSpeedRunGridLoading').hide();
-//        });
-//    });
-//}
 
 function renderTemplate(template, data, element) {
     var _template = _.template(template);

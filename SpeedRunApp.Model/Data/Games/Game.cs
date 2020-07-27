@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Linq;
-using SpeedrunComSharp.Model;
 using SpeedRunCommon;
 
 namespace SpeedRunApp.Model.Data

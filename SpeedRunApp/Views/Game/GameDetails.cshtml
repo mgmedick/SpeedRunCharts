@@ -1,6 +1,4 @@
 ﻿@using SpeedRunApp.Model.ViewModels;
-@using SpeedRunApp.WebUI.Helpers;
-@using Microsoft.AspNetCore.Html;
 @using SpeedRunCommon;
 @model SpeedRunApp.Model.ViewModels.GameDetailsViewModel
 
@@ -77,8 +75,8 @@
     </div>
     <div class="container ml-0">
         <h4>Details</h4>
-        <div class="pl-3 pt-2">
-            <div class="row no-gutters pt-1">
+        <div class="pl-3">
+            <div class="row no-gutters">
                 <div class="form-group">
                     <label for="spnYearOfRelease">Release Year</label>
                     <span id="spnYearOfRelease">@Model.YearOfRelease</span>
@@ -87,9 +85,7 @@
             <div class="row no-gutters pt-1">
                 <div class="form-group">
                     <label for="spnPlatforms">Platforms</label>
-                    <span id="spnJapaneseName">
-                        @(string.Join(", ", Model.Platforms.Select(i => i.Name)))
-                    </span>
+                    <span id="spnPlatforms">@Model.PlatformsString</span>
                 </div>
             </div>
             <div class="row no-gutters pt-1">
@@ -102,12 +98,12 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid pt-2">
+    <div class="container-fluid pt-3">
         <h4>SpeedRuns</h4>
-        <div class="container ml-0 pt-2">
+        <div class="container ml-0">
             @await Html.PartialAsync("_SearchSpeedRunGrid", new SearchSpeedRunGridViewModel("Game", Model.SearchCategoryTypes, Model.SearchGames, Model.SearchCategories, Model.SearchLevels))
         </div>
-        <div id="divSpeedRunGrid" class="pt-2 pl-3">
+        <div id="divSpeedRunGrid" class="pl-3">
         </div>
         <div id="divSpeedRunGridLoading" class="pt-4 pl-3">
             <div class="container ml-0">

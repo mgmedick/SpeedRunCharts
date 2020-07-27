@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.IO;
 
-namespace SpeedRunApp.WebUI.Helpers
+namespace SpeedRunCommon
 {
     public static class HtmlHelperExtensions
     {

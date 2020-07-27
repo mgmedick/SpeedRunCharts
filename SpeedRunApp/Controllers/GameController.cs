@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SpeedRunApp.Model;
 using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Service;
 using SpeedRunCommon;
@@ -30,13 +31,13 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(gameVM);
         }
 
-        [HttpGet]
-        public JsonResult GetGameSpeedRunGrid(string gameID)
-        {
-            var speedRunGridVM = _gamesService.GetGameSpeedRunGrid(gameID);
+        //[HttpGet]
+        //public JsonResult GetGameSpeedRunGrid(string gameID)
+        //{
+        //    var speedRunGridVM = _gamesService.GetGameSpeedRunGrid(gameID);
 
-            return Json(speedRunGridVM);
-        }
+        //    return Json(speedRunGridVM);
+        //}
 
         //[HttpGet]
         //public JsonResult GameSpeedRunGrid_Read(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)

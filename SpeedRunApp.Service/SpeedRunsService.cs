@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SpeedRunApp.Client;
+using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon;

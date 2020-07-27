@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.Encodings.Web;
-using SpeedrunComSharp.Model;
+using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Client
 {

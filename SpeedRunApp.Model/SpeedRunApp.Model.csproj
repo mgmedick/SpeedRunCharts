@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
-    <ProjectReference Include="..\SpeedrunComSharp.Model\SpeedrunComSharp.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

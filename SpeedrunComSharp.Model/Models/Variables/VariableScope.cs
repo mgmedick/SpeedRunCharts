@@ -1,6 +1,6 @@
 ﻿using System;
 using SpeedrunComSharp.Model;
-using SpeedRunCommon;
+using SpeedRunApp.Model;
 
 namespace SpeedrunComSharp
 {

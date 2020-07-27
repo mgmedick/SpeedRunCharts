@@ -45,10 +45,10 @@ namespace SpeedRunApp.Model.Data
                 return "";
 
             return "embed=" +
-                embedDictionary
+                string.Join(",", embedDictionary
                 .Where(x => x.Value)
-                .Select(x => Uri.EscapeDataString(x.Key))
-                .Aggregate(",");
+                .Select(x => Uri.EscapeDataString(x.Key)));
+                //.Aggregate(",");
         }
     }
 }

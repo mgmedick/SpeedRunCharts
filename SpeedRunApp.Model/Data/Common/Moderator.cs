@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpeedrunComSharp.Model;
 using SpeedRunCommon;
 
 namespace SpeedRunApp.Model.Data

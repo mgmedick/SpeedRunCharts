@@ -18,7 +18,7 @@ namespace SpeedRunApp.Model.ViewModels
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
             ModeratorUsers = game.ModeratorUsers.OrderBy(i => i.Name);
-            Platforms = game.Platforms;
+            Platforms = game.Platforms.OrderBy(i => i.Name);
             SearchGames = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
@@ -37,19 +37,13 @@ namespace SpeedRunApp.Model.ViewModels
         public IEnumerable<GameDisplay> SearchGames { get; set; }
         public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
         public IEnumerable<LevelDisplay> SearchLevels { get; set; }
-        //public string ModeratorsString
-        //{
-        //    get
-        //    {
-        //        return string.Join(", ", ModeratorUsers.Select(i => string.Format("<a href='../User/UserDetails?userID={0}'>{1}</a>", i.ID, i.Name))).ToHtmlString();
-        //    }
-        //}
-        //public string PlatformsString
-        //{
-        //    get
-        //    {
-        //        return string.Join(", ", Platforms.Select(i => i.Name));
-        //    }
-        //}
+
+        public string PlatformsString
+        {
+            get
+            {             
+                return string.Join(", ", Platforms.Select(i => i.Name));
+            }
+        }
     }
 }

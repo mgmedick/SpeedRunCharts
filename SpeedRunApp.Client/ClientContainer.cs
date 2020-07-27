@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using SpeedrunComSharp.Model;
 
 namespace SpeedRunApp.Client
 {

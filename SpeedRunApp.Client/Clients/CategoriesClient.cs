@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using System.Linq;
-using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {

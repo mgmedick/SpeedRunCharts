@@ -20,60 +20,60 @@ namespace SpeedRunApp.Service
             return gameVM;
         }
 
-        public SpeedRunGridViewModel GetGameSpeedRunGrid(string gameID)
-        {
-            var game = GetGame(gameID);
-            var categoryTypes = game.CategoryTypes
-                    .Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() })
-                    .ToList();
+        //public SpeedRunGridViewModel GetGameSpeedRunGrid(string gameID)
+        //{
+        //    var game = GetGame(gameID);
+        //    var categoryTypes = game.CategoryTypes
+        //            .Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() })
+        //            .ToList();
 
-            var games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
+        //    var games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
 
-            var categories = game.Categories
-                            .Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID })
-                            .ToList();
+        //    var categories = game.Categories
+        //                    .Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID })
+        //                    .ToList();
 
-            var levels = game.Levels
-                         .Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID })
-                         .ToList();
+        //    var levels = game.Levels
+        //                 .Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID })
+        //                 .ToList();
 
-            var records = GetGameSpeedRunRecords(game, false);
+        //    var records = GetGameSpeedRunRecords(game, false);
 
-            return new SpeedRunGridViewModel("Game", categoryTypes, games, categories, levels, records);
-        }
+        //    return new SpeedRunGridViewModel("Game", categoryTypes, games, categories, levels, records);
+        //}
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, bool includeExaminer = false)
-        {
-            var game = GetGame(gameID);
+        //public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, bool includeExaminer = false)
+        //{
+        //    var game = GetGame(gameID);
 
-            return GetGameSpeedRunRecords(game, includeExaminer);
-        }
+        //    return GetGameSpeedRunRecords(game, includeExaminer);
+        //}
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(Game game, bool includeExaminer = false)
-        {
-            List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
-            foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerGame))
-            {
-                recordVMs.AddRange(GetGameSpeedRunRecords(game.ID, CategoryType.PerGame, category.ID, null, includeExaminer));
-            }
+        //public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(Game game, bool includeExaminer = false)
+        //{
+        //    List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
+        //    foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerGame))
+        //    {
+        //        recordVMs.AddRange(GetGameSpeedRunRecords(game.ID, CategoryType.PerGame, category.ID, null, includeExaminer));
+        //    }
 
-            foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerLevel))
-            {
-                foreach (var level in game.Levels)
-                {
-                    recordVMs.AddRange(GetGameSpeedRunRecords(game.ID, CategoryType.PerLevel, category.ID, level.ID, includeExaminer));
-                }
-            }
+        //    foreach (var category in game.Categories.Where(i => i.Type == CategoryType.PerLevel))
+        //    {
+        //        foreach (var level in game.Levels)
+        //        {
+        //            recordVMs.AddRange(GetGameSpeedRunRecords(game.ID, CategoryType.PerLevel, category.ID, level.ID, includeExaminer));
+        //        }
+        //    }
 
-            return recordVMs;
-        }
+        //    return recordVMs;
+        //}
 
         public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false)
         {
             List<SpeedRunRecordViewModel> recordVMs = new List<SpeedRunRecordViewModel>();
             ClientContainer clientContainer = new ClientContainer();
             Leaderboard leaderboard = null;
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = false };
 
             if (categoryType == CategoryType.PerGame)
             {

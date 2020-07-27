@@ -1,6 +1,4 @@
-﻿using SpeedRunCommon;
-
-namespace SpeedRunApp.Model.Data
+﻿namespace SpeedRunApp.Model.Data
 {
     public class Players
     {

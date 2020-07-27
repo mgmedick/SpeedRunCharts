@@ -5,6 +5,5 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
-    <ProjectReference Include="..\SpeedRunCommon\SpeedRunCommon.csproj" />
   </ItemGroup>
 </Project>

@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Model", "SpeedR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Service", "SpeedRunApp.Service\SpeedRunApp.Service.csproj", "{8D3373DE-D046-4BAB-AAB1-AEFF74B716D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunCommon", "SpeedRunCommon\SpeedRunCommon.csproj", "{0AFCEE7C-79CF-440C-9B94-17C30442B648}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Interfaces", "SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj", "{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunApp.Client", "SpeedRunApp.Client\SpeedRunApp.Client.csproj", "{C3D79C66-B1DC-4159-9416-C4239FE48E11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunCommon", "SpeedRunCommon\SpeedRunCommon.csproj", "{FE3ACE6F-EC68-4C65-ABAD-F30785499638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,12 +40,6 @@ Global
 		{8D3373DE-D046-4BAB-AAB1-AEFF74B716D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D3373DE-D046-4BAB-AAB1-AEFF74B716D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D3373DE-D046-4BAB-AAB1-AEFF74B716D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AFCEE7C-79CF-440C-9B94-17C30442B648}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -58,6 +52,12 @@ Global
 		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

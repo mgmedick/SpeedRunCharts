@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpeedRunCommon;
 using SpeedRunApp.Model.Data;
-using Microsoft.AspNetCore.Html;
 
 namespace SpeedRunApp.Model.ViewModels
 {

@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SpeedRunCommon;
+using SpeedRunApp.Model.Helpers;
 using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
 
 namespace SpeedRunApp.Model.ViewModels
 {

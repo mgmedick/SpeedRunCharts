@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {

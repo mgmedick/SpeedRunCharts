@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace SpeedRunApp.Client
+namespace SpeedRunCommon
 {
     public static class StringHelpers
     {

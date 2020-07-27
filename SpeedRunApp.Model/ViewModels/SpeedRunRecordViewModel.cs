@@ -1,5 +1,5 @@
 ﻿using SpeedRunApp.Model.Data;
-using SpeedRunCommon;
+using SpeedRunApp.Model.Helpers;
 
 namespace SpeedRunApp.Model.ViewModels
 {

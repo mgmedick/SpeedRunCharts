@@ -10,6 +10,7 @@ using SpeedRunApp.Model.Data;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {

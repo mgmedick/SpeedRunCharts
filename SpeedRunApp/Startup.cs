@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Lamar;
 using SpeedRunApp.Interfaces.Services;
+//using SpeedRunApp.Interfaces.Helpers;
 using SpeedRunApp.Service;
 
 namespace SpeedRunApp
@@ -29,7 +30,7 @@ namespace SpeedRunApp
             // Add your ASP.Net Core services as usual
             services.AddMvc();
             services.AddLogging();
-
+            //services.AddSingleton<ICacheHelper, CacheHelper>();
             // Also exposes Lamar specific registrations
             // and functionality
             services.Scan(scanner =>

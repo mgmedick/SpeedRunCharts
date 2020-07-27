@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SpeedRunCommon
+namespace SpeedRunApp.Model.Helpers
 {
     public static class NumberHelper
     {

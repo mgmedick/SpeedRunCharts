@@ -22,8 +22,8 @@ namespace SpeedRunApp.Model.ViewModels
             GameCoverImageLink = run.Game?.Assets?.CoverLarge?.Uri;
             CategoryID = run.CategoryID;
             CategoryName = run.Category?.Name;
-            PlatformID = run.Platform?.ID;
-            PlatformName = run.Platform?.Name;
+            PlatformID = run.System.PlatformID;
+            PlatformName = run.System.Platform?.Name;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
             IsEmulated = run.System.IsEmulated;

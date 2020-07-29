@@ -30,6 +30,8 @@ namespace SpeedRunApp
             // Add your ASP.Net Core services as usual
             services.AddMvc();
             services.AddLogging();
+            services.AddMemoryCache();
+            //services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
             //services.AddSingleton<ICacheHelper, CacheHelper>();
             // Also exposes Lamar specific registrations
             // and functionality

@@ -22,7 +22,7 @@ namespace SpeedRunApp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseLamar()
+                .UseLamar()            
                 .UseStartup<Startup>();
 
     }

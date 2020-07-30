@@ -10,6 +10,7 @@ using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Service;
 using SpeedRunCommon;
 using SpeedRunApp.Interfaces.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -17,7 +18,7 @@ namespace SpeedRunApp.WebUI.Controllers
     {
         private readonly IGamesService _gamesService = null;
         private readonly ISpeedRunsService _speedRunService = null;
-        
+
         public GameController(IGamesService gamesService, ISpeedRunsService speedRunService)
         {
             _gamesService = gamesService;
@@ -46,6 +47,14 @@ namespace SpeedRunApp.WebUI.Controllers
 
         //    return Json(recordVMs);
         //}
+
+        [HttpGet]
+        public JsonResult GetGameSpeedRuns(string gameID, int requestCount, bool includeExaminer = false)
+        {
+            var recordVMs = _gamesService.GetGameSpeedRuns(gameID, requestCount, includeExaminer);
+
+            return Json(new { Data = recordVMs });
+        }
 
         [HttpGet]
         public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false)

@@ -14,5 +14,6 @@ namespace SpeedRunApp.Interfaces.Services
         //IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(Game game, bool includeExaminer = false);
         IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false);
         Game GetGame(string gameID);
+        IEnumerable<SpeedRunViewModel> GetGameSpeedRuns(string gameID, int requestCount, bool includeExaminer);
     }
 }

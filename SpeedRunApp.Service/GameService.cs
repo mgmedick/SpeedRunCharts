@@ -8,16 +8,19 @@ using SpeedRunCommon;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace SpeedRunApp.Service
 {
     public class GamesService : IGamesService
     {
         private readonly ICacheHelper _cacheHelper = null;
+        private readonly IConfiguration _appConfig = null;
 
-        public GamesService(ICacheHelper cacheHelper)
+        public GamesService(ICacheHelper cacheHelper, IConfiguration appConfig)
         {
             _cacheHelper = cacheHelper;
+            _appConfig = appConfig;
         }
 
         public GameDetailsViewModel GetGameDetails(string gameID)
@@ -75,6 +78,33 @@ namespace SpeedRunApp.Service
 
         //    return recordVMs;
         //}
+
+        public IEnumerable<SpeedRunViewModel> GetGameSpeedRuns(string gameID, int requestCount, bool includeExaminer)
+        {
+            List<SpeedRunViewModel> runVMs = new List<SpeedRunViewModel>();
+            ClientContainer clientContainer = new ClientContainer();
+            int pageCount = Convert.ToInt32(_appConfig["ApiSettings:MaxElementsPerPage"]);
+            int offset = pageCount * requestCount;
+
+            var runs = clientContainer.Runs.GetRuns(gameId: gameID, elementsPerPage: pageCount, elementsOffset: offset);
+
+            var platforms = _cacheHelper.GetPlatforms();
+            foreach (var run in runs)
+            {
+                var runVM = new SpeedRunViewModel(run);
+                if (includeExaminer)
+                {
+                    var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
+                    runVM.ExaminerID = examiner?.ID;
+                    runVM.ExaminerName = examiner?.Name;
+                }
+
+                runVM.PlatformName = platforms.Where(i => i.ID == runVM.PlatformID).Select(i => i.Name).FirstOrDefault();
+                runVMs.Add(runVM);
+            }
+
+            return runVMs;
+        }
 
         public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false)
         {

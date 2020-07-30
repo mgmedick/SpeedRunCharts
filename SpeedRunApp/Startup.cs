@@ -31,6 +31,12 @@ namespace SpeedRunApp
             services.AddMvc();
             services.AddLogging();
             services.AddMemoryCache();
+
+            //var config = new MyAppConfig();
+            //var redisConfiguration = Configuration.GetSection("AppSettings").Get<IAppConfiguration>();
+            //services.AddSingleton(redisConfiguration);
+            //services.AddSingleton<RedisCacheHelper>();
+
             //services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
             //services.AddSingleton<ICacheHelper, CacheHelper>();
             // Also exposes Lamar specific registrations

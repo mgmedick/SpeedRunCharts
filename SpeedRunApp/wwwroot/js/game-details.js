@@ -66,21 +66,12 @@ function loadSpeedRunGridTemplate() {
 
 function getSpeedRunGridData() {
     var def1 = $.Deferred();
-    var promises = [];
     var items = [];
-    //var maxCount = 100;
-    var gameCategoryCount = $(sra.searchCategories).filter(function () { return this.categoryTypeID == 0 }).length;
-    var levelCategoryCount = $(sra.searchCategories).filter(function () { return this.categoryTypeID == 1 }).length;
-    var dataCount = (gameCategoryCount + (levelCategoryCount * sra.searchLevels.length));
+    var gameID = $("#hdnGameID").val();
     var requestCount = 0;
+    var maxElementsPerPage = sra.apiSettings.maxElementsPerPage;
 
-    //if (dataCount > maxCount) {
-    //    dataCount = maxCount;
-    //}
-
-    $('#divSpeedRunGridProgressBar').attr('aria-valuenow', requestCount);
-    $('#divSpeedRunGridProgressBar').attr('aria-valuemax', dataCount);
-
+    getGameSpeedRunsPaginated(gameID, maxElementsPerPage, 0, items, requestCount).then(function (data) { def1.resolve(items); })
 
 
     /*
@@ -111,27 +102,37 @@ function getSpeedRunGridData() {
     });
     */
 
-    $.when.apply($, promises).then(function (data) {
-        for (i = 0; i < arguments.length; i++) {
-            items = items.concat(arguments[i]);
-        }
+    //$.when.apply($, promises).then(function (data) {
+    //    for (i = 0; i < arguments.length; i++) {
+    //        items = items.concat(arguments[i]);
+    //    }
 
-        def1.resolve(items);
-    });
+    //    def1.resolve(items);
+    //});
 
     return def1.promise();
 }
 
-function getGameSpeedRuns(gameID, requestCount) {
-    var def = new $.Deferred();
-    var timeout = isFirst ? 0 : 5000;
+function getGameSpeedRunsPaginated(gameID, elementsPerPage, elementsOffset, requestCount) {
+    var def = $.Deferred();
 
-    setTimeout(function () {
-        $.get('GetGameSpeedRuns?gameID=' + gameID + "&requestCount=" + requestCount, function (data, status) {
+    $.when(getGameSpeedRuns(gameID, elementsPerPage, elementsOffset)).then(function (data) {
+        requestCount++;
+        return (data == elementsPerPage) ? setTimeout(function () {
+            getGameSpeedRunsPaginated(gameID, elementsPerPage, (elementsPerPage * requestCount))
+        }, 1000) : def.resolve(data);
+    });
+
+    return def.promise();
+}
+
+function getGameSpeedRuns(gameID, elementsPerPage, elementsOffset) {
+    var def = new $.Deferred();
+
+    return $.get('GetGameSpeedRuns?gameID=' + gameID + "&elementsPerPage=" + elementsPerPage + "&elementsOffset=" + elementsOffset, function (data, status) {
             def.resolve(data.data);
-            updateProgressBar($('#divSpeedRunGridProgressBar'));
+            //updateProgressBar($('#divSpeedRunGridProgressBar'));
         });
-    }, timeout);
 
     return def;
 }

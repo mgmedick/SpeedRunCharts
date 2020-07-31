@@ -7,7 +7,7 @@ namespace SpeedRunApp.Model.ViewModels
     {
         public SpeedRunRecordViewModel(SpeedRunRecord record) : base((SpeedRun)record)
         {
-            RankString = record.Rank.ToOrdinalString();
+            RankString = record.Rank?.ToOrdinalString();
         }
 
         public string RankString { get; set; }

@@ -32,36 +32,12 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(gameVM);
         }
 
-        //[HttpGet]
-        //public JsonResult GetGameSpeedRunGrid(string gameID)
-        //{
-        //    var speedRunGridVM = _gamesService.GetGameSpeedRunGrid(gameID);
-
-        //    return Json(speedRunGridVM);
-        //}
-
-        //[HttpGet]
-        //public JsonResult GameSpeedRunGrid_Read(string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
-        //{
-        //    var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, startDate, endDate);
-
-        //    return Json(recordVMs);
-        //}
-
         [HttpGet]
-        public JsonResult GetGameSpeedRuns(string gameID, int requestCount, bool includeExaminer = false)
+        public JsonResult GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
         {
-            var recordVMs = _gamesService.GetGameSpeedRuns(gameID, requestCount, includeExaminer);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset);
 
-            return Json(new { Data = recordVMs });
-        }
-
-        [HttpGet]
-        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false)
-        {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
-
-            return Json(new { Data = recordVMs });
+            return Json(recordVMs);
         }
 
         [HttpGet]
@@ -80,32 +56,32 @@ namespace SpeedRunApp.WebUI.Controllers
         //    return PartialView("_SpeedRunGrid", gameGridVM);
         //}
 
-        public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
-        {
-            var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
-            //recordVMs = recordVMs.Take(topAmount);
+        //public JsonResult GetSpeedRunsByUserChartData(string gameID, CategoryType categoryType, string categoryID, string levelID, int topAmount)
+        //{
+        //    var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
+        //    //recordVMs = recordVMs.Take(topAmount);
 
-            return Json(new { Data = recordVMs });
-        }
+        //    return Json(new { Data = recordVMs });
+        //}
 
-        public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
-        {
-            var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
+        //public JsonResult GetSpeedRunsReportedChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        //{
+        //    var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
 
-            return Json(new { Data = recordVMs });
-        }
+        //    return Json(new { Data = recordVMs });
+        //}
 
-        public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
-        {
-            var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
+        //public JsonResult GetSpeedRunSummaryByMonthChartData(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        //{
+        //    var recordVMs = new List<SpeedRunViewModel>();//_gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, null, null);
 
-            DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
-            DateTime startDate = (endDate != DateTime.MinValue) ? endDate.AddMonths(-6) : DateTime.MinValue;
+        //    DateTime endDate = recordVMs.Where(i => i.DateSubmitted.HasValue).Select(i => i.DateSubmitted.Value).OrderBy(i => i).LastOrDefault();
+        //    DateTime startDate = (endDate != DateTime.MinValue) ? endDate.AddMonths(-6) : DateTime.MinValue;
 
-            var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
+        //    var timePeriods = DateTimeHelper.DateDiff("month", startDate, endDate).Select(i => i.ToString("MM/yyyy"));
 
-            return Json(new { Data = recordVMs, TimePeriods = timePeriods });
-        }
+        //    return Json(new { Data = recordVMs, TimePeriods = timePeriods });
+        //}
     }
 }
 

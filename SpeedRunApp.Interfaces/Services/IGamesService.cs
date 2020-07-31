@@ -9,11 +9,8 @@ namespace SpeedRunApp.Interfaces.Services
     public interface IGamesService
     {
         GameDetailsViewModel GetGameDetails(string gameID);
-        //SpeedRunGridViewModel GetGameSpeedRunGrid(string gameID);
-        //IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, bool includeExaminer = false);
-        //IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(Game game, bool includeExaminer = false);
-        IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, bool includeExaminer = false);
+        IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset);
         Game GetGame(string gameID);
-        IEnumerable<SpeedRunViewModel> GetGameSpeedRuns(string gameID, int requestCount, bool includeExaminer);
+        IEnumerable<SpeedRun> GetGameSpeedRuns(string gameID, int elementsPerPage, int elementsOffset);
     }
 }

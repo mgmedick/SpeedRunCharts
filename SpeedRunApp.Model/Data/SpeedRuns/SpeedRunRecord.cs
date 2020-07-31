@@ -11,11 +11,11 @@ namespace SpeedRunApp.Model.Data
         //{
         //}
 
-        //public SpeedRunRecordDTO(Record record) : base((Run)record)
+        //public SpeedRunRecord(SpeedRun run, int rank) : base(run)
         //{
-        //    Rank = record.Rank;
+        //    Rank = rank;
         //}
 
-        public int Rank { get; set; }
+        public int? Rank { get; set; }
     }
 }

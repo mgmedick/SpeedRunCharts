@@ -141,6 +141,14 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        public double PrimaryRunTimeMilliseconds
+        {
+            get
+            {
+                return PrimaryRunTime.TotalMilliseconds;
+            }
+        }
+
         public string StatusTypeString
         {
             get

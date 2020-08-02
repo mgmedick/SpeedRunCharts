@@ -33,18 +33,46 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
         {
-            var runs = GetGameSpeedRuns(gameID, elementsPerPage, elementsOffset);
+            var records = GetGameSpeedRuns(gameID, elementsPerPage, elementsOffset).Select(i => (SpeedRunRecord)i).ToList();
+            var verifiedRecords = records.Where(i => i.Status.Type == RunStatusType.Verified && i.Times.Primary.HasValue);
 
-            var ranks = runs.Where(i=>i.Status.Type == RunStatusType.Verified)
-                            .OrderBy(x => x.Times.Primary)
-                            .Select((g, i) => new { Key = g.ID, Rank = i + 1 })
-                            .ToDictionary(x => x.Key, x => x.Rank);
+            //var ranks = verifiedRecords.GroupBy(g=> new { g.GameID, g.CategoryID, g.LevelID })
+            //                .OrderBy(i => i)
+            //                .Select((g, i) => new { Key = g, Rank = i + 1 })
+            //                .ToDictionary(x => x.Key, x => x.Rank);
 
+            //var ranks4 = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
+            //                        .SelectMany(g =>
+            //                            g.OrderBy(i => i.Times.Primary).Select((j, i) => new { j.ID, j.GameID, j.CategoryID, j.LevelID, Rank = i + 1 })
+            //                        ).OrderBy(i => i.GameID)
+            //                        .ThenBy(i => i.CategoryID)
+            //                        .ThenBy(i => i.LevelID)
+            //                        .ThenBy(i => i.Rank);
+
+            //var ranks2 = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
+            //                        .Select(c => c.OrderBy(o => o.Times.Primary.Value).Select((v, i) => new { i, v }).ToList())
+            //                        .SelectMany(c => c)
+            //                        .Select(c => new { c.v.ID, c.v.GameID, c.v.CategoryID, c.v.LevelID, Rank = c.i + 1 })
+            //                        .ToList().OrderBy(i => i.GameID)
+            //                        .ThenBy(i => i.CategoryID)
+            //                        .ThenBy(i => i.LevelID)
+            //                        .ThenBy(i => i.Rank);
+
+            //var ranks = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
+            //                        .SelectMany(g =>
+            //                            g.OrderBy(i=>i.Times.Primary).Select((j, i) => new { Key = j.ID, Rank = i + 1 })
+            //                        ).ToDictionary(x => x.Key, x => x.Rank);
+
+            //var categories = _cacheHelper.GetPlatforms();
             var platforms = _cacheHelper.GetPlatforms();
 
-            var records = runs.Select(i => (SpeedRunRecord)i).ToList();
-            records.ForEach(i => { if (ranks.ContainsKey(i.ID)) { i.Rank = ranks[i.ID]; } i.System.Platform = platforms.FirstOrDefault(g => g.ID == i.System.PlatformID); });
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i));
+            foreach (var record in verifiedRecords)
+            {
+                //record.Rank = ranks4.Where(i => i.ID == record.ID).Select(i => i.Rank).FirstOrDefault();
+                record.System.Platform = platforms.FirstOrDefault(g => g.ID == record.System.PlatformID);
+            }
+
+            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime);
 
             //var platforms = _cacheHelper.GetPlatforms();
             //foreach (var run in runs)
@@ -76,8 +104,8 @@ namespace SpeedRunApp.Service
         public IEnumerable<SpeedRun> GetGameSpeedRuns(string gameID, int elementsPerPage, int elementsOffset)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = false, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
-            var runs = clientContainer.Runs.GetRuns(gameId: gameID, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset, embeds: runEmbeds);
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = false, EmbedPlayers = true, EmbedCategory = false, EmbedLevel = false, EmbedPlatform = false };
+            var runs = clientContainer.Runs.GetRuns(gameId: gameID, status: RunStatusType.Verified, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset,  embeds: runEmbeds);
 
             return runs;
         }

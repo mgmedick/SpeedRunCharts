@@ -271,7 +271,7 @@ input, textarea, select, option:focus {
     font-weight:normal;
 }
 
-input .date {
+input.date {
     font-size: 20px !important;
     padding: 0px 10px 0 40px !important;
     font-weight: 200;

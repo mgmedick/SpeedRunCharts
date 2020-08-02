@@ -45,16 +45,13 @@ function loadSpeedRunGridTemplate() {
     $('#divSpeedRunGridLoading').show();
 
     getSpeedRunGridData().then(function (data) {
-        var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, data);
-
+        sra['speedRunRecords'] = data;
+        var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, sra.speedRunRecords);
         sra['speedRunGridModel'] = gridModel;
+
         $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (template, status) {
             sra['speedRunGridTemplate'] = template;
-            renderTemplate(sra.speedRunGridTemplate, sra.speedRunGridModel, $('#divSpeedRunGrid'));
-            initializeSpeedRunGridEvents();
-
-            var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-            onCategoryTypeTabClick($activeCategoryTypeTab);
+            renderAndInitializeSpeedRunGrid($('#divSpeedRunGrid'), sra.speedRunGridTemplate, sra.speedRunGridModel);
 
             $('#divSpeedRunGrid').show();
             $('#divSpeedRunGridLoading').hide();
@@ -70,10 +67,20 @@ function getSpeedRunGridData() {
     var requestCount = 0;
 
     getAllGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset, requestCount).then(function (data) {
+        setGameSpeedRunRank(data);
+        data.sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; });
         def1.resolve(data);
     });
 
     return def1.promise();
+}
+
+function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRunGridModel) {
+    renderTemplate($('#divSpeedRunGrid'), speedRunGridTemplate, speedRunGridModel);
+    initializeSpeedRunGridEvents();
+
+    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+    onCategoryTypeTabClick($activeCategoryTypeTab);
 }
 
 function getAllGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset, requestCount, items, def) {
@@ -90,7 +97,7 @@ function getAllGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset, requ
         items = items.concat(data);
 
         if (data.length == elementsPerPage) {
-            return setTimeout(function () { getAllGameSpeedRunRecords(gameID, elementsPerPage, (elementsPerPage * requestCount), requestCount, items, def) }, 1000);
+            return setTimeout(function () { getAllGameSpeedRunRecords(gameID, elementsPerPage, (elementsPerPage * requestCount), requestCount, items, def) }, 5000);
         } else {
             def.resolve(items);
         }
@@ -103,13 +110,47 @@ function getGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset) {
     var def = new $.Deferred();
 
     return $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&elementsPerPage=" + elementsPerPage + "&elementsOffset=" + elementsOffset, function (data, status) {
+
         def.resolve(data);
     });
 
     return def.promise();
 }
 
-function renderTemplate(template, data, element) {
+function setGameSpeedRunRank(data) {
+    var groupedObj = [];
+    $(data).each(function () {
+        var gameID = this.gameID;
+        var categoryID = this.categoryID;
+        var levelID = this.levelID;
+
+        groupedObj[gameID] = groupedObj[gameID] || [];
+        groupedObj[gameID][categoryID] = groupedObj[gameID][categoryID] || [];
+        groupedObj[gameID][categoryID][levelID] = groupedObj[gameID][categoryID][levelID] || [];
+
+        groupedObj[gameID][categoryID][levelID].push(this);
+    });
+
+    for (var gameID in groupedObj) {
+        for (var categoryID in groupedObj[gameID]) {
+            for (var levelID in groupedObj[gameID][categoryID]) {
+                var groupData = $(groupedObj[gameID][categoryID][levelID]).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; })
+
+                var ranks = $.grep(groupData, function (item, idx) {
+                    index = idx > 0 ? idx - 1 : 0;
+                    return item.primaryRunTimeSeconds != groupData[index].primaryRunTimeSeconds;
+                }).map(function (item) { return item.primaryRunTimeSeconds; });
+
+                $.each(groupData, function (idx, item) {
+                    var rank = $.inArray(item.primaryRunTimeSeconds, ranks) + 1;
+                    item.rankString = rank + 1;
+                });
+            }
+        }
+    }
+}
+
+function renderTemplate(element, template, data) {
     var _template = _.template(template);
 
     var html = _template({
@@ -235,7 +276,7 @@ function initializeGrid(element) {
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid');
-    var localData = $(sra.speedRunGridModel.speedRunRecords).filter(function () { return this.gameID == gameID && this.categoryType.id == categoryType && this.categoryID == categoryID && this.levelID == levelID }).toArray();
+    var localData = $(sra.speedRunGridModel.speedRunRecords).filter(function () { return this.gameID == gameID && this.categoryID == categoryID && this.levelID == levelID }).toArray();
 
     grid.jqGrid({
         datatype: "local",
@@ -460,26 +501,62 @@ function initializeCharts(element) {
 /**Ajax functions **/
 //Search
 function runSearch() {
-    var formData = new FormData($('#frmSearch')[0]);
-    formData.append("gameID", $('#hdnGameID').val());
+    var startDate = Date.parse($('#txtStartDate').val());
+    var endDate = Date.parse($('#txtEndDate').val());
+    var categoryTypeIDs = $('#drpCategoryTypes').val();
+    var gameIDs = $('#drpGames').val();
+    var categoryIDs = $('#drpCategories').val();
+    var levelIDs = $('#drpLevels').val();
 
-    $.ajax({
-        url: 'SearchGameSpeedRunGrid',
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if (data != null) {
-                $('#divGameSpeedRunGrid').html(data);
-                initializeGridContainerEvents();
+    var records = $(sra.speedRunRecords).filter(function () {
+        return ((!startDate || (Date.parse(this.dateSubmitted) >= startDate))
+            && (!endDate || (Date.parse(this.dateSubmitted) <= endDate))
+            && (categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.categoryType.id))
+            && (gameIDs.length == 0 || games.indexOf(this.gameID))
+            && (categoryIDs.length == 0 || categoryIDs.indexOf(this.categoryID))
+            && (levelIDs.length == 0 || levelIDs.indexOf(this.levelID)))
+    }).toArray();
 
-                var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-                onCategoryTypeTabClick($activeCategoryTypeTab);
-            }
-        }
-    });
+    sra.speedRunGridModel.speedRunRecords = records;
+
+    if (startDate || endDate) {
+        var games = $(sra.searchGames).filter(function () {
+            var gameID = this.id;
+            return $(records).filter(function () { return this.gameID == gameID }).length > 0;
+        });
+
+        var categories = $(sra.searchCategories).filter(function () {
+            var categoryID = this.id;
+            return $(records).filter(function () { return this.categoryID == categoryID }).length > 0;
+        });
+
+        var categoryTypes = $(categories).filter(function () {
+            var categoryTypeID = this.categoryType.id;
+            return $(records).filter(function () { return this.categoryType.id == categoryTypeID }).length > 0;
+        });
+
+        var levels = $(sra.searchLevels).filter(function () {
+            var levelID = this.id;
+            return $(records).filter(function () { return this.levelID == levelID }).length > 0;
+        });
+
+        sra.speedRunGridModel.categoryTypes = categoryTypes;
+        sra.speedRunGridModel.games = games;
+        sra.speedRunGridModel.categories = categories;
+        sra.speedRunGridModel.levels = levels;
+    }
+
+    $('#divSpeedRunGrid').hide();
+    $('#divSpeedRunGridLoading').show();
+
+    renderAndInitializeSpeedRunGrid($('#divSpeedRunGrid'), sra.speedRunGridTemplate, sra.speedRunGridModel);
+
+    $('#divSpeedRunGrid').show();
+    $('#divSpeedRunGridLoading').hide();
 }
+
+
+
 
 
 

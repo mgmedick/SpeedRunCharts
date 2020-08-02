@@ -30,7 +30,7 @@ namespace SpeedRunApp.Client
         public VariablesClient Variables { get; private set; }
 
         public ClientContainer(string userAgent = "SpeedRunComSharp/1.0", 
-            string accessToken = null, int maxCacheElements = 50,
+            string accessToken = null, int maxCacheElements = 500,
             TimeSpan? timeout = null)
         {
             UserAgent = userAgent;

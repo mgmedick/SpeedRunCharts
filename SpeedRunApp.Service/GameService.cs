@@ -31,6 +31,38 @@ namespace SpeedRunApp.Service
             return gameVM;
         }
 
+        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        {
+            Leaderboard leaderboard = null;
+            ClientContainer clientContainer = new ClientContainer();
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+
+            if (categoryType == CategoryType.PerGame)
+            {
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, embeds: leaderboardEmbeds);
+            }
+            else
+            {
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
+            }
+
+            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i));
+
+            foreach (var record in recordVMs)
+            {
+                if (!string.IsNullOrWhiteSpace(record.ExaminerUserID))
+                {
+                    var examiner = clientContainer.Users.GetUser(record.ExaminerUserID);
+                    if (examiner != null)
+                    {
+                        record.ExaminerName = examiner.Name;
+                    }
+                }
+            }
+
+            return recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds);
+        }
+
         public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
         {
             var records = GetGameSpeedRuns(gameID, elementsPerPage, elementsOffset).Select(i => (SpeedRunRecord)i).ToList();

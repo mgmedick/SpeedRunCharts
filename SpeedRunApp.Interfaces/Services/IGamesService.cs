@@ -10,6 +10,7 @@ namespace SpeedRunApp.Interfaces.Services
     {
         GameDetailsViewModel GetGameDetails(string gameID);
         IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset);
+        IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID);
         Game GetGame(string gameID);
         IEnumerable<SpeedRun> GetGameSpeedRuns(string gameID, int elementsPerPage, int elementsOffset);
     }

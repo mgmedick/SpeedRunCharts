@@ -33,12 +33,20 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
+        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
         {
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID);
 
             return Json(recordVMs);
         }
+
+        //[HttpGet]
+        //public JsonResult GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
+        //{
+        //    var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, elementsPerPage, elementsOffset);
+
+        //    return Json(recordVMs);
+        //}
 
         [HttpGet]
         public JsonResult GetGameDetailsCharts()

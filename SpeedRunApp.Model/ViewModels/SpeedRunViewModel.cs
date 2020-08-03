@@ -35,6 +35,7 @@ namespace SpeedRunApp.Model.ViewModels
             RejectedReason = run.Status.Reason;
             Comment = run.Comment;
             SplitsLink = run.SplitsUri;
+            ExaminerUserID = run.Status.ExaminerUserID;
 
             if (run.Category != null)
             {
@@ -59,7 +60,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public bool IsEmulated { get; set; }
         public string ModeratorName { get; set; }
-        public string ExaminerID { get; set; }
+        public string ExaminerUserID { get; set; }
         public string ExaminerName { get; set; }
         public IDNamePair StatusType { get; set; }
         public DateTime? DateSubmitted { get; set; }

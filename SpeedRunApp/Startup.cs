@@ -28,9 +28,15 @@ namespace SpeedRunApp
         public void ConfigureContainer(ServiceRegistry services)
         {
             // Add your ASP.Net Core services as usual
-            services.AddMvc();
             services.AddLogging();
             services.AddMemoryCache();
+            services.AddSession();
+            services.AddMvc();
+
+            services.Configure<CookieTempDataProviderOptions>(options =>
+            {
+                options.Cookie.IsEssential = true;
+            });
 
             //var config = new MyAppConfig();
             //var redisConfiguration = Configuration.GetSection("AppSettings").Get<IAppConfiguration>();
@@ -77,6 +83,7 @@ namespace SpeedRunApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

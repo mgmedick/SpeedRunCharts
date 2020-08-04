@@ -27,15 +27,16 @@ namespace SpeedRunApp.Service
         {
             var game = GetGame(gameID);
             var gameVM = new GameDetailsViewModel(game);
+            
 
             return gameVM;
         }
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, IEnumerable<IDNamePair> moderators)
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = true, EmbedVariables = false };
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = false };
 
             if (categoryType == CategoryType.PerGame)
             {
@@ -46,82 +47,43 @@ namespace SpeedRunApp.Service
                 leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
-            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i));
+            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
+            var platforms = _cacheHelper.GetPlatforms();
+            var examiners = moderators?.ToDictionary(t => t.ID, t => t.Name);
 
             foreach (var record in recordVMs)
             {
                 if (!string.IsNullOrWhiteSpace(record.ExaminerUserID))
                 {
-                    var examiner = clientContainer.Users.GetUser(record.ExaminerUserID);
-                    if (examiner != null)
-                    {
-                        record.ExaminerName = examiner.Name;
-                    }
+                    record.ExaminerName = GetExaminerName(record.ExaminerUserID, examiners);
+                }
+
+                record.PlatformName = platforms.Where(i => i.ID == record.PlatformID).Select(i => i.Name).FirstOrDefault();
+            }
+
+            return recordVMs.OrderBy(i => i.PrimaryRunTimeMilliseconds);
+        }
+
+        private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
+        {
+            string examinerName = null;
+            ClientContainer clientContainer = new ClientContainer();
+
+            if (examiners.ContainsKey(examinerUserID))
+            {
+                examinerName = examiners[examinerUserID];
+            }
+            else
+            {
+                var examiner = clientContainer.Users.GetUser(examinerUserID);
+                if (examiner != null)
+                {
+                    examiners.Add(examiner.ID, examiner.Name);
+                    examinerName = examiner.Name;
                 }
             }
 
-            return recordVMs.OrderBy(i => i.PrimaryRunTimeSeconds);
-        }
-
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, int elementsPerPage, int elementsOffset)
-        {
-            var records = GetGameSpeedRuns(gameID, elementsPerPage, elementsOffset).Select(i => (SpeedRunRecord)i).ToList();
-            var verifiedRecords = records.Where(i => i.Status.Type == RunStatusType.Verified && i.Times.Primary.HasValue);
-
-            //var ranks = verifiedRecords.GroupBy(g=> new { g.GameID, g.CategoryID, g.LevelID })
-            //                .OrderBy(i => i)
-            //                .Select((g, i) => new { Key = g, Rank = i + 1 })
-            //                .ToDictionary(x => x.Key, x => x.Rank);
-
-            //var ranks4 = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
-            //                        .SelectMany(g =>
-            //                            g.OrderBy(i => i.Times.Primary).Select((j, i) => new { j.ID, j.GameID, j.CategoryID, j.LevelID, Rank = i + 1 })
-            //                        ).OrderBy(i => i.GameID)
-            //                        .ThenBy(i => i.CategoryID)
-            //                        .ThenBy(i => i.LevelID)
-            //                        .ThenBy(i => i.Rank);
-
-            //var ranks2 = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
-            //                        .Select(c => c.OrderBy(o => o.Times.Primary.Value).Select((v, i) => new { i, v }).ToList())
-            //                        .SelectMany(c => c)
-            //                        .Select(c => new { c.v.ID, c.v.GameID, c.v.CategoryID, c.v.LevelID, Rank = c.i + 1 })
-            //                        .ToList().OrderBy(i => i.GameID)
-            //                        .ThenBy(i => i.CategoryID)
-            //                        .ThenBy(i => i.LevelID)
-            //                        .ThenBy(i => i.Rank);
-
-            //var ranks = verifiedRecords.GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID })
-            //                        .SelectMany(g =>
-            //                            g.OrderBy(i=>i.Times.Primary).Select((j, i) => new { Key = j.ID, Rank = i + 1 })
-            //                        ).ToDictionary(x => x.Key, x => x.Rank);
-
-            //var categories = _cacheHelper.GetPlatforms();
-            var platforms = _cacheHelper.GetPlatforms();
-
-            foreach (var record in verifiedRecords)
-            {
-                //record.Rank = ranks4.Where(i => i.ID == record.ID).Select(i => i.Rank).FirstOrDefault();
-                record.System.Platform = platforms.FirstOrDefault(g => g.ID == record.System.PlatformID);
-            }
-
-            var recordVMs = records.Select(i => new SpeedRunRecordViewModel(i)).OrderBy(i => i.PrimaryRunTime);
-
-            //var platforms = _cacheHelper.GetPlatforms();
-            //foreach (var run in runs)
-            //{
-            //    var runVM = new SpeedRunViewModel(run);
-            //    //if (includeExaminer)
-            //    //{
-            //    //    var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
-            //    //    runVM.ExaminerID = examiner?.ID;
-            //    //    runVM.ExaminerName = examiner?.Name;
-            //    //}
-
-            //    runVM.PlatformName = platforms.Where(i => i.ID == runVM.PlatformID).Select(i => i.Name).FirstOrDefault();
-            //    runVMs.Add(runVM);
-            //}
-
-            return recordVMs;
+            return examinerName;
         }
 
         public Game GetGame(string gameID)
@@ -131,15 +93,6 @@ namespace SpeedRunApp.Service
             var game = clientContainer.Games.GetGame(gameID, gameEmbeds);
 
             return game;
-        }
-
-        public IEnumerable<SpeedRun> GetGameSpeedRuns(string gameID, int elementsPerPage, int elementsOffset)
-        {
-            ClientContainer clientContainer = new ClientContainer();
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = false, EmbedPlayers = true, EmbedCategory = false, EmbedLevel = false, EmbedPlatform = false };
-            var runs = clientContainer.Runs.GetRuns(gameId: gameID, status: RunStatusType.Verified, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset,  embeds: runEmbeds);
-
-            return runs;
         }
     }
 }

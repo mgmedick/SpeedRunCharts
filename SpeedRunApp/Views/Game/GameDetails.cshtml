@@ -94,7 +94,7 @@
                 <div class="form-group">
                     <label for="spnModerators">Moderators</label>
                     <span id="spnModerators">
-                        @Html.CommaSeparated(Model.ModeratorUsers.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
+                        @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
                     </span>
                 </div>
             </div>

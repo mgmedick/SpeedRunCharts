@@ -15,7 +15,7 @@ namespace SpeedRunApp.Model.ViewModels
             Abbreviation = game.Abbreviation;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
-            ModeratorUsers = game.ModeratorUsers.OrderBy(i => i.Name);
+            Moderators = game.ModeratorUsers?.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).OrderBy(i => i.Name);
             Platforms = game.Platforms.OrderBy(i => i.Name);
             SearchGames = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
@@ -29,7 +29,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string Abbreviation { get; set; }
         public int? YearOfRelease { get; set; }
         public Uri CoverImageUri { get; set; }
-        public IEnumerable<User> ModeratorUsers { get; set; }
+        public IEnumerable<IDNamePair> Moderators { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
         public IEnumerable<IDNamePair> SearchCategoryTypes { get; set; }
         public IEnumerable<GameDisplay> SearchGames { get; set; }

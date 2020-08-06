@@ -223,7 +223,27 @@ function initializeGrid(element) {
             { name: "isEmulated", width: 125 },
             { name: "primaryRunTimeString", width: 160, search: false },
             { name: "examinerName", width: 160 },
-            { name: "dateSubmitted", width: 160, search: false, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr },
+            {
+                name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
+                    sopt: ["deq","dge","dle"],
+                    dataInit: function (element, options) {
+                        var self = this;
+                        var selfOptions = options;
+                        $(element).datepicker({
+                            dateFormat: 'mm/dd/yy',
+                            showButtonPanel: true,
+                            onSelect: function () {
+                                if (selfOptions.mode === "filter") {
+                                    setTimeout(function () {
+                                        self.triggerToolbar();
+                                    }, 0);
+                                } else {
+                                    $(this).trigger("change");
+                                }
+                            }
+                        });
+                    }
+                }, cellattr: dateSubmittedCellAttr },
             { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
@@ -232,13 +252,52 @@ function initializeGrid(element) {
             { name: "categoryID", hidden: true },
             { name: "levelID", hidden: true }
         ],
+        postData: {
+            filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
+        },
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
-        loadComplete: gridLoadComplete
+        loadComplete: gridLoadComplete,
+        customSortOperations: {
+            deq: {
+                operand: "==",
+                text: "Date equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData.getFullYear() === searchValue.getFullYear()
+                        && fieldData.getMonth() === searchValue.getMonth()
+                        && fieldData.getDate() === searchValue.getDate();
+                }
+            },
+            dge: {
+                operand: ">=",
+                text: "Date greater or equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData >= searchValue;
+                }
+            },
+            dle: {
+                operand: "<=",
+                text: "Date less or equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData <= searchValue;
+                }
+            }
+        }
     });
+
+    grid.jqGrid('navGrid', '#' + pagerID, { add: false, del: false, search: true, refresh: false }, {}, {}, {}, { multipleSearch: true });
 
     function gridLoadComplete() {
         initializeGridEvents(this);

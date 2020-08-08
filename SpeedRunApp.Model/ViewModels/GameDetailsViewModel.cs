@@ -35,7 +35,6 @@ namespace SpeedRunApp.Model.ViewModels
         public IEnumerable<GameDisplay> SearchGames { get; set; }
         public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
         public IEnumerable<LevelDisplay> SearchLevels { get; set; }
-
         public string PlatformsString
         {
             get

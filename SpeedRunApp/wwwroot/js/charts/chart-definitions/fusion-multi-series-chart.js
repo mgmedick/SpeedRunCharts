@@ -126,11 +126,8 @@
         this._fusionChart.events.renderComplete = func;
     };
 
-    fusionMultiSeriesChart.prototype.render = function (loader) {
-
-        loader.loadChart(this._chartContainer, this._fusionChart);
+    fusionMultiSeriesChart.prototype.render = function () {
+        $(this._chartContainer).insertFusionCharts(this._fusionChart);
     }
-
-    //return fusionMultiSeriesChart;
 };
 

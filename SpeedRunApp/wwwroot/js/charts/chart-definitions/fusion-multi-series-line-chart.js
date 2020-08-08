@@ -57,8 +57,8 @@
         this._multiSeriesChart.onRenderComplete(func);
     };
 
-    fusionMultiSeriesLineChart.prototype.render = function (loader) {
-        this._multiSeriesChart.render(loader);
+    fusionMultiSeriesLineChart.prototype.render = function () {
+        this._multiSeriesChart.render();
     }
 
     //return fusionMultiSeriesLineChart;

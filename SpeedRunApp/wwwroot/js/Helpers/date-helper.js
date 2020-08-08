@@ -63,6 +63,28 @@ function dateHelper () {
         return result;
     }
 
+    dateHelper.prototype.dateDiffList = function (datePart, startDate, endDate) {
+        var dates = [];
+        switch (datePart.toLowerCase()) {
+            case "day":
+                while (startDate <= endDate) {
+                    dates.push(startDate);
+                    startDate = moment(startDate).add(1, 'day');
+                }
+                break;
+            case "month":
+                var startMonthYear = moment([startDate.Year, startDate.Month, 1]);
+                var endMonthYear = moment([endDate.Year, endDate.Month, 1]);
+                while (startMonthYear <= endMonthYear) {
+                    dates.push(startMonthYear);
+                    startMonthYear = moment(startMonthYear).add(1, 'month');
+                }
+                break;
+        }
+
+        return dates;
+    }
+
     /*
     dateHelper.prototype.convertToHHMMSS = function (value) {
         var result;

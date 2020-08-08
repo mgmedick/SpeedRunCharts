@@ -1,7 +1,6 @@
-﻿function dashboardLoader(container, componentSelector, underscore) {
+﻿function dashboardLoader(container, componentSelector) {
     this.container = container;
     this.componentSelector = componentSelector;
-    this._ = underscore;
 
     dashboardLoader.prototype.InitializeComponent = function (selector) {
         selector.html('');
@@ -11,14 +10,13 @@
         var that = this;
         var componentContainers = that.container.find(that.componentSelector);
 
-        if (componentContainers.length > 0) {
-            that._.each(componentContainers, function (component, idx) {
-                var currentComponent = that._.chain(selectedComponents).find(function (x) { return x.index == idx; }).value();
+        _.each(componentContainers, function (componentContainer, idx) {
+            var currentComponent = _.chain(selectedComponents).find(function (x) { return x.index == idx; }).value();
 
-                if ((!that._.isUndefined(currentComponent)) && (availableComponents[currentComponent.name]))
-                    componentHandler(that, component, availableComponents[currentComponent.name]);
-            });
-        }
+            if (currentComponent && availableComponents[currentComponent.name]) {
+                componentHandler(componentContainer, availableComponents[currentComponent.name]);
+            }
+        });
     };
 
     dashboardLoader.prototype.RenderComponent = function (selector, chartElem) {

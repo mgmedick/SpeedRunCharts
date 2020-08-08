@@ -134,8 +134,9 @@ function onCategoryTabClick(element) {
         var $activeCategoryChartsPane = $chartContainer.find('.category-results-charts');
 
         if (!$activeCategoryPane.find('.grid')[0].grid) {
-            initializeGrid($activeCategoryPane);
-            //initializeCharts($activeCategoryChartsPane);
+            initializeGrid($activeCategoryPane).then(function (data) {
+                initializeCharts($activeCategoryChartsPane, data);
+            });
         }
 
         $container.find('.level-tabs').hide();
@@ -154,8 +155,9 @@ function onLevelTabClick(element) {
     var $chartContainer = $(levelChartContainerID);
 
     if (!$container.find('.grid')[0].grid) {
-        initializeGrid($container);
-        //initializeCharts($chartContainer);
+        initializeGrid($container).then(function (data) {
+            initializeCharts($chartContainer, data);
+        });
     }
 
     $('.level-tab-pane').hide();
@@ -198,6 +200,7 @@ function onCategoryChange(element) {
 /**Initialize component functions**/
 //Initialize Grids
 function initializeGrid(element) {
+    var def = $.Deferred();
     var grid = $(element).find('.grid');
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
@@ -214,7 +217,7 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"],
+        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"],
         colModel: [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center", classes: 'options' },
             { name: "rankString", width: 75, sorttype: "number" },
@@ -225,7 +228,7 @@ function initializeGrid(element) {
             { name: "examinerName", width: 160 },
             {
                 name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
-                    sopt: ["deq","dge","dle"],
+                    sopt: ["deq", "dge", "dle"],
                     dataInit: function (element, options) {
                         var self = this;
                         var selfOptions = options;
@@ -243,11 +246,13 @@ function initializeGrid(element) {
                             }
                         });
                     }
-                }, cellattr: dateSubmittedCellAttr },
+                }, cellattr: dateSubmittedCellAttr
+            },
             { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
             { name: "playerGuests", hidden: true },
+            { name: "categoryType", hidden: true },
             { name: "gameID", hidden: true },
             { name: "categoryID", hidden: true },
             { name: "levelID", hidden: true }
@@ -300,12 +305,34 @@ function initializeGrid(element) {
     grid.jqGrid('navGrid', '#' + pagerID, { add: false, del: false, search: true, refresh: false }, {}, {}, {}, { multipleSearch: true });
 
     function gridLoadComplete() {
+        //cacheGridData(this);
         initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
         var $gridContainer = $(this).closest('.grid-container');
         initializeScroller($gridContainer);
+
+        var data = $(this).jqGrid("getGridParam", "data");
+        def.resolve(data);
     }
+
+    //function cacheGridData(element) {
+    //    var data = $(element).jqGrid("getGridParam", "data");
+
+    //    $(data).each(function () {
+    //        var categoryTypeID = this.cateogryType.ID;
+    //        var gameID = this.gameID;
+    //        var categoryID = this.categoryID;
+    //        var levelID = this.levelID;
+
+    //        sra.gridData[categoryTypeID] = sra.gridData[categoryTypeID] || [];
+    //        sra.gridData[cateogryTypeID][gameID] = sra.gridData[cateogryTypeID][gameID] || [];
+    //        sra.gridData[cateogryTypeID][gameID][categoryID] = sra.gridData[cateogryTypeID][gameID][categoryID] || [];
+    //        sra.gridData[cateogryTypeID][gameID][categoryID][levelID] = sra.gridData[cateogryTypeID][gameID][categoryID][levelID] || [];
+
+    //        sra.gridData[cateogryTypeID][gameID][categoryID][levelID].push(this);
+    //    });
+    //}
 
     function initializeGridEvents(element) {
         $grid = $(element);
@@ -433,59 +460,54 @@ function initializeGrid(element) {
     function verifyDateCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeVerifyDateString + '"';
     }
+
+    return def.promise();
 }
 
 //Initialize Charts
-function initializeCharts(element) {
+function initializeCharts(element, data) {
+    //var gameID = $(element).data('gameid');
+    //var categoryType = $(element).data('categorytype');
+    //var categoryID = $(element).data('categoryid');
+    //var levelID = $(element).data('levelid');
     var $chartsContainer = $(element);
-    var gameID = $(element).data('gameid');
-    var categoryType = $(element).data('categorytype');
-    var categoryID = $(element).data('categoryid');
-    var levelID = $(element).data('levelid');
+    //var charts = [{ name: "SpeedRunSummaryByMonth", index: 0 }, { name: "SpeedRunsReported", index: 1 }, { name: "SpeedRunsByUser", index: 2 }];
+    //var charts = [{ name: "SpeedRunsReported", index: 0 }];
+    var charts = getGameDetailsCharts();
+    var chartData = data; //gridData[categoryTypeID][gameID][categoryID][levelID];
+    //var _dashboardLoader = new dashboardLoader();
+    //var dashLoader = new dashboardLoader($chartsContainer, 'div[data-index]');
 
-    var templateLoader = function () {
-        return {
-            load: function (path, params, callback, failCallback) {
-                sra.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
-            },
-        };
-    }();
- 
-    var dashload = new dashboardLoader($chartsContainer, 'div[data-index]', _);
- 
-    sra.ajaxHelper.get('GetGameDetailsCharts', {},
-        function (charts) {
-            var chartHandler = function(chartLoader, selector, graphObj) {
-                var _chartLoader = chartLoader;
-                var _selector = $(selector);
-                var _graphObj = graphObj;
+    //var templateLoader = function () {
+    //    return {
+    //        load: function (path, params, callback, failCallback) {
+    //            sra.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
+    //        },
+    //    };
+    //}();
 
-                _selector.empty();
-                templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, gameID, categoryType, categoryID, levelID);
- 
-                    _chartLoader.RenderComponent(_selector, html);
- 
-                    controller.preRender($.Deferred()).then(function () {
-                        controller.postRender($.Deferred()).then(function () {
-                        });
-                    });
-                });
-            };
- 
-            var noChartHandler = function (chartLoader, selector) {
-                templateLoader.load('../templates/ChartPlaceholder.html', { msg: 'No Chart Found' }, function (html) {
-                    chartLoader.RenderComponent(selector, html);
-                });
-            };
- 
-            dashload.AddComponents(sra.graphObjects, charts, chartHandler, noChartHandler);
-        }
-    , function () {
-        var html = templateLoader.load('../templates/ChartError.html', undefined, function (html) {
-            $chartsContainer.html(html);
-        }, $.noop);
-    }, $.noop);
+    var chartHandler = function (element, graphObj) {
+        $(element).empty();
+
+        var controller = graphObj.controller(element, chartData);
+        controller.preRender().then(function (data) {
+            controller.postRender(data).then(function () {
+            });
+        });
+    };
+
+    $(charts).each(function () {
+        chartHandler($chartsContainer.find(this.selector), this.chart);
+    });
+
+    //dashLoader.AddComponents(sra.graphObjects, charts, chartHandler, noChartHandler);
+}
+
+function getGameDetailsCharts() {
+    var charts = [];
+    charts.push({ selector: ".chart-container-0", chart: new speedRunSummaryByMonthChart() });
+
+    return charts;
 }
 
 /**Ajax functions **/

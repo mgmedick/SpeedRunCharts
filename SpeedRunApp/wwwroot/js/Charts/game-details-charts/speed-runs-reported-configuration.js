@@ -7,8 +7,9 @@ if (!sra['graphObjects'])
 sra.graphObjects['SpeedRunsReported'] = {
     templatePath: 'SpeedRunsReported.html',
     title: 'Speed Runs Per Average',
-    controller: function (container, gameID, categoryType, categoryID, levelID)  {
-        var chartConfig = {
+    controller: function (container, chartData) {
+        var _chartLoader = new chartLoader();
+        var _chartConfig = {
             selector: 'div#placeholder',
             caption: 'Speed Run Percentiles',
             subCaption: 'All Time',
@@ -29,7 +30,7 @@ sra.graphObjects['SpeedRunsReported'] = {
             //scaleseparator: " "
         };
 
-        return new sra.graphObjects.SpeedRunsReportedController(sra.ajaxHelper, _, container, { gameID: gameID, categoryType: categoryType, categoryID: categoryID, levelID: levelID }, new chartLoader(), chartConfig);
+        return new sra.graphObjects.SpeedRunsReportedController(container, {}, chartData, _chartLoader, _chartConfig);
     }
 };
 

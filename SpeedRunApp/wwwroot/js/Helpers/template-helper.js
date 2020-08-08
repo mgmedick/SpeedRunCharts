@@ -61,7 +61,7 @@ function templateHelper (ajax, templateStorageHelper) {
        else
        {
             $ajax.get(url, {}, onSuccess, _failCallback);
-        }
+       }
    };
 };
 

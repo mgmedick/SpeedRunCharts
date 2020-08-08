@@ -72,8 +72,8 @@
         return this;
     };
 
-    fusionPieChart.prototype.render = function (loader) {
-        loader.loadChart(this._chartContainer, this._fusionChart);
+    fusionPieChart.prototype.render = function () {
+        $(this._chartContainer).insertFusionCharts(this._fusionChart);
     }
 
     fusionPieChart.prototype.onInitialized = function (func) {

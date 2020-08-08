@@ -1,32 +1,59 @@
 ﻿
-function speedRunsByUserController(container, inputs, chartData, chartConfig) {
+function speedRunsByUserChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
-    this.chartData = chartData,
-    this.chartConfig = chartConfig;
 
-    SpeedRunsByUserController.prototype.preRender = function () {
+    this.chartConfig = {
+        caption: 'Top 10 Speed Runs',
+        subCaption: '',
+        xAxis: '',
+        yAxis: 'Time (Minutes)',
+        exportEnabled: 0,
+        showValues: 1,
+        formatNumberScale: 1,
+        numberOfDecimals: 0,
+        useRoundEdges: 1,
+        numberscalevalue: "60,60",
+        numberscaleunit: "m,h",
+        defaultnumberscale: "s",
+        scalerecursively: "1",
+        maxscalerecursion: "-1",
+        scaleseparator: ""
+    };
+
+    speedRunsByUserChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
-        var sortedData = $(that.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
-        var data = sortedData.slice(0, that.inputs.topAmount);
+
+        that.preRender().then(function (data) {
+            that.postRender(data).then(function () {
+                def.resolve();
+            });
+        });
+
+        return def.promise();
+    }
+
+    speedRunsByUserChart.prototype.preRender = function () {
+        var def = $.Deferred();
+        var sortedData = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
+        var data = sortedData.slice(0, this.inputs.topAmount);
 
         def.resolve(data);
         return def.promise();
     };
 
-    SpeedRunsByUserController.prototype.postRender = function (data) {
+    speedRunsByUserChart.prototype.postRender = function (data) {
         var def = $.Deferred();
-        var that = this;
 
-        that.renderResults(that, data).then(function () {
+        this.renderResults(data).then(function () {
             def.resolve();
         });
 
         return def.promise();
     };
 
-    SpeedRunsByUserController.prototype.renderResults = function (that, data) {
+    speedRunsByUserChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 
@@ -39,8 +66,8 @@ function speedRunsByUserController(container, inputs, chartData, chartConfig) {
         });
 
         var categories = _.chain(_data).map(function (item) { return item.playerName }).value();
-        var chartElem = $(that.container).find(that.chartConfig.selector);
-        var config = that.chartConfig;
+        var chartElem = $(this.container);
+        var config = this.chartConfig;
         var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
         columnChart.setCaption(config.caption, config.subCaption)
@@ -58,8 +85,10 @@ function speedRunsByUserController(container, inputs, chartData, chartConfig) {
             }
         }).value());
 
-        columnChart.render(that.chartLoader);
+        columnChart.render();
 
         return def.promise();
     };
 };
+
+

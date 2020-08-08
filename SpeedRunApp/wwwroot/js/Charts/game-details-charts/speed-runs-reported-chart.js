@@ -1,31 +1,60 @@
 ﻿
-function speedRunsReportedController(container, inputs, chartData, chartConfig) {
+function speedRunsReportedChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
-    this.chartData = chartData;
-    this.chartConfig = chartConfig;
 
-    speedRunsReportedController.prototype.preRender = function () {
+    this.chartConfig = {
+        caption: 'Speed Run Percentiles',
+        subCaption: 'All Time',
+        showValues: 1,
+        formatNumberScale: 0,
+        numberOfDecimals: 0,
+        showPercentValues: 0,
+        showPercentInTooltip: 1,
+        exportEnabled: 1,
+        showLegend: 1,
+        showLabels: 0,
+        theme: 'fusion'
+        //numberscalevalue: "60",
+        //numberscaleunit: " mins",
+        //defaultnumberscale: "",
+        //scalerecursively: "1",
+        //maxscalerecursion: "-1",
+        //scaleseparator: " "
+    };
+
+    speedRunsReportedChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
-        var data = $(that.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
+
+        that.preRender().then(function (data) {
+            that.postRender(data).then(function () {
+                def.resolve();
+            });
+        });
+
+        return def.promise();
+    }
+
+    speedRunsReportedChart.prototype.preRender = function () {
+        var def = $.Deferred();
+        var data = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
 
         def.resolve(data);
         return def.promise();
     };
 
-    speedRunsReportedController.prototype.postRender = function (data) {
+    speedRunsReportedChart.prototype.postRender = function (data) {
         var def = $.Deferred();
-        var that = this;
 
-        that.renderResults(that, data).then(function () {
+        this.renderResults(this, data).then(function () {
             def.resolve();
         });
 
         return def.promise();
     };
 
-    speedRunsReportedController.prototype.renderResults = function (that, data) {
+    speedRunsReportedChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 
@@ -126,14 +155,14 @@ function speedRunsReportedController(container, inputs, chartData, chartConfig) 
         }
         */
 
-        var chartElem = $(that.container);
-        var config = that.chartConfig;
+        var chartElem = $(this.container);
+        var config = this.chartConfig;
         var pieChart = new fusionPieChart(chartElem, chartElem.height(), chartElem.width(), true);
-        var subCaption = that.chartConfig.subCaption;
+        var subCaption = this.chartConfig.subCaption;
 
-        _.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x]) }).value();
+        //_.chain(Object.keys(this.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', this.inputs[x]) }).value();
 
-        pieChart.setCaption(that.chartConfig.caption, subCaption)
+        pieChart.setCaption(this.chartConfig.caption, subCaption)
             .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
             .onRenderComplete(function (evt, d) {
                 def.resolve();
@@ -153,8 +182,5 @@ function speedRunsReportedController(container, inputs, chartData, chartConfig) 
         return def.promise();
     };
 };
-
-
-
 
 

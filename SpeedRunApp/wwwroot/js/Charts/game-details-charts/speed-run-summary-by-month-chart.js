@@ -1,19 +1,54 @@
-﻿
-function speedRunSummaryByMonthController(container, inputs, chartData, chartConfig) {
+﻿//if (!sra)
+//    sra = {};
+
+//if (!sra['graphObjects'])
+//    sra.graphObjects = {};
+
+//sra.graphObjects['SpeedRunSummaryByMonth'] =
+function speedRunSummaryByMonthChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
-    this.chartData = chartData;
-    this.chartConfig = chartConfig;
 
-    speedRunSummaryByMonthController.prototype.preRender = function () {
+    this.chartConfig = {
+        caption: 'Speed Runs Per Month',
+        subCaption: 'Most recent 6 Months of activity',
+        xAxis: 'Date',
+        yAxis: 'Time (Minutes)',
+        exportEnabled: 1,
+        showValues: 0,
+        formatNumberScale: 1,
+        numberOfDecimals: 0,
+        useRoundEdges: 1,
+        numberscalevalue: "60,60",
+        numberscaleunit: "m,h",
+        defaultnumberscale: "s",
+        scalerecursively: "1",
+        maxscalerecursion: "-1",
+        scaleseparator: " ",
+        connectNullData: 1
+    };
+
+    speedRunSummaryByMonthChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
+
+        that.preRender().then(function (data) {
+            that.postRender(data).then(function () {
+                def.resolve();
+            });
+        });
+
+        return def.promise();
+    }
+
+    speedRunSummaryByMonthChart.prototype.preRender = function () {
+        var def = $.Deferred();
         var data = {};
 
-        var sortedData = $(that.chartData).sort(function (a, b) {
+        var sortedData = $(this.inputs.chartData).sort(function (a, b) {
             return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds;
         }).toArray();
-        var dates = $(that.chartData).map(function () { return this.DateSubmitted }).toArray();
+        var dates = $(this.inputs.chartData).map(function () { return this.DateSubmitted }).toArray();
         var minDate = new Date(Math.min.apply(null, dates));
         var maxDate = new Date(Math.max.apply(null, dates));
         var timePeriods = sra.dateHelper.dateDiffList("day", minDate, maxDate);
@@ -25,18 +60,17 @@ function speedRunSummaryByMonthController(container, inputs, chartData, chartCon
         return def.promise();
     };
 
-    speedRunSummaryByMonthController.prototype.postRender = function (data) {
+    speedRunSummaryByMonthChart.prototype.postRender = function (data) {
         var def = $.Deferred();
-        var that = this;
 
-        that.renderResults(that, data).then(function () {
+        this.renderResults(this, data).then(function () {
             promise.resolve();
         });
 
         return def.promise();
     };
 
-    speedRunSummaryByMonthController.prototype.renderResults = function (that, data) {
+    speedRunSummaryByMonthChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data.data).clone().value();
         var _timePeriods = _.chain(data.timePeriods).clone().value();
@@ -108,8 +142,8 @@ function speedRunSummaryByMonthController(container, inputs, chartData, chartCon
         categories = _.sortBy(categories, function (item) { return moment(item) });
         */
 
-        var chartElem = $(that.container); //$(that.container).find(that.chartConfig.selector);
-        var config = that.chartConfig;
+        var chartElem = $(this.container);
+        var config = this.chartConfig;
 
         var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
@@ -136,6 +170,8 @@ function speedRunSummaryByMonthController(container, inputs, chartData, chartCon
 
         return def.promise();
     };
-}
+};
+
+
 
 

@@ -3,8 +3,6 @@ function speedRunSummaryByMonthController(container, inputs, chartData, chartCon
     this.container = container;
     this.inputs = inputs;
     this.chartData = chartData;
-    //this.chartLoader = chartLoader;
-    //this.renderResults = renderResults;
     this.chartConfig = chartConfig;
 
     speedRunSummaryByMonthController.prototype.preRender = function () {
@@ -138,8 +136,6 @@ function speedRunSummaryByMonthController(container, inputs, chartData, chartCon
 
         return def.promise();
     };
-
-    //return SpeedRunSummaryByMonthController;
 }
 
 

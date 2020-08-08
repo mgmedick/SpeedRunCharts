@@ -1,18 +1,9 @@
-﻿if (!sra)
-    sra = {};
-
-if (!sra['graphObjects'])
-    sra.graphObjects = {};
-
-sra.graphObjects.SpeedRunsByUserController = (function () {
-    function SpeedRunsByUserController(container, inputs, chartData, chartLoader, chartConfig) {
-        this.container = container;
-        this.inputs = inputs;
-        this.chartData = chartData,
-        this.chartLoader = chartLoader;
-        this.chartConfig = chartConfig;
-        this.renderResults = renderResults;
-    }
+﻿
+function speedRunsByUserController(container, inputs, chartData, chartConfig) {
+    this.container = container;
+    this.inputs = inputs;
+    this.chartData = chartData,
+    this.chartConfig = chartConfig;
 
     SpeedRunsByUserController.prototype.preRender = function () {
         var def = $.Deferred();
@@ -35,7 +26,7 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
         return def.promise();
     };
 
-    var renderResults = function (that, data) {
+    SpeedRunsByUserController.prototype.renderResults = function (that, data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 
@@ -71,6 +62,4 @@ sra.graphObjects.SpeedRunsByUserController = (function () {
 
         return def.promise();
     };
-
-    return SpeedRunsByUserController;
-}());
+};

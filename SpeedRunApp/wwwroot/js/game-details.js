@@ -466,49 +466,40 @@ function initializeGrid(element) {
 
 //Initialize Charts
 function initializeCharts(element, data) {
-    //var gameID = $(element).data('gameid');
-    //var categoryType = $(element).data('categorytype');
-    //var categoryID = $(element).data('categoryid');
-    //var levelID = $(element).data('levelid');
-    var $chartsContainer = $(element);
-    //var charts = [{ name: "SpeedRunSummaryByMonth", index: 0 }, { name: "SpeedRunsReported", index: 1 }, { name: "SpeedRunsByUser", index: 2 }];
-    //var charts = [{ name: "SpeedRunsReported", index: 0 }];
-    var charts = getGameDetailsCharts();
-    var chartData = data; //gridData[categoryTypeID][gameID][categoryID][levelID];
-    //var _dashboardLoader = new dashboardLoader();
-    //var dashLoader = new dashboardLoader($chartsContainer, 'div[data-index]');
+    var def = $.Deferred();
+    var charts = [
+        new speedRunsByUserChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
+        new speedRunsReportedChart($(element).find('.chart-container-1'), { chartData: data }),
+        new speedRunSummaryByMonthChart($(element).find('.chart-container-2'), { chartData: data })
+    ];
 
-    //var templateLoader = function () {
-    //    return {
-    //        load: function (path, params, callback, failCallback) {
-    //            sra.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
-    //        },
-    //    };
-    //}();
+    var promises = $(charts).map(function () { return this.generateChart() });
 
-    var chartHandler = function (element, graphObj) {
-        $(element).empty();
+    $.when.apply(null, promises).then(function () { def.resolve(); })
 
-        var controller = graphObj.controller(element, chartData);
-        controller.preRender().then(function (data) {
-            controller.postRender(data).then(function () {
-            });
-        });
-    };
+    //$(charts).each(function () {
+    //    var self = this;
+    //    //var container = $(element).find(this.selector)
+    //    //$(container).empty();
 
-    $(charts).each(function () {
-        chartHandler($chartsContainer.find(this.selector), this.chart);
-    });
+    //    //var controller = graphObj.controller(container, data);
 
-    //dashLoader.AddComponents(sra.graphObjects, charts, chartHandler, noChartHandler);
+    //    self.preRender().then(function (data) {
+    //        self.postRender(data).then(function () {
+    //        });
+    //    });
+    //});
+    return def.promise();
 }
 
-function getGameDetailsCharts() {
-    var charts = [];
-    charts.push({ selector: ".chart-container-0", chart: new speedRunSummaryByMonthChart() });
+//function getGameDetailsCharts(element, data) {
+//    var charts = [];
+//    charts.push(new speedRunsByUserChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }));
+//    //charts.push({ selector: ".chart-container-1", chart: new speedRunSummaryByMonthChart() });
+//    //charts.push({ selector: ".chart-container-2", chart: new speedRunSummaryByMonthChart() });
 
-    return charts;
-}
+//    return charts;
+//}
 
 /**Ajax functions **/
 //Search

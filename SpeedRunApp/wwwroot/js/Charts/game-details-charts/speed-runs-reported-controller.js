@@ -1,20 +1,11 @@
-﻿if (!sra)
-    sra = {};
+﻿
+function speedRunsReportedController(container, inputs, chartData, chartConfig) {
+    this.container = container;
+    this.inputs = inputs;
+    this.chartData = chartData;
+    this.chartConfig = chartConfig;
 
-if (!sra['graphObjects'])
-    sra.graphObjects = {};
-
-sra.graphObjects.SpeedRunsReportedController = (function () {
-    function SpeedRunsReportedController(container, inputs, chartData, chartLoader, chartConfig) {
-        this.container = container;
-        this.inputs = inputs;
-        this.chartData = chartData;
-        this.chartLoader = chartLoader;
-        this.chartConfig = chartConfig;
-        this.renderResults = renderResults;
-    }
-
-    SpeedRunsReportedController.prototype.preRender = function () {
+    speedRunsReportedController.prototype.preRender = function () {
         var def = $.Deferred();
         var that = this;
         var data = $(that.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
@@ -23,7 +14,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         return def.promise();
     };
 
-    SpeedRunsReportedController.prototype.postRender = function (data) {
+    speedRunsReportedController.prototype.postRender = function (data) {
         var def = $.Deferred();
         var that = this;
 
@@ -34,7 +25,7 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         return def.promise();
     };
 
-    var renderResults = function (that, data) {
+    speedRunsReportedController.prototype.renderResults = function (that, data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 
@@ -135,18 +126,18 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
         }
         */
 
-        var chartElem = $(that.container).find(that.chartConfig.selector);
+        var chartElem = $(that.container);
         var config = that.chartConfig;
         var pieChart = new fusionPieChart(chartElem, chartElem.height(), chartElem.width(), true);
         var subCaption = that.chartConfig.subCaption;
 
-        _.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x])}).value();
+        _.chain(Object.keys(that.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', that.inputs[x]) }).value();
 
         pieChart.setCaption(that.chartConfig.caption, subCaption)
             .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
-                            .onRenderComplete(function (evt, d) {
-                                def.resolve();
-                            });
+            .onRenderComplete(function (evt, d) {
+                def.resolve();
+            });
 
         _.chain(Object.entries(chartDataObj))
             .map(function (x) {
@@ -157,12 +148,13 @@ sra.graphObjects.SpeedRunsReportedController = (function () {
             })
             .value();
 
-        pieChart.render(that.chartLoader);
+        pieChart.render();
 
         return def.promise();
-   };
+    };
+};
 
-   return SpeedRunsReportedController;
-}());
+
+
 
 

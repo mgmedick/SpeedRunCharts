@@ -27,7 +27,6 @@ function initializeEvents() {
     $('.chosen').chosen({ width: "250px" });
     $('.date').datepicker();
     $('#divSearch').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
-    $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 
     $('#btnSearch').click(filterCategories);
 
@@ -41,6 +40,8 @@ function initializeEvents() {
 
     loadSpeedRunGridTemplate();
     initializeScrollerGlobalEvents();
+
+    //$('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 }
 
 function loadSpeedRunGridTemplate() {
@@ -59,14 +60,16 @@ function loadSpeedRunGridTemplate() {
 }
 
 function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRunGridModel) {
-    renderTemplate(element, speedRunGridTemplate, speedRunGridModel);
-    initializeSpeedRunGridEvents();
+    renderTemplate(element, speedRunGridTemplate, speedRunGridModel).then(function () {
+        initializeSpeedRunGridEvents();
 
-    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-    onCategoryTypeTabClick($activeCategoryTypeTab);
+        var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+        onCategoryTypeTabClick($activeCategoryTypeTab);
+    });
 }
 
 function renderTemplate(element, template, data) {
+    var def = $.Deferred();
     var _template = _.template(template);
 
     var html = _template({
@@ -74,6 +77,9 @@ function renderTemplate(element, template, data) {
     });
 
     $(element).html(html);
+    def.resolve();
+
+    return def.promise();
 }
 
 function initializeSpeedRunGridEvents() {
@@ -88,6 +94,8 @@ function initializeSpeedRunGridEvents() {
     $('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
+
+    $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 }
 
 /*Event Handlers*/
@@ -135,7 +143,9 @@ function onCategoryTabClick(element) {
 
         if (!$activeCategoryPane.find('.grid')[0].grid) {
             initializeGrid($activeCategoryPane).then(function (data) {
-                initializeCharts($activeCategoryChartsPane, data);
+                initializeCharts($activeCategoryChartsPane, data).then(function () {
+                    //$('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
+                });
             });
         }
 
@@ -156,7 +166,9 @@ function onLevelTabClick(element) {
 
     if (!$container.find('.grid')[0].grid) {
         initializeGrid($container).then(function (data) {
-            initializeCharts($chartContainer, data);
+            initializeCharts($activeCategoryChartsPane, data).then(function () {
+                //$('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
+            });
         });
     }
 
@@ -477,7 +489,9 @@ function initializeCharts(element, data) {
 
     var promises = $(charts).map(function () { return this.generateChart() });
 
-    $.when.apply(null, promises).then(function () { def.resolve(); })
+    $.when.apply(null, promises).then(function () {
+        def.resolve();
+    })
 
     //$(charts).each(function () {
     //    var self = this;

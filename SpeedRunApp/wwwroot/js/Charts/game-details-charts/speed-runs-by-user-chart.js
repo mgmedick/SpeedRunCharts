@@ -25,7 +25,9 @@ function speedRunsByUserChart(container, inputs) {
         var def = $.Deferred();
         var that = this;
 
-        that.preRender().then(function (data) {
+        $(this.container).empty();
+
+        this.preRender().then(function (data) {
             that.postRender(data).then(function () {
                 def.resolve();
             });

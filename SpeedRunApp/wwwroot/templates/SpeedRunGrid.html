@@ -5,9 +5,21 @@
             <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
             <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
                 <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
-                    <div class="chart-container chart-container-0 chart-placeholder" data-index="0"></div>
-                    <div class="chart-container chart-container-1 chart-placeholder pl-2" data-index="1"></div>
-                    <div class="chart-container chart-container-2 chart-placeholder pl-2" data-index="2"></div>
+                    <div class="chart-placeholder chart-container-0">
+                        <div class="mx-auto align-self-center">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder chart-container-1">
+                        <div class="mx-auto align-self-center">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder chart-container-2">
+                        <div class="mx-auto align-self-center">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
                 </div>
                 <div class="level-results-charts">
                     <% _.each(item.levels, function(level, levelIndex) { %>

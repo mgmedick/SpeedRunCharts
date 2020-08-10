@@ -327,6 +327,11 @@ a.linkToggle.expanded:before {
 div.chart-placeholder {
     height: 500px;
     width: 500px;
+    display: flex;
+}
+
+div.chart-placeholder + div.chart-placeholder {
+    padding-left: 10px;
 }
 
 .nav-tabs {

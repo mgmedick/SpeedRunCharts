@@ -69,20 +69,36 @@ function dateHelper () {
             case "day":
                 while (startDate <= endDate) {
                     dates.push(startDate);
-                    startDate = moment(startDate).add(1, 'day');
+                    startDate = moment(startDate).add(1, 'day').toDate();
                 }
                 break;
             case "month":
-                var startMonthYear = moment([startDate.Year, startDate.Month, 1]);
-                var endMonthYear = moment([endDate.Year, endDate.Month, 1]);
+                var startMonthYear = moment([startDate.getFullYear(), startDate.getMonth(), 1]).toDate();
+                var endMonthYear = moment([endDate.getFullYear(), endDate.getMonth(), 1]).toDate();
                 while (startMonthYear <= endMonthYear) {
                     dates.push(startMonthYear);
-                    startMonthYear = moment(startMonthYear).add(1, 'month');
+                    startMonthYear = moment(startMonthYear).add(1, 'month').toDate();
                 }
                 break;
         }
 
         return dates;
+    }
+
+    dateHelper.prototype.add = function (date, value, datePart) {
+        return moment(date).add(value, datePart).toDate();
+    }
+
+    dateHelper.prototype.maxDate = function (dates) {
+        return moment(Math.max.apply(null, dates)).toDate();
+    }
+
+    dateHelper.prototype.minDate = function (dates) {
+        return moment(Math.min.apply(null, dates)).toDate();
+    }
+
+    dateHelper.prototype.format = function (date, formatString) {
+        return moment(date).format(formatString);
     }
 
     /*

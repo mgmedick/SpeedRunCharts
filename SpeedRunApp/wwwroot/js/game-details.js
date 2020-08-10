@@ -217,7 +217,7 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"],
+        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Time", "Examiner", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"],
         colModel: [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center", classes: 'options' },
             { name: "rankString", width: 75, sorttype: "number" },
@@ -255,7 +255,9 @@ function initializeGrid(element) {
             { name: "categoryType", hidden: true },
             { name: "gameID", hidden: true },
             { name: "categoryID", hidden: true },
-            { name: "levelID", hidden: true }
+            { name: "levelID", hidden: true },
+            { name: "primaryRunTimeSeconds", hidden: true },
+            { name: "monthYearSubmitted", hidden: true }
         ],
         postData: {
             filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'

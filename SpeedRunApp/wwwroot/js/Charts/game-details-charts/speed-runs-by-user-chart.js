@@ -59,13 +59,13 @@ function speedRunsByUserChart(container, inputs) {
 
         var chartDataObj = {};
         _.chain(_data).each(function (item) {
-            var playerName = item.playerName;
+            var playerNames = _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",");
 
-            chartDataObj[playerName] = chartDataObj[playerName] || [];
-            chartDataObj[playerName].push(item.primaryRunTimeSeconds);
+            chartDataObj[playerNames] = chartDataObj[playerNames] || [];
+            chartDataObj[playerNames].push(item.primaryRunTimeSeconds);
         });
 
-        var categories = _.chain(_data).map(function (item) { return item.playerName }).value();
+        var categories = _.chain(_data).map(function (item) { return _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",") }).value();
         var chartElem = $(this.container);
         var config = this.chartConfig;
         var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');

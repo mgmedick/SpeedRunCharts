@@ -1,10 +1,4 @@
-﻿//if (!sra)
-//    sra = {};
-
-//if (!sra['graphObjects'])
-//    sra.graphObjects = {};
-
-//sra.graphObjects['SpeedRunSummaryByMonth'] =
+﻿
 function speedRunSummaryByMonthChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
@@ -45,15 +39,14 @@ function speedRunSummaryByMonthChart(container, inputs) {
         var def = $.Deferred();
         var data = {};
 
-        var sortedData = $(this.inputs.chartData).sort(function (a, b) {
-            return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds;
-        }).toArray();
-        var dates = $(this.inputs.chartData).map(function () { return this.DateSubmitted }).toArray();
-        var minDate = new Date(Math.min.apply(null, dates));
-        var maxDate = new Date(Math.max.apply(null, dates));
-        var timePeriods = sra.dateHelper.dateDiffList("day", minDate, maxDate);
+        var dates = _.chain(this.inputs.chartData).map(function (item) { return new Date(item.dateSubmitted) }).value();
+        //var minDate = new Date(Math.min.apply(null, dates));
+        var maxDate = sra.dateHelper.maxDate(dates);
+        var minDate = sra.dateHelper.add(maxDate, -6, "months");
+        var filteredData = _.chain(this.inputs.chartData).filter(function (x, i) { return new Date(x.dateSubmitted) >= minDate }).value();
+        var timePeriods = _.chain(sra.dateHelper.dateDiffList("month", minDate, maxDate)).map(function (x) { return sra.dateHelper.format(x, "MM/YYYY") })
 
-        data["data"] = sortedData;
+        data["data"] = filteredData;
         data["timePeriods"] = timePeriods;
 
         def.resolve(data);
@@ -63,7 +56,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
     speedRunSummaryByMonthChart.prototype.postRender = function (data) {
         var def = $.Deferred();
 
-        this.renderResults(this, data).then(function () {
+        this.renderResults(data).then(function () {
             promise.resolve();
         });
 
@@ -88,45 +81,44 @@ function speedRunSummaryByMonthChart(container, inputs) {
 
         var groupedObj = {};
         _.chain(_data).each(function (item) {
-            var category = item.categoryName;
+            //var category = item.categoryID;
             var monthYear = item.monthYearSubmitted;
 
-            groupedObj[category] = groupedObj[category] || {};
-            groupedObj[category][monthYear] = groupedObj[category][monthYear] || [];
-            groupedObj[category][monthYear].push(item.primaryRunTimeSeconds);
+            groupedObj[monthYear] = groupedObj[monthYear] || [];
+            groupedObj[monthYear].push(item.primaryRunTimeSeconds);
         });
 
         var chartDataObj = {};
-        for (var key in groupedObj) {
-            if (groupedObj.hasOwnProperty(key)) {
-                var minKey = key + ' - Min Time';
-                var maxKey = key + ' - Max Time';
-                var averageKey = key + ' - Avg Time';
+        //for (var key in groupedObj) {
+        //    if (groupedObj.hasOwnProperty(key)) {
+                var minKey = 'Min Time';
+                var maxKey = 'Max Time';
+                var averageKey = 'Avg Time';
 
-                chartDataObj[minKey] = chartDataObj[minKey] || {};
-                chartDataObj[maxKey] = chartDataObj[maxKey] || {};
-                chartDataObj[averageKey] = chartDataObj[averageKey] || {};
-                for (var subkey in groupedObj[key]) {
-                    chartDataObj[minKey][subkey] = chartDataObj[minKey][subkey] || [];
-                    chartDataObj[maxKey][subkey] = chartDataObj[maxKey][subkey] || [];
-                    chartDataObj[averageKey][subkey] = chartDataObj[averageKey][subkey] || [];
+                chartDataObj[minKey] = {};
+                chartDataObj[maxKey] = {};
+                chartDataObj[averageKey] = {};
+                for (var key in groupedObj) {
+                    chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
+                    chartDataObj[maxKey][key] = chartDataObj[maxKey][key] || [];
+                    chartDataObj[averageKey][key] = chartDataObj[averageKey][key] || [];
 
-                    var min = sra.mathHelper.getMin(groupedObj[key][subkey]);
-                    chartDataObj[minKey][subkey].push(min);
+                    var min = sra.mathHelper.getMin(groupedObj[key]);
+                    chartDataObj[minKey][key].push(min);
 
-                    var max = sra.mathHelper.getMax(groupedObj[key][subkey]);
-                    chartDataObj[maxKey][subkey].push(max);
+                    var max = sra.mathHelper.getMax(groupedObj[key]);
+                    chartDataObj[maxKey][key].push(max);
 
-                    var average = sra.mathHelper.getAverage(groupedObj[key][subkey]);
-                    chartDataObj[averageKey][subkey].push(average);
+                    var average = sra.mathHelper.getAverage(groupedObj[key]);
+                    chartDataObj[averageKey][key].push(average);
                 }
 
                 //_.chain(groupedObj[key]).each(function (x) {
                 //    chartDataObj[key][x[0]] = chartDataObj[key][x[0]] || [];
                 //    chartDataObj[key][x[0]].push(sra.mathHelper.getAverage(x[1]));
                 //});
-            }
-        }
+        //    }
+        //}
 
         var categories = _timePeriods;
 
@@ -156,14 +148,12 @@ function speedRunSummaryByMonthChart(container, inputs) {
             });
 
         for (var key in chartDataObj) {
-            if (chartDataObj.hasOwnProperty(key)) {
-                lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
-                    return {
-                        category: x[0],
-                        value: x[1]
-                    }
-                }).value());
-            }
+            lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
+                return {
+                    category: x[0],
+                    value: x[1]
+                }
+            }).value());
         }
 
         lineChart.render();

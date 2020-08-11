@@ -1,15 +1,17 @@
-﻿var _categoryTypes;
-var _games;
-var _categories;
-var _levels;
+﻿if (!sra) {
+    var sra = {};
+}
+
+function speedRunGridModel(sender, categoryTypes, games, categories, levels) {
+    this.sender = sender,
+        this.categoryTypes = categoryTypes,
+        this.games = games,
+        this.categories = categories,
+        this.levels = levels
+}
 
 /**Initialize Functions**/
-function initializeClient(categoryTypes, games, categories, levels) {
-    _categoryTypes = categoryTypes;
-    _games = games;
-    _categories = categories;
-    _levels = levels;
-
+function initializeClient() {
     initializeEvents();
 
     var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
@@ -22,7 +24,7 @@ function initializeEvents() {
     $('[data-toggle="tooltip"]').tooltip();
     $('#divSearch').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
 
-    $('#btnSearch').click(runSearch);
+    $('#btnSearch').click(filterCategories);
 
     $('#drpCategoryTypes').change(function () {
         onCategoryTypeChange(this);
@@ -32,11 +34,142 @@ function initializeEvents() {
         onGameChange(this);
     });
 
-    initializeGridContainerEvents();
+    loadSpeedRunGridTemplate();
     initializeScrollerGlobalEvents();
 }
 
-function initializeGridContainerEvents() {
+function loadSpeedRunGridTemplate() {
+    $('#divSpeedRunGrid').hide();
+    $('#divSpeedRunGridLoading').show();
+
+    getSpeedRunGridData().then(function (data) {
+        cacheGridData(data);
+        var gridModel = getSpeedRunGridModel(data);
+        $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (template, status) {
+            renderAndInitializeSpeedRunGrid($('#divSpeedRunGrid'), template, gridModel);
+
+            $('#divSpeedRunGrid').show();
+            $('#divSpeedRunGridLoading').hide();
+        });
+    });
+}
+
+function cacheGridData(data) {
+    $(data).each(function () {
+        var categoryTypeID = this.cateogryType.ID;
+        var gameID = this.gameID;
+        var categoryID = this.categoryID;
+        var levelID = this.levelID;
+
+        sra.gridData[categoryTypeID] = sra.gridData[categoryTypeID] || [];
+        sra.gridData[cateogryTypeID][gameID] = sra.gridData[cateogryTypeID][gameID] || [];
+        sra.gridData[cateogryTypeID][gameID][categoryID] = sra.gridData[cateogryTypeID][gameID][categoryID] || [];
+        sra.gridData[cateogryTypeID][gameID][categoryID][levelID] = sra.gridData[cateogryTypeID][gameID][categoryID][levelID] || [];
+
+        sra.gridData[cateogryTypeID][gameID][categoryID][levelID].push(this);
+    });
+}
+
+function getSpeedRunGridModel(data) {
+    var groupedCategoryTypes = _.groupBy(data, function (value) {
+        return value.categoryType.id + '#' + value.categoryType.name;
+    });
+    sra["searchCategoryTypes"] = $(groupedCategoryTypes).map(function () { return { id: this[0].id, name: this[0].name } }).toArray()
+
+    var groupedCategories = _.groupBy(data, function (value) {
+        return value.categoryID + '#' + value.categoryName + '#' + value.gameID + '#' + value.categoryType.id;
+    });
+    sra["searchCategories"] = $(groupedCategories).map(function () { return { id: this[0].categoryID, name: this[0].categoryName, gameID: this[0].gameID, categoryTypeID: this[0].id } }).value();
+
+    var groupedGames = _.groupBy(data, function (value) {
+        return value.gameID + '#' + value.gameName;
+    });
+    sra["searchGames"] = $(groupedGames).map(function () {
+        var that = this;
+        return { id: this[0].gameID, name: this[0].gameName, categoryTypeIDs: $(sra.searchCategories).filter(function () { this.gameID == that.gameID }).map(function () { return this }).toArray() }
+    }).toArray();
+
+    var groupedLevels = _.groupBy(data, function (value) {
+        return value.levelID + '#' + value.levelName + "#" + value.gameID;
+    });
+    sra["searchLevels"] = $(groupedLevels).map(function () { return { id: this[0].levelID, name: this[0].levelName, gameID: this[0].gameID } }).toArray();
+
+    return new speedRunGridModel("User", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels)
+}
+
+function getSpeedRunGridData() {
+    var def1 = $.Deferred();
+    var gameID = $("#hdnUserID").val();
+    var elementsPerPage = sra.apiSettings.maxElementsPerPage;
+    var elementsOffset = 0;
+    var requestCount = 0;
+
+    getAllUserSpeedRuns(gameID, elementsPerPage, elementsOffset, requestCount).then(function (data) {
+        data.sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; });
+        def1.resolve(data);
+    });
+
+    return def1.promise();
+}
+
+function getAllUserSpeedRuns(userID, elementsPerPage, elementsOffset, requestCount, items, def) {
+    if (!def) {
+        var def = new $.Deferred();
+    }
+
+    if (!items) {
+        var items = [];
+    }
+
+    getUserSpeedRuns(userID, elementsPerPage, elementsOffset).then(function (data) {
+        requestCount++;
+        items = items.concat(data);
+
+        if (data.length == elementsPerPage) {
+            return setTimeout(function () { getUserSpeedRuns(userID, elementsPerPage, (elementsPerPage * requestCount), requestCount, items, def) }, 5000);
+        } else {
+            def.resolve(items);
+        }
+    });
+
+    return def.promise();
+}
+
+function getUserSpeedRuns(userID, elementsPerPage, elementsOffset) {
+    var def = new $.Deferred();
+
+    return $.get('GetUserSpeedRuns?userID=' + userID + "&elementsPerPage=" + elementsPerPage + "&elementsOffset=" + elementsOffset, function (data, status) {
+
+        def.resolve(data);
+    });
+
+    return def.promise();
+}
+
+function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRunGridModel) {
+    renderTemplate(element, speedRunGridTemplate, speedRunGridModel).then(function () {
+        initializeSpeedRunGridEvents();
+
+        var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
+        onCategoryTypeTabClick($activeCategoryTypeTab);
+    });
+}
+
+function renderTemplate(element, template, data) {
+    var def = $.Deferred();
+    var _template = _.template(template);
+
+    var html = _template({
+        item: data
+    });
+
+    $(element).html(html);
+    def.resolve();
+
+    return def.promise();
+}
+
+function initializeSpeedRunGridEvents() {
     $('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });
@@ -158,20 +291,18 @@ function onGameChange(element) {
 /**Initialize Component functions**/
 //Initialize Grids
 function initializeGrid(element) {
+    var def = $.Deferred();
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
-    var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
+    var gameID = $(element).data('gameid');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
-    var userID = $('#hdnUserID').val();
-    var startDate = $('#txtStartDate').val();
-    var endDate = $('#txtEndDate').val();
+    var localData = sra.gridData[categoryType][gameID][categoryID][levelID];
 
     grid.jqGrid({
-        url: 'UserSpeedRunGrid_Read?userID=' + userID + '&gameID=' + gameID + '&categoryType=' + categoryType + '&categoryID=' + categoryID + '&levelID=' + levelID + '&startDate=' + startDate + '&endDate=' + endDate,
-        datatype: "json",
-        mtype: "GET",
+        datatype: "local",
+        data: localData,
         height: '100%',
         //autowidth: true,
         //shrinkToFit: true,
@@ -194,12 +325,49 @@ function initializeGrid(element) {
             { name: "relativeVerifyDateString", hidden: true },
             { name: "playerGuests", hidden: true }
         ],
+        postData: {
+            filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
+        },
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
-        loadComplete: gridLoadComplete
+        loadComplete: gridLoadComplete,
+        customSortOperations: {
+            deq: {
+                operand: "==",
+                text: "Date equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData.getFullYear() === searchValue.getFullYear()
+                        && fieldData.getMonth() === searchValue.getMonth()
+                        && fieldData.getDate() === searchValue.getDate();
+                }
+            },
+            dge: {
+                operand: ">=",
+                text: "Date greater or equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData >= searchValue;
+                }
+            },
+            dle: {
+                operand: "<=",
+                text: "Date less or equal",
+                filter: function (options) {
+                    var fieldData = new Date(options.item[options.cmName]);
+                    var searchValue = new Date(options.searchValue);
+
+                    return fieldData <= searchValue;
+                }
+            }
+        }
     });
 
     function gridLoadComplete(element) {
@@ -208,6 +376,9 @@ function initializeGrid(element) {
         initializeGridStyles(this);
         var $gridContainer = $(this).closest('.grid-container');
         initializeScroller($gridContainer);
+
+        var data = $(this).jqGrid("getGridParam", "data");
+        def.resolve(data)
     }
 
     function initializeGridEvents(element) {
@@ -347,88 +518,35 @@ function initializeGrid(element) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
     }
 
-    function verifyDateCellAttr(rowId, val, rowObject, cm, rdata) {
-        return ' title="' + rowObject.relativeVerifyDateString + '"';
-    }
+    return def.promise();
 }
 
 /**Ajax functions **/
 //Search
-function runSearch() {
-    var formData = new FormData($('#frmSearch')[0]);
-    formData.append("userID", $('#hdnUserID').val());
+function filterCategories() {
+    var categoryTypeIDs = $('#drpCategoryTypes').val();
+    var gameIDs = $('#drpGames').val();
+    var categoryIDs = $('#drpCategories').val();
+    var levelIDs = $('#drpLevels').val();
 
-    $.ajax({
-        url: 'SearchUserSpeedRunGrid',
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-            if (data != null) {
-                $('#divUserSpeedRunGrid').html(data);
-                initializeGridContainerEvents();
+    var categoryTypes = $(sra.searchCategoryTypes).filter(function () { return categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.id) > -1 })
+    var games = $(sra.searchGames).filter(function () { return gameIDs.length == 0 || gameIDs.indexOf(this.id) > -1 })
+    var categories = $(sra.searchCategories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 })
+    var levels = $(sra.searchLevels).filter(function () { return levelIDs.length == 0 || levelIDs.indexOf(this.id) > -1 })
 
-                var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-                onCategoryTypeTabClick($activeCategoryTypeTab);
-            }
-        }
-    });
+    $('#divSpeedRunGrid').hide();
+    $('#divSpeedRunGridLoading').show();
+
+    var gridModel = new speedRunGridModel("Game", categoryTypes, games, categories, levels);
+    renderAndInitializeSpeedRunGrid($('#divSpeedRunGrid'), sra.speedRunGridTemplate, gridModel);
+
+    $('#divSpeedRunGrid').show();
+    $('#divSpeedRunGridLoading').hide();
 }
 
-/*
-function initializeCharts(element) {
-    var $chartsContainer = $(element);
-    var gameID = $(element).data('gameid');
-    var categoryType = $(element).data('categorytype');
-    var categoryID = $(element).data('categoryid');
-    var levelID = $(element).data('levelid');
 
-    var templateLoader = function () {
-        return {
-            load: function (path, params, callback, failCallback) {
-                sra.templateHelper.getTemplateFromUrl(path, params, callback, failCallback);
-            },
-        };
-    }();
- 
-    var dashload = new dashboardLoader($chartsContainer, 'div[data-index]', _);
- 
-    sra.ajaxHelper.get('GetGameDetailsCharts', {},
-        function (charts) {
-            var chartHandler = function(chartLoader, selector, graphObj) {
-                var _chartLoader = chartLoader;
-                var _selector = $(selector);
-                var _graphObj = graphObj;
 
-                _selector.empty();
-                templateLoader.load('../templates/ChartPlaceholder.html', {}, function (html) {
-                    var controller = _graphObj.controller(_selector, sra.dateHelper, gameID, categoryType, categoryID, levelID);
- 
-                    _chartLoader.RenderComponent(_selector, html);
- 
-                    controller.preRender($.Deferred()).then(function () {
-                        controller.postRender($.Deferred()).then(function () {
-                        });
-                    });
-                });
-            };
- 
-            var noChartHandler = function (chartLoader, selector) {
-                templateLoader.load('../templates/ChartPlaceholder.html', { msg: 'No Chart Found' }, function (html) {
-                    chartLoader.RenderComponent(selector, html);
-                });
-            };
- 
-            dashload.AddComponents(sra.graphObjects, charts, chartHandler, noChartHandler);
-        }
-    , function () {
-        var html = templateLoader.load('../templates/ChartError.html', undefined, function (html) {
-            $chartsContainer.html(html);
-        }, $.noop);
-    }, $.noop);
-}
-*/
+
 
 
 

@@ -35,19 +35,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult UserSpeedRunGrid_Read(string userID, string gameID, CategoryType categoryType, string categoryID, string levelID, DateTime? startDate = null, DateTime? endDate = null)
+        public JsonResult GetUserSpeedRuns(string userID, int elementsPerPage, int elementsOffset)
         {
-            var recordVMs = _userService.GetUserSpeedRuns(userID, gameID, categoryType, categoryID, levelID, startDate, endDate);
+            var runVMs = _userService.GetUserSpeedRuns(userID, elementsPerPage, elementsOffset);
 
-            return Json(recordVMs);
-        }
-
-        [HttpPost]
-        public PartialViewResult SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
-        {
-            var userGridVM = _userService.SearchUserSpeedRunGrid(userID, drpCategoryTypes, drpGames, drpCategories, drpLevels);
-
-            return PartialView("_SpeedRunGrid", userGridVM);
+            return Json(runVMs);
         }
     }
 }

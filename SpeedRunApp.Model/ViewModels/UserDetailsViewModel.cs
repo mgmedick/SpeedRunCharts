@@ -34,7 +34,6 @@ namespace SpeedRunApp.Model.ViewModels
         public Uri YoutubeProfile { get; set; }
         public Uri TwitterProfile { get; set; }
         public Uri SpeedRunsLiveProfile { get; set; }
-        public SpeedRunGridViewModel SpeedRunGridVM { get; set; }
     }
 }
 

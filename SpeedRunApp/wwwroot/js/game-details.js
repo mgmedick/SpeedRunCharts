@@ -143,9 +143,7 @@ function onCategoryTabClick(element) {
 
         if (!$activeCategoryPane.find('.grid')[0].grid) {
             initializeGrid($activeCategoryPane).then(function (data) {
-                initializeCharts($activeCategoryChartsPane, data).then(function () {
-                    //$('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
-                });
+                initializeCharts($activeCategoryChartsPane, data);
             });
         }
 
@@ -166,9 +164,7 @@ function onLevelTabClick(element) {
 
     if (!$container.find('.grid')[0].grid) {
         initializeGrid($container).then(function (data) {
-            initializeCharts($activeCategoryChartsPane, data).then(function () {
-                //$('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
-            });
+            initializeCharts($chartContainer, data);
         });
     }
 
@@ -469,10 +465,6 @@ function initializeGrid(element) {
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
-    }
-
-    function verifyDateCellAttr(rowId, val, rowObject, cm, rdata) {
-        return ' title="' + rowObject.relativeVerifyDateString + '"';
     }
 
     return def.promise();

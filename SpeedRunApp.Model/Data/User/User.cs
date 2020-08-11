@@ -33,7 +33,6 @@ namespace SpeedRunApp.Model.Data
         public UserRole Role { get; set; }
         public DateTime? SignUpDate { get; set; }
         public Location Location { get; set; }
-
         public Uri ProfileImage { get; set; }
         public Uri TwitchProfile { get; set; }
         public Uri HitboxProfile { get; set; }

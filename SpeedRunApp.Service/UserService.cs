@@ -13,11 +13,11 @@ namespace SpeedRunApp.Service
 {
     public class UserService : IUserService
     {
-        private readonly IMemoryCache _cache = null;
+        private readonly ICacheHelper _cacheHelper = null;
 
-        public UserService(IMemoryCache cache)
+        public UserService(ICacheHelper cacheHelper)
         {
-            _cache = cache;
+            _cacheHelper = cacheHelper;
         }
 
         public UserDetailsViewModel GetUserDetails(string userID)
@@ -33,11 +33,45 @@ namespace SpeedRunApp.Service
         public IEnumerable<SpeedRunViewModel> GetUserSpeedRuns(string userID, int elementsPerPage, int elementsOffset)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = false, EmbedPlayers = true, EmbedCategory = false, EmbedLevel = false, EmbedPlatform = false };
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = false };
             var runs = clientContainer.Runs.GetRuns(userId: userID, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset, embeds: runEmbeds);
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var platforms = _cacheHelper.GetPlatforms();
+            var examiners = new Dictionary<string, string>();
+
+            foreach (var runVM in runVMs)
+            {
+                if (!string.IsNullOrWhiteSpace(runVM.ExaminerUserID))
+                {
+                    runVM.ExaminerName = GetExaminerName(runVM.ExaminerUserID, examiners);
+                }
+
+                runVM.PlatformName = platforms.Where(i => i.ID == runVM.PlatformID).Select(i => i.Name).FirstOrDefault();
+            }
 
             return runVMs;
+        }
+
+        private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
+        {
+            string examinerName = null;
+            ClientContainer clientContainer = new ClientContainer();
+
+            if (examiners.ContainsKey(examinerUserID))
+            {
+                examinerName = examiners[examinerUserID];
+            }
+            else
+            {
+                var examiner = clientContainer.Users.GetUser(examinerUserID);
+                if (examiner != null)
+                {
+                    examiners.Add(examiner.ID, examiner.Name);
+                    examinerName = examiner.Name;
+                }
+            }
+
+            return examinerName;
         }
 
         //public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)

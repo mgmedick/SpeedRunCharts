@@ -12,10 +12,12 @@ function speedRunGridModel(sender, categoryTypes, games, categories, levels) {
 
 /**Initialize Functions**/
 function initializeClient() {
+    initalizeConstants();
     initializeEvents();
+}
 
-    var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
-    onCategoryTypeTabClick($activeCategoryTypeTab);
+function initalizeConstants() {
+    sra['gridData'] = [];
 }
 
 function initializeEvents() {
@@ -56,17 +58,17 @@ function loadSpeedRunGridTemplate() {
 
 function cacheGridData(data) {
     $(data).each(function () {
-        var categoryTypeID = this.cateogryType.ID;
+        var categoryTypeID = this.categoryType.id;
         var gameID = this.gameID;
         var categoryID = this.categoryID;
         var levelID = this.levelID;
 
         sra.gridData[categoryTypeID] = sra.gridData[categoryTypeID] || [];
-        sra.gridData[cateogryTypeID][gameID] = sra.gridData[cateogryTypeID][gameID] || [];
-        sra.gridData[cateogryTypeID][gameID][categoryID] = sra.gridData[cateogryTypeID][gameID][categoryID] || [];
-        sra.gridData[cateogryTypeID][gameID][categoryID][levelID] = sra.gridData[cateogryTypeID][gameID][categoryID][levelID] || [];
+        sra.gridData[categoryTypeID][gameID] = sra.gridData[categoryTypeID][gameID] || [];
+        sra.gridData[categoryTypeID][gameID][categoryID] = sra.gridData[categoryTypeID][gameID][categoryID] || [];
+        sra.gridData[categoryTypeID][gameID][categoryID][levelID] = sra.gridData[categoryTypeID][gameID][categoryID][levelID] || [];
 
-        sra.gridData[cateogryTypeID][gameID][categoryID][levelID].push(this);
+        sra.gridData[categoryTypeID][gameID][categoryID][levelID].push(this);
     });
 }
 
@@ -74,25 +76,35 @@ function getSpeedRunGridModel(data) {
     var groupedCategoryTypes = _.groupBy(data, function (value) {
         return value.categoryType.id + '#' + value.categoryType.name;
     });
-    sra["searchCategoryTypes"] = $(groupedCategoryTypes).map(function () { return { id: this[0].id, name: this[0].name } }).toArray()
+    sra["searchCategoryTypes"] = _.map(groupedCategoryTypes, function (group) {
+        return { id: group[0].categoryType.id, name: group[0].categoryType.name }
+    });
 
     var groupedCategories = _.groupBy(data, function (value) {
         return value.categoryID + '#' + value.categoryName + '#' + value.gameID + '#' + value.categoryType.id;
     });
-    sra["searchCategories"] = $(groupedCategories).map(function () { return { id: this[0].categoryID, name: this[0].categoryName, gameID: this[0].gameID, categoryTypeID: this[0].id } }).value();
+    sra["searchCategories"] = _.map(groupedCategories, function (group) {
+        return { id: group[0].categoryID, name: group[0].categoryName, gameID: group[0].gameID, categoryTypeID: group[0].categoryType.id }
+    });
 
     var groupedGames = _.groupBy(data, function (value) {
         return value.gameID + '#' + value.gameName;
     });
-    sra["searchGames"] = $(groupedGames).map(function () {
-        var that = this;
-        return { id: this[0].gameID, name: this[0].gameName, categoryTypeIDs: $(sra.searchCategories).filter(function () { this.gameID == that.gameID }).map(function () { return this }).toArray() }
-    }).toArray();
+    sra["searchGames"] = _.map(groupedGames, function (group) {
+        return { id: group[0].gameID, name: group[0].gameName, categoryTypeIDs: $(sra.searchCategories).filter(function () { this.gameID == group[0].gameID }).map(function () { return this.id }).toArray() }
+    });
 
     var groupedLevels = _.groupBy(data, function (value) {
         return value.levelID + '#' + value.levelName + "#" + value.gameID;
     });
-    sra["searchLevels"] = $(groupedLevels).map(function () { return { id: this[0].levelID, name: this[0].levelName, gameID: this[0].gameID } }).toArray();
+    sra["searchLevels"] = _.map(groupedLevels, function (group) {
+        var level = null;
+        if (group[0].levelID) {
+            level = { id: group[0].levelID, name: group[0].levelName, gameID: group[0].gameID };
+        }
+
+        return level;
+    });
 
     return new speedRunGridModel("User", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels)
 }

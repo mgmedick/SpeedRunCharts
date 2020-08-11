@@ -15,12 +15,10 @@ namespace SpeedRunApp.Service
     public class GamesService : IGamesService
     {
         private readonly ICacheHelper _cacheHelper = null;
-        private readonly IConfiguration _appConfig = null;
 
-        public GamesService(ICacheHelper cacheHelper, IConfiguration appConfig)
+        public GamesService(ICacheHelper cacheHelper)
         {
             _cacheHelper = cacheHelper;
-            _appConfig = appConfig;
         }
 
         public GameDetailsViewModel GetGameDetails(string gameID)

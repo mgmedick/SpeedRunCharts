@@ -306,6 +306,20 @@ function onGameChange(element) {
     repopulateDropDown($('#drpLevels'), $levels);
 }
 
+function onCategoryChange(element) {
+    var selectedCategoryIDs = $(element).val();
+
+    var $selectedLevelCategories = $(sra.searchCategories).filter(function () {
+        return (selectedCategoryIDs.indexOf(this.id) > -1 && this.categoryTypeID == "1");
+    });
+
+    var $levels = $(sra.searchLevels).filter(function () {
+        return (selectedCategoryIDs.length == 0 || $selectedLevelCategories.length > 0);
+    });
+
+    repopulateDropDown($('#drpLevels'), $levels);
+}
+
 /**Initialize Component functions**/
 //Initialize Grids
 function initializeGrid(element) {
@@ -328,7 +342,7 @@ function initializeGrid(element) {
         pager: pagerID,
         colNames: ["", "Players", "Platform", "Emulated", "Primary Time", "Real Time", "Real Time (No Load)", "Game Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden"],
         colModel: [
-            { name: "id", width: 50, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
+            { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platformName", width: 160 },
             { name: "isEmulated", width: 125 },
@@ -389,6 +403,8 @@ function initializeGrid(element) {
         }
     });
 
+    grid.jqGrid('navGrid', '#' + pagerID, { add: false, del: false, search: true, refresh: false }, {}, {}, {}, { multipleSearch: true });
+
     function gridLoadComplete(element) {
         initializeGridEvents(this);
         initializeGridFilters(this);
@@ -424,12 +440,11 @@ function initializeGrid(element) {
 
     function initializeGridFilters(element) {
         var gridData = $(element).jqGrid("getGridParam", "data");
-        var levelNames = _.chain(gridData).map(function (item) { return item.levelName }).uniq("levelName").value().sort();
-        var rankStrings = _.chain(gridData).map(function (item) { return item.rankString }).uniq("rankString").value().sort();
-        var categoryNames = _.chain(gridData).map(function (item) { return item.categoryName }).uniq("categoryName").value().sort();
-        var platformNames = _.chain(gridData).map(function (item) { return item.platformName }).uniq("platformName").value().sort();
-        var emulatorStrings = _.chain(gridData).map(function (item) { return item.isEmulated }).uniq("platformName").value().sort();
-        var statuses = _.chain(gridData).map(function (item) { return item.statusTypeString }).uniq("statusTypeString").value().sort();
+        var rankStrings = _.chain(gridData).map(function (item) { return item.rankString }).uniq().value().sort();
+        var categoryNames = _.chain(gridData).map(function (item) { return item.categoryName }).uniq().value().sort();
+        var platformNames = _.chain(gridData).map(function (item) { return item.platformName }).uniq().value().sort();
+        var emulatorStrings = _.chain(gridData).map(function (item) { return item.isEmulated }).uniq().value().sort();
+        var statuses = _.chain(gridData).map(function (item) { return item.statusTypeString }).uniq().value().sort();
         var playerNames = [];
         $(gridData).each(function () {
             var users = this.playerUsers;
@@ -449,7 +464,6 @@ function initializeGrid(element) {
         });
         playerNames = playerNames.sort();
 
-        setSearchSelect($(element), 'levelName', levelNames);
         setSearchSelect($(element), 'rankString', rankStrings);
         setSearchSelect($(element), 'playerUsers', playerNames);
         setSearchSelect($(element), 'categoryName', categoryNames);
@@ -490,11 +504,18 @@ function initializeGrid(element) {
     }
 
     function optionsFormatter(cellvalue, options, rowObject) {
-        var html = "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-
-        if (rowObject.splitsLink) {
-            html += "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>";
-        }
+        var html = "<div>"
+        html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
+        html += "<tr>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        html += "</td>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
+        html += "</td>";
+        html += "</tr>";
+        html += "</table>";
+        html += "</div>";
 
         return html;
     }

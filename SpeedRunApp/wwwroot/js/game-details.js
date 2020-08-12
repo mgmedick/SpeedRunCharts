@@ -312,7 +312,7 @@ function initializeGrid(element) {
             },
             dge: {
                 operand: ">=",
-                text: "Date greater or equal",
+                text: "Date >=",
                 filter: function (options) {
                     var fieldData = new Date(options.item[options.cmName]);
                     var searchValue = new Date(options.searchValue);
@@ -322,7 +322,7 @@ function initializeGrid(element) {
             },
             dle: {
                 operand: "<=",
-                text: "Date less or equal",
+                text: "Date <=",
                 filter: function (options) {
                     var fieldData = new Date(options.item[options.cmName]);
                     var searchValue = new Date(options.searchValue);
@@ -370,11 +370,10 @@ function initializeGrid(element) {
 
     function initializeGridFilters(element) {
         var gridData = $(element).jqGrid("getGridParam", "data");
-        var rankStrings = _.chain(gridData).map(function (item) { return item.rankString }).uniq("rankString").value().sort();
-        var categoryNames = _.chain(gridData).map(function (item) { return item.categoryName }).uniq("categoryName").value().sort();
-        var platformNames = _.chain(gridData).map(function (item) { return item.platformName }).uniq("platformName").value().sort();
-        var emulatorStrings = _.chain(gridData).map(function (item) { return item.isEmulated }).uniq("platformName").value().sort();
-
+        var rankStrings = _.chain(gridData).map(function (item) { return item.rankString }).uniq().value().sort();
+        var categoryNames = _.chain(gridData).map(function (item) { return item.categoryName }).uniq().value().sort();
+        var platformNames = _.chain(gridData).map(function (item) { return item.platformName }).uniq().value().sort();
+        var emulatorStrings = _.chain(gridData).map(function (item) { return item.isEmulated }).uniq().value().sort();
         var playerNames = [];
         $(gridData).each(function () {
             var users = this.playerUsers;
@@ -428,12 +427,12 @@ function initializeGrid(element) {
 
     function optionsFormatter(cellvalue, options, rowObject) {
         var html = "<div>"
-        html += "<table style='border:none; border-collapse:collapse; border-spacing:0;'>";
+        html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
         html += "<tr>";
-        html += "<td style='border:none; padding:0px;'>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
         html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
         html += "</td>";
-        html += "<td style='border:none; padding:0px;'>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
         html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
         html += "</td>";
         html += "</tr>";

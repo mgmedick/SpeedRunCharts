@@ -49,7 +49,7 @@
     </div>
     <div id="divGridContainer" class="pt-2">
         <div class="row no-gutters p-1">
-            <div class="col-auto align-self-end" style="width:108px;">
+            <div class="col-auto align-self-end" style="width:115px;">
                 <label class="font-weight-bold">Category Type:</label>
             </div>
             <div class="col pl-2">
@@ -66,7 +66,7 @@
         <div class="grid-container">
             <div id="divCategoryType-<%= categoryTypeIndex.toString() %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
                 <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
-                    <div class="col-auto align-self-end" style="width:108px;">
+                    <div class="col-auto align-self-end" style="width:115px;">
                         <label class="font-weight-bold">Game:</label>
                     </div>
                     <div class="col-11 pl-2 scroller-tab-wrapper">
@@ -88,7 +88,7 @@
                 <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
                 <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
                     <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
-                        <div class="col-auto align-self-end" style="width:108px;">
+                        <div class="col-auto align-self-end" style="width:115px;">
                             <label class="font-weight-bold">Category:</label>
                         </div>
                         <div class="col-11 pl-2 scroller-tab-wrapper">
@@ -110,7 +110,7 @@
                     <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                     <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
                         <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
-                            <div class="col-auto align-self-end" style="width:108px;">
+                            <div class="col-auto align-self-end" style="width:115px;">
                                 <label class="font-weight-bold">Level:</label>
                             </div>
                             <div class="col-11 pl-2 scroller-tab-wrapper">

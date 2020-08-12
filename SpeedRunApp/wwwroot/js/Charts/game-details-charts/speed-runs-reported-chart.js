@@ -40,7 +40,7 @@ function speedRunsReportedChart(container, inputs) {
 
     speedRunsReportedChart.prototype.preRender = function () {
         var def = $.Deferred();
-        var data = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
+        var data = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryTimeMilliseconds - b.PrimaryTimeMilliseconds; }).toArray();
 
         def.resolve(data);
         return def.promise();
@@ -63,7 +63,7 @@ function speedRunsReportedChart(container, inputs) {
         var allSpeedRunTimes = _.chain(_data).map(function (item) {
             return item;
         }).sortBy(function (item) {
-            return item.primaryRunTimeSeconds;
+            return item.primaryTimeSeconds;
         }).value();
 
         var chartDataObj = {};
@@ -88,7 +88,7 @@ function speedRunsReportedChart(container, inputs) {
             }
 
             var values = _.chain(allSpeedRunTimes).filter(function (x, i) { return (prevIndex == null || i > prevIndex) && i <= index }).value();
-            var time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+            var time = allSpeedRunTimes[index].primaryTimeSeconds;
             var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "%)";
 
             if (index != prevIndex) {
@@ -113,7 +113,7 @@ function speedRunsReportedChart(container, inputs) {
             }
 
             var values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
-            var time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+            var time = allSpeedRunTimes[index].primaryTimeSeconds;
             var key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percNum + "% - " + values.length + "/" + allSpeedRunTimes.length + ")"
 
             if (index != prevIndex) {
@@ -145,7 +145,7 @@ function speedRunsReportedChart(container, inputs) {
                 chartDataObj[key] = values;
                 break;
             } else {
-                time = allSpeedRunTimes[index].primaryRunTimeSeconds;
+                time = allSpeedRunTimes[index].primaryTimeSeconds;
                 percent = Math.round((values.length / allSpeedRunTimes.length) * 100);
                 key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
 

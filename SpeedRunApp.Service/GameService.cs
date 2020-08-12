@@ -45,43 +45,18 @@ namespace SpeedRunApp.Service
                 leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
-            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
             var platforms = _cacheHelper.GetPlatforms();
-            var examiners = moderators?.ToDictionary(t => t.ID, t => t.Name);
-
-            foreach (var record in recordVMs)
+            foreach (var record in leaderboard.Records)
             {
-                if (!string.IsNullOrWhiteSpace(record.ExaminerUserID))
+                if (!string.IsNullOrWhiteSpace(record.System?.PlatformID))
                 {
-                    record.ExaminerName = GetExaminerName(record.ExaminerUserID, examiners);
-                }
-
-                record.PlatformName = platforms.Where(i => i.ID == record.PlatformID).Select(i => i.Name).FirstOrDefault();
-            }
-
-            return recordVMs.OrderBy(i => i.PrimaryRunTimeMilliseconds);
-        }
-
-        private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
-        {
-            string examinerName = null;
-            ClientContainer clientContainer = new ClientContainer();
-
-            if (examiners.ContainsKey(examinerUserID))
-            {
-                examinerName = examiners[examinerUserID];
-            }
-            else
-            {
-                var examiner = clientContainer.Users.GetUser(examinerUserID);
-                if (examiner != null)
-                {
-                    examiners.Add(examiner.ID, examiner.Name);
-                    examinerName = examiner.Name;
+                    record.System.Platform = platforms.FirstOrDefault(i => i.ID == record.System.PlatformID);
                 }
             }
 
-            return examinerName;
+            var recordVMs = leaderboard.Records.Select(i => new SpeedRunRecordViewModel(i)).ToList();
+
+            return recordVMs.OrderBy(i => i.PrimaryTimeMilliseconds);
         }
 
         public Game GetGame(string gameID)

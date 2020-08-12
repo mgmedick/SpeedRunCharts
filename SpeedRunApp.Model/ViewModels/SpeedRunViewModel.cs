@@ -29,7 +29,10 @@ namespace SpeedRunApp.Model.ViewModels
             IsEmulated = run.System.IsEmulated;
             DateSubmitted = run.DateSubmitted;
             VideoLinkEmbeded = run.Videos.EmbededLinks?.FirstOrDefault(i => i != null);
-            PrimaryRunTime = run.Times.Primary.Value;
+            PrimaryTime = run.Times.Primary.Value;
+            RealTime = run.Times.RealTime;
+            RealTimeWithoutLoads = run.Times.RealTimeWithoutLoads;
+            GameTime = run.Times.GameTime;
             StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
             VerifyDate = run.Status.VerifyDate;
             RejectedReason = run.Status.Reason;
@@ -69,7 +72,10 @@ namespace SpeedRunApp.Model.ViewModels
         public string Comment { get; set; }
         public Uri VideoLinkEmbeded { get; set; }
         public Uri SplitsLink { get; set; }
-        public TimeSpan PrimaryRunTime { get; set; }
+        public TimeSpan PrimaryTime { get; set; }
+        public TimeSpan? RealTime { get; set; }
+        public TimeSpan? RealTimeWithoutLoads { get; set; }
+        public TimeSpan? GameTime { get; set; }
         public string GameCoverImageLinkString
         {
             get
@@ -118,35 +124,51 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string PrimaryRunTimeString
+        public string PrimaryTimeString
         {
             get
             {
-                return PrimaryRunTime.ToShortString();
+                return PrimaryTime.ToShortString();
             }
         }
 
-        public double PrimaryRunTimeMinutes
+        public double PrimaryTimeSeconds
         {
             get
             {
-                return PrimaryRunTime.TotalMinutes;
+                return PrimaryTime.TotalSeconds;
             }
         }
 
-        public double PrimaryRunTimeSeconds
+        public double PrimaryTimeMilliseconds
         {
             get
             {
-                return PrimaryRunTime.TotalSeconds;
+                return PrimaryTime.TotalMilliseconds;
             }
         }
 
-        public double PrimaryRunTimeMilliseconds
+        public string RealTimeString
         {
             get
             {
-                return PrimaryRunTime.TotalMilliseconds;
+                return RealTime?.ToShortString();
+            }
+        }
+
+        public string RealTimeWithoutLoadsString
+        {
+            get
+            {
+                return RealTimeWithoutLoads?.ToShortString();
+            }
+        }
+
+        public string GameTimeString
+        {
+            get
+            {
+                return GameTime?.ToShortString();
             }
         }
 

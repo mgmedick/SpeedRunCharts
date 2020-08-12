@@ -1,0 +1,44 @@
+﻿<div id="divSearchSpeedRunGrid">
+    <div class="row no-gutters">
+        <div class="form-group">
+            <label for="drpCategoryTypes">Category Type</label>
+            <select id="drpCategoryTypes" class="chosen search" multiple="multiple" style="width:250px;">
+                <% _.each(item.categoryTypes, function(op, index) { %>
+                <option value="<%= op.id %>"><%= op.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div class="form-group" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
+            <label for="drpGames">Game</label>
+            <select id="drpGames" class="chosen search" multiple="multiple" style="width:250px;">
+                <% _.each(item.games, function(op, index) { %>
+                <option value="<%= op.id %>"><%= op.name %></option>
+                <% }); %>
+            </select>
+        </div>
+    </div>
+    <div class="row no-gutters">
+        <div class="form-group">
+            <label for="drpCategories">Category</label>
+            <select id="drpCategories" class="chosen search" multiple="multiple" style="width:250px;">
+                <% _.each(item.categories, function(op, index) { %>
+                <option value="<%= op.id %>"><%= op.name %></option>
+                <% }); %>
+            </select>
+        </div>
+        <div id="divLevels" class="form-group" style="<%= (item.levels.length == 0) ? 'display:none' : '' %>">
+            <label for="drpLevels">Level</label>
+            <select id="drpLevels" class="chosen search" multiple="multiple" style="width:250px;">
+                <% _.each(item.levels, function(op, index) { %>
+                <option value="<%= op.id %>"><%= op.name %></option>
+                <% }); %>
+            </select>
+        </div>
+    </div>
+    <div class="row no-gutters pt-1">
+        <div class="form-group">
+            <input id="btnSearch" type="button" class="btn btn-primary" value="search" onclick="filterCategories()" />
+        </div>
+    </div>
+</div>
+

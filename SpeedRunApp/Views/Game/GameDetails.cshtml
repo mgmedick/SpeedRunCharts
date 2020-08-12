@@ -96,10 +96,9 @@
     </div>
     <div class="container-fluid pt-3">
         <h4>SpeedRuns</h4>
-        <div class="container ml-0">
-            @await Html.PartialAsync("_SearchSpeedRunGrid", new SearchSpeedRunGridViewModel("Game", Model.SearchCategoryTypes, Model.SearchGames, Model.SearchCategories, Model.SearchLevels))
+        <div id="divSearchSpeedRunGridContainer" class="container ml-0 pt-2">
         </div>
-        <div id="divSpeedRunGrid" class="pl-3 pt-2">
+        <div id="divSpeedRunGridContainer" class="pl-3 pt-2">
         </div>
         <div id="divSpeedRunGridLoading" class="pl-3 pt-2">
             <div class="container d-flex ml-0" style="height:465px;">

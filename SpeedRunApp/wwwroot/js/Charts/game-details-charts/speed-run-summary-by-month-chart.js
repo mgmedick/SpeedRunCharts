@@ -87,7 +87,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
             var monthYear = item.monthYearSubmitted;
 
             groupedObj[monthYear] = groupedObj[monthYear] || [];
-            groupedObj[monthYear].push(item.primaryRunTimeSeconds);
+            groupedObj[monthYear].push(item.primaryTimeSeconds);
         });
 
         var chartDataObj = {};

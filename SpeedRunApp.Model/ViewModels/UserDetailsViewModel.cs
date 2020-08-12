@@ -15,6 +15,7 @@ namespace SpeedRunApp.Model.ViewModels
             Role = new IDNamePair() { ID = ((int)user.Role).ToString(), Name = user.Role.ToString() };
             SignUpDate = user.SignUpDate;
             Location = user.Location.ToString();
+            ProfileImage = user.ProfileImage;
             TwitchProfile = user.TwitchProfile;
             HitboxProfile = user.HitboxProfile;
             YoutubeProfile = user.YoutubeProfile;

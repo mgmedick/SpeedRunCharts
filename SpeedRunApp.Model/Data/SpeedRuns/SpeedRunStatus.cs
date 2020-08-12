@@ -20,6 +20,7 @@ namespace SpeedRunApp.Model.Data
         public string ExaminerUserID { get; set; }
         public string Reason { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public User Examiner { get; set; }
     }
 }
 

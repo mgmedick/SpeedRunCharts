@@ -1,5 +1,5 @@
 ﻿<div>
-    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px; display:<%= (item.sender == 'User') ? 'none' : 'block' %>">
+    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px; <%= (item.sender == 'User') ? 'display:none' : '' %>">
         <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
         <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
             <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
@@ -24,9 +24,21 @@
                 <div class="level-results-charts">
                     <% _.each(item.levels, function(level, levelIndex) { %>
                     <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
-                        <div class="chart-container chart-container-0" data-index="0"></div>
-                        <div class="chart-container chart-container-1 pl-2" data-index="1"></div>
-                        <div class="chart-container chart-container-2 pl-2" data-index="2"></div>
+                        <div class="chart-placeholder chart-container-0">
+                            <div class="mx-auto align-self-center">
+                                <i class="fa fa-spinner fa-spin fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="chart-placeholder chart-container-1">
+                            <div class="mx-auto align-self-center">
+                                <i class="fa fa-spinner fa-spin fa-lg"></i>
+                            </div>
+                        </div>
+                        <div class="chart-placeholder chart-container-2">
+                            <div class="mx-auto align-self-center">
+                                <i class="fa fa-spinner fa-spin fa-lg"></i>
+                            </div>
+                        </div>
                     </div>
                     <% }) %>
                 </div>
@@ -37,7 +49,7 @@
     </div>
     <div id="divGridContainer" class="pt-2">
         <div class="row no-gutters p-1">
-            <div class="col-auto align-self-end ">
+            <div class="col-auto align-self-end" style="width:108px;">
                 <label class="font-weight-bold">Category Type:</label>
             </div>
             <div class="col pl-2">
@@ -53,8 +65,10 @@
         <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
         <div class="grid-container">
             <div id="divCategoryType-<%= categoryTypeIndex.toString() %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
-                <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="display:<%= (item.sender == 'Game') ? 'none' : 'block' %>">
-                    <div class="col-auto align-self-end"><label class="font-weight-bold">Game:</label></div>
+                <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
+                    <div class="col-auto align-self-end" style="width:108px;">
+                        <label class="font-weight-bold">Game:</label>
+                    </div>
                     <div class="col-11 pl-2 scroller-tab-wrapper">
                         <div class="row no-gutters">
                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
@@ -74,7 +88,9 @@
                 <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
                 <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
                     <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
-                        <div class="col-auto align-self-end"><label class="font-weight-bold">Category:</label></div>
+                        <div class="col-auto align-self-end" style="width:108px;">
+                            <label class="font-weight-bold">Category:</label>
+                        </div>
                         <div class="col-11 pl-2 scroller-tab-wrapper">
                             <div class="row no-gutters">
                                 <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
@@ -94,7 +110,9 @@
                     <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                     <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
                         <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
-                            <div class="col-auto align-self-end"><label class="font-weight-bold">Level:</label></div>
+                            <div class="col-auto align-self-end" style="width:108px;">
+                                <label class="font-weight-bold">Level:</label>
+                            </div>
                             <div class="col-11 pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
                                     <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>

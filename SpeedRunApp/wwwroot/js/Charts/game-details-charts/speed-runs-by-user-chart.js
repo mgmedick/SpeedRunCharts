@@ -38,7 +38,7 @@ function speedRunsByUserChart(container, inputs) {
 
     speedRunsByUserChart.prototype.preRender = function () {
         var def = $.Deferred();
-        var sortedData = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryRunTimeMilliseconds - b.PrimaryRunTimeMilliseconds; }).toArray();
+        var sortedData = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryTimeMilliseconds - b.PrimaryTimeMilliseconds; }).toArray();
         var data = sortedData.slice(0, this.inputs.topAmount);
 
         def.resolve(data);
@@ -64,7 +64,7 @@ function speedRunsByUserChart(container, inputs) {
             var playerNames = _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",");
 
             chartDataObj[playerNames] = chartDataObj[playerNames] || [];
-            chartDataObj[playerNames].push(item.primaryRunTimeSeconds);
+            chartDataObj[playerNames].push(item.primaryTimeSeconds);
         });
 
         var categories = _.chain(_data).map(function (item) { return _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",") }).value();

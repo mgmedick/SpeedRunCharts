@@ -43,8 +43,6 @@
     <None Include="wwwroot\lib\font-awesome\sprites\brands.svg" />
     <None Include="wwwroot\lib\font-awesome\sprites\regular.svg" />
     <None Include="wwwroot\lib\font-awesome\sprites\solid.svg" />
-    <None Include="wwwroot\templates\ChartError.html" />
-    <None Include="wwwroot\templates\ChartPlaceholder.html" />
     <None Include="wwwroot\templates\SpeedRunGrid.html" />
   </ItemGroup>
 

@@ -34,45 +34,43 @@ namespace SpeedRunApp.Service
         {
             ClientContainer clientContainer = new ClientContainer();
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = false };
-            var runs = clientContainer.Runs.GetRuns(userId: userID, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset, embeds: runEmbeds);
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var runs = clientContainer.Runs.GetRuns(userId: userID, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset, embeds: runEmbeds).ToList();
+
             var platforms = _cacheHelper.GetPlatforms();
-            var examiners = new Dictionary<string, string>();
-
-            foreach (var runVM in runVMs)
+            foreach (var run in runs)
             {
-                if (!string.IsNullOrWhiteSpace(runVM.ExaminerUserID))
+                if (!string.IsNullOrWhiteSpace(run.System?.PlatformID))
                 {
-                    runVM.ExaminerName = GetExaminerName(runVM.ExaminerUserID, examiners);
+                    run.System.Platform = platforms.FirstOrDefault(i => i.ID == run.System.PlatformID);
                 }
-
-                runVM.PlatformName = platforms.Where(i => i.ID == runVM.PlatformID).Select(i => i.Name).FirstOrDefault();
             }
+
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
 
             return runVMs;
         }
 
-        private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
-        {
-            string examinerName = null;
-            ClientContainer clientContainer = new ClientContainer();
+        //private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
+        //{
+        //    string examinerName = null;
+        //    ClientContainer clientContainer = new ClientContainer();
 
-            if (examiners.ContainsKey(examinerUserID))
-            {
-                examinerName = examiners[examinerUserID];
-            }
-            else
-            {
-                var examiner = clientContainer.Users.GetUser(examinerUserID);
-                if (examiner != null)
-                {
-                    examiners.Add(examiner.ID, examiner.Name);
-                    examinerName = examiner.Name;
-                }
-            }
+        //    if (examiners.ContainsKey(examinerUserID))
+        //    {
+        //        examinerName = examiners[examinerUserID];
+        //    }
+        //    else
+        //    {
+        //        var examiner = clientContainer.Users.GetUser(examinerUserID);
+        //        if (examiner != null)
+        //        {
+        //            examiners.Add(examiner.ID, examiner.Name);
+        //            examinerName = examiner.Name;
+        //        }
+        //    }
 
-            return examinerName;
-        }
+        //    return examinerName;
+        //}
 
         //public SpeedRunGridViewModel SearchUserSpeedRunGrid(string userID, List<string> drpCategoryTypes, List<string> drpGames, List<string> drpCategories, List<string> drpLevels)
         //{

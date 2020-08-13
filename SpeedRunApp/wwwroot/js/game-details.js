@@ -497,9 +497,9 @@ function initializeGrid(element) {
 function initializeCharts(element, data) {
     var def = $.Deferred();
     var charts = [
-        new speedRunsByUserChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
-        new speedRunsReportedChart($(element).find('.chart-container-1'), { chartData: data }),
-        new speedRunSummaryByMonthChart($(element).find('.chart-container-2'), { chartData: data })
+        new gameTopSpeedRunsChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
+        new gameSpeedRunsPercentileChart($(element).find('.chart-container-1'), { chartData: data }),
+        new gameSpeedRunsByMonthChart($(element).find('.chart-container-2'), { chartData: data })
     ];
 
     var promises = $(charts).map(function () { return this.generateChart() });

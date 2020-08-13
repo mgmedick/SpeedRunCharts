@@ -4,8 +4,8 @@ function userSpeedRunsByDateChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Speed Runs Per Month',
-        subCaption: 'Most recent 6 Months of activity',
+        caption: 'Speed Runs By Date',
+        subCaption: 'All Time',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',
         exportEnabled: 1,
@@ -81,11 +81,13 @@ function userSpeedRunsByDateChart(container, inputs) {
         });
 
         var chartDataObj = {};
+        var minKey = 'Min Time';
+        chartDataObj[minKey] = {};
         for (var key in groupedObj) {
-            chartDataObj[key] = chartDataObj[key] || [];
+            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
             var min = sra.mathHelper.getMin(groupedObj[key]);
-            chartDataObj[key].push(min);
+            chartDataObj[minKey][key].push(min);
         }
 
         /*
@@ -123,7 +125,6 @@ function userSpeedRunsByDateChart(container, inputs) {
 
         var categories = _timePeriods;
 
-
         var chartElem = $(this.container);
         var config = this.chartConfig;
 
@@ -137,21 +138,21 @@ function userSpeedRunsByDateChart(container, inputs) {
                 def.resolve();
             });
 
-        //for (var key in chartDataObj) {
-        //    lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
-        //        return {
-        //            category: x[0],
-        //            value: x[1]
-        //        }
-        //    }).value());
-        //}
+        for (var key in chartDataObj) {
+            lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
+                return {
+                    category: x[0],
+                    value: x[1]
+                }
+            }).value());
+        }
 
-        lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {
-            return {
-                category: x[0],
-                value: x[1]
-            }
-        }).value());
+        //lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {
+        //    return {
+        //        category: x[0],
+        //        value: x[1]
+        //    }
+        //}).value());
 
         lineChart.render();
 

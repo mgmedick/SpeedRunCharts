@@ -1,11 +1,11 @@
 ﻿
-function speedRunSummaryByMonthChart(container, inputs) {
+function gameSpeedRunsByMonthChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Min Time Per Month',
-        subCaption: 'Last 12 Months',
+        caption: 'Speed Runs By Month',
+        subCaption: 'Last 2 Years',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',
         exportEnabled: 1,
@@ -23,7 +23,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
         setAdaptiveYMin: 1
     };
 
-    speedRunSummaryByMonthChart.prototype.generateChart = function () {
+    gameSpeedRunsByMonthChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
 
@@ -38,14 +38,14 @@ function speedRunSummaryByMonthChart(container, inputs) {
         return def.promise();
     }
 
-    speedRunSummaryByMonthChart.prototype.preRender = function () {
+    gameSpeedRunsByMonthChart.prototype.preRender = function () {
         var def = $.Deferred();
         var data = {};
 
         var dates = _.chain(this.inputs.chartData).map(function (item) { return new Date(item.dateSubmitted) }).value();
         //var minDate = new Date(Math.min.apply(null, dates));
         var maxDate = sra.dateHelper.maxDate(dates);
-        var minDate = sra.dateHelper.add(maxDate, -12, "months");
+        var minDate = sra.dateHelper.add(maxDate, -24, "months");
         var filteredData = _.chain(this.inputs.chartData).filter(function (x, i) { return new Date(x.dateSubmitted) >= minDate }).value();
         var timePeriods = _.chain(sra.dateHelper.dateDiffList("month", minDate, maxDate)).map(function (x) { return sra.dateHelper.format(x, "MM/YYYY") })
 
@@ -56,7 +56,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunSummaryByMonthChart.prototype.postRender = function (data) {
+    gameSpeedRunsByMonthChart.prototype.postRender = function (data) {
         var def = $.Deferred();
 
         this.renderResults(data).then(function () {
@@ -66,7 +66,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunSummaryByMonthChart.prototype.renderResults = function (data) {
+    gameSpeedRunsByMonthChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data.data).clone().value();
         var _timePeriods = _.chain(data.timePeriods).clone().value();
@@ -92,11 +92,13 @@ function speedRunSummaryByMonthChart(container, inputs) {
         });
 
         var chartDataObj = {};
+        var minKey = 'Min Time';
+        chartDataObj[minKey] = {};
         for (var key in groupedObj) {
-            chartDataObj[key] = chartDataObj[key] || [];
+            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
             var min = sra.mathHelper.getMin(groupedObj[key]);
-            chartDataObj[key].push(min);
+            chartDataObj[minKey][key].push(min);
         }
 
         /*
@@ -151,21 +153,21 @@ function speedRunSummaryByMonthChart(container, inputs) {
                 def.resolve();
             });
 
-        //for (var key in chartDataObj) {
-        //    lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
-        //        return {
-        //            category: x[0],
-        //            value: x[1]
-        //        }
-        //    }).value());
-        //}
+        for (var key in chartDataObj) {
+            lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
+                return {
+                    category: x[0],
+                    value: x[1]
+                }
+            }).value());
+        }
 
-        lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {
-            return {
-                category: x[0],
-                value: x[1]
-            }
-        }).value());
+        //lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {
+        //    return {
+        //        category: x[0],
+        //        value: x[1]
+        //    }
+        //}).value());
 
         lineChart.render();
 

@@ -1,5 +1,5 @@
 ﻿
-function speedRunsByUserChart(container, inputs) {
+function gameTopSpeedRunsChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
 
@@ -21,7 +21,7 @@ function speedRunsByUserChart(container, inputs) {
         scaleseparator: ""
     };
 
-    speedRunsByUserChart.prototype.generateChart = function () {
+    gameTopSpeedRunsChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
 
@@ -36,7 +36,7 @@ function speedRunsByUserChart(container, inputs) {
         return def.promise();
     }
 
-    speedRunsByUserChart.prototype.preRender = function () {
+    gameTopSpeedRunsChart.prototype.preRender = function () {
         var def = $.Deferred();
         var sortedData = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryTimeMilliseconds - b.PrimaryTimeMilliseconds; }).toArray();
         var data = sortedData.slice(0, this.inputs.topAmount);
@@ -45,7 +45,7 @@ function speedRunsByUserChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunsByUserChart.prototype.postRender = function (data) {
+    gameTopSpeedRunsChart.prototype.postRender = function (data) {
         var def = $.Deferred();
 
         this.renderResults(data).then(function () {
@@ -55,7 +55,7 @@ function speedRunsByUserChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunsByUserChart.prototype.renderResults = function (data) {
+    gameTopSpeedRunsChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 

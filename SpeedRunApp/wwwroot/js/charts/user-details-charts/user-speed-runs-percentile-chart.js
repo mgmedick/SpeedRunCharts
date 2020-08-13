@@ -137,7 +137,7 @@ function userSpeedRunsPercentileChart(container, inputs) {
             var values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
 
             if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i > prevTotal }).value();
+                values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i >= prevTotal }).value();
                 percent = Math.round((values.length / allSpeedRunTimes.length) * 100);
                 key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                 chartDataObj[key] = values;

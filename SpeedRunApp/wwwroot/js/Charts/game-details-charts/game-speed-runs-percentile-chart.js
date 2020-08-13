@@ -1,5 +1,5 @@
 ﻿
-function speedRunsReportedChart(container, inputs) {
+function gameSpeedRunsPercentileChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
 
@@ -23,7 +23,7 @@ function speedRunsReportedChart(container, inputs) {
         //scaleseparator: " "
     };
 
-    speedRunsReportedChart.prototype.generateChart = function () {
+    gameSpeedRunsPercentileChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
 
@@ -38,7 +38,7 @@ function speedRunsReportedChart(container, inputs) {
         return def.promise();
     }
 
-    speedRunsReportedChart.prototype.preRender = function () {
+    gameSpeedRunsPercentileChart.prototype.preRender = function () {
         var def = $.Deferred();
         var data = $(this.inputs.chartData).sort(function (a, b) { return a.PrimaryTimeMilliseconds - b.PrimaryTimeMilliseconds; }).toArray();
 
@@ -46,7 +46,7 @@ function speedRunsReportedChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunsReportedChart.prototype.postRender = function (data) {
+    gameSpeedRunsPercentileChart.prototype.postRender = function (data) {
         var def = $.Deferred();
 
         this.renderResults(data).then(function () {
@@ -56,7 +56,7 @@ function speedRunsReportedChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunsReportedChart.prototype.renderResults = function (data) {
+    gameSpeedRunsPercentileChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data).clone().value();
 
@@ -139,7 +139,7 @@ function speedRunsReportedChart(container, inputs) {
             var values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i <= index }).value();
 
             if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i > prevTotal }).value();
+                values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i >= prevTotal }).value();
                 percent = Math.round((values.length / allSpeedRunTimes.length) * 100);
                 key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                 chartDataObj[key] = values;

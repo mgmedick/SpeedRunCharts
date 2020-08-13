@@ -1,11 +1,11 @@
 ﻿
-function speedRunSummaryByMonthChart(container, inputs) {
+function userSpeedRunsByDateChart(container, inputs) {
     this.container = container;
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Min Time Per Month',
-        subCaption: 'Last 12 Months',
+        caption: 'Speed Runs Per Month',
+        subCaption: 'Most recent 6 Months of activity',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',
         exportEnabled: 1,
@@ -23,7 +23,7 @@ function speedRunSummaryByMonthChart(container, inputs) {
         setAdaptiveYMin: 1
     };
 
-    speedRunSummaryByMonthChart.prototype.generateChart = function () {
+    userSpeedRunsByDateChart.prototype.generateChart = function () {
         var def = $.Deferred();
         var that = this;
 
@@ -38,25 +38,25 @@ function speedRunSummaryByMonthChart(container, inputs) {
         return def.promise();
     }
 
-    speedRunSummaryByMonthChart.prototype.preRender = function () {
+    userSpeedRunsByDateChart.prototype.preRender = function () {
         var def = $.Deferred();
         var data = {};
+        //var data = this.inputs.chartData;
+        var timePeriods = _.chain(this.inputs.chartData).sortBy("dateSubmitted").map(function (item) { return item.dateSubmittedString; }).uniq().value();
 
-        var dates = _.chain(this.inputs.chartData).map(function (item) { return new Date(item.dateSubmitted) }).value();
-        //var minDate = new Date(Math.min.apply(null, dates));
-        var maxDate = sra.dateHelper.maxDate(dates);
-        var minDate = sra.dateHelper.add(maxDate, -12, "months");
-        var filteredData = _.chain(this.inputs.chartData).filter(function (x, i) { return new Date(x.dateSubmitted) >= minDate }).value();
-        var timePeriods = _.chain(sra.dateHelper.dateDiffList("month", minDate, maxDate)).map(function (x) { return sra.dateHelper.format(x, "MM/YYYY") })
+        //var dates = _.chain(this.inputs.chartData).map(function (item) { return new Date(item.dateSubmitted) }).value();
+        //var maxDate = sra.dateHelper.maxDate(dates);
+        //var minDate = sra.dateHelper.minDate(dates);
+        //var timePeriods = _.chain(sra.dateHelper.dateDiffList("month", minDate, maxDate)).map(function (x) { return sra.dateHelper.format(x, "MM/YYYY") });
 
-        data["data"] = filteredData;
+        data["data"] = this.inputs.chartData;
         data["timePeriods"] = timePeriods;
 
         def.resolve(data);
         return def.promise();
     };
 
-    speedRunSummaryByMonthChart.prototype.postRender = function (data) {
+    userSpeedRunsByDateChart.prototype.postRender = function (data) {
         var def = $.Deferred();
 
         this.renderResults(data).then(function () {
@@ -66,29 +66,18 @@ function speedRunSummaryByMonthChart(container, inputs) {
         return def.promise();
     };
 
-    speedRunSummaryByMonthChart.prototype.renderResults = function (data) {
+    userSpeedRunsByDateChart.prototype.renderResults = function (data) {
         var def = $.Deferred();
         var _data = _.chain(data.data).clone().value();
         var _timePeriods = _.chain(data.timePeriods).clone().value();
 
-        /*
-        var groupedData = _.chain(_data).groupBy('monthYearSubmitted');
-        var chartData = {};
-        _.chain(groupedData).each(function (x) {
-            var average = sra.mathHelper.getAverage(x[1]);
-            chartData[x[0]] = average;
-        });
- 
-        var categories = _timePeriods;
-        */
-
         var groupedObj = {};
         _.chain(_data).each(function (item) {
             //var category = item.categoryID;
-            var monthYear = item.monthYearSubmitted;
+            var dateString = item.dateSubmittedString;
 
-            groupedObj[monthYear] = groupedObj[monthYear] || [];
-            groupedObj[monthYear].push(item.primaryTimeSeconds);
+            groupedObj[dateString] = groupedObj[dateString] || [];
+            groupedObj[dateString].push(item.primaryTimeSeconds);
         });
 
         var chartDataObj = {};
@@ -100,6 +89,14 @@ function speedRunSummaryByMonthChart(container, inputs) {
         }
 
         /*
+        var groupedObj = {};
+        _.chain(_data).each(function (item) {
+            var monthYear = item.monthYearSubmitted;
+
+            groupedObj[monthYear] = groupedObj[monthYear] || [];
+            groupedObj[monthYear].push(item.primaryTimeSeconds);
+        });
+
         var chartDataObj = {};
         var minKey = 'Min Time';
         var maxKey = 'Max Time';
@@ -126,17 +123,6 @@ function speedRunSummaryByMonthChart(container, inputs) {
 
         var categories = _timePeriods;
 
-
-        /*
-        var categories = [];
-        _.chain(_data).each(function (item) {
-            if (categories.indexOf(item.dateSubmittedString) == -1) {
-                categories.push(item.dateSubmittedString);
-            }
-        });
- 
-        categories = _.sortBy(categories, function (item) { return moment(item) });
-        */
 
         var chartElem = $(this.container);
         var config = this.chartConfig;

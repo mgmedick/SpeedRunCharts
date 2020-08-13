@@ -1,29 +1,12 @@
 ﻿<div>
-    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px; <%= (item.sender == 'User') ? 'display:none' : '' %>">
+    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px;">
         <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
         <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
-            <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
-            <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
-                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
-                    <div class="chart-placeholder chart-container-0">
-                        <div class="mx-auto align-self-center">
-                            <i class="fa fa-spinner fa-spin fa-lg"></i>
-                        </div>
-                    </div>
-                    <div class="chart-placeholder chart-container-1">
-                        <div class="mx-auto align-self-center">
-                            <i class="fa fa-spinner fa-spin fa-lg"></i>
-                        </div>
-                    </div>
-                    <div class="chart-placeholder chart-container-2">
-                        <div class="mx-auto align-self-center">
-                            <i class="fa fa-spinner fa-spin fa-lg"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="level-results-charts">
-                    <% _.each(item.levels, function(level, levelIndex) { %>
-                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-0-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
+            <% _.each(item.games, function(game, gameIndex) { %>
+            <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-charts" class="game-tab-pane-charts p-0 <%= (gameIndex == 0) ? ' show' : '' %>">
+                <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id && ft.gameID == game.id}), function(category, categoryIndex) { %>
+                <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
+                    <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-NA-charts" class="row charts-container category-results-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
                         <div class="chart-placeholder chart-container-0">
                             <div class="mx-auto align-self-center">
                                 <i class="fa fa-spinner fa-spin fa-lg"></i>
@@ -40,8 +23,29 @@
                             </div>
                         </div>
                     </div>
-                    <% }) %>
+                    <div class="level-results-charts">
+                        <% _.each(item.levels, function(level, levelIndex) { %>
+                        <div id="divCategoryType-<%= categoryTypeIndex.toString() %>-Game-<%= gameIndex.toString() %>-Category-<%= categoryIndex.toString() %>-Level-<%= levelIndex.toString() %>-charts" class="row charts-container level-tab-pane-charts" data-gameid="<%= item.games[0].id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
+                            <div class="chart-placeholder chart-container-0">
+                                <div class="mx-auto align-self-center">
+                                    <i class="fa fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="chart-placeholder chart-container-1">
+                                <div class="mx-auto align-self-center">
+                                    <i class="fa fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div class="chart-placeholder chart-container-2">
+                                <div class="mx-auto align-self-center">
+                                    <i class="fa fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
                 </div>
+                <% }) %>
             </div>
             <% }) %>
         </div>

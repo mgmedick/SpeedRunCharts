@@ -130,6 +130,22 @@ function onCategoryTypeTabClick(element) {
     $('.categoryType-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
+    var $activeGameTab = $container.find('.game a.active');
+    onGameTabClick($activeGameTab);
+}
+
+function onGameTabClick(element) {
+    var gameContainerID = $(element).attr('href');
+    var $container = $(gameContainerID);
+    var gameChartContainerID = gameContainerID + '-charts';
+    var $chartContainer = $(gameChartContainerID);
+
+    $('.game-tab-pane').hide();
+    $container.fadeIn();
+
+    $('.game-tab-pane-charts').hide();
+    $chartContainer.fadeIn();
+
     var $activeCategoryTab = $container.find('.category a.active');
     onCategoryTabClick($activeCategoryTab);
 }

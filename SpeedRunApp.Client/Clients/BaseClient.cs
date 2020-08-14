@@ -125,7 +125,7 @@ namespace SpeedRunApp.Client
                         }
                         catch
                         {
-                            throw ex;
+                           throw ex;
                         }
                     }
                 }

@@ -52,8 +52,8 @@ namespace SpeedRunApp.Service
         public IEnumerable<SearchResult> SearchGamesAndUsers(string term)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var games = clientContainer.Games.GetGames(term).Select(i => new SearchResult { Value = i.ID, Label = "Game: " + i.Name });
-            var users = clientContainer.Users.GetUsers(term).Select(i => new SearchResult { Value = i.ID, Label = "User: " + i.Name });
+            var games = clientContainer.Games.GetGames(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Games" });
+            var users = clientContainer.Users.GetUsers(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Users" });
             var results = games.Concat(users);
 
             return results;

@@ -96,30 +96,10 @@ body {
     height: 100%;
     object-fit: cover;
 }
-/*
-.ui-autocomplete {
-    z-index: 999 !important;
-    max-height: 200px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding-right: 20px;
-}
 
-.ui-autocomplete.ui-font {
-    max-height: 350px;
-    width:277px !important;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.ui-menu .ui-menu-item {
-    width: 100% !important;
-}
-*/
 /** Chosen */
-
 .chosen-container {
-    display:block;
+    display: block;
 }
 
 .chosen-choices {
@@ -311,6 +291,44 @@ input.date {
     position: absolute;
 }
 
+.icon-wrapper.loading-icon:before {
+    content: "\f110";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    right: 15px;
+    position: absolute;
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+/*.dropdown-header {
+    padding: 8px 24px;
+    font-size: 14px;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+.dropdown-item {
+    padding: 8px 24px;
+    font-size: 14px;
+    white-space: nowrap;
+    color: #ffffff;
+}*/
+
+/*.ui-autocomplete-loading {
+    position: relative;
+    font-size: 20px;
+    display: block;
+    line-height: 32px;
+}
+
+.ui-autocomplete-loading:before {
+    content: "\f110";
+    font-family: 'Font Awesome 5 Free';
+    left: 10px;
+    position: absolute;
+}*/
+
 .date {
     width: 170px !important;
 }
@@ -359,6 +377,59 @@ div.chart-placeholder + div.chart-placeholder {
 
 .tooltip {
     pointer-events: none;
+}
+
+/*ui-autocomplete*/
+.ui-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+
+.ui-autocomplete > li > div {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333333;
+    white-space: nowrap;
+}
+
+.ui-state-hover,
+.ui-state-active,
+.ui-state-focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 
 

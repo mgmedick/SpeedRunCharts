@@ -32,7 +32,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" asp-area="" asp-controller="SpeedRunController" asp-action="SpeedRunList">Home</a>
                 </li>
@@ -46,6 +46,10 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li>
             </ul>
+            @*<form class="form-inline my-2 my-lg-0">
+                <input id="txtGameUserSearch" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>*@
         </div>
     </nav>
 
@@ -80,7 +84,7 @@
             var requestLimit = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
             var timeLimitMS = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
 
-            initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS)
+            initializeClient(maxElementsPerPage, requestLimit, timeLimitMS);
         });
     </script>
     @RenderSection("Scripts", required: false)

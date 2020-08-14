@@ -97,6 +97,25 @@ body {
     object-fit: cover;
 }
 
+.ui-autocomplete {
+    z-index: 999 !important;
+    max-height: 200px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-right: 20px;
+}
+
+.ui-autocomplete.ui-font {
+    max-height: 350px;
+    width:277px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ui-menu .ui-menu-item {
+    width: 100% !important;
+}
+
 /** Chosen */
 
 .chosen-container {

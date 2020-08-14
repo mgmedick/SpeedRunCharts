@@ -36,5 +36,13 @@ namespace SpeedRunApp.WebUI.Controllers
             var runListVM = _speedRunService.GetLatestSpeedRuns(elementsOffset);
             return PartialView("_SpeedRunListMore", runListVM);
         }
+
+        [HttpGet]
+        public JsonResult SearchGamesAndUsers(string term)
+        {
+            var results = _speedRunService.SearchGamesAndUsers(term);
+
+            return Json(results);
+        }
     }
 }

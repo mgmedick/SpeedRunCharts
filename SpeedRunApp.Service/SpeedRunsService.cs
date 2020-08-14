@@ -48,5 +48,15 @@ namespace SpeedRunApp.Service
 
             return runVM;
         }
+
+        public IEnumerable<IDNamePair> SearchGamesAndUsers(string term)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var games = clientContainer.Games.GetGames(term).Select(i => new IDNamePair { ID = i.ID, Name = "Game: " + i.Name });
+            var users = clientContainer.Users.GetUsers(term).Select(i => new IDNamePair { ID = i.ID, Name = "User: " + i.Name });
+            var results = games.Concat(users);
+
+            return results;
+        }
     }
 }

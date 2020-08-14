@@ -10,7 +10,7 @@ namespace SpeedRunApp.Interfaces.Services
     {
         SpeedRunListViewModel GetLatestSpeedRuns(int? elementsOffset = null);
         SpeedRunViewModel GetSpeedRun(string runID);
-        IEnumerable<IDNamePair> SearchGamesAndUsers(string term);
+        IEnumerable<SearchResult> SearchGamesAndUsers(string term);
     }
 }
 

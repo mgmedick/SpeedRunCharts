@@ -96,7 +96,7 @@ body {
     height: 100%;
     object-fit: cover;
 }
-
+/*
 .ui-autocomplete {
     z-index: 999 !important;
     max-height: 200px;
@@ -115,7 +115,7 @@ body {
 .ui-menu .ui-menu-item {
     width: 100% !important;
 }
-
+*/
 /** Chosen */
 
 .chosen-container {

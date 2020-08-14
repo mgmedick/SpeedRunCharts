@@ -84,7 +84,7 @@
             var requestLimit = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
             var timeLimitMS = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
 
-            initializeClient(maxElementsPerPage, requestLimit, timeLimitMS);
+            //initializeClient(maxElementsPerPage, requestLimit, timeLimitMS);
         });
     </script>
     @RenderSection("Scripts", required: false)

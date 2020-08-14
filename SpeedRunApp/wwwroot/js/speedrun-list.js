@@ -9,7 +9,7 @@ function InitializeEvents() {
     $(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
 
     $('#txtGameUserSearch').autocomplete({
-        delay: 1000,
+        //delay: 1000,
         minlength: 3,
         source: '../SpeedRun/SearchGamesAndUsers'
     });

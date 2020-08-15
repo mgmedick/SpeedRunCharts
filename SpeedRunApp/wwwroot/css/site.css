@@ -380,6 +380,7 @@ div.chart-placeholder + div.chart-placeholder {
 }
 
 /*ui-autocomplete*/
+/*
 .ui-autocomplete {
     position: absolute;
     top: 100%;
@@ -431,6 +432,36 @@ div.chart-placeholder + div.chart-placeholder {
     position: absolute;
     width: 1px;
 }
+*/
+
+.ui-autocomplete {
+    width: 300px;
+    max-height:90%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.ui-menu-item-wrapper {
+    padding: 4px 24px !important;
+}
+
+.ui-autocomplete-category {
+    padding: 8px 24px !important;
+    color: #888;
+    font-size: 14px;
+}
+
+.ui-state-hover,
+.ui-state-active,
+.ui-state-focus {
+    text-decoration: none;
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+    border: none !important;
+}
+
+
 
 
 

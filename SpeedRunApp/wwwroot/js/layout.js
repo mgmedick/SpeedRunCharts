@@ -66,7 +66,7 @@ function initializeGlobalEvents() {
 
             var li = that._renderItemData(ul, item);
             //if (item.category) {
-            //    li.addClass("dropdown-item");
+            //    li.find(".ui-menu-item-wrapper").addClass("dropdown-item");
             //}
         });
     };

@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
 using SpeedRunApp.Service;
 using SpeedRunApp.Interfaces.Services;
@@ -19,9 +21,9 @@ namespace SpeedRunApp.WebUI.Controllers
             _speedRunService = speedRunService;
         }
 
-        public ViewResult SpeedRunList()
+        public ViewResult SpeedRunList(RunStatusType status = RunStatusType.New)
         {
-            var runListVM = _speedRunService.GetLatestSpeedRuns();
+            var runListVM = _speedRunService.GetLatestSpeedRuns(status, null);
             return View(runListVM);
         }
 
@@ -31,10 +33,10 @@ namespace SpeedRunApp.WebUI.Controllers
             return PartialView("_SpeedRunSummary", runVM);
         }
 
-        public PartialViewResult SpeedRunListMore(int elementsOffset)
+        public PartialViewResult SpeedRunListMore(RunStatusType status, int elementsOffset)
         {
-            var runListVM = _speedRunService.GetLatestSpeedRuns(elementsOffset);
-            return PartialView("_SpeedRunListMore", runListVM);
+            var runListVM = _speedRunService.GetLatestSpeedRuns(status, elementsOffset);
+            return PartialView("_SpeedRunListMore", runListVM.SpeedRuns);
         }
 
         [HttpGet]

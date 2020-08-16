@@ -8,7 +8,7 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface ISpeedRunsService
     {
-        SpeedRunListViewModel GetLatestSpeedRuns(int? elementsOffset = null);
+        SpeedRunListViewModel GetLatestSpeedRuns(RunStatusType status, int? elementsOffset);
         SpeedRunViewModel GetSpeedRun(string runID);
         IEnumerable<SearchResult> SearchGamesAndUsers(string term);
     }

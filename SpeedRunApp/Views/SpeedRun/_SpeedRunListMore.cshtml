@@ -1,10 +1,11 @@
-﻿@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
+﻿@model IEnumerable<SpeedRunApp.Model.ViewModels.SpeedRunViewModel>
 
-@foreach (var run in Model.SpeedRuns)
+@foreach (var run in Model)
 {
     <div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
         @await Html.PartialAsync("_SpeedRunSummary", run)
     </div>
 }
+
 
 

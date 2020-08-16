@@ -7,9 +7,10 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(IEnumerable<SpeedRunViewModel> speedRuns)
+        public SpeedRunListViewModel(IEnumerable<SpeedRunViewModel> speedRuns, RunStatusType status)
         {
             SpeedRuns = speedRuns;
+            Status = status;
         }
 
         public IEnumerable<SpeedRunViewModel> SpeedRuns
@@ -17,5 +18,7 @@ namespace SpeedRunApp.Model.ViewModels
             get;
             set;
         }
+
+        public RunStatusType Status { get; set; }
     }
 }

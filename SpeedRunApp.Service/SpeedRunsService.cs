@@ -16,25 +16,16 @@ namespace SpeedRunApp.Service
 
         }
 
-        public SpeedRunListViewModel GetLatestSpeedRuns(int? elementsOffset = null)
+        public SpeedRunListViewModel GetLatestSpeedRuns(RunStatusType status, int? elementsOffset)
         {
             //SpeedRunListViewModel runListVM = null;
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = true, EmbedPlatform = true };
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
             ClientContainer clientContainer = new ClientContainer();
-            var runs = clientContainer.Runs.GetRuns(status: RunStatusType.New, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
-            var runVMs = runs.Where(i => i.Videos.EmbededLinks != null && i.Videos.EmbededLinks.Any(g => g != null)).Select(i => new SpeedRunViewModel(i));
-            var runListVM = new SpeedRunListViewModel(runVMs);
-            //foreach (var run in runs)
-            //{
-            //    var runVM = new SpeedRunViewModel(run);
-            //    if (!string.IsNullOrWhiteSpace(run.Status.ExaminerUserID))
-            //    {
-            //        var examiner = clientContainer.Users.GetUser(run.Status.ExaminerUserID);
-            //        runVM.ExaminerName = examiner.Name;
-            //    }
 
-            //    runVMs.Add(runVM);
-            //}
+            var runs = clientContainer.Runs.GetRuns(status: status, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
+            var runVMs = runs.Where(i => i.Videos.EmbededLinks != null && i.Videos.EmbededLinks.Any(g => g != null)).Select(i => new SpeedRunViewModel(i));
+
+            var runListVM = new SpeedRunListViewModel(runVMs, status);
 
             return runListVM;
         }

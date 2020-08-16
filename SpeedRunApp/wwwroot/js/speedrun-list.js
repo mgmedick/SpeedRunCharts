@@ -11,10 +11,11 @@ function InitializeEvents() {
 
 function GetSpeedRunList() {
     var speedRunCount = $('.speedRunSummary').length;
+    var statusID = $('#hdnStatus').val();
 
     $('#loading').show();
     $.get("SpeedRun/SpeedRunListMore",
-        { "elementsOffset": speedRunCount },
+        { elementsOffset: speedRunCount, status: statusID },
         function (data) {
             if (data != null) {
                 $('#divSpeedRunList').append(data);

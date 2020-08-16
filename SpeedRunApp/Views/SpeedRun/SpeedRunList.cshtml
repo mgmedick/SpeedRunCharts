@@ -15,13 +15,25 @@
 <h2>Latest Games</h2>
 
 <div>
-    <div id="divSpeedRunList">
-        @foreach (var run in Model.SpeedRuns)
-        {
-            <div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
-                @await Html.PartialAsync("_SpeedRunSummary", run)
+    <div id="divSpeedRunListSort">
+        <div class="container d-flex bg-white mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
+            <div class="row no-gutters p-2 align-self-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-light active text-secondary">
+                        <input type="radio" id="option1" autocomplete="off" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
+                    </label>
+                    <label class="btn btn-light text-secondary">
+                        <input type="radio" id="option2" autocomplete="off"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Verified
+                    </label>
+                    <label class="btn btn-light text-secondary">
+                        <input type="radio" id="option3" autocomplete="off"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Rejected
+                    </label>
+                </div>
             </div>
-        }
+        </div>
+    </div>
+    <div id="divSpeedRunList">
+        @await Html.PartialAsync("_SpeedRunListMore", Model.SpeedRuns)
     </div>
     <div id="loading">
         <div class="d-flex">
@@ -30,6 +42,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="hdnStatus" value="@(((int)Model.Status).ToString())" />
 </div>
 
 

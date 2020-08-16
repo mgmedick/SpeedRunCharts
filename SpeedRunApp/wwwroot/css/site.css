@@ -461,6 +461,40 @@ div.chart-placeholder + div.chart-placeholder {
     border: none !important;
 }
 
+/*links*/
+/*
+a,
+a:link,
+a:visited,
+a:active {
+    color: inherit !important;
+    text-decoration: inherit !important;
+    font-weight: inherit !important;
+}
+*/
+
+/*
+a.nostyle {
+    color: inherit !important;
+    text-decoration: inherit !important;
+    font-weight: inherit !important;
+}
+
+a.nostyle:hover {
+    color: #222222 !important;
+    text-decoration: inherit !important;
+    font-weight: inherit !important;
+}
+*/
+
+
+
+
+
+
+
+
+
 
 
 

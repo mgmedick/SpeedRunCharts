@@ -11,7 +11,7 @@ function initializeClient(elementsPerPage) {
 }
 
 function initalizeConstants(elementsPerPage) {
-    sra['speedRunListElementsPerPage'] = elementsPerPage;
+    sra['elementsPerPage'] = elementsPerPage;
 }
 
 function initializeEvents() {
@@ -31,7 +31,7 @@ function getSpeedRunList() {
 
     $('#loading').show();
     $.get("SpeedRun/SpeedRunSummaryList",
-        { category: categoryID, elementsPerPage: sra.speedRunListElementsPerPage, elementsOffset: speedRunCount },
+        { category: categoryID, elementsPerPage: sra.elementsPerPage, elementsOffset: speedRunCount },
         function (data) {
             if (data != null) {
                 $('#divSpeedRunList').append(data);

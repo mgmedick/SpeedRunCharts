@@ -1,7 +1,4 @@
-﻿@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
-
-@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
+﻿@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
 
 @{
     ViewBag.Title = "SpeedRunList";
@@ -12,7 +9,7 @@
 
     <script>
         $(document).ready(function () {
-            var elementsPerPage = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
+            var elementsPerPage = @Json.Serialize(Model.ElementsPerPage);
 
             initializeClient(elementsPerPage);
         })
@@ -26,13 +23,13 @@
         <div class="container d-flex bg-white mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
             <div class="row no-gutters p-2 align-self-center">
                 <div id="btnGrpCategory" class="btn-group btn-group-toggle categoryGroup" data-toggle="buttons">
-                    <label class="btn btn-light active text-secondary">
+                    <label class="btn btn-secondary btn-sm active">
                         <input type="radio" class="category" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
                     </label>
-                    <label class="btn btn-light text-secondary">
+                    <label class="btn btn-secondary btn-sm">
                         <input type="radio" class="category" id="btnCategory1" name="btnCategory" autocomplete="off" value="1"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Verified
                     </label>
-                    <label class="btn btn-light text-secondary">
+                    <label class="btn btn-secondary btn-sm">
                         <input type="radio" class="category" id="btnCategory2" name="btnCategory" autocomplete="off" value="2"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Rejected
                     </label>
                 </div>

@@ -23,7 +23,7 @@ namespace SpeedRunApp.Service
         {
             int elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
             var runVMs = GetLatestSpeedRuns(SpeedRunListCategory.New, elementsPerPage, null);
-            var runListVM = new SpeedRunListViewModel(runVMs);
+            var runListVM = new SpeedRunListViewModel(runVMs, elementsPerPage);
 
             return runListVM;
         }

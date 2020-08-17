@@ -1,11 +1,11 @@
 ﻿namespace SpeedRunApp.Model.Data
 {
-    public class SpeedRunEmbeds: Embeds
+    public class SpeedRunEmbeds : Embeds
     {
-        public bool EmbedGame 
+        public bool EmbedGame
         {
-            get { return base["game"]; } 
-            set { base["game"] = value; }             
+            get { return base["game"]; }
+            set { base["game"] = value; }
         }
 
         public bool EmbedCategory

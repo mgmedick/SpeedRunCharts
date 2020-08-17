@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Net;
 
 namespace SpeedRunApp.Client
 {
@@ -29,7 +24,7 @@ namespace SpeedRunApp.Client
         public UsersClient Users { get; private set; }
         public VariablesClient Variables { get; private set; }
 
-        public ClientContainer(string userAgent = "SpeedRunComSharp/1.0", 
+        public ClientContainer(string userAgent = "SpeedRunComSharp/1.0",
             string accessToken = null, int maxCacheElements = 500,
             TimeSpan? timeout = null)
         {

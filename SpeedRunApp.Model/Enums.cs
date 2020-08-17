@@ -205,4 +205,12 @@ namespace SpeedRunApp.Model
         UserDefined,
         UserDefinedDescending
     }
+
+    //Web
+    public enum SpeedRunListCategory
+    {
+        New = 0,
+        Verified = 1,
+        Rejected = 2
+    }
 }

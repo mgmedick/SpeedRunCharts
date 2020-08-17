@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using SpeedRunApp.Model;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using SpeedRunCommon;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpeedRunApp.Client
 {
@@ -74,16 +69,16 @@ namespace SpeedRunApp.Client
         //}
 
         public IEnumerable<User> GetUsers(
-            string name = null, 
-            string twitch = null, string hitbox = null, 
-            string twitter = null, string speedrunslive = null, 
+            string name = null,
+            string twitch = null, string hitbox = null,
+            string twitter = null, string speedrunslive = null,
             int? elementsPerPage = null,
             UsersOrdering orderBy = default(UsersOrdering))
         {
             var parameters = new List<string>();
 
             if (!string.IsNullOrEmpty(name))
-                parameters.Add(string.Format("name={0}", 
+                parameters.Add(string.Format("name={0}",
                     Uri.EscapeDataString(name)));
 
             if (!string.IsNullOrEmpty(twitch))
@@ -101,7 +96,7 @@ namespace SpeedRunApp.Client
             if (!string.IsNullOrEmpty(speedrunslive))
                 parameters.Add(string.Format("speedrunslive={0}",
                     Uri.EscapeDataString(speedrunslive)));
-            
+
             if (elementsPerPage.HasValue)
                 parameters.Add(string.Format("max={0}", elementsPerPage));
 
@@ -140,7 +135,7 @@ namespace SpeedRunApp.Client
 
             var result = DoRequest(uri);
 
-            if(result != null)
+            if (result != null)
             {
                 user = Parse(result.data, embeds);
             }

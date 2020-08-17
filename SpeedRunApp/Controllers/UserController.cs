@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SpeedRunApp.Model;
-using SpeedRunApp.Service;
-using SpeedRunCommon;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Model.ViewModels;
-using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.WebUI.Controllers
 {

@@ -1,4 +1,7 @@
-﻿@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
 
 @{
     ViewBag.Title = "SpeedRunList";
@@ -8,7 +11,11 @@
     <script src="@Url.Content("~/js/speedrun-list.js")" type="text/javascript"></script>
 
     <script>
-        $(document).ready(InitializeClient)
+        $(document).ready(function () {
+            var elementsPerPage = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
+
+            initializeClient(elementsPerPage);
+        })
     </script>
 }
 
@@ -18,22 +25,22 @@
     <div id="divSpeedRunListSort">
         <div class="container d-flex bg-white mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
             <div class="row no-gutters p-2 align-self-center">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div id="btnGrpCategory" class="btn-group btn-group-toggle categoryGroup" data-toggle="buttons">
                     <label class="btn btn-light active text-secondary">
-                        <input type="radio" id="option1" autocomplete="off" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
+                        <input type="radio" class="category" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
                     </label>
                     <label class="btn btn-light text-secondary">
-                        <input type="radio" id="option2" autocomplete="off"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Verified
+                        <input type="radio" class="category" id="btnCategory1" name="btnCategory" autocomplete="off" value="1"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Verified
                     </label>
                     <label class="btn btn-light text-secondary">
-                        <input type="radio" id="option3" autocomplete="off"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Rejected
+                        <input type="radio" class="category" id="btnCategory2" name="btnCategory" autocomplete="off" value="2"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Rejected
                     </label>
                 </div>
             </div>
         </div>
     </div>
     <div id="divSpeedRunList">
-        @await Html.PartialAsync("_SpeedRunListMore", Model.SpeedRuns)
+        @await Html.PartialAsync("_SpeedRunSummaryList", Model.SpeedRuns)
     </div>
     <div id="loading">
         <div class="d-flex">
@@ -42,7 +49,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="hdnStatus" value="@(((int)Model.Status).ToString())" />
 </div>
 
 

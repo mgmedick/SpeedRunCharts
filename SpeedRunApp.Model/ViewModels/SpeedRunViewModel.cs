@@ -1,10 +1,8 @@
-﻿using System;
+﻿using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using SpeedRunApp.Model.Helpers;
-using SpeedRunApp.Model.Data;
-using SpeedRunCommon;
 
 namespace SpeedRunApp.Model.ViewModels
 {

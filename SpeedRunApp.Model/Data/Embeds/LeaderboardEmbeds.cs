@@ -5,10 +5,10 @@
         //private Embeds embeds;
         private bool isConstructed;
 
-        public bool EmbedGame 
-        { 
-            get { return base["game"]; } 
-            set { base["game"] = value; } 
+        public bool EmbedGame
+        {
+            get { return base["game"]; }
+            set { base["game"] = value; }
         }
 
         public bool EmbedCategory

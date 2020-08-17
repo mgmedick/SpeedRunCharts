@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SpeedRunApp.Model.Data
+﻿namespace SpeedRunApp.Model.Data
 {
     public class Assets
     {

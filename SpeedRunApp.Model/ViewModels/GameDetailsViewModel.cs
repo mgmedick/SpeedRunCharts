@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SpeedRunApp.Model.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -38,7 +38,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string PlatformsString
         {
             get
-            {             
+            {
                 return string.Join(", ", Platforms.Select(i => i.Name));
             }
         }

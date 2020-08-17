@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Linq;
 
 namespace SpeedRunCommon

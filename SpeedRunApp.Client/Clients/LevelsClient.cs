@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using SpeedRunApp.Model;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunCommon;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpeedRunApp.Client
 {
@@ -23,13 +22,13 @@ namespace SpeedRunApp.Client
             return GetAPIUri(string.Format("{0}{1}", Name, subUri));
         }
 
-        public Level GetLevel(string levelId, 
+        public Level GetLevel(string levelId,
             LevelEmbeds embeds = null)
         {
             var parameters = new List<string>() { embeds?.ToString() };
 
             var uri = GetLevelsUri(string.Format("/{0}{1}",
-                Uri.EscapeDataString(levelId), 
+                Uri.EscapeDataString(levelId),
                 parameters.ToParameters()));
 
             var result = DoRequest(uri);
@@ -49,8 +48,8 @@ namespace SpeedRunApp.Client
             if (!miscellaneous)
                 parameters.Add("miscellaneous=no");
 
-            var uri = GetLevelsUri(string.Format("/{0}/categories{1}", 
-                Uri.EscapeDataString(levelId), 
+            var uri = GetLevelsUri(string.Format("/{0}/categories{1}",
+                Uri.EscapeDataString(levelId),
                 parameters.ToParameters()));
 
             return DoRequest<Category>(uri, x => Client.Categories.Parse(x));
@@ -61,7 +60,7 @@ namespace SpeedRunApp.Client
         {
             var parameters = new List<string>(orderBy.ToParameters());
 
-            var uri = GetLevelsUri(string.Format("/{0}/variables{1}", 
+            var uri = GetLevelsUri(string.Format("/{0}/variables{1}",
                 Uri.EscapeDataString(levelId),
                 parameters.ToParameters()));
 

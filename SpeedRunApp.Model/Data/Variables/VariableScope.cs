@@ -1,7 +1,4 @@
-﻿using System;
-using SpeedRunApp.Model;
-
-namespace SpeedRunApp.Model.Data
+﻿namespace SpeedRunApp.Model.Data
 {
     public class VariableScope
     {

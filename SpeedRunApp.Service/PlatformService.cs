@@ -1,12 +1,7 @@
-﻿using SpeedRunApp.Model;
-using SpeedRunApp.Client;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.ViewModels;
+﻿using SpeedRunApp.Client;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunCommon;
+using SpeedRunApp.Model.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 
 namespace SpeedRunApp.Service
 {

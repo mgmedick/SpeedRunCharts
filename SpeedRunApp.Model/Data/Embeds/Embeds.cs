@@ -47,7 +47,7 @@ namespace SpeedRunApp.Model.Data
                 string.Join(",", embedDictionary
                 .Where(x => x.Value)
                 .Select(x => Uri.EscapeDataString(x.Key)));
-                //.Aggregate(",");
+            //.Aggregate(",");
         }
     }
 }

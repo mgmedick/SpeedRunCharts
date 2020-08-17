@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System;
-using SpeedRunApp.Model;
-using Microsoft.Extensions.Caching.Memory;
-using SpeedRunApp.Client;
+﻿using SpeedRunApp.Client;
+using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunApp.Interfaces.Services;
-using SpeedRunCommon;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpeedRunApp.Service
 {

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SpeedRunApp.Model.Data;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using SpeedRunApp.Model.Data;
 using System.Text.RegularExpressions;
 
-namespace SpeedRunApp.Client 
+namespace SpeedRunApp.Client
 {
     public abstract class BaseClient
     {
@@ -125,7 +124,7 @@ namespace SpeedRunApp.Client
                         }
                         catch
                         {
-                           throw ex;
+                            throw ex;
                         }
                     }
                 }
@@ -141,61 +140,61 @@ namespace SpeedRunApp.Client
             }
         }
 
-//        internal dynamic DoRequest(Uri uri)
-//        {
-//            lock (this)
-//            {
-//                dynamic result = null;
+        //        internal dynamic DoRequest(Uri uri)
+        //        {
+        //            lock (this)
+        //            {
+        //                dynamic result = null;
 
-//                if (Cache.ContainsKey(uri))
-//                {
-//#if DEBUG_WITH_API_CALLS
-//                Console.WriteLine("Cached API Call: {0}", uri.AbsoluteUri);
-//#endif
-//                    result = Cache[uri];
-//                    Cache.Remove(uri);
-//                }
-//                else
-//                {
-//#if DEBUG_WITH_API_CALLS
-//                Console.WriteLine("Uncached API Call: {0}", uri.AbsoluteUri);
-//#endif
-//                    try
-//                    {
-//                        result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
-//                    }
-//                    catch (WebException ex)
-//                    {
-//                        try
-//                        {
-//                            using (var stream = ex.Response.GetResponseStream())
-//                            {
-//                                var apiException = ParseAPIException(stream);
-//                                if (!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
-//                                {
-//                                    throw apiException;
-//                                }
-//                            }
-//                        }
-//                        catch (APIException ex2)
-//                        {
-//                            throw ex2;
-//                        }
-//                        catch
-//                        {
-//                            throw ex;
-//                        }
-//                    }
-//                }
+        //                if (Cache.ContainsKey(uri))
+        //                {
+        //#if DEBUG_WITH_API_CALLS
+        //                Console.WriteLine("Cached API Call: {0}", uri.AbsoluteUri);
+        //#endif
+        //                    result = Cache[uri];
+        //                    Cache.Remove(uri);
+        //                }
+        //                else
+        //                {
+        //#if DEBUG_WITH_API_CALLS
+        //                Console.WriteLine("Uncached API Call: {0}", uri.AbsoluteUri);
+        //#endif
+        //                    try
+        //                    {
+        //                        result = JSONHelper.FromUri(uri, UserAgent, AccessToken, Timeout);
+        //                    }
+        //                    catch (WebException ex)
+        //                    {
+        //                        try
+        //                        {
+        //                            using (var stream = ex.Response.GetResponseStream())
+        //                            {
+        //                                var apiException = ParseAPIException(stream);
+        //                                if (!new Regex(@"User \w+ could not be found").IsMatch(apiException.Message))
+        //                                {
+        //                                    throw apiException;
+        //                                }
+        //                            }
+        //                        }
+        //                        catch (APIException ex2)
+        //                        {
+        //                            throw ex2;
+        //                        }
+        //                        catch
+        //                        {
+        //                            throw ex;
+        //                        }
+        //                    }
+        //                }
 
-//                Cache.Add(uri, result);
+        //                Cache.Add(uri, result);
 
-//                while (Cache.Count > MaxCacheElements)
-//                    Cache.Remove(Cache.Keys.First());
+        //                while (Cache.Count > MaxCacheElements)
+        //                    Cache.Remove(Cache.Keys.First());
 
-//                return result;
-//            }
-//        }
+        //                return result;
+        //            }
+        //        }
 
         public IEnumerable<T> DoRequest<T>(Uri uri, Func<dynamic, T> parser)
         {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.Data;
+using System.Collections.Generic;
 
 namespace SpeedRunApp.Service
 {

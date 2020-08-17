@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using SpeedRunApp.Model.Data;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunApp.Model;
+using System.Collections.Generic;
 
 namespace SpeedRunApp.Interfaces.Services
 {
     public interface ISpeedRunsService
     {
-        SpeedRunListViewModel GetLatestSpeedRuns(RunStatusType status, int? elementsOffset);
+        SpeedRunListViewModel GetSpeedRunList();
+        IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int elementsPerPage, int? elementsOffset);
+        IEnumerable<SpeedRunViewModel> GetSpeedRuns(RunStatusType status, RunsOrdering orderBy, int elementsPerPage, int? elementsOffset);
         SpeedRunViewModel GetSpeedRun(string runID);
         IEnumerable<SearchResult> SearchGamesAndUsers(string term);
     }

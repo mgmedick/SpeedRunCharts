@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.AspNetCore.WebUtilities;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model;
-using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {
@@ -68,7 +68,7 @@ namespace SpeedRunApp.Client
             }
             if (elementsPerPage.HasValue)
                 parameters.Add(string.Format("max={0}", elementsPerPage));
-            if(elementsOffset.HasValue)
+            if (elementsOffset.HasValue)
                 parameters.Add(string.Format("offset={0}", elementsOffset));
 
             parameters.AddRange(orderBy.ToParameters());
@@ -313,7 +313,7 @@ namespace SpeedRunApp.Client
                 //{
                 //    videos.Text = videosElement.text as string;
                 //}
-                videos.Text = videosElement.text as string; 
+                videos.Text = videosElement.text as string;
                 videos.Links = ParseCollection(videosElement.links, new Func<dynamic, Uri>(parseVideoLink));
                 videos.EmbededLinks = ParseCollection(videosElement.links, new Func<dynamic, Uri>(parseEmbededVideoLink));
             }

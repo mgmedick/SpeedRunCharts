@@ -1,18 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using SpeedRunApp.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Text.Encodings.Web;
-using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Client
 {

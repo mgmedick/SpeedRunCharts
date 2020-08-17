@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SpeedRunApp.Model.Data
+﻿namespace SpeedRunApp.Model.Data
 {
     public class SpeedRunSystem
     {

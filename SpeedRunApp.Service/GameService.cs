@@ -1,14 +1,11 @@
-﻿using SpeedRunApp.Model;
-using SpeedRunApp.Client;
+﻿using SpeedRunApp.Client;
+using SpeedRunApp.Interfaces.Services;
+using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunApp.Interfaces.Services;
 //using SpeedRunApp.Interfaces.Helpers;
-using SpeedRunCommon;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Microsoft.Extensions.Configuration;
 
 namespace SpeedRunApp.Service
 {
@@ -25,7 +22,7 @@ namespace SpeedRunApp.Service
         {
             var game = GetGame(gameID);
             var gameVM = new GameDetailsViewModel(game);
-            
+
 
             return gameVM;
         }

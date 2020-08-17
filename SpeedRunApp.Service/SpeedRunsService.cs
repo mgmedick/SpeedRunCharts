@@ -1,33 +1,61 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using SpeedRunApp.Client;
+﻿using SpeedRunApp.Client;
+using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunCommon;
-using SpeedRunApp.Interfaces.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using Microsoft.Extensions.Configuration;
 
 namespace SpeedRunApp.Service
 {
     public class SpeedRunsService : ISpeedRunsService
     {
-        public SpeedRunsService()
-        {
+        IConfiguration _config = null;
 
+        public SpeedRunsService(IConfiguration Configuration)
+        {
+            _config = Configuration;
         }
 
-        public SpeedRunListViewModel GetLatestSpeedRuns(RunStatusType status, int? elementsOffset)
+        public SpeedRunListViewModel GetSpeedRunList()
         {
-            //SpeedRunListViewModel runListVM = null;
+            int elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
+            var runVMs = GetLatestSpeedRuns(SpeedRunListCategory.New, elementsPerPage, null);
+            var runListVM = new SpeedRunListViewModel(runVMs);
+
+            return runListVM;
+        }
+
+        public IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int elementsPerPage, int? elementsOffset)
+        {
+            IEnumerable<SpeedRunViewModel> runVMs = null;
+            switch (category)
+            {
+                case SpeedRunListCategory.New:
+                    runVMs = GetSpeedRuns(RunStatusType.New, RunsOrdering.DateSubmittedDescending, elementsPerPage, elementsOffset);
+                    break;
+                case SpeedRunListCategory.Verified:
+                    runVMs = GetSpeedRuns(RunStatusType.Verified, RunsOrdering.VerifyDateDescending, elementsPerPage, elementsOffset);
+                    break;
+                case SpeedRunListCategory.Rejected:
+                    runVMs = GetSpeedRuns(RunStatusType.Rejected, RunsOrdering.DateSubmittedDescending, elementsPerPage, elementsOffset);
+                    break;
+            }
+
+            return runVMs;
+        }
+
+        public IEnumerable<SpeedRunViewModel> GetSpeedRuns(RunStatusType status, RunsOrdering orderBy, int elementsPerPage, int? elementsOffset)
+        {
             var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
             ClientContainer clientContainer = new ClientContainer();
 
-            var runs = clientContainer.Runs.GetRuns(status: status, orderBy: RunsOrdering.DateSubmittedDescending, elementsPerPage: 10, embeds: runEmbeds, elementsOffset: elementsOffset);
+            var runs = clientContainer.Runs.GetRuns(status: status, orderBy: orderBy, elementsPerPage: elementsPerPage, embeds: runEmbeds, elementsOffset: elementsOffset);
             var runVMs = runs.Where(i => i.Videos.EmbededLinks != null && i.Videos.EmbededLinks.Any(g => g != null)).Select(i => new SpeedRunViewModel(i));
 
-            var runListVM = new SpeedRunListViewModel(runVMs, status);
-
-            return runListVM;
+            return runVMs;
         }
 
         public SpeedRunViewModel GetSpeedRun(string runID)

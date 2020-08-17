@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-
-namespace SpeedRunApp.Model.Data
+﻿namespace SpeedRunApp.Model.Data
 {
     public class HttpWebLink
     {

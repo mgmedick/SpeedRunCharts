@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using SpeedRunApp.Model;
-using SpeedRunApp.Model.Data;
 using System.Linq;
-using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {
@@ -35,8 +35,8 @@ namespace SpeedRunApp.Client
         {
             var parameters = new List<string>(orderBy.ToParameters());
 
-            var uri = GetCategoriesUri(string.Format("/{0}/variables{1}", 
-                Uri.EscapeDataString(categoryId), 
+            var uri = GetCategoriesUri(string.Format("/{0}/variables{1}",
+                Uri.EscapeDataString(categoryId),
                 parameters.ToParameters()));
 
             return DoRequest<Variable>(uri, x => Client.Variables.Parse(x));

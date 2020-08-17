@@ -1,11 +1,10 @@
-﻿using System;
+﻿using SpeedRunApp.Model;
+using SpeedRunApp.Model.Data;
+using SpeedRunCommon;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Collections.ObjectModel;
 using System.Linq;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model;
-using SpeedRunCommon;
 
 namespace SpeedRunApp.Client
 {
@@ -50,7 +49,7 @@ namespace SpeedRunApp.Client
             if (filterOutRunsAfter.HasValue)
             {
                 var date = filterOutRunsAfter.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                parameters.Add(string.Format("date={0}", 
+                parameters.Add(string.Format("date={0}",
                     Uri.EscapeDataString(date)));
             }
             if (variableFilters != null)
@@ -240,7 +239,7 @@ namespace SpeedRunApp.Client
             if (properties.ContainsKey("players"))
             {
                 var data = (leaderboardElement.players.data as IEnumerable<dynamic>);
-                if(data !=null && data.Any())
+                if (data != null && data.Any())
                 {
                     Func<dynamic, User> userParser = x => Client.Users.Parse(x) as User;
                     var userData = data.Where(i => i.Properties["rel"] == "user");
@@ -337,7 +336,7 @@ namespace SpeedRunApp.Client
                 //patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;
             }
-            else if(leaderboard.Category != null)
+            else if (leaderboard.Category != null)
             {
                 var variables = leaderboard.Category.Variables;
 

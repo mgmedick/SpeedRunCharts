@@ -1,5 +1,4 @@
-﻿using System;
-namespace SpeedRunApp.Model
+﻿namespace SpeedRunApp.Model
 {
     public class SearchResult
     {

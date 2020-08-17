@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Globalization;
-using SpeedRunApp.Model;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunCommon;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace SpeedRunApp.Client
 {
@@ -25,8 +24,8 @@ namespace SpeedRunApp.Client
         }
 
         public IEnumerable<Game> GetGames(
-            string name = null, int? yearOfRelease = null, 
-            string platformId = null, string regionId = null, 
+            string name = null, int? yearOfRelease = null,
+            string platformId = null, string regionId = null,
             string moderatorId = null, int? elementsPerPage = null,
             GameEmbeds embeds = null,
             GamesOrdering orderBy = default(GamesOrdering))
@@ -74,8 +73,8 @@ namespace SpeedRunApp.Client
         {
             var parameters = new List<string>() { embeds?.ToString() };
 
-            var uri = GetGamesUri(string.Format("/{0}{1}", 
-                Uri.EscapeDataString(gameId), 
+            var uri = GetGamesUri(string.Format("/{0}{1}",
+                Uri.EscapeDataString(gameId),
                 parameters.ToParameters()));
 
             var result = DoRequest(uri);
@@ -112,8 +111,8 @@ namespace SpeedRunApp.Client
             if (!miscellaneous)
                 parameters.Add("miscellaneous=no");
 
-            var uri = GetGamesUri(string.Format("/{0}/categories{1}", 
-                Uri.EscapeDataString(gameId), 
+            var uri = GetGamesUri(string.Format("/{0}/categories{1}",
+                Uri.EscapeDataString(gameId),
                 parameters.ToParameters()));
 
             return DoRequest(uri, x => Client.Categories.Parse(x) as Category);
@@ -127,7 +126,7 @@ namespace SpeedRunApp.Client
 
             parameters.AddRange(orderBy.ToParameters());
 
-            var uri = GetGamesUri(string.Format("/{0}/levels{1}", 
+            var uri = GetGamesUri(string.Format("/{0}/levels{1}",
                 Uri.EscapeDataString(gameId),
                 parameters.ToParameters()));
 
@@ -139,7 +138,7 @@ namespace SpeedRunApp.Client
         {
             var parameters = new List<string>(orderBy.ToParameters());
 
-            var uri = GetGamesUri(string.Format("/{0}/variables{1}", 
+            var uri = GetGamesUri(string.Format("/{0}/variables{1}",
                 Uri.EscapeDataString(gameId),
                 parameters.ToParameters()));
 
@@ -154,7 +153,7 @@ namespace SpeedRunApp.Client
 
             parameters.AddRange(orderBy.ToParameters());
 
-            var uri = GetGamesUri(string.Format("/{0}/romhacks{1}", 
+            var uri = GetGamesUri(string.Format("/{0}/romhacks{1}",
                 Uri.EscapeDataString(gameId),
                 parameters.ToParameters()));
 

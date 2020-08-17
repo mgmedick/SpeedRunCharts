@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunApp.Model;
+using System.Collections.Generic;
 
 namespace SpeedRunApp.Interfaces.Services
 {

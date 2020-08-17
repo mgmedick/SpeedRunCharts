@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SpeedRunApp.Model.Helpers
+﻿namespace SpeedRunApp.Model.Helpers
 {
     public static class NumberHelper
     {

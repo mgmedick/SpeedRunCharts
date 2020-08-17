@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SpeedRunApp.Model;
+using System;
 using System.Collections.Generic;
-using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Client
 {

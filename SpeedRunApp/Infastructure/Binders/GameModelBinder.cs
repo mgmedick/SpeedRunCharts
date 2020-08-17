@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-//using SportsStore.Domain.Entities;
+﻿//using SportsStore.Domain.Entities;
 //using System.Web.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SpeedRunApp.Model;
-using SpeedRunCommon;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace SportsStore.WebUI.Infrastructure.Binders
 {

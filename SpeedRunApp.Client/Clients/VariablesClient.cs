@@ -41,6 +41,7 @@ namespace SpeedRunApp.Client
             variable.Name = variableElement.name as string;
             variable.Scope = ParseVariableScope(variableElement.scope) as VariableScope;
             variable.IsMandatory = (bool)(variableElement.mandatory ?? false);
+            variable.IsSubCategory = (bool)(properties["is-subcategory"] ?? false);
             variable.IsUserDefined = (bool)(properties["user-defined"] ?? false);
             variable.IsUsedForObsoletingRuns = (bool)variableElement.obsoletes;
 

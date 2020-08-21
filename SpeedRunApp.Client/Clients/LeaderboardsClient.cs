@@ -310,37 +310,37 @@ namespace SpeedRunApp.Client
                 leaderboard.UsedPlatforms = leaderboard.Records.Select(x => x.Platform).Distinct().Where(x => x != null).ToList();
             }
 
-            //Action<IEnumerable<Variable>> patchVariablesOfRecords = variables =>
-            //{
-            //    foreach (var record in leaderboard.Records)
-            //    {
-            //        foreach (var value in record.VariableValueMappings)
-            //        {
-            //            value.Variable = variables.FirstOrDefault(x => x.ID == value.VariableID);
-            //        }
-            //    }
-            //};
+            Action<IEnumerable<Variable>> patchVariablesOfRecords = variables =>
+            {
+                foreach (var record in leaderboard.Records)
+                {
+                    foreach (var value in record.VariableValueMappings)
+                    {
+                        value.Variable = variables.FirstOrDefault(x => x.ID == value.VariableID);
+                    }
+                }
+            };
 
             if (properties.ContainsKey("variables"))
             {
                 Func<dynamic, Variable> variableParser = x => Client.Variables.Parse(x) as Variable;
                 var variables = ParseCollection(leaderboardElement.variables.data, variableParser) as IEnumerable<Variable>;
 
-                //patchVariablesOfRecords(variables);
+                patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;
             }
             else if (!string.IsNullOrWhiteSpace(leaderboard.LevelID))
             {
                 var variables = (leaderboard.Category?.Variables ?? new List<Variable>()).Concat(leaderboard.Level?.Variables ?? new List<Variable>());
 
-                //patchVariablesOfRecords(variables);
+                patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;
             }
             else if (leaderboard.Category != null)
             {
                 var variables = leaderboard.Category.Variables;
 
-                //patchVariablesOfRecords(variables);
+                patchVariablesOfRecords(variables);
                 leaderboard.ApplicableVariables = variables;
             }
 

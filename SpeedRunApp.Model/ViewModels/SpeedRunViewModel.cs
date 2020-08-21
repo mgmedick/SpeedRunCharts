@@ -24,6 +24,7 @@ namespace SpeedRunApp.Model.ViewModels
             PlatformName = run.System.Platform?.Name;
             LevelID = run.LevelID;
             LevelName = run.Level?.Name;
+            SubCategory = run.VariableValueMappings.Where(i => i.Variable != null && i.Variable.IsSubCategory).Select(i => new IDNamePair { ID = i.Variable.ID, Name = i.Variable.Name }).FirstOrDefault();
             IsEmulated = run.System.IsEmulated;
             DateSubmitted = run.DateSubmitted;
             VideoLinkEmbeded = run.Videos.EmbededLinks?.FirstOrDefault(i => i != null);
@@ -55,6 +56,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string CategoryID { get; set; }
         public string CategoryName { get; set; }
         public IDNamePair CategoryType { get; set; }
+        public IDNamePair SubCategory { get; set; }
         public string PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string LevelID { get; set; }
@@ -73,7 +75,7 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan PrimaryTime { get; set; }
         public TimeSpan? RealTime { get; set; }
         public TimeSpan? RealTimeWithoutLoads { get; set; }
-        public TimeSpan? GameTime { get; set; }
+        public TimeSpan? GameTime { get; set; }      
         public string GameCoverImageLinkString
         {
             get

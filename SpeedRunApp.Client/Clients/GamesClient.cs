@@ -283,6 +283,17 @@ namespace SpeedRunApp.Client
             {
                 Func<dynamic, Variable> variableParser = x => Client.Variables.Parse(x) as Variable;
                 IEnumerable<Variable> variables = ParseCollection(gameElement.variables.data, variableParser);
+
+                foreach (var category in game.Categories)
+                {
+                    category.Variables = variables.Where(x => x.CategoryID == category.ID);
+                }
+
+                foreach (var level in game.Levels)
+                {
+                    level.Variables = variables.Where(x => x.CategoryID == level.ID);
+                }
+
                 game.Variables = variables;
             }
 

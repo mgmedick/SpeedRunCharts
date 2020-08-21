@@ -5,6 +5,9 @@
         public string VariableValueID { get; set; }
         public string VariableID { get; set; }
 
+        //embeds
+        public Variable Variable { get; set; }
+
         //public VariableValue() { }
 
         /*

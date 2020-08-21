@@ -31,7 +31,7 @@ namespace SpeedRunApp.Service
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
-            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = false };
+            var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = true };
 
             if (categoryType == CategoryType.PerGame)
             {

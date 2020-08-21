@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
         public string Name { get; set; }
         public VariableScope Scope { get; set; }
         public bool IsMandatory { get; set; }
+        public bool IsSubCategory { get; set; }
         public bool IsUserDefined { get; set; }
         public bool IsUsedForObsoletingRuns { get; set; }
         public IEnumerable<VariableValue> Values { get; set; }

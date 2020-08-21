@@ -63,8 +63,14 @@ namespace SpeedRunApp.Client
 
             var uri = imageElement.uri as string;
             image.Uri = new Uri(uri);
-            image.Width = (int)imageElement.width;
-            image.Height = (int)imageElement.height;
+            if (imageElement.width != null)
+            {
+                image.Width = (int)imageElement.width;
+            }
+            if (imageElement.height != null)
+            {
+                image.Height = (int)imageElement.height;
+            }
 
             return image;
         }

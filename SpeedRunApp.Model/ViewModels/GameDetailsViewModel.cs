@@ -21,6 +21,7 @@ namespace SpeedRunApp.Model.ViewModels
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
+            SearchSubCategories = game.Variables?.Where(i => i.IsSubCategory).Select(i => new SubCategoryDisplay { ID = i.ID, Name = i.Name }).ToList();
         }
 
         public string ID { get; set; }
@@ -35,6 +36,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IEnumerable<GameDisplay> SearchGames { get; set; }
         public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
         public IEnumerable<LevelDisplay> SearchLevels { get; set; }
+        public IEnumerable<SubCategoryDisplay> SearchSubCategories { get; set; }
         public string PlatformsString
         {
             get

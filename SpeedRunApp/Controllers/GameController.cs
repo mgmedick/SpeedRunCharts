@@ -21,16 +21,16 @@ namespace SpeedRunApp.WebUI.Controllers
         public ViewResult GameDetails(string gameID)
         {
             var gameVM = _gamesService.GetGameDetails(gameID);
-            HttpContext.Session.Set("Moderators", gameVM.Moderators);
+            //HttpContext.Session.Set("Moderators", gameVM.Moderators);
 
             return View(gameVM);
         }
 
         [HttpGet]
-        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID)
+        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValueID)
         {
-            var moderators = HttpContext.Session.Get<IEnumerable<IDNamePair>>("Moderators");
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, moderators);
+            //var moderators = HttpContext.Session.Get<IEnumerable<IDNamePair>>("Moderators");
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, variableID, variableValueID);
 
             return Json(recordVMs);
         }

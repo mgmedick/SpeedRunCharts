@@ -27,19 +27,25 @@ namespace SpeedRunApp.Service
             return gameVM;
         }
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, IEnumerable<IDNamePair> moderators)
+        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValueID)
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
             var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = true };
+            IEnumerable<VariableValue> variableValues = null;
+
+            if (!string.IsNullOrWhiteSpace(variableID))
+            {
+                variableValues = new List<VariableValue> { new VariableValue { ID = variableValueID, VariableID = variableID } };
+            }
 
             if (categoryType == CategoryType.PerGame)
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, embeds: leaderboardEmbeds);
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, variableFilters: variableValues, embeds: leaderboardEmbeds);
             }
             else
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, levelId: levelID, embeds: leaderboardEmbeds);
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, variableFilters: variableValues, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
             var platforms = _cacheHelper.GetPlatforms();
@@ -59,7 +65,7 @@ namespace SpeedRunApp.Service
         public Game GetGame(string gameID)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var gameEmbeds = new GameEmbeds { EmbedCategories = true, EmbedLevels = true, EmbedModerators = true, EmbedPlatforms = true };
+            var gameEmbeds = new GameEmbeds { EmbedCategories = true, EmbedLevels = true, EmbedModerators = true, EmbedPlatforms = true, EmbedVariables = true };
             var game = clientContainer.Games.GetGame(gameID, gameEmbeds);
 
             return game;

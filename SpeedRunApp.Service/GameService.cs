@@ -27,25 +27,25 @@ namespace SpeedRunApp.Service
             return gameVM;
         }
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValueID)
+        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValues)
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();
             var leaderboardEmbeds = new LeaderboardEmbeds { EmbedGame = false, EmbedCategory = false, EmbedLevel = false, EmbedPlayers = true, EmbedRegions = false, EmbedPlatforms = false, EmbedVariables = true };
-            IEnumerable<VariableValue> variableValues = null;
+            IEnumerable<VariableValue> variableFilters = null;
 
-            if (!string.IsNullOrWhiteSpace(variableID))
+            if (!string.IsNullOrWhiteSpace(variableValues))
             {
-                variableValues = new List<VariableValue> { new VariableValue { ID = variableValueID, VariableID = variableID } };
+                variableFilters = variableValues.Split(",").Select(i => new VariableValue { VariableID = i.Split("|")[0], ID = i.Split("|")[1] });
             }
 
             if (categoryType == CategoryType.PerGame)
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, variableFilters: variableValues, embeds: leaderboardEmbeds);
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForFullGameCategory(gameId: gameID, categoryId: categoryID, variableFilters: variableFilters, embeds: leaderboardEmbeds);
             }
             else
             {
-                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, variableFilters: variableValues, levelId: levelID, embeds: leaderboardEmbeds);
+                leaderboard = clientContainer.Leaderboards.GetLeaderboardForLevel(gameId: gameID, categoryId: categoryID, variableFilters: variableFilters, levelId: levelID, embeds: leaderboardEmbeds);
             }
 
             var platforms = _cacheHelper.GetPlatforms();

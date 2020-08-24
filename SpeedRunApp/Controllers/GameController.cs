@@ -27,10 +27,10 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValueID)
+        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValues)
         {
             //var moderators = HttpContext.Session.Get<IEnumerable<IDNamePair>>("Moderators");
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, variableID, variableValueID);
+            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, variableID, variableValues);
 
             return Json(recordVMs);
         }

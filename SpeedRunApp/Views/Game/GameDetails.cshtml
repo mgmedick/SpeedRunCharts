@@ -51,9 +51,9 @@
             var _searchGames = @Html.Raw(Json.Serialize(Model.SearchGames));
             var _searchCategories = @Html.Raw(Json.Serialize(Model.SearchCategories));
             var _searchLevels = @Html.Raw(Json.Serialize(Model.SearchLevels));
-            var _searchSubCategories = @Html.Raw(Json.Serialize(Model.SearchSubCategories));
+            var _searchVariables = @Html.Raw(Json.Serialize(Model.SearchVariables));
 
-            initializeClient(_searchCategoryTypes, _searchGames, _searchCategories, _searchLevels, _searchSubCategories);
+            initializeClient(_searchCategoryTypes, _searchGames, _searchCategories, _searchLevels, _searchVariables);
         });
     </script>
 }

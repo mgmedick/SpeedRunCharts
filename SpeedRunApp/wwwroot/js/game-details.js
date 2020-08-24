@@ -2,27 +2,27 @@
     var sra = {};
 }
 
-function speedRunGridModel(sender, categoryTypes, games, categories, levels, subCategories) {
+function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables) {
     this.sender = sender,
     this.categoryTypes = categoryTypes,
     this.games = games,
     this.categories = categories,
     this.levels = levels,
-    this.subCategories = subCategories
+    this.variables = variables
 }
 
 /**Initialize Event Functions**/
-function initializeClient(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchSubCategories) {
-    initalizeConstants(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchSubCategories);
+function initializeClient(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables) {
+    initalizeConstants(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables);
     initializeEvents();
 }
 
-function initalizeConstants(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchSubCategories) {
+function initalizeConstants(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables) {
     sra['searchCategoryTypes'] = searchCategoryTypes;
     sra['searchGames'] = searchGames;
     sra['searchCategories'] = searchCategories;
     sra['searchLevels'] = searchLevels;
-    sra['searchSubCategories'] = searchSubCategories;
+    sra['searchVariables'] = searchVariables;
 }
 
 function initializeEvents() {
@@ -45,7 +45,7 @@ function loadSpeedRunGridTemplate() {
     $('#divSpeedRunGridContainer').hide();
     $('#divSpeedRunGridLoading').show();
 
-    var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, sra.searchSubCategories);
+    var gridModel = new speedRunGridModel("Game", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, sra.searchVariables);
 
     $.get('../templates/SearchSpeedRunGrid.html?_t=' + (new Date()).getTime(), function (searchTemplate, status) {
         renderAndInitializeSearchSpeedRunGrid($('#divSearchSpeedRunGridContainer'), searchTemplate, gridModel);
@@ -111,16 +111,16 @@ function initializeSpeedRunGridEvents(element) {
         onCategoryTabClick(this);
     });
 
-    $(element).find('.nav-item.category-subCategory a').click(function () {
-        onCategorySubCategoryTabClick(this);
+    $(element).find('.nav-item.category-variable-value a').click(function () {
+        onCategoryVariableValueTabClick(this);
     });
 
     $(element).find('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
 
-    $(element).find('.nav-item.category-subCategory a').click(function () {
-        onLevelSubCategoryTabClick(this);
+    $(element).find('.nav-item.level-variable-value a').click(function () {
+        onLevelVariableValueTabClick(this);
     });
 
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
@@ -185,7 +185,8 @@ function onCategoryTabClick(element) {
     } else {
         var $activeCategoryPane = $container.find('.category-results');
         var $activeCategoryChartsPane = $chartContainer.find('.category-results-charts');
-
+        var categoryID = $(element).data('categoryid');
+        
         $container.find('.level-tabs').hide();
         $container.find('.level-results').hide();
         $activeCategoryPane.show();
@@ -193,9 +194,19 @@ function onCategoryTabClick(element) {
         $chartContainer.find('.level-results-charts').hide();
         $activeCategoryChartsPane.show();
 
-        if ($(sra.searchSubCategories).filter(function () { return this.categoryID == $(element).data('categoryid') }).length > 0) {
-            var $activeCategorySubCategoryTab = $activeCategoryPane.find('.category-subCategory a.active');
-            onCategorySubCategoryTabClick($activeCategorySubCategoryTab);
+        var variables = $(sra.searchVariables).filter(function () { return this.categoryID == categoryID });
+        if (variables.length > 0) {
+            $activeCategoryPane.find('.category-result').hide();
+            $activeCategoryPane.find('.category-variable-results').show();
+            $activeCategoryPane.find('.category-variable-tabs').each(function (index, element) {
+                $(this).find('.tab-row-name').text(variables[index].name + ":");
+
+                var $activeCategoryVariableValueTab = $(this).find('.category-variable-value a.active');
+                onCategoryVariableValueTabClick($activeCategoryVariableValueTab);
+            });
+
+            $activeCategoryChartsPane.find('.category-result-charts').hide();
+            $activeCategoryChartsPane.find('.category-variable-results-charts').show();
         }
         else
         {
@@ -204,22 +215,36 @@ function onCategoryTabClick(element) {
                     initializeCharts($activeCategoryChartsPane, data);
                 });
             }
+
+            $activeCategoryPane.find('.category-result').show();
+            $activeCategoryChartsPane.find('.category-result-charts').show();
         }
     }
 }
 
-function onCategorySubCategoryTabClick(element) {
-    var subCategoryContainerID = $(element).attr('href');
-    var $container = $(subCategoryContainerID);
+function onCategoryVariableValueTabClick(element) {
+    var variableValueContainerID = $(element).attr('href');
+    var $container = $(variableValueContainerID);
+    var variableValueChartContainerID = variableValueContainerID + '-charts';
+    var $chartContainer = $(variableValueChartContainerID);
+
+    var value = $(element).data('variablevalue');
+    var currValue = $container.data('variablevalue');
+    var newValue = (currValue + "," + value).replace(/(^,)|(,$)/g, "");
+    $container.data('variablevalue', newValue);
+    $chartContainer.data('variablevalue', newValue);
 
     if (!$container.find('.grid')[0].grid) {
         initializeGrid($container).then(function (data) {
-            //initializeCharts($chartContainer, data);
+            initializeCharts($chartContainer, data);
         });
     }
 
-    $('.category-subCategory-tab-pane').hide();
+    $('.category-variable-value-tab-pane').hide();
     $container.fadeIn();
+
+    $('.category-variable-value-tab-pane-charts').hide();
+    $chartContainer.fadeIn();
 }
 
 function onLevelTabClick(element) {
@@ -227,6 +252,7 @@ function onLevelTabClick(element) {
     var $container = $(levelContainerID);
     var levelChartContainerID = levelContainerID + '-charts';
     var $chartContainer = $(levelChartContainerID);
+    var levelID = $(element).data('levelID');
 
     $('.level-tab-pane').hide();
     $container.fadeIn();
@@ -234,30 +260,55 @@ function onLevelTabClick(element) {
     $('.level-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
-    if ($(sra.searchSubCategories).filter(function () { return this.categoryID == $(element).data('levelID') }).length > 0) {
-        var $activeLevelSubCategoryTab = $activeCategoryPane.find('.level-subCategory a.active');
-        onLevelSubCategoryTabClick($activeLevelSubCategoryTab);
+    var variables = $(sra.searchVariables).filter(function () { return this.categoryID == levelID });
+    if (variables.length > 0) {
+        $container.find('.level-result').hide();
+        $container.find('.level-variable-results').show();
+
+        $container.find('.level-variable-tabs').each(function (index, element) {
+            $(this).find('.tab-row-name').text(variables[index].name + ":");
+
+            var $activeLevelVariableValueTab = $(this).find('.level-variable-value a.active');
+            onLevelVariableValueTabClick($activeLevelVariableValueTab);
+        });
+
+        $chartContainer.find('.level-result-charts').hide();
+        $chartContainer.find('.level-variable-results-charts').show();
     } else {
         if (!$container.find('.grid')[0].grid) {
             initializeGrid($container).then(function (data) {
                 initializeCharts($chartContainer, data);
             });
         }
+
+        $container.find('.level-result').show();
+        $chartContainer.find('.level-result-charts').show();
     }
 }
 
-function onLevelSubCategoryTabClick(element) {
-    var subCategoryContainerID = $(element).attr('href');
-    var $container = $(subCategoryContainerID);
+function onLevelVariableValueTabClick(element) {
+    var variableValueContainerID = $(element).attr('href');
+    var $container = $(variableValueContainerID);
+    var variableValueChartContainerID = variableValueContainerID + '-charts';
+    var $chartContainer = $(variableValueChartContainerID);
+
+    var value = $(element).data('variablevalue');
+    var currValue = $container.data('variablevalue');
+    var newValue = (currValue + "," + value).replace(/(^,)|(,$)/g, "");
+    $container.data('variablevalue', newValue);
+    $chartContainer.data('variablevalue', newValue);
 
     if (!$container.find('.grid')[0].grid) {
         initializeGrid($container).then(function (data) {
-            //initializeCharts($chartContainer, data);
+            initializeCharts($chartContainer, data);
         });
     }
 
-    $('.level-subCategory-tab-pane').hide();
+    $('.level-variable-value-tab-pane').hide();
     $container.fadeIn();
+
+    $('.level-variable-value-tab-pane-charts').hide();
+    $chartContainer.fadeIn();
 }
 
 //Search Handlers
@@ -299,12 +350,11 @@ function initializeGrid(element) {
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
     var levelID = $(element).data('levelid');
-    var subCategoryID = $(element).data('subcategoryid');
-    var subCategoryVariableID = $(element).data('subcategoryvariableid');
+    var variableValues = $(element).data('variablevalue');
     var pagerID = $(element).find('.pager').attr("id");
 
     grid.jqGrid({
-        url: 'GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryType + "&categoryID=" + categoryID + "&levelID=" + levelID + "&variableID=" + subCategoryVariableID + "&variableSubCategoryID=" + subCategoryID,
+        url: 'GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryType + "&categoryID=" + categoryID + "&levelID=" + levelID + "&variableValues=" + variableValues,
         datatype: "json",
         mtype: "GET",
         height: '100%',
@@ -607,7 +657,9 @@ function filterCategories() {
     $('#divSpeedRunGridLoading').hide();
 }
 
-
+function getVariableObj(i) {
+    return { depth: i, variable: sra.searchVariables[i] }
+}
 
 
 

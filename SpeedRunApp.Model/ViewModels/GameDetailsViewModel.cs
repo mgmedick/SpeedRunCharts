@@ -21,7 +21,7 @@ namespace SpeedRunApp.Model.ViewModels
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
-            SearchSubCategories = game.Variables?.Where(i => i.IsSubCategory).SelectMany(i => i.Values).Select(i => new SubCategoryDisplay { ID = i.ID, Name = i.Value, CategoryID = i.Variable.CategoryID, Variable = new IDNamePair { ID = i.VariableID, Name = i.Variable.Name } }).ToList();
+            SearchVariables = game.Variables?.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new IDNamePair { ID = g.ID, Name = g.Value }) }).ToList();
         }
 
         public string ID { get; set; }
@@ -36,12 +36,28 @@ namespace SpeedRunApp.Model.ViewModels
         public IEnumerable<GameDisplay> SearchGames { get; set; }
         public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
         public IEnumerable<LevelDisplay> SearchLevels { get; set; }
-        public IEnumerable<SubCategoryDisplay> SearchSubCategories { get; set; }
+        public IEnumerable<VariableDisplay> SearchVariables { get; set; }
         public string PlatformsString
         {
             get
             {
                 return string.Join(", ", Platforms.Select(i => i.Name));
+            }
+        }
+
+        public void SetNestedVariables(List<Variable> variables, int count = 0)
+        {
+            for(int i = 0; i < variables.Count; i++)
+            {
+                if(i == (variables.Count - 1))
+                {
+                    break;
+                }
+
+                foreach(VariableValue value in variables[i].Values)
+                {
+
+                }
             }
         }
     }

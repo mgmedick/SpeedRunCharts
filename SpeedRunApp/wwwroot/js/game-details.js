@@ -2,13 +2,26 @@
     var sra = {};
 }
 
-function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables) {
+function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables, renderVariableTemplate) {
     this.sender = sender,
-    this.categoryTypes = categoryTypes,
-    this.games = games,
-    this.categories = categories,
-    this.levels = levels,
-    this.variables = variables
+        this.categoryTypes = categoryTypes,
+        this.games = games,
+        this.categories = categories,
+        this.levels = levels,
+        this.variables = variables,
+        this.renderVariableTemplate = renderVariableTemplate
+}
+
+function speedRunGridVariableModel(variables, classPrefix, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {
+    this.variables = variables,
+    this.classPrefix = classPrefix,
+    this.categoryTypeIndex = categoryTypeIndex,
+    this.gameIndex = gameIndex,
+    this.categoryIndex = categoryIndex,
+    this.levelIndex = levelIndex,
+    this.prevID = prevID,
+    this.prevData = prevData,
+    this.count = count
 }
 
 /**Initialize Event Functions**/
@@ -51,11 +64,18 @@ function loadSpeedRunGridTemplate() {
         renderAndInitializeSearchSpeedRunGrid($('#divSearchSpeedRunGridContainer'), searchTemplate, gridModel);
 
         $.get('../templates/SpeedRunGrid.html?_t=' + (new Date()).getTime(), function (gridTemplate, status) {
-            sra['speedRunGridTemplate'] = gridTemplate;
-            renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel);
+            $.get('../templates/SpeedRunGridVariable.html?_t=' + (new Date()).getTime(), function (gridVariableTemplate, status) {
+                $.get('../templates/SpeedRunGridVariableChart.html?_t=' + (new Date()).getTime(), function (chartVariableTemplate, status) {
+                    sra['speedRunGridTemplate'] = gridTemplate;
+                    sra['renderSpeedRunGridVariableTemplate'] = _.template(gridVariableTemplate);
+                    sra['renderSpeedRunGridVariableChartTemplate'] = _.template(chartVariableTemplate);
 
-            $('#divSpeedRunGridContainer').show();
-            $('#divSpeedRunGridLoading').hide();
+                    renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel, sra.renderSpeedRunGridVariableTemplate, sra.renderSpeedRunGridVariableChartTemplate);
+
+                    $('#divSpeedRunGridContainer').show();
+                    $('#divSpeedRunGridLoading').hide();
+                });
+            });
         });
     });
 }
@@ -66,8 +86,13 @@ function renderAndInitializeSearchSpeedRunGrid(element, searchSpeedRunGridTempla
     });
 }
 
-function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRunGridModel) {
-    renderTemplate(element, speedRunGridTemplate, speedRunGridModel).then(function () {
+function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRunGridModel, renderVariableGridTemplate, renderVariableChartemplate) {
+    var functions = {
+        renderSpeedRunGridVariableTemplate: renderVariableGridTemplate,
+        renderSpeedRunGridVariableChartTemplate: renderVariableChartemplate
+    };
+
+    renderTemplate(element, speedRunGridTemplate, speedRunGridModel, functions).then(function () {
         initializeSpeedRunGridEvents(element)
 
         var $activeCategoryTypeTab = $('.nav-item.categoryType a.active');
@@ -75,12 +100,13 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
     });
 }
 
-function renderTemplate(element, template, data) {
+function renderTemplate(element, template, data, functions) {
     var def = $.Deferred();
     var _template = _.template(template);
 
     var html = _template({
-        item: data
+        item: data,
+        fn: functions
     });
 
     $(element).html(html);
@@ -173,7 +199,6 @@ function onCategoryTabClick(element) {
     $chartContainer.fadeIn();
 
     if ($(element).data('categorytype') == 1) {
-        $container.find('.level-tabs').show();
         $container.find('.level-results').show();
         $container.find('.category-results').hide();
 
@@ -185,39 +210,24 @@ function onCategoryTabClick(element) {
     } else {
         var $activeCategoryPane = $container.find('.category-results');
         var $activeCategoryChartsPane = $chartContainer.find('.category-results-charts');
-        var categoryID = $(element).data('categoryid');
         
-        $container.find('.level-tabs').hide();
         $container.find('.level-results').hide();
         $activeCategoryPane.show();
 
         $chartContainer.find('.level-results-charts').hide();
         $activeCategoryChartsPane.show();
 
-        var variables = $(sra.searchVariables).filter(function () { return this.categoryID == categoryID });
-        if (variables.length > 0) {
-            $activeCategoryPane.find('.category-result').hide();
-            $activeCategoryPane.find('.category-variable-results').show();
-            $activeCategoryPane.find('.category-variable-tabs').each(function (index, element) {
-                $(this).find('.tab-row-name').text(variables[index].name + ":");
-
-                var $activeCategoryVariableValueTab = $(this).find('.category-variable-value a.active');
-                onCategoryVariableValueTabClick($activeCategoryVariableValueTab);
-            });
-
-            $activeCategoryChartsPane.find('.category-result-charts').hide();
-            $activeCategoryChartsPane.find('.category-variable-results-charts').show();
+        if ($container.find('.category-variable-tabs').length > 0) {
+            var $activeVariableValueTab = $activeCategoryPane.find('.category-variable-tabs:first .category-variable-value a.active')
+            onCategoryVariableValueTabClick($activeVariableValueTab);
         }
         else
         {
             if (!$activeCategoryPane.find('.grid')[0].grid) {
-                initializeGrid($activeCategoryPane).then(function (data) {
+                initializeGrid($activeCategoryPane.find('.grid-container')).then(function (data) {
                     initializeCharts($activeCategoryChartsPane, data);
                 });
             }
-
-            $activeCategoryPane.find('.category-result').show();
-            $activeCategoryChartsPane.find('.category-result-charts').show();
         }
     }
 }
@@ -225,26 +235,27 @@ function onCategoryTabClick(element) {
 function onCategoryVariableValueTabClick(element) {
     var variableValueContainerID = $(element).attr('href');
     var $container = $(variableValueContainerID);
+    var containerClass = $container.data("class");
     var variableValueChartContainerID = variableValueContainerID + '-charts';
     var $chartContainer = $(variableValueChartContainerID);
+    var chartContainerClass = $chartContainer.data("class");
 
-    var value = $(element).data('variablevalue');
-    var currValue = $container.data('variablevalue');
-    var newValue = (currValue + "," + value).replace(/(^,)|(,$)/g, "");
-    $container.data('variablevalue', newValue);
-    $chartContainer.data('variablevalue', newValue);
-
-    if (!$container.find('.grid')[0].grid) {
-        initializeGrid($container).then(function (data) {
-            initializeCharts($chartContainer, data);
-        });
-    }
-
-    $('.category-variable-value-tab-pane').hide();
+    $('.' + containerClass).hide();
     $container.fadeIn();
 
-    $('.category-variable-value-tab-pane-charts').hide();
+    $('.' + chartContainerClass).hide();
     $chartContainer.fadeIn();
+
+    if ($container.find('.category-variable-tabs').length > 0) {
+        var $activeVariableValueTab = $container.find('.category-variable-tabs:first .category-variable-value a.active')
+        onCategoryVariableValueTabClick($activeVariableValueTab);
+    } else {
+        if (!$container.find('.grid')[0].grid) {
+            initializeGrid($container.find('.grid-container')).then(function (data) {
+                initializeCharts($chartContainer, data);
+            });
+        }
+    }
 }
 
 function onLevelTabClick(element) {
@@ -252,7 +263,6 @@ function onLevelTabClick(element) {
     var $container = $(levelContainerID);
     var levelChartContainerID = levelContainerID + '-charts';
     var $chartContainer = $(levelChartContainerID);
-    var levelID = $(element).data('levelID');
 
     $('.level-tab-pane').hide();
     $container.fadeIn();
@@ -260,55 +270,43 @@ function onLevelTabClick(element) {
     $('.level-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
-    var variables = $(sra.searchVariables).filter(function () { return this.categoryID == levelID });
-    if (variables.length > 0) {
-        $container.find('.level-result').hide();
-        $container.find('.level-variable-results').show();
-
-        $container.find('.level-variable-tabs').each(function (index, element) {
-            $(this).find('.tab-row-name').text(variables[index].name + ":");
-
-            var $activeLevelVariableValueTab = $(this).find('.level-variable-value a.active');
-            onLevelVariableValueTabClick($activeLevelVariableValueTab);
-        });
-
-        $chartContainer.find('.level-result-charts').hide();
-        $chartContainer.find('.level-variable-results-charts').show();
-    } else {
+    if ($container.find('.level-variable-tabs').length > 0) {
+        var $activeVariableValueTab = $activeCategoryPane.find('.level-variable-tabs:first .level-variable-value a.active')
+        onLevelVariableValueTabClick($activeVariableValueTab);
+    }
+    else {
         if (!$container.find('.grid')[0].grid) {
-            initializeGrid($container).then(function (data) {
-                initializeCharts($chartContainer, data);
+            initializeGrid($container.find('.grid-container')).then(function (data) {
+                initializeCharts($chartContainer.find('.charts-container'), data);
             });
         }
-
-        $container.find('.level-result').show();
-        $chartContainer.find('.level-result-charts').show();
     }
 }
 
 function onLevelVariableValueTabClick(element) {
     var variableValueContainerID = $(element).attr('href');
     var $container = $(variableValueContainerID);
+    var containerClass = $container.data("class");
     var variableValueChartContainerID = variableValueContainerID + '-charts';
     var $chartContainer = $(variableValueChartContainerID);
+    var chartContainerClass = $chartContainer.data("class");
 
-    var value = $(element).data('variablevalue');
-    var currValue = $container.data('variablevalue');
-    var newValue = (currValue + "," + value).replace(/(^,)|(,$)/g, "");
-    $container.data('variablevalue', newValue);
-    $chartContainer.data('variablevalue', newValue);
-
-    if (!$container.find('.grid')[0].grid) {
-        initializeGrid($container).then(function (data) {
-            initializeCharts($chartContainer, data);
-        });
-    }
-
-    $('.level-variable-value-tab-pane').hide();
+    $('.' + containerClass).hide();
     $container.fadeIn();
 
-    $('.level-variable-value-tab-pane-charts').hide();
+    $('.' + chartContainerClass).hide();
     $chartContainer.fadeIn();
+
+    if ($container.find('.level-variable-tabs').length > 0) {
+        var $activeVariableValueTab = $container.find('.level-variable-tabs:first .level-variable-value a.active')
+        onLevelVariableValueTabClick($activeVariableValueTab);
+    } else {
+        if (!$container.find('.grid')[0].grid) {
+            initializeGrid($container.find('.grid-container')).then(function (data) {
+                initializeCharts($chartContainer.find('.charts-container'), data);
+            });
+        }
+    }
 }
 
 //Search Handlers
@@ -349,8 +347,8 @@ function initializeGrid(element) {
     var gameID = $(element).data('gameid');
     var categoryType = $(element).data('categorytype');
     var categoryID = $(element).data('categoryid');
-    var levelID = $(element).data('levelid');
-    var variableValues = $(element).data('variablevalue');
+    var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
+    var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var pagerID = $(element).find('.pager').attr("id");
 
     grid.jqGrid({
@@ -608,31 +606,10 @@ function initializeCharts(element, data) {
 
     $.when.apply(null, promises).then(function () {
         def.resolve();
-    })
+    });
 
-    //$(charts).each(function () {
-    //    var self = this;
-    //    //var container = $(element).find(this.selector)
-    //    //$(container).empty();
-
-    //    //var controller = graphObj.controller(container, data);
-
-    //    self.preRender().then(function (data) {
-    //        self.postRender(data).then(function () {
-    //        });
-    //    });
-    //});
     return def.promise();
 }
-
-//function getGameDetailsCharts(element, data) {
-//    var charts = [];
-//    charts.push(new speedRunsByUserChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }));
-//    //charts.push({ selector: ".chart-container-1", chart: new speedRunSummaryByMonthChart() });
-//    //charts.push({ selector: ".chart-container-2", chart: new speedRunSummaryByMonthChart() });
-
-//    return charts;
-//}
 
 /**Ajax functions **/
 //Search
@@ -651,15 +628,15 @@ function filterCategories() {
     $('#divSpeedRunGridLoading').show();
 
     var gridModel = new speedRunGridModel("Game", categoryTypes, games, categories, levels);
-    renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel);
+    renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel, sra.renderSpeedRunGridVariableTemplate, sra.renderSpeedRunGridVariableChartTemplate);
 
     $('#divSpeedRunGridContainer').show();
     $('#divSpeedRunGridLoading').hide();
 }
 
-function getVariableObj(i) {
-    return { depth: i, variable: sra.searchVariables[i] }
-}
+
+
+
 
 
 

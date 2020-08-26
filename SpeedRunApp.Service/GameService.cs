@@ -27,7 +27,7 @@ namespace SpeedRunApp.Service
             return gameVM;
         }
 
-        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableID, string variableValues)
+        public IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableValues)
         {
             Leaderboard leaderboard = null;
             ClientContainer clientContainer = new ClientContainer();

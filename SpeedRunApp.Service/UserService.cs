@@ -39,6 +39,18 @@ namespace SpeedRunApp.Service
                 {
                     run.System.Platform = platforms.FirstOrDefault(i => i.ID == run.System.PlatformID);
                 }
+
+                if (run.VariableValueMappings != null && run.VariableValueMappings.Any())
+                {
+                    run.Variables = new List<Variable>();
+                    var variableMappings = run.VariableValueMappings.GroupBy(k => k.VariableID).Select(g => new { g.Key, VariableValueIDs = g.Select(i => i.VariableValueID) });
+                    foreach (var variableMapping in variableMappings)
+                    {
+                        var variable = clientContainer.Variables.GetVariable(variableMapping.Key.ToString());
+                        variable.Values = variable.Values.Where(i => variableMapping.VariableValueIDs.Contains(i.ID));
+                        run.Variables.Append(variable);
+                    }
+                }
             }
 
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));

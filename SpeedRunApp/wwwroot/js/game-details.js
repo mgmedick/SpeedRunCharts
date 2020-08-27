@@ -4,12 +4,12 @@
 
 function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables, renderVariableTemplate) {
     this.sender = sender,
-        this.categoryTypes = categoryTypes,
-        this.games = games,
-        this.categories = categories,
-        this.levels = levels,
-        this.variables = variables,
-        this.renderVariableTemplate = renderVariableTemplate
+    this.categoryTypes = categoryTypes,
+    this.games = games,
+    this.categories = categories,
+    this.levels = levels,
+    this.variables = variables,
+    this.renderVariableTemplate = renderVariableTemplate
 }
 
 function speedRunGridVariableModel(variables, classPrefix, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {

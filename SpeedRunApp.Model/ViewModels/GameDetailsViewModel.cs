@@ -21,7 +21,7 @@ namespace SpeedRunApp.Model.ViewModels
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
-            SearchVariables = game.Variables?.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new IDNamePair { ID = g.ID, Name = g.Value }) }).ToList();
+            //SearchVariables = game.Variables?.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new IDNamePair { ID = g.ID, Name = g.Value }) }).ToList();
 
             var subCategoryVariables = game.Variables?.Where(i => i.IsSubCategory).ToList();
             SearchVariables = GetNestedVariables(subCategoryVariables);

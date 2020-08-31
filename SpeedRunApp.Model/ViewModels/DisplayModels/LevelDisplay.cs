@@ -1,4 +1,6 @@
-﻿namespace SpeedRunApp.Model.ViewModels
+﻿using System.Collections.Generic;
+
+namespace SpeedRunApp.Model.ViewModels
 {
     public class LevelDisplay : IDNamePair
     {

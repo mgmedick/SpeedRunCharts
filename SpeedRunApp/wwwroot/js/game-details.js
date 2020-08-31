@@ -2,26 +2,29 @@
     var sra = {};
 }
 
-function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables, renderVariableTemplate) {
+function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables) {
     this.sender = sender,
-    this.categoryTypes = categoryTypes,
-    this.games = games,
-    this.categories = categories,
-    this.levels = levels,
-    this.variables = variables,
-    this.renderVariableTemplate = renderVariableTemplate
+        this.categoryTypes = categoryTypes,
+        this.games = games,
+        this.categories = categories,
+        this.levels = levels,
+        this.variables = variables
 }
 
-function speedRunGridVariableModel(variables, classPrefix, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {
+function speedRunGridVariableModel(variables, classPrefix, categoryTypeID, gameID, categoryID, levelID, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {
     this.variables = variables,
-    this.classPrefix = classPrefix,
-    this.categoryTypeIndex = categoryTypeIndex,
-    this.gameIndex = gameIndex,
-    this.categoryIndex = categoryIndex,
-    this.levelIndex = levelIndex,
-    this.prevID = prevID,
-    this.prevData = prevData,
-    this.count = count
+        this.classPrefix = classPrefix,
+        this.categoryTypeID = categoryTypeID,
+        this.gameID = gameID,
+        this.categoryID = categoryID,
+        this.levelID = levelID,
+        this.categoryTypeIndex = categoryTypeIndex,
+        this.gameIndex = gameIndex,
+        this.categoryIndex = categoryIndex,
+        this.levelIndex = levelIndex,
+        this.prevID = prevID,
+        this.prevData = prevData,
+        this.count = count
 }
 
 /**Initialize Event Functions**/
@@ -145,10 +148,6 @@ function initializeSpeedRunGridEvents(element) {
         onLevelTabClick(this);
     });
 
-    $(element).find('.nav-item.level-variable-value a').click(function () {
-        onLevelVariableValueTabClick(this);
-    });
-
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 }
 
@@ -270,42 +269,10 @@ function onLevelTabClick(element) {
     $('.level-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
-    if ($container.find('.level-variable-tabs').length > 0) {
-        var $activeVariableValueTab = $activeCategoryPane.find('.level-variable-tabs:first .level-variable-value a.active')
-        onLevelVariableValueTabClick($activeVariableValueTab);
-    }
-    else {
-        if (!$container.find('.grid')[0].grid) {
-            initializeGrid($container.find('.grid-container')).then(function (data) {
-                initializeCharts($chartContainer.find('.charts-container'), data);
-            });
-        }
-    }
-}
-
-function onLevelVariableValueTabClick(element) {
-    var variableValueContainerID = $(element).attr('href');
-    var $container = $(variableValueContainerID);
-    var containerClass = $container.data("class");
-    var variableValueChartContainerID = variableValueContainerID + '-charts';
-    var $chartContainer = $(variableValueChartContainerID);
-    var chartContainerClass = $chartContainer.data("class");
-
-    $('.' + containerClass).hide();
-    $container.fadeIn();
-
-    $('.' + chartContainerClass).hide();
-    $chartContainer.fadeIn();
-
-    if ($container.find('.level-variable-tabs').length > 0) {
-        var $activeVariableValueTab = $container.find('.level-variable-tabs:first .level-variable-value a.active')
-        onLevelVariableValueTabClick($activeVariableValueTab);
-    } else {
-        if (!$container.find('.grid')[0].grid) {
-            initializeGrid($container.find('.grid-container')).then(function (data) {
-                initializeCharts($chartContainer.find('.charts-container'), data);
-            });
-        }
+    if (!$container.find('.grid')[0].grid) {
+        initializeGrid($container.find('.grid-container')).then(function (data) {
+            initializeCharts($chartContainer.find('.charts-container'), data);
+        });
     }
 }
 

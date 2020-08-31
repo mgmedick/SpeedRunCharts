@@ -37,7 +37,7 @@ namespace SpeedRunApp.Model.ViewModels
             Comment = run.Comment;
             SplitsLink = run.SplitsUri;
             ExaminerUserID = run.Status.ExaminerUserID;
-            Variables = run.Variables?.Where(i=>i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = i.ID, Name = i.Name }) });
+            Variables = run.Variables?.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.GameID, CategoryID = this.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
 
             if (run.Category != null)
             {
@@ -75,7 +75,7 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? RealTime { get; set; }
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
-        IEnumerable<VariableDisplay> Variables { get; set; }
+        public IEnumerable<VariableDisplay> Variables { get; set; }
         public string GameCoverImageLinkString
         {
             get

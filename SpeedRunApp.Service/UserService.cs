@@ -33,6 +33,7 @@ namespace SpeedRunApp.Service
             var runs = clientContainer.Runs.GetRuns(userId: userID, elementsPerPage: elementsPerPage, elementsOffset: elementsOffset, embeds: runEmbeds).ToList();
 
             var platforms = _cacheHelper.GetPlatforms();
+            Dictionary<string, IEnumerable<Variable>> gameVariables = new Dictionary<string, IEnumerable<Variable>>();
             foreach (var run in runs)
             {
                 if (!string.IsNullOrWhiteSpace(run.System?.PlatformID))
@@ -42,20 +43,43 @@ namespace SpeedRunApp.Service
 
                 if (run.VariableValueMappings != null && run.VariableValueMappings.Any())
                 {
-                    run.Variables = new List<Variable>();
+                    var variables = new List<Variable>();
                     var variableMappings = run.VariableValueMappings.GroupBy(k => k.VariableID).Select(g => new { g.Key, VariableValueIDs = g.Select(i => i.VariableValueID) });
                     foreach (var variableMapping in variableMappings)
                     {
-                        var variable = clientContainer.Variables.GetVariable(variableMapping.Key.ToString());
+                        var variable = GetVariable(run.GameID, variableMapping.Key, gameVariables); //clientContainer.Variables.GetVariable(variableMapping.Key.ToString());
                         variable.Values = variable.Values.Where(i => variableMapping.VariableValueIDs.Contains(i.ID));
-                        run.Variables.Append(variable);
+                        variables.Add(variable);
                     }
+                    run.Variables = variables;
                 }
             }
 
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
 
             return runVMs;
+        }
+
+        private Variable GetVariable(string gameID, string variableID, Dictionary<string, IEnumerable<Variable>> gameVariables)
+        {
+            Variable variable = null;
+            ClientContainer clientContainer = new ClientContainer();
+
+            if (gameVariables.ContainsKey(gameID))
+            {
+                variable = gameVariables[gameID].FirstOrDefault(i => i.ID == variableID);
+            }
+            else
+            {
+                var variables = clientContainer.Games.GetVariables(gameID);
+                if (variables != null && variables.Any())
+                {
+                    gameVariables.Add(gameID, variables);
+                    variable = variables.FirstOrDefault(i => i.ID == variableID);
+                }
+            }
+
+            return variable;
         }
 
         //private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)

@@ -21,28 +21,39 @@ namespace SpeedRunApp.Model.ViewModels
             SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
-            //SearchVariables = game.Variables?.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new IDNamePair { ID = g.ID, Name = g.Value }) }).ToList();
 
             var subCategoryVariables = game.Variables?.Where(i => i.IsSubCategory).ToList();
+            var gameSubCategoryVariables = subCategoryVariables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
+            foreach (var category in SearchCategories.Reverse())
+            {
+                foreach (var gameSubCategoryVariable in gameSubCategoryVariables)
+                {
+                    var variable = (Variable)gameSubCategoryVariable.Clone();
+                    variable.CategoryID = category.ID;
+                    subCategoryVariables.Insert(0, variable);
+                }
+            }
+            subCategoryVariables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID));
             SearchVariables = GetNestedVariables(subCategoryVariables);
         }
 
-        public IEnumerable<VariableDisplay> GetNestedVariables(List<Variable> variables, int count = 0)
+        public IEnumerable<VariableDisplay> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)
         {
-            var result = variables.Skip(count).Take(variables.Count - count).Select((g, i) => new VariableDisplay
+            var results = variables.Skip(count).Take(variables.Count() - count).Select((g, i) => new VariableDisplay
             {
                 ID = g.ID,
                 Name = g.Name,
+                GameID = g.GameID,
                 CategoryID = g.CategoryID,
                 VariableValues = g.Values.Select(h => new VariableValueDisplay
                 {
                     ID = h.ID,
                     Name = h.Value,
-                    Variables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID).ToList(), count + 1)
+                    Variables = GetNestedVariables(variables.Where(n => n.GameID == g.GameID && (n.CategoryID == g.CategoryID)), count + 1)
                 })
             });
 
-            return result.GroupBy(i => i.CategoryID).Select(i => i.FirstOrDefault());
+            return results.GroupBy(i => new { i.GameID, i.CategoryID }).Select(i => i.FirstOrDefault());
         }
 
         public string ID { get; set; }

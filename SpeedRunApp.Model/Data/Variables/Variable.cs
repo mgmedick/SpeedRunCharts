@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class Variable
+    public class Variable : ICloneable
     {
         public string ID { get; set; }
         public string Name { get; set; }
@@ -18,6 +19,14 @@ namespace SpeedRunApp.Model.Data
         public string GameID { get; set; }
         public string CategoryID { get; set; }
         #endregion
+
+        public object Clone()
+        {
+            Variable variable = (Variable)this.MemberwiseClone();
+            variable.Values = new List<VariableValue>(this.Values);
+
+            return variable;
+        }
 
         //private SpeedrunComClient client;
 

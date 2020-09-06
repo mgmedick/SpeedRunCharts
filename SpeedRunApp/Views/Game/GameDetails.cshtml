@@ -4,10 +4,8 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
-@{
-    ViewBag.Title = "GameDetails";
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
-}
+@{ ViewBag.Title = "GameDetails";
+                var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
@@ -43,6 +41,7 @@
     <script src="@Url.Content("~/js/charts/game-details-charts/game-top-speed-runs-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-by-month-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-percentile-chart.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/speedrun-grid.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/game-details.js")" type="text/javascript"></script>
 
     <script type="text/javascript">

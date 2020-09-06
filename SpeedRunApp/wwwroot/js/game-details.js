@@ -1,4 +1,5 @@
-﻿if (!sra) {
+﻿/*
+if (!sra) {
     var sra = {};
 }
 
@@ -26,8 +27,14 @@ function speedRunGridVariableModel(variables, classPrefix, categoryTypeID, gameI
         this.prevData = prevData,
         this.count = count
 }
-
+*/
 /**Initialize Event Functions**/
+function initializeClient(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables) {
+    var params = { searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables };
+    initalizeSpeedRunGrid("Game", params);
+}
+
+/*
 function initializeClient(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables) {
     initalizeConstants(searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables);
     initializeEvents();
@@ -150,8 +157,10 @@ function initializeSpeedRunGridEvents(element) {
 
     $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
 }
+*/
 
 /*Event Handlers*/
+/*
 //Grid Container Handlers
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
@@ -305,8 +314,10 @@ function onCategoryChange(element) {
 
     repopulateDropDown($('#drpLevels'), $levels);
 }
+*/
 
 /**Initialize component functions**/
+/*
 //Initialize Grids
 function initializeGrid(element) {
     var def = $.Deferred();
@@ -577,8 +588,10 @@ function initializeCharts(element, data) {
 
     return def.promise();
 }
+*/
 
 /**Ajax functions **/
+/*
 //Search
 function filterCategories() {
     var categoryTypeIDs = $('#drpCategoryTypes').val();
@@ -600,6 +613,7 @@ function filterCategories() {
     $('#divSpeedRunGridContainer').show();
     $('#divSpeedRunGridLoading').hide();
 }
+*/
 
 
 

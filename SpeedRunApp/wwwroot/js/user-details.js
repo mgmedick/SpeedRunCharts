@@ -1,4 +1,5 @@
-﻿if (!sra) {
+﻿/*
+if (!sra) {
     var sra = {};
 }
 
@@ -26,8 +27,14 @@ function speedRunGridVariableModel(variables, classPrefix, categoryTypeID, gameI
         this.prevData = prevData,
         this.count = count
 }
+*/
 
 /**Initialize Functions**/
+function initializeClient() {
+    initalizeSpeedRunGrid("User");
+}
+
+/*
 function initializeClient() {
     initalizeConstants();
     initializeEvents();
@@ -264,8 +271,10 @@ function initializeSpeedRunGridEvents(element) {
         onLevelTabClick(this);
     });
 }
+*/
 
-/*Event Handlers*/
+/**Event Handlers**/
+/*
 //Grid Container Handlers
 function onCategoryTypeTabClick(element) {
     var categoryTypeContainerID = $(element).attr('href');
@@ -434,8 +443,10 @@ function onGameChange(element) {
     repopulateDropDown($('#drpCategories'), $categories);
     repopulateDropDown($('#drpLevels'), $levels);
 }
+*/
 
 /**Initialize Component functions**/
+/*
 //Initialize Grids
 function initializeGrid(element) {
     var def = $.Deferred();
@@ -734,8 +745,10 @@ function initializeCharts(element, data) {
     //});
     return def.promise();
 }
+*/
 
 /**Ajax functions **/
+/*
 //Search
 function filterCategories() {
     var categoryTypeIDs = $('#drpCategoryTypes').val();
@@ -745,7 +758,7 @@ function filterCategories() {
 
     var categoryTypes = $(sra.searchCategoryTypes).filter(function () { return categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.id) > -1 })
     var games = $(sra.searchGames).filter(function () { return gameIDs.length == 0 || gameIDs.indexOf(this.id) > -1 })
-    var categories = $(sra.searchCategories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 })
+    var categories = $(sra.searchCategories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 });
     var levels = $(sra.searchLevels).filter(function () { return levelIDs.length == 0 || levelIDs.indexOf(this.id) > -1 })
 
     $('#divSpeedRunGridContainer').hide();
@@ -757,6 +770,7 @@ function filterCategories() {
     $('#divSpeedRunGridContainer').show();
     $('#divSpeedRunGridLoading').hide();
 }
+*/
 
 
 

@@ -1,9 +1,7 @@
 ﻿@model SpeedRunApp.Model.ViewModels.UserDetailsViewModel
 
-@{
-    ViewBag.Title = "UserDetails";
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString();
-}
+@{ ViewBag.Title = "UserDetails";
+                var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
@@ -41,14 +39,12 @@
     <script src="@Url.Content("~/js/charts/user-details-charts/user-top-speed-runs-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/user-details-charts/user-speed-runs-by-date-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/user-details-charts/user-speed-runs-percentile-chart.js")" type="text/javascript"></script>
-
+    <script src="@Url.Content("~/js/speedrun-grid.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/user-details.js")" type="text/javascript"></script>
 
-    <script>
-        $().ready(function () {
+    <script>$().ready(function () {
             initializeClient();
-        });
-    </script>
+        });</script>
 }
 
 <div class="container-fluid">

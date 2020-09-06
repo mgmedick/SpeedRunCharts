@@ -84,6 +84,24 @@ function repopulateDropDown(element, items) {
     }
 }
 
+function renderTemplate(element, template, data, functions) {
+    var def = $.Deferred();
+    var _template = _.template(template);
+
+    var html = _template({
+        item: data,
+        fn: functions
+    });
+
+    $(element).html(html);
+    def.resolve();
+
+    return def.promise();
+}
+
+
+
+
 
 
 

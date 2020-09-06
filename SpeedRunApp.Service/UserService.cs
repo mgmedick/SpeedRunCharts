@@ -39,6 +39,7 @@ namespace SpeedRunApp.Service
                 if (!string.IsNullOrWhiteSpace(run.System?.PlatformID))
                 {
                     run.System.Platform = platforms.FirstOrDefault(i => i.ID == run.System.PlatformID);
+
                 }
 
                 if (run.VariableValueMappings != null && run.VariableValueMappings.Any())
@@ -47,7 +48,7 @@ namespace SpeedRunApp.Service
                     var variableMappings = run.VariableValueMappings.GroupBy(k => k.VariableID).Select(g => new { g.Key, VariableValueIDs = g.Select(i => i.VariableValueID) });
                     foreach (var variableMapping in variableMappings)
                     {
-                        var variable = GetVariable(run.GameID, variableMapping.Key, gameVariables); //clientContainer.Variables.GetVariable(variableMapping.Key.ToString());
+                        var variable = GetVariable(run.GameID, variableMapping.Key, gameVariables);
                         variable.Values = variable.Values.Where(i => variableMapping.VariableValueIDs.Contains(i.ID));
                         variables.Add(variable);
                     }

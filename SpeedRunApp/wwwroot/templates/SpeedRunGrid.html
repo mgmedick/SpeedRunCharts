@@ -143,7 +143,7 @@
                                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                             <div class="col scroller-tab-list-container">
                                                 <ul class="nav nav-tabs scroller-tab-list">
-                                                    <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id }), function(level, levelIndex) { %>
+                                                    <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
                                                     <li class="nav-item level">
                                                         <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="tab"><%= level.name %></a>
                                                     </li>

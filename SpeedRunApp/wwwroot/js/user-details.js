@@ -116,7 +116,7 @@ function getSpeedRunGridModel(data) {
 
     sra["searchCategories"] = _.chain(data).map(function (value) {
         return { id: value.categoryID, name: value.categoryName, gameID: value.gameID, categoryTypeID: value.categoryType.id }
-    }).filter(function (item) { return item.id }).uniq("id").sortBy(function (item) { return item.name; }).value();
+    }).uniq(function (item) { return [item.id, item.categoryTypeID].join(); }).sortBy(function (item) { return item.name; }).value();
 
     sra["searchGames"] = _.chain(data).map(function (value) {
         return { id: value.gameID, name: value.gameName, categoryTypeIDs: _.chain(sra.searchCategories).filter(function (category) { return category.gameID == value.gameID }).map(function (category) { return category.categoryTypeID }).uniq().value() }
@@ -124,8 +124,9 @@ function getSpeedRunGridModel(data) {
 
     sra["searchLevels"] = _.chain(data).map(function (value) {
         return { id: value.levelID, name: value.levelName, gameID: value.gameID, categoryID: value.categoryID }
-    }).filter(function (item) { return item.id }).uniq("id").sortBy(function (item) { return item.name; }).value();
+    }).filter(function (item) { return item.id }).uniq(function (item) { return [item.id, item.categoryID, item.gameID].join(); }).sortBy(function (item) { return item.name; }).value();
 
+    //.uniq(function (item) { return [item.levelID, item.categoryID].join() })
     var variables = _.flatten(_.pluck(data, 'variables')).filter(function (item) { return item != null });
     var groupedVariables = _.uniq(variables, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
     sra["searchVariables"] = getNestedVariables(groupedVariables, 0);

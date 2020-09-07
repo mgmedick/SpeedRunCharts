@@ -60,7 +60,7 @@ namespace SpeedRunApp.Service
 
         public SpeedRunViewModel GetSpeedRun(string runID)
         {
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = false, EmbedLevel = false, EmbedPlatform = false };
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
             ClientContainer clientContainer = new ClientContainer();
             var run = clientContainer.Runs.GetRun(runID, runEmbeds);
             var runVM = new SpeedRunViewModel(run);

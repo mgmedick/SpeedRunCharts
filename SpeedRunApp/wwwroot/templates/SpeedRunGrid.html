@@ -1,13 +1,10 @@
-﻿<script>
-
-</script>
-<div>
+﻿
     <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px;">
         <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
         <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
-            <% _.each(item.games, function(game, gameIndex) { %>
+            <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
             <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-charts" class="game-tab-pane-charts p-0 <%= (gameIndex == 0) ? ' show' : '' %>">
-                <% _.each(_.filter(item.categories, function(ft) { return ft.categoryTypeID == categoryType.id && ft.gameID == game.id}), function(category, categoryIndex) { %>
+                <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                 <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
                     <div class="category-results-charts">
                         <% if(_.filter(item.variables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
@@ -55,7 +52,7 @@
                         </div>
                         <% }) %>
                     </div>
-                    </div>
+                </div>
                 <% }) %>
             </div>
             <% }) %>

@@ -13,13 +13,13 @@
             </div>
             <div>
                 <h5>
-                    @Html.ActionLink(@Model.GameName, "GameDetails", "Game", new { gameID = @Model.GameID }, new { @class = "text-dark" })
-                    <small class="text-secondary">@Model.CategoryName</small>
+                    @Html.ActionLink(@Model.Game.Name, "GameDetails", "Game", new { gameID = @Model.Game.ID }, new { @class = "text-dark" })
+                    <small class="text-secondary">@Model.Category.Name</small>
                 </h5>
             </div>
             <div class="row no-gutters text-secondary">
                 <div class="col-xs-4">
-                    @Html.ActionLink(Model.PlayerName, "UserDetails", "User", new { userID = @Model.PlayerID }, new { @class = "text-secondary" })
+                    @Html.ActionLink(Model.Player.Name, "UserDetails", "User", new { userID = @Model.Player.ID }, new { @class = "text-secondary" })
                 </div>
                 <div class="col-xs-4 ml-1">
                     - @Model.PrimaryTimeString

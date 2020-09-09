@@ -17,14 +17,14 @@ namespace SpeedRunApp.Model.ViewModels
             CoverImageUri = game.Assets?.CoverLarge?.Uri;
             Moderators = game.ModeratorUsers?.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).OrderBy(i => i.Name);
             Platforms = game.Platforms.OrderBy(i => i.Name);
-            SearchGames = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
-            SearchCategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
-            SearchCategories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
-            SearchLevels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
+            Games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
+            CategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
+            Categories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
+            Levels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
 
             var subCategoryVariables = game.Variables?.Where(i => i.IsSubCategory).ToList();
             var gameSubCategoryVariables = subCategoryVariables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
-            foreach (var category in SearchCategories.Reverse())
+            foreach (var category in Categories.Reverse())
             {
                 foreach (var gameSubCategoryVariable in gameSubCategoryVariables)
                 {
@@ -34,7 +34,7 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
             subCategoryVariables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID));
-            SearchVariables = GetNestedVariables(subCategoryVariables);
+            SubCategoryVariables = GetNestedVariables(subCategoryVariables);
         }
 
         public IEnumerable<VariableDisplay> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)
@@ -64,11 +64,11 @@ namespace SpeedRunApp.Model.ViewModels
         public Uri CoverImageUri { get; set; }
         public IEnumerable<IDNamePair> Moderators { get; set; }
         public IEnumerable<Platform> Platforms { get; set; }
-        public IEnumerable<IDNamePair> SearchCategoryTypes { get; set; }
-        public IEnumerable<GameDisplay> SearchGames { get; set; }
-        public IEnumerable<CategoryDisplay> SearchCategories { get; set; }
-        public IEnumerable<LevelDisplay> SearchLevels { get; set; }
-        public IEnumerable<VariableDisplay> SearchVariables { get; set; }
+        public IEnumerable<IDNamePair> CategoryTypes { get; set; }
+        public IEnumerable<GameDisplay> Games { get; set; }
+        public IEnumerable<CategoryDisplay> Categories { get; set; }
+        public IEnumerable<LevelDisplay> Levels { get; set; }
+        public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
 
         public string PlatformsString
         {

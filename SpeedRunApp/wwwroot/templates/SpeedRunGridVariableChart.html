@@ -1,29 +1,29 @@
-﻿<% _.each(item.variables, function(variable, variableIndex) {%>
+﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
 <% item.count++ %>
 <% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
-    <div id="divCategoryType-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>-charts" class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts <%= (variableValueIndex == 0) ? ' show' : '' %>" data-class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts">
-        <% if (variableValue.variables.length > 0) { %>
-            <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(variableValue.variables, item.classPrefix, item.categoryTypeID, item.gameID, item.categoryID, item.levelID, item.categoryTypeIndex, item.gameIndex, item.categoryIndex, item.levelIndex, item.prevID + '-Variable-' + item.count + '-VariableValue-' + variableValueIndex, (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, ''), item.count), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
-        <% } else { %>
-        <div class="charts-container row" data-categorytype="<%= item.categoryTypeID %>" data-gameid="<%= item.gameID %>" data-categoryid="<%= item.categoryID %>" data-levelid="<%= (item.levelID) ? item.levelID : '' %>" data-variablevalues="<%= (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, '') %>">
-            <div class="chart-placeholder chart-container-0">
-                <div class="mx-auto align-self-center">
-                    <i class="fa fa-spinner fa-spin fa-lg"></i>
-                </div>
-            </div>
-            <div class="chart-placeholder chart-container-1">
-                <div class="mx-auto align-self-center">
-                    <i class="fa fa-spinner fa-spin fa-lg"></i>
-                </div>
-            </div>
-            <div class="chart-placeholder chart-container-2">
-                <div class="mx-auto align-self-center">
-                    <i class="fa fa-spinner fa-spin fa-lg"></i>
-                </div>
+<div id="divCategoryType-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>-charts" class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts <%= (variableValueIndex == 0) ? ' show' : '' %>" data-class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts">
+    <% if (variableValue.variables.length > 0) { %>
+    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(variableValue.variables, item.classPrefix, item.categoryTypeID, item.gameID, item.categoryID, item.levelID, item.categoryTypeIndex, item.gameIndex, item.categoryIndex, item.levelIndex, item.prevID + '-Variable-' + item.count + '-VariableValue-' + variableValueIndex, (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, ''), item.count), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+    <% } else { %>
+    <div class="charts-container row" data-categorytype="<%= item.categoryTypeID %>" data-gameid="<%= item.gameID %>" data-categoryid="<%= item.categoryID %>" data-levelid="<%= (item.levelID) ? item.levelID : '' %>" data-variablevalues="<%= (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, '') %>">
+        <div class="chart-placeholder chart-container-0">
+            <div class="mx-auto align-self-center">
+                <i class="fa fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <% } %>
+        <div class="chart-placeholder chart-container-1">
+            <div class="mx-auto align-self-center">
+                <i class="fa fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+        <div class="chart-placeholder chart-container-2">
+            <div class="mx-auto align-self-center">
+                <i class="fa fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
     </div>
+    <% } %>
+</div>
 <% }) %>
 <% }) %>
 

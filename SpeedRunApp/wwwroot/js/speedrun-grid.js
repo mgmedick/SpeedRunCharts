@@ -2,29 +2,29 @@
     var sra = {};
 }
 
-function speedRunGridModel(sender, categoryTypes, games, categories, levels, variables) {
+function speedRunGridModel(sender, categoryTypes, games, categories, levels, subCategoryVariables) {
     this.sender = sender,
-        this.categoryTypes = categoryTypes,
-        this.games = games,
-        this.categories = categories,
-        this.levels = levels,
-        this.variables = variables
+    this.categoryTypes = categoryTypes,
+    this.games = games,
+    this.categories = categories,
+    this.levels = levels,
+    this.subCategoryVariables = subCategoryVariables
 }
 
-function speedRunGridVariableModel(variables, classPrefix, categoryTypeID, gameID, categoryID, levelID, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {
-    this.variables = variables,
-        this.classPrefix = classPrefix,
-        this.categoryTypeID = categoryTypeID,
-        this.gameID = gameID,
-        this.categoryID = categoryID,
-        this.levelID = levelID,
-        this.categoryTypeIndex = categoryTypeIndex,
-        this.gameIndex = gameIndex,
-        this.categoryIndex = categoryIndex,
-        this.levelIndex = levelIndex,
-        this.prevID = prevID,
-        this.prevData = prevData,
-        this.count = count
+function speedRunGridVariableModel(subCategoryVariables, classPrefix, categoryTypeID, gameID, categoryID, levelID, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, prevID, prevData, count) {
+    this.subCategoryVariables = subCategoryVariables,
+    this.classPrefix = classPrefix,
+    this.categoryTypeID = categoryTypeID,
+    this.gameID = gameID,
+    this.categoryID = categoryID,
+    this.levelID = levelID,
+    this.categoryTypeIndex = categoryTypeIndex,
+    this.gameIndex = gameIndex,
+    this.categoryIndex = categoryIndex,
+    this.levelIndex = levelIndex,
+    this.prevID = prevID,
+    this.prevData = prevData,
+    this.count = count
 }
 
 /**Initialize Functions**/
@@ -37,23 +37,23 @@ function initalizeSpeedRunGrid(sender, params) {
             var gridData = getGridData(data);
             var gridModel = getGridModelFromGridData(data);
             //sra['gridData'] = gridData;
-            initalizeConstants(sender, gridModel.categoryTypes, gridModel.games, gridModel.categories, gridModel.levels, gridModel.variables, gridData);          
+            initalizeConstants(sender, gridModel.categoryTypes, gridModel.games, gridModel.categories, gridModel.levels, gridModel.subCategoryVariables, gridData);          
             loadSpeedRunGridTemplate(gridModel);
         });
     } else {
-        initalizeConstants(sender, params.searchCategoryTypes, params.searchGames, params.searchCategories, params.searchLevels, params.searchVariables, null);
-        var gridModel = new speedRunGridModel(sender, sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, sra.searchVariables);
+        initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, null);
+        var gridModel = new speedRunGridModel(sender, sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables);
         loadSpeedRunGridTemplate(gridModel);
     }
 }
 
-function initalizeConstants(sender, searchCategoryTypes, searchGames, searchCategories, searchLevels, searchVariables, gridData) {
+function initalizeConstants(sender, categoryTypes, games, categories, levels, subCategoryVariables, gridData) {
     sra['sender'] = sender;
-    sra['searchCategoryTypes'] = searchCategoryTypes;
-    sra['searchGames'] = searchGames;
-    sra['searchCategories'] = searchCategories;
-    sra['searchLevels'] = searchLevels;
-    sra['searchVariables'] = searchVariables;
+    sra['categoryTypes'] = categoryTypes;
+    sra['games'] = games;
+    sra['categories'] = categories;
+    sra['levels'] = levels;
+    sra['subCategoryVariables'] = subCategoryVariables;
     sra['gridData'] = gridData;
 }
 
@@ -266,7 +266,7 @@ function getGridData(data) {
         var gameID = this.game.id;
         var categoryID = this.category.id;
         var levelID = this.level ? this.level.id : '';
-        var variableValues = $(this.variables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).map(function () {
+        var variableValues = $(this.subCategoryVariables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).map(function () {
             var that = this;
             return $(this.variableValues).map(function () { return that.id + "|" + this.id }).get().join(",");
         }).get().join(",");
@@ -284,27 +284,27 @@ function getGridData(data) {
 }
 
 function getGridModelFromGridData(data) {
-    sra["searchCategoryTypes"] = _.chain(data).map(function (value) {
+    sra["categoryTypes"] = _.chain(data).map(function (value) {
         return { id: value.categoryType.id, name: value.categoryType.name }
     }).uniq("id").sortBy(function (item) { return item.name; }).value();
 
-    sra["searchCategories"] = _.chain(data).map(function (value) {
+    sra["categories"] = _.chain(data).map(function (value) {
         return { id: value.category.id, name: value.category.name, gameID: value.game.id, categoryTypeID: value.categoryType.id }
     }).uniq(function (item) { return [item.id, item.categoryTypeID].join(); }).sortBy(function (item) { return item.name; }).value();
 
-    sra["searchGames"] = _.chain(data).map(function (value) {
-        return { id: value.game.id, name: value.game.name, categoryTypeIDs: _.chain(sra.searchCategories).filter(function (category) { return category.gameID == value.game.id }).map(function (category) { return category.categoryTypeID }).uniq().value() }
+    sra["games"] = _.chain(data).map(function (value) {
+        return { id: value.game.id, name: value.game.name, categoryTypeIDs: _.chain(sra.categories).filter(function (category) { return category.gameID == value.game.id }).map(function (category) { return category.categoryTypeID }).uniq().value() }
     }).uniq("id").sortBy(function (item) { return item.name; }).value();
 
-    sra["searchLevels"] = _.chain(data).filter(function (value) { return value.level }).map(function (value) {
+    sra["levels"] = _.chain(data).filter(function (value) { return value.level }).map(function (value) {
         return { id: value.level.id, name: value.level.name, gameID: value.game.id, categoryID: value.category.id }
     }).uniq(function (item) { return [item.id, item.categoryID, item.gameID].join(); }).sortBy(function (item) { return item.name; }).value();
 
-    var variables = _.flatten(_.pluck(data, 'variables')).filter(function (item) { return item != null });
-    var groupedVariables = _.uniq(variables, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
-    sra["searchVariables"] = getNestedVariables(groupedVariables, 0);
+    var subCategoryVariables = _.flatten(_.pluck(data, 'subCategoryVariables')).filter(function (item) { return item != null });
+    var groupedVariables = _.uniq(subCategoryVariables, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
+    sra["subCategoryVariables"] = getNestedVariables(groupedVariables, 0);
 
-    return new speedRunGridModel("User", sra.searchCategoryTypes, sra.searchGames, sra.searchCategories, sra.searchLevels, sra.searchVariables)
+    return new speedRunGridModel("User", sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables)
 }
 
 function getNestedVariables(variables, count) {
@@ -392,6 +392,51 @@ function initializeGrid(element) {
         url = 'GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryType + "&categoryID=" + categoryID + "&levelID=" + levelID + "&variableValues=" + variableValues;
     }
 
+    var columnModel = [
+        { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
+        { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
+        { name: "playerUsers", width: 160, formatter: playerFormatter },
+        { name: "platform.name", width: 160 },
+        { name: "isEmulated", width: 125 },
+        { name: "primaryTimeString", width: 160, search: false },
+        { name: "statusTypeString", width: 125 },
+        { name: "rejectedReason", width: 160, hidden: true },
+        {
+            name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
+                sopt: ["deq", "dge", "dle"],
+                dataInit: function (element, options) {
+                    var self = this;
+                    var selfOptions = options;
+                    $(element).datepicker({
+                        dateFormat: 'mm/dd/yy',
+                        showButtonPanel: true,
+                        onSelect: function () {
+                            if (selfOptions.mode === "filter") {
+                                setTimeout(function () {
+                                    self.triggerToolbar();
+                                }, 0);
+                            } else {
+                                $(this).trigger("change");
+                            }
+                        }
+                    });
+                }
+            }, cellattr: dateSubmittedCellAttr
+        },
+        { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
+        { name: "relativeDateSubmittedString", hidden: true },
+        { name: "relativeVerifyDateString", hidden: true },
+        { name: "playerGuests", hidden: true },
+        { name: "categoryType", hidden: true },
+        { name: "gameID", hidden: true },
+        { name: "categoryID", hidden: true },
+        { name: "levelID", hidden: true },
+        { name: "primaryTimeSeconds", hidden: true },
+        { name: "monthYearSubmitted", hidden: true },
+        { name: "subCategoryVariables", hidden: true },
+        { name: "realTimeString", width: 160, search: false },
+    ];
+
     grid.jqGrid({
         url: url,
         datatype: dataType,
@@ -402,17 +447,14 @@ function initializeGrid(element) {
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Real Time", "Real Time (No Load)", "Game Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"],
+        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Real Time"],
         colModel: [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
             { name: "playerUsers", width: 160, formatter: playerFormatter },
-            { name: "platform", width: 160, formatter: platformFormatter },
+            { name: "platform.name", width: 160 },
             { name: "isEmulated", width: 125 },
             { name: "primaryTimeString", width: 160, search: false },
-            { name: "realTimeString", width: 160, search: false },
-            { name: "realTimeWithoutLoadsString", width: 160, search: false },
-            { name: "gameTimeString", width: 160, search: false },
             { name: "statusTypeString", width: 125 },
             { name: "rejectedReason", width: 160, hidden: true },
             {
@@ -447,7 +489,8 @@ function initializeGrid(element) {
             { name: "levelID", hidden: true },
             { name: "primaryTimeSeconds", hidden: true },
             { name: "monthYearSubmitted", hidden: true },
-            { name: "variables", hidden: true }
+            { name: "subCategoryVariables", hidden: true },
+            { name: "realTimeString", width: 160, search: false },
         ],
         postData: {
             filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
@@ -500,8 +543,8 @@ function initializeGrid(element) {
         initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
-        var $gridContainer = $(this).closest('.grid-container');
-        initializeScroller($gridContainer);
+        var $tabgridContainer = $grid.closest('.tab-grid-container');
+        initializeScroller($tabgridContainer);
 
         var data = $(this).jqGrid("getGridParam", "data");
         def.resolve(data);
@@ -531,11 +574,10 @@ function initializeGrid(element) {
 
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
-        var rankStrings = _.chain(data).map(function (item) { return item.rankString }).uniq().value().sort();
-        //var categoryNames = _.chain(data).map(function (item) { return item.category.name }).uniq().value().sort();
-        var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().value().sort();
-        var emulatorStrings = _.chain(data).map(function (item) { return item.isEmulated }).uniq().value().sort();
-        var statuses = _.chain(data).map(function (item) { return item.statusTypeString }).uniq().value().sort();
+        var rankStrings = _.chain(data).map(function (item) { return parseInt(item.rankString) }).uniq().sortBy(function (item) { return item; }).value();
+        var platformNames = _.chain(data).map(function (item) { return item["platform.name"] }).uniq().sortBy(function (item) { return item; }).value();
+        var emulatorStrings = _.chain(data).map(function (item) { return item.isEmulated }).uniq().sortBy(function (item) { return item; }).value();
+        var statuses = _.chain(data).map(function (item) { return item.statusTypeString }).uniq().sortBy(function (item) { return item; }).value();
         var playerNames = [];
         $(data).each(function () {
             var users = this.playerUsers;
@@ -553,12 +595,11 @@ function initializeGrid(element) {
                 }
             });
         });
-        playerNames = playerNames.sort();
+        playerNames = _.chain(playerNames).sortBy(function (item) { return item; }).value();
 
         setSearchSelect($(element), 'rankString', rankStrings);
         setSearchSelect($(element), 'playerUsers', playerNames);
-        //setSearchSelect($(element), 'categoryName', categoryNames);
-        setSearchSelect($(element), 'platform', platformNames);
+        setSearchSelect($(element), 'platform.name', platformNames);
         setSearchSelect($(element), 'isEmulated', emulatorStrings);
         setSearchSelect($(element), 'statusTypeString', statuses);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
@@ -572,8 +613,12 @@ function initializeGrid(element) {
             $grid.jqGrid("showCol", ["rejectedReason"]);
         }
 
-        var $gridContainer = $grid.closest('.grid-container');
-        $gridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
+        var $tabgridContainer = $grid.closest('.tab-grid-container');
+        var $gridContainer = $grid.closest('.tab-grid-container');
+        $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
+
+        var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name').map(function () { return $(this).width(); }).get());
+        $tabgridContainer.find('.tab-row-name').each(function () { $(this).width(maxWidth); })
     }
 
     function setSearchSelect(grid, columnName, searchData) {
@@ -688,9 +733,9 @@ function filterCategories() {
     var categoryIDs = $('#drpCategories').val();
     var levelIDs = $('#drpLevels').val();
 
-    var categoryTypes = $(sra.searchCategoryTypes).filter(function () { return categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.id) > -1 })
-    var games = $(sra.searchGames).filter(function () { return gameIDs.length == 0 || gameIDs.indexOf(this.id) > -1 })
-    var categories = $(sra.searchCategories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 });
+    var categoryTypes = $(sra.categoryTypes).filter(function () { return categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.id) > -1 })
+    var games = $(sra.games).filter(function () { return gameIDs.length == 0 || gameIDs.indexOf(this.id) > -1 })
+    var categories = $(sra.categories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 });
     var levels = $(sra.searchLevels).filter(function () { return levelIDs.length == 0 || levelIDs.indexOf(this.id) > -1 })
 
     $('#divSpeedRunGridContainer').hide();

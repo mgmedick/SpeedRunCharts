@@ -1,5 +1,5 @@
 ﻿
-    <div id="divChartContainer" class="container-fluid ml-0" style="width:1520px;">
+    <div id="divChartContainer" class="container-fluid ml-0" style="">
         <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
         <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
             <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
@@ -7,8 +7,8 @@
                 <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                 <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
                     <div class="category-results-charts">
-                        <% if(_.filter(item.variables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
-                        <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.variables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                        <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
+                        <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                         <% } else { %>
                         <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
                             <div class="chart-placeholder chart-container-0">
@@ -58,9 +58,9 @@
             <% }) %>
         </div>
         <% }) %>
-        <div id="divGridContainer" class="pt-2">
+        <div id="divGridContainer" class="tab-grid-container pt-2">
             <div class="row no-gutters p-1">
-                <div class="col-auto align-self-end" style="width:115px;">
+                <div class="tab-row-name col-auto align-self-end">
                     <label class="font-weight-bold">Category Type:</label>
                 </div>
                 <div class="col pl-2">
@@ -74,13 +74,13 @@
                 </div>
             </div>
             <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
-            <div class="grid-container">
+            <div>
                 <div id="divCategoryType-<%= categoryTypeIndex %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
                     <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
-                        <div class="col-auto align-self-end" style="width:115px;">
+                        <div class="tab-row-name col-auto align-self-end">
                             <label class="font-weight-bold">Game:</label>
                         </div>
-                        <div class="col-11 pl-2 scroller-tab-wrapper">
+                        <div class="col pl-2 scroller-tab-wrapper">
                             <div class="row no-gutters">
                                 <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                 <div class="col scroller-tab-list-container">
@@ -99,10 +99,10 @@
                     <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
                     <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
                         <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
-                            <div class="col-auto align-self-end" style="width:115px;">
+                            <div class="tab-row-name col-auto align-self-end">
                                 <label class="font-weight-bold">Category:</label>
                             </div>
-                            <div class="col-11 pl-2 scroller-tab-wrapper">
+                            <div class="col pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
                                     <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                     <div class="col scroller-tab-list-container">
@@ -121,8 +121,8 @@
                         <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                         <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
                             <div class="category-results">
-                                <% if(_.filter(item.variables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
-                                <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.variables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id; }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+                                <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
+                                <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id; }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
                                 <% } else { %>
                                 <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="">
                                     <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="grid"></table>
@@ -132,10 +132,10 @@
                             </div>
                             <div class="level-results">
                                 <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
-                                    <div class="col-auto align-self-end" style="width:115px;">
+                                    <div class="tab-row-name col-auto align-self-end">
                                         <label class="font-weight-bold">Levels:</label>
                                     </div>
-                                    <div class="col-11 pl-2 scroller-tab-wrapper">
+                                    <div class="col pl-2 scroller-tab-wrapper">
                                         <div class="row no-gutters">
                                             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
                                             <div class="col scroller-tab-list-container">

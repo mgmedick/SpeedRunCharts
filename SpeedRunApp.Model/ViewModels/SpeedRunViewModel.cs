@@ -11,64 +11,74 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunViewModel(SpeedRun run)
         {
             ID = run.ID;
-            PlayerUsers = run.PlayerUsers;
-            PlayerGuests = run.PlayerGuests;
+            StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
             IsEmulated = run.System.IsEmulated;
             DateSubmitted = run.DateSubmitted;
+            VerifyDate = run.Status.VerifyDate;
             VideoLinkEmbeded = run.Videos.EmbededLinks?.FirstOrDefault(i => i != null);
+            Comment = run.Comment;
+            RejectedReason = run.Status.Reason;
+            SplitsLink = run.SplitsUri;
+            PlayerUsers = run.PlayerUsers;
+            PlayerGuests = run.PlayerGuests;
+
+            //Times
             PrimaryTime = run.Times.Primary.Value;
             RealTime = run.Times.RealTime;
             RealTimeWithoutLoads = run.Times.RealTimeWithoutLoads;
             GameTime = run.Times.GameTime;
-            StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
-            VerifyDate = run.Status.VerifyDate;
-            RejectedReason = run.Status.Reason;
-            Comment = run.Comment;
-            SplitsLink = run.SplitsUri;
-            ExaminerUserID = run.Status.ExaminerUserID;
 
             if (run.PlayerUser != null)
             {
                 Player = new IDNamePair { ID = run.PlayerUser.ID, Name = run.PlayerUser.Name };
             }
+
             if (run.Game != null)
             {
                 Game = new IDNamePair { ID = run.GameID, Name = run.Game.Name };
                 GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
             }
+
             if (run.Category != null)
             {
                 Category = new IDNamePair { ID = run.CategoryID, Name = run.Category.Name };
                 CategoryType = new IDNamePair { ID = ((int)run.Category?.Type).ToString(), Name = run.Category?.Type.ToString() };
             }
+
             if (run.Platform != null)
             {
                 Platform = new IDNamePair { ID = run.Platform.ID, Name = run.Platform.Name };
             }
+
             if (run.Level != null)
             {
                 Level = new IDNamePair { ID = run.Level.ID, Name = run.Level.Name };
             }
+
             if (run.Variables != null)
             {
-                Variables = run.Variables.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
+                SubCategoryVariables = run.Variables.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
+                //Variables = run.Variables.Where(i => !i.IsSubCategory)
+            }
+
+            if (run.Status.Examiner != null)
+            {
+                Examiner = new IDNamePair { ID = run.Status.Examiner.ID, Name = run.Status.Examiner.Name };
             }
         }
 
         public string ID { get; set; }
         public IDNamePair Player { get; set; }
+        public IDNamePair CategoryType { get; set; }
+        public IDNamePair Game { get; set; }
+        public IDNamePair Category { get; set; }
+        public IDNamePair Level { get; set; }
+        public IDNamePair Platform { get; set; }
         public IEnumerable<User> PlayerUsers { get; set; }
         public IEnumerable<Guest> PlayerGuests { get; set; }
-        public IDNamePair Game { get; set; }
         public Uri GameCoverImageLink { get; set; }
-        public IDNamePair Category { get; set; }
-        public IDNamePair CategoryType { get; set; }
-        public IDNamePair Platform { get; set; }
-        public IDNamePair Level { get; set; }
         public bool IsEmulated { get; set; }
-        public string ModeratorName { get; set; }
-        public string ExaminerUserID { get; set; }
-        public string ExaminerName { get; set; }
+        public IDNamePair Examiner { get; set; }
         public IDNamePair StatusType { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
@@ -80,7 +90,9 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? RealTime { get; set; }
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
-        public IEnumerable<VariableDisplay> Variables { get; set; }
+        public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
+        //public IEnumerable<VariableDisplay> Variables { get; set; }
+
         public string GameCoverImageLinkString
         {
             get

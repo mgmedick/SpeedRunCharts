@@ -15,7 +15,6 @@
     <Folder Include="Data\Platforms\" />
     <Folder Include="Data\Regions\" />
     <Folder Include="Data\Embeds\" />
-    <Folder Include="ViewModels\DisplayModels\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Common.cs" />

@@ -46,13 +46,13 @@
 
     <script type="text/javascript">
         $().ready(function () {
-            var _searchCategoryTypes = @Html.Raw(Json.Serialize(Model.SearchCategoryTypes));
-            var _searchGames = @Html.Raw(Json.Serialize(Model.SearchGames));
-            var _searchCategories = @Html.Raw(Json.Serialize(Model.SearchCategories));
-            var _searchLevels = @Html.Raw(Json.Serialize(Model.SearchLevels));
-            var _searchVariables = @Html.Raw(Json.Serialize(Model.SearchVariables));
+            var _categoryTypes = @Html.Raw(Json.Serialize(Model.CategoryTypes));
+            var _games = @Html.Raw(Json.Serialize(Model.Games));
+            var _categories = @Html.Raw(Json.Serialize(Model.Categories));
+            var _levels = @Html.Raw(Json.Serialize(Model.Levels));
+            var _subCategoryVariables = @Html.Raw(Json.Serialize(Model.SubCategoryVariables));
 
-            initializeClient(_searchCategoryTypes, _searchGames, _searchCategories, _searchLevels, _searchVariables);
+            initializeClient(_categoryTypes, _games, _categories, _levels, _subCategoryVariables);
         });
     </script>
 }

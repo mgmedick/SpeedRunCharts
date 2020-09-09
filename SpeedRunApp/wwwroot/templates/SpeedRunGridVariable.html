@@ -1,10 +1,10 @@
-﻿<% _.each(item.variables, function(variable, variableIndex) {%>
+﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
 <% item.count++ %>
 <div class="<%= item.classPrefix %>-variable-tabs row no-gutters px-1 pt-1 pb-0">
-    <div class="col-auto align-self-end" style="width:115px;">
+    <div class="tab-row-name col-auto align-self-end">
         <label class="font-weight-bold tab-row-name"><%= variable.name %></label>
     </div>
-    <div class="col-11 pl-2 scroller-tab-wrapper">
+    <div class="col pl-2 scroller-tab-wrapper">
         <div class="row no-gutters">
             <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
             <div class="col scroller-tab-list-container">

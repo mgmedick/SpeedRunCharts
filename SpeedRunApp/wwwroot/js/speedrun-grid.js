@@ -425,7 +425,7 @@ function configureAndInitializeGrid(element) {
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
 
-    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
+    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
 
     var columnModel = [
         { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -458,7 +458,6 @@ function configureAndInitializeGrid(element) {
                 }
             }, cellattr: dateSubmittedCellAttr
         },
-        { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
         { name: "relativeDateSubmittedString", hidden: true },
         { name: "relativeVerifyDateString", hidden: true },
         { name: "playerGuests", hidden: true },
@@ -471,12 +470,6 @@ function configureAndInitializeGrid(element) {
         { name: "subCategoryVariables", hidden: true }
     ];
 
-    $(sra.variables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).each(function () {
-        columnNames.push(this.name);
-        var variable = { name: this.id, width: 160, search: false };
-        columnModel.push(variable);
-    });
-
     getGridData(categoryType, gameID, categoryID, levelID, variableValues).then(function (data) {
         $(data).each(function () {
             var item = this;
@@ -484,6 +477,18 @@ function configureAndInitializeGrid(element) {
                 item[this.variable.id] = this.name;
             });
         });
+
+       $(sra.variables).filter(function () {
+            var variable = this;
+           return $(data).filter(function () { return !levelID && variable.gameID == gameID && variable.categoryID == categoryID && this.hasOwnProperty(variable.id) }).length > 0
+        }).each(function () {
+            columnNames.push(this.name);
+            var variable = { name: this.id, width: 160, search: false };
+            columnModel.push(variable);
+        });
+
+        columnNames.push("Comment");
+        columnModel.push({ name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" });
 
         initializeGrid(grid, pagerID, data, columnModel, columnNames).then(function (gridData) {
             def.resolve(gridData);

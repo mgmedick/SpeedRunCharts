@@ -21,29 +21,24 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             Categories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             Levels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
-            Variables = game.Variables.Where(i => !i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) }).ToList();
 
-            var subCategoryVariables = game.Variables?.Where(i => i.IsSubCategory).ToList();
-            var gameSubCategoryVariables = subCategoryVariables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
-            var gameVariables = Variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
-            foreach (var category in Categories.Reverse())
+            if (game.Variables != null && game.Variables.Any())
             {
-                foreach (var gameVariable in gameVariables)
+                var variables = game.Variables.ToList();
+                var gameVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
+                foreach (var category in Categories.Reverse())
                 {
-                    var variable = (Variable)gameVariable.Clone();
-                    variable.CategoryID = category.ID;
-                    Variables.Insert(0, variable);
+                    foreach (var gameVariable in gameVariables)
+                    {
+                        var variable = (Variable)gameVariable.Clone();
+                        variable.CategoryID = category.ID;
+                        variables.Insert(0, variable);
+                    }
                 }
-
-                foreach (var gameSubCategoryVariable in gameSubCategoryVariables)
-                {
-                    var variable = (Variable)gameSubCategoryVariable.Clone();
-                    variable.CategoryID = category.ID;
-                    subCategoryVariables.Insert(0, variable);
-                }
+                variables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID));
+                Variables = variables.Where(i => !i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) }).ToList();
+                SubCategoryVariables = GetNestedVariables(variables.Where(i => i.IsSubCategory));
             }
-            subCategoryVariables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID));
-            SubCategoryVariables = GetNestedVariables(subCategoryVariables);
         }
 
         public IEnumerable<VariableDisplay> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)

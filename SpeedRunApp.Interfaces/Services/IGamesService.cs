@@ -10,5 +10,6 @@ namespace SpeedRunApp.Interfaces.Services
         GameDetailsViewModel GetGameDetails(string gameID);
         IEnumerable<SpeedRunRecordViewModel> GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableValues);
         Game GetGame(string gameID);
+        Variable GetGameVariable(string gameID, string variableID, Dictionary<string, IEnumerable<Variable>> gameVariables);
     }
 }

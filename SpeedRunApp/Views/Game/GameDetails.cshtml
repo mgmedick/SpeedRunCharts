@@ -51,8 +51,9 @@
             var _categories = @Html.Raw(Json.Serialize(Model.Categories));
             var _levels = @Html.Raw(Json.Serialize(Model.Levels));
             var _subCategoryVariables = @Html.Raw(Json.Serialize(Model.SubCategoryVariables));
+            var _variables = @Html.Raw(Json.Serialize(Model.Variables));
 
-            initializeClient(_categoryTypes, _games, _categories, _levels, _subCategoryVariables);
+            initializeClient(_categoryTypes, _games, _categories, _levels, _subCategoryVariables, _variables);
         });
     </script>
 }

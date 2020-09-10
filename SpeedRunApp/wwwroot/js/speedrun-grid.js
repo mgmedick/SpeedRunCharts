@@ -34,27 +34,28 @@ function initalizeSpeedRunGrid(sender, params) {
 
     if (sender == "User") {
         getUserSpeedRunGridData().then(function (data) {
-            var gridData = getGridData(data);
-            var gridModel = getGridModelFromGridData(data);
-            //sra['gridData'] = gridData;
-            initalizeConstants(sender, gridModel.categoryTypes, gridModel.games, gridModel.categories, gridModel.levels, gridModel.subCategoryVariables, gridData);          
+            var cachedData = getFormattedData(data);
+            var params = getParamsFromGridData(data);
+            initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, null, cachedData);
+            var gridModel = new speedRunGridModel(sender, sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables); 
             loadSpeedRunGridTemplate(gridModel);
         });
     } else {
-        initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, null);
+        initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, params.variables, null);
         var gridModel = new speedRunGridModel(sender, sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables);
         loadSpeedRunGridTemplate(gridModel);
     }
 }
 
-function initalizeConstants(sender, categoryTypes, games, categories, levels, subCategoryVariables, gridData) {
+function initalizeConstants(sender, categoryTypes, games, categories, levels, subCategoryVariables, variables, cachedData) {
     sra['sender'] = sender;
     sra['categoryTypes'] = categoryTypes;
     sra['games'] = games;
     sra['categories'] = categories;
     sra['levels'] = levels;
     sra['subCategoryVariables'] = subCategoryVariables;
-    sra['gridData'] = gridData;
+    sra['variables'] = variables;
+    sra['cachedData'] = cachedData;
 }
 
 /*Load Functions*/
@@ -204,7 +205,7 @@ function onCategoryTabClick(element) {
         }
         else {
             if (!$activeCategoryPane.find('.grid')[0].grid) {
-                initializeGrid($activeCategoryPane.find('.grid-container')).then(function (data) {
+                configureAndInitializeGrid($activeCategoryPane.find('.grid-container')).then(function (data) {
                     initializeCharts($activeCategoryChartsPane, data);
                 });
             }
@@ -231,7 +232,7 @@ function onCategoryVariableValueTabClick(element) {
         onCategoryVariableValueTabClick($activeVariableValueTab);
     } else {
         if (!$container.find('.grid')[0].grid) {
-            initializeGrid($container.find('.grid-container')).then(function (data) {
+            configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
                 initializeCharts($chartContainer, data);
             });
         }
@@ -251,14 +252,14 @@ function onLevelTabClick(element) {
     $chartContainer.fadeIn();
 
     if (!$container.find('.grid')[0].grid) {
-        initializeGrid($container.find('.grid-container')).then(function (data) {
+        configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
             initializeCharts($chartContainer.find('.charts-container'), data);
         });
     }
 }
 
 /**Data Functions**/
-function getGridData(data) {
+function getFormattedData(data) {
     var gridData = {};
 
     $(data).each(function () {
@@ -266,10 +267,14 @@ function getGridData(data) {
         var gameID = this.game.id;
         var categoryID = this.category.id;
         var levelID = this.level ? this.level.id : '';
-        var variableValues = $(this.subCategoryVariables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).map(function () {
-            var that = this;
-            return $(this.variableValues).map(function () { return that.id + "|" + this.id }).get().join(",");
+        var variableValues = $(this.subCategoryVariableValues).filter(function () { return !levelID && this.variable.gameID == gameID && this.variable.categoryID == categoryID }).map(function () {
+            return this.variable.id + "|" + this.id;
         }).get().join(",");
+
+        //var variableValues = $(this.subCategoryVariables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).map(function () {
+        //    var that = this;
+        //    return $(this.variableValues).map(function () { return that.id + "|" + this.id }).get().join(",");
+        //}).get().join(",");
 
         gridData[categoryTypeID] = gridData[categoryTypeID] || [];
         gridData[categoryTypeID][gameID] = gridData[categoryTypeID][gameID] || [];
@@ -283,41 +288,65 @@ function getGridData(data) {
     return gridData;
 }
 
-function getGridModelFromGridData(data) {
-    sra["categoryTypes"] = _.chain(data).map(function (value) {
+function getParamsFromGridData(data) {
+    var categoryTypes = _.chain(data).map(function (value) {
         return { id: value.categoryType.id, name: value.categoryType.name }
     }).uniq("id").sortBy(function (item) { return item.name; }).value();
 
-    sra["categories"] = _.chain(data).map(function (value) {
+    var categories = _.chain(data).map(function (value) {
         return { id: value.category.id, name: value.category.name, gameID: value.game.id, categoryTypeID: value.categoryType.id }
     }).uniq(function (item) { return [item.id, item.categoryTypeID].join(); }).sortBy(function (item) { return item.name; }).value();
 
-    sra["games"] = _.chain(data).map(function (value) {
-        return { id: value.game.id, name: value.game.name, categoryTypeIDs: _.chain(sra.categories).filter(function (category) { return category.gameID == value.game.id }).map(function (category) { return category.categoryTypeID }).uniq().value() }
+    var games = _.chain(data).map(function (value) {
+        return { id: value.game.id, name: value.game.name, categoryTypeIDs: _.chain(categories).filter(function (category) { return category.gameID == value.game.id }).map(function (category) { return category.categoryTypeID }).uniq().value() }
     }).uniq("id").sortBy(function (item) { return item.name; }).value();
 
-    sra["levels"] = _.chain(data).filter(function (value) { return value.level }).map(function (value) {
+    var levels = _.chain(data).filter(function (value) { return value.level }).map(function (value) {
         return { id: value.level.id, name: value.level.name, gameID: value.game.id, categoryID: value.category.id }
     }).uniq(function (item) { return [item.id, item.categoryID, item.gameID].join(); }).sortBy(function (item) { return item.name; }).value();
 
-    var subCategoryVariables = _.flatten(_.pluck(data, 'subCategoryVariables')).filter(function (item) { return item != null });
-    var groupedVariables = _.uniq(subCategoryVariables, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
-    sra["subCategoryVariables"] = getNestedVariables(groupedVariables, 0);
+    //var subCategoryVariables1 = _.flatten(_.pluck(data, 'subCategoryVariables')).filter(function (item) { return item != null });
+    //var groupedSubCategoryVariables = _.uniq(subCategoryVariables1, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
+    //var subCategoryVariables = getNestedVariables(groupedSubCategoryVariables, 0);
 
-    return new speedRunGridModel("User", sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables)
+    var subCategoryVariableValues = _.chain(data).pluck('subCategoryVariableValues').flatten().value();
+    var subCategoryVariables = _.chain(subCategoryVariableValues).pluck('variable').flatten().uniq("id");
+    _.chain(subCategoryVariables).each(function (variable) {
+        variable.variableValues = _.chain(subCategoryVariableValues).filter(function (variableValue) { return variableValue.variable.id == variable.id }).uniq("id").value();
+    });
+    subCategoryVariables = getNestedVariables(subCategoryVariables);
+    //var subCategoryVariableValues = _.pluck(_.pluck(data, 'subCategoryVariableValues'), 'variable');
+    //var groupedSubCategoryVariables = _.uniq(subCategoryVariableValues, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
+    //var subCategoryVariables = getNestedVariables(groupedSubCategoryVariables, 0);
+
+    var params = { categoryTypes, categories, games, levels, subCategoryVariables };
+
+    return params;
 }
 
 function getNestedVariables(variables, count) {
     var results = _.chain(variables).filter(function (item, index) { return index >= count }).map(function (variable) {
         return {
             id: variable.id, name: variable.name, gameID: variable.gameID, categoryID: variable.categoryID, variableValues: _.map(variable.variableValues, function (variableValue) {
-                return { id: variableValue.id, name: variableValue.name, variables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID }), count + 1) }
+                return { id: variableValue.id, name: variableValue.name, subVariables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID }), count + 1) }
             })
         }
     }).value();
 
     return _.uniq(results, function (item) { return [item.gameID, item.categoryID].join(); });
 }
+
+//function getNestedVariables(variables, count) {
+//    var results = _.chain(variables).filter(function (item, index) { return index >= count }).map(function (variable) {
+//        return {
+//            id: variable.id, name: variable.name, gameID: variable.gameID, categoryID: variable.categoryID, variableValues: _.map(variable.variableValues, function (variableValue) {
+//                return { id: variableValue.id, name: variableValue.name, subVariables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID }), count + 1) }
+//            })
+//        }
+//    }).value();
+
+//    return _.uniq(results, function (item) { return [item.gameID, item.categoryID].join(); });
+//}
 
 function getUserSpeedRunGridData() {
     var def1 = $.Deferred();
@@ -369,7 +398,23 @@ function getUserSpeedRuns(userID, elementsPerPage, elementsOffset) {
 }
 
 //Initialize Grids
-function initializeGrid(element) {
+function getGridData(categoryType, gameID, categoryID, levelID, variableValues) {
+    var def = $.Deferred();
+    var isSenderUser = sra.sender == "User";
+
+    if (isSenderUser) {
+        var gridData = sra.cachedData[categoryType][gameID][categoryID][levelID][variableValues];
+        def.resolve(gridData);
+    } else {
+        $.get('GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryType + "&categoryID=" + categoryID + "&levelID=" + levelID + "&variableValues=" + variableValues, function (data, status) {
+            def.resolve(data);
+        });
+    }
+
+    return def.promise();
+}
+
+function configureAndInitializeGrid(element) {
     var def = $.Deferred();
     var grid = $(element).find('.grid');
     var pagerID = $(element).find('.pager').attr("id");
@@ -379,18 +424,8 @@ function initializeGrid(element) {
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
-    var dataType = null;
-    var localData = null;
-    var url = null;
 
-    if (isSenderUser) {
-        dataType = "local";
-        localData = sra.gridData[categoryType][gameID][categoryID][levelID][variableValues];
-    } else {
-        dataType = "json";
-        localData = [];
-        url = 'GetGameSpeedRunRecords?gameID=' + gameID + "&categoryType=" + categoryType + "&categoryID=" + categoryID + "&levelID=" + levelID + "&variableValues=" + variableValues;
-    }
+    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
 
     var columnModel = [
         { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -433,65 +468,44 @@ function initializeGrid(element) {
         { name: "levelID", hidden: true },
         { name: "primaryTimeSeconds", hidden: true },
         { name: "monthYearSubmitted", hidden: true },
-        { name: "subCategoryVariables", hidden: true },
-        { name: "realTimeString", width: 160, search: false },
+        { name: "subCategoryVariables", hidden: true }
     ];
 
+    $(sra.variables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).each(function () {
+        columnNames.push(this.name);
+        var variable = { name: this.id, width: 160, search: false };
+        columnModel.push(variable);
+    });
+
+    getGridData(categoryType, gameID, categoryID, levelID, variableValues).then(function (data) {
+        $(data).each(function () {
+            var item = this;
+            $(item.variableValues).each(function () {
+                item[this.variable.id] = this.name;
+            });
+        });
+
+        initializeGrid(grid, pagerID, data, columnModel, columnNames).then(function (gridData) {
+            def.resolve(gridData);
+        });
+    });
+
+    return def.promise();
+}
+
+function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
+    var def = $.Deferred();
+
     grid.jqGrid({
-        url: url,
-        datatype: dataType,
-        mtype: "GET",
+        datatype: "local",
         data: localData,
         height: '100%',
         //autowidth: true,
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
-        colNames: ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Comment", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Real Time"],
-        colModel: [
-            { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
-            { name: "playerUsers", width: 160, formatter: playerFormatter },
-            { name: "platform.name", width: 160 },
-            { name: "isEmulated", width: 125 },
-            { name: "primaryTimeString", width: 160, search: false },
-            { name: "statusTypeString", width: 125 },
-            { name: "rejectedReason", width: 160, hidden: true },
-            {
-                name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
-                    sopt: ["deq", "dge", "dle"],
-                    dataInit: function (element, options) {
-                        var self = this;
-                        var selfOptions = options;
-                        $(element).datepicker({
-                            dateFormat: 'mm/dd/yy',
-                            showButtonPanel: true,
-                            onSelect: function () {
-                                if (selfOptions.mode === "filter") {
-                                    setTimeout(function () {
-                                        self.triggerToolbar();
-                                    }, 0);
-                                } else {
-                                    $(this).trigger("change");
-                                }
-                            }
-                        });
-                    }
-                }, cellattr: dateSubmittedCellAttr
-            },
-            { name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" },
-            { name: "relativeDateSubmittedString", hidden: true },
-            { name: "relativeVerifyDateString", hidden: true },
-            { name: "playerGuests", hidden: true },
-            { name: "categoryType", hidden: true },
-            { name: "gameID", hidden: true },
-            { name: "categoryID", hidden: true },
-            { name: "levelID", hidden: true },
-            { name: "primaryTimeSeconds", hidden: true },
-            { name: "monthYearSubmitted", hidden: true },
-            { name: "subCategoryVariables", hidden: true },
-            { name: "realTimeString", width: 160, search: false },
-        ],
+        colNames: columnNames,
+        colModel: columnModel,
         postData: {
             filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
         },
@@ -617,8 +631,8 @@ function initializeGrid(element) {
         var $gridContainer = $grid.closest('.tab-grid-container');
         $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
 
-        var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name').map(function () { return $(this).width(); }).get());
-        $tabgridContainer.find('.tab-row-name').each(function () { $(this).width(maxWidth); })
+        var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
+        $tabgridContainer.find('.tab-row-name:visible').each(function () { $(this).width(maxWidth); })
     }
 
     function setSearchSelect(grid, columnName, searchData) {
@@ -639,64 +653,65 @@ function initializeGrid(element) {
         return values;
     }
 
-    function optionsFormatter(cellvalue, options, rowObject) {
-        var html = "<div>"
-        html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
-        html += "<tr>";
-        html += "<td style='border:none; padding:0px; width:30px;'>";
-        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-        html += "</td>";
-        html += "<td style='border:none; padding:0px; width:30px;'>";
-        html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
-        html += "</td>";
-        html += "</tr>";
-        html += "</table>";
-        html += "</div>";
-
-        return html;
-    }
-
-    function playerFormatter(value, options, rowObject) {
-        var html = '';
-        var users = value;
-        var guests = rowObject.playerGuests;
-        var currentUserID = $('#hdnUserID').val();
-
-        $(users).each(function () {
-            var user = this;
-            if (user.id == currentUserID) {
-                html += user.name + "<br/>";
-            } else {
-                html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
-            }
-        });
-
-        $(guests).each(function () {
-            var guest = this;
-            html += guest.name + "<br/>";
-        });
-
-        return html;
-    }
-
-    function platformFormatter(value, options, rowObject) {
-        return value.name;
-    }
-
-    function commentFormatter(value, options, rowObject) {
-        var html = '';
-        if (value != null) {
-            html = '<i class="far fa-comment" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' + value + '"></i>'
-        }
-
-        return html;
-    }
-
-    function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
-        return ' title="' + rowObject.relativeDateSubmittedString + '"';
-    }
-
     return def.promise();
+}
+
+//Column Formatters
+function optionsFormatter(cellvalue, options, rowObject) {
+    var html = "<div>"
+    html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
+    html += "<tr>";
+    html += "<td style='border:none; padding:0px; width:30px;'>";
+    html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+    html += "</td>";
+    html += "<td style='border:none; padding:0px; width:30px;'>";
+    html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
+    html += "</td>";
+    html += "</tr>";
+    html += "</table>";
+    html += "</div>";
+
+    return html;
+}
+
+function playerFormatter(value, options, rowObject) {
+    var html = '';
+    var users = value;
+    var guests = rowObject.playerGuests;
+    var currentUserID = $('#hdnUserID').val();
+
+    $(users).each(function () {
+        var user = this;
+        if (user.id == currentUserID) {
+            html += user.name + "<br/>";
+        } else {
+            html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+        }
+    });
+
+    $(guests).each(function () {
+        var guest = this;
+        html += guest.name + "<br/>";
+    });
+
+    return html;
+}
+
+function platformFormatter(value, options, rowObject) {
+    return value.name;
+}
+
+function commentFormatter(value, options, rowObject) {
+    var html = '';
+    if (value != null) {
+        html = '<i class="far fa-comment" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' + value + '"></i>'
+    }
+
+    return html;
+}
+
+function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
+    return ' title="' + rowObject.relativeDateSubmittedString + '"';
 }
 
 //Initialize Charts

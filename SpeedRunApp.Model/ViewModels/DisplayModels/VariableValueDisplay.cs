@@ -5,7 +5,8 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class VariableValueDisplay : IDNamePair
     {
-        public IEnumerable<VariableDisplay> Variables { get; set; }
+        public VariableDisplay Variable { get; set; }
+        public IEnumerable<VariableDisplay> SubVariables { get; set; }
     }
 }
 

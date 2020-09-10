@@ -75,5 +75,6 @@ namespace SpeedRunApp.Model.Data
         public Platform Platform { get { return System.Platform; } }
         public Region Region { get { return System.Region; } }
         public IEnumerable<Variable> Variables { get; set; }
+        public IEnumerable<VariableValue> VariableValues { get; set; }
     }
 }

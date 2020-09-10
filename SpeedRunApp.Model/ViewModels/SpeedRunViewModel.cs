@@ -55,10 +55,15 @@ namespace SpeedRunApp.Model.ViewModels
                 Level = new IDNamePair { ID = run.Level.ID, Name = run.Level.Name };
             }
 
-            if (run.Variables != null)
+            //if (run.Variables != null)
+            //{
+            //    SubCategoryVariables = run.Variables.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
+            //}
+
+            if (run.VariableValues != null)
             {
-                SubCategoryVariables = run.Variables.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
-                //Variables = run.Variables.Where(i => !i.IsSubCategory)
+                SubCategoryVariableValues = run.VariableValues.Where(i => i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
+                VariableValues = run.VariableValues.Where(i => !i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
             }
 
             if (run.Status.Examiner != null)
@@ -91,8 +96,8 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
         public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
-        //public IEnumerable<VariableDisplay> Variables { get; set; }
-
+        public IEnumerable<VariableValueDisplay> SubCategoryVariableValues { get; set; }
+        public IEnumerable<VariableValueDisplay> VariableValues { get; set; }
         public string GameCoverImageLinkString
         {
             get

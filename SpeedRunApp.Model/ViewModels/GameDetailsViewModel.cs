@@ -21,11 +21,20 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             Categories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             Levels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
+            Variables = game.Variables.Where(i => !i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) }).ToList();
 
             var subCategoryVariables = game.Variables?.Where(i => i.IsSubCategory).ToList();
             var gameSubCategoryVariables = subCategoryVariables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
+            var gameVariables = Variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
             foreach (var category in Categories.Reverse())
             {
+                foreach (var gameVariable in gameVariables)
+                {
+                    var variable = (Variable)gameVariable.Clone();
+                    variable.CategoryID = category.ID;
+                    Variables.Insert(0, variable);
+                }
+
                 foreach (var gameSubCategoryVariable in gameSubCategoryVariables)
                 {
                     var variable = (Variable)gameSubCategoryVariable.Clone();
@@ -49,7 +58,7 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     ID = h.ID,
                     Name = h.Value,
-                    Variables = GetNestedVariables(variables.Where(n => n.GameID == g.GameID && (n.CategoryID == g.CategoryID)), count + 1)
+                    SubVariables = GetNestedVariables(variables.Where(n => n.GameID == g.GameID && (n.CategoryID == g.CategoryID)), count + 1)
                 })
             });
 
@@ -69,7 +78,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IEnumerable<CategoryDisplay> Categories { get; set; }
         public IEnumerable<LevelDisplay> Levels { get; set; }
         public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
-
+        public IEnumerable<VariableDisplay> Variables { get; set; }
         public string PlatformsString
         {
             get

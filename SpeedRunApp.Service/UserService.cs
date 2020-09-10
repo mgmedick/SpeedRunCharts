@@ -9,10 +9,12 @@ namespace SpeedRunApp.Service
 {
     public class UserService : IUserService
     {
+        private readonly IGamesService _gameService = null;
         private readonly ICacheHelper _cacheHelper = null;
 
-        public UserService(ICacheHelper cacheHelper)
+        public UserService(IGamesService gameService, ICacheHelper cacheHelper)
         {
+            _gameService = gameService;
             _cacheHelper = cacheHelper;
         }
 
@@ -42,18 +44,26 @@ namespace SpeedRunApp.Service
 
                 }
 
-                if (run.VariableValueMappings != null && run.VariableValueMappings.Any())
+                //if (run.VariableValueMappings != null && run.VariableValueMappings.Any())
+                //{
+                //    var variables = new List<Variable>();
+                //    var variableMappings = run.VariableValueMappings.GroupBy(k => k.VariableID).Select(g => new { g.Key, VariableValueIDs = g.Select(i => i.VariableValueID) });
+                //    foreach (var variableMapping in variableMappings)
+                //    {
+                //        var variable = GetVariable(run.GameID, variableMapping.Key, gameVariables);
+                //        variable.Values = variable.Values.Where(i => variableMapping.VariableValueIDs.Contains(i.ID));
+                //        variables.Add(variable);
+                //    }
+                //    run.Variables = variables;
+                //}
+                var values = new List<VariableValue>();
+                foreach (var variableValueMapping in run.VariableValueMappings)
                 {
-                    var variables = new List<Variable>();
-                    var variableMappings = run.VariableValueMappings.GroupBy(k => k.VariableID).Select(g => new { g.Key, VariableValueIDs = g.Select(i => i.VariableValueID) });
-                    foreach (var variableMapping in variableMappings)
-                    {
-                        var variable = GetVariable(run.GameID, variableMapping.Key, gameVariables);
-                        variable.Values = variable.Values.Where(i => variableMapping.VariableValueIDs.Contains(i.ID));
-                        variables.Add(variable);
-                    }
-                    run.Variables = variables;
+                    var variable = _gameService.GetGameVariable(run.GameID, variableValueMapping.VariableID, gameVariables);
+                    var variableValue = variable.Values.FirstOrDefault(i => i.ID == variableValueMapping.VariableValueID);
+                    values.Add(variableValue);
                 }
+                run.VariableValues = values;
             }
 
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
@@ -61,27 +71,6 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        private Variable GetVariable(string gameID, string variableID, Dictionary<string, IEnumerable<Variable>> gameVariables)
-        {
-            Variable variable = null;
-            ClientContainer clientContainer = new ClientContainer();
-
-            if (gameVariables.ContainsKey(gameID))
-            {
-                variable = gameVariables[gameID].FirstOrDefault(i => i.ID == variableID);
-            }
-            else
-            {
-                var variables = clientContainer.Games.GetVariables(gameID);
-                if (variables != null && variables.Any())
-                {
-                    gameVariables.Add(gameID, variables);
-                    variable = variables.FirstOrDefault(i => i.ID == variableID);
-                }
-            }
-
-            return variable;
-        }
 
         //private string GetExaminerName(string examinerUserID, Dictionary<string, string> examiners)
         //{

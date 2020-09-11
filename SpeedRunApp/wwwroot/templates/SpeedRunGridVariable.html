@@ -2,7 +2,7 @@
 <% item.count++ %>
 <div class="<%= item.classPrefix %>-variable-tabs row no-gutters px-1 pt-1 pb-0">
     <div class="tab-row-name-container col-auto align-self-end">
-        <label class="tab-row-name font-weight-bold"><%= variable.name %></label>
+        <label class="tab-row-name"><%= variable.name %></label>
     </div>
     <div class="col pl-2 scroller-tab-wrapper">
         <div class="row no-gutters">
@@ -28,6 +28,13 @@
     <div class="grid-container" data-categorytype="<%= item.categoryTypeID %>" data-gameid="<%= item.gameID %>" data-categoryid="<%= item.categoryID %>" data-levelid="<%= (item.levelID) ? item.levelID : '' %>" data-variablevalues="<%= (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, '') %>">
         <table id="tblCategoryType-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="grid"></table>
         <div id="divPager-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="pager"></div>
+        <div id="divLoading-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="loading">
+            <div class="container d-flex ml-0" style="height:465px;">
+                <div class="mx-auto align-self-center">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
+        </div>
     </div>
     <% } %>
 </div>

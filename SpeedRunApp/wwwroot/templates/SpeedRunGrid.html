@@ -59,9 +59,9 @@
         </div>
         <% }) %>
         <div id="divGridContainer" class="tab-grid-container pt-2">
-            <div class="row no-gutters p-1">
+            <div class="row no-gutters px-1 pt-1 pb-0">
                 <div class="tab-row-name-container col-auto align-self-end">
-                    <label class="tab-row-name font-weight-bold">Category Type:</label>
+                    <label class="tab-row-name">Category Type:</label>
                 </div>
                 <div class="col pl-2">
                     <ul class="nav nav-pills">
@@ -78,7 +78,7 @@
                 <div id="divCategoryType-<%= categoryTypeIndex %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
                     <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
                         <div class="tab-row-name-container col-auto align-self-end">
-                            <label class="tab-row-name font-weight-bold">Game:</label>
+                            <label class="tab-row-name">Game:</label>
                         </div>
                         <div class="col pl-2 scroller-tab-wrapper">
                             <div class="row no-gutters">
@@ -100,7 +100,7 @@
                     <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
                         <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
                             <div class="tab-row-name-container col-auto align-self-end">
-                                <label class="tab-row-name font-weight-bold">Category:</label>
+                                <label class="tab-row-name">Category:</label>
                             </div>
                             <div class="col pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
@@ -127,13 +127,20 @@
                                 <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="">
                                     <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="grid"></table>
                                     <div id="divPager-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="pager"></div>
+                                    <div id="divLoading-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="loading">
+                                        <div class="container d-flex ml-0" style="height:465px;">
+                                            <div class="mx-auto align-self-center">
+                                                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <% } %>
                             </div>
                             <div class="level-results">
                                 <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
                                     <div class="tab-row-name-container col-auto align-self-end">
-                                        <label class="tab-row-name font-weight-bold">Levels:</label>
+                                        <label class="tab-row-name">Levels:</label>
                                     </div>
                                     <div class="col pl-2 scroller-tab-wrapper">
                                         <div class="row no-gutters">
@@ -156,6 +163,13 @@
                                     <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
                                         <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="grid"></table>
                                         <div id="divPager-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="pager"></div>
+                                        <div id="divLoading-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="loading">
+                                            <div class="container d-flex ml-0" style="height:465px;">
+                                                <div class="mx-auto align-self-center">
+                                                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <% }) %>

@@ -404,7 +404,8 @@ function getGridData(categoryType, gameID, categoryID, levelID, variableValues) 
 
 function configureAndInitializeGrid(element) {
     var def = $.Deferred();
-    var grid = $(element).find('.grid');
+    var $grid = $(element).find('.grid');
+    var $loading = $(element).find('.loading');
     var pagerID = $(element).find('.pager').attr("id");
     var categoryType = $(element).data('categorytype');
     var gameID = $(element).data('gameid');
@@ -458,6 +459,8 @@ function configureAndInitializeGrid(element) {
         { name: "subCategoryVariables", hidden: true }
     ];
 
+    $loading.show();
+    $grid.hide();
     getGridData(categoryType, gameID, categoryID, levelID, variableValues).then(function (data) {
         $(data).each(function () {
             var item = this;
@@ -478,8 +481,10 @@ function configureAndInitializeGrid(element) {
         columnNames.push("Comment");
         columnModel.push({ name: "comment", width: 100, search: false, formatter: commentFormatter, align: "center" });
 
-        initializeGrid(grid, pagerID, data, columnModel, columnNames).then(function (gridData) {
+        initializeGrid($grid, pagerID, data, columnModel, columnNames).then(function (gridData) {
             def.resolve(gridData);
+            $grid.show();
+            $loading.hide();
         });
     });
 
@@ -709,8 +714,13 @@ function configureAndInitializeScroller(element) {
 
     $tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
 
-    var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
-    $tabgridContainer.find('.tab-row-name-container:visible').each(function () { $(this).width(maxWidth); })
+    //var maxValue = 130;
+    //var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
+    //if (maxWidth > maxValue) {
+    //    maxWidth = maxValue;
+    //}
+
+    //$tabgridContainer.find('.tab-row-name-container:visible').each(function () { $(this).width(maxWidth); })
 }
 
 //Initialize Charts

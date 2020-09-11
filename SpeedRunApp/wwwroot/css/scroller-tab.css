@@ -36,9 +36,20 @@
     display: none;
     padding: 7px;
     padding-top: 11px;
-    white-space: no-wrap;
+    white-space: nowrap;
     vertical-align: middle;
     background-color: #fff;
+}
+
+.tab-row-name-container {
+    width: 130px;
+    display: flex;
+}
+
+.tab-row-name {
+    font-size: 14px !important;
+    line-height: 18px;
+    font-weight: bold;
 }
 
 

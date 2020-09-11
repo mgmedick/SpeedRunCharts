@@ -1,8 +1,8 @@
 ﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
 <% item.count++ %>
 <div class="<%= item.classPrefix %>-variable-tabs row no-gutters px-1 pt-1 pb-0">
-    <div class="tab-row-name col-auto align-self-end">
-        <label class="font-weight-bold"><%= variable.name %></label>
+    <div class="tab-row-name-container col-auto align-self-end">
+        <label class="tab-row-name font-weight-bold"><%= variable.name %></label>
     </div>
     <div class="col pl-2 scroller-tab-wrapper">
         <div class="row no-gutters">

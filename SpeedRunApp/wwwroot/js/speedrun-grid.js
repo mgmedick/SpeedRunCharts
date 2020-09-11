@@ -36,7 +36,7 @@ function initalizeSpeedRunGrid(sender, params) {
         getUserSpeedRunGridData().then(function (data) {
             var cachedData = getFormattedData(data);
             var params = getParamsFromGridData(data);
-            initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, null, cachedData);
+            initalizeConstants(sender, params.categoryTypes, params.games, params.categories, params.levels, params.subCategoryVariables, params.variables, cachedData);
             var gridModel = new speedRunGridModel(sender, sra.categoryTypes, sra.games, sra.categories, sra.levels, sra.subCategoryVariables); 
             loadSpeedRunGridTemplate(gridModel);
         });
@@ -208,6 +208,8 @@ function onCategoryTabClick(element) {
                 configureAndInitializeGrid($activeCategoryPane.find('.grid-container')).then(function (data) {
                     initializeCharts($activeCategoryChartsPane, data);
                 });
+            } else {
+                configureAndInitializeScroller($container);
             }
         }
     }
@@ -235,6 +237,8 @@ function onCategoryVariableValueTabClick(element) {
             configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
                 initializeCharts($chartContainer, data);
             });
+        } else {
+            configureAndInitializeScroller($container);
         }
     }
 }
@@ -255,6 +259,8 @@ function onLevelTabClick(element) {
         configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
             initializeCharts($chartContainer.find('.charts-container'), data);
         });
+    } else {
+        configureAndInitializeScroller($container);
     }
 }
 
@@ -270,11 +276,6 @@ function getFormattedData(data) {
         var variableValues = $(this.subCategoryVariableValues).filter(function () { return !levelID && this.variable.gameID == gameID && this.variable.categoryID == categoryID }).map(function () {
             return this.variable.id + "|" + this.id;
         }).get().join(",");
-
-        //var variableValues = $(this.subCategoryVariables).filter(function () { return !levelID && this.gameID == gameID && this.categoryID == categoryID }).map(function () {
-        //    var that = this;
-        //    return $(this.variableValues).map(function () { return that.id + "|" + this.id }).get().join(",");
-        //}).get().join(",");
 
         gridData[categoryTypeID] = gridData[categoryTypeID] || [];
         gridData[categoryTypeID][gameID] = gridData[categoryTypeID][gameID] || [];
@@ -305,21 +306,20 @@ function getParamsFromGridData(data) {
         return { id: value.level.id, name: value.level.name, gameID: value.game.id, categoryID: value.category.id }
     }).uniq(function (item) { return [item.id, item.categoryID, item.gameID].join(); }).sortBy(function (item) { return item.name; }).value();
 
-    //var subCategoryVariables1 = _.flatten(_.pluck(data, 'subCategoryVariables')).filter(function (item) { return item != null });
-    //var groupedSubCategoryVariables = _.uniq(subCategoryVariables1, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
-    //var subCategoryVariables = getNestedVariables(groupedSubCategoryVariables, 0);
-
     var subCategoryVariableValues = _.chain(data).pluck('subCategoryVariableValues').flatten().value();
-    var subCategoryVariables = _.chain(subCategoryVariableValues).pluck('variable').flatten().uniq("id");
-    _.chain(subCategoryVariables).each(function (variable) {
+    var subCategoryVariables1 = _.chain(subCategoryVariableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID].join(); }).value();
+    _.chain(subCategoryVariables1).each(function (variable) {
         variable.variableValues = _.chain(subCategoryVariableValues).filter(function (variableValue) { return variableValue.variable.id == variable.id }).uniq("id").value();
     });
-    subCategoryVariables = getNestedVariables(subCategoryVariables);
-    //var subCategoryVariableValues = _.pluck(_.pluck(data, 'subCategoryVariableValues'), 'variable');
-    //var groupedSubCategoryVariables = _.uniq(subCategoryVariableValues, function (item) { return [item.id, item.gameID, item.categoryID].join(); });
-    //var subCategoryVariables = getNestedVariables(groupedSubCategoryVariables, 0);
+    var subCategoryVariables = getNestedVariables(subCategoryVariables1, 0);
 
-    var params = { categoryTypes, categories, games, levels, subCategoryVariables };
+    var variableValues = _.chain(data).pluck('variableValues').flatten().value();
+    var variables = _.chain(variableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID].join(); }).value();
+    _.chain(variables).each(function (variable) {
+        variable.variableValues = _.chain(variableValues).filter(function (variableValue) { return variableValue.variable.id == variable.id }).uniq("id").value();
+    });
+
+    var params = { categoryTypes, categories, games, levels, subCategoryVariables, variables };
 
     return params;
 }
@@ -335,18 +335,6 @@ function getNestedVariables(variables, count) {
 
     return _.uniq(results, function (item) { return [item.gameID, item.categoryID].join(); });
 }
-
-//function getNestedVariables(variables, count) {
-//    var results = _.chain(variables).filter(function (item, index) { return index >= count }).map(function (variable) {
-//        return {
-//            id: variable.id, name: variable.name, gameID: variable.gameID, categoryID: variable.categoryID, variableValues: _.map(variable.variableValues, function (variableValue) {
-//                return { id: variableValue.id, name: variableValue.name, subVariables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID }), count + 1) }
-//            })
-//        }
-//    }).value();
-
-//    return _.uniq(results, function (item) { return [item.gameID, item.categoryID].join(); });
-//}
 
 function getUserSpeedRunGridData() {
     var def1 = $.Deferred();
@@ -495,6 +483,64 @@ function configureAndInitializeGrid(element) {
         });
     });
 
+    //Column Formatters
+    function optionsFormatter(cellvalue, options, rowObject) {
+        var html = "<div>"
+        html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
+        html += "<tr>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        html += "</td>";
+        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
+        html += "</td>";
+        html += "</tr>";
+        html += "</table>";
+        html += "</div>";
+
+        return html;
+    }
+
+    function playerFormatter(value, options, rowObject) {
+        var html = '';
+        var users = value;
+        var guests = rowObject.playerGuests;
+        var currentUserID = $('#hdnUserID').val();
+
+        $(users).each(function () {
+            var user = this;
+            if (user.id == currentUserID) {
+                html += user.name + "<br/>";
+            } else {
+                html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+            }
+        });
+
+        $(guests).each(function () {
+            var guest = this;
+            html += guest.name + "<br/>";
+        });
+
+        return html;
+    }
+
+    function platformFormatter(value, options, rowObject) {
+        return value.name;
+    }
+
+    function commentFormatter(value, options, rowObject) {
+        var html = '';
+        if (value != null) {
+            html = '<i class="far fa-comment" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' + value + '"></i>'
+        }
+
+        return html;
+    }
+
+    function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
+        return ' title="' + rowObject.relativeDateSubmittedString + '"';
+    }
+
     return def.promise();
 }
 
@@ -562,8 +608,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
-        var $tabgridContainer = $grid.closest('.tab-grid-container');
-        initializeScroller($tabgridContainer);
+        configureAndInitializeScroller(this);
 
         var data = $(this).jqGrid("getGridParam", "data");
         def.resolve(data);
@@ -635,9 +680,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         var $tabgridContainer = $grid.closest('.tab-grid-container');
         var $gridContainer = $grid.closest('.tab-grid-container');
         $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
-
-        var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
-        $tabgridContainer.find('.tab-row-name:visible').each(function () { $(this).width(maxWidth); })
     }
 
     function setSearchSelect(grid, columnName, searchData) {
@@ -661,62 +703,14 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
     return def.promise();
 }
 
-//Column Formatters
-function optionsFormatter(cellvalue, options, rowObject) {
-    var html = "<div>"
-    html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
-    html += "<tr>";
-    html += "<td style='border:none; padding:0px; width:30px;'>";
-    html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-    html += "</td>";
-    html += "<td style='border:none; padding:0px; width:30px;'>";
-    html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
-    html += "</td>";
-    html += "</tr>";
-    html += "</table>";
-    html += "</div>";
+function configureAndInitializeScroller(element) {
+    var $tabgridContainer = $(element).closest('.tab-grid-container');
+    initializeScroller($tabgridContainer);
 
-    return html;
-}
+    $tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
 
-function playerFormatter(value, options, rowObject) {
-    var html = '';
-    var users = value;
-    var guests = rowObject.playerGuests;
-    var currentUserID = $('#hdnUserID').val();
-
-    $(users).each(function () {
-        var user = this;
-        if (user.id == currentUserID) {
-            html += user.name + "<br/>";
-        } else {
-            html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
-        }
-    });
-
-    $(guests).each(function () {
-        var guest = this;
-        html += guest.name + "<br/>";
-    });
-
-    return html;
-}
-
-function platformFormatter(value, options, rowObject) {
-    return value.name;
-}
-
-function commentFormatter(value, options, rowObject) {
-    var html = '';
-    if (value != null) {
-        html = '<i class="far fa-comment" data-toggle="tooltip" data-placement="bottom" data-html="true" title="' + value + '"></i>'
-    }
-
-    return html;
-}
-
-function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
-    return ' title="' + rowObject.relativeDateSubmittedString + '"';
+    var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
+    $tabgridContainer.find('.tab-row-name-container:visible').each(function () { $(this).width(maxWidth); })
 }
 
 //Initialize Charts

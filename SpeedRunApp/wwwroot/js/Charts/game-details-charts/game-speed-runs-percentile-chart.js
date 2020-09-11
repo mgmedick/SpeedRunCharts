@@ -140,13 +140,13 @@ function gameSpeedRunsPercentileChart(container, inputs) {
 
             if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
                 values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i >= prevTotal }).value();
-                percent = Math.round((values.length / allSpeedRunTimes.length) * 100);
+                percent = Math.round((values.length / allSpeedRunTimes.length) * 100) || 0;
                 key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                 chartDataObj[key] = values;
                 break;
             } else {
                 time = allSpeedRunTimes[index].primaryTimeSeconds;
-                percent = Math.round((values.length / allSpeedRunTimes.length) * 100);
+                percent = Math.round((values.length / allSpeedRunTimes.length) * 100) || 0;
                 key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
 
                 if (index != prevIndex) {
@@ -175,7 +175,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
 
         _.chain(Object.entries(chartDataObj))
             .map(function (x) {
-                return { label: x[0], value: x[1].length }
+                return { label: x[0], value: (x[1].length == 0) ? 100 : x[1].length }
             })
             .each(function (item, idx) {
                 pieChart.addData(item.label, item.value, idx == 0);

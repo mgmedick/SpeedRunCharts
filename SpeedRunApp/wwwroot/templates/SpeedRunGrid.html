@@ -60,8 +60,8 @@
         <% }) %>
         <div id="divGridContainer" class="tab-grid-container pt-2">
             <div class="row no-gutters p-1">
-                <div class="tab-row-name col-auto align-self-end">
-                    <label class="font-weight-bold">Category Type:</label>
+                <div class="tab-row-name-container col-auto align-self-end">
+                    <label class="tab-row-name font-weight-bold">Category Type:</label>
                 </div>
                 <div class="col pl-2">
                     <ul class="nav nav-pills">
@@ -77,8 +77,8 @@
             <div>
                 <div id="divCategoryType-<%= categoryTypeIndex %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
                     <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
-                        <div class="tab-row-name col-auto align-self-end">
-                            <label class="font-weight-bold">Game:</label>
+                        <div class="tab-row-name-container col-auto align-self-end">
+                            <label class="tab-row-name font-weight-bold">Game:</label>
                         </div>
                         <div class="col pl-2 scroller-tab-wrapper">
                             <div class="row no-gutters">
@@ -99,8 +99,8 @@
                     <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
                     <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
                         <div class="category-tabs row no-gutters px-1 pt-1 pb-0">
-                            <div class="tab-row-name col-auto align-self-end">
-                                <label class="font-weight-bold">Category:</label>
+                            <div class="tab-row-name-container col-auto align-self-end">
+                                <label class="tab-row-name font-weight-bold">Category:</label>
                             </div>
                             <div class="col pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
@@ -132,8 +132,8 @@
                             </div>
                             <div class="level-results">
                                 <div class="level-tabs row no-gutters px-1 pt-1 pb-0">
-                                    <div class="tab-row-name col-auto align-self-end">
-                                        <label class="font-weight-bold">Levels:</label>
+                                    <div class="tab-row-name-container col-auto align-self-end">
+                                        <label class="tab-row-name font-weight-bold">Levels:</label>
                                     </div>
                                     <div class="col pl-2 scroller-tab-wrapper">
                                         <div class="row no-gutters">

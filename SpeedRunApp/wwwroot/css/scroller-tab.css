@@ -22,7 +22,7 @@
 }
 
 .scroller-tab-list li {
-    display: table-cell;
+    display: table-cell; 
     text-align: center;
     cursor: grab;
     cursor: -webkit-grab;

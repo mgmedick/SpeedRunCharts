@@ -414,51 +414,6 @@ function configureAndInitializeGrid(element) {
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
 
-    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
-
-    var columnModel = [
-        { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-        { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
-        { name: "playerUsers", width: 160, formatter: playerFormatter },
-        { name: "platform.name", width: 160 },
-        { name: "isEmulated", width: 125 },
-        { name: "primaryTimeString", width: 160, search: false },
-        { name: "statusTypeString", width: 125 },
-        { name: "rejectedReason", width: 160, hidden: true },
-        {
-            name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
-                sopt: ["deq", "dge", "dle"],
-                dataInit: function (element, options) {
-                    var self = this;
-                    var selfOptions = options;
-                    $(element).datepicker({
-                        dateFormat: 'mm/dd/yy',
-                        showButtonPanel: true,
-                        onSelect: function () {
-                            if (selfOptions.mode === "filter") {
-                                setTimeout(function () {
-                                    self.triggerToolbar();
-                                }, 0);
-                            } else {
-                                $(this).trigger("change");
-                            }
-                        }
-                    });
-                }
-            }, cellattr: dateSubmittedCellAttr
-        },
-        { name: "relativeDateSubmittedString", hidden: true },
-        { name: "relativeVerifyDateString", hidden: true },
-        { name: "playerGuests", hidden: true },
-        { name: "categoryType", hidden: true },
-        { name: "gameID", hidden: true },
-        { name: "categoryID", hidden: true },
-        { name: "levelID", hidden: true },
-        { name: "primaryTimeSeconds", hidden: true },
-        { name: "monthYearSubmitted", hidden: true },
-        { name: "subCategoryVariables", hidden: true }
-    ];
-
     $loading.show();
     $grid.hide();
     getGridData(categoryType, gameID, categoryID, levelID, variableValues).then(function (data) {
@@ -468,6 +423,50 @@ function configureAndInitializeGrid(element) {
                 item[this.variable.id] = this.name;
             });
         });
+
+        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
+
+        var columnModel = [
+            { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
+            { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
+            { name: "playerUsers", width: 160, formatter: playerFormatter },
+            { name: "platform.name", width: 160 },
+            { name: "isEmulatedString", width: 125 },
+            { name: "primaryTimeString", width: 160, search: false },
+            { name: "statusTypeString", width: 125, hidden: !isSenderUser },
+            { name: "rejectedReason", width: 160, hidden: true },
+            { name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
+                    sopt: ["deq", "dge", "dle"],
+                    dataInit: function (element, options) {
+                        var self = this;
+                        var selfOptions = options;
+                        $(element).datepicker({
+                            dateFormat: 'mm/dd/yy',
+                            showButtonPanel: true,
+                            onSelect: function () {
+                                if (selfOptions.mode === "filter") {
+                                    setTimeout(function () {
+                                        self.triggerToolbar();
+                                    }, 0);
+                                } else {
+                                    $(this).trigger("change");
+                                }
+                            }
+                        });
+                    }
+                }, cellattr: dateSubmittedCellAttr
+            },
+            { name: "relativeDateSubmittedString", hidden: true },
+            { name: "relativeVerifyDateString", hidden: true },
+            { name: "playerGuests", hidden: true },
+            { name: "categoryType", hidden: true },
+            { name: "gameID", hidden: true },
+            { name: "categoryID", hidden: true },
+            { name: "levelID", hidden: true },
+            { name: "primaryTimeSeconds", hidden: true },
+            { name: "monthYearSubmitted", hidden: true },
+            { name: "subCategoryVariables", hidden: true }
+        ];
 
        $(sra.variables).filter(function () {
             var variable = this;
@@ -530,7 +529,7 @@ function configureAndInitializeGrid(element) {
     }
 
     function platformFormatter(value, options, rowObject) {
-        return value.name;
+        return value.id;
     }
 
     function commentFormatter(value, options, rowObject) {
@@ -544,6 +543,14 @@ function configureAndInitializeGrid(element) {
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
+    }
+
+    function buildSearchSelect(items) {
+        var values = ":All";
+        $.each(items, function () {
+            values += ";" + this.id + ":" + this.name;
+        });
+        return values;
     }
 
     return def.promise();
@@ -603,6 +610,16 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
                     return fieldData <= searchValue;
                 }
+            },
+            nIn: {
+                operand: "nIN",
+                text: "In",
+                filter: function (options) {
+                    var fieldData = options.item[options.cmName];
+                    var searchValue = options.searchValue;
+
+                    return $(fieldData).filter(function () { return this.name == searchValue; }).length > 0;
+                }
             }
         }
     });
@@ -643,35 +660,36 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
-        var rankStrings = _.chain(data).map(function (item) { return parseInt(item.rankString) }).uniq().sortBy(function (item) { return item; }).value();
-        var platformNames = _.chain(data).map(function (item) { return item["platform.name"] }).uniq().sortBy(function (item) { return item; }).value();
-        var emulatorStrings = _.chain(data).map(function (item) { return item.isEmulated }).uniq().sortBy(function (item) { return item; }).value();
-        var statuses = _.chain(data).map(function (item) { return item.statusTypeString }).uniq().sortBy(function (item) { return item; }).value();
-        var playerNames = [];
-        $(data).each(function () {
-            var users = this.playerUsers;
-            var guests = this.playerGuests;
+        var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rankString) }).uniq().sortBy(function (item) { return item; }).value();
+        var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item.name }).value();
+        var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
+        var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
+        var playerNames = _.union(playerUsers, playerGuests);
+        var emulatedNames = _.chain(data).map(function (item) { return item.isEmulatedString }).uniq().sortBy(function (item) { return item }).value();
 
-            $(users).each(function () {
-                if (playerNames.indexOf(this.name) == -1) {
-                    playerNames.push(this.name);
-                }
-            });
-
-            $(guests).each(function () {
-                if (playerNames.indexOf(this.name) == -1) {
-                    playerNames.push(this.name);
-                }
-            });
-        });
-        playerNames = _.chain(playerNames).sortBy(function (item) { return item; }).value();
-
-        setSearchSelect($(element), 'rankString', rankStrings);
-        setSearchSelect($(element), 'playerUsers', playerNames);
-        setSearchSelect($(element), 'platform.name', platformNames);
-        setSearchSelect($(element), 'isEmulated', emulatorStrings);
-        setSearchSelect($(element), 'statusTypeString', statuses);
+        setSearchSelect($(element), 'rankString', rankNumbers, ["eq"]);
+        setSearchSelect($(element), 'platform.name', platformNames, ["eq"]);
+        setSearchSelect($(element), 'playerUsers', playerNames, ["nIn"]);
+        setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["eq"]);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
+    }
+
+    function setSearchSelect(grid, columnName, searchData, sortOptions) {
+        grid.jqGrid("setColProp", columnName, {
+            stype: "select",
+            searchoptions: {
+                value: buildSearchSelect(searchData),
+                sopt: sortOptions
+            }
+        });
+    }
+
+    function buildSearchSelect(items) {
+        var values = ":All";
+        $.each(items, function () {
+            values += ";" + this + ":" + this;
+        });
+        return values;
     }
 
     function initializeGridStyles(element) {
@@ -685,24 +703,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         var $tabgridContainer = $grid.closest('.tab-grid-container');
         var $gridContainer = $grid.closest('.tab-grid-container');
         $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
-    }
-
-    function setSearchSelect(grid, columnName, searchData) {
-        grid.jqGrid("setColProp", columnName, {
-            stype: "select",
-            searchoptions: {
-                value: buildSearchSelect(searchData),
-                sopt: ["eq"]
-            }
-        });
-    }
-
-    function buildSearchSelect(uniqueNames) {
-        var values = ":All";
-        $.each(uniqueNames, function () {
-            values += ";" + this + ":" + this;
-        });
-        return values;
     }
 
     return def.promise();

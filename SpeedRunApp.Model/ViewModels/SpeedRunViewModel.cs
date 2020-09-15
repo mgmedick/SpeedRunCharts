@@ -209,5 +209,13 @@ namespace SpeedRunApp.Model.ViewModels
                 return VerifyDate?.ToRealtiveDateString();
             }
         }
+
+        public string IsEmulatedString
+        {
+            get
+            {
+                return IsEmulated.ToString();
+            }
+        }
     }
 }

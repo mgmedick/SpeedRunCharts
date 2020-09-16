@@ -577,6 +577,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
+        //beforeProcessing: beforeProcessingHandler1,
         loadComplete: gridLoadComplete,
         customSortOperations: {
             deq: {
@@ -661,16 +662,16 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
         var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rankString) }).uniq().sortBy(function (item) { return item; }).value();
-        var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item.name }).value();
+        var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
         var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerNames = _.union(playerUsers, playerGuests);
         var emulatedNames = _.chain(data).map(function (item) { return item.isEmulatedString }).uniq().sortBy(function (item) { return item }).value();
 
-        setSearchSelect($(element), 'rankString', rankNumbers, ["eq"]);
-        setSearchSelect($(element), 'platform.name', platformNames, ["eq"]);
+        setSearchSelect($(element), 'rankString', rankNumbers, ["in"]);
+        setSearchSelect($(element), 'platform.name', platformNames, ["in"]);
         setSearchSelect($(element), 'playerUsers', playerNames, ["nIn"]);
-        setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["eq"]);
+        setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["in"]);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
 
@@ -679,7 +680,12 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             stype: "select",
             searchoptions: {
                 value: buildSearchSelect(searchData),
-                sopt: sortOptions
+                sopt: sortOptions,
+                attr: {
+                    multiple: "multiple",
+                    size: 4
+                },
+                selectFilled: initMultiselect
             }
         });
     }
@@ -691,6 +697,64 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         });
         return values;
     }
+
+    function initMultiselect (searchOptions) {
+        var $elem = $(searchOptions.elem),
+            options = {
+                selectedList: 2,
+                height: "auto",
+                checkAllText: "all",
+                uncheckAllText: "no",
+                noneSelectedText: "Any",
+                open: function () {
+                    var $menu = $(".ui-multiselect-menu:visible");
+                    $menu.addClass("ui-jqdialog").width("auto");
+                    $menu.find(">ul").css("maxHeight", "200px");
+                }
+            };
+        if (searchOptions.mode === "filter") {
+            options.minWidth = "auto";
+        }
+        $elem.multiselect(options);
+        $elem.siblings("button.ui-multiselect").css({
+            width: "100%",
+            margin: "1px 0",
+            paddingTop: ".3em",
+            paddingBottom: "0"
+        });
+    }
+
+    /*
+    function beforeProcessingHandler1 (data) {
+        var $this = $(this), p = $this.jqGrid("getGridParam");
+        // !!! it will be called only after loading from the server
+        // datatype is always "json" here
+
+        setSearchSelect(this, "ship_via", data);
+
+        if (this.ftoolbar === true) {
+            // if the filter toolbar is not already created
+            $("#gs_" + this.id + "ship_via").multiselect("destroy");
+            $this.jqGrid('destroyFilterToolbar');
+        }
+
+        if (p.postData.filters) {
+            p.search = true;
+        }
+
+        $this.jqGrid("filterToolbar", {
+            //stringResult: true,
+            defaultSearch: myDefaultSearch,
+            beforeClear: function () {
+                $(this.grid.hDiv)
+                    .find(".ui-search-toolbar button.ui-multiselect")
+                    .each(function () {
+                        $(this).prev("select[multiple]").multiselect("refresh");
+                    });
+            }
+        });
+    }
+    */
 
     function initializeGridStyles(element) {
         var $grid = $(element);

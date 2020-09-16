@@ -94,6 +94,13 @@
         "chosen.css",
         "chosen.min.css"
       ]
-    }
+    },
+    {
+      "library": "jquery-ui-multiselect-widget@3.0.0",
+      "destination": "wwwroot/lib/jquery-ui-multiselect-widget/",
+      "files": [
+        "jquery.multiselect.min.js"
+      ]
+    } 
   ]
 }

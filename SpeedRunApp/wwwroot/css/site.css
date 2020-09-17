@@ -119,24 +119,6 @@ body {
     min-height: 32px;
 }
 
-/**
-
-.chosen-container .chosen-choices {
-
-    border: 1px solid transparent;
-
-}
-
-*/
-
-/*
-.chosen-container-multi .chosen-choices li.search-choice {
-    margin: 5px 0 5px 5px;
-    font-size: 16px;
-    color: #405363;
-}
-*/
-
 .chosen-container-multi .chosen-choices li.search-choice {
     font-size: 16px;
     border-radius: 0px;
@@ -212,6 +194,11 @@ body {
     min-height:32px;
 }
 
+/** select2 **/
+.select2-container {
+    height: 32px;
+}
+
 input, textarea, select, option {
     font-family: "proxima-nova", Arial,Helvetica, sans-serif;
     border-radius: 0px;
@@ -221,7 +208,12 @@ input, textarea, select, option {
     -moz-appearance: none;
 }
 
-input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+/*input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+select:not(.ui-pg-selbox) {
+    height: 32px;
+}*/
+
+/*input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     display:block;
     color: #415463;
@@ -231,8 +223,7 @@ select:not(.ui-pg-selbox) {
     line-height: 32px;
     padding: 0 10px;
     border: solid 1px #c0c0c0;
-}
-
+}*/
 input, textarea, select, option:focus {
     outline: none;
 }
@@ -499,6 +490,7 @@ a.nostyle:hover {
     font-weight: inherit !important;
 }
 */
+
 
 
 

@@ -685,19 +685,34 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                     multiple: "multiple",
                     size: 4
                 },
-                selectFilled: initMultiselect
+                selectFilled: function(options) {
+                    setTimeout(function () {
+                        $(options.elem).select2({ width: "100%" });
+                    }, 0);
+                }
             }
         });
     }
 
     function buildSearchSelect(items) {
-        var values = ":All";
-        $.each(items, function () {
-            values += ";" + this + ":" + this;
-        });
+        //var values = ":";
+        var values = $(items).map(function () {
+            return this + ":" + this;
+        }).get().join(";");
         return values;
     }
 
+    /*
+    function buildSearchSelect(items) {
+        var values = ":";
+        $.each(items, function () {
+            values += ";" + this + ":" + this + ";";
+        });
+        return values;
+    }
+    */
+
+    /*
     function initMultiselect (searchOptions) {
         var $elem = $(searchOptions.elem),
             options = {
@@ -723,6 +738,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             paddingBottom: "0"
         });
     }
+    */
 
     /*
     function beforeProcessingHandler1 (data) {

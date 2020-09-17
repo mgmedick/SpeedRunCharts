@@ -101,7 +101,7 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 }
 
 function initializeSearchSpeedRunGridEvents(element) {
-    $(element).find('.chosen').chosen({ width: "250px" });
+    $(element).find('.select2').select2({ width: "250px" });
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
 
     $('#drpCategoryTypes').change(function () {
@@ -617,9 +617,9 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                 text: "In",
                 filter: function (options) {
                     var fieldData = options.item[options.cmName];
-                    var searchValue = options.searchValue;
+                    var searchValues = options.searchValue.split(',');
 
-                    return $(fieldData).filter(function () { return this.name == searchValue; }).length > 0;
+                    return $(fieldData).filter(function () { return searchValues.indexOf(this.name) > -1 }).length > 0;
                 }
             }
         }

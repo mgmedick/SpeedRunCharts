@@ -196,7 +196,22 @@ body {
 
 /** select2 **/
 .select2-container {
-    height: 32px;
+    font-size: 13px;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+    max-height: 240px !important;
+}
+
+.select2-container .select2-selection--multiple .select2-selection__rendered li.select2-search input[type="search"] {
+    font-size: 14px;
+    height: 15px;
+    padding: 0;
+    padding-left: 5px;
+}
+
+.select2-results__options {
+    line-height: 14px;
 }
 
 input, textarea, select, option {
@@ -208,10 +223,10 @@ input, textarea, select, option {
     -moz-appearance: none;
 }
 
-/*input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     height: 32px;
-}*/
+}
 
 /*input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
@@ -266,6 +281,7 @@ input, textarea, select, option:focus {
     line-height: 18px;
     margin-bottom: 0px;
     display: block;
+    padding-bottom: 2px;
 }
 
 .form-group label + span:not(.icon-wrapper) {

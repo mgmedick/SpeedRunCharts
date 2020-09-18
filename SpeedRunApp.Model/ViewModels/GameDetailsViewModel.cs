@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -18,9 +19,9 @@ namespace SpeedRunApp.Model.ViewModels
             Moderators = game.ModeratorUsers?.Select(i => new IDNamePair { ID = i.ID, Name = i.Name }).OrderBy(i => i.Name);
             Platforms = game.Platforms.OrderBy(i => i.Name);
             Games = new List<GameDisplay>() { new GameDisplay { ID = game.ID, Name = game.Name, CategoryTypeIDs = game.Categories.Select(i => ((int)i.Type).ToString()).Distinct() } };
-            CategoryTypes = game.CategoryTypes.Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
             Categories = game.Categories.Select(i => new CategoryDisplay { ID = i.ID, Name = i.Name, CategoryTypeID = ((int)i.Type).ToString(), GameID = i.GameID }).ToList();
             Levels = game.Levels.Select(i => new LevelDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID }).ToList();
+            CategoryTypes = game.CategoryTypes.Where(i=> Levels.Any() || (int)i != (int)CategoryType.PerLevel).Select(i => new IDNamePair { ID = ((int)i).ToString(), Name = i.ToString() }).ToList();
 
             if (game.Variables != null && game.Variables.Any())
             {

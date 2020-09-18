@@ -428,7 +428,7 @@ function configureAndInitializeGrid(element) {
 
         var columnModel = [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "rankString", width: 75, sorttype: "number", hidden: isSenderUser },
+            { name: "rank", width: 75, sorttype: "number", formatter: rankFormatter, hidden: isSenderUser },
             { name: "playerUsers", width: 160, formatter: playerFormatter },
             { name: "platform.name", width: 160 },
             { name: "isEmulatedString", width: 125 },
@@ -501,6 +501,40 @@ function configureAndInitializeGrid(element) {
         html += "</tr>";
         html += "</table>";
         html += "</div>";
+
+        return html;
+    }
+
+    function rankFormatter(value, options, rowObject) {
+        var html = '';
+        var num = parseInt(value);
+
+        if (num <= 0) {
+            html = '-'
+        }
+
+        switch (num % 100) {
+            case 11:
+            case 12:
+            case 13:
+                html = num + "th";
+                break;
+        }
+
+        switch (num % 10) {
+            case 1:
+                html = num + "st";
+                break;
+            case 2:
+                html = num + "nd";
+                break;
+            case 3:
+                html = num + "rd";
+                break;
+            default:
+                html = num + "th";
+                break;
+        }
 
         return html;
     }
@@ -612,6 +646,16 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                     return fieldData <= searchValue;
                 }
             },
+            aIn: {
+                operand: "aIN",
+                text: "In",
+                filter: function (options) {
+                    var fieldData = options.item[options.cmName];
+                    var searchValues = options.searchValue.split(',');
+
+                    return $(searchValues).filter(function () { return fieldData.indexOf(this.name) > -1 }).length > 0;
+                }
+            },
             nIn: {
                 operand: "nIN",
                 text: "In",
@@ -619,7 +663,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                     var fieldData = options.item[options.cmName];
                     var searchValues = options.searchValue.split(',');
 
-                    return $(fieldData).filter(function () { return searchValues.indexOf(this.name) > -1 }).length > 0;
+                    return $(searchValues).filter(function () { return this == fieldData }).length > 0;
                 }
             }
         }
@@ -661,16 +705,16 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
-        var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rankString) }).uniq().sortBy(function (item) { return item; }).value();
+        var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
         var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
         var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerNames = _.union(playerUsers, playerGuests);
         var emulatedNames = _.chain(data).map(function (item) { return item.isEmulatedString }).uniq().sortBy(function (item) { return item }).value();
 
-        setSearchSelect($(element), 'rankString', rankNumbers, ["in"]);
+        setSearchSelect($(element), 'rank', rankNumbers, ["nIn"]);
         setSearchSelect($(element), 'platform.name', platformNames, ["in"]);
-        setSearchSelect($(element), 'playerUsers', playerNames, ["nIn"]);
+        setSearchSelect($(element), 'playerUsers', playerNames, ["aIn"]);
         setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["in"]);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }

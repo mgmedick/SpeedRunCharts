@@ -112,6 +112,16 @@
         "css/select2.css",
         "css/select2.min.css"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery.scrolltabs.psk@2.1.1",
+      "destination": "wwwroot/lib/jquery.scrolltabs.psk/",
+      "files": [
+        "js/jquery.mousewheel.js",
+        "js/jquery.scrolltabs.js",
+        "css/scrolltabs.css"
+      ]
     }
   ]
 }

@@ -506,35 +506,8 @@ function configureAndInitializeGrid(element) {
     }
 
     function rankFormatter(value, options, rowObject) {
-        var html = '';
         var num = parseInt(value);
-
-        if (num <= 0) {
-            html = '-'
-        }
-
-        switch (num % 100) {
-            case 11:
-            case 12:
-            case 13:
-                html = num + "th";
-                break;
-        }
-
-        switch (num % 10) {
-            case 1:
-                html = num + "st";
-                break;
-            case 2:
-                html = num + "nd";
-                break;
-            case 3:
-                html = num + "rd";
-                break;
-            default:
-                html = num + "th";
-                break;
-        }
+        var html = (num <= 0) ? '-' : sra.mathHelper.getIntOrdinalString(num);
 
         return html;
     }
@@ -562,10 +535,6 @@ function configureAndInitializeGrid(element) {
         return html;
     }
 
-    function platformFormatter(value, options, rowObject) {
-        return value.id;
-    }
-
     function commentFormatter(value, options, rowObject) {
         var html = '';
         if (value != null) {
@@ -577,14 +546,6 @@ function configureAndInitializeGrid(element) {
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
-    }
-
-    function buildSearchSelect(items) {
-        var values = ":All";
-        $.each(items, function () {
-            values += ";" + this.id + ":" + this.name;
-        });
-        return values;
     }
 
     return def.promise();
@@ -603,9 +564,9 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         pager: pagerID,
         colNames: columnNames,
         colModel: columnModel,
-        postData: {
-            filters: '{"groupOp":"AND","rules":[{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
-        },
+        //postData: {
+        //    filters: '{"groupOp":"AND","rules":[{"field":"rank","op":"nIn","data":""},{"field":"dateSubmitted","op":"dge","data":""},{"field":"dateSubmitted","op":"dle","data":""}]}'
+        //},
         iconSet: "fontAwesome",
         guiStyle: "bootstrap4",
         ignoreCase: true,
@@ -616,7 +577,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         customSortOperations: {
             deq: {
                 operand: "==",
-                text: "Date equal",
+                text: "equal",
                 filter: function (options) {
                     var fieldData = new Date(options.item[options.cmName]);
                     var searchValue = new Date(options.searchValue);
@@ -628,7 +589,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             },
             dge: {
                 operand: ">=",
-                text: "Date greater or equal",
+                text: "greater or equal",
                 filter: function (options) {
                     var fieldData = new Date(options.item[options.cmName]);
                     var searchValue = new Date(options.searchValue);
@@ -638,7 +599,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             },
             dle: {
                 operand: "<=",
-                text: "Date less or equal",
+                text: "less or equal",
                 filter: function (options) {
                     var fieldData = new Date(options.item[options.cmName]);
                     var searchValue = new Date(options.searchValue);
@@ -648,17 +609,17 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             },
             aIn: {
                 operand: "aIN",
-                text: "In",
+                text: "is in",
                 filter: function (options) {
                     var fieldData = options.item[options.cmName];
                     var searchValues = options.searchValue.split(',');
 
-                    return $(searchValues).filter(function () { return fieldData.indexOf(this.name) > -1 }).length > 0;
+                    return $(fieldData).filter(function () { return searchValues.indexOf(this.name) > -1 }).length > 0;
                 }
             },
             nIn: {
                 operand: "nIN",
-                text: "In",
+                text: "is in",
                 filter: function (options) {
                     var fieldData = options.item[options.cmName];
                     var searchValues = options.searchValue.split(',');
@@ -706,14 +667,19 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
         var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
-        var platformNames = _.chain(data).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
+        var platformNames = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name; }).uniq().sortBy(function (item) { return item }).value();
         var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
         var playerNames = _.union(playerUsers, playerGuests);
         var emulatedNames = _.chain(data).map(function (item) { return item.isEmulatedString }).uniq().sortBy(function (item) { return item }).value();
 
         setSearchSelect($(element), 'rank', rankNumbers, ["nIn"]);
-        setSearchSelect($(element), 'platform.name', platformNames, ["in"]);
+        if (platformNames.length > 0) {
+            setSearchSelect($(element), 'platform.name', platformNames, ["in"]);
+        } else {
+            $(element).jqGrid("setColProp", 'platform.name', { search: false });
+        }
+
         setSearchSelect($(element), 'playerUsers', playerNames, ["aIn"]);
         setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["in"]);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
@@ -727,11 +693,12 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                 sopt: sortOptions,
                 attr: {
                     multiple: "multiple",
-                    size: 4
+                    attr: { style: "width:100%;" }//,
+                    //size: 4
                 },
-                selectFilled: function(options) {
+                dataInit: function (element) {
                     setTimeout(function () {
-                        $(options.elem).select2({ width: "100%" });
+                        $(element).select2({ width: "element" });
                     }, 0);
                 }
             }
@@ -739,7 +706,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
     }
 
     function buildSearchSelect(items) {
-        //var values = ":";
         var values = $(items).map(function () {
             return this + ":" + this;
         }).get().join(";");

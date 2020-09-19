@@ -428,34 +428,14 @@ function configureAndInitializeGrid(element) {
 
         var columnModel = [
             { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "rank", width: 75, sorttype: "number", formatter: rankFormatter, hidden: isSenderUser },
-            { name: "playerUsers", width: 160, formatter: playerFormatter },
-            { name: "platform.name", width: 160 },
-            { name: "isEmulatedString", width: 125 },
+            { name: "rank", width: 75, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] }, hidden: isSenderUser },
+            { name: "playerUsers", width: 160, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
+            { name: "platform.name", width: 160, search: true, searchoptions: { sopt: ["in"] } },
+            { name: "isEmulatedString", width: 125, search: true, searchoptions: { sopt: ["in"] } },
             { name: "primaryTimeString", width: 160, search: false },
             { name: "statusTypeString", width: 125, hidden: !isSenderUser },
             { name: "rejectedReason", width: 160, hidden: true },
-            { name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, searchoptions: {
-                    sopt: ["deq", "dge", "dle"],
-                    dataInit: function (element, options) {
-                        var self = this;
-                        var selfOptions = options;
-                        $(element).datepicker({
-                            dateFormat: 'mm/dd/yy',
-                            showButtonPanel: true,
-                            onSelect: function () {
-                                if (selfOptions.mode === "filter") {
-                                    setTimeout(function () {
-                                        self.triggerToolbar();
-                                    }, 0);
-                                } else {
-                                    $(this).trigger("change");
-                                }
-                            }
-                        });
-                    }
-                }, cellattr: dateSubmittedCellAttr
-            },
+            { name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
             { name: "playerGuests", hidden: true },
@@ -473,7 +453,7 @@ function configureAndInitializeGrid(element) {
            return $(data).filter(function () { return !levelID && variable.gameID == gameID && variable.categoryID == categoryID && this.hasOwnProperty(variable.id) }).length > 0
         }).each(function () {
             columnNames.push(this.name);
-            var variable = { name: this.id, width: 160, search: false };
+            var variable = { name: this.id, width: 160, search: true, searchoptions: { sopt: ["in"] } };
             columnModel.push(variable);
         });
 
@@ -666,6 +646,43 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
     function initializeGridFilters(element) {
         var data = $(element).jqGrid("getGridParam", "data");
+        var columns = $(element).jqGrid("getGridParam", "colModel");
+
+        $(columns).each(function () {
+            var column = this;
+            if (column.search) {
+                if (column.sorttype == "date") {
+                    setSearchDate(element, column.name, column.searchoptions.sopt);
+                } else {
+                    var colSearchData = [];
+                    switch (column.name) {
+                        case "rank":
+                            colSearchData = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
+                            break;
+                        //case "platform.name":
+                        //    colSearchData = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name; }).uniq().sortBy(function (item) { return item }).value();
+                        //    break;
+                        case "playerUsers":
+                            var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
+                            var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
+                            colSearchData = _.union(playerUsers, playerGuests);
+                            break;
+                        default:
+                            colSearchData = _.chain(data).filter(function (item) { return item[column.name] }).map(function (item) { return item[column.name] }).uniq().sortBy(function (item) { return item }).value();
+                            break;
+                    }
+
+                    setSearchSelect($(element), column.name, colSearchData, column.searchoptions.sopt);
+                }
+            }
+        });
+
+        $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
+    }
+
+    /*
+    function initializeGridFilters(element) {
+        var data = $(element).jqGrid("getGridParam", "data");
         var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
         var platformNames = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name; }).uniq().sortBy(function (item) { return item }).value();
         var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
@@ -684,25 +701,54 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["in"]);
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
-
-    function setSearchSelect(grid, columnName, searchData, sortOptions) {
-        grid.jqGrid("setColProp", columnName, {
-            stype: "select",
+    */
+    function setSearchDate(element, columnName, sortOptions) {
+        $(element).jqGrid("setColProp", columnName, {
             searchoptions: {
-                value: buildSearchSelect(searchData),
                 sopt: sortOptions,
-                attr: {
-                    multiple: "multiple",
-                    attr: { style: "width:100%;" }//,
-                    //size: 4
-                },
-                dataInit: function (element) {
-                    setTimeout(function () {
-                        $(element).select2({ width: "element" });
-                    }, 0);
+                dataInit: function (element, options) {
+                    var self = this;
+                    var selfOptions = options;
+                    $(element).datepicker({
+                        dateFormat: 'mm/dd/yy',
+                        showButtonPanel: true,
+                        onSelect: function () {
+                            if (selfOptions.mode === "filter") {
+                                setTimeout(function () {
+                                    self.triggerToolbar();
+                                }, 0);
+                            } else {
+                                $(this).trigger("change");
+                            }
+                        }
+                    });
                 }
             }
         });
+    }
+
+    function setSearchSelect(element, columnName, searchData, sortOptions) {
+        if (searchData.length > 0) {
+            $(element).jqGrid("setColProp", columnName, {
+                stype: "select",
+                searchoptions: {
+                    value: buildSearchSelect(searchData),
+                    sopt: sortOptions,
+                    attr: {
+                        multiple: "multiple",
+                        attr: { style: "width:100%;" }//,
+                        //size: 4
+                    },
+                    dataInit: function (element) {
+                        setTimeout(function () {
+                            $(element).select2({ width: "element" });
+                        }, 0);
+                    }
+                }
+            });
+        } else {
+            $(element).jqGrid("setColProp", columnName, { search: false });
+        }
     }
 
     function buildSearchSelect(items) {

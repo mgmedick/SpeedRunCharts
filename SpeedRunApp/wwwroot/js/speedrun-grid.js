@@ -538,7 +538,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         datatype: "local",
         data: localData,
         height: '100%',
-        //autowidth: true,
+        autowidth: true,
         //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,

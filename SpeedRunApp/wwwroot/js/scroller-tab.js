@@ -16,8 +16,8 @@ function initializeScrollerEvents(element) {
     $(element).find('.scroller-tab-wrapper').each(function () {
         var scrollerTabWrapper = this;
         var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');
-        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
-        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
+        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right-end');
+        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left-end');
 
         $(scrollerTabRight).off('click');
         $(scrollerTabRight).on('click', function () {
@@ -25,7 +25,6 @@ function initializeScrollerEvents(element) {
             $(scrollerTabRight).fadeOut('slow');
 
             $(scrollerTabList).animate({ marginLeft: "+=" + widthOfHidden(scrollerTabWrapper, scrollerTabList) + "px" }, 'slow', function () { });
-
         });
 
         $(scrollerTabLeft).off('click');
@@ -38,12 +37,12 @@ function initializeScrollerEvents(element) {
     });
 
 
-    //$('.scroller-tab-right').off('click');
-    //$('.scroller-tab-right').on('click', function () {
+    //$('.scroller-tab-right-end').off('click');
+    //$('.scroller-tab-right-end').on('click', function () {
     //    var scrollerTabWrapper = $(this).closest('.scroller-tab-wrapper');
     //    var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');        
-    //    var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
-    //    var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
+    //    var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right-end');
+    //    var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left-end);
 
     //    $(scrollerTabLeft).fadeIn('slow');
     //    $(scrollerTabRight).fadeOut('slow');
@@ -52,12 +51,12 @@ function initializeScrollerEvents(element) {
     //    });
     //});
 
-    //$('.scroller-tab-left').off('click');
-    //$('.scroller-tab-left').on('click', function () {
+    //$('.scroller-tab-left-end').off('click');
+    //$('.scroller-tab-left-end').on('click', function () {
     //    var scrollerTabWrapper = $(this).closest('.scroller-tab-wrapper');
     //    var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');        
-    //    var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
-    //    var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left'); 
+    //    var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right-end');
+    //    var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left-end);
     
     //    $(scrollerTabRight).fadeIn('slow');
     //    $(scrollerTabLeft).fadeOut('slow');
@@ -88,8 +87,8 @@ var getLeftPositionOfList = function (scrollerTabList) {
 //    $('.scroller-tab-wrapper').each(function () {
 //        var scrollerTabWrapper = $(this);
 //        var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');
-//        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
-//        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
+//        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right-end');
+//        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left-end');
 
 //        if (($(scrollerTabWrapper).outerWidth()) < widthOfList(scrollerTabList)) {
 //            $(scrollerTabRight).show();
@@ -112,8 +111,8 @@ function reAdjust(element) {
     $(element).find('.scroller-tab-wrapper').each(function () {
         var scrollerTabWrapper = $(this);
         var scrollerTabList = $(scrollerTabWrapper).find('.scroller-tab-list');
-        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right');
-        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left');
+        var scrollerTabRight = $(scrollerTabWrapper).find('.scroller-tab-right-end');
+        var scrollerTabLeft = $(scrollerTabWrapper).find('.scroller-tab-left-end');
 
         if (($(scrollerTabWrapper).outerWidth()) < widthOfList(scrollerTabList)) {
             $(scrollerTabRight).show();

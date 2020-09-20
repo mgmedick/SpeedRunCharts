@@ -214,10 +214,12 @@
         if($(this).hasClass('scroll_tab_last') || $('.scroll_tab_inner > '+_this.itemTag+'.scroll_tab_first', _this).hasClass('scroll_tab_last')){
           $('.scroll_tab_inner > span.scroll_tab_right_finisher', _this).removeClass('scroll_tab_over').removeClass('scroll_tab_right_finisher_over');
         }
-      }).click(function(e){
-        e.stopPropagation();
+      }).click(function (e) {
+        /*
+        //e.stopPropagation();
         $('.tab_selected',_this).removeClass('tab_selected scroll_tab_first_selected scroll_tab_last_selected scroll_tab_left_finisher_selected scroll_tab_right_finisher_selected');
         $(this).addClass('tab_selected');
+        //$(this).addClass('active');
 
         var context_obj = this;
         if($(this).hasClass('scroll_tab_left_finisher')){
@@ -232,11 +234,12 @@
         if($(this).hasClass('scroll_tab_last') || $('.scroll_tab_inner > '+_this.itemTag+'.scroll_tab_first', _this).hasClass('scroll_tab_last')){
           $('.scroll_tab_inner > span.scroll_tab_right_finisher', _this).addClass('tab_selected').addClass('scroll_tab_left_finisher_selected');
         }
+        */
 
         // "Slide" it into view if not fully visible.
-        scroll_selected_into_view.call(_this, state);
+        //scroll_selected_into_view.call(_this, state);
 
-        opts.click_callback.call(context_obj,e);
+        //opts.click_callback.call(context_obj,e);
       });
 
       // Check to set the edges as selected if needed

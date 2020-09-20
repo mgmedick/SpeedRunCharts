@@ -846,9 +846,11 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
 function configureAndInitializeScroller(element) {
     var $tabgridContainer = $(element).closest('.tab-grid-container');
-    initializeScroller($tabgridContainer);
+    //initializeScroller($tabgridContainer);
 
-    $tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
+    //$tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
+
+    $('.scroller-tab-list').scrollTabs();
 
     //var maxValue = 130;
     //var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());

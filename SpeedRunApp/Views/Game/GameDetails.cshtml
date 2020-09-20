@@ -5,11 +5,12 @@
 @inject IConfiguration Configuration
 
 @{ ViewBag.Title = "GameDetails";
-                var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
     <link rel="stylesheet" href="~/css/free-jqgrid-custom.css" />
+    @*<link rel="stylesheet" href="~/lib/jquery.scrolltabs.psk/css/scrolltabs.css" />*@
     <link rel="stylesheet" href="~/css/scroller-tab.css" />
     <style>
 
@@ -27,6 +28,8 @@
     <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.widgets.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/lib/fusioncharts/themes/fusioncharts.theme.fusion.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/lib/jquery-fusioncharts/dist/fusioncharts.jqueryplugin.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/jquery.scrolltabs.psk/js/jquery.scrolltabs.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/jquery.scrolltabs.psk/js/jquery.mousewheel.js")" type="text/javascript"></script>
 
     <script src="@Url.Content("~/js/helpers/date-helper.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/helpers/math-helper.js")" type="text/javascript"></script>
@@ -37,7 +40,7 @@
     <script src="@Url.Content("~/js/charts/chart-definitions/fusion-multi-series-line-chart.js")" type="text/javascript"></script>
 
     <script src="@Url.Content("~/js/common.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>*@
     <script src="@Url.Content("~/js/charts/game-details-charts/game-top-speed-runs-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-by-month-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-percentile-chart.js")" type="text/javascript"></script>

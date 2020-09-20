@@ -52,6 +52,54 @@
     font-weight: bold;
 }
 
+/*ScrollerTab*/
+.scroll_tabs_container div.scroll_tab_inner span, .scroll_tabs_container div.scroll_tab_inner li {
+    font-size:14px;
+}
+
+.scroll_tabs_container{
+    height:40px;
+}
+
+.scroll_tabs_container .scroll_tab_right_button {
+    height: 40px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.scroll_tabs_container .scroll_tab_right_button::before {
+    content: "\25B6";
+    /*line-height: 40px;*/
+    padding-left: 5px;
+}
+
+/*.scroll_tabs_container .scroll_tab_right_button_disabled {
+    display: none;
+}*/
+
+.scroll_tabs_container .scroll_tab_left_button {
+    height: 40px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.scroll_tabs_container .scroll_tab_left_button::before {
+    content: "\25C0";
+    /*line-height: 40px;*/
+    padding-left: 5px;
+}
+
+/*.scroll_tabs_container .scroll_tab_left_button_disabled {
+    display: none;
+}*/
 
 
 

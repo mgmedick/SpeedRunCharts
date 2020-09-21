@@ -75,41 +75,24 @@ function initializeScrollerEvents(element) {
         });
 
         if ($.isFunction($.fn.mousewheel)) {
-            $(scrollerTabWrapper).off('mousewheel');
-            $(scrollerTabWrapper).on('mousewheel', function (event, delta) {
-                var hiddenWidth = widthOfHiddenEnd(scrollerTabWrapper, scrollerTabList);
-                var leftPosition = getLeftPositionOfList(scrollerTabList);
-                var scrollWidth = (delta * 30);
+            $(scrollerTabList).off('mousewheel');
+            $(scrollerTabList).on('mousewheel', function (event, delta) {
+                this.scrollLeft -= (delta * 30);
 
-                if (hiddenWidth >= scrollWidth && delta == -1) {
-                    scrollWidth = hiddenWidth;
-                } else if (leftPosition >= scrollWidth && delta == 1) {
-                    scrollWidth = leftPosition;
-                }
-
-                if (hiddenWidth >= 0) {
-                    $(scrollerTabRight).fadeOut('slow');
-                    $(scrollerTabRightEnd).fadeOut('slow');
-
-                } else {
-                    $(scrollerTabRight).fadeIn('slow');
-                    $(scrollerTabRightEnd).fadeIn('slow');
-                }
-
-                if (leftPosition >= 0) {
+                if (this.scrollLeft == 0) {
                     $(scrollerTabLeft).fadeOut('slow');
                     $(scrollerTabLeftEnd).fadeOut('slow');
-                } else if (!$(scrollerTabLeft).is(':visible')) {
+                } else if (!$(scrollerTabLeft).is(":visible")) {
                     $(scrollerTabLeft).fadeIn('slow');
                     $(scrollerTabLeftEnd).fadeIn('slow');
                 }
 
-                if (hiddenWidth < 0 && delta == -1) {
-                    $(scrollerTabList).animate({ marginLeft: "+=" + scrollWidth + "px" }, 'fast', function () { });
-                }
-
-                if (leftPosition < 0 && delta == 1) {
-                    $(scrollerTabList).animate({ marginLeft: "+=" + scrollWidth + "px" }, 'fast', function () { });
+                if (this.scrollLeft >= Math.floor((widthOfList(this) - $(this).width()))) {
+                    $(scrollerTabRight).fadeOut('slow');
+                    $(scrollerTabRightEnd).fadeOut('slow');
+                } else if (!$(scrollerTabRight).is(":visible")) {
+                    $(scrollerTabRight).fadeIn('slow');
+                    $(scrollerTabRightEnd).fadeIn('slow');
                 }
 
                 event.preventDefault();

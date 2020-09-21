@@ -61,7 +61,7 @@
       });
 
       // If mousewheel function not present, don't utilize it
-      if($.isFunction($.fn.mousewheel)){
+      if($.isFunction($.fn.mousewheel)) {
         $('.scroll_tab_inner', this).mousewheel(function(event, delta){
           // Only do mousewheel scrolling if scrolling is necessary
           if($('.scroll_tab_right_button', _this).css('display') !== 'none'){

@@ -1,12 +1,13 @@
 ﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
 <% item.count++ %>
-<div class="<%= item.classPrefix %>-variable-tabs row no-gutters px-1 pt-1 pb-0">
+<div class="<%= item.classPrefix %>-variable-tabs row no-gutters pl-1 pt-1 pb-0 pr-0">
     <div class="tab-row-name-container col-auto align-self-end">
         <label class="tab-row-name"><%= variable.name %></label>
     </div>
     <div class="col pl-2 scroller-tab-wrapper">
         <div class="row no-gutters">
-            <!--<div class="scroller-tab scroller-tab-left-end" style="width:25px;"><i class="fa fa-step-backward"></i></div>-->
+            <div class="scroller-tab scroller-tab-left-end" style="width:25px;"><i class="fa fa-step-backward"></i></div>
+            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
             <div class="col scroller-tab-list-container">
                 <ul class="nav nav-tabs scroller-tab-list">
                     <% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
@@ -16,7 +17,8 @@
                     <% }) %>
                 </ul>
             </div>
-            <!--<div class="scroller-tab scroller-tab-right-end" style="width:25px;"><i class="fa fa-step-forward"></i></div>-->
+            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+            <div class="scroller-tab scroller-tab-right-end" style="width:25px;"><i class="fa fa-step-forward"></i></div>
         </div>
     </div>
 </div>

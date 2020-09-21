@@ -209,7 +209,7 @@ function onCategoryTabClick(element) {
                     initializeCharts($activeCategoryChartsPane, data);
                 });
             } else {
-                configureAndInitializeScroller($container);
+                initializeGridStyles($container);
             }
         }
     }
@@ -238,7 +238,7 @@ function onCategoryVariableValueTabClick(element) {
                 initializeCharts($chartContainer, data);
             });
         } else {
-            configureAndInitializeScroller($container);
+            initializeGridStyles($container);
         }
     }
 }
@@ -260,7 +260,7 @@ function onLevelTabClick(element) {
             initializeCharts($chartContainer.find('.charts-container'), data);
         });
     } else {
-        configureAndInitializeScroller($container);
+        initializeGridStyles($container);
     }
 }
 
@@ -424,18 +424,26 @@ function configureAndInitializeGrid(element) {
             });
         });
 
+        var perc = 1;
+        if (window.matchMedia) {
+            var mq = window.matchMedia("(min-width: 1366px) and (max-width: 1920px)");
+            if (mq.matches) {
+                perc = $(window).width() / 1950.0;
+            }
+        }
+
         var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
 
         var columnModel = [
-            { name: "id", width: 75, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-            { name: "rank", width: 75, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] }, hidden: isSenderUser },
-            { name: "playerUsers", width: 160, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
-            { name: "platform.name", width: 160, search: true, searchoptions: { sopt: ["in"] } },
-            { name: "isEmulatedString", width: 125, search: true, searchoptions: { sopt: ["in"] } },
-            { name: "primaryTimeString", width: 160, search: false },
-            { name: "statusTypeString", width: 125, hidden: !isSenderUser },
-            { name: "rejectedReason", width: 160, hidden: true },
-            { name: "dateSubmitted", width: 160, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
+            { name: "id", width: 75 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
+            { name: "rank", width: 75 * perc, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] }, hidden: isSenderUser },
+            { name: "playerUsers", width: 160 * perc, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
+            { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
+            { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
+            { name: "primaryTimeString", width: 160 * perc, search: false },
+            { name: "statusTypeString", width: 125 * perc, hidden: !isSenderUser },
+            { name: "rejectedReason", width: 160 * perc, hidden: true },
+            { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
             { name: "playerGuests", hidden: true },
@@ -538,8 +546,8 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         datatype: "local",
         data: localData,
         height: '100%',
-        autowidth: true,
-        shrinkToFit: true,
+        //autowidth: true,
+        //shrinkToFit: true,
         rowNum: 50,
         pager: pagerID,
         colNames: columnNames,
@@ -616,7 +624,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
-        configureAndInitializeScroller(this);
+        //configureAndInitializeScroller(this);
 
         var data = $(this).jqGrid("getGridParam", "data");
         def.resolve(data);
@@ -828,27 +836,26 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
     }
     */
 
-    function initializeGridStyles(element) {
-        var $grid = $(element);
-        var data = $grid.jqGrid("getGridParam", "data");
-        var $rejectedItems = $(data).filter(function (item) { return item.statusTypeString == "Rejected"; })
-        if ($rejectedItems.length > 0) {
-            $grid.jqGrid("showCol", ["rejectedReason"]);
-        }
+    //function initializeGridStyles(element) {
+    //    var $grid = $(element);
+    //    var data = $grid.jqGrid("getGridParam", "data");
+    //    //var $rejectedItems = $(data).filter(function (item) { return item.statusTypeString == "Rejected"; })
+    //    //if ($rejectedItems.length > 0) {
+    //    //    $grid.jqGrid("showCol", ["rejectedReason"]);
+    //    //}
 
-        var $tabgridContainer = $grid.closest('.tab-grid-container');
-        var $gridContainer = $grid.closest('.tab-grid-container');
-        $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
-    }
+    //    var $tabgridContainer = $grid.closest('.tab-grid-container');
+    //    var $gridContainer = $grid.closest('.tab-grid-container');
+    //    $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
+    //}
 
     return def.promise();
 }
 
-function configureAndInitializeScroller(element) {
+function initializeGridStyles(element) {
     var $tabgridContainer = $(element).closest('.tab-grid-container');
-    initializeScroller($tabgridContainer);
-
     $tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
+    initializeScroller($tabgridContainer);
 
     //$('.scroller-tab-list').scrollTabs();
 

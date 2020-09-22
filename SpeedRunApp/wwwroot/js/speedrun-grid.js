@@ -432,7 +432,7 @@ function configureAndInitializeGrid(element) {
             }
         }
 
-        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
+        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
 
         var columnModel = [
             { name: "id", width: 75 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -442,8 +442,9 @@ function configureAndInitializeGrid(element) {
             { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
             { name: "primaryTimeString", width: 160 * perc, search: false },
             { name: "statusTypeString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] }, hidden: !isSenderUser },
-            { name: "rejectedReason", width: 160 * perc, hidden: true },
+            { name: "rejectedReason", width: 160 * perc, hidden: !showRejectedReason(isSenderUser, data) },
             { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
+            { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
             { name: "playerGuests", hidden: true },
@@ -461,7 +462,7 @@ function configureAndInitializeGrid(element) {
            return $(data).filter(function () { return !levelID && variable.gameID == gameID && variable.categoryID == categoryID && this.hasOwnProperty(variable.id) }).length > 0
         }).each(function () {
             columnNames.push(this.name);
-            var variable = { name: this.id, width: 160, search: true, searchoptions: { sopt: ["in"] } };
+            var variable = { name: this.id, width: "100%", search: true, searchoptions: { sopt: ["in"] } };
             columnModel.push(variable);
         });
 
@@ -534,6 +535,14 @@ function configureAndInitializeGrid(element) {
 
     function dateSubmittedCellAttr(rowId, val, rowObject, cm, rdata) {
         return ' title="' + rowObject.relativeDateSubmittedString + '"';
+    }
+
+    function verifyDateCellAttr(rowId, val, rowObject, cm, rdata) {
+        return ' title="' + rowObject.relativeVerifyDateString + '"';
+    }
+
+    function showRejectedReason(isSenderUser, data) {
+        return isSenderUser && $(data).filter(function () { return this.rejectedReason }).length > 0;
     }
 
     return def.promise();

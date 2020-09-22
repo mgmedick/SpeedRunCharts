@@ -175,7 +175,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
 
         _.chain(Object.entries(chartDataObj))
             .map(function (x) {
-                return { label: x[0], value: (x[1].length == 0) ? 100 : x[1].length }
+                return { label: x[0], value: x[1].length }
             })
             .each(function (item, idx) {
                 pieChart.addData(item.label, item.value, idx == 0);

@@ -70,6 +70,9 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         var def = $.Deferred();
         var _data = _.chain(data.data).clone().value();
         var _timePeriods = _.chain(data.timePeriods).clone().value();
+        var groupedObj = {};
+        var chartDataObj = {};
+        var categories = [];
 
         /*
         var groupedData = _.chain(_data).groupBy('monthYearSubmitted');
@@ -82,7 +85,6 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         var categories = _timePeriods;
         */
 
-        var groupedObj = {};
         _.chain(_data).each(function (item) {
             //var category = item.categoryID;
             var monthYear = item.monthYearSubmitted;
@@ -91,14 +93,18 @@ function gameSpeedRunsByMonthChart(container, inputs) {
             groupedObj[monthYear].push(item.primaryTimeSeconds);
         });
 
-        var chartDataObj = {};
-        var minKey = 'Min Time';
-        chartDataObj[minKey] = {};
-        for (var key in groupedObj) {
-            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
-            var min = sra.mathHelper.getMin(groupedObj[key]);
-            chartDataObj[minKey][key].push(min);
+        if (Object.keys(groupedObj).length > 0) {
+            var minKey = 'Min Time';
+            chartDataObj[minKey] = {};
+            for (var key in groupedObj) {
+                chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
+
+                var min = sra.mathHelper.getMin(groupedObj[key]);
+                chartDataObj[minKey][key].push(min);
+            }
+
+            categories = _timePeriods;
         }
 
         /*
@@ -126,7 +132,8 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         }
         */
 
-        var categories = _timePeriods;
+
+       
 
 
         /*
@@ -154,12 +161,10 @@ function gameSpeedRunsByMonthChart(container, inputs) {
             });
 
         for (var key in chartDataObj) {
-            lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
-                return {
-                    category: x[0],
-                    value: x[1]
-                }
-            }).value());
+            var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
+            if (data.length > 0) {
+                lineChart.addDataSet(key, data);
+            }
         }
 
         //lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {

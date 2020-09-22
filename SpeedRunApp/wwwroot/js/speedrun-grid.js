@@ -441,7 +441,7 @@ function configureAndInitializeGrid(element) {
             { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
             { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
             { name: "primaryTimeString", width: 160 * perc, search: false },
-            { name: "statusTypeString", width: 125 * perc, hidden: !isSenderUser },
+            { name: "statusTypeString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] }, hidden: !isSenderUser },
             { name: "rejectedReason", width: 160 * perc, hidden: true },
             { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
@@ -560,7 +560,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
-        //beforeProcessing: beforeProcessingHandler1,
         loadComplete: gridLoadComplete,
         customSortOperations: {
             deq: {
@@ -624,7 +623,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         initializeGridEvents(this);
         initializeGridFilters(this);
         initializeGridStyles(this);
-        //configureAndInitializeScroller(this);
 
         var data = $(this).jqGrid("getGridParam", "data");
         def.resolve(data);
@@ -658,18 +656,17 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
         $(columns).each(function () {
             var column = this;
-            if (column.search) {
+            if (column.search && !column.hidden) {
+                var colSearchData = [];
+                var searchOptions = [];
                 if (column.sorttype == "date") {
+                    searchOptions = []
                     setSearchDate(element, column.name, column.searchoptions.sopt);
                 } else {
-                    var colSearchData = [];
                     switch (column.name) {
                         case "rank":
                             colSearchData = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
                             break;
-                        //case "platform.name":
-                        //    colSearchData = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name; }).uniq().sortBy(function (item) { return item }).value();
-                        //    break;
                         case "playerUsers":
                             var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
                             var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();

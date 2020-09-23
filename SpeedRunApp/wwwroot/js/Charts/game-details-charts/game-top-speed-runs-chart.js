@@ -13,9 +13,9 @@ function gameTopSpeedRunsChart(container, inputs) {
         formatNumberScale: 1,
         numberOfDecimals: 0,
         useRoundEdges: 1,
-        numberscalevalue: "60,60",
-        numberscaleunit: "m,h",
-        defaultnumberscale: "s",
+        numberscalevalue: "1000,60,60",
+        numberscaleunit: "s,m,h",
+        defaultnumberscale: "ms",
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: ""
@@ -64,7 +64,9 @@ function gameTopSpeedRunsChart(container, inputs) {
             var playerNames = _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",");
 
             chartDataObj[playerNames] = chartDataObj[playerNames] || [];
-            chartDataObj[playerNames].push(item.primaryTimeSeconds);
+
+            //var primaryTime = item.primaryTimeMilliseconds;
+            chartDataObj[playerNames].push(item.primaryTimeMilliseconds);
         });
 
         var categories = _.chain(_data).map(function (item) { return _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",") }).value();

@@ -667,7 +667,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
             var column = this;
             if (column.search && !column.hidden) {
                 var colSearchData = [];
-                var searchOptions = [];
                 if (column.sorttype == "date") {
                     searchOptions = []
                     setSearchDate(element, column.name, column.searchoptions.sopt);
@@ -680,6 +679,11 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                             var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
                             var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
                             colSearchData = _.union(playerUsers, playerGuests);
+                            break;
+                        case "platform.name":
+                            colSearchData = _.chain(data).filter(function (item) {
+                                return item.platform.name
+                            }).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
                             break;
                         default:
                             colSearchData = _.chain(data).filter(function (item) { return item[column.name] }).map(function (item) { return item[column.name] }).uniq().sortBy(function (item) { return item }).value();

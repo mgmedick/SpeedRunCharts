@@ -107,7 +107,7 @@ namespace SpeedRunCommon
                 return Ts.ToString("s's'");
 
             if (Ts.TotalMilliseconds > 1d)
-                return Ts.ToString("fffffff'ms'");
+                return Ts.ToString("fff'ms'");
 
             return Ts.ToString();
         }

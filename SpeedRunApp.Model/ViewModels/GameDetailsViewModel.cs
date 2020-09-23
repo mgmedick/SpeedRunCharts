@@ -27,6 +27,7 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 var variables = game.Variables.ToList();
                 var gameVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
+                //var globalVariables = variables.Where(i => i.Scope.Type == VariableScopeType.Global).ToList();
                 foreach (var category in Categories.Reverse())
                 {
                     foreach (var gameVariable in gameVariables)
@@ -36,6 +37,7 @@ namespace SpeedRunApp.Model.ViewModels
                         variables.Insert(0, variable);
                     }
                 }
+                //variables = variables.Where(i => !string.IsNullOrWhiteSpace(i.CategoryID)).GroupBy(i => new { i.GameID, i.CategoryID, i.Name, i.Scope.Type }).Where(g => g.Min(i=>i.Scope.Type).Select(y => y.Last()).ToList();
                 variables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID));
                 Variables = variables.Where(i => !i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID, CategoryID = i.CategoryID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) }).ToList();
                 SubCategoryVariables = GetNestedVariables(variables.Where(i => i.IsSubCategory));

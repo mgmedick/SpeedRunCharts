@@ -7,8 +7,8 @@
                 <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                 <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
                     <div class="category-results-charts">
-                        <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
-                        <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                        <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
+                        <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                         <% } else { %>
                         <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
                             <div class="chart-placeholder chart-container-0">
@@ -31,6 +31,9 @@
                     </div>
                     <div class="level-results-charts">
                         <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
+                        <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
+                        <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', categoryType.id, game.id, category.id, level.id, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                        <% } else { %>
                         <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-charts" class="level-tab-pane-charts">
                             <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
                                 <div class="chart-placeholder chart-container-0">
@@ -50,6 +53,7 @@
                                 </div>
                             </div>
                         </div>
+                        <% } %>
                         <% }) %>
                     </div>
                 </div>
@@ -125,8 +129,8 @@
                         <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                         <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
                             <div class="category-results">
-                                <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id }).length > 0) { %>
-                                <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id; }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+                                <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
+                                <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1'); }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
                                 <% } else { %>
                                 <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="">
                                     <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="grid"></table>
@@ -166,6 +170,9 @@
                                 </div>
                                 <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
                                 <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" class="level-tab-pane">
+                                    <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
+                                    <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', categoryType.id, game.id, category.id, level.id, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+                                    <% } else { %>
                                     <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
                                         <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="grid"></table>
                                         <div id="divPager-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="pager"></div>
@@ -177,6 +184,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <% } %>
                                 </div>
                                 <% }) %>
                             </div>

@@ -25,43 +25,50 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (game.Variables != null && game.Variables.Any())
             {
+                //var variables = game.Variables.ToList();
+                //var gameVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID) && (i.Scope.Type == VariableScopeType.Global || i.Scope.Type == VariableScopeType.FullGame)).ToList();
+                //var gameCategories = game.Categories.Where(i => i.Type == CategoryType.PerGame).Reverse();
+                //foreach (var gameCategory in gameCategories)
+                //{
+                //    foreach (var gameVariable in gameVariables)
+                //    {
+                //        var variable = (Variable)gameVariable.Clone();
+                //        variable.CategoryID = gameCategory.ID;
+                //        variables.Insert(0, variable);
+                //    }
+                //}
+
                 var variables = game.Variables.ToList();
-                var gameVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID) && (i.Scope.Type == VariableScopeType.Global || i.Scope.Type == VariableScopeType.FullGame)).ToList();
-                var gameCategories = game.Categories.Where(i => i.Type == CategoryType.PerGame).Reverse();
-                foreach (var gameCategory in gameCategories)
-                {
-                    foreach (var gameVariable in gameVariables)
-                    {
-                        var variable = (Variable)gameVariable.Clone();
-                        variable.CategoryID = gameCategory.ID;
-                        variables.Insert(0, variable);
-                    }
-                }
-
-                var levelVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.CategoryID) && (i.Scope.Type == VariableScopeType.AllLevels || i.Scope.Type == VariableScopeType.SingleLevel)).ToList();
+                var allLevelVariables = variables.Where(i => i.Scope.Type == VariableScopeType.AllLevels).ToList();
                 var levelCategories = game.Categories.Where(i => i.Type == CategoryType.PerLevel).Reverse();
-                foreach (var levelCategory in levelCategories)
+                foreach (var allLevelVariable in allLevelVariables)
                 {
-                    foreach (var levelVariable in levelVariables)
+                    foreach (var category in levelCategories)
                     {
-                        var variable = (Variable)levelVariable.Clone();
-                        variable.CategoryID = levelCategory.ID;
-                        variables.Insert(0, variable);
+                        foreach (var level in game.Levels)
+                        {
+                            var variable = (Variable)allLevelVariable.Clone();
+                            variable.CategoryID = category.ID;
+                            variable.Scope.LevelID = level.ID;
+                            variables.Insert(0, variable);
+                        }
                     }
                 }
 
-                levelVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.Scope.LevelID) && (i.Scope.Type == VariableScopeType.AllLevels)).ToList();
-                foreach (var level in game.Levels)
-                {
-                    foreach (var levelVariable in levelVariables)
-                    {
-                        var variable = (Variable)levelVariable.Clone();
-                        variable.Scope.LevelID = level.ID;
-                        variables.Insert(0, variable);
-                    }
-                }
+                variables.RemoveAll(i => i.Scope.Type == VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.Scope.LevelID));
 
-                variables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID) || (i.Scope.Type == VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.Scope.LevelID)));
+                //levelVariables = variables.Where(i => string.IsNullOrWhiteSpace(i.Scope.LevelID) && (i.Scope.Type == VariableScopeType.AllLevels)).ToList();
+                //foreach (var level in game.Levels)
+                //{
+                //    foreach (var levelVariable in levelVariables)
+                //    {
+                //        var variable = (Variable)levelVariable.Clone();
+                //        variable.Scope.LevelID = level.ID;
+                //        variables.Insert(0, variable);
+                //    }
+                //}
+
+                //variables.RemoveAll(i => string.IsNullOrWhiteSpace(i.CategoryID) || (i.Scope.Type == VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.Scope.LevelID)));
                 Variables = variables.Where(i => !i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.Scope.LevelID, ScopeTypeID = ((int)i.Scope.Type).ToString(), VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) }).ToList();
                 SubCategoryVariables = GetNestedVariables(variables.Where(i => i.IsSubCategory));
             }
@@ -83,14 +90,11 @@ namespace SpeedRunApp.Model.ViewModels
                     Name = h.Value,
                     SubVariables = GetNestedVariables(variables.Where(n => n.GameID == g.GameID
                                                                         && n.CategoryID == g.CategoryID
-                                                                        && (g.Scope.Type == VariableScopeType.Global
-                                                                            || n.Scope.Type == VariableScopeType.Global
-                                                                            || (g.Scope.Type == VariableScopeType.FullGame && n.Scope.Type == VariableScopeType.FullGame)
-                                                                            || ((g.Scope.Type == VariableScopeType.AllLevels || g.Scope.Type == VariableScopeType.SingleLevel) && (n.Scope.Type == VariableScopeType.AllLevels || n.Scope.Type == VariableScopeType.SingleLevel)))), count + 1)
+                                                                        && n.Scope.LevelID == g.Scope.LevelID), count + 1)
                 })
             });
 
-            return results.GroupBy(i => new { i.GameID, i.CategoryID }).Select(i => i.FirstOrDefault());
+            return results.GroupBy(i => new { i.GameID, i.CategoryID, i.LevelID }).Select(i => i.FirstOrDefault());
         }
 
         public string ID { get; set; }

@@ -133,6 +133,10 @@ function initializeSpeedRunGridEvents(element) {
     $(element).find('.nav-item.level a').click(function () {
         onLevelTabClick(this);
     });
+
+    $(element).find('.nav-item.level-variable-value a').click(function () {
+        onLevelVariableValueTabClick(this);
+    });
 }
 
 /*Event Handlers*/
@@ -255,12 +259,46 @@ function onLevelTabClick(element) {
     $('.level-tab-pane-charts').hide();
     $chartContainer.fadeIn();
 
-    if (!$container.find('.grid')[0].grid) {
-        configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
-            initializeCharts($chartContainer.find('.charts-container'), data);
-        });
+    if ($container.find('.level-variable-tabs').length > 0) {
+        var $activeVariableValueTab = $container.find('.level-variable-tabs:first .level-variable-value a.active')
+        onLevelVariableValueTabClick($activeVariableValueTab);
+    }
+    else {
+        if (!$container.find('.grid')[0].grid) {
+            configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
+                initializeCharts($chartContainer.find('.charts-container'), data);
+            });
+        } else {
+            initializeGridStyles($container);
+        }
+    }
+}
+
+function onLevelVariableValueTabClick(element) {
+    var variableValueContainerID = $(element).attr('href');
+    var $container = $(variableValueContainerID);
+    var containerClass = $container.data("class");
+    var variableValueChartContainerID = variableValueContainerID + '-charts';
+    var $chartContainer = $(variableValueChartContainerID);
+    var chartContainerClass = $chartContainer.data("class");
+
+    $('.' + containerClass).hide();
+    $container.fadeIn();
+
+    $('.' + chartContainerClass).hide();
+    $chartContainer.fadeIn();
+
+    if ($container.find('.level-variable-tabs').length > 0) {
+        var $activeVariableValueTab = $container.find('.level-variable-tabs:first .level-variable-value a.active')
+        onLevelVariableValueTabClick($activeVariableValueTab);
     } else {
-        initializeGridStyles($container);
+        if (!$container.find('.grid')[0].grid) {
+            configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
+                initializeCharts($chartContainer, data);
+            });
+        } else {
+            initializeGridStyles($container);
+        }
     }
 }
 

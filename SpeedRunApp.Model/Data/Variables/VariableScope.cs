@@ -1,11 +1,18 @@
-﻿namespace SpeedRunApp.Model.Data
+﻿using System;
+
+namespace SpeedRunApp.Model.Data
 {
-    public class VariableScope
+    public class VariableScope : ICloneable
     {
         public VariableScopeType Type { get; set; }
         public string LevelID { get; set; }
 
+        public object Clone()
+        {
+            VariableScope variableScope = (VariableScope)this.MemberwiseClone();
 
+            return variableScope;
+        }
         //public VariableScope() { }
 
         /*

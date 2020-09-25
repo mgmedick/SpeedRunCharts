@@ -14,7 +14,8 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         exportEnabled: 1,
         showLegend: 1,
         showLabels: 0,
-        theme: 'fusion'
+        theme: 'fusion',
+        chartNoDataText: "No Data Found"
         //numberscalevalue: "60",
         //numberscaleunit: " mins",
         //defaultnumberscale: "",
@@ -63,7 +64,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         var allSpeedRunTimes = _.chain(_data).map(function (item) {
             return item;
         }).sortBy(function (item) {
-            return item.primaryTimeSeconds;
+            return item.primaryTimeMilliseconds;
         }).value();
 
         var chartDataObj = {};
@@ -141,13 +142,13 @@ function gameSpeedRunsPercentileChart(container, inputs) {
             if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
                 values = _.chain(allSpeedRunTimes).filter(function (x, i) { return i >= prevTotal }).value();
                 percent = Math.round((values.length / allSpeedRunTimes.length) * 100) || 0;
-                key = '> ' + sra.dateHelper.formatTime("seconds", prevTime, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                key = '> ' + sra.dateHelper.formatTime("milliseconds", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                 chartDataObj[key] = values;
                 break;
             } else {
-                time = allSpeedRunTimes[index].primaryTimeSeconds;
+                time = allSpeedRunTimes[index].primaryTimeMilliseconds;
                 percent = Math.round((values.length / allSpeedRunTimes.length) * 100) || 0;
-                key = '<= ' + sra.dateHelper.formatTime("seconds", time, "hh[h] mm[m] ss[s]") + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                key = '<= ' + sra.dateHelper.formatTime("milliseconds", time) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
 
                 if (index != prevIndex) {
                     chartDataObj[key] = values;
@@ -168,7 +169,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         //_.chain(Object.keys(this.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', this.inputs[x]) }).value();
 
         pieChart.setCaption(this.chartConfig.caption, subCaption)
-            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
+            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale, config.chartNoDataText)
             .onRenderComplete(function (evt, d) {
                 def.resolve();
             });

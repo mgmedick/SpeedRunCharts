@@ -1,7 +1,7 @@
 ﻿@model SpeedRunApp.Model.ViewModels.UserDetailsViewModel
 
 @{ ViewBag.Title = "UserDetails";
-                var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
+    var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
@@ -25,6 +25,7 @@
     <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.widgets.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/lib/fusioncharts/themes/fusioncharts.theme.fusion.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/lib/jquery-fusioncharts/dist/fusioncharts.jqueryplugin.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/jquery.scrolltabs.psk/js/jquery.mousewheel.js")" type="text/javascript"></script>
 
     <script src="@Url.Content("~/js/helpers/date-helper.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/helpers/math-helper.js")" type="text/javascript"></script>
@@ -42,7 +43,8 @@
     <script src="@Url.Content("~/js/speedrun-grid.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/user-details.js")" type="text/javascript"></script>
 
-    <script>$().ready(function () {
+    <script>
+    $().ready(function () {
             initializeClient();
         });</script>
 }

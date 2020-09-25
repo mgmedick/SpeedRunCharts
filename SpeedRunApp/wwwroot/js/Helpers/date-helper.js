@@ -36,11 +36,14 @@ function dateHelper () {
         return moment(year, 'YYYY').endOf('year').format('MM/DD/YYYY');
     };
 
-    dateHelper.prototype.formatTime = function (timepart, value, format) {
+    dateHelper.prototype.formatTime = function (timepart, value) {
         var result;
         var date = moment().startOf('day');
 
         switch (timepart) {
+            case 'milliseconds':
+                result = date.milliseconds(value);
+                break;
             case 'seconds':
                 result = date.seconds(value);
                 break;
@@ -56,8 +59,10 @@ function dateHelper () {
             result = date.format("hh[h] mm[m] ss[s]")
         } else if (date.minutes() > 0) {
             result = date.format("mm[m] ss[s]")
-        } else {
+        } else if (date.seconds() > 0) {
             result = date.format("ss[s]")
+        } else {
+            result = date.format("SSS[ms]")
         }
 
         return result;

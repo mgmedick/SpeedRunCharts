@@ -392,8 +392,12 @@ div.chart-placeholder + div.chart-placeholder {
     padding-left: 10px;
 }
 
+.fusioncharts-container {
+    background-color:#FFFFFF;
+}
+
 .nav-tabs {
-    border-bottom:none;
+    border-bottom: none;
 }
 
 .tooltip {

@@ -311,7 +311,7 @@ function getFormattedData(data) {
         var gameID = this.game.id;
         var categoryID = this.category.id;
         var levelID = this.level ? this.level.id : '';
-        var variableValues = $(this.subCategoryVariableValues).filter(function () { return !levelID && this.variable.gameID == gameID && this.variable.categoryID == categoryID }).map(function () {
+        var variableValues = $(this.subCategoryVariableValues).filter(function () { return this.variable.gameID == gameID && this.variable.categoryID == categoryID && (this.variable.levelID ?? "") == (levelID ?? "") }).map(function () {
             return this.variable.id + "|" + this.id;
         }).get().join(",");
 
@@ -345,14 +345,14 @@ function getParamsFromGridData(data) {
     }).uniq(function (item) { return [item.id, item.categoryID, item.gameID].join(); }).sortBy(function (item) { return item.name; }).value();
 
     var subCategoryVariableValues = _.chain(data).pluck('subCategoryVariableValues').flatten().value();
-    var subCategoryVariables1 = _.chain(subCategoryVariableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID].join(); }).value();
+    var subCategoryVariables1 = _.chain(subCategoryVariableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID, item.levelID].join(); }).value();
     _.chain(subCategoryVariables1).each(function (variable) {
         variable.variableValues = _.chain(subCategoryVariableValues).filter(function (variableValue) { return variableValue.variable.id == variable.id }).uniq("id").value();
     });
     var subCategoryVariables = getNestedVariables(subCategoryVariables1, 0);
 
     var variableValues = _.chain(data).pluck('variableValues').flatten().value();
-    var variables = _.chain(variableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID].join(); }).value();
+    var variables = _.chain(variableValues).pluck('variable').flatten().uniq(function (item) { return [item.id, item.gameID, item.categoryID, item.levelID].join(); }).value();
     _.chain(variables).each(function (variable) {
         variable.variableValues = _.chain(variableValues).filter(function (variableValue) { return variableValue.variable.id == variable.id }).uniq("id").value();
     });
@@ -365,13 +365,13 @@ function getParamsFromGridData(data) {
 function getNestedVariables(variables, count) {
     var results = _.chain(variables).filter(function (item, index) { return index >= count }).map(function (variable) {
         return {
-            id: variable.id, name: variable.name, gameID: variable.gameID, categoryID: variable.categoryID, variableValues: _.map(variable.variableValues, function (variableValue) {
-                return { id: variableValue.id, name: variableValue.name, subVariables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID }), count + 1) }
+            id: variable.id, name: variable.name, gameID: variable.gameID, categoryID: variable.categoryID, levelID: variable.levelID, scopeTypeID: variable.scopeTypeID, variableValues: _.map(variable.variableValues, function (variableValue) {
+                return { id: variableValue.id, name: variableValue.name, subVariables: getNestedVariables(_.filter(variables, function (item) { return item.gameID == variable.gameID && item.categoryID == variable.categoryID && (item.levelID ?? "") == (variable.levelID ?? "") }), count + 1) }
             })
         }
     }).value();
 
-    return _.uniq(results, function (item) { return [item.gameID, item.categoryID].join(); });
+    return _.uniq(results, function (item) { return [item.gameID, item.categoryID, item.levelID].join(); });
 }
 
 function getUserSpeedRunGridData() {
@@ -497,7 +497,7 @@ function configureAndInitializeGrid(element) {
 
        $(sra.variables).filter(function () {
             var variable = this;
-           return $(data).filter(function () { return !levelID && variable.gameID == gameID && variable.categoryID == categoryID && this.hasOwnProperty(variable.id) }).length > 0
+           return $(data).filter(function () { return variable.gameID == gameID && variable.categoryID == categoryID && (variable.levelID ?? "") == (levelID ?? "") && this.hasOwnProperty(variable.id) }).length > 0
         }).each(function () {
             columnNames.push(this.name);
             var variable = { name: this.id, width: "100%", search: true, searchoptions: { sopt: ["in"] } };

@@ -62,7 +62,7 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (run.VariableValues != null)
             {
-                SubCategoryVariableValues = run.VariableValues.Where(i => i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
+                SubCategoryVariableValues = run.VariableValues.Where(i => i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, LevelID = this.Level?.ID, ScopeTypeID = ((int)i.Variable.Scope.Type).ToString() } });
                 VariableValues = run.VariableValues.Where(i => !i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
             }
 

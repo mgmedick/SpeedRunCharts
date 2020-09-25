@@ -13,14 +13,15 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         formatNumberScale: 1,
         numberOfDecimals: 0,
         useRoundEdges: 1,
-        numberscalevalue: "60,60",
-        numberscaleunit: "m,h",
-        defaultnumberscale: "s",
+        numberscalevalue: "1000,60,60",
+        numberscaleunit: "s,m,h",
+        defaultnumberscale: "ms",
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: " ",
         connectNullData: 1,
-        setAdaptiveYMin: 1
+        setAdaptiveYMin: 1,
+        chartNoDataText: "No Data Found"
     };
 
     gameSpeedRunsByMonthChart.prototype.generateChart = function () {
@@ -90,7 +91,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
             var monthYear = item.monthYearSubmitted;
 
             groupedObj[monthYear] = groupedObj[monthYear] || [];
-            groupedObj[monthYear].push(item.primaryTimeSeconds);
+            groupedObj[monthYear].push(item.primaryTimeMilliseconds);
         });
 
 
@@ -152,18 +153,20 @@ function gameSpeedRunsByMonthChart(container, inputs) {
 
         var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
-        lineChart.setCaption(config.caption, config.subCaption)
-            .setAxis(config.xAxis, config.yAxis, true)
-            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin)
-            .setCategories(categories)
-            .onRenderComplete(function (evt, d) {
-                def.resolve();
-            });
+        if (Object.keys(chartDataObj).length > 0) {
+            lineChart.setCaption(config.caption, config.subCaption)
+                .setAxis(config.xAxis, config.yAxis, true)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin, config.chartNoDataText)
+                .setCategories(categories)
+                .onRenderComplete(function (evt, d) {
+                    def.resolve();
+                });
 
-        for (var key in chartDataObj) {
-            var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
-            if (data.length > 0) {
-                lineChart.addDataSet(key, data);
+            for (var key in chartDataObj) {
+                var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
+                if (data.length > 0) {
+                    lineChart.addDataSet(key, data);
+                }
             }
         }
 

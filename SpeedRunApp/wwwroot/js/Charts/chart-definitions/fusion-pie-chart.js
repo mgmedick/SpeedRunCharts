@@ -20,7 +20,7 @@
         return this;
     };
 
-    fusionPieChart.prototype.setChartOptions = function (showPercentValues, exportEnabled, showLegend, showLabels, theme, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, numberOfDecimals, showPercentInTooltip, formatNumberScale) {
+    fusionPieChart.prototype.setChartOptions = function (showPercentValues, exportEnabled, showLegend, showLabels, theme, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, numberOfDecimals, showPercentInTooltip, formatNumberScale, chartNoDataText) {
         this._fusionChart.dataSource.chart.showPercentValues = showPercentValues;
         this._fusionChart.dataSource.chart.showPercentInTooltip = showPercentValues == 0 ? 1 : 0;
         this._fusionChart.dataSource.chart.exportEnabled = exportEnabled;
@@ -55,6 +55,9 @@
         if (typeof formatNumberScale !== 'undefined')
             this._fusionChart.dataSource.chart.formatNumberScale = formatNumberScale;
 
+        if (typeof chartNoDataText !== 'undefined')
+            this._fusionChart.dataSource.chart.chartNoDataText = chartNoDataText;
+
         return this;
     };
 
@@ -80,13 +83,13 @@
         this._fusionChart.events.initialized = func;
     };
 
-    fusionPieChart.prototype.onRenderComplete = function (func, includeNoDataToDisplay) {
+    fusionPieChart.prototype.onRenderComplete = function (func) {
         this._fusionChart.events.renderComplete = func;
 
-        if ((typeof includeNoDataToDisplay == 'undefined') || ((typeof includeNoDataToDisplay !== 'undefined') && (includeNoDataToDisplay)))
-            this.onNoDataToDisplay(func);
+        //if ((typeof includeNoDataToDisplay == 'undefined') || ((typeof includeNoDataToDisplay !== 'undefined') && (includeNoDataToDisplay)))
+        //    this.onNoDataToDisplay(func);
 
-        return this;
+        //return this;
     };
 
     fusionPieChart.prototype.onNoDataToDisplay = function (func) {

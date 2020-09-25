@@ -18,7 +18,8 @@ function gameTopSpeedRunsChart(container, inputs) {
         defaultnumberscale: "ms",
         scalerecursively: "1",
         maxscalerecursion: "-1",
-        scaleseparator: ""
+        scaleseparator: "",
+        chartNoDataText: "No Data Found"
     };
 
     gameTopSpeedRunsChart.prototype.generateChart = function () {
@@ -74,20 +75,18 @@ function gameTopSpeedRunsChart(container, inputs) {
         var config = this.chartConfig;
         var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
-        columnChart.setCaption(config.caption, config.subCaption)
-            .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
-            .setCategories(categories)
-            .onRenderComplete(function (evt, d) {
-                def.resolve();
-            });
+        var chartData = _.chain(Object.entries(chartDataObj)).map(function (x) { return { category: x[0], value: x[1] } }).value();
+        if (chartData.length > 0) {
+            columnChart.setCaption(config.caption, config.subCaption)
+                .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.chartNoDataText)
+                .setCategories(categories)
+                .onRenderComplete(function (evt, d) {
+                    def.resolve();
+                });
 
-        columnChart.addColumnDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {
-            return {
-                category: x[0],
-                value: x[1]
-            }
-        }).value());
+            columnChart.addColumnDataSet('', chartData);
+        }
 
         columnChart.render();
 

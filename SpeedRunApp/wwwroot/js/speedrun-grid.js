@@ -609,6 +609,8 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         ignoreCase: true,
         viewrecords: true,
         loadonce: true,
+        altRows: true,
+        altClass: 'alt-row',
         loadComplete: gridLoadComplete,
         customSortOperations: {
             deq: {

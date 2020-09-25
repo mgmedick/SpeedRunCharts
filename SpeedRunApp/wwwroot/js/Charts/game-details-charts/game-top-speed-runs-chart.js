@@ -19,7 +19,7 @@ function gameTopSpeedRunsChart(container, inputs) {
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: "",
-        chartNoDataText: "No Data Found"
+        theme: "candy"
     };
 
     gameTopSpeedRunsChart.prototype.generateChart = function () {
@@ -73,13 +73,13 @@ function gameTopSpeedRunsChart(container, inputs) {
         var categories = _.chain(_data).map(function (item) { return _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",") }).value();
         var chartElem = $(this.container);
         var config = this.chartConfig;
-        var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
+        var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), config.theme);
 
         var chartData = _.chain(Object.entries(chartDataObj)).map(function (x) { return { category: x[0], value: x[1] } }).value();
         if (chartData.length > 0) {
             columnChart.setCaption(config.caption, config.subCaption)
                 .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.chartNoDataText)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.theme)
                 .setCategories(categories)
                 .onRenderComplete(function (evt, d) {
                     def.resolve();

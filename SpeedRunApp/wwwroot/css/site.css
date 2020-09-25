@@ -10,7 +10,6 @@ body {
     font-size: 15px;
     line-height: 22px;
     font-weight: 500 !important;
-    /*background-color: #DAE0E6 !important;*/
     /*font-family:"proxima-nova", Arial, Helvetica, sans-serif;*/
 }
 
@@ -283,6 +282,7 @@ input, textarea, select, option:focus {
     margin-bottom: 0px;
     display: block;
     padding-bottom: 2px;
+    font-weight: bold;
 }
 
 .form-group label + span:not(.icon-wrapper) {

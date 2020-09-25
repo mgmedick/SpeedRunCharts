@@ -9,8 +9,8 @@
         return this;
     };
 
-    fusionMultiSeriesLineChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, chartNoDataText) {
-        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, chartNoDataText);
+    fusionMultiSeriesLineChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, theme) {
+        this._multiSeriesChart.setChartOptions(showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, theme);
 
         //if (typeof scalerecursively !== 'undefined')
         //    this._multiSeriesChart._fusionChart.dataSource.chart.scaleRecursively = scalerecursively;

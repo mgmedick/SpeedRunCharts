@@ -61,7 +61,8 @@
         "fusioncharts.charts.js",
         "fusioncharts.js",
         "fusioncharts.widgets.js",
-        "themes/fusioncharts.theme.fusion.js"
+        "themes/fusioncharts.theme.fusion.js",
+        "themes/fusioncharts.theme.candy.js"
       ]
     },
     {

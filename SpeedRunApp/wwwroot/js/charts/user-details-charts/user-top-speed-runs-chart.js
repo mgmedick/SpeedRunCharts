@@ -18,7 +18,8 @@ function userTopSpeedRunsChart(container, inputs) {
         defaultnumberscale: "s",
         scalerecursively: "1",
         maxscalerecursion: "-1",
-        scaleseparator: ""
+        scaleseparator: "",
+        theme: "carbon"
     };
 
     userTopSpeedRunsChart.prototype.generateChart = function () {
@@ -77,7 +78,7 @@ function userTopSpeedRunsChart(container, inputs) {
         if (chartData.length > 0) {
             columnChart.setCaption(config.caption, config.subCaption)
                 .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.theme)
                 .setCategories(categories)
                 .onRenderComplete(function (evt, d) {
                     def.resolve();

@@ -1,6 +1,6 @@
 ﻿@model SpeedRunApp.Model.ViewModels.SpeedRunViewModel
 
-<div class="bg-white speedRunSummary p-2">
+<div class="speedRunSummary p-2">
     <div class="header p-0 pb-2 container d-flex">
         <div class="p-0 col-2 align-self-center">
             <div class="img-round">
@@ -13,7 +13,7 @@
             </div>
             <div>
                 <h5>
-                    @Html.ActionLink(@Model.Game.Name, "GameDetails", "Game", new { gameID = @Model.Game.ID }, new { @class = "text-dark" })
+                    @Html.ActionLink(@Model.Game.Name, "GameDetails", "Game", new { gameID = @Model.Game.ID }, new { @class = "text-primary" })
                     <small class="text-secondary">@Model.Category.Name</small>
                 </h5>
             </div>

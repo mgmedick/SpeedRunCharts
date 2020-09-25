@@ -14,8 +14,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         exportEnabled: 1,
         showLegend: 1,
         showLabels: 0,
-        theme: 'fusion',
-        chartNoDataText: "No Data Found"
+        theme: 'candy'
         //numberscalevalue: "60",
         //numberscaleunit: " mins",
         //defaultnumberscale: "",
@@ -169,7 +168,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         //_.chain(Object.keys(this.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', this.inputs[x]) }).value();
 
         pieChart.setCaption(this.chartConfig.caption, subCaption)
-            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale, config.chartNoDataText)
+            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
             .onRenderComplete(function (evt, d) {
                 def.resolve();
             });

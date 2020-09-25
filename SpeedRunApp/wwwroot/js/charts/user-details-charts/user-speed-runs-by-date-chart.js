@@ -20,7 +20,8 @@ function userSpeedRunsByDateChart(container, inputs) {
         maxscalerecursion: "-1",
         scaleseparator: " ",
         connectNullData: 1,
-        setAdaptiveYMin: 1
+        setAdaptiveYMin: 1,
+        theme: "candy"
     };
 
     userSpeedRunsByDateChart.prototype.generateChart = function () {
@@ -133,7 +134,7 @@ function userSpeedRunsByDateChart(container, inputs) {
         if (Object.keys(chartDataObj).length > 0) {
             lineChart.setCaption(config.caption, config.subCaption)
                 .setAxis(config.xAxis, config.yAxis, true)
-                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin, config.theme)
                 .setCategories(categories)
                 .onRenderComplete(function (evt, d) {
                     def.resolve();

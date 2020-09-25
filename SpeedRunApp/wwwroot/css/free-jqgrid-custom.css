@@ -14,6 +14,30 @@
     text-overflow: ellipsis;
 }
 
+.alt-row {
+    background: #262626;
+}
+
+.table-bordered th{
+    border:none;
+}
+
+.table-bordered th td {
+    border: none;
+}
+
+.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-th-column {
+    border: none;
+}
+
+.ui-jqgrid.ui-jqgrid-bootstrap {
+    border:none;
+}
+
+/*.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+    border-right:none;
+}*/
+
 /* .ui-jqgrid tr.jqgfirstrow td {
     padding: 0px !important;
 } */

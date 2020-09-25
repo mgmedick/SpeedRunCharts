@@ -6,19 +6,19 @@
     </div>
     <div class="col pl-2 scroller-tab-wrapper">
         <div class="row no-gutters">
-            <div class="scroller-tab scroller-tab-left-end" style="width:25px;"><i class="fa fa-step-backward"></i></div>
-            <div class="scroller-tab scroller-tab-left" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+            <div class="scroller-tab scroller-tab-left-end btn btn-secondary" style="width:25px;"><i class="fa fa-step-backward"></i></div>
+            <div class="scroller-tab scroller-tab-left btn btn-secondary" style="width:25px;"><i class="fa fa-angle-left"></i></div>
             <div class="col scroller-tab-list-container">
-                <ul class="nav nav-tabs scroller-tab-list">
+                <ul class="nav nav-pills scroller-tab-list">
                     <% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
                     <li class="nav-item <%= item.classPrefix %>-variable-value">
-                        <a class="nav-link <%= (variableValueIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" data-toggle="tab"><%= variableValue.name %></a>
+                        <a class="nav-link <%= (variableValueIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= item.categoryTypeIndex %>-Game-<%= item.gameIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" data-toggle="pill"><%= variableValue.name %></a>
                     </li>
                     <% }) %>
                 </ul>
             </div>
-            <div class="scroller-tab scroller-tab-right" style="width:25px;"><i class="fa fa-angle-right"></i></div>
-            <div class="scroller-tab scroller-tab-right-end" style="width:25px;"><i class="fa fa-step-forward"></i></div>
+            <div class="scroller-tab scroller-tab-right btn btn-secondary" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+            <div class="scroller-tab scroller-tab-right-end btn btn-secondary" style="width:25px;"><i class="fa fa-step-forward"></i></div>
         </div>
     </div>
 </div>

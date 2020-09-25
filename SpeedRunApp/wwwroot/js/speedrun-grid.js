@@ -102,7 +102,7 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 
 function initializeSearchSpeedRunGridEvents(element) {
     $(element).find('.select2').select2({ width: "250px" });
-    $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Filters", linkDisplayedText: "Hide Filters" });
+    $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Tab Filters", linkDisplayedText: "Hide Tab Filters" });
 
     $('#drpCategoryTypes').change(function () {
         onCategoryTypeChange(this);
@@ -114,6 +114,8 @@ function initializeSearchSpeedRunGridEvents(element) {
 }
 
 function initializeSpeedRunGridEvents(element) {
+    $('#divChartContainer').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Charts", linkDisplayedText: "Hide Charts" });
+
     $(element).find('.nav-item.categoryType a').click(function () {
         onCategoryTypeTabClick(this);
     });

@@ -130,21 +130,23 @@ function userSpeedRunsByDateChart(container, inputs) {
 
         var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
 
-        lineChart.setCaption(config.caption, config.subCaption)
-            .setAxis(config.xAxis, config.yAxis, true)
-            .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin)
-            .setCategories(categories)
-            .onRenderComplete(function (evt, d) {
-                def.resolve();
-            });
+        if (Object.keys(chartDataObj).length > 0) {
+            lineChart.setCaption(config.caption, config.subCaption)
+                .setAxis(config.xAxis, config.yAxis, true)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin)
+                .setCategories(categories)
+                .onRenderComplete(function (evt, d) {
+                    def.resolve();
+                });
 
-        for (var key in chartDataObj) {
-            lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
-                return {
-                    category: x[0],
-                    value: x[1]
-                }
-            }).value());
+            for (var key in chartDataObj) {
+                lineChart.addDataSet(key, _.chain(Object.entries(chartDataObj[key])).map(function (x) {
+                    return {
+                        category: x[0],
+                        value: x[1]
+                    }
+                }).value());
+            }
         }
 
         //lineChart.addDataSet('', _.chain(Object.entries(chartDataObj)).map(function (x) {

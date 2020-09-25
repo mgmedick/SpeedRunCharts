@@ -86,19 +86,19 @@
                         </div>
                         <div class="col pl-2 scroller-tab-wrapper">
                             <div class="row no-gutters">
-                                <div class="scroller-tab scroller-tab-left-end"><i class="fa fa-step-backward"></i></div>
-                                <div class="scroller-tab scroller-tab-left"><i class="fa fa-angle-left"></i></div>
+                                <div class="scroller-tab scroller-tab-left-end btn btn-secondary"><i class="fa fa-step-backward"></i></div>
+                                <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                                 <div class="col scroller-tab-list-container">
-                                    <ul class="nav nav-tabs scroller-tab-list">
+                                    <ul class="nav nav-pills scroller-tab-list">
                                         <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
                                         <li class="nav-item game">
-                                            <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" data-toggle="tab"><%= game.name %></a>
+                                            <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" data-toggle="pill"><%= game.name %></a>
                                         </li>
                                         <% }) %>
                                     </ul>
                                 </div>
-                                <div class="scroller-tab scroller-tab-right"><i class="fa fa-angle-right"></i></div>
-                                <div class="scroller-tab scroller-tab-right-end"><i class="fa fa-step-forward"></i></div>
+                                <div class="scroller-tab scroller-tab-right btn btn-secondary"><i class="fa fa-angle-right"></i></div>
+                                <div class="scroller-tab scroller-tab-right-end btn btn-secondary"><i class="fa fa-step-forward"></i></div>
                             </div>
                         </div>
                     </div>
@@ -110,19 +110,19 @@
                             </div>
                             <div class="col pl-2 scroller-tab-wrapper">
                                 <div class="row no-gutters">
-                                    <div class="scroller-tab scroller-tab-left-end"><i class="fa fa-step-backward"></i></div>
-                                    <div class="scroller-tab scroller-tab-left"><i class="fa fa-angle-left"></i></div>
+                                    <div class="scroller-tab scroller-tab-left-end btn btn-secondary"><i class="fa fa-step-backward"></i></div>
+                                    <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                                     <div class="col scroller-tab-list-container">
-                                        <ul class="nav nav-tabs scroller-tab-list">
+                                        <ul class="nav nav-pills scroller-tab-list">
                                             <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                                             <li class="nav-item category">
-                                                <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" data-toggle="tab" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %></a>
+                                                <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" data-toggle="pill" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %></a>
                                             </li>
                                             <% }) %>
                                         </ul>
                                     </div>
-                                    <div class="scroller-tab scroller-tab-right"><i class="fa fa-angle-right"></i></div>
-                                    <div class="scroller-tab scroller-tab-right-end"><i class="fa fa-step-forward"></i></div>
+                                    <div class="scroller-tab scroller-tab-right btn btn-secondary"><i class="fa fa-angle-right"></i></div>
+                                    <div class="scroller-tab scroller-tab-right-end btn btn-secondary"><i class="fa fa-step-forward"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -152,19 +152,19 @@
                                     </div>
                                     <div class="col pl-2 scroller-tab-wrapper">
                                         <div class="row no-gutters">
-                                            <div class="scroller-tab scroller-tab-left-end"><i class="fa fa-step-backward"></i></div>
-                                            <div class="scroller-tab scroller-tab-left"><i class="fa fa-angle-left"></i></div>
+                                            <div class="scroller-tab scroller-tab-left-end btn btn-secondary"><i class="fa fa-step-backward"></i></div>
+                                            <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                                             <div class="col scroller-tab-list-container">
-                                                <ul class="nav nav-tabs scroller-tab-list">
+                                                <ul class="nav nav-pills scroller-tab-list">
                                                     <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
                                                     <li class="nav-item level">
-                                                        <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="tab"><%= level.name %></a>
+                                                        <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="pill"><%= level.name %></a>
                                                     </li>
                                                     <% }) %>
                                                 </ul>
                                             </div>
-                                            <div class="scroller-tab scroller-tab-right"><i class="fa fa-angle-right"></i></div>
-                                            <div class="scroller-tab scroller-tab-right-end"><i class="fa fa-step-forward"></i></div>
+                                            <div class="scroller-tab scroller-tab-right btn btn-secondary"><i class="fa fa-angle-right"></i></div>
+                                            <div class="scroller-tab scroller-tab-right-end btn btn-secondary"><i class="fa fa-step-forward"></i></div>
                                         </div>
                                     </div>
                                 </div>

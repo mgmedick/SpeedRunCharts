@@ -72,12 +72,8 @@ body {
     background-color: #1a1a1a;
 }
 
-.speedRunSummary {
-    background: #262626;
-}
-
 [tabindex="-1"]:focus:not(:focus-visible) {
-  outline: 0 !important;
+    outline: 0 !important;
 }
 
 hr {
@@ -172,8 +168,8 @@ a {
 }
 
 a:hover {
-  color: #007053;
-  text-decoration: underline;
+    color: #0d5875;
+    /*text-decoration: underline;*/
 }
 
 a:not([href]):not([class]) {
@@ -1849,21 +1845,22 @@ pre code {
 }
 
 .table {
-  width: 100%;
-  margin-bottom: 1rem;
-  color: #fff;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #fff !important;
 }
 
 .table th,
 .table td {
-  padding: 0.75rem;
-  vertical-align: top;
-  border-top: 1px solid #444;
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #444;
 }
 
 .table thead th {
-  vertical-align: bottom;
-  border-bottom: 2px solid #444;
+    vertical-align: bottom;
+    border-bottom: 2px solid #444;
+    background-color: #444;
 }
 
 .table tbody + tbody {
@@ -3350,8 +3347,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-link:hover {
-  color: #007053;
-  text-decoration: underline;
+  color: #0d5875;
+  /*text-decoration: underline;*/
 }
 
 .btn-link:focus, .btn-link.focus {
@@ -4995,8 +4992,12 @@ input[type="button"].btn-block {
   color: #222;
 }
 
+.navbar-dark {
+    background-color: #262626;
+}
+
 .navbar-dark .navbar-brand {
-  color: #fff;
+    color: #fff;
 }
 
 .navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
@@ -5397,7 +5398,7 @@ input[type="button"].btn-block {
   color: #fff;
   pointer-events: none;
   cursor: auto;
-  background-color: #007053;
+  background-color: #0d5875;
   border-color: transparent;
 }
 
@@ -10768,10 +10769,10 @@ a.text-dark:hover, a.text-dark:focus {
   .table {
     border-collapse: collapse !important;
   }
-  .table td,
-  .table th {
-    background-color: #fff !important;
-  }
+.table td,
+.table th {
+    background-color: #303030 !important;
+}
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #dee2e6 !important;
@@ -10977,3 +10978,16 @@ a.text-dark:hover, a.text-dark:focus {
 .list-group-item-action .list-group-item-heading {
   color: #fff;
 }
+
+.speedRunSummary {
+    background: #262626;
+}
+
+.chart-placeholder {
+    background-color: #262626;
+}
+
+.select2-dropdown {
+    background-color: #262626;
+}
+

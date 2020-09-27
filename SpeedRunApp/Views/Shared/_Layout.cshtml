@@ -14,21 +14,24 @@
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-theme-dark.css" />
+        @*<link rel="stylesheet" href="~/css/bootstrap-theme-light.css" />*@
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme-dark.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.min.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-theme-dark.css" />
+        @*<link rel="stylesheet" href="~/css/bootstrap-theme-light.css" />*@
     </environment>
 
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">SpeedRunApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

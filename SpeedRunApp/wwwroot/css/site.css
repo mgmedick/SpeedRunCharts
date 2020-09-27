@@ -390,7 +390,7 @@ div.chart-placeholder {
 }
 
 div.chart-placeholder + div.chart-placeholder {
-    padding-left: 10px;
+    margin-left: 10px;
 }
 
 .fusioncharts-container {

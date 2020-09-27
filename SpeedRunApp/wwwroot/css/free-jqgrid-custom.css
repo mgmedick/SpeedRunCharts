@@ -1,11 +1,11 @@
 ﻿.ui-jqgrid .ui-jqgrid-htable th {
-    color: #3B3F43;
+    /*color: #3B3F43;*/
     font-size: 15px;
     font-weight: bold;
 }
 
 .ui-jqgrid .ui-jqgrid-htable th:hover {
-    color: #080C10;
+    /*color: #080C10;*/
 }
 
 .ui-jqgrid tr.ui-row-ltr:not(.jqgfirstrow) td {
@@ -30,19 +30,31 @@
     border: none;
 }
 
-.ui-jqgrid.ui-jqgrid-bootstrap {
-    border:none;
+.ui-jqgrid-htable {
+    border-bottom-width: 1px !important;
+    border-bottom-style: solid !important;
 }
 
-/*.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+/**/
+.ui-jqgrid.ui-jqgrid-bootstrap {
+    border: none;
+}
+
+.ui-jqgrid .ui-search-input {
+    padding-bottom:5px !important;
+}
+
+.ui-jqgrid .ui-search-input .form-control {
+    border: 1px solid #aaa;
+}
+
+    /*.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
     border-right:none;
 }*/
-
-/* .ui-jqgrid tr.jqgfirstrow td {
+    /* .ui-jqgrid tr.jqgfirstrow td {
     padding: 0px !important;
 } */
-
-/*.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
+    /*.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
     border-bottom: 1px #95d6d8 solid;
     border-right: 1px #95d6d8 solid;
 }
@@ -50,9 +62,7 @@
 .ui-jqgrid .ui-jqgrid-htable th.ui-th-column:first-child {
     border-left: 1px #95d6d8 solid;
 }*/
-
-
-/*
+    /*
 .jqgroupingheader {
     background: #95d6d8;
     padding: 5px 0;

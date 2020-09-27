@@ -47,6 +47,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\bootstrap_lumen.css" />
+    <Content Remove="wwwroot\css\bootstrap_theme_dark.css" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Update="Views\User\UserDetails.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

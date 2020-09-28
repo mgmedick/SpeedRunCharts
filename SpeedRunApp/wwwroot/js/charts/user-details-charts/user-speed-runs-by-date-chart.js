@@ -21,7 +21,7 @@ function userSpeedRunsByDateChart(container, inputs) {
         scaleseparator: " ",
         connectNullData: 1,
         setAdaptiveYMin: 1,
-        theme: "candy"
+        theme: sra.userSettings.isDarkMode ? "candy" : "fusion"
     };
 
     userSpeedRunsByDateChart.prototype.generateChart = function () {

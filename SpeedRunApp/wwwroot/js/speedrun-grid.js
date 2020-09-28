@@ -723,9 +723,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                             colSearchData = _.union(playerUsers, playerGuests);
                             break;
                         case "platform.name":
-                            colSearchData = _.chain(data).filter(function (item) {
-                                return item.platform.name
-                            }).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
+                            colSearchData = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
                             break;
                         default:
                             colSearchData = _.chain(data).filter(function (item) { return item[column.name] }).map(function (item) { return item[column.name] }).uniq().sortBy(function (item) { return item }).value();

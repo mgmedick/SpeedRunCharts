@@ -21,7 +21,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         scaleseparator: " ",
         connectNullData: 1,
         setAdaptiveYMin: 1,
-        theme: "candy"
+        theme: sra.userSiteSettings.isDarkMode ? "candy" : "fusion"
     };
 
     gameSpeedRunsByMonthChart.prototype.generateChart = function () {
@@ -150,8 +150,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
 
         var chartElem = $(this.container);
         var config = this.chartConfig;
-
-        var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
+        var lineChart = new fusionMultiSeriesLineChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), config.theme);
 
         if (Object.keys(chartDataObj).length > 0) {
             lineChart.setCaption(config.caption, config.subCaption)

@@ -7,15 +7,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SpeedRunApp</title>
-
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        @*<link rel="stylesheet" href="~/css/bootstrap-theme-dark.css" />*@
-        <link rel="stylesheet" href="~/css/bootstrap-theme-light.css" />
+        <link id="lnkDarkTheme" rel="stylesheet" href="~/css/bootstrap-theme-dark.css" disabled />
+        <link id="lnkLightTheme" rel="stylesheet" href="~/css/bootstrap-theme-light.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
@@ -24,10 +23,9 @@
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.min.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" />
-        @*<link rel="stylesheet" href="~/css/bootstrap-theme-dark.css" />*@
-        <link rel="stylesheet" href="~/css/bootstrap-theme-light.css" />
+        <link id="lnkDarkTheme" rel="stylesheet" href="~/css/bootstrap-theme-dark.css" disabled />
+        <link id="lnkLightTheme" rel="stylesheet" href="~/css/bootstrap-theme-light.css" />
     </environment>
-
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -55,10 +53,22 @@
                 <span class="icon-wrapper">
                     <input id="txtGameUserSearch" class="form-control mr-sm-2" type="text" placeholder="Search Games, Users, etc." aria-label="Search" style="width:300px;">
                 </span>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>
+                            <i class="fa fa-user"></i>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="position: fixed; left: 1520px; top: 50px;">
+                        <div class="dropdown-item custom-control custom-switch">
+                            <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle">
+                            <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </nav>
-
     <div class="container-fluid body-content">
         @RenderBody()
         <hr />
@@ -66,7 +76,6 @@
             <p>&copy; 2019 - SpeedRunApp</p>
         </footer>
     </div>
-
     <environment include="Development">
         <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
         <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
@@ -92,8 +101,9 @@
             var maxElementsPerPage = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
             var requestLimit = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
             var timeLimitMS = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
+            var IsDarkMode = @Json.Serialize(@Configuration.GetSection("SiteSettings").GetSection("IsDarkMode").Value);
 
-            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS);
+            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, IsDarkMode);
         });
     </script>
     @RenderSection("Scripts", required: false)

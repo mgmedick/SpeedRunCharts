@@ -1117,9 +1117,13 @@ select.form-control:focus::-ms-value {
   background-color: rgba(44, 62, 80, 0.5);
 }
 
+.custom-switch {
+    padding-left:2.5rem;
+}
+
 .custom-switch .custom-control-label::after {
-  top: calc(0.203125rem + 2px);
-  background-color: #b4bcc2;
+    top: calc(0.203125rem + 2px);
+    background-color: #b4bcc2;
 }
 
 .custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {

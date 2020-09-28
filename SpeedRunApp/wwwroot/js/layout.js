@@ -8,16 +8,33 @@ function apiSettings(maxPerPage, reqLimit, tLimitMS) {
     this.timeLimitMS = tLimitMS;
 }
 
-function initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS) {
-    initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS);
-    initializeGlobalEvents();
+function userSiteSettings(isDarkMode) {
+    this.isDarkMode = isDarkMode;
 }
 
-function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS) {
-    sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
+function initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
+    initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode);
+    initializeGlobalEvents();
+    initializeGlobalStyles();
+}
+
+function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
+    if (!sra.apiSettings) {
+        sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
+    }
+
+    if (!sra.userSiteSettings) {
+        sra["userSiteSettings"] = new userSiteSettings(isDarkMode == 'true');
+    }
 }
 
 function initializeGlobalEvents() {
+    $('#chkNightMode').click(function () {
+        var isDark = $(this).is(":checked");
+        sra.userSiteSettings.isDarkMode = isDark;
+        initalizeDarkMode(sra.userSiteSettings.isDarkMode);
+    });
+
     $('#txtGameUserSearch').autocomplete({
         minlength: 3,
         source: '../SpeedRun/SearchGamesAndUsers',
@@ -71,6 +88,21 @@ function initializeGlobalEvents() {
         });
     };
 }
+
+function initializeGlobalStyles() {
+    initalizeDarkMode(sra.userSiteSettings.isDarkMode);
+}
+
+function initalizeDarkMode(isDarkMode) {
+    if (isDarkMode) {
+        $("#lnkDarkTheme").removeAttr('disabled');
+        $("#lnkLightTheme").prop("disabled", true);
+    } else {
+        $("#lnkLightTheme").removeAttr('disabled');
+        $("#lnkDarkTheme").prop("disabled", true);
+    }
+}
+
 
 
 

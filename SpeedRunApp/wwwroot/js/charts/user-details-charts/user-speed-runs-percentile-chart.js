@@ -14,7 +14,7 @@ function userSpeedRunsPercentileChart(container, inputs) {
         exportEnabled: 1,
         showLegend: 1,
         showLabels: 0,
-        theme: 'candy'
+        theme: sra.userSettings.isDarkMode ? "candy" : "fusion"
         //numberscalevalue: "60",
         //numberscaleunit: " mins",
         //defaultnumberscale: "",

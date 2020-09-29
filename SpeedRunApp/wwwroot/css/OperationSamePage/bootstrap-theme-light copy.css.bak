@@ -1696,7 +1696,7 @@ a.badge-success:hover, a.badge-success:focus {
 }
 
 a.badge-success:focus, a.badge-success.focus {
-  box-shadow: 0 0 0 0.2rem var(--box-shadow-color10);
+  box-shadow: 0 0 0 0.2rem var(--box-shadow-color10)
 }
 
 .badge-info {

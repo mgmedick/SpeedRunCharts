@@ -1170,6 +1170,7 @@ select.form-control:focus::-ms-value {
 
 .custom-control-label::before {
   top: 0.203125rem;
+ border: #adb5bd solid 1px;
 }
 
 .custom-control-label::after {
@@ -1197,15 +1198,9 @@ select.form-control:focus::-ms-value {
   padding-left: 2.5rem;
 }
 
-.custom-switch .custom-control-label::before {
-  left: -2.25rem;
-  width: 1.75rem;
-  pointer-events: all;
-  border-radius: 0.5rem;
-}
-
 .custom-switch .custom-control-label::after {
   top: calc(0.203125rem + 2px);
+  background-color: #adb5bd;
 }
 
 .custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {
@@ -1301,6 +1296,18 @@ select.form-control:focus::-ms-value {
   background-color: #97b3d2;
 }
 
+.custom-range:disabled::-webkit-slider-thumb {
+  background-color: #adb5bd;
+}
+
+.custom-range:disabled::-moz-range-thumb {
+  background-color: #adb5bd;
+}
+
+.custom-range:disabled::-ms-thumb {
+  background-color: #adb5bd;
+}
+
 .nav-link {
   padding: 0.5rem 2rem;
 }
@@ -1390,10 +1397,6 @@ select.form-control:focus::-ms-value {
 .navbar-light .navbar-text a:hover, .navbar-light .navbar-text a:focus {
   color: #222;
 }
-
-/*.navbar-dark {
-    background-color: #262626;
-}*/
 
 .navbar-dark .navbar-nav .nav-link {
   color: rgba(255, 255, 255, 0.6);

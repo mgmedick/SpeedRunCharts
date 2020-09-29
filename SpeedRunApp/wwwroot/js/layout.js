@@ -90,7 +90,7 @@ function initializeGlobalEvents() {
 }
 
 function initializeGlobalStyles() {
-    initalizeDarkMode(sra.userSiteSettings.isDarkMode);
+    //initalizeDarkMode(sra.userSiteSettings.isDarkMode);
 }
 
 function initalizeDarkMode(isDarkMode) {

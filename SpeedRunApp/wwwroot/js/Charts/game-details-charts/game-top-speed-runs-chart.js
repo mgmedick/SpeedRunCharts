@@ -19,7 +19,7 @@ function gameTopSpeedRunsChart(container, inputs) {
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: "",
-        theme: sra.userSiteSettings.isDarkMode ? "candy" : "fusion"
+        theme: "candy"//sra.userSiteSettings.isDarkMode ? "candy" : "fusion"
     };
 
     gameTopSpeedRunsChart.prototype.generateChart = function () {

@@ -9,26 +9,26 @@
 }
 
 .ui-jqgrid tr.ui-row-ltr:not(.jqgfirstrow) td {
-    padding: 5px !important;
+    padding: 10px !important;
     font-size: 14px;
     text-overflow: ellipsis;
 }
 
-.alt-row {
-    background: #262626;
-}
+/*.alt-row {
+    background: #000;
+}*/
 
-.table-bordered th{
+/*.table-bordered th{
     border:none;
-}
+}*/
 
-.table-bordered th td {
+/*.table-bordered th td {
     border: none;
-}
+}*/
 
-.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-th-column {
+/*.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-th-column {
     border: none;
-}
+}*/
 
 .ui-jqgrid-htable {
     border-bottom-width: 1px !important;

@@ -101,7 +101,7 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 }
 
 function initializeSearchSpeedRunGridEvents(element) {
-    $(element).find('.select2').select2({ width: "250px" });
+    $(element).find('.select2').select2({ width: "150px" });
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Tab Filters", linkDisplayedText: "Hide Tab Filters" });
 
     $('#drpCategoryTypes').change(function () {
@@ -533,6 +533,23 @@ function configureAndInitializeGrid(element) {
 
         return html;
     }
+
+    //function optionsFormatter(cellvalue, options, rowObject) {
+    //    var html = "<div>"
+    //    html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
+    //    html += "<tr>";
+    //    html += "<td style='border:none; padding:0px; width:30px;'>";
+    //    html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+    //    html += "</td>";
+    //    html += "<td style='border:none; padding:0px; width:30px;'>";
+    //    html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
+    //    html += "</td>";
+    //    html += "</tr>";
+    //    html += "</table>";
+    //    html += "</div>";
+
+    //    return html;
+    //}
 
     function rankFormatter(value, options, rowObject) {
         var num = parseInt(value);

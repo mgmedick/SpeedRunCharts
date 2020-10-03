@@ -14,7 +14,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
         exportEnabled: 1,
         showLegend: 1,
         showLabels: 0,
-        theme: "candy"//sra.userSiteSettings.isDarkMode ? "candy" : "fusion"
+        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
         //numberscalevalue: "60",
         //numberscaleunit: " mins",
         //defaultnumberscale: "",

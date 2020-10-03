@@ -19,7 +19,7 @@ function userTopSpeedRunsChart(container, inputs) {
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: "",
-        theme: sra.userSettings.isDarkMode ? "candy" : "fusion"
+        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
     };
 
     userTopSpeedRunsChart.prototype.generateChart = function () {
@@ -72,7 +72,6 @@ function userTopSpeedRunsChart(container, inputs) {
         var chartElem = $(this.container);
         var config = this.chartConfig;
         var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), 'fusion');
-
 
         var chartData = _.chain(Object.entries(chartDataObj)).map(function (x) { return { category: x[0], value: x[1] } }).value();
         if (chartData.length > 0) {

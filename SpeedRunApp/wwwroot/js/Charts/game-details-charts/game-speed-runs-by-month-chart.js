@@ -21,7 +21,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         scaleseparator: " ",
         connectNullData: 1,
         setAdaptiveYMin: 1,
-        theme: "candy"//sra.userSiteSettings.isDarkMode ? "candy" : "fusion"
+        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
     };
 
     gameSpeedRunsByMonthChart.prototype.generateChart = function () {

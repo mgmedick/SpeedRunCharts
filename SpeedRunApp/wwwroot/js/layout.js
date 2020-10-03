@@ -8,31 +8,34 @@ function apiSettings(maxPerPage, reqLimit, tLimitMS) {
     this.timeLimitMS = tLimitMS;
 }
 
-function userSiteSettings(isDarkMode) {
-    this.isDarkMode = isDarkMode;
-}
-
 function initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
     initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode);
     initializeGlobalEvents();
-    initializeGlobalStyles();
 }
 
 function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
     if (!sra.apiSettings) {
         sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
     }
-
-    if (!sra.userSiteSettings) {
-        sra["userSiteSettings"] = new userSiteSettings(isDarkMode == 'true');
-    }
 }
 
 function initializeGlobalEvents() {
     $('#chkNightMode').click(function () {
-        var isDark = $(this).is(":checked");
-        sra.userSiteSettings.isDarkMode = isDark;
-        initalizeDarkMode(sra.userSiteSettings.isDarkMode);
+        if ($(this).is(":checked")) {
+            setCookie('theme', "theme-dark", 365);
+            $(document.body).removeClass("theme-light").addClass("theme-dark");
+            $(sra.charts).each(function () {
+                this.chartConfig.theme = "candy";
+                this.generateChart();
+            });
+        } else {
+            setCookie('theme', "theme-light", 365);
+            $(document.body).removeClass("theme-dark").addClass("theme-light");
+            $(sra.charts).each(function () {
+                this.chartConfig.theme = "fusion";
+                this.generateChart();
+            });
+        }
     });
 
     $('#txtGameUserSearch').autocomplete({
@@ -89,19 +92,12 @@ function initializeGlobalEvents() {
     };
 }
 
-function initializeGlobalStyles() {
-    //initalizeDarkMode(sra.userSiteSettings.isDarkMode);
-}
 
-function initalizeDarkMode(isDarkMode) {
-    if (isDarkMode) {
-        $("#lnkDarkTheme").removeAttr('disabled');
-        $("#lnkLightTheme").prop("disabled", true);
-    } else {
-        $("#lnkLightTheme").removeAttr('disabled');
-        $("#lnkDarkTheme").prop("disabled", true);
-    }
-}
+
+
+
+
+
 
 
 

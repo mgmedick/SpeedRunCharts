@@ -519,16 +519,16 @@ function configureAndInitializeGrid(element) {
     //Column Formatters
     function optionsFormatter(cellvalue, options, rowObject) {
         var html = "<div>"
-        html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
-        html += "<tr>";
-        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
+        html += "<div class='d-table-row'>";
+        html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
         html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-        html += "</td>";
-        html += "<td style='border:none; padding:0px; width:30px;'>";
+        html += "</div>";
+        html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
         html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
-        html += "</td>";
-        html += "</tr>";
-        html += "</table>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
 
         return html;
@@ -921,22 +921,21 @@ function initializeGridStyles(element) {
 //Initialize Charts
 function initializeCharts(element, data) {
     var def = $.Deferred();
-    var charts = [];
     if (sra.sender == "User") {
-        charts = [
+        sra['charts'] = [
             new userTopSpeedRunsChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
             new userSpeedRunsByDateChart($(element).find('.chart-container-1'), { chartData: data }),
             new userSpeedRunsPercentileChart($(element).find('.chart-container-2'), { chartData: data })
         ];
     } else {
-        charts = [
+        sra['charts'] = [
             new gameTopSpeedRunsChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
             new gameSpeedRunsPercentileChart($(element).find('.chart-container-1'), { chartData: data }),
             new gameSpeedRunsByMonthChart($(element).find('.chart-container-2'), { chartData: data })
         ];
     }
 
-    var promises = $(charts).map(function () { return this.generateChart() });
+    var promises = $(sra.charts).map(function () { return this.generateChart() });
 
     $.when.apply(null, promises).then(function () {
         def.resolve();

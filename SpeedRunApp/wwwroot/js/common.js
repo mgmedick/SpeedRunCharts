@@ -99,6 +99,25 @@ function renderTemplate(element, template, data, functions) {
     return def.promise();
 }
 
+function setCookie(key, value, days) {
+    var expires = new Date();
+    var cookieString = key + '=' + value;
+    if (days) {
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        cookieString += ';expires=' + expires.toUTCString();
+    }
+
+    document.cookie = cookieString;
+}
+
+function getCookie(key) {
+    var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+    return keyValue ? keyValue[2] : null;
+}
+
+
+
+
 
 
 

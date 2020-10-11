@@ -472,12 +472,12 @@ function configureAndInitializeGrid(element) {
             }
         }
 
-        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
+        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
 
         var columnModel = [
-            { name: "id", width: 75 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
+            { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
             { name: "rank", width: 75 * perc, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] }, hidden: isSenderUser },
-            { name: "playerUsers", width: 160 * perc, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
+            { name: "players", width: 160 * perc, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
             { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
             { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
             { name: "primaryTimeString", width: 160 * perc, search: false },
@@ -487,7 +487,6 @@ function configureAndInitializeGrid(element) {
             { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
             { name: "relativeVerifyDateString", hidden: true },
-            { name: "playerGuests", hidden: true },
             { name: "categoryType", hidden: true },
             { name: "gameID", hidden: true },
             { name: "categoryID", hidden: true },
@@ -522,7 +521,10 @@ function configureAndInitializeGrid(element) {
         html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
         html += "<div class='d-table-row'>";
         html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
-        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#editModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        html += "</div>";
+        html += "<div class='d-table-cell pl-2 ' style='border:none; padding:0px; width:30px;'>";
+        html += "<a href=\"javascript:showSpeedRunDetails('" + cellvalue + "');\"><i class='fas fa-edit'></i></a>";
         html += "</div>";
         html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
         html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
@@ -534,23 +536,6 @@ function configureAndInitializeGrid(element) {
         return html;
     }
 
-    //function optionsFormatter(cellvalue, options, rowObject) {
-    //    var html = "<div>"
-    //    html += "<table style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
-    //    html += "<tr>";
-    //    html += "<td style='border:none; padding:0px; width:30px;'>";
-    //    html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#videoLinkModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
-    //    html += "</td>";
-    //    html += "<td style='border:none; padding:0px; width:30px;'>";
-    //    html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
-    //    html += "</td>";
-    //    html += "</tr>";
-    //    html += "</table>";
-    //    html += "</div>";
-
-    //    return html;
-    //}
-
     function rankFormatter(value, options, rowObject) {
         var num = parseInt(value);
         var html = (num <= 0) ? '-' : sra.mathHelper.getIntOrdinalString(num);
@@ -560,22 +545,20 @@ function configureAndInitializeGrid(element) {
 
     function playerFormatter(value, options, rowObject) {
         var html = '';
-        var users = value;
-        var guests = rowObject.playerGuests;
+        var users = _.chain(rowObject.playerUsers).uniq(function (item) { return item.id }).sortBy(function (item) { return item.name; }).value();
+        var guests = _.chain(rowObject.playerGuests).uniq(function (item) { return item.name }).sortBy(function (item) { return item; }).value();
         var currentUserID = $('#hdnUserID').val();
 
         $(users).each(function () {
-            var user = this;
-            if (user.id == currentUserID) {
-                html += user.name + "<br/>";
+            if (this.id == currentUserID) {
+                html += this.name + "<br/>";
             } else {
-                html += "<a href='../User/UserDetails?userID=" + user.id + "'>" + user.name + "</a><br/>";
+                html += "<a href='../User/UserDetails?userID=" + this.id + "'>" + this.name + "</a><br/>";
             }
         });
 
         $(guests).each(function () {
-            var guest = this;
-            html += guest.name + "<br/>";
+            html += this.name + "<br/>";
         });
 
         return html;
@@ -734,10 +717,8 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                         case "rank":
                             colSearchData = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
                             break;
-                        case "playerUsers":
-                            var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
-                            var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
-                            colSearchData = _.union(playerUsers, playerGuests);
+                        case "players":
+                            colSearchData = _.chain(data).pluck('players').flatten().uniq(function (item) { return [item.id, item.name].join(); }).sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
                             break;
                         case "platform.name":
                             colSearchData = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();
@@ -755,28 +736,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
     }
 
-    /*
-    function initializeGridFilters(element) {
-        var data = $(element).jqGrid("getGridParam", "data");
-        var rankNumbers = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
-        var platformNames = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name; }).uniq().sortBy(function (item) { return item }).value();
-        var playerUsers = _.chain(data).pluck('playerUsers').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
-        var playerGuests = _.chain(data).pluck('playerGuests').flatten().uniq("id").sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
-        var playerNames = _.union(playerUsers, playerGuests);
-        var emulatedNames = _.chain(data).map(function (item) { return item.isEmulatedString }).uniq().sortBy(function (item) { return item }).value();
-
-        setSearchSelect($(element), 'rank', rankNumbers, ["nIn"]);
-        if (platformNames.length > 0) {
-            setSearchSelect($(element), 'platform.name', platformNames, ["in"]);
-        } else {
-            $(element).jqGrid("setColProp", 'platform.name', { search: false });
-        }
-
-        setSearchSelect($(element), 'playerUsers', playerNames, ["aIn"]);
-        setSearchSelect($(element), 'isEmulatedString', emulatedNames, ["in"]);
-        $(element).jqGrid('filterToolbar', { stringResult: true, searchOnEnter: true });
-    }
-    */
     function setSearchDate(element, columnName, sortOptions) {
         $(element).jqGrid("setColProp", columnName, {
             searchoptions: {
@@ -833,89 +792,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
         return values;
     }
 
-    /*
-    function buildSearchSelect(items) {
-        var values = ":";
-        $.each(items, function () {
-            values += ";" + this + ":" + this + ";";
-        });
-        return values;
-    }
-    */
-
-    /*
-    function initMultiselect (searchOptions) {
-        var $elem = $(searchOptions.elem),
-            options = {
-                selectedList: 2,
-                height: "auto",
-                checkAllText: "all",
-                uncheckAllText: "no",
-                noneSelectedText: "Any",
-                open: function () {
-                    var $menu = $(".ui-multiselect-menu:visible");
-                    $menu.addClass("ui-jqdialog").width("auto");
-                    $menu.find(">ul").css("maxHeight", "200px");
-                }
-            };
-        if (searchOptions.mode === "filter") {
-            options.minWidth = "auto";
-        }
-        $elem.multiselect(options);
-        $elem.siblings("button.ui-multiselect").css({
-            width: "100%",
-            margin: "1px 0",
-            paddingTop: ".3em",
-            paddingBottom: "0"
-        });
-    }
-    */
-
-    /*
-    function beforeProcessingHandler1 (data) {
-        var $this = $(this), p = $this.jqGrid("getGridParam");
-        // !!! it will be called only after loading from the server
-        // datatype is always "json" here
-
-        setSearchSelect(this, "ship_via", data);
-
-        if (this.ftoolbar === true) {
-            // if the filter toolbar is not already created
-            $("#gs_" + this.id + "ship_via").multiselect("destroy");
-            $this.jqGrid('destroyFilterToolbar');
-        }
-
-        if (p.postData.filters) {
-            p.search = true;
-        }
-
-        $this.jqGrid("filterToolbar", {
-            //stringResult: true,
-            defaultSearch: myDefaultSearch,
-            beforeClear: function () {
-                $(this.grid.hDiv)
-                    .find(".ui-search-toolbar button.ui-multiselect")
-                    .each(function () {
-                        $(this).prev("select[multiple]").multiselect("refresh");
-                    });
-            }
-        });
-    }
-    */
-
-    //function initializeGridStyles(element) {
-    //    var $grid = $(element);
-    //    var data = $grid.jqGrid("getGridParam", "data");
-    //    //var $rejectedItems = $(data).filter(function (item) { return item.statusTypeString == "Rejected"; })
-    //    //if ($rejectedItems.length > 0) {
-    //    //    $grid.jqGrid("showCol", ["rejectedReason"]);
-    //    //}
-
-    //    var $tabgridContainer = $grid.closest('.tab-grid-container');
-    //    var $gridContainer = $grid.closest('.tab-grid-container');
-    //    $tabgridContainer.css('width', parseInt($gridContainer.find('.ui-jqgrid-view').width()) + parseInt($gridContainer.css('padding-left')));
-    //}
-
     return def.promise();
 }
 
@@ -924,15 +800,13 @@ function initializeGridStyles(element) {
     $tabgridContainer.css('width', parseInt($tabgridContainer.find('.ui-jqgrid-view:visible').width()) + parseInt($tabgridContainer.css('padding-left')));
     initializeScroller($tabgridContainer);
 
-    //$('.scroller-tab-list').scrollTabs();
-
-    //var maxValue = 130;
-    //var maxWidth = Math.max.apply(Math, $tabgridContainer.find('.tab-row-name:visible').map(function () { return $(this).width(); }).get());
-    //if (maxWidth > maxValue) {
-    //    maxWidth = maxValue;
+    //if (getCookie("theme")== "theme-dark") {
+    //    $tabgridContainer.find('.table').removeClass('table-active').addClass('table-dark');
+    //    $tabgridContainer.find('.ui-pg-table').removeClass('table-active').addClass('table-dark');
+    //} else {
+    //    $tabgridContainer.find('.table').removeClass('table-dark').addClass('table-active');
+    //    $tabgridContainer.find('.ui-pg-table').removeClass('table-dark').addClass('table-active');
     //}
-
-    //$tabgridContainer.find('.tab-row-name-container:visible').each(function () { $(this).width(maxWidth); })
 }
 
 //Initialize Charts
@@ -983,6 +857,26 @@ function filterCategories() {
     $('#divSpeedRunGridLoading').hide();
 }
 
+function showSpeedRunDetails(speedRunID) {
+    var $modal = $('#editModal');
+    var $modalTitle = $('#editModal').find('.modal-title');
+    var $modalBody = $('#editModal').find('.modal-body');
+    var $modalLoading = $('#editModal').find('.modal-loading');
+    $modalTitle.text("Details");
+
+    $modalBody.hide();
+    $modalLoading.show();
+    $modal.modal('show');
+    $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
+        $.get('../SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
+            renderTemplate($modalBody, detailsTemplate, data).then(function () {
+                initializeSpeedRunEdit(data.isReadOnly);
+                $modalBody.show();
+                $modalLoading.hide();
+            });
+        });
+    });
+}
 
 
 

@@ -20,7 +20,7 @@
         return this;
     };
 
-    fusionPieChart.prototype.setChartOptions = function (showPercentValues, exportEnabled, showLegend, showLabels, theme, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, numberOfDecimals, showPercentInTooltip, formatNumberScale) {
+    fusionPieChart.prototype.setChartOptions = function (showPercentValues, exportEnabled, showLegend, showLabels, theme, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, numberOfDecimals, showPercentInTooltip, formatNumberScale, bgColor, baseFontColor, outCnvBaseFontColor) {
         this._fusionChart.dataSource.chart.showPercentValues = showPercentValues;
         this._fusionChart.dataSource.chart.showPercentInTooltip = showPercentValues == 0 ? 1 : 0;
         this._fusionChart.dataSource.chart.exportEnabled = exportEnabled;
@@ -54,6 +54,15 @@
 
         if (typeof formatNumberScale !== 'undefined')
             this._fusionChart.dataSource.chart.formatNumberScale = formatNumberScale;
+
+        if (typeof bgColor !== 'undefined')
+            this._fusionChart.dataSource.chart.bgColor = bgColor;
+
+        if (typeof baseFontColor !== 'undefined')
+            this._fusionChart.dataSource.chart.baseFontColor = baseFontColor;
+
+        if (typeof outCnvBaseFontColor !== 'undefined')
+            this._fusionChart.dataSource.chart.outCnvBaseFontColor = outCnvBaseFontColor;
 
         return this;
     };

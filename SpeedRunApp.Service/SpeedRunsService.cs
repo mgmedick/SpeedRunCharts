@@ -12,18 +12,28 @@ namespace SpeedRunApp.Service
 {
     public class SpeedRunsService : ISpeedRunsService
     {
-        IConfiguration _config = null;
+        private readonly IConfiguration _config = null;
+        private readonly ICacheHelper _cacheHelper = null;
+        private readonly IGamesService _gamesService = null;
 
-        public SpeedRunsService(IConfiguration Configuration)
+        public SpeedRunsService(IConfiguration Configuration, ICacheHelper cacheHelper, IGamesService gamesService)
         {
             _config = Configuration;
+            _cacheHelper = cacheHelper;
+            _gamesService = gamesService;
         }
 
         public SpeedRunListViewModel GetSpeedRunList()
         {
             int elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
             var runVMs = GetLatestSpeedRuns(SpeedRunListCategory.New, elementsPerPage, null);
-            var runListVM = new SpeedRunListViewModel(runVMs, elementsPerPage);
+            var statusTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)RunStatusType.New).ToString(), Name = RunStatusType.New.ToString() },
+                                                    new IDNamePair { ID = ((int)RunStatusType.Verified).ToString(), Name = RunStatusType.Verified.ToString()},
+                                                    new IDNamePair { ID = ((int)RunStatusType.Rejected).ToString(), Name = RunStatusType.Rejected.ToString()} };
+            var categoryTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)CategoryType.PerGame).ToString(), Name = CategoryType.PerGame.ToString() },
+                                                        new IDNamePair { ID = ((int)CategoryType.PerLevel).ToString(), Name = CategoryType.PerLevel.ToString() } };
+            var platforms = _cacheHelper.GetPlatforms().Select(i => new IDNamePair { ID = i.ID, Name = i.Name });
+            var runListVM = new SpeedRunListViewModel(runVMs, statusTypes, categoryTypes, platforms);
 
             return runListVM;
         }
@@ -68,14 +78,46 @@ namespace SpeedRunApp.Service
             return runVM;
         }
 
-        public IEnumerable<SearchResult> SearchGamesAndUsers(string term)
+        public EditSpeedRunViewModel GetEditSpeedRun(string runID, bool isReadOnly)
         {
             ClientContainer clientContainer = new ClientContainer();
-            var games = clientContainer.Games.GetGames(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Games" });
-            var users = clientContainer.Users.GetUsers(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Users" });
+         
+            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
+            var run = clientContainer.Runs.GetRun(runID, runEmbeds);
+            var runVM = new SpeedRunViewModel(run);
+
+            var gameDetails = _gamesService.GetGameDetails(runVM.Game.ID);
+            var statusTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)RunStatusType.New).ToString(), Name = RunStatusType.New.ToString() },
+                                                    new IDNamePair { ID = ((int)RunStatusType.Verified).ToString(), Name = RunStatusType.Verified.ToString()},
+                                                    new IDNamePair { ID = ((int)RunStatusType.Rejected).ToString(), Name = RunStatusType.Rejected.ToString()} };
+            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameDetails.CategoryTypes, gameDetails.Categories, gameDetails.Levels, gameDetails.Platforms, gameDetails.Variables, runVM, isReadOnly);
+
+            return editSpeedRunVM;
+        }
+
+        public IEnumerable<SearchResult> SearchGamesAndUsers(string term)
+        {
+            var games = SearchGames(term);
+            var users = SearchUsers(term);
             var results = games.Concat(users);
 
             return results;
+        }
+
+        public IEnumerable<SearchResult> SearchGames(string term)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var games = clientContainer.Games.GetGames(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Games" });
+
+            return games;
+        }
+
+        public IEnumerable<SearchResult> SearchUsers(string term)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            var users = clientContainer.Users.GetUsers(term).Select(i => new SearchResult { Value = i.ID, Label = i.Name, Category = "Users" });
+
+            return users;
         }
     }
 }

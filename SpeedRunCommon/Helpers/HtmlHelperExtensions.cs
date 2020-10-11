@@ -9,7 +9,15 @@ namespace SpeedRunCommon
     {
         public static IHtmlContent CommaSeparated(this IHtmlHelper html, IEnumerable<HtmlString> list)
         {
-            return new HtmlString(string.Join(", ", list));
+
+            if(list != null)
+            {
+                return new HtmlString(string.Join(", ", list));
+            }
+            else
+            {
+                return new HtmlString(string.Empty);
+            }
         }
 
         public static HtmlString ToHtmlString(this IHtmlContent htmlContent)

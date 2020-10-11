@@ -19,7 +19,10 @@ function gameTopSpeedRunsChart(container, inputs) {
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: "",
-        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
+        theme: "candy",
+        bgColor: (getCookie("theme") == "theme-dark") ? "#303030" : "#2c3e50",
+        baseFontColor: "#fff",
+        outCnvBaseFontColor: "#fff"
     };
 
     gameTopSpeedRunsChart.prototype.generateChart = function () {
@@ -79,7 +82,7 @@ function gameTopSpeedRunsChart(container, inputs) {
         if (chartData.length > 0) {
             columnChart.setCaption(config.caption, config.subCaption)
                 .setAxis(config.xAxis, config.yAxis, undefined, undefined, undefined, true)
-                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.theme)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, undefined, config.useRoundEdges, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.theme, config.bgColor, config.baseFontColor, config.outCnvBaseFontColor)
                 .setCategories(categories)
                 .onRenderComplete(function (evt, d) {
                     def.resolve();

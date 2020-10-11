@@ -8,31 +8,41 @@ function apiSettings(maxPerPage, reqLimit, tLimitMS) {
     this.timeLimitMS = tLimitMS;
 }
 
-function initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
-    initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode);
+function initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme) {
+    initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme);
     initializeGlobalEvents();
 }
 
-function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, isDarkMode) {
+function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme) {
     if (!sra.apiSettings) {
         sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
+    }
+
+    if (!getCookie('theme')) {
+        setCookie('theme', defaultTheme);
     }
 }
 
 function initializeGlobalEvents() {
     $('#chkNightMode').click(function () {
         if ($(this).is(":checked")) {
-            setCookie('theme', "theme-dark", 365);
+            setCookie('theme', "theme-dark");
             $(document.body).removeClass("theme-light").addClass("theme-dark");
+            //$(document.body).find('.table').removeClass('table-active').addClass('table-dark');
+            //$(document.body).find('.speedRunSummary').removeClass('bg-light').addClass('bg-dark');
+
             $(sra.charts).each(function () {
-                this.chartConfig.theme = "candy";
+                this.chartConfig.bgColor = "#303030";
                 this.generateChart();
             });
         } else {
-            setCookie('theme', "theme-light", 365);
+            setCookie('theme', "theme-light");
             $(document.body).removeClass("theme-dark").addClass("theme-light");
+            //$(document.body).find('.table').removeClass('table-dark').addClass('table-active');
+            //$(document.body).find('.speedRunSummary').removeClass('bg-dark').addClass('bg-light');
+
             $(sra.charts).each(function () {
-                this.chartConfig.theme = "fusion";
+                this.chartConfig.bgColor = "#2c3e50";
                 this.generateChart();
             });
         }

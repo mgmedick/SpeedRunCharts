@@ -4,9 +4,6 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
-@{ ViewBag.Title = "GameDetails";
-    var controllerName = ViewContext.RouteData.Values["controller"].ToString(); }
-
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
     <link rel="stylesheet" href="~/css/free-jqgrid-custom.css" />
@@ -43,6 +40,7 @@
     <script src="@Url.Content("~/js/charts/game-details-charts/game-top-speed-runs-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-by-month-chart.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-percentile-chart.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/speedrun-edit.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/speedrun-grid.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/game-details.js")" type="text/javascript"></script>
 
@@ -114,10 +112,11 @@
     </div>
     <input type="hidden" id="hdnGameID" name="gameID" value="@Html.DisplayFor(i=>i.ID)" />
 </div>
-<div id="videoLinkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="height:700px;">
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -134,6 +133,7 @@
         </div>
     </div>
 </div>
+
 
 
 

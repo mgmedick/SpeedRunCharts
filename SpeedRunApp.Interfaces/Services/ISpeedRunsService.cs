@@ -10,7 +10,10 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int elementsPerPage, int? elementsOffset);
         IEnumerable<SpeedRunViewModel> GetSpeedRuns(RunStatusType status, RunsOrdering orderBy, int elementsPerPage, int? elementsOffset);
         SpeedRunViewModel GetSpeedRun(string runID);
+        EditSpeedRunViewModel GetEditSpeedRun(string runID, bool isReadOnly);
         IEnumerable<SearchResult> SearchGamesAndUsers(string term);
+        IEnumerable<SearchResult> SearchGames(string term);
+        IEnumerable<SearchResult> SearchUsers(string term);
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
+using SpeedRunApp.Model.ViewModels;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -31,10 +32,41 @@ namespace SpeedRunApp.WebUI.Controllers
             return PartialView("_SpeedRunSummary", runVM);
         }
 
+        public ViewResult SpeedRunDetails(string speedRunID)
+        {
+            var runVM = _speedRunService.GetSpeedRun(speedRunID);
+
+            return View(runVM);
+        }
+
         [HttpGet]
         public JsonResult SearchGamesAndUsers(string term)
         {
             var results = _speedRunService.SearchGamesAndUsers(term);
+
+            return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult SearchGames(string term)
+        {
+            var results = _speedRunService.SearchGames(term);
+
+            return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult SearchUsers(string term)
+        {
+            var results = _speedRunService.SearchUsers(term);
+
+            return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult GetEditSpeedRun(string speedRunID, bool isReadOnly)
+        {
+            var results = _speedRunService.GetEditSpeedRun(speedRunID, isReadOnly);
 
             return Json(results);
         }

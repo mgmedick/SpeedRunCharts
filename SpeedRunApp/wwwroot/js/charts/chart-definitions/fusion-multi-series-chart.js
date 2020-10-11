@@ -30,7 +30,7 @@
         return this;
     };
 
-    fusionMultiSeriesChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, theme) {
+    fusionMultiSeriesChart.prototype.setChartOptions = function (showValues, exportEnabled, formatNumberScale, numberOfDecimals, forceDecimalDisplay, numberscalevalue, numberscaleunit, defaultnumberscale, scalerecursively, maxscalerecursion, scaleseparator, connectNullData, setAdaptiveYMin, theme, bgColor, baseFontColor, outCnvBaseFontColor) {
         this._fusionChart.dataSource.chart.showValues = showValues;
         this._fusionChart.dataSource.chart.exportEnabled = exportEnabled;
         this._fusionChart.dataSource.chart.formatNumberScale = formatNumberScale;
@@ -67,6 +67,15 @@
 
         if (typeof theme !== 'undefined')
             this._fusionChart.dataSource.chart.theme = theme;
+
+        if (typeof bgColor !== 'undefined')
+            this._fusionChart.dataSource.chart.bgColor = bgColor;
+
+        if (typeof baseFontColor !== 'undefined')
+            this._fusionChart.dataSource.chart.baseFontColor = baseFontColor;
+
+        if (typeof outCnvBaseFontColor !== 'undefined')
+            this._fusionChart.dataSource.chart.outCnvBaseFontColor = outCnvBaseFontColor;
 
         return this;
     };

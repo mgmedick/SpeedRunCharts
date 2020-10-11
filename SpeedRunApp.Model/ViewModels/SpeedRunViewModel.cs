@@ -62,6 +62,7 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (run.VariableValues != null)
             {
+                AllVariableValues = run.VariableValues.Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, LevelID = this.Level?.ID, ScopeTypeID = ((int)i.Variable.Scope.Type).ToString() } });
                 SubCategoryVariableValues = run.VariableValues.Where(i => i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, LevelID = this.Level?.ID, ScopeTypeID = ((int)i.Variable.Scope.Type).ToString() } });
                 VariableValues = run.VariableValues.Where(i => !i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
             }
@@ -96,8 +97,16 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
         public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
+        public IEnumerable<VariableValueDisplay> AllVariableValues { get; set; }
         public IEnumerable<VariableValueDisplay> SubCategoryVariableValues { get; set; }
         public IEnumerable<VariableValueDisplay> VariableValues { get; set; }
+        public IEnumerable<User> Players
+        {
+            get
+            {
+                return PlayerUsers?.Concat(PlayerGuests?.Select(i => new User { ID= i.Name, Name = i.Name }));
+            }
+        }
         public string GameCoverImageLinkString
         {
             get
@@ -199,6 +208,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return StatusType.Name;
+            }
+        }
+
+        public string VerifyDateString
+        {
+            get
+            {
+                return VerifyDate?.ToString("MM/dd/yyyy");
             }
         }
 

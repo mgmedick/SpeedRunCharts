@@ -5,10 +5,12 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(IEnumerable<SpeedRunViewModel> speedRuns, int elementsPerPage)
+        public SpeedRunListViewModel(IEnumerable<SpeedRunViewModel> speedRuns, IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> categoryTypes, IEnumerable<IDNamePair> platforms)
         {
             SpeedRuns = speedRuns;
-            ElementsPerPage = elementsPerPage;
+            StatusTypes = statusTypes;
+            CategoryTypes = categoryTypes;
+            Platforms = platforms;
         }
 
         public IEnumerable<SpeedRunViewModel> SpeedRuns
@@ -17,7 +19,19 @@ namespace SpeedRunApp.Model.ViewModels
             set;
         }
 
-        public int ElementsPerPage
+        public IEnumerable<IDNamePair> StatusTypes
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<IDNamePair> CategoryTypes
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<IDNamePair> Platforms
         {
             get;
             set;

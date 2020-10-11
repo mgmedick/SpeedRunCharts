@@ -18,6 +18,8 @@ function initializeClient(categoryTypes, games, categories, levels, subCategoryV
 
 
 
+
+
  
 
 

@@ -1,5 +1,4 @@
 ﻿.ui-jqgrid .ui-jqgrid-htable th {
-    /*color: #3B3F43;*/
     font-size: 15px;
     font-weight: bold;
 }
@@ -18,24 +17,42 @@
     background: #000;
 }*/
 
-/*.table-bordered th{
+/*
+.table-bordered th{
     border:none;
-}*/
+}
+*/
 
-/*.table-bordered th td {
+/*
+.table-bordered thead th {
+    border:none;
+}
+*/
+
+.table-bordered th td {
     border: none;
-}*/
+}
 
-/*.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-th-column {
-    border: none;
-}*/
+.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-th-column {
+    border-top-width: 1px;
+    border-top-style: none;
+}
 
+.ui-jqgrid .ui-jqgrid-hdiv .ui-search-toolbar .ui-search-table td{
+    border:none !important;
+}
+/*
 .ui-jqgrid-htable {
     border-bottom-width: 1px !important;
     border-bottom-style: solid !important;
 }
-
+*/
 /**/
+
+.ui-jqgrid.ui-jqgrid-bootstrap .table-bordered.ui-jqgrid-htable {
+    border-bottom: initial !important;
+}
+
 .ui-jqgrid.ui-jqgrid-bootstrap {
     border: none;
 }
@@ -44,8 +61,22 @@
     padding-bottom:5px !important;
 }
 
-.ui-jqgrid .ui-search-input .form-control {
-    border: 1px solid #aaa;
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-hdiv,
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-pager,
+.ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-legacy-subgrid > thead:not(.table) {
+    background-color: initial;
+}
+
+.table-bordered th {
+    border: none;
+}
+
+.table-bordered thead tr {
+    border: none;
+}
+
+.table-bordered tr td:last-child {
+    border-right: none !important;
 }
 
     /*.ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {

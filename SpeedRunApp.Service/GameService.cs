@@ -23,7 +23,6 @@ namespace SpeedRunApp.Service
             var game = GetGame(gameID);
             var gameVM = new GameDetailsViewModel(game);
 
-
             return gameVM;
         }
 

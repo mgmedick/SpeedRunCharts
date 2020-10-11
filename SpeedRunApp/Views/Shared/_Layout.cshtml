@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
         <link rel="stylesheet" href="~/css/site1.css" />
         <link rel="stylesheet" href="~/css/bootstrap-theme1.css" />
+        @*<link rel="stylesheet" href="~/css/bootstrap-theme1.css" />*@
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
@@ -22,11 +23,11 @@
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.min.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap-theme1.css" />
+        @*<link rel="stylesheet" href="~/css/bootstrap-theme1.css" />*@
     </environment>
     @RenderSection("Styles", required: false)
 </head>
-<body class="@(Context.Request.Cookies["theme"] ?? "theme-light")">
+<body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">SpeedRunApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +60,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                         <div class="dropdown-item custom-control custom-switch">
-                            <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" @(Context.Request.Cookies["theme"] == "theme-dark" ? "checked" : string.Empty)>
+                            <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" @((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark" ? "checked" : string.Empty)>
                             <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                         </div>
                     </div>
@@ -96,11 +97,12 @@
     </environment>
     <script type="text/javascript">
         $().ready(function () {
-            var maxElementsPerPage = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
-            var requestLimit = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
-            var timeLimitMS = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
+            var maxElementsPerPage = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
+            var requestLimit = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
+            var timeLimitMS = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
+            var defaultTheme = @Json.Serialize(Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value);
 
-            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS);
+            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme);
         });
     </script>
     @RenderSection("Scripts", required: false)

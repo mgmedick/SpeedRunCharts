@@ -14,7 +14,10 @@ function userSpeedRunsPercentileChart(container, inputs) {
         exportEnabled: 1,
         showLegend: 1,
         showLabels: 0,
-        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
+        theme: "candy",
+        bgColor: (getCookie("theme") == "theme-dark") ? "#303030" : "#2c3e50",
+        baseFontColor: "#fff",
+        outCnvBaseFontColor: "#fff"
         //numberscalevalue: "60",
         //numberscaleunit: " mins",
         //defaultnumberscale: "",
@@ -166,7 +169,7 @@ function userSpeedRunsPercentileChart(container, inputs) {
         //_.chain(Object.keys(this.inputs)).each(function (x) { subCaption = subCaption.replace('{{' + x + '}}', this.inputs[x]) }).value();
 
         pieChart.setCaption(this.chartConfig.caption, subCaption)
-            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale)
+            .setChartOptions(config.showPercentValues, config.exportEnabled, config.showLegend, config.showLabels, config.theme, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.numberOfDecimals, config.showPercentInTooltip, config.formatNumberScale, config.bgColor, config.baseFontColor, config.outCnvBaseFontColor)
             .onRenderComplete(function (evt, d) {
                 def.resolve();
             });

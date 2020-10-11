@@ -5,12 +5,15 @@
 var throttleTimer = null;
 var throttleDelay = 500;
 
-function initializeClient(elementsPerPage) {
-    initalizeConstants(elementsPerPage);
+function initializeClient(statusTypes, categoryTypes, platforms, elementsPerPage) {
+    initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage);
     initializeEvents();
 }
 
-function initalizeConstants(elementsPerPage) {
+function initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage) {
+    sra['statusTypes'] = statusTypes;
+    sra['categoryTypes'] = categoryTypes;
+    sra['platforms'] = platforms;
     sra['elementsPerPage'] = elementsPerPage;
 }
 
@@ -23,6 +26,15 @@ function initializeEvents() {
 function onCategoryChange() {
     $('#divSpeedRunList').empty();
     getSpeedRunList();
+}
+
+function OnWindowScroll() {
+    clearTimeout(throttleTimer);
+    throttleTimer = setTimeout(function () {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            getSpeedRunList();
+        }
+    }, throttleDelay);
 }
 
 function getSpeedRunList() {
@@ -45,14 +57,30 @@ function getSpeedRunList() {
     });
 }
 
-function OnWindowScroll() {
-    clearTimeout(throttleTimer);
-    throttleTimer = setTimeout(function () {
-        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-            getSpeedRunList();
-        }
-    }, throttleDelay);
+function showSpeedRunDetails(speedRunID) {
+    var $modal = $('#editModal');
+    var $modalTitle = $('#editModal').find('.modal-title');
+    var $modalBody = $('#editModal').find('.modal-body');
+    var $modalLoading = $('#editModal').find('.modal-loading');
+    $modalTitle.text("Details");
+
+    $modalBody.hide();
+    $modalLoading.show();
+    $modal.modal('show');
+    $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
+        $.get('SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
+            renderTemplate($modalBody, detailsTemplate, data).then(function () {
+                initializeSpeedRunEdit(data.isReadOnly);
+                $modalBody.show();
+                $modalLoading.hide();
+            });
+        });
+    });
 }
+
+
+
+
 
 
 

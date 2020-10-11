@@ -21,7 +21,10 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         scaleseparator: " ",
         connectNullData: 1,
         setAdaptiveYMin: 1,
-        theme: (getCookie('theme') == "theme-dark") ? "candy" : "fusion"
+        theme: "candy",
+        bgColor: (getCookie("theme") == "theme-dark") ? "#303030" : "#2c3e50",
+        baseFontColor: "#fff",
+        outCnvBaseFontColor: "#fff"
     };
 
     gameSpeedRunsByMonthChart.prototype.generateChart = function () {
@@ -155,7 +158,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
         if (Object.keys(chartDataObj).length > 0) {
             lineChart.setCaption(config.caption, config.subCaption)
                 .setAxis(config.xAxis, config.yAxis, true)
-                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin, config.theme)
+                .setChartOptions(config.showValues, config.exportEnabled, config.formatNumberScale, config.numberOfDecimals, undefined, config.numberscalevalue, config.numberscaleunit, config.defaultnumberscale, config.scalerecursively, config.maxscalerecursion, config.scaleseparator, config.connectNullData, config.setAdaptiveYMin, config.theme, config.bgColor, config.baseFontColor, config.outCnvBaseFontColor)
                 .setCategories(categories)
                 .onRenderComplete(function (evt, d) {
                     def.resolve();

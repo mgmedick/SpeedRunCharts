@@ -1,0 +1,156 @@
+﻿<div id="divSpeedRunEdit" class="container">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Status</label>
+        <div class="col-sm-10">
+            <select id="drpStatus" class="custom-select form-control" style="width:auto">
+                <% if(item.speedRunVM) {
+                _.each(item.statusTypes, function(ft, index) { %>
+                <option value="<%=ft.id%>" <%= item.speedRunVM && item.speedRunVM.statusType.id == ft.id ? 'selected' : '' %>><%= ft.name %></option>
+                <% }) %>
+                <% } %>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row" style="<%= (!item.speedRunVM || item.speedRunVM.statusType.id == 0) ? 'display:none' : '' %>">
+        <label class="col-sm-2 col-form-label">Verified Date</label>
+        <div class="col-sm-10">
+            <input id="txtVerifiedDate" type="text" name="verifiedDate" class="date form-control" value="<%= item.speedRunVM ? item.speedRunVM.verifyDateString : '' %>" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Players</label>
+        <div class="col-sm-10">
+            <select id="lstUserSearch" name="players" class="user-search" placeholder="Search Users" multiple>
+                <% _.each(item.speedRunVM.players, function(ft, index) { %>
+                <option value="<%= ft.id %>" selected><%= ft.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Emulated</label>
+        <div class="col-sm-10">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="isEmulated" id="chkIsEmulated1" value="1" <%= item.speedRunVM && item.speedRunVM.isEmulated == 1 ? 'checked' : '' %>>
+                <label class="form-check-label">True</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="isEmulated" id="chkIsEmulated2" value="0" <%= item.speedRunVM && item.speedRunVM.isEmulated == 0 ? 'checked' : ''%>>
+                <label class="form-check-label">False</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Category Type</label>
+        <div class="col-sm-10">
+            <select id="drpCategoryType" name="categoryType" class="custom-select form-control" style="width:auto">
+                <% _.each(item.categoryTypes, function(ft, index) { %>
+                <option value="<%= ft.id %>" <%= item.speedRunVM && item.speedRunVM.categoryType.id == ft.id ? 'selected' : '' %>><%= ft.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Game</label>
+        <div class="col-sm-10">
+            <span class="icon-wrapper">
+                <input id="txtGameSearch" type="text" name="game" class="form-control mr-sm-2 game-search" style="width:300px;" placeholder="Search Games" aria-label="Search" value="<%= item.speedRunVM ? item.speedRunVM.game.name : ''%>" data-value="<%= item.speedRunVM ? item.speedRunVM.game.id : ''%>">
+            </span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Platform</label>
+        <div class="col-sm-10">
+            <select id="drpPlatform" name="platform" class="select2" style="width:auto;">
+                <% _.each(item.platforms, function(ft, index) { %>
+                <option value="<%= ft.id %>" <%= item.speedRunVM && item.speedRunVM.platform && item.speedRunVM.platform.id == ft.id ? 'selected' : '' %>><%= ft.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+            <select id="drpCategory" name="category" class="custom-select form-control" style="width:auto">
+                <% _.each(item.categories, function(ft, index) { %>
+                <option value="<%= ft.id %>" <%= item.speedRunVM && item.speedRunVM.category.id == ft.id ? 'selected' : '' %>><%= ft.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row" style="<%= (!item.speedRunVM || item.speedRunVM.categoryType.id == '0') ? 'display:none' : '' %>">
+        <label class="col-sm-2 col-form-label">Level</label>
+        <div class="col-sm-10">
+            <select id="drpLevel" name="level" class="select2" style="width:auto;">
+                <% _.each(item.levels, function(ft, index) { %>
+                <option value="<%= ft.id %>" <%= item.speedRunVM && item.speedRunVM.level && item.speedRunVM.level.id == ft.id ? 'selected' : '' %>><%= ft.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <% if(item.speedRunVM) {
+    _.chain(item.variables).filter(function(ft) { return ft.categoryID == item.speedRunVM.category.id
+    && (ft.levelID == (item.speedRunVM.level ? item.speedRunVM.level.id : null))
+    && ((item.speedRunVM.categoryType.id == "0" && ["0", "1"].indexOf(ft.scopeTypeID) > -1) || (item.speedRunVM.categoryType.id == "1" && ["0", "2", "3"].indexOf(ft.scopeTypeID) > -1))
+    }).each(function(variable, index) { %>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label"><%= variable.name %></label>
+        <div class="col-sm-10">
+            <select id="drpVariable-<%=index%>" name="level" class="custom-select form-control" style="width:auto;">
+                <% _.each(variable.variableValues, function(variableValue, index1) { %>
+                <option value="<%= variableValue.id %>" <%= (item.speedRunVM && _.filter(item.speedRunVM.allVariableValues, function(x, index) { return x.id == variableValue.id && x.variable.id == variable.id }).length > 0) ? 'selected' : '' %>><%= variableValue.name %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <% });
+    } %>
+    <div class="form-group row">
+        <div class="col-sm-auto pl-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="font-weight-normal">Primary Time</th>
+                        <th class="font-weight-normal">Real Time</th>
+                        <th class="font-weight-normal">Real Time w/out Loads</th>
+                        <th class="font-weight-normal">Game Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input id="txtPrimaryTime" type="text" name="primaryTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.primaryTimeString : '' %>" />
+                        </td>
+                        <td>
+                            <input id="txtRealTime" type="text" name="realTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.realTimeString : '' %>" />
+                        </td>
+                        <td>
+                            <input id="txtRealTimeWithoutLoads" type="text" name="realTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.realTimeWithoutLoadsString : '' %>" />
+                        </td>
+                        <td>
+                            <input id="txtGameTime" type="text" name="gameTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.gameTimeString : '' %>" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% if(item.speedRunVM) { %>
+    <div class="form-group row">
+        <div class="col-sm-10 m-auto">
+            <div class="p-0 embed-responsive embed-responsive-16by9">
+                <iframe src="<%= item.speedRunVM.videoLinkEmbeddedString %>"
+                        frameborder="0"
+                        scrolling="no"
+                        allowfullscreen="true"></iframe>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <div class="row no-gutters pt-1" style="<%= (item.isReadOnly) ? 'display:none' : '' %>">
+        <div class="form-group">
+            <input id="btnSave" type="button" class="btn btn-primary" value="Save" onclick="save()" />
+        </div>
+    </div>
+</div>
+

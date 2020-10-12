@@ -5,18 +5,11 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(IEnumerable<SpeedRunViewModel> speedRuns, IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> categoryTypes, IEnumerable<IDNamePair> platforms)
+        public SpeedRunListViewModel(IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> categoryTypes, IEnumerable<IDNamePair> platforms)
         {
-            SpeedRuns = speedRuns;
             StatusTypes = statusTypes;
             CategoryTypes = categoryTypes;
             Platforms = platforms;
-        }
-
-        public IEnumerable<SpeedRunViewModel> SpeedRuns
-        {
-            get;
-            set;
         }
 
         public IEnumerable<IDNamePair> StatusTypes

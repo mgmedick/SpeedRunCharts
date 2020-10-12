@@ -8,6 +8,7 @@ var throttleDelay = 500;
 function initializeClient(statusTypes, categoryTypes, platforms, elementsPerPage) {
     initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage);
     initializeEvents();
+    getSpeedRunList();
 }
 
 function initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage) {
@@ -42,22 +43,26 @@ function getSpeedRunList() {
     var categoryID = $('.categoryGroup input:checked').val();
 
     $('#loading').show();
-    $.get("SpeedRun/SpeedRunSummaryList",
-        { category: categoryID, elementsPerPage: sra.elementsPerPage, elementsOffset: speedRunCount },
-        function (data) {
-            if (data != null) {
-                $('#divSpeedRunList').append(data);
-            }
-        },
-        "html"
-    ).fail(function () {
-        alert("error");
-    }).always(function () {
-        $('#loading').hide();
+    $.get('../templates/SpeedRunSummary.html?_t=' + (new Date()).getTime(), function (summaryTemplate, status) {
+        $.get('../SpeedRun/GetLatestSpeedRuns', { category: categoryID, elementsPerPage: sra.elementsPerPage, elementsOffset: speedRunCount },
+            function (data, status) {
+                var requests = [];
+                $(data).each(function () {
+                    requests.push(renderTemplate(null, summaryTemplate, this));
+                });
+                $.when.apply(null, requests).then(function () {
+                    var html = "";
+                    $(arguments).each(function () {
+                        html += this;
+                    })
+                    $('#divSpeedRunList').append(html);
+                    $('#loading').hide();
+                });
+            });
     });
 }
 
-function showSpeedRunDetails(speedRunID) {
+function showSpeedRunDetails(speedRunID, gameID) {
     var $modal = $('#editModal');
     var $modalTitle = $('#editModal').find('.modal-title');
     var $modalBody = $('#editModal').find('.modal-body');
@@ -68,7 +73,7 @@ function showSpeedRunDetails(speedRunID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
+        $.get('SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&gameID=' + gameID + '&isReadOnly=true', function (data, status) {
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();

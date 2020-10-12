@@ -20,23 +20,12 @@ namespace SpeedRunApp.WebUI.Controllers
             return View(runListVM);
         }
 
-        public PartialViewResult SpeedRunSummaryList(SpeedRunListCategory category, int elementsPerPage, int elementsOffset)
+        [HttpGet]
+        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int elementsPerPage, int elementsOffset)
         {
-            var runVMs = _speedRunService.GetLatestSpeedRuns(category, elementsPerPage, elementsOffset);
-            return PartialView("_SpeedRunSummaryList", runVMs);
-        }
+            var results = _speedRunService.GetLatestSpeedRuns(category, elementsPerPage, elementsOffset);
 
-        public PartialViewResult SpeedRunSummary(string speedRunID)
-        {
-            var runVM = _speedRunService.GetSpeedRun(speedRunID);
-            return PartialView("_SpeedRunSummary", runVM);
-        }
-
-        public ViewResult SpeedRunDetails(string speedRunID)
-        {
-            var runVM = _speedRunService.GetSpeedRun(speedRunID);
-
-            return View(runVM);
+            return Json(results);
         }
 
         [HttpGet]
@@ -64,9 +53,9 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetEditSpeedRun(string speedRunID, bool isReadOnly)
+        public JsonResult GetEditSpeedRun(string speedRunID, string gameID, bool isReadOnly)
         {
-            var results = _speedRunService.GetEditSpeedRun(speedRunID, isReadOnly);
+            var results = _speedRunService.GetEditSpeedRun(speedRunID, gameID, isReadOnly);
 
             return Json(results);
         }

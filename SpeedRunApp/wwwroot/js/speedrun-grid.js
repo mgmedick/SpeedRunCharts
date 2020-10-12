@@ -472,7 +472,7 @@ function configureAndInitializeGrid(element) {
             }
         }
 
-        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden"];
+        var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden" ];
 
         var columnModel = [
             { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -486,14 +486,27 @@ function configureAndInitializeGrid(element) {
             { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
             { name: "relativeDateSubmittedString", hidden: true },
-            { name: "relativeVerifyDateString", hidden: true },
+            { name: "game", hidden: true },
+            { name: "category", hidden: true },
+            { name: "level", hidden: true },       
+            { name: "gameCoverImageLinkString", hidden: true },
+            { name: "videoLinkEmbeddedString", hidden: true },
             { name: "categoryType", hidden: true },
-            { name: "gameID", hidden: true },
-            { name: "categoryID", hidden: true },
-            { name: "levelID", hidden: true },
-            { name: "primaryTimeSeconds", hidden: true },
-            { name: "monthYearSubmitted", hidden: true },
-            { name: "subCategoryVariables", hidden: true }
+            { name: "verifyDateString", hidden: true },
+            { name: "statusType", hidden: true },
+            { name: "isEmulated", hidden: true },
+            { name: "platform", hidden: true },
+            { name: "allVariableValues", hidden: true },
+            { name: "realTimeString", hidden: true },
+            { name: "realTimeWithoutLoadsString", hidden: true },
+            { name: "gameTimeString", hidden: true }
+
+            //{ name: "gameID", hidden: true },
+            //{ name: "categoryID", hidden: true },
+            //{ name: "levelID", hidden: true },
+            //{ name: "primaryTimeSeconds", hidden: true },
+            //{ name: "monthYearSubmitted", hidden: true },
+            //{ name: "subCategoryVariables", hidden: true }
         ];
 
        $(sra.variables).filter(function () {
@@ -516,18 +529,19 @@ function configureAndInitializeGrid(element) {
     });
 
     //Column Formatters
+
     function optionsFormatter(cellvalue, options, rowObject) {
         var html = "<div>"
         html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
         html += "<div class='d-table-row'>";
-        html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
-        html += "<a href='../SpeedRun/SpeedRunSummary?speedRunID=" + cellvalue + "' data-toggle='modal' data-target='#editModal' data-backdrop='static'><i class='fas fa-play-circle'></i></a>";
+        html += "<div class='d-table-cell pl-1' style='border:none; padding:0px; width:30px;'>";
+        html += "<a href=\"javascript:showSpeedRunSummary('" + this.id + "','" + options.rowId + "');\"><i class='fas fa-play-circle'></i></a>";
         html += "</div>";
-        html += "<div class='d-table-cell pl-2 ' style='border:none; padding:0px; width:30px;'>";
-        html += "<a href=\"javascript:showSpeedRunDetails('" + cellvalue + "');\"><i class='fas fa-edit'></i></a>";
+        html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
+        html += "<a href=\"javascript:showSpeedRunDetails('" + this.id + "','" + options.rowId + "');\"><i class='fas fa-edit'></i></a>";
         html += "</div>";
-        html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
-        html += (rowObject.splitsLink) ? "<a href='" + rowObject.splitsLink + "' class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
+        html += "<div class='d-table-cell pl-1' style='border:none; padding:0px; width:30px;'>";
+        html += (rowObject.splitsLink) ? "<a href=\"javascript:showSpilts('" + this.id + "','" + options.rowId + "');\" class='options-link'><img src='/images/SplitsLogo.svg' style='width:20px;'></img></a>" : "";
         html += "</div>";
         html += "</div>";
         html += "</div>";
@@ -857,7 +871,31 @@ function filterCategories() {
     $('#divSpeedRunGridLoading').hide();
 }
 
-function showSpeedRunDetails(speedRunID) {
+function showSpeedRunSummary(gridID, rowID) {
+    var currentItem = $('#' + gridID).jqGrid("getLocalRow", rowID);
+    var $modal = $('#editModal');
+    var $modalTitle = $('#editModal').find('.modal-title');
+    var $modalBody = $('#editModal').find('.modal-body');
+    var $modalLoading = $('#editModal').find('.modal-loading');
+
+    $modalBody.hide();
+    $modalLoading.show();
+    $modal.modal('show');
+    $.get('../templates/SpeedRunSummary.html?_t=' + (new Date()).getTime(), function (summaryTemplate, status) {
+        renderTemplate(null, summaryTemplate, currentItem).then(function (result) {
+            var $header = $(result).find('.header');
+            var $body = $(result).find('.body');
+
+            $modalTitle.html($header);
+            $modalBody.html($body);
+            $modalBody.show();
+            $modalLoading.hide();
+        });
+    });
+}
+
+function showSpeedRunDetails(gridID, rowID) {
+    var currentItem = $('#' + gridID).jqGrid("getLocalRow", rowID);
     var $modal = $('#editModal');
     var $modalTitle = $('#editModal').find('.modal-title');
     var $modalBody = $('#editModal').find('.modal-body');
@@ -868,7 +906,8 @@ function showSpeedRunDetails(speedRunID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('../SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
+        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&isReadOnly=true', function (data, status) {
+            data.speedRunVM = currentItem;
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();
@@ -878,6 +917,18 @@ function showSpeedRunDetails(speedRunID) {
     });
 }
 
+function showSpilts(gridID, rowID) {
+    var $modal = $('#editModal');
+    var $modalTitle = $('#editModal').find('.modal-title');
+    var $modalBody = $('#editModal').find('.modal-body');
+    var $modalLoading = $('#editModal').find('.modal-loading');
+    $modalTitle.text("Splits");
+
+    $modalLoading.hide();
+    $modalBody.html("<div class='row'><div class='col-auto m-auto'><h4>Coming Soon</h4></div></div>");
+    $modalBody.show();
+    $modal.modal('show');
+}
 
 
 

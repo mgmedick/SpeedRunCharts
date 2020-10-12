@@ -93,8 +93,12 @@ function renderTemplate(element, template, data, functions) {
         fn: functions
     });
 
-    $(element).html(html);
-    def.resolve();
+    if (element) {
+        $(element).html(html);
+        def.resolve();
+    } else {
+        def.resolve(html);
+    }
 
     return def.promise();
 }

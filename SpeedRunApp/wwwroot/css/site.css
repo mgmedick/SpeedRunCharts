@@ -1,24 +1,20 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-bottom: 30px;
+}
+
 html {
     position: relative;
     min-height: 100%;
-}
-
-body {
-    padding-bottom: 30px;
-    font-size: 15px;
-    line-height: 22px;
-    font-weight: 500 !important;
-    /*font-family:"proxima-nova", Arial, Helvetica, sans-serif;*/
 }
 
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 30px; /* Set the fixed height of the footer here */
-    line-height: 30px; /* Vertically center the text there */
+    height: 30px;
+    line-height: 30px;
 }
 
 /* Wrapping element */
@@ -27,72 +23,6 @@ body {
     padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
-}
-
-/*@font-face {
-    font-family: 'Font Awesome 5 Free';
-    src: url('../lib/font-awesome/webfonts/fa-regular-400.ttf') format('truetype');
-    src: url('../lib/font-awesome/webfonts/fa-solid-900.ttf') format('truetype');
-}*/
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-.left {
-    float:left;
-}
-
-.right {
-    float: right;
-}
-
-.clear {
-    clear:both;
-}
-
-.inline {
-    display:inline-block;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
-
-}
-
-.bg-grey {
-    background-color: #EEE;
-}
-
-.bg-white {
-    background-color: #FFFFFF;
-}
-
-.fakeLink {
-    border: 0px;
-    background-color: transparent;
-    color: blue;
-    cursor: pointer;
-}
-
-.fakelink:hover {
-    text-decoration: underline;
 }
 
 .img-round {
@@ -110,90 +40,6 @@ body {
     object-fit: cover;
 }
 
-/** Chosen */
-.chosen-container {
-    display: block;
-}
-
-.chosen-choices {
-    min-height: 32px;
-}
-
-.chosen-container-multi .chosen-choices li.search-choice {
-    font-size: 16px;
-    border-radius: 0px;
-    background-image: unset;
-    background-color: #f4f4f4;
-    box-shadow: unset;
-    color: #405363;
-    margin: 5px 0 5px 5px;
-}
-
-.chosen-container-multi .chosen-choices li.search-field {
-    margin: 5px 0 5px 0px;
-    color: #405363;
-    font-size: 14px;
-    width: unset !important;
-}
-
-.chosen-container-multi .chosen-choices {
-    background-image: none;
-    border: 1px solid #c0c0c0;
-}
-
-.chosen-container-active .chosen-choices {
-    box-shadow: none;
-    border: 1px solid #037798;
-}
-
-.chosen-container .chosen-drop {
-    border: 1px solid #037798;
-}
-
-.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
-    font-size: 14px;
-    height: 15px;
-    padding: 0;
-    padding-left: 5px;
-}
-
-.chosen-container-single .chosen-single {
-    font-size: 16px;
-    border-radius: 0px;
-    height: 32px;
-    color: #405363;
-    line-height: 32px;
-    background-color: #fff !important;
-    background: #def0f3 url(../images/select.png) right center no-repeat;
-}
-
-.chosen-container-active.chosen-with-drop .chosen-single {
-    background-color: #fff !important;
-}
-
-.chosen-container-active.chosen-with-drop .chosen-single div b, .chosen-container-single .chosen-single div b {
-    display: none;
-}
-
-.chosen-container-single .chosen-single .chosen-choices li.search-choice {
-    margin: 5px 0 5px 5px;
-    font-size: 16px;
-    color: #405363;
-}
-
-.chosen-container-single .chosen-single .chosen-choices {
-    background-image: none;
-    border: 1px solid #FFFFFF;
-}
-
-.chosen-container-single .chosen-single .chosen-choices li.search-field {
-    width: unset !important;
-}
-
-.chosen-choices{
-    min-height:32px;
-}
-
 /** select2 **/
 .select2-container {
     font-size: 13px;
@@ -201,6 +47,12 @@ body {
 
 .select2-container--default .select2-results > .select2-results__options {
     max-height: 240px !important;
+}
+
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple
+{
+    min-height: 32px;
 }
 
 .select2-container .select2-selection--multiple .select2-selection__rendered li.select2-search input[type="search"] {
@@ -214,81 +66,9 @@ body {
     line-height: 14px;
 }
 
-input, textarea, select, option {
-    font-family: "proxima-nova", Arial,Helvetica, sans-serif;
-    border-radius: 0px;
-    outline: none;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
-    -moz-appearance: none;
-}
-
 input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     height: 32px;
-}
-
-/*input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
-select:not(.ui-pg-selbox) {
-    display:block;
-    color: #415463;
-    font-size: 16px;
-    box-sizing: border-box;
-    height: 32px;
-    line-height: 32px;
-    padding: 0 10px;
-    border: solid 1px #c0c0c0;
-}*/
-input, textarea, select, option:focus {
-    outline: none;
-}
-
-/*.form label, form label {
-    font-size: 13px;
-    display: block;
-    position: relative;
-    line-height: 14px;
-    padding-bottom: 2px;
-}
-
-.form.row > div {
-    padding-left: 5px;
-    padding-right: 5px;
-}*/
-
-/*
-.formgroup {
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-.formgroup label {
-    font-size: 14px;
-    line-height: 15px;
-    margin-bottom:0px;
-}
-*/
-
-.form-group {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    margin-bottom: 0px;
-}
-
-.form-group label {
-    font-size: 15px;
-    line-height: 18px;
-    margin-bottom: 0px;
-    display: block;
-    padding-bottom: 2px;
-    font-weight: bold;
-}
-
-.form-group label + span:not(.icon-wrapper) {
-    font-size: 14px;
-    line-height: 15px;
-    font-weight:normal;
 }
 
 input.date {
@@ -321,35 +101,6 @@ input.date {
     -webkit-animation: fa-spin 2s infinite linear;
     animation: fa-spin 2s infinite linear;
 }
-
-/*.dropdown-header {
-    padding: 8px 24px;
-    font-size: 14px;
-    white-space: nowrap;
-    color: #ffffff;
-}
-
-.dropdown-item {
-    padding: 8px 24px;
-    font-size: 14px;
-    white-space: nowrap;
-    color: #ffffff;
-}*/
-
-/*.ui-autocomplete-loading {
-    position: relative;
-    font-size: 20px;
-    display: block;
-    line-height: 32px;
-}
-
-.ui-autocomplete-loading:before {
-    content: "\f110";
-    font-family: 'Font Awesome 5 Free';
-    left: 10px;
-    position: absolute;
-}*/
-
 
 .date {
     width: 170px !important;
@@ -405,66 +156,12 @@ div.chart-placeholder + div.chart-placeholder {
     pointer-events: none;
 }
 
-/*ui-autocomplete*/
-/*
-.ui-autocomplete {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    display: none;
-    float: left;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    list-style: none;
-    font-size: 14px;
-    text-align: left;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-    background-clip: padding-box;
-}
-
-.ui-autocomplete > li > div {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333333;
-    white-space: nowrap;
-}
-
-.ui-state-hover,
-.ui-state-active,
-.ui-state-focus {
-    text-decoration: none;
-    color: #262626;
-    background-color: #f5f5f5;
-    cursor: pointer;
-}
-
-.ui-helper-hidden-accessible {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-*/
-
 .ui-autocomplete {
     width: 300px;
-    max-height:90%;
+    max-height: 240px;
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 100000;
 }
 
 .ui-menu-item-wrapper {
@@ -487,31 +184,7 @@ div.chart-placeholder + div.chart-placeholder {
     border: none !important;
 }
 
-/*links*/
-/*
-a,
-a:link,
-a:visited,
-a:active {
-    color: inherit !important;
-    text-decoration: inherit !important;
-    font-weight: inherit !important;
-}
-*/
 
-/*
-a.nostyle {
-    color: inherit !important;
-    text-decoration: inherit !important;
-    font-weight: inherit !important;
-}
-
-a.nostyle:hover {
-    color: #222222 !important;
-    text-decoration: inherit !important;
-    font-weight: inherit !important;
-}
-*/
 
 
 

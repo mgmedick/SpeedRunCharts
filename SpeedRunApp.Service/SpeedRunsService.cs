@@ -25,15 +25,13 @@ namespace SpeedRunApp.Service
 
         public SpeedRunListViewModel GetSpeedRunList()
         {
-            int elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
-            var runVMs = GetLatestSpeedRuns(SpeedRunListCategory.New, elementsPerPage, null);
             var statusTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)RunStatusType.New).ToString(), Name = RunStatusType.New.ToString() },
                                                     new IDNamePair { ID = ((int)RunStatusType.Verified).ToString(), Name = RunStatusType.Verified.ToString()},
                                                     new IDNamePair { ID = ((int)RunStatusType.Rejected).ToString(), Name = RunStatusType.Rejected.ToString()} };
             var categoryTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)CategoryType.PerGame).ToString(), Name = CategoryType.PerGame.ToString() },
                                                         new IDNamePair { ID = ((int)CategoryType.PerLevel).ToString(), Name = CategoryType.PerLevel.ToString() } };
             var platforms = _cacheHelper.GetPlatforms().Select(i => new IDNamePair { ID = i.ID, Name = i.Name });
-            var runListVM = new SpeedRunListViewModel(runVMs, statusTypes, categoryTypes, platforms);
+            var runListVM = new SpeedRunListViewModel(statusTypes, categoryTypes, platforms);
 
             return runListVM;
         }
@@ -57,42 +55,49 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunViewModel> GetSpeedRuns(RunStatusType status, RunsOrdering orderBy, int elementsPerPage, int? elementsOffset)
+        public EditSpeedRunViewModel GetEditSpeedRun(string runID, string gameID, bool isReadOnly)
         {
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
-            ClientContainer clientContainer = new ClientContainer();
+            SpeedRunViewModel runVM = null;
+            if (!string.IsNullOrWhiteSpace(runID))
+            {
+                runVM = GetSpeedRun(runID);
+            }
+            var gameDetails = _gamesService.GetGameDetails(gameID);
 
-            var runs = clientContainer.Runs.GetRuns(status: status, orderBy: orderBy, elementsPerPage: elementsPerPage, embeds: runEmbeds, elementsOffset: elementsOffset);
-            var runVMs = runs.Where(i => i.Videos.EmbededLinks != null && i.Videos.EmbededLinks.Any(g => g != null)).Select(i => new SpeedRunViewModel(i));
-
-            return runVMs;
-        }
-
-        public SpeedRunViewModel GetSpeedRun(string runID)
-        {
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
-            ClientContainer clientContainer = new ClientContainer();
-            var run = clientContainer.Runs.GetRun(runID, runEmbeds);
-            var runVM = new SpeedRunViewModel(run);
-
-            return runVM;
-        }
-
-        public EditSpeedRunViewModel GetEditSpeedRun(string runID, bool isReadOnly)
-        {
-            ClientContainer clientContainer = new ClientContainer();
-         
-            var runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
-            var run = clientContainer.Runs.GetRun(runID, runEmbeds);
-            var runVM = new SpeedRunViewModel(run);
-
-            var gameDetails = _gamesService.GetGameDetails(runVM.Game.ID);
             var statusTypes = new List<IDNamePair> { new IDNamePair { ID = ((int)RunStatusType.New).ToString(), Name = RunStatusType.New.ToString() },
                                                     new IDNamePair { ID = ((int)RunStatusType.Verified).ToString(), Name = RunStatusType.Verified.ToString()},
                                                     new IDNamePair { ID = ((int)RunStatusType.Rejected).ToString(), Name = RunStatusType.Rejected.ToString()} };
             var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameDetails.CategoryTypes, gameDetails.Categories, gameDetails.Levels, gameDetails.Platforms, gameDetails.Variables, runVM, isReadOnly);
 
             return editSpeedRunVM;
+        }
+
+        public SpeedRunViewModel GetSpeedRun(string runID, SpeedRunEmbeds runEmbeds = null)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            if (runEmbeds == null)
+            {
+                runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
+            }
+
+            var run = clientContainer.Runs.GetRun(runID, runEmbeds);
+            var runVM = new SpeedRunViewModel(run);
+
+            return runVM;
+        }
+
+        public IEnumerable<SpeedRunViewModel> GetSpeedRuns(RunStatusType status, RunsOrdering orderBy, int elementsPerPage, int? elementsOffset, SpeedRunEmbeds runEmbeds = null)
+        {
+            ClientContainer clientContainer = new ClientContainer();
+            if (runEmbeds == null)
+            {
+                runEmbeds = new SpeedRunEmbeds { EmbedGame = true, EmbedPlayers = true, EmbedCategory = true, EmbedLevel = false, EmbedPlatform = false };
+            }
+
+            var runs = clientContainer.Runs.GetRuns(status: status, orderBy: orderBy, elementsPerPage: elementsPerPage, embeds: runEmbeds, elementsOffset: elementsOffset);
+            var runVMs = runs.Where(i => i.Videos.EmbededLinks != null && i.Videos.EmbededLinks.Any(g => g != null)).Select(i => new SpeedRunViewModel(i));
+
+            return runVMs;
         }
 
         public IEnumerable<SearchResult> SearchGamesAndUsers(string term)

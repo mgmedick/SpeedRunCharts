@@ -1,0 +1,46 @@
+﻿<div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
+    <div class="speedRunSummary p-2 bg-dark">
+        <div class="header p-0 pb-2 container d-flex">
+            <div class="p-0 col-2 align-self-center">
+                <div class="img-round">
+                    <img src="<%= item.gameCoverImageLinkString %>" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+            <div class="pl-2 align-self-center">
+                <div>
+                    <small class="text-muted">Posted <%= item.relativeDateSubmittedString %></small>
+                </div>
+                <div>
+                    <h5>
+                        <a href='../Game/GameDetails?gameID=<%=item.game.id%>' class="text-primary"><%= item.game.name %></a>
+                        <small class="text-secondary"><%= item.category.name %></small>
+                    </h5>
+                </div>
+                <div class="row no-gutters text-secondary">
+                    <div class="col-xs-4">
+                        <% _.each(item.players, function(ft, index) { %>
+                        <a href="../User/UserDetails?userID=<%=ft.id%>" class="text-secondary"><%= ft.name %></a> <%= (item.players.length == index) ? ', ' : '' %>
+                        <% }) %>
+                    </div>
+                    <div class="col-xs-4 ml-1">
+                        - <%= item.primaryTimeString %>
+                    </div>
+                    <div class="col-xs-4 ml-1">
+                    </div>
+                </div>
+            </div>
+            <div class="p-0 ml-auto align-self-center">
+                <a title="Details" href="javascript:showSpeedRunDetails('<%= item.id %>','<%= item.game.id %>');" class="btn btn-primary btn-large detail">Details</a>
+            </div>
+        </div>
+        <div class="body p-0 embed-responsive embed-responsive-16by9">
+            <iframe src="<%= item.videoLinkEmbeddedString %>"
+                    frameborder="0"
+                    scrolling="no"
+                    allowfullscreen="true"></iframe>
+        </div>
+    </div>
+</div>
+
+
+

@@ -44,7 +44,7 @@
       "destination": "wwwroot/lib/underscore.js/",
       "files": [
         "underscore-min.js",
-        "underscore.js"
+        "underscore.js" 
       ]
     },
     {

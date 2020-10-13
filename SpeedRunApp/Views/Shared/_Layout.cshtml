@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SpeedRunApp</title>
+    <title>@ViewData["Title"] - SpeedRunStats</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -37,16 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" asp-area="" asp-controller="SpeedRunController" asp-action="SpeedRunList">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
+                    <a class="nav-link" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">Home</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -73,7 +64,7 @@
         @RenderBody()
         <hr />
         <footer class="footer">
-            <p>&copy; 2019 - SpeedRunApp</p>
+            <p>&copy; 2020 - SpeedRunStats</p>
         </footer>
     </div>
     <environment include="Development">

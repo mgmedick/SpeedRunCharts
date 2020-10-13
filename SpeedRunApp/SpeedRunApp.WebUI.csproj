@@ -49,6 +49,9 @@
   <ItemGroup>
     <Content Remove="wwwroot\css\bootstrap_lumen.css" />
     <Content Remove="wwwroot\css\bootstrap_theme_dark.css" />
+    <Content Remove="wwwroot\css\bootstrap-theme %28copy%29.css" />
+    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
+    <Content Remove="wwwroot\css\bootstrap-theme.min.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\User\UserDetails.cshtml">

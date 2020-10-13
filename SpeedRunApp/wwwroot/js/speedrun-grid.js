@@ -101,7 +101,7 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 }
 
 function initializeSearchSpeedRunGridEvents(element) {
-    $(element).find('.select2').select2({ width: "150px" });
+    $(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Tab Filters", linkDisplayedText: "Hide Tab Filters" });
 
     $('#drpCategoryTypes').change(function () {
@@ -829,8 +829,8 @@ function initializeCharts(element, data) {
     if (sra.sender == "User") {
         sra['charts'] = [
             new userTopSpeedRunsChart($(element).find('.chart-container-0'), { chartData: data, topAmount: 10 }),
-            new userSpeedRunsByDateChart($(element).find('.chart-container-1'), { chartData: data }),
-            new userSpeedRunsPercentileChart($(element).find('.chart-container-2'), { chartData: data })
+            new userSpeedRunsPercentileChart($(element).find('.chart-container-1'), { chartData: data }),
+            new userSpeedRunsByDateChart($(element).find('.chart-container-2'), { chartData: data })
         ];
     } else {
         sra['charts'] = [
@@ -900,7 +900,7 @@ function showSpeedRunDetails(gridID, rowID) {
     var $modalTitle = $('#editModal').find('.modal-title');
     var $modalBody = $('#editModal').find('.modal-body');
     var $modalLoading = $('#editModal').find('.modal-loading');
-    $modalTitle.text("Details");
+    $modalTitle.html("<h5>Details</h5>");
 
     $modalBody.hide();
     $modalLoading.show();
@@ -922,7 +922,7 @@ function showSpilts(gridID, rowID) {
     var $modalTitle = $('#editModal').find('.modal-title');
     var $modalBody = $('#editModal').find('.modal-body');
     var $modalLoading = $('#editModal').find('.modal-loading');
-    $modalTitle.text("Splits");
+    $modalTitle.html("<h5>Splits</h5>");
 
     $modalLoading.hide();
     $modalBody.html("<div class='row'><div class='col-auto m-auto'><h4>Coming Soon</h4></div></div>");

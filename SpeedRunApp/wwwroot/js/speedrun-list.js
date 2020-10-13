@@ -67,7 +67,7 @@ function showSpeedRunDetails(speedRunID, gameID) {
     var $modalTitle = $('#editModal').find('.modal-title');
     var $modalBody = $('#editModal').find('.modal-body');
     var $modalLoading = $('#editModal').find('.modal-loading');
-    $modalTitle.text("Details");
+    $modalTitle.html("<h5>Details</h5>");
 
     $modalBody.hide();
     $modalLoading.show();

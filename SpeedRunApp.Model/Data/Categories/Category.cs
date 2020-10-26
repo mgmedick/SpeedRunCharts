@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpeedRunApp.Model.Entity;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -140,6 +141,18 @@ namespace SpeedRunApp.Model.Data
         public override string ToString()
         {
             return Name;
+        }
+
+        public CategoryEntity ConvertToEntity()
+        {
+            return new CategoryEntity
+            {
+                ID = this.ID,
+                Name = this.Name,
+                Rules = this.Rules,
+                GameID = this.GameID,
+                CategoryTypeID = (int)this.Type
+            };
         }
     }
 }

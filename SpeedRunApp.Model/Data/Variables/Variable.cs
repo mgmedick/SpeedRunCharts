@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpeedRunApp.Model.Entity;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -130,6 +131,19 @@ namespace SpeedRunApp.Model.Data
         public override string ToString()
         {
             return Name;
+        }
+
+        public VariableEntity ConvertToEntity()
+        {
+            return new VariableEntity
+            {
+                ID = this.ID,
+                Name = this.Name,
+                GameID = this.GameID,
+                VariableScopeTypeID = (int)this.Scope.Type,
+                CategoryID = this.CategoryID,
+                LevelID = this.Scope.LevelID
+            };
         }
     }
 }

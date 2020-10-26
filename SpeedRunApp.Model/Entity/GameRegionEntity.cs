@@ -9,4 +9,4 @@ namespace SpeedRunApp.Model.Entity
         public string GameID { get; set; }
         public string RegionID { get; set; }
     }
-}
+} 

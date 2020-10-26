@@ -13,3 +13,4 @@ namespace SpeedRunApp.Model.Entity
         public int CategoryTypeID { get; set; }
     }
 }
+

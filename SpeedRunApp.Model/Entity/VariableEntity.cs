@@ -13,4 +13,4 @@ namespace SpeedRunApp.Model.Entity
         public string CategoryID { get; set; }
         public string LevelID { get; set; }
     }
-}
+} 

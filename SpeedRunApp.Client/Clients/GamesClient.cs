@@ -28,7 +28,8 @@ namespace SpeedRunApp.Client
             string platformId = null, string regionId = null,
             string moderatorId = null, int? elementsPerPage = null,
             GameEmbeds embeds = null,
-            GamesOrdering orderBy = default(GamesOrdering))
+            GamesOrdering orderBy = default(GamesOrdering),
+            int? elementsOffset = null)
         {
             var parameters = new List<string>() { embeds?.ToString() };
 
@@ -51,6 +52,9 @@ namespace SpeedRunApp.Client
 
             if (elementsPerPage.HasValue)
                 parameters.Add(string.Format("max={0}", elementsPerPage.Value));
+
+            if (elementsOffset.HasValue)
+                parameters.Add(string.Format("offset={0}", elementsOffset));
 
             var uri = GetGamesUri(parameters.ToParameters());
             return DoRequest(uri, x => Parse(x) as Game);
@@ -198,11 +202,17 @@ namespace SpeedRunApp.Client
 
             game.IsRomHack = gameElement.romhack;
 
-            var created = gameElement.created as string;
-            if (!string.IsNullOrWhiteSpace(created))
+            if (gameElement.created != null)
             {
-                game.CreationDate = DateTime.Parse(created, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+                game.CreationDate = gameElement.created;
             }
+
+            //game.CreationDate = gameElement.created as DateTime?;
+            //var created = gameElement.created as string;
+            //if (!string.IsNullOrWhiteSpace(created))
+            //{
+            //    game.CreationDate = DateTime.Parse(created, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            //}
 
             game.Assets = Client.Common.ParseAssets(gameElement.assets);
 

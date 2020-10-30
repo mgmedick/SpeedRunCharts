@@ -73,7 +73,8 @@ namespace SpeedRunApp.Client
             string twitch = null, string hitbox = null,
             string twitter = null, string speedrunslive = null,
             int? elementsPerPage = null,
-            UsersOrdering orderBy = default(UsersOrdering))
+            UsersOrdering orderBy = default(UsersOrdering),
+            int? elementsOffset = null)
         {
             var parameters = new List<string>();
 
@@ -182,9 +183,14 @@ namespace SpeedRunApp.Client
             user.NameStyle = ParseUserNameStyle(properties["name-style"]) as UserNameStyle;
             user.Role = parseUserRole(userElement.role as string);
 
-            var signUpDate = userElement.signup as string;
-            if (!string.IsNullOrEmpty(signUpDate))
-                user.SignUpDate = DateTime.Parse(signUpDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+            //var signUpDate = userElement.signup as string;
+            //if (!string.IsNullOrEmpty(signUpDate))
+            //    user.SignUpDate = DateTime.Parse(signUpDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
+
+            if (userElement.signup != null)
+            {
+                user.SignUpDate = userElement.signup;
+            }
 
             user.Location = ParseLocation(userElement.location) as Location;
 

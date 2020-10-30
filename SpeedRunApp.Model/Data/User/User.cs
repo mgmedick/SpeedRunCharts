@@ -1,4 +1,5 @@
 ﻿using System;
+using SpeedRunApp.Model.Entity;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -48,5 +49,26 @@ namespace SpeedRunApp.Model.Data
 
         //private Lazy<Uri> _profileImageUri { get; set; }
         //public Uri ProfileImageUri { get { return _profileImageUri.Value; } }
+
+        public UserEntity ConvertToEntity()
+        {
+            return new UserEntity
+            {
+                ID = this.ID,
+                Name = this.Name,
+                JapaneseName = this.JapaneseName,
+                UserRoleID = (int)this.Role,
+                Location = this.Location?.ToString(),
+                ProfileUrl = this.WebLink.ToString(),
+                ProfileImageUrl = this.ProfileImage?.ToString(),
+                TwitchProfileUrl = this.TwitchProfile?.ToString(),
+                HitboxProfileUrl = this.HitboxProfile?.ToString(),
+                YoutubeProfileUrl = this.YoutubeProfile?.ToString(),
+                TwitterProfileUrl = this.TwitterProfile?.ToString(),
+                SpeedRunsLiveProfileUrl = this.SpeedRunsLiveProfile?.ToString(),
+                SpeedRunComCreatedDate = this.SignUpDate,
+                CreatedDate = DateTime.Now
+            };
+        }
     }
 }

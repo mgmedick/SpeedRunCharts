@@ -58,10 +58,13 @@ namespace SpeedRunApp.Model.Data
                 Name = this.Name,
                 JapaneseName = this.JapaneseName,
                 Abbreviation = this.Abbreviation,
+                RuleSet = this.Ruleset.ToString(),
                 YearOfRelease = this.YearOfRelease,
                 IsRomHack = this.IsRomHack,
-                SpeedRunComCreatedDate = this.CreationDate,
-                CreatedDate = DateTime.Now
+                SpeedRunComUrl = this.WebLink.ToString(),
+                CoverImageUrl = this.Assets?.CoverLarge?.Uri.ToString(),
+                CreatedDate = this.CreationDate,
+                ImportedDate = DateTime.Now
             };
         }
     }

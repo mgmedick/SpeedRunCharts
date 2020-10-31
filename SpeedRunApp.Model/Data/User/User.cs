@@ -59,15 +59,15 @@ namespace SpeedRunApp.Model.Data
                 JapaneseName = this.JapaneseName,
                 UserRoleID = (int)this.Role,
                 Location = this.Location?.ToString(),
-                ProfileUrl = this.WebLink.ToString(),
+                SpeedRunComUrl = this.WebLink.ToString(),
                 ProfileImageUrl = this.ProfileImage?.ToString(),
                 TwitchProfileUrl = this.TwitchProfile?.ToString(),
                 HitboxProfileUrl = this.HitboxProfile?.ToString(),
                 YoutubeProfileUrl = this.YoutubeProfile?.ToString(),
                 TwitterProfileUrl = this.TwitterProfile?.ToString(),
                 SpeedRunsLiveProfileUrl = this.SpeedRunsLiveProfile?.ToString(),
-                SpeedRunComCreatedDate = this.SignUpDate,
-                CreatedDate = DateTime.Now
+                SignUpDate = this.SignUpDate,
+                ImportedDate = DateTime.Now
             };
         }
     }

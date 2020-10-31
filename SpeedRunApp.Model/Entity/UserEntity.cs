@@ -11,14 +11,14 @@ namespace SpeedRunApp.Model.Entity
         public string JapaneseName { get; set; }
         public int UserRoleID { get; set; }
         public string Location { get; set; }
-        public string ProfileUrl { get; set; }
+        public string SpeedRunComUrl { get; set; }
         public string ProfileImageUrl { get; set; }
         public string TwitchProfileUrl { get; set; }
         public string HitboxProfileUrl { get; set; }
         public string YoutubeProfileUrl { get; set; }
         public string TwitterProfileUrl { get; set; }
         public string SpeedRunsLiveProfileUrl { get; set; }
-        public DateTime? SpeedRunComCreatedDate { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? SignUpDate { get; set; }
+        public DateTime ImportedDate { get; set; }
     }
 } 

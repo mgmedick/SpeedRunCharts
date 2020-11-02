@@ -102,7 +102,7 @@ namespace SpeedRunApp.Model.Data
                 RunDate = this.Date,
                 DateSubmitted = this.DateSubmitted,
                 VerifyDate = this.VerifyDate,
-                ModifedDate = modifiedDate
+                ModifiedDate = modifiedDate
             };
         }
     }

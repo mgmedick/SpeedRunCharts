@@ -27,6 +27,6 @@ namespace SpeedRunApp.Model.Entity
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
         public DateTime ImportedDate { get; set; }
-        public DateTime? ModifedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 } 

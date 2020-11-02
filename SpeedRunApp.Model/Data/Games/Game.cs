@@ -63,8 +63,7 @@ namespace SpeedRunApp.Model.Data
                 IsRomHack = this.IsRomHack,
                 SpeedRunComUrl = this.WebLink.ToString(),
                 CoverImageUrl = this.Assets?.CoverLarge?.Uri.ToString(),
-                CreatedDate = this.CreationDate,
-                ImportedDate = DateTime.Now
+                CreatedDate = this.CreationDate
             };
         }
     }

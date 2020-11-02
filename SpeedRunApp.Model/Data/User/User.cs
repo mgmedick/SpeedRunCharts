@@ -66,8 +66,7 @@ namespace SpeedRunApp.Model.Data
                 YoutubeProfileUrl = this.YoutubeProfile?.ToString(),
                 TwitterProfileUrl = this.TwitterProfile?.ToString(),
                 SpeedRunsLiveProfileUrl = this.SpeedRunsLiveProfile?.ToString(),
-                SignUpDate = this.SignUpDate,
-                ImportedDate = DateTime.Now
+                SignUpDate = this.SignUpDate
             };
         }
     }

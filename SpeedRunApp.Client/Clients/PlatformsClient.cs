@@ -43,7 +43,8 @@ namespace SpeedRunApp.Client
         //}
 
         public IEnumerable<Platform> GetPlatforms(int? elementsPerPage = null,
-            PlatformsOrdering orderBy = default(PlatformsOrdering))
+            PlatformsOrdering orderBy = default(PlatformsOrdering),
+            int? elementsOffset = null)
         {
             var parameters = new List<string>();
 
@@ -51,6 +52,9 @@ namespace SpeedRunApp.Client
 
             if (elementsPerPage.HasValue)
                 parameters.Add(string.Format("max={0}", elementsPerPage.Value));
+
+            if (elementsOffset.HasValue)
+                parameters.Add(string.Format("offset={0}", elementsOffset));
 
             var uri = GetPlatformsUri(parameters.ToParameters());
 

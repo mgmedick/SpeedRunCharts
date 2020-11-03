@@ -1,4 +1,6 @@
-﻿namespace SpeedRunApp.Model.Data
+﻿using SpeedRunApp.Model.Entity;
+
+namespace SpeedRunApp.Model.Data
 {
     public class Platform
     {
@@ -54,6 +56,16 @@
         public override string ToString()
         {
             return Name;
+        }
+
+        public PlatformEntity ConvertToEntity()
+        {
+            return new PlatformEntity
+            {
+                ID = this.ID,
+                Name = this.Name,
+                YearOfRelease = this.YearOfRelease
+            };
         }
     }
 }

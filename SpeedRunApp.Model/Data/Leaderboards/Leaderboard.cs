@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpeedRunApp.Model.Entity;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -47,5 +48,15 @@ namespace SpeedRunApp.Model.Data
         //public Region RegionFilter { get { return regionFilter.Value; } }
 
         //public Leaderboard() { }
+
+        public LeaderboardEntity ConvertToEntity()
+        {
+            return new LeaderboardEntity
+            {
+                GameID = this.GameID,
+                CategoryID = this.CategoryID,
+                LevelID = this.LevelID
+            };
+        }
     }
 }

@@ -8,9 +8,9 @@ namespace SpeedRunApp.Model.Entity
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public IEnumerable<CategoryEntity> Categories { get; set; }
-        public IEnumerable<LevelEntity> Levels { get; set; }
-
+        public string CategoryIDs { get; set; }
+        public string CategoryTypeIDs { get; set; }
+        public string LevelIDs { get; set; }
         /*
         public string JapaneseName { get; set; }
         public string Abbreviation { get; set; }

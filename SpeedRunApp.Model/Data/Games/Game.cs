@@ -58,7 +58,6 @@ namespace SpeedRunApp.Model.Data
                 Name = this.Name,
                 JapaneseName = this.JapaneseName,
                 Abbreviation = this.Abbreviation,
-                RuleSet = this.Ruleset.ToString(),
                 YearOfRelease = this.YearOfRelease,
                 IsRomHack = this.IsRomHack,
                 SpeedRunComUrl = this.WebLink.ToString(),

@@ -101,6 +101,9 @@ namespace SpeedRunApp.Client
             if (elementsPerPage.HasValue)
                 parameters.Add(string.Format("max={0}", elementsPerPage));
 
+            if (elementsOffset.HasValue)
+                parameters.Add(string.Format("offset={0}", elementsOffset));
+
             parameters.AddRange(orderBy.ToParameters());
 
             var uri = GetUsersUri(parameters.ToParameters());

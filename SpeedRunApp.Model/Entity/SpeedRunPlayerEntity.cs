@@ -6,6 +6,7 @@ namespace SpeedRunApp.Model.Entity
 {
     public class SpeedRunPlayerEntity
     {
+        public int ID { get; set; }
         public string SpeedRunID { get; set; }
         public bool IsUser { get; set; }
         public string UserID { get; set; }

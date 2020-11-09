@@ -6,6 +6,7 @@ namespace SpeedRunApp.Model.Entity
 {
     public class SpeedRunEntity
     {
+        public int IDX { get; set; }
         public string ID { get; set; }
         public int StatusTypeID { get; set; }
         public string GameID { get; set; }
@@ -14,10 +15,10 @@ namespace SpeedRunApp.Model.Entity
         public string PlatformID { get; set; }
         public string RegionID { get; set; }
         public bool IsEmulated { get; set; }
-        public TimeSpan? PrimaryTime { get; set; }
-        public TimeSpan? RealTime { get; set; }
-        public TimeSpan? RealTimeWithoutLoads { get; set; }
-        public TimeSpan? GameTime { get; set; }
+        public long? PrimaryTime { get; set; }
+        public long? RealTime { get; set; }
+        public long? RealTimeWithoutLoads { get; set; }
+        public long? GameTime { get; set; }
         public string Comment { get; set; }
         public string ExaminerUserID { get; set; }
         public string RejectReason { get; set; }

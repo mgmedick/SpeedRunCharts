@@ -6,6 +6,7 @@ namespace SpeedRunApp.Model.Entity
 {
     public class UserEntity
     {
+        public int IDX { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
         public string JapaneseName { get; set; }

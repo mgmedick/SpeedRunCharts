@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Games\" />
-    <Folder Include="Data\Leaderboards\" />
     <Folder Include="Data\User\" />
     <Folder Include="Data\Common\" />
     <Folder Include="Data\Categories\" />

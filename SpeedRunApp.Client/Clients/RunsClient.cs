@@ -152,7 +152,6 @@ namespace SpeedRunApp.Client
             }
 
             //Parse embeds
-            //if (runElement.players is IEnumerable<dynamic>) IList
             if (runElement.players is IList)
             {
                 Func<dynamic, Player> parsePlayer = x => Client.Common.ParsePlayer(x) as Player;

@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SpeedRunStats</title>
+    <title>@ViewData["Title"] - SpeedRunCharts</title>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -30,7 +30,7 @@
 </head>
 <body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">SpeedRunStats</a>
+        <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">SpeedRunCharts</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -64,7 +64,7 @@
         @RenderBody()
         <hr />
         <footer class="footer">
-            <p>&copy; 2020 - SpeedRunStats</p>
+            <p>&copy; 2020 - SpeedRunCharts</p>
         </footer>
     </div>
     <environment include="Development">

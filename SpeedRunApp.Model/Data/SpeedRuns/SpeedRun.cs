@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpeedRunApp.Model.Entity;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -76,5 +77,33 @@ namespace SpeedRunApp.Model.Data
         public Region Region { get { return System.Region; } }
         public IEnumerable<Variable> Variables { get; set; }
         public IEnumerable<VariableValue> VariableValues { get; set; }
+
+        public SpeedRunEntity ConvertToEntity(DateTime? modifiedDate = null)
+        {
+            return new SpeedRunEntity
+            {
+                ID = this.ID,
+                StatusTypeID = (int)this.Status.Type,
+                GameID = this.GameID,
+                CategoryID = this.CategoryID,
+                LevelID = this.LevelID,
+                PlatformID = this.System.PlatformID,
+                RegionID = this.System.RegionID,
+                IsEmulated = this.System.IsEmulated,
+                PrimaryTime = this.Times.Primary?.Ticks,
+                RealTime = this.Times.RealTime?.Ticks,
+                RealTimeWithoutLoads = this.Times.RealTimeWithoutLoads?.Ticks,
+                GameTime = this.Times.GameTime?.Ticks,
+                Comment = this.Comment,
+                ExaminerUserID = this.Status.ExaminerUserID,
+                RejectReason = this.Status.Reason,
+                SpeedRunComUrl = this.WebLink.ToString(),
+                SplitsUrl = this.SplitsUri?.ToString(),
+                RunDate = this.Date,
+                DateSubmitted = this.DateSubmitted,
+                VerifyDate = this.VerifyDate,
+                ModifiedDate = modifiedDate
+            };
+        }
     }
 }

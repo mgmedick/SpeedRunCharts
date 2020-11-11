@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Collections;
 
 namespace SpeedRunApp.Client
 {
@@ -139,7 +140,7 @@ namespace SpeedRunApp.Client
             run.System = ParseRunSystem(runElement.system, properties) as SpeedRunSystem;
 
             var splits = runElement.splits;
-            if (splits != null)
+            if (splits != null && !(splits is string))
             {
                 run.SplitsUri = new Uri(splits.uri as string);
             }
@@ -151,7 +152,7 @@ namespace SpeedRunApp.Client
             }
 
             //Parse embeds
-            if (runElement.players is IEnumerable<dynamic>)
+            if (runElement.players is IList)
             {
                 Func<dynamic, Player> parsePlayer = x => Client.Common.ParsePlayer(x) as Player;
                 run.Players = ParseCollection(runElement.players, parsePlayer);

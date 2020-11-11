@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using SpeedRunApp.Model.Entity;
+using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {

@@ -1,4 +1,6 @@
-﻿namespace SpeedRunApp.Model.Data
+﻿using SpeedRunApp.Model.Entity;
+
+namespace SpeedRunApp.Model.Data
 {
     public class VariableValue
     {
@@ -76,6 +78,17 @@
         public override string ToString()
         {
             return Value;
+        }
+
+        public VariableValueEntity ConvertToEntity()
+        {
+            return new VariableValueEntity
+            {
+                ID = this.ID,
+                VariableID = this.VariableID,
+                Value = this.Value,
+                IsCustomValue = this.IsCustomValue
+            };
         }
     }
 }

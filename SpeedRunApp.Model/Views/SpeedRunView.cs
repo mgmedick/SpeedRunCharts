@@ -4,9 +4,8 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Entity
 {
-    public class SpeedRunEntity
+    public class SpeedRunView
     {
-        public int OrderValue { get; set; }
         public string ID { get; set; }
         public int StatusTypeID { get; set; }
         public string GameID { get; set; }

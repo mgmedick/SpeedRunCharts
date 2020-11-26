@@ -6,4 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
 </Project>

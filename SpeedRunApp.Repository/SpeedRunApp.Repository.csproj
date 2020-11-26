@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
   </ItemGroup>
 

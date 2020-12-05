@@ -37,6 +37,7 @@ namespace SpeedRunApp
                 scanner.TheCallingAssembly();
                 scanner.Assembly("SpeedRunApp.Interfaces");
                 scanner.Assembly("SpeedRunApp.Service");
+                scanner.Assembly("SpeedRunApp.Repository");
                 scanner.WithDefaultConventions();
                 scanner.SingleImplementationsOfInterface();
             });

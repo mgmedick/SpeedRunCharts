@@ -14,18 +14,27 @@ namespace SpeedRunApp.Repository
 {
     public class SpeedRunRespository : BaseRepository, ISpeedRunRepository
     {
-        private readonly ILogger _logger;
-
-        public SpeedRunRespository(ILogger logger)
-        {
-            _logger = logger;
-        }
-
-        public IEnumerable<SpeedRunView> GetTop5PercentSpeedRuns()
+        public IEnumerable<SpeedRunView> GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunEntity>().Where(predicate).ToList();
+                return db.Query<SpeedRunView>("EXEC dbo.GetLatestSpeedRuns @0, @1, @2", (int)category, topAmount, orderValueOffset).ToList();
+            }
+        }
+
+        public SpeedRunView GetSpeedRunView(string speedRunID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunView>().Where(i => i.ID == speedRunID).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<IDNamePair> RunStatusTypes()
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_RunStatusType").ToList();
             }
         }
     }

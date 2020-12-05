@@ -213,4 +213,10 @@ namespace SpeedRunApp.Model
         Verified = 1,
         Rejected = 2
     }
+
+    public enum SpeedRunListCategory1
+    {
+        New = 0,
+        Top5Perc = 1
+    }
 }

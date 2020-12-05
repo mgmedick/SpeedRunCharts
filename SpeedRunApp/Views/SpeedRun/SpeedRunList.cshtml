@@ -1,6 +1,6 @@
 ﻿@using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
-@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
+@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel1
 
 @{ ViewBag.Title = "SpeedRunList"; }
 
@@ -10,12 +10,9 @@
 
     <script>
         $(document).ready(function () {
-            var _statusTypes = @Html.Raw(Json.Serialize(Model.StatusTypes));
-            var _categoryTypes = @Html.Raw(Json.Serialize(Model.CategoryTypes));
-            var _platforms = @Html.Raw(Json.Serialize(Model.Platforms));
-            var _elementsPerPage = @Json.Serialize(@Configuration.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
+            var _elementsPerPage = @Json.Serialize(Model.ElementsPerPage);
 
-            initializeClient(_statusTypes, _categoryTypes, _platforms, _elementsPerPage);
+            initializeClient(_elementsPerPage);
         })
     </script>
 }
@@ -29,10 +26,7 @@
                         <input type="radio" class="category" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
                     </label>
                     <label class="btn btn-primary btn-sm">
-                        <input type="radio" class="category" id="btnCategory1" name="btnCategory" autocomplete="off" value="1"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Verified
-                    </label>
-                    <label class="btn btn-primary btn-sm">
-                        <input type="radio" class="category" id="btnCategory2" name="btnCategory" autocomplete="off" value="2"><i class="fa fa-times-circle fa-lg"></i>&nbsp;Rejected
+                        <input type="radio" class="category" id="btnCategory1" name="btnCategory" autocomplete="off" value="1"><i class="fa fa-check-circle fa-lg"></i>&nbsp;Top 5%
                     </label>
                 </div>
             </div>

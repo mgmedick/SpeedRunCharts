@@ -46,10 +46,14 @@ namespace SpeedRunApp.Repository
             For<LeaderboardEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Leaderboard").Columns(i => {
                 i.Column(g => g.ImportedDate).Ignore();
             });
-            For<PlatformEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Platform").Columns(i => {
+            For<PlatformEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Platform").Columns(i =>
+            {
                 i.Column(g => g.OrderValue).Ignore();
                 i.Column(g => g.ImportedDate).Ignore();
             });
+
+            For<SpeedRunView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRun");
+            For<GameView>().PrimaryKey("ID", true).TableName("dbo.vw_Game");
         }
     }
 }

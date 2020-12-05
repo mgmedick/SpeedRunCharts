@@ -16,7 +16,7 @@ namespace SpeedRunApp.Repository.Configuration
 
             BaseRepository.DBFactory = DatabaseFactory.Config(i =>
             {
-                i.UsingDatabase(() => new Database(connectionString, DatabaseType.SqlServer2012, SqlClientFactory.Instance));
+                i.UsingDatabase(() => new Database(connectionString, DatabaseType.SQLite, SqlClientFactory.Instance));
                 i.WithFluentConfig(fluentConfig);
             });
         }

@@ -21,9 +21,11 @@
         <label class="col-sm-2 col-form-label">Players</label>
         <div class="col-sm-10">
             <select id="lstUserSearch" name="players" class="user-search" placeholder="Search Users" multiple>
-                <% _.each(item.speedRunVM.players, function(ft, index) { %>
+                <% if(item.speedRunVM) {
+                _.each(item.speedRunVM.players, function(ft, index) { %>
                 <option value="<%= ft.id %>" selected><%= ft.name %></option>
                 <% }) %>
+                <% } %>
             </select>
         </div>
     </div>
@@ -139,7 +141,7 @@
     <div class="form-group row no-gutters">
         <div class="col-sm-10 m-auto">
             <div class="p-0 embed-responsive embed-responsive-16by9">
-                <iframe src="<%= item.speedRunVM.videoLinkEmbeddedString %>"
+                <iframe src="<%= item.speedRunVM.videoLink %>"
                         frameborder="0"
                         scrolling="no"
                         allowfullscreen="true"></iframe>

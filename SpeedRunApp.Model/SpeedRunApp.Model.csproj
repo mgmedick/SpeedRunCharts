@@ -5,16 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data_Old\Games\" />
-    <Folder Include="Data_Old\User\" />
-    <Folder Include="Data_Old\Common\" />
-    <Folder Include="Data_Old\Categories\" />
-    <Folder Include="Data_Old\Variables\" />
-    <Folder Include="Data_Old\Levels\" />
-    <Folder Include="Data_Old\Platforms\" />
-    <Folder Include="Data_Old\Regions\" />
-    <Folder Include="Data_Old\Embeds\" />
-    <Folder Include="Views\" />
+    <Compile Remove="Data_Old\**" />
+    <Compile Remove="Views\**" />
+    <EmbeddedResource Remove="Data_Old\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Data_Old\**" />
+    <None Remove="Views\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Common.cs" />

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using SpeedRunApp.Model;
-using SpeedRunApp.Model.Entity;
+﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace SpeedRunApp.Interfaces.Repositories
 {

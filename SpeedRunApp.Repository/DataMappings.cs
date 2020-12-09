@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NPoco.FluentMappings;
-using SpeedRunApp.Model.Entity;
+using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.Repository
 {
@@ -10,48 +10,49 @@ namespace SpeedRunApp.Repository
     {
         public DataMappings()
         {
-            For<SettingEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Setting");
-            For<GameEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Game").Columns(i => {
+            /*
+            For<Setting>().PrimaryKey("ID", false).TableName("dbo.tbl_Setting");
+            For<Game>().PrimaryKey("ID", false).TableName("dbo.tbl_Game").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
                 i.Column(g => g.ImportedDate).Ignore();
             });
-            For<LevelEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Level").Columns(i => {
+            For<Level>().PrimaryKey("ID", false).TableName("dbo.tbl_Level").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
             });
-            For<CategoryEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Category").Columns(i => {
+            For<Category>().PrimaryKey("ID", false).TableName("dbo.tbl_Category").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
             });
-            For<VariableEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Variable").Columns(i => {
+            For<Variable>().PrimaryKey("ID", false).TableName("dbo.tbl_Variable").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
             });
-            For<VariableValueEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_VariableValue").Columns(i => {
+            For<VariableValue>().PrimaryKey("ID", false).TableName("dbo.tbl_VariableValue").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
             });
-            For<GamePlatformEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Platform");
-            For<GameRegionEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Region");
-            For<GameModeratorEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Moderator");
-            For<GameRulesetEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Ruleset");
-            For<GameTimingMethodEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_TimingMethod");
-            For<UserEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_User").Columns(i => {
-                i.Column(g => g.OrderValue).Ignore();
-                i.Column(g => g.ImportedDate).Ignore();
-            });
-            For<SpeedRunEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_SpeedRun").Columns(i => {
+            For<GamePlatform>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Platform");
+            For<GameRegion>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Region");
+            For<GameModerator>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Moderator");
+            For<GameRuleset>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_Ruleset");
+            For<GameTimingMethod>().PrimaryKey("ID", true).TableName("dbo.tbl_Game_TimingMethod");
+            For<User>().PrimaryKey("ID", false).TableName("dbo.tbl_User").Columns(i => {
                 i.Column(g => g.OrderValue).Ignore();
                 i.Column(g => g.ImportedDate).Ignore();
             });
-            For<SpeedRunVariableValueEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_VariableValue");
-            For<SpeedRunPlayerEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_Player");
-            For<SpeedRunVideoEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_Video");
-            For<LeaderboardEntity>().PrimaryKey("ID", true).TableName("dbo.tbl_Leaderboard").Columns(i => {
+            For<SpeedRun>().PrimaryKey("ID", false).TableName("dbo.tbl_SpeedRun").Columns(i => {
+                i.Column(g => g.OrderValue).Ignore();
                 i.Column(g => g.ImportedDate).Ignore();
             });
-            For<PlatformEntity>().PrimaryKey("ID", false).TableName("dbo.tbl_Platform").Columns(i =>
+            For<SpeedRunVariableValue>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_VariableValue");
+            For<SpeedRunPlayer>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_Player");
+            For<SpeedRunVideo>().PrimaryKey("ID", true).TableName("dbo.tbl_SpeedRun_Video");
+            For<Leaderboard>().PrimaryKey("ID", true).TableName("dbo.tbl_Leaderboard").Columns(i => {
+                i.Column(g => g.ImportedDate).Ignore();
+            });
+            For<Platform>().PrimaryKey("ID", false).TableName("dbo.tbl_Platform").Columns(i =>
             {
                 i.Column(g => g.OrderValue).Ignore();
                 i.Column(g => g.ImportedDate).Ignore();
             });
-
+            */
             For<SpeedRunView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRun");
             For<GameView>().PrimaryKey("ID", true).TableName("dbo.vw_Game");
         }

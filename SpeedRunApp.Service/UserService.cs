@@ -1,11 +1,7 @@
-﻿using SpeedRunApp.Client;
+﻿using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Model;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SpeedRunApp.Service
 {

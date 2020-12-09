@@ -1,11 +1,9 @@
-﻿using SpeedRunApp.Model.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.ViewModels;
 
-namespace SpeedRunApp.Model.Data
+namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunGridItemViewModel
     {
@@ -26,11 +24,11 @@ namespace SpeedRunApp.Model.Data
 
             if (!string.IsNullOrWhiteSpace(gridItem.Categories))
             {
-                Categories = new List<CategoryDisplay1>();
+                Categories = new List<Category>();
                 foreach (var category in gridItem.Categories.Split(","))
                 {
                     var values = category.Split("|");
-                    Categories.Add(new CategoryDisplay1 { ID = values[0], Name = values[1], CategoryTypeID = Convert.ToInt32(values[2]) });
+                    Categories.Add(new Category { ID = values[0], Name = values[1], CategoryTypeID = Convert.ToInt32(values[2]) });
                 }
             }
 
@@ -46,12 +44,12 @@ namespace SpeedRunApp.Model.Data
 
             if (!string.IsNullOrWhiteSpace(gridItem.Variables))
             {
-                Variables = new List<VariableDisplay1>();
+                Variables = new List<Variable>();
                 foreach (var variable in gridItem.Variables.Split(","))
                 {
                     var values = variable.Split("|");
-                    var variableDisplay = new VariableDisplay1 { ID = values[0], Name = values[1], IsSubCategory = Convert.ToBoolean(values[2]), ScopeTypeID = Convert.ToInt32(values[3]), CategoryID = values[4], LevelID = values[5] };
-                    variableDisplay.VariableValues = gridItem.VariableValues?.Split(",").Where(i => i.Split("|")[2] == variableDisplay.ID).Select(i => new VariableValueDisplay1 { ID = i.Split("|")[0], Name = i.Split("|")[1] });
+                    var variableDisplay = new Variable { ID = values[0], Name = values[1], IsSubCategory = Convert.ToBoolean(values[2]), ScopeTypeID = Convert.ToInt32(values[3]), CategoryID = values[4], LevelID = values[5] };
+                    variableDisplay.VariableValues = gridItem.VariableValues?.Split(",").Where(i => i.Split("|")[2] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("|")[0], Name = i.Split("|")[1] });
                     Variables.Add(variableDisplay);
                 }
 
@@ -60,10 +58,10 @@ namespace SpeedRunApp.Model.Data
             }
         }
 
-        public List<VariableDisplay1> GetAdjustedVariables(List<VariableDisplay1> variables)
+        public List<Variable> GetAdjustedVariables(List<Variable> variables)
         {
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global).ToList();
-            var categories = Categories.Reverse<CategoryDisplay1>();
+            var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)
             {
                 foreach (var category in categories)
@@ -72,7 +70,7 @@ namespace SpeedRunApp.Model.Data
                     {
                         foreach (var level in Levels)
                         {
-                            var variable = (VariableDisplay1)globalVariable.Clone();
+                            var variable = (Variable)globalVariable.Clone();
                             variable.CategoryID = category.ID;
                             variable.LevelID = level.ID;
                             variables.Insert(0, variable);
@@ -80,7 +78,7 @@ namespace SpeedRunApp.Model.Data
                     }
                     else
                     {
-                        var variable = (VariableDisplay1)globalVariable.Clone();
+                        var variable = (Variable)globalVariable.Clone();
                         variable.CategoryID = category.ID;
                         variables.Insert(0, variable);
                     }
@@ -97,7 +95,7 @@ namespace SpeedRunApp.Model.Data
                 {
                     foreach (var level in Levels)
                     {
-                        var variable = (VariableDisplay1)allLevelVariable.Clone();
+                        var variable = (Variable)allLevelVariable.Clone();
                         variable.CategoryID = category.ID;
                         variable.LevelID = level.ID;
                         variables.Insert(0, variable);
@@ -112,16 +110,16 @@ namespace SpeedRunApp.Model.Data
             return nestedVariables;
         }
 
-        public List<VariableDisplay1> GetNestedVariables(IEnumerable<VariableDisplay1> variables, int count = 0)
+        public List<Variable> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)
         {
-            var results = variables.Skip(count).Take(variables.Count() - count).Select((g, i) => new VariableDisplay1
+            var results = variables.Skip(count).Take(variables.Count() - count).Select((g, i) => new Variable
             {
                 ID = g.ID,
                 Name = g.Name,
                 CategoryID = g.CategoryID,
                 LevelID = g.LevelID,
                 ScopeTypeID = g.ScopeTypeID,
-                VariableValues = g.VariableValues.Select(h => new VariableValueDisplay1
+                VariableValues = g.VariableValues.Select(h => new VariableValue
                 {
                     ID = h.ID,
                     Name = h.Name,
@@ -136,9 +134,9 @@ namespace SpeedRunApp.Model.Data
         public string GameID { get; set; }
         public string GameName { get; set; }
         public List<IDNamePair> CategoryTypes { get; set; }
-        public List<CategoryDisplay1> Categories { get; set; }
+        public List<Category> Categories { get; set; }
         public List<IDNamePair> Levels { get; set; }
-        public List<VariableDisplay1> Variables { get; set; }
-        public List<VariableDisplay1> SubCategoryVariables { get; set; }
+        public List<Variable> Variables { get; set; }
+        public List<Variable> SubCategoryVariables { get; set; }
     }
 }

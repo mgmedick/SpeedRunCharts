@@ -1,6 +1,5 @@
-﻿using SpeedRunApp.Client;
+﻿using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
@@ -32,10 +31,10 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
-        public SpeedRunGridViewModel1 GetSpeedRunGridModel(string gameID)
+        public SpeedRunGridViewModel GetSpeedRunGridModel(string gameID)
         {
             var gridItems = _gameRepo.GetSpeedRunGridItemsByGameID(gameID);
-            var gridVM = new SpeedRunGridViewModel1("Game", gridItems.Select(i => new SpeedRunGridItemViewModel(i)).ToList());
+            var gridVM = new SpeedRunGridViewModel("Game", gridItems.Select(i => new SpeedRunGridItemViewModel(i)).ToList());
 
             return gridVM;
         }

@@ -6,14 +6,11 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(int elementsPerPage, string loadDateString)
+        public SpeedRunListViewModel(int elementsPerPage)
         {
             ElementsPerPage = elementsPerPage;
-            LoadDateString = loadDateString;
         }
 
         public int ElementsPerPage { get; set; }
-
-        public string LoadDateString { get; set; }
     }
 }

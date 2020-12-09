@@ -5,7 +5,6 @@ using Serilog;
 using NPoco.Extensions;
 using System.Linq;
 using SpeedRunApp.Model;
-using SpeedRunApp.Model.Entity;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;

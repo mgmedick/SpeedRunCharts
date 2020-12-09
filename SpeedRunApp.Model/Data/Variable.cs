@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SpeedRunApp.Model.ViewModels
+namespace SpeedRunApp.Model.Data
 {
-    public class VariableDisplay1 : ICloneable
+    public class Variable : ICloneable
     {
         public string ID { get; set; }
         public string Name { get; set; }
@@ -11,12 +11,12 @@ namespace SpeedRunApp.Model.ViewModels
         public int ScopeTypeID { get; set; }
         public string CategoryID { get; set; }
         public string LevelID { get; set; }
-        public IEnumerable<VariableValueDisplay1> VariableValues { get; set; }
+        public IEnumerable<VariableValue> VariableValues { get; set; }
 
         public object Clone()
         {
-            VariableDisplay1 variable = (VariableDisplay1)this.MemberwiseClone();
-            variable.VariableValues = new List<VariableValueDisplay1>(this.VariableValues);
+            Variable variable = (Variable)this.MemberwiseClone();
+            variable.VariableValues = new List<VariableValue>(this.VariableValues);
 
             return variable;
         }

@@ -1,15 +1,11 @@
-﻿using SpeedRunApp.Client;
+﻿using Microsoft.Extensions.Configuration;
 using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
-using SpeedRunApp.Model.Entity;
-using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using Microsoft.Extensions.Configuration;
-using System.Linq.Expressions;
 
 namespace SpeedRunApp.Service
 {
@@ -30,10 +26,9 @@ namespace SpeedRunApp.Service
 
         public SpeedRunListViewModel GetSpeedRunList()
         {
-            var loadDateString = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss");
             var elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
 
-            var runListVM = new SpeedRunListViewModel(elementsPerPage, loadDateString);
+            var runListVM = new SpeedRunListViewModel(elementsPerPage);
 
             return runListVM;
         }

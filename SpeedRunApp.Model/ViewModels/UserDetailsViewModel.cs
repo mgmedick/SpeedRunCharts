@@ -5,20 +5,21 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class UserDetailsViewModel
     {
-        public UserDetailsViewModel(User user)
+        //public UserDetailsViewModel(User user)
+        public UserDetailsViewModel()
         {
-            ID = user.ID;
-            Name = user.Name;
-            JapaneseName = user.JapaneseName;
-            Role = new IDNamePair() { ID = ((int)user.Role).ToString(), Name = user.Role.ToString() };
-            SignUpDate = user.SignUpDate;
-            Location = user.Location.ToString();
-            ProfileImage = user.ProfileImage;
-            TwitchProfile = user.TwitchProfile;
-            HitboxProfile = user.HitboxProfile;
-            YoutubeProfile = user.YoutubeProfile;
-            TwitterProfile = user.TwitterProfile;
-            SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
+            //ID = user.ID;
+            //Name = user.Name;
+            //JapaneseName = user.JapaneseName;
+            //Role = new IDNamePair() { ID = ((int)user.Role).ToString(), Name = user.Role.ToString() };
+            //SignUpDate = user.SignUpDate;
+            //Location = user.Location.ToString();
+            //ProfileImage = user.ProfileImage;
+            //TwitchProfile = user.TwitchProfile;
+            //HitboxProfile = user.HitboxProfile;
+            //YoutubeProfile = user.YoutubeProfile;
+            //TwitterProfile = user.TwitterProfile;
+            //SpeedRunsLiveProfile = user.SpeedRunsLiveProfile;
         }
 
         public string ID { get; set; }

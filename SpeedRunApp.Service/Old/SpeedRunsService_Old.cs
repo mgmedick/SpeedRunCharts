@@ -1,14 +1,4 @@
-﻿using SpeedRunApp.Client;
-using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Model;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using Microsoft.Extensions.Configuration;
-
-namespace SpeedRunApp.Service
+﻿namespace SpeedRunApp.Service
 {
     public class SpeedRunsService_Old 
     {

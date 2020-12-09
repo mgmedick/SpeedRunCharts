@@ -1,5 +1,4 @@
 ﻿using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.Entity;
 using SpeedRunCommon;
 using System;
 using System.Collections.Generic;

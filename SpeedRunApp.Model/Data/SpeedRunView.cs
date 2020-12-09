@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SpeedRunApp.Model.Entity
+namespace SpeedRunApp.Model.Data
 {
     public class SpeedRunView
     {

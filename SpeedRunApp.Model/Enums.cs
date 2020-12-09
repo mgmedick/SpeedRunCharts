@@ -219,4 +219,10 @@ namespace SpeedRunApp.Model
         New = 0,
         Top5Perc = 1
     }
+
+    public enum SearchCategory
+    {
+        Game = 0,
+        User = 1
+    }
 }

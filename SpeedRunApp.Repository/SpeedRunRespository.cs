@@ -37,5 +37,13 @@ namespace SpeedRunApp.Repository
                 return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_RunStatusType").ToList();
             }
         }
+
+        public IEnumerable<SpeedRunView> GetSpeedRuns(Expression<Func<SpeedRunView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunView>().Where(predicate).ToList();
+            }
+        }
     }
 }

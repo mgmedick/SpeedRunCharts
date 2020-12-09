@@ -25,6 +25,7 @@ namespace SpeedRunApp.Model.Entity
         public string Players { get; set; }
         public string VideoLinks { get; set; }
         public bool IsEmulated { get; set; }
+        public int? Rank { get; set; }
         public long? PrimaryTime { get; set; }
         public long? RealTime { get; set; }
         public long? RealTimeWithoutLoads { get; set; }

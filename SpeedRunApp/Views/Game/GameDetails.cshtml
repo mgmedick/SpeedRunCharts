@@ -1,8 +1,5 @@
-﻿@using SpeedRunApp.Model.ViewModels;
-@using SpeedRunCommon;
-@model SpeedRunApp.Model.ViewModels.GameDetailsViewModel
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
+﻿@using SpeedRunCommon;
+@model SpeedRunApp.Model.ViewModels.GameViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
@@ -38,19 +35,14 @@
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-by-month-chart.js?v=10/10/2020")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-percentile-chart.js?v=10/10/2020")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/speedrun-edit.js?v=10/10/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/speedrun-grid.js?v=10/11/2020")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/speedrun-grid1.js?v=12/07/2020")" type="text/javascript"></script>
     <script src="@Url.Content("~/js/game-details.js?v=10/10/2020")" type="text/javascript"></script>
 
     <script type="text/javascript">
         $().ready(function () {
-            var _categoryTypes = @Html.Raw(Json.Serialize(Model.CategoryTypes));
-            var _games = @Html.Raw(Json.Serialize(Model.Games));
-            var _categories = @Html.Raw(Json.Serialize(Model.Categories));
-            var _levels = @Html.Raw(Json.Serialize(Model.Levels));
-            var _subCategoryVariables = @Html.Raw(Json.Serialize(Model.SubCategoryVariables));
-            var _variables = @Html.Raw(Json.Serialize(Model.Variables));
+            var _gameID = @Html.Raw(Json.Serialize(Model.ID));
 
-            initializeClient(_categoryTypes, _games, _categories, _levels, _subCategoryVariables, _variables);
+            initializeClient(_gameID);
         });
     </script>
 }
@@ -107,7 +99,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" id="hdnGameID" name="gameID" value="@Html.DisplayFor(i=>i.ID)" />
 </div>
 <div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

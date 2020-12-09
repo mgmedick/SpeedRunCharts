@@ -14,4 +14,7 @@
     <ProjectReference Include="..\SpeedRunApp.Client\SpeedRunApp.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Old\" />
+  </ItemGroup>
 </Project>

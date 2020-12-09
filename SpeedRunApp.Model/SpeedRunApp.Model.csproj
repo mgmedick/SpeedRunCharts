@@ -5,15 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Games\" />
-    <Folder Include="Data\User\" />
-    <Folder Include="Data\Common\" />
-    <Folder Include="Data\Categories\" />
-    <Folder Include="Data\Variables\" />
-    <Folder Include="Data\Levels\" />
-    <Folder Include="Data\Platforms\" />
-    <Folder Include="Data\Regions\" />
-    <Folder Include="Data\Embeds\" />
+    <Folder Include="Data_Old\Games\" />
+    <Folder Include="Data_Old\User\" />
+    <Folder Include="Data_Old\Common\" />
+    <Folder Include="Data_Old\Categories\" />
+    <Folder Include="Data_Old\Variables\" />
+    <Folder Include="Data_Old\Levels\" />
+    <Folder Include="Data_Old\Platforms\" />
+    <Folder Include="Data_Old\Regions\" />
+    <Folder Include="Data_Old\Embeds\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Common.cs" />

@@ -1,0 +1,53 @@
+﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
+<% item.count++ %>
+<div class="<%= item.classPrefix %>-variable-tabs row no-gutters pl-1 pt-1 pb-0 pr-0">
+    <div class="tab-row-name-container col-auto align-self-end">
+        <label class="tab-row-name"><%= variable.name %></label>
+    </div>
+    <div class="col pl-2 scroller-tab-wrapper">
+        <div class="row no-gutters">
+            <div class="scroller-tab scroller-tab-left-end btn btn-secondary" style="width:25px;"><i class="fa fa-step-backward"></i></div>
+            <div class="scroller-tab scroller-tab-left btn btn-secondary" style="width:25px;"><i class="fa fa-angle-left"></i></div>
+            <div class="col scroller-tab-list-container">
+                <ul class="nav nav-pills scroller-tab-list">
+                    <% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
+                    <li class="nav-item <%= item.classPrefix %>-variable-value">
+                        <a class="nav-link <%= (variableValueIndex == 0) ? ' active' : '' %>" href="#divGame-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" data-toggle="pill"><%= variableValue.name %></a>
+                    </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="scroller-tab scroller-tab-right btn btn-secondary" style="width:25px;"><i class="fa fa-angle-right"></i></div>
+            <div class="scroller-tab scroller-tab-right-end btn btn-secondary" style="width:25px;"><i class="fa fa-step-forward"></i></div>
+        </div>
+    </div>
+</div>
+<% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
+<div id="divGame-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane <%= (variableValueIndex == 0) ? ' show' : '' %>" data-class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane">
+    <% if (variableValue.subVariables.length > 0) { %>
+    <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(variableValue.subVariables, item.classPrefix, item.categoryTypeID, item.gameID, item.categoryID, item.levelID, item.categoryTypeIndex, item.gameIndex, item.categoryIndex, item.levelIndex, item.prevID + '-Variable-' + item.count + '-VariableValue-' + variableValueIndex, (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, ''), item.count), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+    <% } else { %>
+    <div class="grid-container" data-categorytype="<%= item.categoryTypeID %>" data-gameid="<%= item.gameID %>" data-categoryid="<%= item.categoryID %>" data-levelid="<%= (item.levelID) ? item.levelID : '' %>" data-variablevalues="<%= (item.prevData + ',' + variable.id + '|' + variableValue.id).replace(/(^,)|(,$)/g, '') %>">
+        <table id="tblGame-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="grid"></table>
+        <div id="divPager-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="pager"></div>
+        <div id="divLoading-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>" class="loading">
+            <div class="container d-flex ml-0" style="height:465px;">
+                <div class="mx-auto align-self-center">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+<% }) %>
+<% }) %>
+
+
+
+
+
+
+
+
+

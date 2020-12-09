@@ -12,6 +12,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<SpeedRunView> GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset);
         SpeedRunView GetSpeedRunView(string speedRunID);
         IEnumerable<IDNamePair> RunStatusTypes();
+        IEnumerable<SpeedRunView> GetSpeedRuns(Expression<Func<SpeedRunView, bool>> predicate);
     }
 }
 

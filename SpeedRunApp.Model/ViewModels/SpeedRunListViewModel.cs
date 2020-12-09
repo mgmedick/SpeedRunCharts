@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunListViewModel1
+    public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel1(int elementsPerPage, string loadDateString)
+        public SpeedRunListViewModel(int elementsPerPage, string loadDateString)
         {
             ElementsPerPage = elementsPerPage;
             LoadDateString = loadDateString;

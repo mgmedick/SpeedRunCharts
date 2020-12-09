@@ -6,9 +6,9 @@ using SpeedRunApp.Model;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class GameDetailsViewModel1
+    public class GameViewModel
     {
-        public GameDetailsViewModel1(GameView game)
+        public GameViewModel(GameView game)
         {
             ID = game.ID;
             Name = game.Name;
@@ -16,7 +16,7 @@ namespace SpeedRunApp.Model.ViewModels
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUrl;
 
-            if(!string.IsNullOrWhiteSpace(game.CategoryTypes))
+            if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
                 CategoryTypes = new List<IDNamePair>();
                 foreach (var categoryType in game.CategoryTypes.Split(","))
@@ -57,9 +57,8 @@ namespace SpeedRunApp.Model.ViewModels
                     Variables.Add(variableDisplay);
                 }
 
-                AdjustVariables(Variables);
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetNestedVariables(subVariables);
+                SubCategoryVariables = GetAdjustedVariables(subVariables);
             }
 
             if (!string.IsNullOrWhiteSpace(game.Platforms))
@@ -83,7 +82,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public void AdjustVariables(List<VariableDisplay1> variables)
+        public List<VariableDisplay1> GetAdjustedVariables(List<VariableDisplay1> variables)
         {
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global).ToList();
             var categories = Categories.Reverse<CategoryDisplay1>();
@@ -129,6 +128,10 @@ namespace SpeedRunApp.Model.ViewModels
             }
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.LevelID));
+
+            var nestedVariables = GetNestedVariables(variables);
+
+            return nestedVariables;
         }
 
         public List<VariableDisplay1> GetNestedVariables(IEnumerable<VariableDisplay1> variables, int count = 0)

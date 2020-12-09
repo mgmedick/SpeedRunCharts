@@ -6,6 +6,7 @@ using NPoco.Extensions;
 using System.Linq;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Entity;
+using SpeedRunApp.Model.Data;
 using SpeedRunApp.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
@@ -19,6 +20,22 @@ namespace SpeedRunApp.Repository
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<GameView>().Where(i => i.ID == gameID).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<SearchResult> SearchGames(string searchText)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SearchResult>("SELECT ID AS Value, Name AS Label, 'Games' AS Category FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+            }
+        }
+
+        public IEnumerable<SpeedRunGridItem> GetSpeedRunGridItemsByGameID(string gameID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunGridItem>("EXEC GetSpeedRunGridItemsByGameID @0", gameID).ToList();
             }
         }
     }

@@ -15,6 +15,7 @@ namespace SpeedRunApp.WebUI.Controllers
             _cache = cache;
         }
 
+        /*
         [HttpGet]
         public ViewResult UserDetails(string userID)
         {
@@ -30,6 +31,7 @@ namespace SpeedRunApp.WebUI.Controllers
 
             return Json(runVMs);
         }
+        */
     }
 }
 

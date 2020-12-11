@@ -46,7 +46,7 @@ function loadSpeedRunGridTemplate(sender, id) {
                     $.get('../templates/SpeedRunGridVariableChart2.html?_t=' + (new Date()).getTime(), function (chartVariableTemplate, status) {
                         sra['sender'] = sender;
                         sra['speedRunGridModel'] = data.gridModel;
-                        sra['speedRunGridData'] = getFormattedData(data.gridData);
+                        sra['speedRunGridData'] = data.gridData; //getFormattedData(data.gridData);
                         sra['speedRunGridTemplate'] = gridTemplate;
                         sra['renderSpeedRunGridVariableTemplate'] = _.template(gridVariableTemplate);
                         sra['renderSpeedRunGridVariableChartTemplate'] = _.template(chartVariableTemplate);
@@ -296,7 +296,10 @@ function getFormattedData(data) {
         var categoryTypeID = this.categoryType.id;
         var categoryID = this.category.id;
         var levelID = this.level ? this.level.id : '';
-        var variableValues = $(this.variableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',')
+        var variableValues = $(this.variableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',');
+        if (!variableValues) {
+            variableValues = '';
+        }
 
         gridData[gameID] = gridData[gameID] || [];
         gridData[gameID][categoryTypeID] = gridData[gameID][categoryTypeID] || [];
@@ -323,24 +326,23 @@ function configureAndInitializeGrid(element) {
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
-    var data = sra.speedRunGridData[gameID][categoryType][categoryID][levelID][variableValues];
-    /*
-    var data = $(sra.speedRunGridData).filter(function () {
-        return this.gameID == gameID
-            && this.categoryID == categoryID
-            && (this.levelID ?? '') == (levelID ?? '')
-            && ($(this.variableValues).map(function () { return this.item1 + '|' + this.item2 }).join(',') ?? '') == (variableValues ?? '')
-    });
-    */
+    //var data = sra.speedRunGridData[gameID][categoryType][categoryID][levelID][variableValues];
 
+    var data = $(sra.speedRunGridData).filter(function () {
+        return this.game.id == gameID
+            && this.category.id == categoryID
+            && (this.level ? this.level.id : '') == levelID
+            && (this.subCategoryVariableValues ? $(this.subCategoryVariableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',') : '') == variableValues
+    }).get();
+    
     $loading.show();
     $grid.hide();
-    $(data).each(function () {
-        var item = this;
-        $(item.variableValues).each(function () {
-            item[this.variable.id] = this.name;
-        });
-    });
+    //$(data).each(function () {
+    //    var item = this;
+    //    $(item.variableValues).each(function () {
+    //        item[this.variable.id] = this.name;
+    //    });
+    //});
 
     var perc = 1;
     if (window.matchMedia) {

@@ -18,7 +18,7 @@ function initializeSpeedRunEditEvents(isReadOnly) {
 
     $('#divSpeedRunEdit').find('.game-search').autocomplete({
         minlength: 3,
-        source: '../SpeedRun/SearchGames',
+        source: '../Game/SearchGames',
         select: function (event, ui) {
             var obj = JSON.parse(ui.item.value);
 

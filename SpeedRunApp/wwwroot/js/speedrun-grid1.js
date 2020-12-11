@@ -39,31 +39,28 @@ function initalizeSpeedRunGrid(sender, id) {
 
 /*Load Functions*/
 function loadSpeedRunGridTemplate(sender, id) {
-    $.get('../' + sender + '/GetSpeedRunGridModel?ID=' + id + '&_t='+ (new Date()).getTime(), function (gridModel, status) {
-        $.get('../' + sender + '/GetSpeedRunGridData?ID=' + id + '&_t=' + (new Date()).getTime(), function (gridData, status) {
-            $.get('../templates/SpeedRunGridSearch.html?_t=' + (new Date()).getTime(), function (searchTemplate, status) {
-                $.get('../templates/SpeedRunGrid1.html?_t=' + (new Date()).getTime(), function (gridTemplate, status) {
-                    $.get('../templates/SpeedRunGridVariable1.html?_t=' + (new Date()).getTime(), function (gridVariableTemplate, status) {
-                        $.get('../templates/SpeedRunGridVariableChart2.html?_t=' + (new Date()).getTime(), function (chartVariableTemplate, status) {
-                            sra['sender'] = sender;
-                            sra['speedRunGridModel'] = gridModel;
-                            sra['speedRunGridData'] = getFormattedData(gridData);
-                            sra['speedRunGridTemplate'] = gridTemplate;
-                            sra['renderSpeedRunGridVariableTemplate'] = _.template(gridVariableTemplate);
-                            sra['renderSpeedRunGridVariableChartTemplate'] = _.template(chartVariableTemplate);
+    $.get('../' + sender + '/GetSpeedRunGrid?ID=' + id + '&_t=' + (new Date()).getTime(), function (data, status) {
+        $.get('../templates/SpeedRunGridSearch.html?_t=' + (new Date()).getTime(), function (searchTemplate, status) {
+            $.get('../templates/SpeedRunGrid1.html?_t=' + (new Date()).getTime(), function (gridTemplate, status) {
+                $.get('../templates/SpeedRunGridVariable1.html?_t=' + (new Date()).getTime(), function (gridVariableTemplate, status) {
+                    $.get('../templates/SpeedRunGridVariableChart2.html?_t=' + (new Date()).getTime(), function (chartVariableTemplate, status) {
+                        sra['sender'] = sender;
+                        sra['speedRunGridModel'] = data.gridModel;
+                        sra['speedRunGridData'] = getFormattedData(data.gridData);
+                        sra['speedRunGridTemplate'] = gridTemplate;
+                        sra['renderSpeedRunGridVariableTemplate'] = _.template(gridVariableTemplate);
+                        sra['renderSpeedRunGridVariableChartTemplate'] = _.template(chartVariableTemplate);
 
-                            renderAndInitializeSearchSpeedRunGrid($('#divSearchSpeedRunGridContainer'), searchTemplate, sra.speedRunGridModel);
-                            renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, sra.speedRunGridModel, sra.renderSpeedRunGridVariableTemplate, sra.renderSpeedRunGridVariableChartTemplate);
+                        renderAndInitializeSearchSpeedRunGrid($('#divSearchSpeedRunGridContainer'), searchTemplate, sra.speedRunGridModel);
+                        renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, sra.speedRunGridModel, sra.renderSpeedRunGridVariableTemplate, sra.renderSpeedRunGridVariableChartTemplate);
 
-                            $('#divSpeedRunGridContainer').show();
-                            $('#divSpeedRunGridLoading').hide();
-                        });
+                        $('#divSpeedRunGridContainer').show();
+                        $('#divSpeedRunGridLoading').hide();
                     });
                 });
             });
         });
     });
-
 }
 
 function renderAndInitializeSearchSpeedRunGrid(element, searchSpeedRunGridTemplate, speedRunGridModel) {
@@ -602,7 +599,7 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
                             colSearchData = _.chain(data).map(function (item) { return parseInt(item.rank) }).uniq().sortBy(function (item) { return item; }).value();
                             break;
                         case "players":
-                            colSearchData = _.chain(data).pluck('players').flatten().uniq(function (item) { return [item.id, item.name].join(); }).sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
+                            colSearchData = _.chain(data).pluck('players').flatten().filter(function (item) { return item }).uniq(function (item) { return [item.id, item.name].join(); }).sortBy(function (item) { return item.name }).map(function (value) { return value.name }).value();
                             break;
                         case "platform.name":
                             colSearchData = _.chain(data).filter(function (item) { return item.platform }).map(function (item) { return item.platform.name }).uniq().sortBy(function (item) { return item }).value();

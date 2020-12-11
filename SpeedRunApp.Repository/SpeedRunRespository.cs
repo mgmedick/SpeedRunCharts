@@ -45,5 +45,14 @@ namespace SpeedRunApp.Repository
                 return db.Query<SpeedRunView>().Where(predicate).ToList();
             }
         }
+
+        public IEnumerable<SpeedRunView> GetLeaderboards(string leaderboardParamString)
+        {
+            var results = new List<SpeedRunView>();
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunView>("EXEC dbo.GetLeaderboards @0", leaderboardParamString).ToList();
+            }
+        }
     }
 }

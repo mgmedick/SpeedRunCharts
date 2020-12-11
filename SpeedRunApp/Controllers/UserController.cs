@@ -15,6 +15,14 @@ namespace SpeedRunApp.WebUI.Controllers
             _cache = cache;
         }
 
+        [HttpGet]
+        public JsonResult SearchUsers(string term)
+        {
+            var results = _userService.SearchUsers(term);
+
+            return Json(results);
+        }
+
         /*
         [HttpGet]
         public ViewResult UserDetails(string userID)

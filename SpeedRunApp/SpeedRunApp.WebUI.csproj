@@ -49,7 +49,6 @@
     <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
     <Content Remove="wwwroot\css\bootstrap-theme.min.css" />
     <Content Remove="wwwroot\templates\SpeedRunGrid %28copy%29.html" />
-    <Content Remove="wwwroot\templates\SpeedRunGrid1.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\User\UserDetails.cshtml">

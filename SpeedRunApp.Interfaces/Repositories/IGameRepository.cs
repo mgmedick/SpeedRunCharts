@@ -8,7 +8,7 @@ namespace SpeedRunApp.Interfaces.Repositories
     {
         GameView GetGameView(string gameID);
         IEnumerable<SearchResult> SearchGames(string searchText);
-        IEnumerable<SpeedRunGridItem> GetSpeedRunGridItemsByGameID(string gameID);
+        SpeedRunGridItem GetSpeedRunGridItemByGameID(string gameID);
     }
 }
 

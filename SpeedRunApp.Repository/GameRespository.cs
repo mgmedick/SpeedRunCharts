@@ -30,11 +30,12 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridItem> GetSpeedRunGridItemsByGameID(string gameID)
+        public SpeedRunGridItem GetSpeedRunGridItemByGameID(string gameID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridItem>("EXEC GetSpeedRunGridItemsByGameID @0", gameID).ToList();
+                var gameView = db.Query<GameView>().Where(i => i.ID == gameID).FirstOrDefault();
+                return new SpeedRunGridItem(gameView);
             }
         }
     }

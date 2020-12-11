@@ -12,6 +12,7 @@ namespace SpeedRunApp.Service
     public class GamesService : IGamesService
     {
         private readonly IGameRepository _gameRepo = null;
+        private readonly ISpeedRunsService _speedRunsService = null;
 
         public GamesService(IGameRepository gameRepo)
         {
@@ -33,8 +34,8 @@ namespace SpeedRunApp.Service
 
         public SpeedRunGridViewModel GetSpeedRunGridModel(string gameID)
         {
-            var gridItems = _gameRepo.GetSpeedRunGridItemsByGameID(gameID);
-            var gridVM = new SpeedRunGridViewModel("Game", gridItems.Select(i => new SpeedRunGridItemViewModel(i)).ToList());
+            var gridItems = new List<SpeedRunGridItem>() { _gameRepo.GetSpeedRunGridItemByGameID(gameID) };
+            var gridVM = new SpeedRunGridViewModel("Game", gridItems);
 
             return gridVM;
         }

@@ -10,12 +10,12 @@ namespace SpeedRunApp.WebUI.Controllers
     public class GameController : Controller
     {
         private readonly IGamesService _gamesService = null;
-        private readonly ISpeedRunsService _speedRunService = null;
+        private readonly ISpeedRunsService _speedRunsService = null;
 
-        public GameController(IGamesService gamesService, ISpeedRunsService speedRunService)
+        public GameController(IGamesService gamesService, ISpeedRunsService speedRunsService)
         {
             _gamesService = gamesService;
-            _speedRunService = speedRunService;
+            _speedRunsService = speedRunsService;
         }
 
         public ViewResult GameDetails(string gameID)
@@ -26,19 +26,28 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridModel(string ID)
+        public JsonResult GetSpeedRunGrid(string ID)
         {
-            var gridModelVM = _gamesService.GetSpeedRunGridModel(ID);
+            var gridVM = _gamesService.GetSpeedRunGridModel(ID);
+            var gridData = _speedRunsService.GetLeaderboards(gridVM.GridItems);
 
-            return Json(gridModelVM);
+            return Json(new { GridModel = gridVM, GridData = gridData });
         }
 
-        [HttpGet]
-        public JsonResult GetSpeedRunGridData(string ID)
-        {
-            var runVMs = _speedRunService.GetSpeedRunsByGameID(ID);
+        //[HttpGet]
+        //public JsonResult GetSpeedRunGridData(string ID)
+        //{
+        //    var runVMs = _speedRunService.GetSpeedRunsByGameID(ID);
 
-            return Json(runVMs);
+        //    return Json(runVMs);
+        //}
+
+        [HttpGet]
+        public JsonResult SearchGames(string term)
+        {
+            var results = _gamesService.SearchGames(term);
+
+            return Json(results);
         }
 
         /*

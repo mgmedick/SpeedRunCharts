@@ -10,7 +10,8 @@ namespace SpeedRunApp.Interfaces.Services
         SpeedRunListViewModel GetSpeedRunList();
         IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset);
         EditSpeedRunViewModel GetEditSpeedRun(string runID, string gameID, bool isReadOnly);
-        IEnumerable<SpeedRunViewModel> GetLeaderboards(IEnumerable<SpeedRunGridItem> gridItems);
+        //IEnumerable<SpeedRunViewModel> GetLeaderboards(IEnumerable<SpeedRunGridItem> gridItems);
+        IEnumerable<SpeedRunView> GetSpeedRunRecordsByGameID(string gameID);
     }
 }
 

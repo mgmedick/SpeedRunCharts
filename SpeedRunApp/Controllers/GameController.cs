@@ -29,7 +29,7 @@ namespace SpeedRunApp.WebUI.Controllers
         public JsonResult GetSpeedRunGrid(string ID)
         {
             var gridVM = _gamesService.GetSpeedRunGridModel(ID);
-            var gridData = _speedRunsService.GetLeaderboards(gridVM.GridItems);
+            var gridData = _speedRunsService.GetSpeedRunRecordsByGameID(ID);
 
             return Json(new { GridModel = gridVM, GridData = gridData });
         }

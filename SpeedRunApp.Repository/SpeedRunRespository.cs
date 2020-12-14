@@ -46,6 +46,7 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        /*
         public IEnumerable<SpeedRunView> GetLeaderboards(string leaderboardParamString)
         {
             var results = new List<SpeedRunView>();
@@ -54,5 +55,6 @@ namespace SpeedRunApp.Repository
                 return db.Query<SpeedRunView>("EXEC dbo.GetLeaderboards @0", leaderboardParamString).ToList();
             }
         }
+        */
     }
 }

@@ -55,6 +55,12 @@ namespace SpeedRunApp.Service
             return editSpeedRunVM;
         }
 
+        public IEnumerable<SpeedRunView> GetSpeedRunRecordsByGameID(string gameID)
+        {
+            return _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified).ToList();
+        }
+
+        /*
         public IEnumerable<SpeedRunViewModel> GetLeaderboards(IEnumerable<SpeedRunGridItem> gridItems)
         {
             List<Tuple<string,string,string,string>> leaderboardParams = new List<Tuple<string, string, string, string>>();
@@ -143,5 +149,6 @@ namespace SpeedRunApp.Service
 
             return variableValueStrings;
         }
+        */
     }
 }

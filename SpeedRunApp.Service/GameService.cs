@@ -19,7 +19,7 @@ namespace SpeedRunApp.Service
             _gameRepo = gameRepo;
         }
 
-        public GameViewModel GetGameDetails(string gameID)
+        public GameViewModel GetGame(string gameID)
         {
             var game = _gameRepo.GetGameView(gameID);
             var gameVM = new GameViewModel(game);

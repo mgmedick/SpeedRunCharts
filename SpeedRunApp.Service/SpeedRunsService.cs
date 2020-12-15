@@ -42,15 +42,19 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public EditSpeedRunViewModel GetEditSpeedRun(string runID, string gameID, bool isReadOnly)
+        public EditSpeedRunViewModel GetEditSpeedRun(string gameID, string speedRunID, bool isReadOnly)
         {
-            var run = _speedRunRepo.GetSpeedRunView(runID);
-            var runVM = new SpeedRunViewModel(run);
-
-            var gameDetails = _gamesService.GetGameDetails(gameID);
+            var gameVM = _gamesService.GetGame(gameID);
             var statusTypes = _speedRunRepo.RunStatusTypes();
 
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameDetails.CategoryTypes, gameDetails.Categories, gameDetails.Levels, gameDetails.Platforms, gameDetails.Variables, runVM, isReadOnly);
+            SpeedRunViewModel runVM = null;
+            if (!string.IsNullOrWhiteSpace(speedRunID))
+            {
+                var run = _speedRunRepo.GetSpeedRunView(speedRunID);
+                runVM = new SpeedRunViewModel(run);
+            }
+
+            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM, isReadOnly);
 
             return editSpeedRunVM;
         }

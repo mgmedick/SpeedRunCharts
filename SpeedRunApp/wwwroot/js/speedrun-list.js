@@ -71,7 +71,7 @@ function showSpeedRunDetails(speedRunID, gameID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&gameID=' + gameID + '&isReadOnly=true', function (data, status) {
+        $.get('SpeedRun/GetEditSpeedRun?gameID=' + gameID + '&speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();

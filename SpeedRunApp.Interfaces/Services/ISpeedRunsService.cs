@@ -9,7 +9,7 @@ namespace SpeedRunApp.Interfaces.Services
     {
         SpeedRunListViewModel GetSpeedRunList();
         IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset);
-        EditSpeedRunViewModel GetEditSpeedRun(string runID, string gameID, bool isReadOnly);
+        EditSpeedRunViewModel GetEditSpeedRun(string gameID, string speedRunID, bool isReadOnly);
         IEnumerable<SpeedRunViewModel> GetSpeedRunsByGameID(string gameID);
     }
 }

@@ -20,7 +20,7 @@ namespace SpeedRunApp.WebUI.Controllers
 
         public ViewResult GameDetails(string gameID)
         {
-            var gameVM = _gamesService.GetGameDetails(gameID);
+            var gameVM = _gamesService.GetGame(gameID);
 
             return View(gameVM);
         }

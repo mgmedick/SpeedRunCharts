@@ -13,7 +13,6 @@ namespace SpeedRunApp.Interfaces.Repositories
         SpeedRunView GetSpeedRunView(string speedRunID);
         IEnumerable<IDNamePair> RunStatusTypes();
         IEnumerable<SpeedRunView> GetSpeedRuns(Expression<Func<SpeedRunView, bool>> predicate);
-        //IEnumerable<SpeedRunView> GetLeaderboards(string leaderboardParamString);
     }
 }
 

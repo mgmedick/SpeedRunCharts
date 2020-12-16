@@ -1,5 +1,4 @@
-﻿
-<div id="divChartContainer" class="container-fluid ml-0" style="">
+﻿<div id="divChartContainer" class="container-fluid ml-0" style="">
     <% _.each(item.gridItems, function(game, gameIndex) { %>
     <div id="divGame-<%= gameIndex %>-charts" class="game-tab-pane-charts p-0 <%= (gameIndex == 0) ? ' show' : '' %>">
         <% _.each(game.categoryTypes, function(categoryType, categoryTypeIndex) { %>
@@ -32,7 +31,7 @@
                 <div class="level-results-charts">
                     <% _.each(game.levels, function(level, levelIndex) { %>
                     <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
-                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return t.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.gameID, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.gameID, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                     <% } else { %>
                     <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-charts" class="level-tab-pane-charts">
                         <div class="charts-container row" data-gameid="<%= game.gameID %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">

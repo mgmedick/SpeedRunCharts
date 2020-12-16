@@ -60,7 +60,7 @@ namespace SpeedRunApp.Model.Data
 
         public List<Variable> GetAdjustedVariables(List<Variable> variables)
         {
-            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global).ToList();
+            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
             var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)
             {
@@ -87,7 +87,7 @@ namespace SpeedRunApp.Model.Data
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.Global && string.IsNullOrWhiteSpace(i.CategoryID));
 
-            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels).ToList();
+            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.LevelID)).ToList();
             var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
             foreach (var allLevelVariable in allLevelVariables)
             {
@@ -124,8 +124,7 @@ namespace SpeedRunApp.Model.Data
                 {
                     ID = h.ID,
                     Name = h.Name,
-                    SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID
-                                                                        && n.LevelID == g.LevelID), count + 1)
+                    SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID), count + 1)
                 })
             });
 

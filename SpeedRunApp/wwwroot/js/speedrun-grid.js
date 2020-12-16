@@ -308,12 +308,6 @@ function configureAndInitializeGrid(element) {
     
     $loading.show();
     $grid.hide();
-    //$(data).each(function () {
-    //    var item = this;
-    //    $(item.variableValues).each(function () {
-    //        item[this.variable.id] = this.name;
-    //    });
-    //});
 
     var perc = 1;
     if (window.matchMedia) {
@@ -341,10 +335,25 @@ function configureAndInitializeGrid(element) {
         { name: "game", hidden: true }
     ];
 
-    var game = $(sra.speedRunGridModel.gridItems).filter(function () { return this.gameID == gameID });
+    var game = $(sra.speedRunGridModel.gridItems).first(function () { return this.gameID == gameID }).get(0);
+
+    $(data).each(function () {
+        var item = this;
+        $(item.variableValues).each(function () {
+            var variableValue = this;
+            var variable = $(game.variables).first(function () { return this.id == variableValue.item1 }).get(0);
+            item[variable.id] = variableValue.item2;
+        });
+    });
+
     $(game.variables).filter(function () {
         var variable = this;
-        return !variable.isSubCategory && $(data).filter(function () { return this.variableValues.filter(function () { return this.item1 == variable.id }).length > 0 }).length > 0
+        return !variable.isSubCategory && $(data).filter(function () {
+            return this.variableValues
+                && $(this.variableValues).filter(function () {
+                    return this.item1 == variable.id
+                }).length > 0
+        }).length > 0
     }).each(function () {
         columnNames.push(this.name);
         var variable = { name: this.id, width: "100%", search: true, searchoptions: { sopt: ["in"] } };

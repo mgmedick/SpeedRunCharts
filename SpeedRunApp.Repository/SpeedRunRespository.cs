@@ -14,7 +14,7 @@ namespace SpeedRunApp.Repository
 {
     public class SpeedRunRespository : BaseRepository, ISpeedRunRepository
     {
-        public IEnumerable<SpeedRunView> GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset)
+        public IEnumerable<SpeedRunView> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {

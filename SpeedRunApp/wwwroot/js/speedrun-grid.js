@@ -287,34 +287,7 @@ function onLevelVariableValueTabClick(element) {
     }
 }
 
-/**Data Functions**/
-function getFormattedData(data) {
-    var gridData = {};
-
-    $(data).each(function () {
-        var gameID = this.game.id;
-        var categoryTypeID = this.categoryType.id;
-        var categoryID = this.category.id;
-        var levelID = this.level ? this.level.id : '';
-        var variableValues = $(this.variableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',');
-        if (!variableValues) {
-            variableValues = '';
-        }
-
-        gridData[gameID] = gridData[gameID] || [];
-        gridData[gameID][categoryTypeID] = gridData[gameID][categoryTypeID] || [];
-        gridData[gameID][categoryTypeID][categoryID] = gridData[gameID][categoryTypeID][categoryID] || [];
-        gridData[gameID][categoryTypeID][categoryID][levelID] = gridData[gameID][categoryTypeID][categoryID][levelID] || [];
-        gridData[gameID][categoryTypeID][categoryID][levelID][variableValues] = gridData[gameID][categoryTypeID][categoryID][levelID][variableValues] || [];
-
-        gridData[gameID][categoryTypeID][categoryID][levelID][variableValues].push(this);
-    });
-
-    return gridData;
-}
-
 //Initialize Grids
-
 function configureAndInitializeGrid(element) {
     var def = $.Deferred();
     var $grid = $(element).find('.grid');
@@ -326,8 +299,6 @@ function configureAndInitializeGrid(element) {
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
-    //var data = sra.speedRunGridData[gameID][categoryType][categoryID][levelID][variableValues];
-
     var data = $(sra.speedRunGridData).filter(function () {
         return this.game.id == gameID
             && this.category.id == categoryID
@@ -352,7 +323,7 @@ function configureAndInitializeGrid(element) {
         }
     }
 
-    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden", "Hidden" ];
+    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden"];
 
     var columnModel = [
         { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -367,27 +338,7 @@ function configureAndInitializeGrid(element) {
         { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
         { name: "relativeDateSubmittedString", hidden: true },
         { name: "relativeVerifyDateString", hidden: true },
-        { name: "game", hidden: true },
-        { name: "category", hidden: true },
-        { name: "level", hidden: true },       
-        { name: "gameCoverImageLinkString", hidden: true },
-        { name: "videoLinkEmbeddedString", hidden: true },
-        { name: "categoryType", hidden: true },
-        { name: "verifyDateString", hidden: true },
-        { name: "statusType", hidden: true },
-        { name: "isEmulated", hidden: true },
-        { name: "platform", hidden: true },
-        { name: "allVariableValues", hidden: true },
-        { name: "realTimeString", hidden: true },
-        { name: "realTimeWithoutLoadsString", hidden: true },
-        { name: "gameTimeString", hidden: true }
-
-        //{ name: "gameID", hidden: true },
-        //{ name: "categoryID", hidden: true },
-        //{ name: "levelID", hidden: true },
-        //{ name: "primaryTimeSeconds", hidden: true },
-        //{ name: "monthYearSubmitted", hidden: true },
-        //{ name: "subCategoryVariables", hidden: true }
+        { name: "game", hidden: true }
     ];
 
     var game = $(sra.speedRunGridModel.gridItems).filter(function () { return this.gameID == gameID });
@@ -410,7 +361,6 @@ function configureAndInitializeGrid(element) {
     });
 
     //Column Formatters
-
     function optionsFormatter(cellvalue, options, rowObject) {
         var html = "<div>"
         html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";

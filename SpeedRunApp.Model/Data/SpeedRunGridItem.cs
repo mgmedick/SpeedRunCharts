@@ -17,7 +17,7 @@ namespace SpeedRunApp.Model.Data
                 CategoryTypes = new List<IDNamePair>();
                 foreach (var categoryType in gameView.CategoryTypes.Split("^^"))
                 {
-                    var values = categoryType.Split("||", 2);
+                    var values = categoryType.Split("|", 2);
                     CategoryTypes.Add(new IDNamePair { ID = values[0], Name = values[1] });
                 }
             }
@@ -27,8 +27,8 @@ namespace SpeedRunApp.Model.Data
                 Categories = new List<Category>();
                 foreach (var category in gameView.Categories.Split("^^"))
                 {
-                    var values = category.Split("||", 3);
-                    Categories.Add(new Category { ID = values[0], Name = values[1], CategoryTypeID = Convert.ToInt32((string)values[2]) });
+                    var values = category.Split("|", 3);
+                    Categories.Add(new Category { ID = values[0], CategoryTypeID = Convert.ToInt32((string)values[1]), Name = values[2] });
                 }
             }
 
@@ -37,7 +37,7 @@ namespace SpeedRunApp.Model.Data
                 Levels = new List<IDNamePair>();
                 foreach (var level in gameView.Levels.Split("^^"))
                 {
-                    var values = level.Split("||", 2);
+                    var values = level.Split("|", 2);
                     Levels.Add(new IDNamePair { ID = values[0], Name = values[1] });
                 }
             }
@@ -47,9 +47,9 @@ namespace SpeedRunApp.Model.Data
                 Variables = new List<Variable>();
                 foreach (var variable in gameView.Variables.Split("^^"))
                 {
-                    var values = variable.Split("||", 6);
-                    var variableDisplay = new Variable { ID = values[0], Name = values[1], IsSubCategory = Convert.ToBoolean(values[2]), ScopeTypeID = Convert.ToInt32((string)values[3]), CategoryID = values[4], LevelID = values[5] };
-                    variableDisplay.VariableValues = gameView.VariableValues?.Split("^^").Where(i => i.Split("||", 3)[2] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("||", 3)[0], Name = i.Split("||", 3)[1] });
+                    var values = variable.Split("|", 6);
+                    var variableDisplay = new Variable { ID = values[0], IsSubCategory = Convert.ToBoolean(values[1]), ScopeTypeID = Convert.ToInt32((string)values[2]), CategoryID = values[3], LevelID = values[4], Name = values[5] };
+                    variableDisplay.VariableValues = gameView.VariableValues?.Split("^^").Where(i => i.Split("|", 3)[1] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("|", 3)[0], Name = i.Split("|", 3)[2] });
                     Variables.Add(variableDisplay);
                 }
 
@@ -116,9 +116,10 @@ namespace SpeedRunApp.Model.Data
             {
                 ID = g.ID,
                 Name = g.Name,
+                IsSubCategory = g.IsSubCategory,
+                ScopeTypeID = g.ScopeTypeID,
                 CategoryID = g.CategoryID,
                 LevelID = g.LevelID,
-                ScopeTypeID = g.ScopeTypeID,
                 VariableValues = g.VariableValues.Select(h => new VariableValue
                 {
                     ID = h.ID,

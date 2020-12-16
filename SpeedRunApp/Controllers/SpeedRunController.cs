@@ -27,7 +27,7 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory1 category, int topAmount, int? orderValueOffset)
+        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
         {
             var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
 
@@ -37,7 +37,7 @@ namespace SpeedRunApp.WebUI.Controllers
         [HttpGet]
         public JsonResult GetEditSpeedRun(string gameID, string speedRunID = null, bool isReadOnly = false)
         {
-            var results = _speedRunService.GetEditSpeedRun(speedRunID, gameID, isReadOnly);
+            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID, isReadOnly);
 
             return Json(results);
         }

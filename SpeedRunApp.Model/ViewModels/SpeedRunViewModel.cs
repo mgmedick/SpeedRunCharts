@@ -37,9 +37,9 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
                 VariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.VariableValues.Split("^^"))
+                foreach (var value in run.VariableValues.Split(","))
                 {
-                    var variableValue = value.Split("||", 2);
+                    var variableValue = value.Split("|", 2);
                     VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
                 }
             }
@@ -47,9 +47,9 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
                 SubCategoryVariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.SubCategoryVariableValues.Split("^^"))
+                foreach (var value in run.SubCategoryVariableValues.Split(","))
                 {
-                    var variableValue = value.Split("||", 2);
+                    var variableValue = value.Split("|", 2);
                     SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
                 }
             }
@@ -59,7 +59,7 @@ namespace SpeedRunApp.Model.ViewModels
                 Players = new List<IDNamePair>();
                 foreach (var player in run.Players.Split("^^"))
                 {
-                    var playerValue = player.Split("||", 2);
+                    var playerValue = player.Split("|", 2);
                     Players.Add(new IDNamePair { ID = playerValue[0], Name = playerValue[1] });
                 }
             }

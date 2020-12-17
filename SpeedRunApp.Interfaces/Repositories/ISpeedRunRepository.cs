@@ -10,9 +10,9 @@ namespace SpeedRunApp.Interfaces.Repositories
     public interface ISpeedRunRepository
     {
         IEnumerable<SpeedRunView> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset);
-        SpeedRunView GetSpeedRunView(string speedRunID);
         IEnumerable<IDNamePair> RunStatusTypes();
-        IEnumerable<SpeedRunView> GetSpeedRuns(Expression<Func<SpeedRunView, bool>> predicate);
+        IEnumerable<SpeedRunView> GetSpeedRunViews(Expression<Func<SpeedRunView, bool>> predicate);
+        IEnumerable<SpeedRunView> GetSpeedRunsByUserID(string userID);
     }
 }
 

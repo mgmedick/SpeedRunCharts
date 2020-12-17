@@ -11,10 +11,10 @@ namespace SpeedRunApp.Service
 {
     public class MenuService : IMenuService
     {
-        private readonly IGamesService _gamesService = null;
+        private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
 
-        public MenuService(IGamesService gamesService, IUserService userService)
+        public MenuService(IGameService gamesService, IUserService userService)
         {
             _gamesService = gamesService;
             _userService = userService;

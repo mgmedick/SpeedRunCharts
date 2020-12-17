@@ -1,18 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
+using System.Linq;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService = null;
-        private readonly IMemoryCache _cache = null;
 
-        public UserController(IUserService userService, IMemoryCache cache)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _cache = cache;
+        }
+
+        public ViewResult UserDetails(string userID)
+        {
+            var userVM = _userService.GetUser(userID);
+
+            return View(userVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetSpeedRunGrid(string ID)
+        {
+            var grid = _userService.GetSpeedRunGrid(ID);
+
+            return Json(new { GridModel = grid.Item1, GridData = grid.Item2 });
         }
 
         [HttpGet]
@@ -22,24 +36,6 @@ namespace SpeedRunApp.WebUI.Controllers
 
             return Json(results);
         }
-
-        /*
-        [HttpGet]
-        public ViewResult UserDetails(string userID)
-        {
-            var userVM = _userService.GetUserDetails(userID);
-
-            return View(userVM);
-        }
-
-        [HttpGet]
-        public JsonResult GetUserSpeedRuns(string userID, int elementsPerPage, int elementsOffset)
-        {
-            var runVMs = _userService.GetUserSpeedRuns(userID, elementsPerPage, elementsOffset);
-
-            return Json(runVMs);
-        }
-        */
     }
 }
 

@@ -22,14 +22,6 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public SpeedRunView GetSpeedRunView(string speedRunID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<SpeedRunView>().Where(i => i.ID == speedRunID).FirstOrDefault();
-            }
-        }
-
         public IEnumerable<IDNamePair> RunStatusTypes()
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -38,11 +30,19 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunView> GetSpeedRuns(Expression<Func<SpeedRunView, bool>> predicate)
+        public IEnumerable<SpeedRunView> GetSpeedRunViews(Expression<Func<SpeedRunView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<SpeedRunView>().Where(predicate).ToList();
+            }
+        }
+
+        public IEnumerable<SpeedRunView> GetSpeedRunsByUserID(string userID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunView>("EXEC dbo.GetSpeedRunsByUserID @0", userID).ToList();
             }
         }
     }

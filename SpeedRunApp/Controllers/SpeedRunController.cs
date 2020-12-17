@@ -8,11 +8,11 @@ namespace SpeedRunApp.WebUI.Controllers
 {
     public class SpeedRunController : Controller
     {
-        private readonly ISpeedRunsService _speedRunService = null;
-        private readonly IGamesService _gamesService = null;
+        private readonly ISpeedRunService _speedRunService = null;
+        private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
 
-        public SpeedRunController(ISpeedRunsService speedRunService1, IGamesService gamesService, IUserService userService)
+        public SpeedRunController(ISpeedRunService speedRunService1, IGameService gamesService, IUserService userService)
         {
             _speedRunService = speedRunService1;
             _gamesService = gamesService;

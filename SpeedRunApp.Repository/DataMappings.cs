@@ -55,6 +55,7 @@ namespace SpeedRunApp.Repository
             */
             For<SpeedRunView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRun");
             For<GameView>().PrimaryKey("ID", true).TableName("dbo.vw_Game");
+            For<UserView>().PrimaryKey("ID", true).TableName("dbo.vw_User");
         }
     }
 }

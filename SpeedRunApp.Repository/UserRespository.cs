@@ -14,6 +14,14 @@ namespace SpeedRunApp.Repository
 {
     public class UserRespository : BaseRepository, IUserRepository
     {
+        public UserView GetUserViews(Expression<Func<UserView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<UserView>().Where(predicate).FirstOrDefault();
+            }
+        }
+
         public IEnumerable<SearchResult> SearchUsers(string searchText)
         {
             using (IDatabase db = DBFactory.GetDatabase())

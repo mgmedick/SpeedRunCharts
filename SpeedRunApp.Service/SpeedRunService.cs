@@ -10,14 +10,14 @@ using System.Linq;
 
 namespace SpeedRunApp.Service
 {
-    public class SpeedRunsService : ISpeedRunsService
+    public class SpeedRunService : ISpeedRunService
     {
         private readonly IConfiguration _config = null;
-        private readonly IGamesService _gamesService = null;
+        private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
 
-        public SpeedRunsService(IConfiguration config, IGamesService gamesService, IUserService userService, ISpeedRunRepository speedRunRepo)
+        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ISpeedRunRepository speedRunRepo)
         {
             _config = config;
             _gamesService = gamesService;
@@ -50,7 +50,7 @@ namespace SpeedRunApp.Service
             SpeedRunViewModel runVM = null;
             if (!string.IsNullOrWhiteSpace(speedRunID))
             {
-                var run = _speedRunRepo.GetSpeedRunView(speedRunID);
+                var run = _speedRunRepo.GetSpeedRunViews(i => i.ID == speedRunID).FirstOrDefault();
                 runVM = new SpeedRunViewModel(run);
             }
 
@@ -61,7 +61,15 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunViewModel> GetSpeedRunsByGameID(string gameID)
         {
-            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified && i.Rank.HasValue).OrderBy(i => i.Rank);
+            var runs = _speedRunRepo.GetSpeedRunViews(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified && i.Rank.HasValue).OrderBy(i => i.Rank);
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+
+            return runVMs;
+        }
+
+        public IEnumerable<SpeedRunViewModel> GetSpeedRunsByUserID(string userID)
+        {
+            var runs = _speedRunRepo.GetSpeedRunsByUserID(userID);
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
 
             return runVMs;

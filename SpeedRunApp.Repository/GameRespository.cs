@@ -18,7 +18,15 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<GameView>().Where(i => i.ID == gameID).FirstOrDefault();
+                return db.Query<GameView>().Where(i=>i.ID== gameID).FirstOrDefault();
+            }
+        }
+
+        public IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<GameView>().Where(predicate).ToList();
             }
         }
 
@@ -27,15 +35,6 @@ namespace SpeedRunApp.Repository
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<SearchResult>("SELECT ID AS Value, Name AS Label, 'Games' AS Category FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
-            }
-        }
-
-        public SpeedRunGridItem GetSpeedRunGridItemByGameID(string gameID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                var gameView = db.Query<GameView>().Where(i => i.ID == gameID).FirstOrDefault();
-                return new SpeedRunGridItem(gameView);
             }
         }
     }

@@ -9,6 +9,7 @@ namespace SpeedRunApp.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        UserView GetUserViews(Expression<Func<UserView, bool>> predicate);
         IEnumerable<SearchResult> SearchUsers(string searchText);
     }
 }

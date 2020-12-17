@@ -1,27 +1,28 @@
-﻿using SpeedRunApp.Interfaces.Repositories;
+﻿using System;
+using SpeedRunApp.Interfaces.Repositories;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-//using SpeedRunApp.Interfaces.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SpeedRunApp.Service
 {
-    public class GamesService : IGamesService
+    public class GamesService : IGameService
     {
         private readonly IGameRepository _gameRepo = null;
-        private readonly ISpeedRunsService _speedRunsService = null;
+        private readonly ISpeedRunRepository _speedRunRepo = null;
 
-        public GamesService(IGameRepository gameRepo)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
         {
             _gameRepo = gameRepo;
+            _speedRunRepo = speedRunRepo;
         }
 
         public GameViewModel GetGame(string gameID)
         {
-            var game = _gameRepo.GetGameView(gameID);
+            var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var gameVM = new GameViewModel(game);
 
             return gameVM;
@@ -32,12 +33,15 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
-        public SpeedRunGridViewModel GetSpeedRunGridModel(string gameID)
+        public Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>> GetSpeedRunGrid(string gameID)
         {
-            var gridItems = new List<SpeedRunGridItem>() { _gameRepo.GetSpeedRunGridItemByGameID(gameID) };
+            var runs = _speedRunRepo.GetSpeedRunViews(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified && i.Rank.HasValue).OrderBy(i => i.Rank);
+            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
+            var gridItems = new List<SpeedRunGridItem>() { new SpeedRunGridItem(game) };
             var gridVM = new SpeedRunGridViewModel("Game", gridItems);
 
-            return gridVM;
+            return new Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>>(gridVM, runVMs);
         }
     }
 }

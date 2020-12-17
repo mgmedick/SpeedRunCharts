@@ -14,19 +14,19 @@ namespace SpeedRunApp.Repository
 {
     public class GameRespository : BaseRepository, IGameRepository
     {
-        public GameView GetGameView(string gameID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<GameView>().Where(i=>i.ID== gameID).FirstOrDefault();
-            }
-        }
-
         public IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<GameView>().Where(predicate).ToList();
+            }
+        }
+
+        public IEnumerable<GameView> GetGamesByUserID(string userID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<GameView>("EXEC dbo.GetGamesByUserID @0", userID).ToList();
             }
         }
 

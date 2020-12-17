@@ -326,7 +326,7 @@ function configureAndInitializeGrid(element) {
         { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
         { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
         { name: "primaryTimeString", width: 160 * perc, search: false },
-        { name: "statusTypeString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] }, hidden: !isSenderUser },
+        { name: "statusType.name", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] }, hidden: !isSenderUser },
         { name: "rejectedReason", width: 160 * perc, hidden: !showRejectedReason(isSenderUser, data) },
         { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
         { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
@@ -335,13 +335,13 @@ function configureAndInitializeGrid(element) {
         { name: "game", hidden: true }
     ];
 
-    var game = $(sra.speedRunGridModel.gridItems).first(function () { return this.gameID == gameID }).get(0);
+    var game = $(sra.speedRunGridModel.gridItems).filter(function () { return this.gameID == gameID }).get(0);
 
     $(data).each(function () {
         var item = this;
         $(item.variableValues).each(function () {
             var variableValue = this;
-            var variable = $(game.variables).first(function () { return this.id == variableValue.item1 }).get(0);
+            var variable = $(game.variables).filter(function () { return this.id == variableValue.item1 }).get(0);
             item[variable.id] = variableValue.item2;
         });
     });

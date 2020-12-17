@@ -8,8 +8,8 @@ namespace SpeedRunApp.Interfaces.Repositories
 {
     public interface IGameRepository
     {
-        GameView GetGameView(string gameID);
         IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate);
+        IEnumerable<GameView> GetGamesByUserID(string userID);
         IEnumerable<SearchResult> SearchGames(string searchText);
     }
 }

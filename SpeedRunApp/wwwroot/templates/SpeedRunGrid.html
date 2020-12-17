@@ -68,14 +68,22 @@
         <div class="tab-row-name-container col-auto align-self-end">
             <label class="tab-row-name">Game:</label>
         </div>
-        <div class="col pl-2">
-            <ul class="nav nav-pills">
-                <% _.each(item.gridItems, function(game, gameIndex) { %>
-                <li class="nav-item game">
-                    <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>" data-toggle="pill"><%= game.gameName %></a>
-                </li>
-                <% }) %>
-            </ul>
+        <div class="col pl-2 scroller-tab-wrapper">
+            <div class="row no-gutters">
+                <div class="scroller-tab scroller-tab-left-end btn btn-secondary"><i class="fa fa-step-backward"></i></div>
+                <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
+                <div class="col scroller-tab-list-container">
+                    <ul class="nav nav-pills scroller-tab-list">
+                        <% _.each(item.gridItems, function(game, gameIndex) { %>
+                        <li class="nav-item game">
+                            <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>" data-toggle="pill"><%= game.gameName %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="scroller-tab scroller-tab-right btn btn-secondary"><i class="fa fa-angle-right"></i></div>
+                <div class="scroller-tab scroller-tab-right-end btn btn-secondary"><i class="fa fa-step-forward"></i></div>
+            </div>
         </div>
     </div>
     <% _.each(item.gridItems, function(game, gameIndex) { %>

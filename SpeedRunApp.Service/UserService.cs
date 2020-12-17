@@ -40,7 +40,7 @@ namespace SpeedRunApp.Service
             var runs = _speedRunRepo.GetSpeedRunsByUserID(userID);
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
             var gameIDs = runVMs.Select(i => i.Game.ID).Distinct();
-            var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
+            var games = _gameRepo.GetGamesByUserID(userID);
             var gridItems = games.Select(i => new SpeedRunGridItem(i));
             var gridVM = new SpeedRunGridViewModel("User", gridItems);
 

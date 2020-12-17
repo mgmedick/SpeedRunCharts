@@ -65,7 +65,7 @@ function gameTopSpeedRunsChart(container, inputs) {
 
         var chartDataObj = {};
         _.chain(_data).each(function (item) {
-            var playerNames = _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",");
+            var playerNames = _.chain(item.players).map(function (item) { return item.name }).value().join(",");
 
             chartDataObj[playerNames] = chartDataObj[playerNames] || [];
 
@@ -73,7 +73,7 @@ function gameTopSpeedRunsChart(container, inputs) {
             chartDataObj[playerNames].push(item.primaryTimeMilliseconds);
         });
 
-        var categories = _.chain(_data).map(function (item) { return _.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",") }).value();
+        var categories = _.chain(_data).map(function (item) { return _.chain(item.players).map(function (item) { return item.name }).value().join(",") }).value();
         var chartElem = $(this.container);
         var config = this.chartConfig;
         var columnChart = new fusionStackedBarChart(new fusionMultiSeriesChart(chartElem, chartElem.height(), chartElem.width()), config.theme);

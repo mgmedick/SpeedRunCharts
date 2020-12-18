@@ -18,11 +18,11 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
-                CategoryTypes = new List<IDNamePair>();
+                CategoryTypes = new List<TabItem>();
                 foreach (var categoryType in game.CategoryTypes.Split("^^"))
                 {
-                    var values = categoryType.Split("|", 2);
-                    CategoryTypes.Add(new IDNamePair { ID = values[0], Name = values[1] });
+                    var values = categoryType.Split("|", 3);
+                    CategoryTypes.Add(new TabItem { ID = values[0], HasData = Convert.ToBoolean(values[1]), Name = values[2] });
                 }
             }
 
@@ -31,18 +31,18 @@ namespace SpeedRunApp.Model.ViewModels
                 Categories = new List<Category>();
                 foreach (var category in game.Categories.Split("^^"))
                 {
-                    var values = category.Split("|", 3);
-                    Categories.Add(new Category { ID = values[0], CategoryTypeID = Convert.ToInt32((string)values[1]), Name = values[2] });
+                    var values = category.Split("|", 4);
+                    Categories.Add(new Category { ID = values[0], CategoryTypeID = Convert.ToInt32((string)values[1]), HasData = Convert.ToBoolean(values[2]), Name = values[3] });
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
-                Levels = new List<IDNamePair>();
+                Levels = new List<TabItem>();
                 foreach (var level in game.Levels.Split("^^"))
                 {
-                    var values = level.Split("|", 2);
-                    Levels.Add(new IDNamePair { ID = values[0], Name = values[1] });
+                    var values = level.Split("|", 3);
+                    Levels.Add(new TabItem { ID = values[0], HasData = Convert.ToBoolean(values[1]), Name = values[1] });
                 }
             }
 
@@ -53,7 +53,7 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     var values = variable.Split("|", 6);
                     var variableDisplay = new Variable { ID = values[0], IsSubCategory = Convert.ToBoolean(values[1]), ScopeTypeID = Convert.ToInt32((string)values[2]), CategoryID = values[3], LevelID = values[4], Name = values[5] };
-                    variableDisplay.VariableValues = game.VariableValues?.Split("^^").Where(i => i.Split("|")[1] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("|")[0], Name = i.Split("|")[2] });
+                    variableDisplay.VariableValues = game.VariableValues?.Split("^^").Where(i => i.Split("|")[1] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("|")[0], HasData = Convert.ToBoolean(i.Split("|")[2]), Name = i.Split("|")[3] });
                     Variables.Add(variableDisplay);
                 }
             }
@@ -84,9 +84,9 @@ namespace SpeedRunApp.Model.ViewModels
         public string JapaneseName { get; set; }
         public string CoverImageUri { get; set; }
         public int? YearOfRelease { get; set; }
-        public List<IDNamePair> CategoryTypes { get; set; }
+        public List<TabItem> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
-        public List<IDNamePair> Levels { get; set; }
+        public List<TabItem> Levels { get; set; }
         public List<Variable> Variables { get; set; }
         public List<IDNamePair> Platforms { get; set; }
         public List<IDNamePair> Moderators { get; set; }

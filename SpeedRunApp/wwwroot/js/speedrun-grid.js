@@ -335,14 +335,15 @@ function configureAndInitializeGrid(element) {
         { name: "game", hidden: true }
     ];
 
-    var game = $(sra.speedRunGridModel.gridItems).filter(function () { return this.gameID == gameID }).get(0);
+    var game = $(sra.speedRunGridModel.tabItems).filter(function () { return this.id == gameID }).get(0);
 
     $(data).each(function () {
         var item = this;
         $(item.variableValues).each(function () {
             var variableValue = this;
-            var variable = $(game.variables).filter(function () { return this.id == variableValue.item1 }).get(0);
-            item[variable.id] = variableValue.item2;
+            var gameVariable = $(game.variables).filter(function () { return this.id == variableValue.item1 }).get(0);
+            var gameVariableValue = $(gameVariable.variableValues).filter(function () { return this.id == variableValue.item2 }).get(0);
+            item[gameVariable.id] = gameVariableValue.name;
         });
     });
 

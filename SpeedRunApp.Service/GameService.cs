@@ -38,8 +38,8 @@ namespace SpeedRunApp.Service
             var runs = _speedRunRepo.GetSpeedRunViews(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified && i.Rank.HasValue).OrderBy(i => i.Rank);
             var runVMs = runs.Select(i => new SpeedRunViewModel(i));
             var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var gridItems = new List<SpeedRunGridItem>() { new SpeedRunGridItem(game) };
-            var gridVM = new SpeedRunGridViewModel("Game", gridItems);
+            var tabItems = new List<GameViewModel>() { new GameViewModel(game) };
+            var gridVM = new SpeedRunGridViewModel("Game", tabItems);
 
             return new Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>>(gridVM, runVMs);
         }

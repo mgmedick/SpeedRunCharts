@@ -5,13 +5,13 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunGridViewModel
     {
-        public SpeedRunGridViewModel(string sender, IEnumerable<SpeedRunGridItem> gridItems)
+        public SpeedRunGridViewModel(string sender, IEnumerable<GameViewModel> tabItems)
         {
             Sender = sender;
-            GridItems = gridItems;
+            TabItems = tabItems;
         }
 
         public string Sender { get; set; }
-        public IEnumerable<SpeedRunGridItem> GridItems { get; set; }
+        public IEnumerable<GameViewModel> TabItems { get; set; }
     }
 }

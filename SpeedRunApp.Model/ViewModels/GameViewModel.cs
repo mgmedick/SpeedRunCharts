@@ -18,11 +18,11 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
-                CategoryTypes = new List<TabItem>();
+                CategoryTypes = new List<IDNamePair>();
                 foreach (var categoryType in game.CategoryTypes.Split("^^"))
                 {
-                    var values = categoryType.Split("|", 3);
-                    CategoryTypes.Add(new TabItem { ID = values[0], HasData = Convert.ToBoolean(values[1]), Name = values[2] });
+                    var values = categoryType.Split("|", 2);
+                    CategoryTypes.Add(new IDNamePair { ID = values[0], Name = values[1] });
                 }
             }
 
@@ -148,6 +148,7 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     ID = h.ID,
                     Name = h.Name,
+                    HasData = h.HasData,
                     SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID), count + 1)
                 })
             });
@@ -160,7 +161,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string JapaneseName { get; set; }
         public string CoverImageUri { get; set; }
         public int? YearOfRelease { get; set; }
-        public List<TabItem> CategoryTypes { get; set; }
+        public List<IDNamePair> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
         public List<TabItem> Levels { get; set; }
         public List<Variable> Variables { get; set; }

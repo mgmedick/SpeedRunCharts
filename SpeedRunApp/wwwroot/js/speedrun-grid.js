@@ -2,16 +2,10 @@
     var sra = {};
 }
 
-/*
-function speedRunGridModel(sender, categoryTypes, games, categories, levels, subCategoryVariables) {
+function speedRunGridModel(sender, tabItems) {
     this.sender = sender,
-    this.categoryTypes = categoryTypes,
-    this.games = games,
-    this.categories = categories,
-    this.levels = levels,
-    this.subCategoryVariables = subCategoryVariables
+        this.tabItems = tabItems
 }
-*/
 
 function speedRunGridVariableModel(subCategoryVariables, classPrefix, gameID, categoryTypeID, categoryID, levelID, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, prevID, prevData, count) {
     this.subCategoryVariables = subCategoryVariables,
@@ -85,15 +79,15 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 
 function initializeSearchSpeedRunGridEvents(element) {
     $(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
-    $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "hidden", linkHiddenText: "Show Tab Filters", linkDisplayedText: "Hide Tab Filters" });
+    $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Search", linkDisplayedText: "Hide Search" });
 
-    $('#drpCategoryTypes').change(function () {
-        onCategoryTypeChange(this);
-    });
+    //$('#drpCategoryTypes').change(function () {
+    //    onCategoryTypeChange(this);
+    //});
 
-    $('#drpCategories').change(function () {
-        onCategoryChange(this);
-    });
+    //$('#drpCategories').change(function () {
+    //    onCategoryChange(this);
+    //});
 }
 
 function initializeSpeedRunGridEvents(element) {
@@ -681,22 +675,55 @@ function initializeCharts(element, data) {
 }
 
 /**Search functions **/
-function filterCategories() {
-    var categoryTypeIDs = $('#drpCategoryTypes').val();
+function search() {
     var gameIDs = $('#drpGames').val();
+    var categoryTypeID = $('#drpCategoryTypes').val();
     var categoryIDs = $('#drpCategories').val();
     var levelIDs = $('#drpLevels').val();
+    var hideEmpty = $('#chkHideEmpty').prop("checked");
+    var tabItems = sra.speedRunGridModel.tabItems.map(a => Object.assign({}, a));
 
-    var categoryTypes = $(sra.categoryTypes).filter(function () { return categoryTypeIDs.length == 0 || categoryTypeIDs.indexOf(this.id) > -1 })
-    var games = $(sra.games).filter(function () { return gameIDs.length == 0 || gameIDs.indexOf(this.id) > -1 })
-    var categories = $(sra.categories).filter(function () { return categoryIDs.length == 0 || categoryIDs.indexOf(this.id) > -1 });
-    var levels = $(sra.searchLevels).filter(function () { return levelIDs.length == 0 || levelIDs.indexOf(this.id) > -1 })
+    if (gameIDs.length > 0) {
+        tabItems = $(gridModel.tabItems).filter(function () { return gameIDs.indexOf(this.id) > -1 }).get();
+    }
+
+    if (categoryTypeID != -1) {
+        $(tabItems).each(function () {
+            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeID == this.id }).get();
+            //this.categories = $(this.categories).filter(function () { return categoryTypeID = this.categoryTypeID }).value();
+            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return (categoryTypeID == 0 && (this.scopeTypeID == 0 || this.scopeTypeID == 1)) || (categoryTypeID == 1 && (this.scopeTypeID == 2 || this.scopeTypeID == 3)) }).value();
+        });
+    }
+
+    if (categoryIDs.length > 0) {
+        $(tabItems).each(function () {
+            this.categories = $(this.categories).filter(function () { return categoryIDs.indexOf(this.id) > -1 }).get();
+            //var filteredCategoryIDs = $(this.categories).map(function () { return this.id; })
+            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredCategoryIDs.indexOf(this.categoryID) > -1 }).value();
+        });
+    }
+
+    if (levelIDs.length > 0) {
+        $(tabItems).each(function () {
+            this.levels = $(this.levels).filter(function () { return levelIDs.indexOf(this.id) > -1 }).get();
+            //var filteredLevelIDs = $(this.categories).map(function () { return this.id; })
+            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredLevelIDs.indexOf(this.levelID) > -1 }).value();
+        });
+    }
+
+    if (hideEmpty) {
+        $(tabItems).each(function () {
+            this.categories = $(this.categories).filter(function () { return this.hasData }).value();
+            this.levels = $(this.levels).filter(function () { return this.hasData }).value();
+            this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return this.hasData }).value();
+        });
+    }
 
     $('#divSpeedRunGridContainer').hide();
     $('#divSpeedRunGridLoading').show();
 
-    var gridModel = new speedRunGridModel("Game", categoryTypes, games, categories, levels);
-    renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel);
+    var gridModel = new speedRunGridModel(sra.sender, tabItems);
+    renderAndInitializeSpeedRunGrid($('#divSpeedRunGridContainer'), sra.speedRunGridTemplate, gridModel, sra.renderSpeedRunGridVariableTemplate, sra.renderSpeedRunGridVariableChartTemplate);
 
     $('#divSpeedRunGridContainer').show();
     $('#divSpeedRunGridLoading').hide();
@@ -738,7 +765,7 @@ function showSpeedRunDetails(gridID, rowID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=true', function (data, status) {
+        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=false', function (data, status) {
             data.speedRunVM = currentItem;
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);

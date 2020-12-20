@@ -125,7 +125,7 @@
                                 <ul class="nav nav-pills scroller-tab-list">
                                     <% _.each(_.filter(game.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                                     <li class="nav-item category">
-                                        <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>" data-toggle="pill" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %></a>
+                                        <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>" data-toggle="pill" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %><% if(!category.hasData) { %><i class="pl-1">(empty)</i><% } %></a>
                                     </li>
                                     <% }) %>
                                 </ul>
@@ -167,7 +167,7 @@
                                         <ul class="nav nav-pills scroller-tab-list">
                                             <% _.each(game.levels, function(level, levelIndex) { %>
                                             <li class="nav-item level">
-                                                <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="pill"><%= level.name %></a>
+                                                <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="pill"><%= level.name %><% if(!level.hasData) { %><i class="pl-1">(empty)</i><% } %></a>
                                             </li>
                                             <% }) %>
                                         </ul>

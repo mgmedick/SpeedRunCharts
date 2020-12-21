@@ -81,13 +81,72 @@ function initializeSearchSpeedRunGridEvents(element) {
     $(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Search", linkDisplayedText: "Hide Search" });
 
-    //$('#drpCategoryTypes').change(function () {
-    //    onCategoryTypeChange(this);
-    //});
+    $('#drpGames').change(function () {
+        onGameChange(this);
+    });
 
-    //$('#drpCategories').change(function () {
-    //    onCategoryChange(this);
-    //});
+    $('#drpCategoryTypes').change(function () {
+        onCategoryTypeChange(this);
+    });
+}
+
+function onGameChange(element) {
+    var selectedGameIDs = $(element).val();
+    var selectedGames = $(sra.speedRunGridModel.tabItems).filter(function () {
+        return selectedGameIDs.indexOf(this.id) > -1
+    }).get();
+
+    var categories = $(selectedGames).map(function () { return this.categories }).get();
+    var categoryTypes = $(selectedGames).map(function () { return this.categoryTypes }).get();
+    var levels = $(selectedGames).map(function () { return this.levels }).get();
+
+    var selectedCategoryTypeID = $('#drpCategoryTypes').val();
+    if (selectedCategoryTypeID) {
+        categories = $(categories).filter(function () {
+            return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
+        }).get();
+        categoryTypes = $(categoryTypes).filter(function () {
+            return selectedCategoryTypeID == -1 || this.id == selectedCategoryTypeID;
+        }).get();
+    }
+
+    populateDropDown($('#drpCategories'), categories);
+    populateDropDown($('#drpCategoryTypes'), categoryTypes);
+    populateDropDown($('#drpLevels'), levels);
+}
+
+function onCategoryTypeChange(element) {
+    var selectedCategoryTypeID = $(element).val();
+
+    var games = $(sra.speedRunGridModel.tabItems).filter(function () {
+        return $(this.categoryTypeIDs).filter(function () { return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID }).length > 0
+    }).get();
+    var categories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () {
+        return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
+    }).get();
+
+    var selectedGameIDs = $('#drpGames').val();
+    if (selectedGameIDs.length > 0) {
+        games = $(games).filter(function () { return selectedGameIDs.indexOf(this.id) > -1 });
+        var selectedGameCategoryIDs = $(games).map(function () { return this.categories }).map(function () { return this.id; }).get()
+        categories = $(categories).filter(function () { return selectedGameCategoryIDs.indexOf(this.id) > -1 }).get();
+    }
+
+    if (selectedCategoryTypeID == 0) {
+        $('#divLevels').hide();
+    } else {
+        $('#divLevels').show();
+    }
+
+    populateDropDown($('#drpGames'), games);
+    populateDropDown($('#drpCategories'), categories);
+}
+
+function populateDropDown(element, items) {
+    $(element).empty();
+    $(items).each(function () {
+        $(element).append($('<option>').text(this.name).attr('value', this.id));
+    });
 }
 
 function initializeSpeedRunGridEvents(element) {
@@ -280,6 +339,8 @@ function onLevelVariableValueTabClick(element) {
         }
     }
 }
+
+
 
 //Initialize Grids
 function configureAndInitializeGrid(element) {
@@ -682,6 +743,9 @@ function search() {
     var levelIDs = $('#drpLevels').val();
     var hideEmpty = $('#chkHideEmpty').prop("checked");
     var tabItems = sra.speedRunGridModel.tabItems.map(a => Object.assign({}, a));
+    $(tabItems).each(function () {
+        this.subCategoryVariables = cloneVariables(this.subCategoryVariables);
+    });
 
     if (gameIDs.length > 0) {
         tabItems = $(gridModel.tabItems).filter(function () { return gameIDs.indexOf(this.id) > -1 }).get();
@@ -711,11 +775,20 @@ function search() {
         });
     }
 
+    $('.variable-search').each(function () {
+        var variableName = $(this).data('variablename');
+        var variableValueNames = $(this).val();
+        if (variableValueNames.length > 0) {
+            var variables = $(tabItems).map(function () { return this.subCategoryVariables }).get();
+            setVariableValues(variables, variableName, variableValueNames);
+        }
+    });
+
     if (hideEmpty) {
         $(tabItems).each(function () {
-            this.categories = $(this.categories).filter(function () { return this.hasData }).value();
-            this.levels = $(this.levels).filter(function () { return this.hasData }).value();
-            this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return this.hasData }).value();
+            this.categories = $(this.categories).filter(function () { return this.hasData }).get();
+            this.levels = $(this.levels).filter(function () { return this.hasData }).get();
+            hideEmptyVariableValues(this.subCategoryVariables);
         });
     }
 
@@ -727,6 +800,44 @@ function search() {
 
     $('#divSpeedRunGridContainer').show();
     $('#divSpeedRunGridLoading').hide();
+}
+
+function cloneVariables(variables) {
+    variables = variables.map(a => Object.assign({}, a));
+
+    $(variables).each(function () {
+        $(this.variableValues).each(function () {
+            if (this.subVariables.length > 0) {
+                this.subVariables = cloneVariables(this.subVariables);
+            }
+        });
+    });
+
+    return variables;
+}
+
+function setVariableValues(variables, variableName, variableValueNames) {
+    $(variables).each(function () {
+        if (this.name == variableName) {
+            this.variableValues = this.variableValues.map(a => Object.assign({}, a))
+        }
+
+        var subVariables = $(this.variableValues).map(function () { return this.subVariables; }).get();
+        if (subVariables > 0) {
+            setVariableValues(this.subVariables, variableName, variableValueNames);
+        }
+    });
+}
+
+function hideEmptyVariableValues(variables) {
+    $(variables).each(function () {
+        this.variableValues = $(this.variableValues).filter(function () { return this.hasData }).get();
+
+        var subVariables = $(this.variableValues).map(function () { return this.subVariables; }).get();
+        if (subVariables.length > 0) {
+            hideEmptyVariableValues(subVariables);
+        }
+    });
 }
 
 function showSpeedRunSummary(gridID, rowID) {
@@ -788,6 +899,8 @@ function showSpilts(gridID, rowID) {
     $modalBody.show();
     $modal.modal('show');
 }
+
+
 
 
 

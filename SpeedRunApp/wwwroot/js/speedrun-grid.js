@@ -92,6 +92,10 @@ function initializeSearchSpeedRunGridEvents(element) {
     $('#drpCategories').change(function () {
         onCategoryChange(this);
     });
+
+    $('#drpLevels').change(function () {
+        onLevelChange(this);
+    });
 }
 
 function onGameChange(element) {
@@ -103,38 +107,65 @@ function onGameChange(element) {
     var categories = $(selectedGames).map(function () { return this.categories }).get();
     var categoryTypes = $(selectedGames).map(function () { return this.categoryTypes }).get();
     var levels = $(selectedGames).map(function () { return this.levels }).get();
+    var variableIDs = $(selectedGames).map(function () { return this.variables }).filter(function () { return this.isSubCategory }).map(function () { return this.id }).get();
 
     var selectedCategoryTypeID = $('#drpCategoryTypes').val();
-    if (selectedCategoryTypeID) {
-        categories = $(categories).filter(function () {
-            return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
-        }).get();
-        categoryTypes = $(categoryTypes).filter(function () {
-            return selectedCategoryTypeID == -1 || this.id == selectedCategoryTypeID;
-        }).get();
-    }
+    categories = $(categories).filter(function () {
+        return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
+    }).get();
+    categoryTypes = $(categoryTypes).filter(function () {
+        return selectedCategoryTypeID == -1 || this.id == selectedCategoryTypeID;
+    }).get();
 
-    populateDropDown($('#drpCategories'), categories);
+
+    $('.variable-search').each(function () {
+        var variableID = $(this).data("variableid");
+        var scopeTypeID = $(this).data("scopetypeid");
+        var categoryID = $(this).data("categoryid");
+        var levelID = $(this).data("levelid");
+
+        if (selectedCategoryTypeID == 0) {
+            if (!categoryID && !levelID && [0, 1].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        } else if (selectedCategoryTypeID == 1) {
+            if (!categoryID && !levelID && [2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        } else {
+            if (!categoryID && !levelID && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        }
+    });
+
     populateDropDown($('#drpCategoryTypes'), categoryTypes);
+    populateDropDown($('#drpCategories'), categories);
     populateDropDown($('#drpLevels'), levels);
 }
 
 function onCategoryTypeChange(element) {
     var selectedCategoryTypeID = $(element).val();
-
-    var games = $(sra.speedRunGridModel.tabItems).filter(function () {
-        return $(this.categoryTypeIDs).filter(function () { return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID }).length > 0
-    }).get();
-    var categories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () {
-        return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
-    }).get();
-
     var selectedGameIDs = $('#drpGames').val();
-    if (selectedGameIDs.length > 0) {
-        games = $(games).filter(function () { return selectedGameIDs.indexOf(this.id) > -1 });
-        var selectedGameCategoryIDs = $(games).map(function () { return this.categories }).map(function () { return this.id; }).get()
-        categories = $(categories).filter(function () { return selectedGameCategoryIDs.indexOf(this.id) > -1 }).get();
-    }
+    var selectedGames = $(sra.speedRunGridModel.tabItems).filter(function () {
+        return selectedGameIDs.indexOf(this.id) > -1
+    }).get();
+    var selectedGameCategoryIDs = $(selectedGames).map(function () { return this.categories }).map(function () { return this.id; }).get()
+
+    var categories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () {
+        return (selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID) && (selectedGameCategoryIDs.length == 0 || selectedGameCategoryIDs.indexOf(this.id) > -1);
+    }).get();
+    var levels = $(selectedGames).map(function () { return this.levels }).get();
+    var variableIDs = $(selectedGames).map(function () { return this.variables }).filter(function () { return this.isSubCategory }).map(function () { return this.id }).get();
 
     if (selectedCategoryTypeID == 0) {
         $('#divLevels').hide();
@@ -142,19 +173,72 @@ function onCategoryTypeChange(element) {
         $('#divLevels').show();
     }
 
-    populateDropDown($('#drpGames'), games);
+    $('.variable-search').each(function () {
+        var variableID = $(this).data("variableid");
+        var scopeTypeID = $(this).data("scopetypeid");
+        var categoryID = $(this).data("categoryid");
+        var levelID = $(this).data("levelid");
+
+        if (selectedCategoryTypeID == 0) {
+            if (!categoryID && !levelID && [0, 1].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        } else if (selectedCategoryTypeID == 1) {
+            if (!categoryID && !levelID && [2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        } else {
+            if (!categoryID && !levelID && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+                $(this).find('.variable-select').val('').trigger("change")
+            }
+        }
+    });
+
     populateDropDown($('#drpCategories'), categories);
+    populateDropDown($('#drpLevels'), levels);
 }
 
 function onCategoryChange(element) {
     var selectedCategoryIDs = $(element).val();
+    var selectedLevelIDs = $('#drpLevels').val();
 
     $('.variable-search').each(function () {
+        var scopeTypeID = $(this).data("scopetypeid");
         var categoryID = $(this).data("categoryid");
-        if (selectedCategoryIDs.indexOf(categoryID)) {
+        var levelID = $(this).data("levelid");
+
+        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
             $(this).show();
-        } else {
+        } else if (categoryID || levelID) {
             $(this).hide();
+            $(this).find('.variable-select').val('').trigger("change")
+        }
+    });
+}
+
+function onLevelChange(element) {
+    var selectedLevelIDs = $(element).val();
+    var selectedCategoryIDs = $('#drpCategories').val();
+
+    $('.variable-search').each(function () {
+        var scopeTypeID = $(this).data("scopetypeid");
+        var categoryID = $(this).data("categoryid");
+        var levelID = $(this).data("levelid");
+
+        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
+            $(this).show();
+        } else if (categoryID || levelID) {
+            $(this).hide();
+            $(this).find('.variable-select').val('').trigger("change")
         }
     });
 }
@@ -793,11 +877,11 @@ function search() {
     }
 
     $('.variable-select').each(function () {
-        var variableName = $(this).data('variablename');
-        var variableValueNames = $(this).val();
-        if (variableValueNames.length > 0) {
+        var variableID = $(this).data('variableid');
+        var variableValueIDs = $(this).val();
+        if (variableValueIDs.length > 0) {
             var variables = $(tabItems).map(function () { return this.subCategoryVariables }).get();
-            filterVariableValues(variables, variableName, variableValueNames);
+            filterVariableValues(variables, variableID, variableValueIDs);
         }
     });
 
@@ -834,15 +918,15 @@ function cloneVariables(variables) {
     return clonedVariables;
 }
 
-function filterVariableValues(variables, variableName, variableValueNames) {
+function filterVariableValues(variables, variableID, variableValueIDs) {
     $(variables).each(function () {
-        if (this.name == variableName) {
-            this.variableValues = $(this.variableValues).filter(function () { return variableValueNames.indexOf(this.name) > -1 }).get();
+        if (this.id == variableID) {
+            this.variableValues = $(this.variableValues).filter(function () { return variableValueIDs.indexOf(this.id) > -1 }).get();
         }
 
         var subVariables = $(this.variableValues).map(function () { return this.subVariables; }).get();
         if (subVariables.length > 0) {
-            filterVariableValues(subVariables, variableName, variableValueNames);
+            filterVariableValues(subVariables, variableID, variableValueIDs);
         }
     });
 }

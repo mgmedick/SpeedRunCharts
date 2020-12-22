@@ -1,7 +1,10 @@
-﻿/**Initialize Functions**/
-function initializeClient() {
-    initalizeSpeedRunGrid("User");
+﻿
+function initializeClient(userID) {
+    initalizeSpeedRunGrid("User", userID);
 }
+
+
+
 
 
 

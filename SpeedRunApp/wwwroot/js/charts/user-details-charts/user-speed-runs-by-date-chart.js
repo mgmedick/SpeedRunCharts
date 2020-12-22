@@ -4,7 +4,7 @@ function userSpeedRunsByDateChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Speed Runs By Date',
+        caption: 'By Date',
         subCaption: 'All Time',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',
@@ -81,7 +81,7 @@ function userSpeedRunsByDateChart(container, inputs) {
             var dateString = item.dateSubmittedString;
 
             groupedObj[dateString] = groupedObj[dateString] || [];
-            groupedObj[dateString].push(item.primaryTimeSeconds);
+            groupedObj[dateString].push(item.primaryTimeMilliseconds);
         });
 
         var chartDataObj = {};

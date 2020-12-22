@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Model;
+using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon;
 using System.Collections.Generic;
 
@@ -9,30 +9,36 @@ namespace SpeedRunApp.WebUI.Controllers
 {
     public class GameController : Controller
     {
-        private readonly IGamesService _gamesService = null;
-        private readonly ISpeedRunsService _speedRunService = null;
+        private readonly IGameService _gameService = null;
+        private readonly ISpeedRunService _speedRunsService = null;
 
-        public GameController(IGamesService gamesService, ISpeedRunsService speedRunService)
+        public GameController(IGameService gameService, ISpeedRunService speedRunsService)
         {
-            _gamesService = gamesService;
-            _speedRunService = speedRunService;
+            _gameService = gameService;
+            _speedRunsService = speedRunsService;
         }
 
         public ViewResult GameDetails(string gameID)
         {
-            var gameVM = _gamesService.GetGameDetails(gameID);
-            //HttpContext.Session.Set("Moderators", gameVM.Moderators);
+            var gameVM = _gameService.GetGame(gameID);
 
             return View(gameVM);
         }
 
         [HttpGet]
-        public JsonResult GetGameSpeedRunRecords(string gameID, CategoryType categoryType, string categoryID, string levelID, string variableValues)
+        public JsonResult GetSpeedRunGrid(string ID)
         {
-            //var moderators = HttpContext.Session.Get<IEnumerable<IDNamePair>>("Moderators");
-            var recordVMs = _gamesService.GetGameSpeedRunRecords(gameID, categoryType, categoryID, levelID, variableValues);
+            var grid = _gameService.GetSpeedRunGrid(ID);
 
-            return Json(recordVMs);
+            return Json(new { GridModel = grid.Item1, GridData = grid.Item2 });
+        }
+
+        [HttpGet]
+        public JsonResult SearchGames(string term)
+        {
+            var results = _gameService.SearchGames(term);
+
+            return Json(results);
         }
     }
 }

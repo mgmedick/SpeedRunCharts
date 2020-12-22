@@ -1,33 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> categoryTypes, IEnumerable<IDNamePair> platforms)
+        public SpeedRunListViewModel(int elementsPerPage)
         {
-            StatusTypes = statusTypes;
-            CategoryTypes = categoryTypes;
-            Platforms = platforms;
+            ElementsPerPage = elementsPerPage;
         }
 
-        public IEnumerable<IDNamePair> StatusTypes
-        {
-            get;
-            set;
-        }
-
-        public IEnumerable<IDNamePair> CategoryTypes
-        {
-            get;
-            set;
-        }
-
-        public IEnumerable<IDNamePair> Platforms
-        {
-            get;
-            set;
-        }
+        public int ElementsPerPage { get; set; }
     }
 }

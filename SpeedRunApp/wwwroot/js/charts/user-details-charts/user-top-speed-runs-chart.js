@@ -4,7 +4,7 @@ function userTopSpeedRunsChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Top 10 Speed Runs',
+        caption: 'Top 10',
         subCaption: '',
         xAxis: '',
         yAxis: 'Time (Minutes)',
@@ -13,9 +13,9 @@ function userTopSpeedRunsChart(container, inputs) {
         formatNumberScale: 1,
         numberOfDecimals: 0,
         useRoundEdges: 1,
-        numberscalevalue: "60,60",
-        numberscaleunit: "m,h",
-        defaultnumberscale: "s",
+        numberscalevalue: "1000,60,60",
+        numberscaleunit: "s,m,h",
+        defaultnumberscale: "ms",
         scalerecursively: "1",
         maxscalerecursion: "-1",
         scaleseparator: "",
@@ -65,10 +65,10 @@ function userTopSpeedRunsChart(container, inputs) {
 
         var chartDataObj = {};
         _.chain(_data).each(function (item) {
-            var dateString = item.dateSubmittedString; //_.chain(item.playerUsers).map(function (item) { return item.name }).value().join(",");
+            var dateString = item.dateSubmittedString;
 
             chartDataObj[dateString] = chartDataObj[dateString] || [];
-            chartDataObj[dateString].push(item.primaryTimeSeconds);
+            chartDataObj[dateString].push(item.primaryTimeMilliseconds);
         });
 
         var categories = _.chain(_data).map(function (item) { return item.dateSubmittedString; }).uniq().value();

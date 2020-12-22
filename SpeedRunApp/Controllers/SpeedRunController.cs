@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.ViewModels;
@@ -7,55 +8,36 @@ namespace SpeedRunApp.WebUI.Controllers
 {
     public class SpeedRunController : Controller
     {
-        private readonly ISpeedRunsService _speedRunService = null;
+        private readonly ISpeedRunService _speedRunService = null;
+        private readonly IGameService _gamesService = null;
+        private readonly IUserService _userService = null;
 
-        public SpeedRunController(ISpeedRunsService speedRunService)
+        public SpeedRunController(ISpeedRunService speedRunService1, IGameService gamesService, IUserService userService)
         {
-            _speedRunService = speedRunService;
+            _speedRunService = speedRunService1;
+            _gamesService = gamesService;
+            _userService = userService;
         }
 
         public ViewResult SpeedRunList()
         {
             var runListVM = _speedRunService.GetSpeedRunList();
+
             return View(runListVM);
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int elementsPerPage, int elementsOffset)
+        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
         {
-            var results = _speedRunService.GetLatestSpeedRuns(category, elementsPerPage, elementsOffset);
+            var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
 
             return Json(results);
         }
 
         [HttpGet]
-        public JsonResult SearchGamesAndUsers(string term)
+        public JsonResult GetEditSpeedRun(string gameID, string speedRunID = null, bool isReadOnly = false)
         {
-            var results = _speedRunService.SearchGamesAndUsers(term);
-
-            return Json(results);
-        }
-
-        [HttpGet]
-        public JsonResult SearchGames(string term)
-        {
-            var results = _speedRunService.SearchGames(term);
-
-            return Json(results);
-        }
-
-        [HttpGet]
-        public JsonResult SearchUsers(string term)
-        {
-            var results = _speedRunService.SearchUsers(term);
-
-            return Json(results);
-        }
-
-        [HttpGet]
-        public JsonResult GetEditSpeedRun(string speedRunID, string gameID, bool isReadOnly)
-        {
-            var results = _speedRunService.GetEditSpeedRun(speedRunID, gameID, isReadOnly);
+            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID, isReadOnly);
 
             return Json(results);
         }

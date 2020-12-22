@@ -8,166 +8,161 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunViewModel
     {
-        public SpeedRunViewModel(SpeedRun run)
+        public SpeedRunViewModel(SpeedRunView run)
         {
+            OrderValue = run.OrderValue;
             ID = run.ID;
-            StatusType = new IDNamePair { ID = ((int)run.Status.Type).ToString(), Name = run.Status.Type.ToString() };
-            IsEmulated = run.System.IsEmulated;
+            StatusType = new IDNamePair { ID = run.StatusTypeID.ToString(), Name = run.StatusTypeName.ToString() };
+            Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
+            GameCoverImageLink = run.GameCoverImageUrl;
+            CategoryType = new IDNamePair { ID = run.CategoryTypeID.ToString(), Name = run.CategoryTypeName };
+            Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
+            IsEmulated = run.IsEmulated;
+            SplitsLink = run.SplitsUrl;
+            RunDate = run.RunDate;
             DateSubmitted = run.DateSubmitted;
-            VerifyDate = run.Status.VerifyDate;
-            VideoLinkEmbeded = run.Videos.EmbededLinks?.FirstOrDefault(i => i != null);
-            Comment = run.Comment;
-            RejectedReason = run.Status.Reason;
-            SplitsLink = run.SplitsUri;
-            PlayerUsers = run.PlayerUsers;
-            PlayerGuests = run.PlayerGuests;
+            VerifyDate = run.VerifyDate;
+            Rank = run.Rank;
 
-            //Times
-            PrimaryTime = run.Times.Primary.Value;
-            RealTime = run.Times.RealTime;
-            RealTimeWithoutLoads = run.Times.RealTimeWithoutLoads;
-            GameTime = run.Times.GameTime;
-
-            if (run.PlayerUser != null)
+            if (!string.IsNullOrWhiteSpace(run.LevelID))
             {
-                Player = new IDNamePair { ID = run.PlayerUser.ID, Name = run.PlayerUser.Name };
+                Level = new IDNamePair { ID = run.LevelID, Name = run.LevelName };
             }
 
-            if (run.Game != null)
+            if (!string.IsNullOrWhiteSpace(run.PlatformID))
             {
-                Game = new IDNamePair { ID = run.GameID, Name = run.Game.Name };
-                GameCoverImageLink = run.Game.Assets?.CoverLarge?.Uri;
+                Platform = new IDNamePair { ID = run.PlatformID, Name = run.PlatformName };
             }
 
-            if (run.Category != null)
+            if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                Category = new IDNamePair { ID = run.CategoryID, Name = run.Category.Name };
-                CategoryType = new IDNamePair { ID = ((int)run.Category?.Type).ToString(), Name = run.Category?.Type.ToString() };
+                VariableValues = new List<Tuple<string, string>>();
+                foreach (var value in run.VariableValues.Split(","))
+                {
+                    var variableValue = value.Split("|", 2);
+                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                }
             }
 
-            if (run.Platform != null)
+            if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
-                Platform = new IDNamePair { ID = run.Platform.ID, Name = run.Platform.Name };
+                SubCategoryVariableValues = new List<Tuple<string, string>>();
+                foreach (var value in run.SubCategoryVariableValues.Split(","))
+                {
+                    var variableValue = value.Split("|", 2);
+                    SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                }
             }
 
-            if (run.Level != null)
+            if (!string.IsNullOrWhiteSpace(run.Players))
             {
-                Level = new IDNamePair { ID = run.Level.ID, Name = run.Level.Name };
+                Players = new List<IDNamePair>();
+                foreach (var player in run.Players.Split("^^"))
+                {
+                    var playerValue = player.Split("|", 2);
+                    Players.Add(new IDNamePair { ID = playerValue[0], Name = playerValue[1] });
+                }
             }
 
-            //if (run.Variables != null)
-            //{
-            //    SubCategoryVariables = run.Variables.Where(i => i.IsSubCategory).Select(i => new VariableDisplay { ID = i.ID, Name = i.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, VariableValues = i.Values.Select(g => new VariableValueDisplay { ID = g.ID, Name = g.Value }) });
-            //}
-
-            if (run.VariableValues != null)
+            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
             {
-                AllVariableValues = run.VariableValues.Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, LevelID = this.Level?.ID, ScopeTypeID = ((int)i.Variable.Scope.Type).ToString() } });
-                SubCategoryVariableValues = run.VariableValues.Where(i => i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID, LevelID = this.Level?.ID, ScopeTypeID = ((int)i.Variable.Scope.Type).ToString() } });
-                VariableValues = run.VariableValues.Where(i => !i.Variable.IsSubCategory).Select(i => new VariableValueDisplay { ID = i.ID, Name = i.Value, Variable = new VariableDisplay { ID = i.Variable.ID, Name = i.Variable.Name, GameID = this.Game.ID, CategoryID = this.Category.ID } });
+                VideoLinks = new List<string>();
+                foreach (var videoLink in run.VideoLinks.Split(","))
+                {
+                    VideoLinks.Add(videoLink);
+                }
             }
 
-            if (run.Status.Examiner != null)
+            if (run.PrimaryTime.HasValue)
             {
-                Examiner = new IDNamePair { ID = run.Status.Examiner.ID, Name = run.Status.Examiner.Name };
+                PrimaryTime = new TimeSpan(run.PrimaryTime.Value);
+            }
+
+            if (run.RealTime.HasValue)
+            {
+                RealTime = new TimeSpan(run.RealTime.Value);
+            }
+
+            if (run.RealTimeWithoutLoads.HasValue)
+            {
+                RealTimeWithoutLoads = new TimeSpan(run.RealTimeWithoutLoads.Value);
+            }
+
+            if (run.GameTime.HasValue)
+            {
+                GameTime = new TimeSpan(run.GameTime.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(run.ExaminerUserID))
+            {
+                Examiner = new IDNamePair { ID = run.ExaminerUserID, Name = run.ExaminerUserName };
             }
         }
 
+        public int OrderValue { get; set; }
         public string ID { get; set; }
-        public IDNamePair Player { get; set; }
-        public IDNamePair CategoryType { get; set; }
+        public IDNamePair StatusType { get; set; }
         public IDNamePair Game { get; set; }
+        public string GameCoverImageLink { get; set; }
+        public IDNamePair CategoryType { get; set; }
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; }
         public IDNamePair Platform { get; set; }
-        public IEnumerable<User> PlayerUsers { get; set; }
-        public IEnumerable<Guest> PlayerGuests { get; set; }
-        public Uri GameCoverImageLink { get; set; }
+        public List<Tuple<string, string>> VariableValues { get; set; }
+        public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
+        public List<IDNamePair> Players { get; set; }
+        public List<string> VideoLinks { get; set; }
         public bool IsEmulated { get; set; }
-        public IDNamePair Examiner { get; set; }
-        public IDNamePair StatusType { get; set; }
-        public DateTime? DateSubmitted { get; set; }
-        public DateTime? VerifyDate { get; set; }
-        public string RejectedReason { get; set; }
-        public string Comment { get; set; }
-        public Uri VideoLinkEmbeded { get; set; }
-        public Uri SplitsLink { get; set; }
+        public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public TimeSpan? RealTime { get; set; }
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
-        public IEnumerable<VariableDisplay> SubCategoryVariables { get; set; }
-        public IEnumerable<VariableValueDisplay> AllVariableValues { get; set; }
-        public IEnumerable<VariableValueDisplay> SubCategoryVariableValues { get; set; }
-        public IEnumerable<VariableValueDisplay> VariableValues { get; set; }
-        public IEnumerable<User> Players
+        public string Comment { get; set; }
+        public IDNamePair Examiner { get; set; }
+        public string RejectReason { get; set; }
+        public string SplitsLink { get; set; }
+        public DateTime? RunDate { get; set; }
+        public DateTime? DateSubmitted { get; set; }
+        public DateTime? VerifyDate { get; set; }
+
+        public IDNamePair Player
         {
             get
             {
-                return PlayerUsers?.Concat(PlayerGuests?.Select(i => new User { ID= i.Name, Name = i.Name }));
-            }
-        }
-        public string GameCoverImageLinkString
-        {
-            get
-            {
-                return GameCoverImageLink?.AbsoluteUri;
+                return Players?.FirstOrDefault();
             }
         }
 
-        public string DateSubmittedString
+        public string VideoLink
         {
             get
             {
-                return DateSubmitted?.ToString("MM/dd/yyyy");
+                return VideoLinks?.FirstOrDefault();
             }
         }
 
-        public string MonthYearSubmitted
+        public string VerifyDateString
         {
             get
             {
-                return DateSubmitted?.ToString("MM/yyyy");
+                return VerifyDate?.ToString("MM/dd/yyyy");
             }
         }
 
-        public string RelativeDateSubmittedString
+        public string RelativeVerifyDateString
         {
             get
             {
-                return DateSubmitted?.ToRealtiveDateString();
+                return VerifyDate?.ToRealtiveDateString();
             }
         }
 
-        public string VideoLinkEmbeddedString
+        public string IsEmulatedString
         {
             get
             {
-                return VideoLinkEmbeded?.AbsoluteUri;
-            }
-        }
-
-        public string SplitsLinkString
-        {
-            get
-            {
-                return SplitsLink?.AbsoluteUri;
-            }
-        }
-
-        public string PrimaryTimeString
-        {
-            get
-            {
-                return PrimaryTime.ToShortString();
-            }
-        }
-
-        public double PrimaryTimeSeconds
-        {
-            get
-            {
-                return PrimaryTime.TotalSeconds;
+                return IsEmulated.ToString();
             }
         }
 
@@ -176,6 +171,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return PrimaryTime.TotalMilliseconds;
+            }
+        }
+
+        public string PrimaryTimeString
+        {
+            get
+            {
+                return PrimaryTime.ToShortString();
             }
         }
 
@@ -203,35 +206,28 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string StatusTypeString
+        public string DateSubmittedString
         {
             get
             {
-                return StatusType.Name;
+                return DateSubmitted?.ToString("MM/dd/yyyy");
             }
         }
 
-        public string VerifyDateString
+        public string MonthYearSubmitted
         {
             get
             {
-                return VerifyDate?.ToString("MM/dd/yyyy");
+                return DateSubmitted?.ToString("MM/yyyy");
             }
         }
 
-        public string RelativeVerifyDateString
-        {
-            get
-            {
-                return VerifyDate?.ToRealtiveDateString();
-            }
-        }
 
-        public string IsEmulatedString
+        public string RelativeDateSubmittedString
         {
             get
             {
-                return IsEmulated.ToString();
+                return DateSubmitted?.ToRealtiveDateString();
             }
         }
     }

@@ -5,16 +5,13 @@
 var throttleTimer = null;
 var throttleDelay = 500;
 
-function initializeClient(statusTypes, categoryTypes, platforms, elementsPerPage) {
-    initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage);
+function initializeClient(elementsPerPage) {
+    initalizeConstants(elementsPerPage);
     initializeEvents();
     getSpeedRunList();
 }
 
-function initalizeConstants(statusTypes, categoryTypes, platforms, elementsPerPage) {
-    sra['statusTypes'] = statusTypes;
-    sra['categoryTypes'] = categoryTypes;
-    sra['platforms'] = platforms;
+function initalizeConstants(elementsPerPage) {
     sra['elementsPerPage'] = elementsPerPage;
 }
 
@@ -39,12 +36,13 @@ function OnWindowScroll() {
 }
 
 function getSpeedRunList() {
-    var speedRunCount = $('.speedRunSummary').length;
     var categoryID = $('.categoryGroup input:checked').val();
+    var orderValues = $('.orderValue').map(function () { return parseInt($(this).val()) });
+    var offset = orderValues.length > 0 ? Math.min.apply(null, orderValues) : null;
 
     $('#loading').show();
     $.get('../templates/SpeedRunSummary.html?_t=' + (new Date()).getTime(), function (summaryTemplate, status) {
-        $.get('../SpeedRun/GetLatestSpeedRuns', { category: categoryID, elementsPerPage: sra.elementsPerPage, elementsOffset: speedRunCount },
+        $.get('../SpeedRun/GetLatestSpeedRuns', { category: categoryID, topAmount: sra.elementsPerPage, orderValueOffset: offset },
             function (data, status) {
                 var requests = [];
                 $(data).each(function () {
@@ -73,7 +71,7 @@ function showSpeedRunDetails(speedRunID, gameID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('SpeedRun/GetEditSpeedRun?speedRunID=' + speedRunID + '&gameID=' + gameID + '&isReadOnly=true', function (data, status) {
+        $.get('SpeedRun/GetEditSpeedRun?gameID=' + gameID + '&speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();

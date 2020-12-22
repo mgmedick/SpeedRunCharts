@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 //using SpeedRunApp.Interfaces.Helpers;
+using SpeedRunApp.Repository.Configuration;
 
 namespace SpeedRunApp
 {
@@ -30,37 +32,22 @@ namespace SpeedRunApp
                 options.Cookie.IsEssential = true;
             });
 
-            //var config = new MyAppConfig();
-            //var redisConfiguration = Configuration.GetSection("AppSettings").Get<IAppConfiguration>();
-            //services.AddSingleton(redisConfiguration);
-            //services.AddSingleton<RedisCacheHelper>();
-
-            //services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
-            //services.AddSingleton<ICacheHelper, CacheHelper>();
-            // Also exposes Lamar specific registrations
-            // and functionality
             services.Scan(scanner =>
             {
-                // Here you can add various assembly scans
-                // to ensure Lamar finds all your classes
-                // and registers your project conventions.
                 scanner.TheCallingAssembly();
                 scanner.Assembly("SpeedRunApp.Interfaces");
                 scanner.Assembly("SpeedRunApp.Service");
+                scanner.Assembly("SpeedRunApp.Repository");
                 scanner.WithDefaultConventions();
                 scanner.SingleImplementationsOfInterface();
-
-                // Add all implementations of an interface
-                //scanner.AddAllTypesOf(typeof(ISpeedRunsService));
             });
 
-            // You can create your own registries like with StructurMap
-            // and use expressions to configure types
-            //services.For<ISpeedRunsService>().Use(new SpeedRunsService());
+            var connString = Configuration.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;
+            NPocoBootstrapper.Configure(connString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -74,15 +61,14 @@ namespace SpeedRunApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseRouting();
+
             app.UseCookiePolicy();
             app.UseSession();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "SpeedRun", action = "SpeedRunList" });
+                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}");
             });
         }
     }

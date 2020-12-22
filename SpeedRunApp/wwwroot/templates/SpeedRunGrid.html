@@ -1,14 +1,13 @@
-﻿
-<div id="divChartContainer" class="container-fluid ml-0" style="">
-    <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
-    <div id="divCategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
-        <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
-        <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-charts" class="game-tab-pane-charts p-0 <%= (gameIndex == 0) ? ' show' : '' %>">
-            <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
-            <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
+﻿<div id="divChartContainer" class="container-fluid ml-0" style="">
+    <% _.each(item.tabItems, function(game, gameIndex) { %>
+    <div id="divGame-<%= gameIndex %>-charts" class="game-tab-pane-charts p-0 <%= (gameIndex == 0) ? ' show' : '' %>">
+        <% _.each(game.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+        <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-charts" class="categoryType-tab-pane-charts p-0 <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
+            <% _.each(_.filter(game.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+            <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-charts" class="category-tab-pane-charts <%= (categoryIndex == 0) ? ' show' : '' %>">
                 <div class="category-results-charts">
-                    <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
-                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                    <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
+                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }), 'category', game.id, categoryType.id, category.id, '', gameIndex, categoryTypeIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                     <% } else { %>
                     <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>">
                         <div class="chart-placeholder chart-container-0">
@@ -30,11 +29,11 @@
                     <% } %>
                 </div>
                 <div class="level-results-charts">
-                    <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
-                    <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
-                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', categoryType.id, game.id, category.id, level.id, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                    <% _.each(game.levels, function(level, levelIndex) { %>
+                    <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
+                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.id, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                     <% } else { %>
-                    <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-charts" class="level-tab-pane-charts">
+                    <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-charts" class="level-tab-pane-charts">
                         <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
                             <div class="chart-placeholder chart-container-0">
                                 <div class="mx-auto align-self-center">
@@ -63,27 +62,36 @@
     </div>
     <% }) %>
 </div>
+
 <div id="divGridContainer" class="tab-grid-container pt-2">
-    <div class="row no-gutters px-1 pt-1 pb-0">
+    <div class="game-tabs row no-gutters px-1 pt-1 pb-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
         <div class="tab-row-name-container col-auto align-self-end">
-            <label class="tab-row-name">Category Type:</label>
+            <label class="tab-row-name">Game:</label>
         </div>
-        <div class="col pl-2">
-            <ul class="nav nav-pills">
-                <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
-                <li class="nav-item categoryType">
-                    <a class="nav-link <%= (categoryTypeIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>" data-toggle="pill"><%= categoryType.name %></a>
-                </li>
-                <% }) %>
-            </ul>
+        <div class="col pl-2 scroller-tab-wrapper">
+            <div class="row no-gutters">
+                <div class="scroller-tab scroller-tab-left-end btn btn-secondary"><i class="fa fa-step-backward"></i></div>
+                <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
+                <div class="col scroller-tab-list-container">
+                    <ul class="nav nav-pills scroller-tab-list">
+                        <% _.each(item.tabItems, function(game, gameIndex) { %>
+                        <li class="nav-item game">
+                            <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>" data-toggle="pill"><%= game.name %></a>
+                        </li>
+                        <% }) %>
+                    </ul>
+                </div>
+                <div class="scroller-tab scroller-tab-right btn btn-secondary"><i class="fa fa-angle-right"></i></div>
+                <div class="scroller-tab scroller-tab-right-end btn btn-secondary"><i class="fa fa-step-forward"></i></div>
+            </div>
         </div>
     </div>
-    <% _.each(item.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+    <% _.each(item.tabItems, function(game, gameIndex) { %>
     <div>
-        <div id="divCategoryType-<%= categoryTypeIndex %>" class="categoryType-tab-pane p-0 <%= categoryTypeIndex == 0 ? ' show' : '' %>">
-            <div class="game-tabs row no-gutters pl-1 pt-1 pb-0 pr-0" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
+        <div id="divGame-<%= gameIndex %>" class="game-tab-pane p-0 <%= gameIndex == 0 ? ' show' : '' %>">
+            <div class="categoryType-tabs row no-gutters pl-1 pt-1 pb-0 pr-0">
                 <div class="tab-row-name-container col-auto align-self-end">
-                    <label class="tab-row-name">Game:</label>
+                    <label class="tab-row-name">Category Type:</label>
                 </div>
                 <div class="col pl-2 scroller-tab-wrapper">
                     <div class="row no-gutters">
@@ -91,9 +99,9 @@
                         <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                         <div class="col scroller-tab-list-container">
                             <ul class="nav nav-pills scroller-tab-list">
-                                <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
-                                <li class="nav-item game">
-                                    <a class="nav-link <%= (gameIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" data-toggle="pill"><%= game.name %></a>
+                                <% _.each(game.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+                                <li class="nav-item categoryType">
+                                    <a class="nav-link <%= (categoryTypeIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>" data-toggle="pill"><%= categoryType.name %></a>
                                 </li>
                                 <% }) %>
                             </ul>
@@ -103,8 +111,8 @@
                     </div>
                 </div>
             </div>
-            <% _.each(_.filter(item.games, function(ft) { return ft.categoryTypeIDs.indexOf(categoryType.id) > -1 }), function(game, gameIndex) { %>
-            <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>" class="game-tab-pane <%= (gameIndex == 0) ? ' show' : '' %>">
+            <% _.each(game.categoryTypes, function(categoryType, categoryTypeIndex) { %>
+            <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>" class="categoryType-tab-pane <%= (categoryTypeIndex == 0) ? ' show' : '' %>">
                 <div class="category-tabs row no-gutters pl-1 pt-1 pb-0 pr-0">
                     <div class="tab-row-name-container col-auto align-self-end">
                         <label class="tab-row-name">Category:</label>
@@ -115,9 +123,9 @@
                             <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                             <div class="col scroller-tab-list-container">
                                 <ul class="nav nav-pills scroller-tab-list">
-                                    <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+                                    <% _.each(_.filter(game.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
                                     <li class="nav-item category">
-                                        <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" data-toggle="pill" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %></a>
+                                        <a class="nav-link <%= (categoryIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>" data-toggle="pill" data-categorytype="<%= category.categoryTypeID %>"><%= category.name %><% if(!category.hasData) { %><i class="pl-1">(empty)</i><% } %></a>
                                     </li>
                                     <% }) %>
                                 </ul>
@@ -127,16 +135,16 @@
                         </div>
                     </div>
                 </div>
-                <% _.each(_.filter(item.categories, function(ft) { return ft.gameID == game.id && ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
-                <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
+                <% _.each(_.filter(game.categories, function(ft) { return ft.categoryTypeID == categoryType.id }), function(category, categoryIndex) { %>
+                <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>" class="category-tab-pane <%= (categoryIndex == 0) ? ' show' : '' %>">
                     <div class="category-results">
-                        <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
-                        <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1'); }), 'category', categoryType.id, game.id, category.id, '', categoryTypeIndex, gameIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+                        <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1') }).length > 0) { %>
+                        <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '1'); }), 'category', game.id, categoryType.id, category.id, '', gameIndex, categoryTypeIndex, categoryIndex, '', '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
                         <% } else { %>
                         <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="">
-                            <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="grid"></table>
-                            <div id="divPager-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="pager"></div>
-                            <div id="divLoading-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-" class="loading">
+                            <table id="tblGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-" class="grid"></table>
+                            <div id="divPager-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-" class="pager"></div>
+                            <div id="divLoading-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-" class="loading">
                                 <div class="container d-flex ml-0" style="height:465px;">
                                     <div class="mx-auto align-self-center">
                                         <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -157,9 +165,9 @@
                                     <div class="scroller-tab scroller-tab-left btn btn-secondary"><i class="fa fa-angle-left"></i></div>
                                     <div class="col scroller-tab-list-container">
                                         <ul class="nav nav-pills scroller-tab-list">
-                                            <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
+                                            <% _.each(game.levels, function(level, levelIndex) { %>
                                             <li class="nav-item level">
-                                                <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="pill"><%= level.name %></a>
+                                                <a class="nav-link <%= (levelIndex == 0) ? ' active' : '' %>" href="#divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" data-toggle="pill"><%= level.name %><% if(!level.hasData) { %><i class="pl-1">(empty)</i><% } %></a>
                                             </li>
                                             <% }) %>
                                         </ul>
@@ -169,15 +177,15 @@
                                 </div>
                             </div>
                         </div>
-                        <% _.each(_.filter(item.levels, function(ft) { return ft.gameID == game.id && (item.sender == 'Game' || ft.categoryID == category.id) }), function(level, levelIndex) { %>
-                        <div id="divCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" class="level-tab-pane">
-                            <% if(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
-                            <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(item.subCategoryVariables, function(ft) { return ft.gameID == game.id && ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', categoryType.id, game.id, category.id, level.id, categoryTypeIndex, gameIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
+                        <% _.each(game.levels, function(level, levelIndex) { %>
+                        <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>" class="level-tab-pane">
+                            <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
+                            <%= fn.renderSpeedRunGridVariableTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.id, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableTemplate: fn.renderSpeedRunGridVariableTemplate }}) %>
                             <% } else { %>
                             <div class="grid-container" data-gameid="<%= game.id %>" data-categorytype="<%= categoryType.id %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">
-                                <table id="tblCategoryType-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="grid"></table>
-                                <div id="divPager-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="pager"></div>
-                                <div id="divLoading-<%= categoryTypeIndex %>-Game-<%= gameIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="loading">
+                                <table id="tblGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="grid"></table>
+                                <div id="divPager-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="pager"></div>
+                                <div id="divLoading-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-VariableValue-NA" class="loading">
                                     <div class="container d-flex ml-0" style="height:465px;">
                                         <div class="mx-auto align-self-center">
                                             <i class="fa fa-spinner fa-spin fa-2x"></i>

@@ -50,7 +50,7 @@ function initializeGlobalEvents() {
 
     $('#txtGameUserSearch').autocomplete({
         minlength: 3,
-        source: '../SpeedRun/SearchGamesAndUsers',
+        source: '../Menu/Search',
         search: function (event, ui) {
             $(this).parent().addClass("loading-icon");
         },

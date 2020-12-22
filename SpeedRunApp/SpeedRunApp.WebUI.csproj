@@ -1,28 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App">
-      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
-      <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
-    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.3.0" />
-    <PackageReference Include="Lamar" Version="4.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Lamar" Version="4.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
+    <ProjectReference Include="..\SpeedRunApp.Repository\SpeedRunApp.Repository.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Service\SpeedRunApp.Service.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
@@ -37,29 +33,64 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\speedrun-list.js" />
-    <None Include="wwwroot\lib\font-awesome\js\all.js" />
-    <None Include="wwwroot\lib\font-awesome\js\all.min.js" />
-    <None Include="wwwroot\lib\font-awesome\sprites\brands.svg" />
-    <None Include="wwwroot\lib\font-awesome\sprites\regular.svg" />
-    <None Include="wwwroot\lib\font-awesome\sprites\solid.svg" />
-    <None Include="wwwroot\templates\SpeedRunGrid.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="wwwroot\css\bootstrap_lumen.css" />
     <Content Remove="wwwroot\css\bootstrap_theme_dark.css" />
     <Content Remove="wwwroot\css\bootstrap-theme %28copy%29.css" />
     <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
-    <Content Remove="wwwroot\css\bootstrap-theme.min.css" />
+    <Content Remove="wwwroot\templates\SpeedRunGrid %28copy%29.html" />
+    <Content Remove="wwwroot\css\bootstrap-darkly-orig.css" />
+    <Content Remove="wwwroot\css\bootstrap-flatly-orig.css" />
+    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
+    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css.bak" />
+    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-light copy.css" />
+    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-light copy.css.bak" />
+    <Content Remove="wwwroot\css\OperationSamePage2\bootstrap-theme-light_copy.css" />
+    <Content Remove="Properties\launchSettings.json" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.js" />
+    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
+    <Content Remove="wwwroot\lib\chosen\chosen-sprite.png" />
+    <Content Remove="wwwroot\lib\chosen\chosen-sprite%402x.png" />
+    <Content Remove="wwwroot\lib\chosen\chosen.css" />
+    <Content Remove="wwwroot\lib\chosen\chosen.jquery.js" />
+    <Content Remove="wwwroot\lib\chosen\chosen.jquery.min.js" />
+    <Content Remove="wwwroot\lib\chosen\chosen.min.css" />
+    <Content Remove="wwwroot\lib\font-awesome\css\all.css" />
+    <Content Remove="wwwroot\lib\font-awesome\css\all.min.css" />
+    <Content Remove="wwwroot\lib\font-awesome\js\all.js" />
+    <Content Remove="wwwroot\lib\font-awesome\js\all.min.js" />
+    <Content Remove="wwwroot\lib\font-awesome\sprites\brands.svg" />
+    <Content Remove="wwwroot\lib\font-awesome\sprites\regular.svg" />
+    <Content Remove="wwwroot\lib\font-awesome\sprites\solid.svg" />
+    <Content Remove="wwwroot\lib\font-awesome\webfonts\fa-regular-400.ttf" />
+    <Content Remove="wwwroot\lib\font-awesome\webfonts\fa-solid-900.ttf" />
+    <Content Remove="wwwroot\lib\free-jqgrid\css\ui.jqgrid.css" />
+    <Content Remove="wwwroot\lib\free-jqgrid\css\ui.jqgrid.min.css" />
+    <Content Remove="wwwroot\lib\free-jqgrid\jquery.jqgrid.min.js" />
+    <Content Remove="wwwroot\lib\free-jqgrid\jquery.jqgrid.src.js" />
+    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.charts.js" />
+    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.js" />
+    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.widgets.js" />
+    <Content Remove="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.candy.js" />
+    <Content Remove="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.fusion.js" />
+    <Content Remove="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.js" />
+    <Content Remove="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.min.js" />
+    <Content Remove="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.js" />
+    <Content Remove="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\.bower.json" />
+    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Remove="wwwroot\lib\jquery-validation\.bower.json" />
+    <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Views\User\UserDetails.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Game\GameDetails.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\SpeedRun\UserDetails.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

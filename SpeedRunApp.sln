@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunApp.WebUI", "SpeedRunApp\SpeedRunApp.WebUI.csproj", "{5DAD8F8B-57F8-4D26-82E1-3A10D811D8F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.WebUI", "SpeedRunApp\SpeedRunApp.WebUI.csproj", "{5DAD8F8B-57F8-4D26-82E1-3A10D811D8F5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Model", "SpeedRunApp.Model\SpeedRunApp.Model.csproj", "{9BEDE8CA-EAB1-46AA-9382-0BB87CFB065F}"
 EndProject
@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Service", "Spee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Interfaces", "SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj", "{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunApp.Client", "SpeedRunApp.Client\SpeedRunApp.Client.csproj", "{C3D79C66-B1DC-4159-9416-C4239FE48E11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunCommon", "SpeedRunCommon\SpeedRunCommon.csproj", "{FE3ACE6F-EC68-4C65-ABAD-F30785499638}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedRunCommon", "SpeedRunCommon\SpeedRunCommon.csproj", "{FE3ACE6F-EC68-4C65-ABAD-F30785499638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedRunApp.Repository", "SpeedRunApp.Repository\SpeedRunApp.Repository.csproj", "{376191F0-98CB-4F23-B1E0-C26C6A237812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,18 +46,18 @@ Global
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6D2C3C-3B7B-4DC6-B17B-0C518E9A2AAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3D79C66-B1DC-4159-9416-C4239FE48E11}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE3ACE6F-EC68-4C65-ABAD-F30785499638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Debug with API Calls|Any CPU.ActiveCfg = Debug|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Debug with API Calls|Any CPU.Build.0 = Debug|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376191F0-98CB-4F23-B1E0-C26C6A237812}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

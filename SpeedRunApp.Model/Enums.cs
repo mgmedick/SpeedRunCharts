@@ -210,7 +210,14 @@ namespace SpeedRunApp.Model
     public enum SpeedRunListCategory
     {
         New = 0,
-        Verified = 1,
-        Rejected = 2
+        Top5Perc = 1,
+        First = 2,
+        Trending = 3
+    }
+
+    public enum SearchCategory
+    {
+        Game = 0,
+        User = 1
     }
 }

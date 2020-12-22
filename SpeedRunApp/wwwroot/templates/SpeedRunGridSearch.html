@@ -40,19 +40,19 @@
             </select>
         </div>
     </div>
-    <% _.chain(item.tabItems).pluck('variables').flatten().filter(function(op) { return op && op.isSubCategory }).uniq(function(op) { return op.name }).each(function(op, index) { %>
-    <div id="divVariable-<%= index %>" class="form-group row no-gutters">
-        <label for="drpVariable-<%= index %>" class="col-sm-2 col-form-label"><%= op.name %></label>
+    <% _.chain(item.tabItems).pluck('variables').flatten().filter(function(op) { return op && op.isSubCategory }).each(function(op, index) { %>
+    <div id="divVariable-<%= index %>" class="form-group row no-gutters variable-search" style="<%= [2,3].indexOf(op.scopeTypeID) > -1 || op.categoryID ? 'display:none' : '' %>" data-scopetypeid="<%= op.scopeTypeID %>" data-categoryid="<%= op.categoryID %>" data-levelid="<%= op.levelID %>">
+        <label for="drpVariable-<%= index %>" class="col-sm-2 col-form-label"><%= op.name %><% if (op.categoryID || op.levelID) { %><i class="pl-1">(<%= op.categoryID ? _.chain(item.tabItems).pluck('categories').flatten().filter(function(ft) { return ft.id == op.categoryID }).first().value().name : '' %>&nbsp;<%= op.levelID ? _.chain(item.tabItems).pluck('levels').flatten().filter(function(ft) { return ft.id == op.levelID }).first().value().name : '' %>)</i><% } %></label>
         <div class="col-sm-10">
-            <select id="drpVariable-<%= index %>" class="select2 variable-search" multiple="multiple" style="min-width:220px;" data-variablename="<%= op.name %>">
+            <select id="drpVariable-<%= index %>" class="select2 variable-select" multiple="multiple" style="min-width:220px;" data-variablename="<%= op.name %>">
                 <% _.chain(op.variableValues).sortBy(function (ft) { return ft.name }).each(function(ft, index) { %>
-                <option value="<%= ft.name %>"><%= ft.name %></option>
+                <option value="<%= ft.id %>"><%= ft.name %></option>
                 <% }); %>
             </select>
         </div>
     </div>
     <% }) %>
-    <div id="divHideEmpty" class="form-group row no-gutters">
+    <div id="divHideEmpty" class="form-group row no-gutters" style="<%= (item.sender == 'User') ? 'display:none' : '' %>">
         <label class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
             <div class="form-check form-check-inline">

@@ -81,7 +81,7 @@ function userSpeedRunsByDateChart(container, inputs) {
             var dateString = item.dateSubmittedString;
 
             groupedObj[dateString] = groupedObj[dateString] || [];
-            groupedObj[dateString].push(item.primaryTimeSeconds);
+            groupedObj[dateString].push(item.primaryTimeMilliseconds);
         });
 
         var chartDataObj = {};

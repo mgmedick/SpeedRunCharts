@@ -88,6 +88,10 @@ function initializeSearchSpeedRunGridEvents(element) {
     $('#drpCategoryTypes').change(function () {
         onCategoryTypeChange(this);
     });
+
+    $('#drpCategories').change(function () {
+        onCategoryChange(this);
+    });
 }
 
 function onGameChange(element) {
@@ -140,6 +144,19 @@ function onCategoryTypeChange(element) {
 
     populateDropDown($('#drpGames'), games);
     populateDropDown($('#drpCategories'), categories);
+}
+
+function onCategoryChange(element) {
+    var selectedCategoryIDs = $(element).val();
+
+    $('.variable-search').each(function () {
+        var categoryID = $(this).data("categoryid");
+        if (selectedCategoryIDs.indexOf(categoryID)) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
 }
 
 function populateDropDown(element, items) {
@@ -775,7 +792,7 @@ function search() {
         });
     }
 
-    $('.variable-search').each(function () {
+    $('.variable-select').each(function () {
         var variableName = $(this).data('variablename');
         var variableValueNames = $(this).val();
         if (variableValueNames.length > 0) {

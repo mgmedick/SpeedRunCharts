@@ -4,7 +4,7 @@ function gameSpeedRunsPercentileChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Speed Run Percentiles',
+        caption: 'Percentiles',
         subCaption: 'All Time',
         showValues: 1,
         formatNumberScale: 0,

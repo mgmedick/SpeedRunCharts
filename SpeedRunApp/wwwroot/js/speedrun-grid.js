@@ -780,7 +780,7 @@ function search() {
         var variableValueNames = $(this).val();
         if (variableValueNames.length > 0) {
             var variables = $(tabItems).map(function () { return this.subCategoryVariables }).get();
-            setVariableValues(variables, variableName, variableValueNames);
+            filterVariableValues(variables, variableName, variableValueNames);
         }
     });
 
@@ -803,9 +803,10 @@ function search() {
 }
 
 function cloneVariables(variables) {
-    variables = variables.map(a => Object.assign({}, a));
+    var clonedVariables = variables.map(a => Object.assign({}, a));
 
-    $(variables).each(function () {
+    $(clonedVariables).each(function () {
+        this.variableValues = this.variableValues.map(a => Object.assign({}, a));
         $(this.variableValues).each(function () {
             if (this.subVariables.length > 0) {
                 this.subVariables = cloneVariables(this.subVariables);
@@ -813,18 +814,18 @@ function cloneVariables(variables) {
         });
     });
 
-    return variables;
+    return clonedVariables;
 }
 
-function setVariableValues(variables, variableName, variableValueNames) {
+function filterVariableValues(variables, variableName, variableValueNames) {
     $(variables).each(function () {
         if (this.name == variableName) {
-            this.variableValues = this.variableValues.map(a => Object.assign({}, a))
+            this.variableValues = $(this.variableValues).filter(function () { return variableValueNames.indexOf(this.name) > -1 }).get();
         }
 
         var subVariables = $(this.variableValues).map(function () { return this.subVariables; }).get();
-        if (subVariables > 0) {
-            setVariableValues(this.subVariables, variableName, variableValueNames);
+        if (subVariables.length > 0) {
+            filterVariableValues(subVariables, variableName, variableValueNames);
         }
     });
 }
@@ -876,7 +877,7 @@ function showSpeedRunDetails(gridID, rowID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=false', function (data, status) {
+        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=true', function (data, status) {
             data.speedRunVM = currentItem;
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);

@@ -4,7 +4,7 @@ function gameSpeedRunsByMonthChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Fastest Speed Runs Per Month',
+        caption: 'Best Per Month',
         subCaption: 'Last 2 Years',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',

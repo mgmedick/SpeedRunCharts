@@ -4,7 +4,7 @@ function gameTopSpeedRunsChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Top 10 Speed Runs',
+        caption: 'Top 10',
         subCaption: '',
         xAxis: '',
         yAxis: 'Time (Minutes)',

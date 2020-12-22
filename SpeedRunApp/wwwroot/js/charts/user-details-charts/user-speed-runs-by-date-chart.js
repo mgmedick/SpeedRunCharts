@@ -4,7 +4,7 @@ function userSpeedRunsByDateChart(container, inputs) {
     this.inputs = inputs;
 
     this.chartConfig = {
-        caption: 'Speed Runs By Date',
+        caption: 'By Date',
         subCaption: 'All Time',
         xAxis: 'Date',
         yAxis: 'Time (Minutes)',

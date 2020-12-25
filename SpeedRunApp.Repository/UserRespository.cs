@@ -26,7 +26,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT ID AS Value, Name AS Label, 'Users' AS Category FROM dbo.tbl_User WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%' ORDER BY [Name]", searchText).ToList();
+                return db.Query<SearchResult>("SELECT ID AS [Value], [Name] AS Label FROM dbo.tbl_User WITH (NOLOCK) WHERE [Name] LIKE @0 + '%' ORDER BY [Name]", searchText).ToList();
             }
         }
     }

@@ -78,7 +78,9 @@ function renderAndInitializeSpeedRunGrid(element, speedRunGridTemplate, speedRun
 }
 
 function initializeSearchSpeedRunGridEvents(element) {
-    $(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
+    //$(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
+
+    $(element).find('.select2').select2({ width: "220px" });
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Search", linkDisplayedText: "Hide Search" });
 
     $('#drpGames').change(function () {
@@ -148,6 +150,10 @@ function onGameChange(element) {
         }
     });
 
+    categoryTypes = _.chain(categoryTypes).sortBy(function (item) { return item.name; }).value();
+    categories = _.chain(categories).map(function (item) { return { id: item.id, name: item.name, group: item.categoryTypeID == 0 ? 'PerGame' : 'PerLevel' } }).sortBy(function (item) { return [item.group, item.name].join(); }).value();
+    levels = _.chain(levels).sortBy(function (item) { return item.name; }).value();
+
     populateDropDown($('#drpCategoryTypes'), categoryTypes);
     populateDropDown($('#drpCategories'), categories);
     populateDropDown($('#drpLevels'), levels);
@@ -203,6 +209,9 @@ function onCategoryTypeChange(element) {
         }
     });
 
+    categories = _.chain(categories).map(function (item) { return { id: item.id, name: item.name, group: item.categoryTypeID == 0 ? 'PerGame' : 'PerLevel' } }).sortBy(function (item) { return [item.group, item.name].join(); }).value();
+    levels = _.chain(levels).sortBy(function (item) { return item.name; }).value();
+
     populateDropDown($('#drpCategories'), categories);
     populateDropDown($('#drpLevels'), levels);
 }
@@ -246,6 +255,22 @@ function onLevelChange(element) {
 function populateDropDown(element, items) {
     $(element).empty();
     $(items).each(function () {
+        $(element).append($('<option>').text(this.name).attr('value', this.id));
+    });
+}
+
+function populateDropDown(element, items) {
+    var parentElement = element;
+    var optGroups = [];
+
+    $(element).empty();
+    $(items).each(function () {
+        if (this.group && optGroups.indexOf(this.group) == -1) {
+            $(parentElement).append($('<optgroup>').attr('label', this.group));
+            element = $(parentElement).find('optgroup').last();
+            optGroups.push(this.group);
+        }
+
         $(element).append($('<option>').text(this.name).attr('value', this.id));
     });
 }
@@ -849,7 +874,7 @@ function search() {
     });
 
     if (gameIDs.length > 0) {
-        tabItems = $(gridModel.tabItems).filter(function () { return gameIDs.indexOf(this.id) > -1 }).get();
+        tabItems = $(tabItems).filter(function () { return gameIDs.indexOf(this.id) > -1 }).get();
     }
 
     if (categoryTypeID != -1) {
@@ -863,6 +888,9 @@ function search() {
     if (categoryIDs.length > 0) {
         $(tabItems).each(function () {
             this.categories = $(this.categories).filter(function () { return categoryIDs.indexOf(this.id) > -1 }).get();
+            var categoryTypeIDs = $(this.categories).map(function () { return this.categoryTypeID.toString() }).get();
+            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeIDs.indexOf(this.id) > -1 }).get();
+
             //var filteredCategoryIDs = $(this.categories).map(function () { return this.id; })
             //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredCategoryIDs.indexOf(this.categoryID) > -1 }).value();
         });

@@ -48,7 +48,7 @@ function initializeGlobalEvents() {
         }
     });
 
-    $('#txtGameUserSearch').autocomplete({
+    $('#txtMenuSearch').autocomplete({
         minlength: 3,
         source: '../Menu/Search',
         search: function (event, ui) {
@@ -61,7 +61,6 @@ function initializeGlobalEvents() {
             var item = ui.item;
             if (item) {
                 $(this).val(item.label);
-
                 var controller;
                 var action;
                 var params;
@@ -86,18 +85,16 @@ function initializeGlobalEvents() {
         }
     }).data('ui-autocomplete')._renderMenu = function (ul, items) {
         var that = this;
-        var currentCategory;
+        $(items).each(function () {
+            if (this.subItems.length > 0) {
+                var category = this.label;
+                ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + category + "</div>");
 
-        $.each(items, function (index, item) {
-            if (item.category != currentCategory) {
-                ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + item.category + "</div>");
-                currentCategory = item.category;
+                $(this.subItems).each(function () {
+                    this.category = category;
+                    var li = that._renderItemData(ul, this);
+                });
             }
-
-            var li = that._renderItemData(ul, item);
-            //if (item.category) {
-            //    li.find(".ui-menu-item-wrapper").addClass("dropdown-item");
-            //}
         });
     };
 }

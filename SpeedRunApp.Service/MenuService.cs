@@ -23,8 +23,11 @@ namespace SpeedRunApp.Service
         public IEnumerable<SearchResult> Search(string searchText)
         {
             var games = _gamesService.SearchGames(searchText);
+            var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
             var users = _userService.SearchUsers(searchText);
-            var results = games.Concat(users);
+            var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
+
+            var results = new List<SearchResult> { gamesGroup, usersGroup };
 
             return results;
         }

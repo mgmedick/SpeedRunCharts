@@ -15,6 +15,11 @@ namespace SpeedRunApp.WebUI.Controllers
             _menuService = menuService;
         }
 
+        public ViewResult About()
+        {
+            return View();
+        }
+
         [HttpGet]
         public JsonResult Search(string term)
         {

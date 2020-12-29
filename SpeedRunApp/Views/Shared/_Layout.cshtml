@@ -39,8 +39,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item p-2 active">
-                    @*<a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedruncomorg</a>*@
+                <li class="nav-item">
+                    @Html.ActionLink("About", "About", "Menu", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active p-2">
+                    <a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedrun.com API</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">

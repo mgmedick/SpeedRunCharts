@@ -81,6 +81,7 @@ function initializeSearchSpeedRunGridEvents(element) {
     //$(element).find('.select2').select2({ dropdownAutoWidth: true, width: "element" });
 
     $(element).find('.select2').select2({ width: "220px" });
+    $(element).find('[data-toggle="tooltip"]').tooltip();
     $('#divSearchSpeedRunGrid').setupCollapsible({ initialState: "visible", linkHiddenText: "Show Search", linkDisplayedText: "Hide Search" });
 
     $('#drpGames').change(function () {
@@ -175,6 +176,7 @@ function onCategoryTypeChange(element) {
 
     if (selectedCategoryTypeID == 0) {
         $('#divLevels').hide();
+        $('#divLevels').val('');
     } else {
         $('#divLevels').show();
     }
@@ -218,8 +220,17 @@ function onCategoryTypeChange(element) {
 
 function onCategoryChange(element) {
     var selectedCategoryIDs = $(element).val();
-    var selectedLevelIDs = $('#drpLevels').val();
+    var selectedCategoryTypeID = $('#divCategoryType').val();
+    var levelCategories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () { return selectedCategoryIDs.indexOf(this.id) > -1 && this.categoryTypeID == 1 }).get();
 
+    if ((selectedCategoryIDs.length == 0 && (selectedCategoryTypeID == -1 || selectedCategoryTypeID == 1)) || levelCategories.length > 0) {
+        $('#divLevels').show();
+    } else {
+        $('#divLevels').hide();
+        $('#divLevels').val('');
+    }
+
+    var selectedLevelIDs = $('#drpLevels').val();
     $('.variable-search').each(function () {
         var scopeTypeID = $(this).data("scopetypeid");
         var categoryID = $(this).data("categoryid");
@@ -870,7 +881,9 @@ function search() {
     var hideEmpty = $('#chkHideEmpty').prop("checked");
     var tabItems = sra.speedRunGridModel.tabItems.map(a => Object.assign({}, a));
     $(tabItems).each(function () {
-        this.subCategoryVariables = cloneVariables(this.subCategoryVariables);
+        if (this.subCategoryVariables) {
+            this.subCategoryVariables = cloneVariables(this.subCategoryVariables);
+        }
     });
 
     if (gameIDs.length > 0) {

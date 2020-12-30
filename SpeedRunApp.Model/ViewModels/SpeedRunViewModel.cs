@@ -23,6 +23,7 @@ namespace SpeedRunApp.Model.ViewModels
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
+            Comment = run.Comment;
 
             if (!string.IsNullOrWhiteSpace(run.LevelID))
             {

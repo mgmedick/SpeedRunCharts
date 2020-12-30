@@ -25,7 +25,7 @@ namespace SpeedRunApp
             services.AddLogging();
             services.AddMemoryCache();
             services.AddSession();
-            services.AddMvc();
+            services.AddMvc().AddRazorRuntimeCompilation();
 
             services.Configure<CookieTempDataProviderOptions>(options =>
             {

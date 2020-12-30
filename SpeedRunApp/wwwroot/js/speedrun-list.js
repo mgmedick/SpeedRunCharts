@@ -17,6 +17,7 @@ function initalizeConstants(elementsPerPage) {
 
 function initializeEvents() {
     $('.categoryGroup input').change(onCategoryChange);
+    $('[data-toggle="tooltip"]').tooltip();
 
     $(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
 }

@@ -55,41 +55,30 @@
     <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.js" />
     <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
     <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
-    <Content Remove="wwwroot\lib\chosen\chosen-sprite.png" />
-    <Content Remove="wwwroot\lib\chosen\chosen-sprite%402x.png" />
-    <Content Remove="wwwroot\lib\chosen\chosen.css" />
-    <Content Remove="wwwroot\lib\chosen\chosen.jquery.js" />
-    <Content Remove="wwwroot\lib\chosen\chosen.jquery.min.js" />
-    <Content Remove="wwwroot\lib\chosen\chosen.min.css" />
-    <Content Remove="wwwroot\lib\font-awesome\css\all.css" />
-    <Content Remove="wwwroot\lib\font-awesome\css\all.min.css" />
-    <Content Remove="wwwroot\lib\font-awesome\js\all.js" />
-    <Content Remove="wwwroot\lib\font-awesome\js\all.min.js" />
-    <Content Remove="wwwroot\lib\font-awesome\sprites\brands.svg" />
-    <Content Remove="wwwroot\lib\font-awesome\sprites\regular.svg" />
-    <Content Remove="wwwroot\lib\font-awesome\sprites\solid.svg" />
-    <Content Remove="wwwroot\lib\font-awesome\webfonts\fa-regular-400.ttf" />
-    <Content Remove="wwwroot\lib\font-awesome\webfonts\fa-solid-900.ttf" />
-    <Content Remove="wwwroot\lib\free-jqgrid\css\ui.jqgrid.css" />
-    <Content Remove="wwwroot\lib\free-jqgrid\css\ui.jqgrid.min.css" />
-    <Content Remove="wwwroot\lib\free-jqgrid\jquery.jqgrid.min.js" />
-    <Content Remove="wwwroot\lib\free-jqgrid\jquery.jqgrid.src.js" />
-    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.charts.js" />
-    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.js" />
-    <Content Remove="wwwroot\lib\fusioncharts\fusioncharts.widgets.js" />
-    <Content Remove="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.candy.js" />
-    <Content Remove="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.fusion.js" />
-    <Content Remove="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.js" />
-    <Content Remove="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.min.js" />
-    <Content Remove="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.js" />
-    <Content Remove="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.min.js" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\.bower.json" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-    <Content Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
     <Content Remove="wwwroot\lib\jquery-validation\.bower.json" />
     <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
     <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\font-awesome\js\all.js" />
+    <None Include="wwwroot\lib\font-awesome\js\all.min.js" />
+    <None Include="wwwroot\lib\font-awesome\sprites\brands.svg" />
+    <None Include="wwwroot\lib\font-awesome\sprites\regular.svg" />
+    <None Include="wwwroot\lib\font-awesome\sprites\solid.svg" />
+    <None Include="wwwroot\lib\free-jqgrid\jquery.jqgrid.min.js" />
+    <None Include="wwwroot\lib\free-jqgrid\jquery.jqgrid.src.js" />
+    <None Include="wwwroot\lib\fusioncharts\fusioncharts.charts.js" />
+    <None Include="wwwroot\lib\fusioncharts\fusioncharts.js" />
+    <None Include="wwwroot\lib\fusioncharts\fusioncharts.widgets.js" />
+    <None Include="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.candy.js" />
+    <None Include="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.fusion.js" />
+    <None Include="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.js" />
+    <None Include="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.min.js" />
+    <None Include="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.js" />
+    <None Include="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\SpeedRun\UserDetails.cshtml">

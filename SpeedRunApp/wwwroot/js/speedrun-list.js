@@ -30,7 +30,7 @@ function onCategoryChange() {
 function OnWindowScroll() {
     clearTimeout(throttleTimer);
     throttleTimer = setTimeout(function () {
-        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        if ($(window).scrollTop() + $(window).height() > $('body').height() - 200) {
             getSpeedRunList();
         }
     }, throttleDelay);

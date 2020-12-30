@@ -36,7 +36,9 @@
         "sprites/regular.svg",
         "sprites/solid.svg",
         "webfonts/fa-solid-900.ttf",
-        "webfonts/fa-regular-400.ttf"
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-solid-900.woff2",
+        "webfonts/fa-regular-400.woff2"
       ]
     },
     {
@@ -63,6 +65,7 @@
         "fusioncharts.charts.js",
         "fusioncharts.js",
         "fusioncharts.widgets.js",
+        "fusioncharts.excelexport.js",
         "themes/fusioncharts.theme.fusion.js",
         "themes/fusioncharts.theme.candy.js"
       ]
@@ -84,18 +87,6 @@
         "jquery-ui.min.js",
         "themes/base/jquery-ui.css",
         "themes/base/jquery-ui.min.css"
-      ]
-    },
-    {
-      "library": "chosen@1.8.7",
-      "destination": "wwwroot/lib/chosen/",
-      "files": [
-        "chosen.jquery.js",
-        "chosen.jquery.min.js",
-        "chosen-sprite.png",
-        "chosen-sprite@2x.png",
-        "chosen.css",
-        "chosen.min.css"
       ]
     },
     {

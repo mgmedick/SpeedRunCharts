@@ -1,76 +1,95 @@
-﻿<div id="divSearchSpeedRunGrid" class="container">
-    <div class="form-group row no-gutters" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
-        <label for="drpGames" class="col-sm-2 col-form-label">Game</label>
-        <div class="col-sm-10">
-            <select id="drpGames" class="select2" multiple="multiple" style="width:auto;">
-                <% _.each(item.tabItems, function(op, index) { %>
-                <option value="<%= op.id %>" <%= (item.sender == 'Game') && index == 0 ? ' selected' : '' %>><%= op.name %></option>
-                <% }); %>
-            </select>
+﻿<div id="divSearchSpeedRunGrid">
+    <div class="container d-flex pl-0">
+        <div class="pr-2">
+            <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" data-html="true" title="Work from top to bottom when filling in search params. Fields hide/show based on choices above."></i>
         </div>
-    </div>
-    <div class="form-group row no-gutters">
-        <label for="drpCategoryTypes" class="col-sm-2 col-form-label">Category Type</label>
-        <div class="col-sm-10">
-            <select id="drpCategoryTypes" class="custom-select form-control" style="width:auto;">
-                <option value="-1" selected>All</option>
-                <% _.chain(item.tabItems).pluck('categoryTypes').flatten().uniq(function(op) { return [op.id, op.name].join() }).each(function(op, index) { %>
-                <option value="<%= op.id %>"><%= op.name %></option>
-                <% }); %>
-            </select>
-        </div>
-    </div>
-    <div class="form-group row no-gutters">
-        <label for="drpCategories" class="col-sm-2 col-form-label">Category</label>
-        <div class="col-sm-10">
-            <select id="drpCategories" class="select2" multiple="multiple" style="width:auto;">
-                <optgroup label="PerGame">
-                    <% _.chain(item.tabItems).pluck('categories').flatten().filter(function(op) { return op && op.categoryTypeID == 0; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
-                    <option value="<%= op.id %>"><%= op.name %></option>
-                    <% }); %>
-                </optgroup>
-                <optgroup label="PerLevel">
-                    <% _.chain(item.tabItems).pluck('categories').flatten().filter(function(op) { return op && op.categoryTypeID == 1; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
-                    <option value="<%= op.id %>"><%= op.name %></option>
-                    <% }); %>
-                </optgroup>
-            </select>
-        </div>
-    </div>
-    <div id="divLevels" class="form-group row no-gutters" style="<%= (!_.chain(item.tabItems).pluck('levels').flatten().first().value()) ? 'display:none' : '' %>">
-        <label for="drpLevels" class="col-sm-2 col-form-label">Level</label>
-        <div class="col-sm-10">
-            <select id="drpLevels" class="select2" multiple="multiple" style="width:auto;">
-                <% _.chain(item.tabItems).pluck('levels').flatten().filter(function(op) { return op; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
-                <option value="<%= op.id %>"><%= op.name %></option>
-                <% }); %>
-            </select>
-        </div>
-    </div>
-    <% _.chain(item.tabItems).pluck('variables').flatten().filter(function(op) { return op && op.isSubCategory }).each(function(op, index) { %>
-    <div id="divVariable-<%= index %>" class="form-group row no-gutters variable-search" style="<%= op.categoryID || op.levelID ? 'display:none' : '' %>" data-variableid="<%= op.id %>" data-scopetypeid="<%= op.scopeTypeID %>" data-categoryid="<%= op.categoryID %>" data-levelid="<%= op.levelID %>">
-        <label for="drpVariable-<%= index %>" class="col-sm-2 col-form-label"><%= op.name %><% if(op.categoryID || op.levelID) { %><i class="pl-1">(<%=(op.categoryID ? _.chain(item.tabItems).pluck('categories').flatten().filter(function(ft) { return ft.id == op.categoryID }).first().value().name : '')%><%= (op.levelID ? ' - ' : '') %><%= (op.levelID ? _.chain(item.tabItems).pluck('levels').flatten().filter(function(ft) { return ft.id == op.levelID }).first().value().name : '') %>)</i><% } %></label>
-        <div class="col-sm-10">
-            <select id="drpVariable-<%= index %>" class="select2 variable-select" multiple="multiple" style="min-width:220px;" data-variableid="<%= op.id %>">
-                <% _.chain(op.variableValues).sortBy(function (ft) { return ft.name }).each(function(ft, index) { %>
-                <option value="<%= ft.id %>"><%= ft.name %></option>
-                <% }); %>
-            </select>
-        </div>
-    </div>
-    <% }) %>
-    <div id="divHideEmpty" class="form-group row no-gutters" style="<%= (item.sender == 'User') ? 'display:none' : '' %>">
-        <label class="col-sm-2 col-form-label"></label>
-        <div class="col-sm-10">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="chkHideEmpty">
-                <label class="form-check-label" for="chkHideEmpty">Hide Empty</label>
+        <div class="container pl-0">
+            <div class="form-group row no-gutters" style="<%= (item.sender == 'Game') ? 'display:none' : '' %>">
+                <div class="col-sm-2">
+                    <label for="drpGames" class="col-form-label">Game</label>
+                </div>
+                <div class="col-sm-10">
+                    <select id="drpGames" class="select2" multiple="multiple" style="width:auto;">
+                        <% _.each(item.tabItems, function(op, index) { %>
+                        <option value="<%= op.id %>" <%= (item.sender == 'Game') && index == 0 ? ' selected' : '' %>><%= op.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="row no-gutters pt-1">
-        <div class="form-group">
-            <input id="btnSearch" type="button" class="btn btn-primary" value="Search" onclick="search()" />
+            <div class="form-group row no-gutters">
+                <div class="col-sm-2">
+                    <label for="drpCategoryTypes" class="col-form-label">Category Type</label>
+                </div>
+                <div class="col-sm-10">
+                    <select id="drpCategoryTypes" class="custom-select form-control" style="width:auto;">
+                        <option value="-1" selected>All</option>
+                        <% _.chain(item.tabItems).pluck('categoryTypes').flatten().uniq(function(op) { return [op.id, op.name].join() }).each(function(op, index) { %>
+                        <option value="<%= op.id %>"><%= op.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row no-gutters">
+                <div class="col-sm-2">
+                    <label for="drpCategories" class="col-form-label">Category</label>
+                </div>
+                <div class="col-sm-10">
+                    <select id="drpCategories" class="select2" multiple="multiple" style="width:auto;">
+                        <optgroup label="PerGame">
+                            <% _.chain(item.tabItems).pluck('categories').flatten().filter(function(op) { return op && op.categoryTypeID == 0; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
+                            <option value="<%= op.id %>"><%= op.name %></option>
+                            <% }); %>
+                        </optgroup>
+                        <optgroup label="PerLevel">
+                            <% _.chain(item.tabItems).pluck('categories').flatten().filter(function(op) { return op && op.categoryTypeID == 1; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
+                            <option value="<%= op.id %>"><%= op.name %></option>
+                            <% }); %>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div id="divLevels" class="form-group row no-gutters" style="<%= (!_.chain(item.tabItems).pluck('levels').flatten().first().value()) ? 'display:none' : '' %>">
+                <div class="col-sm-2">
+                    <label for="drpLevels" class="col-form-label">Level</label>
+                </div>
+                <div class="col-sm-10">
+                    <select id="drpLevels" class="select2" multiple="multiple" style="width:auto;">
+                        <% _.chain(item.tabItems).pluck('levels').flatten().filter(function(op) { return op; }).uniq(function(op) { return [op.id, op.name].join() }).sortBy(function (op) { return op.name }).each(function(op, index) { %>
+                        <option value="<%= op.id %>"><%= op.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+            <% _.chain(item.tabItems).pluck('variables').flatten().filter(function(op) { return op && op.isSubCategory }).each(function(op, index) { %>
+            <div id="divVariable-<%= index %>" class="form-group row no-gutters variable-search" style="<%= op.categoryID || op.levelID ? 'display:none' : '' %>" data-variableid="<%= op.id %>" data-scopetypeid="<%= op.scopeTypeID %>" data-categoryid="<%= op.categoryID %>" data-levelid="<%= op.levelID %>">
+                <div class="col-sm-2">
+                    <label for="drpVariable-<%= index %>" class="col-form-label"><%= op.name %><% if(op.categoryID || op.levelID) { %><i class="pl-1">(<%=(op.categoryID ? _.chain(item.tabItems).pluck('categories').flatten().filter(function(ft) { return ft.id == op.categoryID }).first().value().name : '')%><%= (op.levelID ? ' - ' : '') %><%= (op.levelID ? _.chain(item.tabItems).pluck('levels').flatten().filter(function(ft) { return ft.id == op.levelID }).first().value().name : '') %>)</i><% } %></label>
+                </div>
+                <div class="col-sm-10">
+                    <select id="drpVariable-<%= index %>" class="select2 variable-select" multiple="multiple" style="min-width:220px;" data-variableid="<%= op.id %>">
+                        <% _.chain(op.variableValues).sortBy(function (ft) { return ft.name }).each(function(ft, index) { %>
+                        <option value="<%= ft.id %>"><%= ft.name %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+            <% }) %>
+            <div id="divHideEmpty" class="form-group row no-gutters" style="<%= (item.sender == 'User') ? 'display:none' : '' %>">
+                <div class="col-sm-2">
+                    <label class="col-sm-2 col-form-label"></label>
+                </div>
+                <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="chkHideEmpty">
+                        <label class="form-check-label" for="chkHideEmpty">Hide Empty</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters pt-1">
+                <div class="form-group">
+                    <input id="btnSearch" type="button" class="btn btn-primary" value="Search" onclick="search()" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

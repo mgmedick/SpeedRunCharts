@@ -9,6 +9,10 @@
         .options a:not(:first-child) {
             padding-left: 5px;
         }
+        /*
+        .grid-container {
+            width:100%;
+        }*/
     </style>
 }
 
@@ -49,19 +53,19 @@
 }
 
 <div class="container-fluid pl-0">
-    <div class="container ml-0">
-        <div class="row no-gutters p-0">
-            <div class="col-2 align-self-center">
+    <div class="container ml-0 d-flex">
+        <div class="row p-0">
+            <div class="col-5 align-self-center">
                 <div class="img-round">
                     <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
                 </div>
             </div>
-            <div class="p-2 col-10 align-self-end">
-                <h2 class="m-0">@Model.Name</h2>
+            <div class="p-2 col align-self-end">
+                <h3 class="m-0">@Model.Name</h3>
             </div>
         </div>
     </div>
-    <div class="container ml-0 pt-3">
+    <div class="container ml-0 p-2 pt-3">
         <h4>Details</h4>
         <div class="pl-3">
             <div class="form-group row no-gutters">
@@ -86,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid pt-3">
+    <div class="container-fluid p-2 pt-3">
         <h4>Leaderboards</h4>
         <div id="divSearchSpeedRunGridContainer" class="container ml-0 pt-2">
         </div>

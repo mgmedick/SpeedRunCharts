@@ -3,6 +3,7 @@ using SpeedRunCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpeedRunApp.Model.Helpers;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -165,6 +166,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return IsEmulated.ToString();
+            }
+        }
+
+        public string RankString
+        {
+            get
+            {
+                return Rank?.ToOrdinalString();
             }
         }
 

@@ -84,7 +84,7 @@ namespace SpeedRunApp.Model.ViewModels
 
         public List<Variable> GetAdjustedVariables(List<Variable> variables)
         {
-            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && string.IsNullOrWhiteSpace(i.CategoryID)).ToList();
+            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && string.IsNullOrWhiteSpace(i.CategoryID)).Reverse().ToList();
             var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)
             {
@@ -111,7 +111,21 @@ namespace SpeedRunApp.Model.ViewModels
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.Global && string.IsNullOrWhiteSpace(i.CategoryID));
 
-            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.LevelID)).ToList();
+            var gameVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.FullGame && string.IsNullOrWhiteSpace(i.CategoryID)).Reverse().ToList();
+            var gameCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerGame).Reverse();
+            foreach (var gameVariable in gameVariables)
+            {
+                foreach (var category in gameCategories)
+                {
+                    var variable = (Variable)gameVariable.Clone();
+                    variable.CategoryID = category.ID;
+                    variables.Insert(0, variable);
+                }
+            }
+
+            variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.FullGame && string.IsNullOrWhiteSpace(i.CategoryID));
+
+            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.LevelID)).Reverse().ToList();
             var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
             foreach (var allLevelVariable in allLevelVariables)
             {

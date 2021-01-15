@@ -51,14 +51,14 @@
 
 <div class="container-fluid">
     <div class="container ml-0">
-        <div class="row no-gutters p-0 d-flex">
-            <div class="col-2 align-self-center" style="@((Model.ProfileImage == null) ? "display:none" : "")">
+        <div class="row no-gutters p-0">
+            <div class="col-sm-2 align-self-center" style="@((Model.ProfileImage == null) ? "display:none" : "")">
                 <div class="img-round">
                     <img src="@Model.ProfileImage" class="img-fluid" alt="Responsive image">
                 </div>
             </div>
-            <div class="pr-4 align-self-end">
-                <h2 class="m-0">@Model.Name</h2>
+            <div class="p-2 align-self-end">
+                <h3 class="m-0">@Model.Name</h3>
             </div>
             <div class="p-1 align-self-end" style="@((Model.TwitterProfile == null) ? "display:none" : "")">
                 <a href="@Model.TwitterProfile"><img src="@Url.Content("~/images/Twitter_Logo_WhiteOnBlue.svg")" class="img-fluid brand-logo" alt="Responsive image"></a>
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid pt-3">
+    <div class="container-fluid p-2 pt-3">
         <h4>SpeedRuns</h4>
         <div id="divSearchSpeedRunGridContainer" class="container ml-0 pt-2">
         </div>

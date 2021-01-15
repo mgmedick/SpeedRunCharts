@@ -11,10 +11,10 @@
                     <small class="text-muted">Posted <%= item.relativeDateSubmittedString %></small>
                 </div>
                 <div>
-                    <h5>
+                    <h6>
                         <a href='../Game/GameDetails?gameID=<%=item.game.id%>' class="text-primary"><%= item.game.name %></a>
                         <small class="text-secondary"><%= item.category.name %></small>
-                    </h5>
+                    </h6>
                 </div>
                 <div class="row no-gutters text-secondary">
                     <div class="col-xs-4">
@@ -30,8 +30,8 @@
                     </div>
                 </div>
             </div>
-            <div class="details p-0 ml-auto align-self-center">
-                <a title="Details" href="javascript:showSpeedRunDetails('<%= item.id %>','<%= item.game.id %>');" class="btn btn-primary btn-large detail">Details</a>
+            <div class="details pl-2 ml-auto align-self-center">
+                <a title="Details" href="javascript:showSpeedRunDetails('<%= item.id %>','<%= item.game.id %>');" class="btn btn-primary detail">Details</a>
             </div>
         </div>
         <div class="body p-0 embed-responsive embed-responsive-16by9">

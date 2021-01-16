@@ -49,7 +49,7 @@ function initializeGlobalEvents() {
     });
 
     $('#txtMenuSearch').autocomplete({
-        minlength: 3,
+        minlength: 5,
         source: '../Menu/Search',
         search: function (event, ui) {
             $(this).parent().addClass("loading-icon");

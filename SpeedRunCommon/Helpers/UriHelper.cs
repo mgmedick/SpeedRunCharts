@@ -46,6 +46,16 @@ namespace SpeedRunCommon
                         uriString = string.Format(@"https://player.vimeo.com/video/{0}?autoplay=0&muted=1", videoIDString);
                     }
                 }
+                else if (domain.Contains("streamable.com"))
+                {
+                    videoIDString = uri.Segments.Last();
+                    uriString = string.Format(@"https://streamable.com/o/{0}", videoIDString);
+                }
+                else if (domain.Contains("medal.tv"))
+                {
+                    videoIDString = string.Join(string.Empty, uri.Segments.Reverse().Take(2).Reverse().ToList());
+                    uriString = string.Format(@"https://medal.tv/clip/{0}?autoplay=0&muted=1&loop=0", videoIDString);
+                }
 
                 if (!string.IsNullOrWhiteSpace(uriString))
                 {

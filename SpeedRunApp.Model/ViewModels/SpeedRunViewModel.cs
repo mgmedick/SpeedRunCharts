@@ -140,6 +140,20 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        string _subCategoryVariableValuesString = null;
+        public string SubCategoryVariableValuesString
+        {
+            get
+            {
+                if (SubCategoryVariableValues != null)
+                {
+                    _subCategoryVariableValuesString = string.Join(" - ", SubCategoryVariableValues.Select(i => i.Item2));
+                }
+
+                return _subCategoryVariableValuesString;
+            }
+        }
+
         public string VideoLink
         {
             get

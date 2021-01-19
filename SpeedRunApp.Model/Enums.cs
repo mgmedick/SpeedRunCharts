@@ -212,7 +212,7 @@ namespace SpeedRunApp.Model
         New = 0,
         Top5Perc = 1,
         First = 2,
-        Trending = 3
+        Top3 = 3
     }
 
     public enum SearchCategory

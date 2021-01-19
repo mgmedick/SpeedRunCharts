@@ -522,7 +522,7 @@ function configureAndInitializeGrid(element) {
 
     var columnModel = [
         { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
-        { name: "rank", width: 75 * perc, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] }, hidden: isSenderUser },
+        { name: "rank", width: 75 * perc, sorttype: "number", formatter: rankFormatter, search: true, searchoptions: { sopt: ["nIn"] } },
         { name: "players", width: 160 * perc, formatter: playerFormatter, search: true, searchoptions: { sopt: ["aIn"] } },
         { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
         { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },

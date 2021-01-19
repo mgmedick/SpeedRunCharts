@@ -5,6 +5,7 @@ namespace SpeedRunApp.Model.Data
 {
     public class Variable : ICloneable
     {
+        public int OrderValue { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
         public bool IsSubCategory { get; set; }

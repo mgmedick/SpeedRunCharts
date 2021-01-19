@@ -27,8 +27,16 @@ function speedRunGridVariableModel(subCategoryVariables, classPrefix, gameID, ca
 function initalizeSpeedRunGrid(sender, id) {
     $('#divSpeedRunGridContainer').hide();
     $('#divSpeedRunGridLoading').show();
+    setLoadingMessage();
 
     loadSpeedRunGridTemplate(sender, id);
+}
+
+function setLoadingMessage() {
+    var loadingMessages = ["loading runs...", "loading more runs...", "loading even more runs..."]
+    var messageIndex = loadingMessages.indexOf($('#spnLoadingMessage').text());
+    $('#spnLoadingMessage').text(loadingMessages[messageIndex + 1]);
+    setInterval(setLoadingMessage, 5000);
 }
 
 /*Load Functions*/
@@ -135,7 +143,7 @@ function onGameChange(element) {
                 $(this).find('.variable-select').val('').trigger("change")
             }
         } else if (selectedCategoryTypeID == 1) {
-            if (!categoryID && !levelID && [2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+            if (!categoryID && !levelID && [0, 2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
                 $(this).show();
             } else {
                 $(this).hide();
@@ -195,7 +203,7 @@ function onCategoryTypeChange(element) {
                 $(this).find('.variable-select').val('').trigger("change")
             }
         } else if (selectedCategoryTypeID == 1) {
-            if (!categoryID && !levelID && [2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
+            if (!categoryID && !levelID && [0, 2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
                 $(this).show();
             } else {
                 $(this).hide();
@@ -236,7 +244,7 @@ function onCategoryChange(element) {
         var categoryID = $(this).data("categoryid");
         var levelID = $(this).data("levelid");
 
-        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
+        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
             $(this).show();
         } else if (categoryID || levelID) {
             $(this).hide();
@@ -254,7 +262,7 @@ function onLevelChange(element) {
         var categoryID = $(this).data("categoryid");
         var levelID = $(this).data("levelid");
 
-        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
+        if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID) > -1) || [0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID) > -1) && (selectedLevelIDs.indexOf(levelID) > -1)) {
             $(this).show();
         } else if (categoryID || levelID) {
             $(this).hide();
@@ -469,7 +477,8 @@ function onLevelVariableValueTabClick(element) {
     } else {
         if (!$container.find('.grid')[0].grid) {
             configureAndInitializeGrid($container.find('.grid-container')).then(function (data) {
-                initializeCharts($chartContainer, data);
+                //initializeCharts($chartContainer, data);
+                initializeCharts($chartContainer.find('.charts-container'), data);
             });
         } else {
             initializeGridStyles($container);

@@ -51,8 +51,8 @@ namespace SpeedRunApp.Model.ViewModels
                 Variables = new List<Variable>();
                 foreach (var variable in game.Variables.Split("^^"))
                 {
-                    var values = variable.Split("|", 6);
-                    var variableDisplay = new Variable { ID = values[0], IsSubCategory = Convert.ToBoolean(values[1]), ScopeTypeID = Convert.ToInt32((string)values[2]), CategoryID = values[3], LevelID = values[4], Name = values[5] };
+                    var values = variable.Split("|", 7);
+                    var variableDisplay = new Variable { OrderValue = Convert.ToInt32((string)values[0]), ID = values[1], IsSubCategory = Convert.ToBoolean(values[2]), ScopeTypeID = Convert.ToInt32((string)values[3]), CategoryID = values[4], LevelID = values[5], Name = values[6] };
                     variableDisplay.VariableValues = game.VariableValues?.Split("^^").Where(i => i.Split("|", 4)[1] == variableDisplay.ID).Select(i => new VariableValue { ID = i.Split("|", 4)[0], HasData = Convert.ToBoolean(i.Split("|", 4)[2]), Name = i.Split("|", 4)[3] });
                     Variables.Add(variableDisplay);
                 }
@@ -142,6 +142,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && string.IsNullOrWhiteSpace(i.CategoryID) && string.IsNullOrWhiteSpace(i.LevelID));
+            variables = variables.OrderBy(i => i.OrderValue).ToList();
 
             var nestedVariables = GetNestedVariables(variables);
 

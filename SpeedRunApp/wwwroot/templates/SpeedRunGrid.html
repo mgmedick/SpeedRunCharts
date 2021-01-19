@@ -30,8 +30,8 @@
                 </div>
                 <div class="level-results-charts">
                     <% _.each(game.levels, function(level, levelIndex) { %>
-                    <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
-                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.id, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
+                    <% if(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }).length > 0) { %>
+                    <%= fn.renderSpeedRunGridVariableChartTemplate({ item: new speedRunGridVariableModel(_.filter(game.subCategoryVariables, function(ft) { return ft.categoryID == category.id && ft.levelID == level.id && (ft.scopeTypeID == '0' || ft.scopeTypeID == '2' || ft.scopeTypeID == '3') }), 'level', game.id, categoryType.id, category.id, level.id, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, '', '', 0), fn: { renderSpeedRunGridVariableChartTemplate: fn.renderSpeedRunGridVariableChartTemplate }}) %>
                     <% } else { %>
                     <div id="divGame-<%= gameIndex %>-CategoryType-<%= categoryTypeIndex %>-Category-<%= categoryIndex %>-Level-<%= levelIndex %>-charts" class="level-tab-pane-charts">
                         <div class="charts-container row" data-gameid="<%= game.id %>" data-categorytype="<%= category.categoryTypeID %>" data-categoryid="<%= category.id %>" data-levelid="<%= level.id %>">

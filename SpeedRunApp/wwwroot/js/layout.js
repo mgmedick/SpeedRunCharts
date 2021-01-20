@@ -85,17 +85,21 @@ function initializeGlobalEvents() {
         }
     }).data('ui-autocomplete')._renderMenu = function (ul, items) {
         var that = this;
-        $(items).each(function () {
-            if (this.subItems.length > 0) {
-                var category = this.label;
-                ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + category + "</div>");
+        if ($(items).filter(function () { return this.subItems && this.subItems.length > 0 }).length == 0) {
+            ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>No results found</div>");
+        } else {
+            $(items).each(function () {
+                if (this.subItems.length > 0) {
+                    var category = this.label;
+                    ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + category + "</div>");
 
-                $(this.subItems).each(function () {
-                    this.category = category;
-                    var li = that._renderItemData(ul, this);
-                });
-            }
-        });
+                    $(this.subItems).each(function () {
+                        this.category = category;
+                        var li = that._renderItemData(ul, this);
+                    });
+                }
+            });
+        }
     };
 }
 

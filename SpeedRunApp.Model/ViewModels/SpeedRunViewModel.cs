@@ -66,17 +66,9 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
+            if (!string.IsNullOrWhiteSpace(run.PrimaryVideoLinkUrl))
             {
-                VideoLinks = new List<string>();
-                foreach (var videoLink in run.VideoLinks.Split(","))
-                {
-                    if (!string.IsNullOrWhiteSpace(videoLink))
-                    {
-                        var videoLinkEmbedded = new Uri(videoLink).ToEmbeddedURIString();
-                        VideoLinks.Add(videoLinkEmbedded);
-                    }
-                }
+                VideoLink = new Uri(run.PrimaryVideoLinkUrl).ToEmbeddedURIString();
             }
 
             if (run.PrimaryTime.HasValue)
@@ -117,7 +109,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Tuple<string, string>> VariableValues { get; set; }
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
-        public List<string> VideoLinks { get; set; }
+        public string VideoLink { get; set; }
         public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
@@ -154,13 +146,13 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string VideoLink
-        {
-            get
-            {
-                return VideoLinks?.FirstOrDefault();
-            }
-        }
+        //public string VideoLink
+        //{
+        //    get
+        //    {
+        //        return VideoLinks?.FirstOrDefault();
+        //    }
+        //}
 
         public string VerifyDateString
         {

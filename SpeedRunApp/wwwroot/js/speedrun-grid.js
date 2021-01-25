@@ -36,7 +36,7 @@ function setLoadingMessage() {
     var loadingMessages = ["loading runs...", "loading more runs...", "loading even more runs..."]
     var messageIndex = loadingMessages.indexOf($('#spnLoadingMessage').text());
     $('#spnLoadingMessage').text(loadingMessages[messageIndex + 1]);
-    setInterval(setLoadingMessage, 5000);
+    setInterval(setLoadingMessage, 8000);
 }
 
 /*Load Functions*/

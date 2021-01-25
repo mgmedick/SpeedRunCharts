@@ -187,7 +187,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return string.Join(", ", Platforms.Select(i => i.Name));
+                return Platforms != null ? string.Join(", ", Platforms.Select(i => i.Name)) : null;
             }
         }
     }

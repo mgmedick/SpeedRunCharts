@@ -22,11 +22,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGrid(string ID)
+        public JsonResult GetSpeedRunGrid(int ID)
         {
-            var grid = _userService.GetSpeedRunGrid(ID);
+            var gridVM = _userService.GetSpeedRunGrid(ID);
 
-            return Json(new { GridModel = grid.Item1, GridData = grid.Item2 });
+            return Json(gridVM);
         }
 
         [HttpGet]

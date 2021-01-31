@@ -18,7 +18,7 @@ namespace SpeedRunApp.WebUI.Controllers
             _speedRunsService = speedRunsService;
         }
 
-        public ViewResult GameDetails(string gameID)
+        public ViewResult GameDetails(int gameID)
         {
             var gameVM = _gameService.GetGame(gameID);
 
@@ -26,11 +26,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGrid(string ID)
+        public JsonResult GetSpeedRunGrid(int ID)
         {
-            var grid = _gameService.GetSpeedRunGrid(ID);
+            var gridVM = _gameService.GetSpeedRunGrid(ID);
 
-            return Json(new { GridModel = grid.Item1, GridData = grid.Item2 });
+            return Json(gridVM);
         }
 
         [HttpGet]

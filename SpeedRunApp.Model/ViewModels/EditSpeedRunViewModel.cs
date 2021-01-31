@@ -6,9 +6,8 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class EditSpeedRunViewModel
     {
-        public EditSpeedRunViewModel(IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> categoryTypes, IEnumerable<Category> categories, IEnumerable<IDNamePair> levels, IEnumerable<IDNamePair> platforms, IEnumerable<Variable> variables, SpeedRunViewModel speedRunVM, bool isReadOnly)
+        public EditSpeedRunViewModel(IEnumerable<IDNamePair> categoryTypes, IEnumerable<Category> categories, IEnumerable<IDNamePair> levels, IEnumerable<IDNamePair> platforms, IEnumerable<Variable> variables, SpeedRunViewModel speedRunVM, bool isReadOnly)
         {
-            StatusTypes = statusTypes;
             CategoryTypes = categoryTypes;
             Categories = categories;
             Levels = levels;
@@ -18,7 +17,6 @@ namespace SpeedRunApp.Model.ViewModels
             IsReadOnly = isReadOnly;
         }
 
-        public IEnumerable<IDNamePair> StatusTypes { get; set; }
         public IEnumerable<IDNamePair> CategoryTypes { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<IDNamePair> Levels { get; set; }

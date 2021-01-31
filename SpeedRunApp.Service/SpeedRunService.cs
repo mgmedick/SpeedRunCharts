@@ -34,45 +34,36 @@ namespace SpeedRunApp.Service
             return runListVM;
         }
 
-        public IEnumerable<SpeedRunViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
+        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
         {
             var runs = _speedRunRepo.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
-            IEnumerable<SpeedRunViewModel> runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            IEnumerable<SpeedRunSummaryViewModel> runVMs = runs.Select(i => new SpeedRunSummaryViewModel(i));
 
             return runVMs;
         }
 
-        public EditSpeedRunViewModel GetEditSpeedRun(string gameID, string speedRunID, bool isReadOnly)
+        public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID, bool isReadOnly)
         {
             var gameVM = _gamesService.GetGame(gameID);
-            var statusTypes = _speedRunRepo.RunStatusTypes();
 
             SpeedRunViewModel runVM = null;
-            if (!string.IsNullOrWhiteSpace(speedRunID))
+            if (speedRunID.HasValue)
             {
-                var run = _speedRunRepo.GetSpeedRunViews(i => i.ID == speedRunID).FirstOrDefault();
+                var run = _speedRunRepo.GetSpeedRunViews(i => i.ID == speedRunID.Value).FirstOrDefault();
                 runVM = new SpeedRunViewModel(run);
             }
 
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM, isReadOnly);
+            var editSpeedRunVM = new EditSpeedRunViewModel(gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM, isReadOnly);
 
             return editSpeedRunVM;
         }
 
-        public IEnumerable<SpeedRunViewModel> GetSpeedRunsByGameID(string gameID)
+        public SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID)
         {
-            var runs = _speedRunRepo.GetSpeedRunViews(i => i.GameID == gameID && i.StatusTypeID == (int)RunStatusType.Verified && i.Rank.HasValue).OrderBy(i => i.Rank);
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var run = _speedRunRepo.GetSpeedRunSummaryViews(i => i.ID == speedRunID).FirstOrDefault();
+            var runVM = new SpeedRunSummaryViewModel(run);
 
-            return runVMs;
-        }
-
-        public IEnumerable<SpeedRunViewModel> GetSpeedRunsByUserID(string userID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunsByUserID(userID);
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
-
-            return runVMs;
+            return runVM;
         }
     }
 }

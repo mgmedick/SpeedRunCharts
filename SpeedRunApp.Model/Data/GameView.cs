@@ -6,10 +6,8 @@ namespace SpeedRunApp.Model.Data
 {
     public class GameView
     {
-        public string OrderValue { get; set; }
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public string JapaneseName { get; set; }
         public string CoverImageUrl { get; set; }
         public int? YearOfRelease { get; set; }
         public string CategoryTypes { get; set; }

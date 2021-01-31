@@ -8,8 +8,8 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IGameService
     {
-        GameViewModel GetGame(string gameID);
+        GameViewModel GetGame(int gameID);
         IEnumerable<SearchResult> SearchGames(string searchText);
-        Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>> GetSpeedRunGrid(string gameID);
+        SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID);
     }
 }

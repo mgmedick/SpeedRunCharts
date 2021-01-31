@@ -518,7 +518,7 @@ function configureAndInitializeGrid(element) {
         }
     }
 
-    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Status", "Reject Reason", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden"];
+    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden"];
 
     var columnModel = [
         { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -527,13 +527,11 @@ function configureAndInitializeGrid(element) {
         { name: "platform.name", width: 160 * perc, search: true, searchoptions: { sopt: ["in"] } },
         { name: "isEmulatedString", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] } },
         { name: "primaryTimeString", width: 160 * perc, search: false },
-        { name: "statusType.name", width: 125 * perc, search: true, searchoptions: { sopt: ["in"] }, hidden: !isSenderUser },
-        { name: "rejectedReason", width: 160 * perc, hidden: !showRejectedReason(isSenderUser, data) },
         { name: "dateSubmitted", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: dateSubmittedCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
         { name: "verifyDate", width: 160 * perc, sorttype: "date", formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "m/d/Y H:i" }, cellattr: verifyDateCellAttr, search: true, searchoptions: { sopt: ["deq", "dge", "dle"] } },
         { name: "relativeDateSubmittedString", hidden: true },
-        { name: "relativeVerifyDateString", hidden: true },
-        { name: "game", hidden: true }
+        { name: "relativeVerifyDateString", hidden: true }
+        //{ name: "game", hidden: true }
     ];
 
     var game = $(sra.speedRunGridModel.tabItems).filter(function () { return this.id == gameID }).get(0);
@@ -1003,16 +1001,18 @@ function showSpeedRunSummary(gridID, rowID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunSummary.html?_t=' + (new Date()).getTime(), function (summaryTemplate, status) {
-        renderTemplate(null, summaryTemplate, currentItem).then(function (result) {
-            var $header = $(result).find('.header');
-            var $body = $(result).find('.body');
+        $.get('../SpeedRun/GetSpeedRunSummary?speedRunID=' + currentItem.id, function (data, status) {
+            renderTemplate(null, summaryTemplate, data).then(function (result) {
+                var $header = $(result).find('.header');
+                var $body = $(result).find('.body');
 
-            $header.find('.details').remove();
-            $modalTitle.html($header);
-            $modalBody.html($body);
-            $modalBody.show();
-            $modalLoading.hide();
-        });
+                $header.find('.details').remove();
+                $modalTitle.html($header);
+                $modalBody.html($body);
+                $modalBody.show();
+                $modalLoading.hide();
+            });
+        });            
     });
 }
 
@@ -1029,7 +1029,6 @@ function showSpeedRunDetails(gridID, rowID) {
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
         $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=true', function (data, status) {
-            data.speedRunVM = currentItem;
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();

@@ -22,7 +22,7 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<GameView> GetGamesByUserID(string userID)
+        public IEnumerable<GameView> GetGamesByUserID(int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
@@ -44,7 +44,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 30 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%' ORDER BY [Name]", searchText).ToList();
+                return db.Query<SearchResult>("SELECT TOP 30 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
             }
         }
     }

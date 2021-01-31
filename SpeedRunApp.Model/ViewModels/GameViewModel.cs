@@ -12,7 +12,6 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = game.ID;
             Name = game.Name;
-            JapaneseName = game.JapaneseName;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUrl;
 
@@ -171,9 +170,8 @@ namespace SpeedRunApp.Model.ViewModels
             return results.GroupBy(i => new { i.CategoryID, i.LevelID }).Select(i => i.FirstOrDefault()).ToList();
         }
 
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public string JapaneseName { get; set; }
         public string CoverImageUri { get; set; }
         public int? YearOfRelease { get; set; }
         public List<IDNamePair> CategoryTypes { get; set; }

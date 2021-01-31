@@ -7,32 +7,16 @@ using SpeedRunApp.Model.Helpers;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunGridViewModel
+    public class SpeedRunSummaryViewModel
     {
-        public SpeedRunGridViewModel(SpeedRunGridView run)
+        public SpeedRunSummaryViewModel(SpeedRunSummaryView run)
         {
             ID = run.ID;
-            GameID = run.GameID;
-            CategoryTypeID = run.CategoryTypeID;
-            CategoryID = run.CategoryID;
-            LevelID = run.LevelID;
-            PlatformID = run.PlatformID;
-            SpeedRunComLink = run.SpeedRunComUrl;
-            SplitsLink = run.SplitsUrl;
+            Game = new IDNamePair { ID = run.GameID.ToString(), Name = run.GameName };
+            GameCoverImageLink = run.GameCoverImageUrl;
+            Category = new IDNamePair { ID = run.CategoryID.ToString(), Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
-            VerifyDate = run.VerifyDate;
             Rank = run.Rank;
-            Comment = run.Comment;
-
-            if (!string.IsNullOrWhiteSpace(run.VariableValues))
-            {
-                VariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.VariableValues.Split(","))
-                {
-                    var variableValue = value.Split("|", 2);
-                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                }
-            }
 
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
@@ -42,6 +26,11 @@ namespace SpeedRunApp.Model.ViewModels
                     var variableValue = value.Split("|", 2);
                     SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
                 }
+            }
+
+            if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValueNames))
+            {
+                SubCategoryVariableValueNames = run.SubCategoryVariableValueNames.Split(",").ToList();
             }
 
             if (!string.IsNullOrWhiteSpace(run.Players))
@@ -70,53 +59,30 @@ namespace SpeedRunApp.Model.ViewModels
         }
 
         public int ID { get; set; }
-        public int GameID { get; set; }
-        public int CategoryTypeID { get; set; }
-        public int CategoryID { get; set; }
-        public int? LevelID { get; set; }
-        public int? PlatformID { get; set; }
-        public List<Tuple<string, string>> VariableValues { get; set; }
+        public IDNamePair Game { get; set; }
+        public string GameCoverImageLink { get; set; }
+        public IDNamePair Level { get; set; }
+        public IDNamePair Category { get; set; }
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
+        public List<string> SubCategoryVariableValueNames { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
-        public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
-        public string Comment { get; set; }
-        public string SpeedRunComLink { get; set; }
-        public string SplitsLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
-        public DateTime? VerifyDate { get; set; }
 
-        public IDNamePair Player
+
+        string _subCategoryVariableValuesString = null;
+        public string SubCategoryVariableValuesString
         {
             get
             {
-                return Players?.FirstOrDefault();
-            }
-        }
+                if (SubCategoryVariableValueNames != null)
+                {
+                    _subCategoryVariableValuesString = string.Join(" - ", SubCategoryVariableValueNames);
+                }
 
-        public string VerifyDateString
-        {
-            get
-            {
-                return VerifyDate?.ToString("MM/dd/yyyy");
-            }
-        }
-
-        public string RelativeVerifyDateString
-        {
-            get
-            {
-                return VerifyDate?.ToRealtiveDateString();
-            }
-        }
-
-        public string IsEmulatedString
-        {
-            get
-            {
-                return IsEmulated.ToString();
+                return _subCategoryVariableValuesString;
             }
         }
 
@@ -151,23 +117,6 @@ namespace SpeedRunApp.Model.ViewModels
                 return PrimaryTime.ToShortString();
             }
         }
-
-        public string DateSubmittedString
-        {
-            get
-            {
-                return DateSubmitted?.ToString("MM/dd/yyyy");
-            }
-        }
-
-        public string MonthYearSubmitted
-        {
-            get
-            {
-                return DateSubmitted?.ToString("MM/yyyy");
-            }
-        }
-
 
         public string RelativeDateSubmittedString
         {

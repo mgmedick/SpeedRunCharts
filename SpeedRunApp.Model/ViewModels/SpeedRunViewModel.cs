@@ -11,11 +11,8 @@ namespace SpeedRunApp.Model.ViewModels
     {
         public SpeedRunViewModel(SpeedRunView run)
         {
-            OrderValue = run.OrderValue;
             ID = run.ID;
-            StatusType = new IDNamePair { ID = run.StatusTypeID.ToString(), Name = run.StatusTypeName.ToString() };
             Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
-            GameCoverImageLink = run.GameCoverImageUrl;
             CategoryType = new IDNamePair { ID = run.CategoryTypeID.ToString(), Name = run.CategoryTypeName };
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             IsEmulated = run.IsEmulated;
@@ -66,9 +63,13 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(run.PrimaryVideoLinkUrl))
+            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
             {
-                VideoLink = new Uri(run.PrimaryVideoLinkUrl).ToEmbeddedURIString();
+                VideoLinks = new List<string>();
+                foreach (var videoLink in run.VideoLinks.Split(","))
+                {
+                    VideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
+                }
             }
 
             if (run.PrimaryTime.HasValue)
@@ -97,11 +98,8 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public int OrderValue { get; set; }
-        public string ID { get; set; }
-        public IDNamePair StatusType { get; set; }
+        public int ID { get; set; }
         public IDNamePair Game { get; set; }
-        public string GameCoverImageLink { get; set; }
         public IDNamePair CategoryType { get; set; }
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; }
@@ -109,7 +107,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Tuple<string, string>> VariableValues { get; set; }
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
-        public string VideoLink { get; set; }
+        public List<string> VideoLinks { get; set; }
         public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
@@ -118,7 +116,6 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? GameTime { get; set; }
         public string Comment { get; set; }
         public IDNamePair Examiner { get; set; }
-        public string RejectReason { get; set; }
         public string SplitsLink { get; set; }
         public DateTime? RunDate { get; set; }
         public DateTime? DateSubmitted { get; set; }
@@ -146,13 +143,13 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        //public string VideoLink
-        //{
-        //    get
-        //    {
-        //        return VideoLinks?.FirstOrDefault();
-        //    }
-        //}
+        public string VideoLink
+        {
+            get
+            {
+                return VideoLinks?.FirstOrDefault();
+            }
+        }
 
         public string VerifyDateString
         {
@@ -241,7 +238,6 @@ namespace SpeedRunApp.Model.ViewModels
                 return DateSubmitted?.ToString("MM/yyyy");
             }
         }
-
 
         public string RelativeDateSubmittedString
         {

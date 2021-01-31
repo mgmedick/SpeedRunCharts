@@ -35,15 +35,15 @@ namespace SpeedRunApp.Service
             return _userRepo.SearchUsers(searchText);
         }
 
-        public Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>> GetSpeedRunGrid(string userID)
+        public SpeedRunGridContainerViewModel GetSpeedRunGrid(int userID)
         {
-            var runs = _speedRunRepo.GetSpeedRunsByUserID(userID);
-            var runVMs = runs.Select(i => new SpeedRunViewModel(i));
+            var runs = _speedRunRepo.GetSpeedRunGridViewsByUserID(userID);
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i));
             var games = _gameRepo.GetGamesByUserID(userID);
             var tabItems = games.Select(i => new GameViewModel(i));
-            var gridVM = new SpeedRunGridViewModel("User", tabItems);
+            var gridVM = new SpeedRunGridContainerViewModel(new SpeedRunGridTabViewModel("User", tabItems), runVMs);
 
-            return new Tuple<SpeedRunGridViewModel, IEnumerable<SpeedRunViewModel>>(gridVM, runVMs);
+            return gridVM;
         }
     }
 }

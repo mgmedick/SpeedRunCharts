@@ -18,7 +18,5 @@ namespace SpeedRunApp.Model.Data
         public string Platforms { get; set; }
         public string Moderators { get; set; }
         public string SpeedRunComUrl { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ImportedDate { get; set; }
     }
 } 

@@ -11,7 +11,7 @@ namespace SpeedRunApp.Model.ViewModels
             Name = user.Name;
             JapaneseName = user.JapaneseName;
             ProfileImage = user.ProfileImageUrl;
-            Role = new IDNamePair { ID = user.Role.Split("|", 2)[0], Name = user.Role.Split("|", 2)[1] };
+            Role = new IDNamePair { ID = Convert.ToInt32(user.Role.Split("|", 2)[0]), Name = user.Role.Split("|", 2)[1] };
             SignUpDate = user.SignUpDate;
             Location = user.Location;
             TwitchProfile = user.TwitchProfileUrl;

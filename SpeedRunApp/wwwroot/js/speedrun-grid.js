@@ -501,9 +501,9 @@ function configureAndInitializeGrid(element) {
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
     var data = $(sra.speedRunGridData).filter(function () {
-        return this.game.id == gameID
-            && this.category.id == categoryID
-            && (this.level ? this.level.id : '') == levelID
+        return this.gameID == gameID
+            && this.categoryID == categoryID
+            && (this.levelID ? this.levelID : '') == levelID
             && (this.subCategoryVariableValues ? $(this.subCategoryVariableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',') : '') == variableValues
     }).get();
     
@@ -518,7 +518,7 @@ function configureAndInitializeGrid(element) {
         }
     }
 
-    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Submitted Date", "Verified Date", "Hidden", "Hidden", "Hidden"];
+    var columnNames = ["", "Rank", "Players", "Platform", "Emulated", "Primary Time", "Submitted Date", "Verified Date", "Hidden", "Hidden"];
 
     var columnModel = [
         { name: "id", width: 100 * perc, resizable: false, search: false, formatter: optionsFormatter, align: "center" },
@@ -1028,7 +1028,7 @@ function showSpeedRunDetails(gridID, rowID) {
     $modalLoading.show();
     $modal.modal('show');
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
-        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.game.id + '&speedRunID=' + currentItem.id + '&isReadOnly=true', function (data, status) {
+        $.get('../SpeedRun/GetEditSpeedRun?gameID=' + currentItem.gameID + '&speedRunID=' + currentItem.id + '&isReadOnly=true', function (data, status) {
             renderTemplate($modalBody, detailsTemplate, data).then(function () {
                 initializeSpeedRunEdit(data.isReadOnly);
                 $modalBody.show();

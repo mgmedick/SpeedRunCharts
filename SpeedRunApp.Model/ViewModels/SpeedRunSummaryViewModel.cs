@@ -12,9 +12,9 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunSummaryViewModel(SpeedRunSummaryView run)
         {
             ID = run.ID;
-            Game = new IDNamePair { ID = run.GameID.ToString(), Name = run.GameName };
+            Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
             GameCoverImageLink = run.GameCoverImageUrl;
-            Category = new IDNamePair { ID = run.CategoryID.ToString(), Name = run.CategoryName };
+            Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
             Rank = run.Rank;
 
@@ -39,7 +39,7 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("|", 2);
-                    Players.Add(new IDNamePair { ID = playerValue[0], Name = playerValue[1] });
+                    Players.Add(new IDNamePair { ID = Convert.ToInt32(playerValue[0]), Name = playerValue[1] });
                 }
             }
 

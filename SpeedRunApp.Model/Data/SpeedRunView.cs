@@ -7,15 +7,15 @@ namespace SpeedRunApp.Model.Data
     public class SpeedRunView
     {
         public int ID { get; set; }
-        public string GameID { get; set; }
+        public int GameID { get; set; }
         public string GameName { get; set; }
         public int CategoryTypeID { get; set; }
         public string CategoryTypeName { get; set; }
-        public string CategoryID { get; set; }
+        public int CategoryID { get; set; }
         public string CategoryName { get; set; }
-        public string LevelID { get; set; }
+        public int? LevelID { get; set; }
         public string LevelName { get; set; }
-        public string PlatformID { get; set; }
+        public int? PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string VariableValues { get; set; }
         public string SubCategoryVariableValues { get; set; }
@@ -28,7 +28,7 @@ namespace SpeedRunApp.Model.Data
         public long? RealTimeWithoutLoads { get; set; }
         public long? GameTime { get; set; }
         public string Comment { get; set; }
-        public string ExaminerUserID { get; set; }
+        public int? ExaminerUserID { get; set; }
         public string ExaminerUserName { get; set; }
         public string SpeedRunComUrl { get; set; }
         public string SplitsUrl { get; set; }

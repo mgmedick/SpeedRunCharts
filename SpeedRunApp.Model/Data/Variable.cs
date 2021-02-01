@@ -5,13 +5,12 @@ namespace SpeedRunApp.Model.Data
 {
     public class Variable : ICloneable
     {
-        public int OrderValue { get; set; }
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public bool IsSubCategory { get; set; }
         public int ScopeTypeID { get; set; }
-        public string CategoryID { get; set; }
-        public string LevelID { get; set; }
+        public int? CategoryID { get; set; }
+        public int? LevelID { get; set; }
         public IEnumerable<VariableValue> VariableValues { get; set; }
 
         public object Clone()

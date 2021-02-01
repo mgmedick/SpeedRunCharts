@@ -12,8 +12,8 @@ namespace SpeedRunApp.Model.Data
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public int? PlatformID { get; set; }
+        public string PlatformName { get; set; }
         public string VariableValues { get; set; }
-        public string SubCategoryVariableValues { get; set; }
         public bool IsEmulated { get; set; }
         public string Players { get; set; }
         public string VideoLinks { get; set; }

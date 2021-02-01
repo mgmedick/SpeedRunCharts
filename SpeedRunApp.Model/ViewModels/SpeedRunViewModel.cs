@@ -13,7 +13,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
-            CategoryType = new IDNamePair { ID = run.CategoryTypeID.ToString(), Name = run.CategoryTypeName };
+            CategoryType = new IDNamePair { ID = run.CategoryTypeID, Name = run.CategoryTypeName };
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             IsEmulated = run.IsEmulated;
             SplitsLink = run.SplitsUrl;
@@ -23,14 +23,14 @@ namespace SpeedRunApp.Model.ViewModels
             Rank = run.Rank;
             Comment = run.Comment;
 
-            if (!string.IsNullOrWhiteSpace(run.LevelID))
+            if (run.LevelID.HasValue)
             {
-                Level = new IDNamePair { ID = run.LevelID, Name = run.LevelName };
+                Level = new IDNamePair { ID = run.LevelID.Value, Name = run.LevelName };
             }
 
-            if (!string.IsNullOrWhiteSpace(run.PlatformID))
+            if (run.PlatformID.HasValue)
             {
-                Platform = new IDNamePair { ID = run.PlatformID, Name = run.PlatformName };
+                Platform = new IDNamePair { ID = run.PlatformID.Value, Name = run.PlatformName };
             }
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
@@ -59,7 +59,7 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("|", 2);
-                    Players.Add(new IDNamePair { ID = playerValue[0], Name = playerValue[1] });
+                    Players.Add(new IDNamePair { ID = Convert.ToInt32(playerValue[0]), Name = playerValue[1] });
                 }
             }
 
@@ -92,9 +92,9 @@ namespace SpeedRunApp.Model.ViewModels
                 GameTime = new TimeSpan(run.GameTime.Value);
             }
 
-            if (!string.IsNullOrWhiteSpace(run.ExaminerUserID))
+            if (run.ExaminerUserID.HasValue)
             {
-                Examiner = new IDNamePair { ID = run.ExaminerUserID, Name = run.ExaminerUserName };
+                Examiner = new IDNamePair { ID = run.ExaminerUserID.Value, Name = run.ExaminerUserName };
             }
         }
 

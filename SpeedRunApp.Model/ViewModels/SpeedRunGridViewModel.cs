@@ -61,7 +61,10 @@ namespace SpeedRunApp.Model.ViewModels
                 VideoLinks = new List<string>();
                 foreach (var videoLink in run.VideoLinks.Split(","))
                 {
-                    VideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
+                    if (!string.IsNullOrWhiteSpace(videoLink))
+                    {
+                        VideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
+                    }
                 }
             }
 

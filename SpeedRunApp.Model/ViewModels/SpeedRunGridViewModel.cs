@@ -56,18 +56,6 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
-            {
-                VideoLinks = new List<string>();
-                foreach (var videoLink in run.VideoLinks.Split(","))
-                {
-                    if (!string.IsNullOrWhiteSpace(videoLink))
-                    {
-                        VideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
-                    }
-                }
-            }
-
             if (run.PrimaryTime.HasValue)
             {
                 PrimaryTime = new TimeSpan(run.PrimaryTime.Value);
@@ -122,14 +110,6 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return IsEmulated.ToString();
-            }
-        }
-
-        public string VideoLink
-        {
-            get
-            {
-                return VideoLinks?.FirstOrDefault();
             }
         }
 

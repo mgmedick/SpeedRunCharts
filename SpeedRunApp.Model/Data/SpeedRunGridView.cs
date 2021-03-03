@@ -16,7 +16,6 @@ namespace SpeedRunApp.Model.Data
         public string VariableValues { get; set; }
         public bool IsEmulated { get; set; }
         public string Players { get; set; }
-        public string VideoLinks { get; set; }
         public int? Rank { get; set; }
         public long? PrimaryTime { get; set; }
         public string Comment { get; set; }

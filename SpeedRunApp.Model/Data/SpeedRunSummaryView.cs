@@ -21,5 +21,6 @@ namespace SpeedRunApp.Model.Data
         public int? Rank { get; set; }
         public long? PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
+        public DateTime? VerifyDate { get; set; }
     }
 } 

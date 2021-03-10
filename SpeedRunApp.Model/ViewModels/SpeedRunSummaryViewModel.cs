@@ -16,6 +16,7 @@ namespace SpeedRunApp.Model.ViewModels
             GameCoverImageLink = run.GameCoverImageUrl;
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
+            VerifyDate = run.VerifyDate;
             Rank = run.Rank;
 
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
@@ -73,7 +74,7 @@ namespace SpeedRunApp.Model.ViewModels
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
-
+        public DateTime? VerifyDate { get; set; }
 
         string _subCategoryVariableValuesString = null;
         public string SubCategoryVariableValuesString
@@ -126,6 +127,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return DateSubmitted?.ToRealtiveDateString();
+            }
+        }
+
+        public string RelativeVerifyDateString
+        {
+            get
+            {
+                return VerifyDate?.ToRealtiveDateString();
             }
         }
     }

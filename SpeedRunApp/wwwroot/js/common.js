@@ -59,7 +59,7 @@ $.widget("custom.categorycomplete", $.ui.autocomplete, {
 
         $.each(items, function (index, item) {
             if (item.category != currentCategory) {
-                ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+
                 currentCategory = item.category;
             }
             that._renderItem(ul, item);

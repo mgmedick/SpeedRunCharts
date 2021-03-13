@@ -28,6 +28,39 @@
         <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=12/22/2020" />
     </environment>
     @RenderSection("Styles", required: false)
+    <environment include="Development">
+        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
+        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
+        <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
+        <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
+        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
+
+        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
+        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
+        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
+        <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
+        <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
+        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
+
+        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
+        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
+    </environment>
+    <script type="text/javascript">
+        $().ready(function () {
+            var maxElementsPerPage = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
+            var requestLimit = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
+            var timeLimitMS = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
+            var defaultTheme = @Json.Serialize(Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value);
+
+            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme);
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
 </head>
 <body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -74,38 +107,5 @@
             <p>&copy; 2021 - SpeedRunCharts</p>
         </footer>
     </div>
-    <environment include="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
-        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
-
-        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script> 
-        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
-
-        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
-    </environment>
-    <script type="text/javascript">
-        $().ready(function () {
-            var maxElementsPerPage = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
-            var requestLimit = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
-            var timeLimitMS = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);
-            var defaultTheme = @Json.Serialize(Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value);
-
-            initializeGlobalClient(maxElementsPerPage, requestLimit, timeLimitMS, defaultTheme);
-        });
-    </script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

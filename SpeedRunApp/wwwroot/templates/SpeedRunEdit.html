@@ -109,14 +109,13 @@
     <% });
     } %>
     <div class="form-group row no-gutters">
+        <label class="col-sm-2 col-form-label">Times</label>
         <div class="col-sm-auto pl-0">
             <table class="table-responsive">
                 <thead>
                     <tr>
-                        <th class="font-weight-normal">Primary Time</th>
-                        <th class="font-weight-normal">Real Time</th>
-                        <th class="font-weight-normal">Real Time w/out Loads</th>
-                        <th class="font-weight-normal">Game Time</th>
+                        <th class="font-weight-normal p-1" style="font-size:12px;">Primary Time</th>
+                        <th class="font-weight-normal p-1" style="font-size:12px;">Real Time</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,6 +126,20 @@
                         <td>
                             <input id="txtRealTime" type="text" name="realTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.realTimeString : '' %>" />
                         </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-auto pl-0">
+            <table class="table-responsive">
+                <thead>
+                    <tr>
+                        <th class="font-weight-normal p-1" style="font-size:12px;">Real Time w/o Loads</th>
+                        <th class="font-weight-normal p-1" style="font-size:12px;">Game Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
                         <td>
                             <input id="txtRealTimeWithoutLoads" type="text" name="realTime" class="form-control time" style="width:125px" value="<%= item.speedRunVM ? item.speedRunVM.realTimeWithoutLoadsString : '' %>" />
                         </td>

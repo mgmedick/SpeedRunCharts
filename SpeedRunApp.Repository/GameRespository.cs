@@ -30,21 +30,11 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        /*
-        public IEnumerable<SearchResult2> SearchGames(string searchText)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<SearchResult2>("SELECT ID, Name AS Text, 'Games' AS Category FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%' ORDER BY [Name]", searchText).ToList();
-            }
-        }
-        */
-
         public IEnumerable<SearchResult> SearchGames(string searchText)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 30 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
+                return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
             }
         }
     }

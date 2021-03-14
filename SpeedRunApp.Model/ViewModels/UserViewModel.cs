@@ -1,5 +1,7 @@
 ﻿using SpeedRunApp.Model.Data;
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -12,12 +14,12 @@ namespace SpeedRunApp.Model.ViewModels
             SignUpDate = user.SignUpDate;
             Location = user.Location;
             SpeedRunComLink = user.SpeedRunComUrl;
-            ProfileImage = user.ProfileImageUrl;
             TwitchProfile = user.TwitchProfileUrl;
             HitboxProfile = user.HitboxProfileUrl;
             YoutubeProfile = user.YoutubeProfileUrl;
             TwitterProfile = user.TwitterProfileUrl;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfileUrl;
+            ProfileImage = Task.Run<string>(async () => await ParseProfileImageLink(user.ProfileImageUrl)).Result;
         }
 
         public string ID { get; set; }
@@ -31,6 +33,24 @@ namespace SpeedRunApp.Model.ViewModels
         public string YoutubeProfile { get; set; }
         public string TwitterProfile { get; set; }
         public string SpeedRunsLiveProfile { get; set; }
+
+        private async Task<string> ParseProfileImageLink(string profileImageUrl)
+        {
+            string profileImageLink = profileImageUrl;
+
+            using (HttpClient client = new HttpClient())
+            {
+                using (var response = await client.GetAsync(profileImageUrl, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        profileImageLink = null;
+                    }
+                }
+            }
+
+            return profileImageLink;
+        }
     }
 }
 

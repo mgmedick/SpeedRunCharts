@@ -1,5 +1,13 @@
 ﻿<div id="divSpeedRunEdit" class="container">
     <div class="form-group row no-gutters">
+        <label class="col-sm-2 col-form-label">Game</label>
+        <div class="col-sm-10">
+            <span class="icon-wrapper">
+                <input id="txtGameSearch" type="text" name="game" class="form-control mr-sm-2 game-search" style="width:300px;" placeholder="Search Games" aria-label="Search" value="<%= item.speedRunVM ? item.speedRunVM.game.name : ''%>" data-value="<%= item.speedRunVM ? item.speedRunVM.game.id : ''%>">
+            </span>
+        </div>
+    </div>
+    <div class="form-group row no-gutters">
         <label class="col-sm-2 col-form-label">Status</label>
         <div class="col-sm-10">
             <select id="drpStatus" class="custom-select form-control" style="width:220px;">
@@ -52,14 +60,7 @@
             </select>
         </div>
     </div>
-    <div class="form-group row no-gutters">
-        <label class="col-sm-2 col-form-label">Game</label>
-        <div class="col-sm-10">
-            <span class="icon-wrapper">
-                <input id="txtGameSearch" type="text" name="game" class="form-control mr-sm-2 game-search" style="width:300px;" placeholder="Search Games" aria-label="Search" value="<%= item.speedRunVM ? item.speedRunVM.game.name : ''%>" data-value="<%= item.speedRunVM ? item.speedRunVM.game.id : ''%>">
-            </span>
-        </div>
-    </div>
+
     <div class="form-group row no-gutters">
         <label class="col-sm-2 col-form-label">Platform</label>
         <div class="col-sm-10">

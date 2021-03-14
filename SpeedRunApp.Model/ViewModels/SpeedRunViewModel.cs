@@ -13,6 +13,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
+            StatusType = new IDNamePair { ID = run.StatusTypeID, Name = run.StatusTypeName };
             CategoryType = new IDNamePair { ID = run.CategoryTypeID, Name = run.CategoryTypeName };
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             IsEmulated = run.IsEmulated;
@@ -36,20 +37,18 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
                 VariableValues = new List<Tuple<string, string>>();
+                SubCategoryVariableValues = new List<Tuple<string, string>>();
                 foreach (var value in run.VariableValues.Split(","))
                 {
-                    var variableValue = value.Split("|", 2);
-                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
-            {
-                SubCategoryVariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.SubCategoryVariableValues.Split(","))
-                {
-                    var variableValue = value.Split("|", 2);
-                    SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    var variableValue = value.Split("|", 3);
+                    if (Convert.ToBoolean(variableValue[2]))
+                    {
+                        SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    }
+                    else
+                    {
+                        VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    }
                 }
             }
 
@@ -103,6 +102,7 @@ namespace SpeedRunApp.Model.ViewModels
 
         public int ID { get; set; }
         public IDNamePair Game { get; set; }
+        public IDNamePair StatusType { get; set; }
         public IDNamePair CategoryType { get; set; }
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; }

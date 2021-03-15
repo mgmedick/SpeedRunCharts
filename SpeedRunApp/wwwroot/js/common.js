@@ -52,20 +52,20 @@ $.fn.setupCollapsible = function (callerSettings) {
     return this;
 };
 
-$.widget("custom.categorycomplete", $.ui.autocomplete, {
-    _renderMenu: function (ul, items) {
-        var that = this;
-        var currentCategory;
+//$.widget("custom.categorycomplete", $.ui.autocomplete, {
+//    _renderMenu: function (ul, items) {
+//        var that = this;
+//        var currentCategory;
 
-        $.each(items, function (index, item) {
-            if (item.category != currentCategory) {
-
-                currentCategory = item.category;
-            }
-            that._renderItem(ul, item);
-        });
-    }
-});
+//        $.each(items, function (index, item) {
+//            if (item.category != currentCategory) {
+//                ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
+//                currentCategory = item.category;
+//            }
+//            that._renderItem(ul, item);
+//        });
+//    }
+//});
 
 function repopulateDropDown(element, items) {
     var selectedItems = $(element).val();

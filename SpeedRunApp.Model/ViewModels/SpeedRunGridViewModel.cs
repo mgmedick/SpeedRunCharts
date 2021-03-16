@@ -31,18 +31,10 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
                 VariableValues = new List<Tuple<string, string>>();
-                SubCategoryVariableValues = new List<Tuple<string, string>>();
                 foreach (var value in run.VariableValues.Split(","))
                 {
-                    var variableValue = value.Split("|", 3);
-                    if (Convert.ToBoolean(variableValue[2]))
-                    {
-                        SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                    }
-                    else
-                    {
-                        VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                    }
+                    var variableValue = value.Split("|", 2);
+                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
                 }
             }
 
@@ -52,7 +44,9 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("|", 2);
-                    Players.Add(new IDNamePair { ID = Convert.ToInt32(playerValue[0]), Name = playerValue[1] });
+                    int playerID;
+                    int.TryParse(playerValue[0], out playerID);
+                    Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
                 }
             }
 
@@ -69,7 +63,6 @@ namespace SpeedRunApp.Model.ViewModels
         public int? LevelID { get; set; }
         public IDNamePair Platform { get; set; }
         public List<Tuple<string, string>> VariableValues { get; set; }
-        public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public bool IsEmulated { get; set; }

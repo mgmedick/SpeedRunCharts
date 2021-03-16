@@ -40,7 +40,9 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("|", 2);
-                    Players.Add(new IDNamePair { ID = Convert.ToInt32(playerValue[0]), Name = playerValue[1] });
+                    int playerID;
+                    int.TryParse(playerValue[0], out playerID);
+                    Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
                 }
             }
 

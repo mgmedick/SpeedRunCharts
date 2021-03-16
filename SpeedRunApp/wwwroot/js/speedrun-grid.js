@@ -27,16 +27,7 @@ function speedRunGridVariableModel(subCategoryVariables, classPrefix, gameID, ca
 function initalizeSpeedRunGrid(sender, id) {
     $('#divSpeedRunGridContainer').hide();
     $('#divSpeedRunGridLoading').show();
-    setLoadingMessage();
-
     loadSpeedRunGridTemplate(sender, id);
-}
-
-function setLoadingMessage() {
-    var loadingMessages = ["loading runs...", "loading more runs...", "loading even more runs..."]
-    var messageIndex = loadingMessages.indexOf($('#spnLoadingMessage').text());
-    $('#spnLoadingMessage').text(loadingMessages[messageIndex + 1]);
-    setInterval(setLoadingMessage, 8000);
 }
 
 /*Load Functions*/
@@ -500,13 +491,19 @@ function configureAndInitializeGrid(element) {
     var levelID = $(element).data('levelid') ? $(element).data('levelid') : '';
     var variableValues = $(element).data('variablevalues') ? $(element).data('variablevalues') : '';
     var isSenderUser = sra.sender == "User";
+    var game = $(sra.speedRunGridModel.tabItems).filter(function () { return this.id == gameID }).get(0);
     var data = $(sra.speedRunGridData).filter(function () {
         return this.gameID == gameID
             && this.categoryID == categoryID
             && (this.levelID ? this.levelID : '') == levelID
-            && (this.subCategoryVariableValues ? $(this.subCategoryVariableValues).map(function () { return this.item1 + '|' + this.item2 }).get().join(',') : '') == variableValues
+            && (this.variableValues ? $(this.variableValues).filter(function () {
+                var variableValue = this;
+                return $(game.variables).filter(function () {
+                    return this.isSubCategory && this.id == variableValue.item1
+                }).length > 0
+            }).map(function () { return this.item1 + '|' + this.item2 }).get().join(',') : '') == variableValues
     }).get();
-    
+
     $loading.show();
     $grid.hide();
 
@@ -533,8 +530,6 @@ function configureAndInitializeGrid(element) {
         { name: "relativeVerifyDateString", hidden: true }
         //{ name: "game", hidden: true }
     ];
-
-    var game = $(sra.speedRunGridModel.tabItems).filter(function () { return this.id == gameID }).get(0);
 
     $(data).each(function () {
         var item = this;
@@ -601,7 +596,11 @@ function configureAndInitializeGrid(element) {
         var html = '';
 
         $(value).each(function () {
-            html += "<a href='../User/UserDetails?userID=" + this.id + "'>" + this.name + "</a><br/>";
+            if (this.id > 0) {
+                html += "<a href='../User/UserDetails?userID=" + this.id + "'>" + this.name + "</a><br/>";
+            } else {
+                html += this.name;
+            }
         });
 
         return html;

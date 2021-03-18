@@ -61,9 +61,18 @@ namespace SpeedRunApp.Model.ViewModels
                 VideoLinks = new List<string>();
                 foreach (var videoLink in run.VideoLinks.Split(","))
                 {
-                    if (!string.IsNullOrWhiteSpace(videoLink))
+                    VideoLinks.Add(videoLink);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
+            {
+                EmbeddedVideoLinks = new List<string>();
+                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
+                {
+                    if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
                     {
-                        VideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
+                        EmbeddedVideoLinks.Add(embeddedVideoLink);
                     }
                 }
             }
@@ -104,6 +113,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Tuple<string, string>> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
+        public List<string> EmbeddedVideoLinks { get; set; }
         public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
@@ -129,7 +139,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return VideoLinks?.FirstOrDefault();
+                return EmbeddedVideoLinks?.FirstOrDefault();
             }
         }
 

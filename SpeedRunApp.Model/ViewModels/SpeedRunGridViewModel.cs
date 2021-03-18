@@ -38,15 +38,27 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(run.Players))
+            if (!string.IsNullOrWhiteSpace(run.Players) || !string.IsNullOrWhiteSpace(run.Guests))
             {
                 Players = new List<IDNamePair>();
-                foreach (var player in run.Players.Split("^^"))
+
+                if (!string.IsNullOrWhiteSpace(run.Players))
                 {
-                    var playerValue = player.Split("|", 2);
-                    int playerID;
-                    int.TryParse(playerValue[0], out playerID);
-                    Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
+                    foreach (var player in run.Players.Split("^^"))
+                    {
+                        var playerValue = player.Split("|", 2);
+                        int playerID;
+                        int.TryParse(playerValue[0], out playerID);
+                        Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(run.Guests))
+                {
+                    foreach (var guest in run.Guests.Split("^^"))
+                    {
+                        Players.Add(new IDNamePair { ID = 0, Name = guest });
+                    }
                 }
             }
 

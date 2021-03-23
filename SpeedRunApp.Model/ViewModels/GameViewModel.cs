@@ -8,7 +8,7 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameViewModel
     {
-        public GameViewModel(GameView game)
+        public GameViewModel(GameView game, IEnumerable<SpeedRunGridViewModel> runVMs = null)
         {
             ID = game.ID;
             Name = game.Name;
@@ -29,32 +29,66 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(game.Categories))
             {
                 Categories = new List<Category>();
-                foreach (var category in game.Categories.Split("^^"))
+                foreach (var categoryString in game.Categories.Split("^^"))
                 {
-                    var values = category.Split("|", 3);
-                    Categories.Add(new Category { ID = Convert.ToInt32(values[0]), CategoryTypeID = Convert.ToInt32((string)values[1]), HasData = true, Name = values[2] });
+                    var values = categoryString.Split("|", 3);
+                    var category = new Category
+                    {
+                        ID = Convert.ToInt32(values[0]),
+                        CategoryTypeID = Convert.ToInt32((string)values[1]),
+                        Name = values[2]
+                    };
+                    category.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.CategoryID == category.ID);
+                    Categories.Add(category);
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
                 Levels = new List<TabItem>();
-                foreach (var level in game.Levels.Split("^^"))
+                foreach (var levelString in game.Levels.Split("^^"))
                 {
-                    var values = level.Split("|", 2);
-                    Levels.Add(new TabItem { ID = Convert.ToInt32(values[0]), HasData = true, Name = values[1] });
+                    var values = levelString.Split("|", 2);
+                    var level = new TabItem
+                    {
+                        ID = Convert.ToInt32(values[0]),
+                        Name = values[1]
+                    };
+                    level.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.LevelID == level.ID);
+                    Levels.Add(level);
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(game.Variables))
             {
                 Variables = new List<Variable>();
-                foreach (var variable in game.Variables.Split("^^"))
+                foreach (var variableString in game.Variables.Split("^^"))
                 {
-                    var values = variable.Split("|", 6);
-                    var variableDisplay = new Variable { ID = Convert.ToInt32(values[0]), IsSubCategory = Convert.ToBoolean(values[1]), ScopeTypeID = Convert.ToInt32((string)values[2]), CategoryID = !String.IsNullOrWhiteSpace((string)values[3]) ? Convert.ToInt32((string)values[3]) : (int?)null, LevelID = !String.IsNullOrWhiteSpace((string)values[4]) ? Convert.ToInt32((string)values[4]) : (int?)null, Name = values[5] };
-                    variableDisplay.VariableValues = game.VariableValues?.Split("^^").Where(i => i.Split("|", 3)[1] == variableDisplay.ID.ToString()).Select(i => new VariableValue { ID = Convert.ToInt32(i.Split("|", 3)[0]), HasData = true, Name = i.Split("|", 3)[2] });
-                    Variables.Add(variableDisplay);
+                    var values = variableString.Split("|", 6);
+                    var variable = new Variable
+                    {
+                        ID = Convert.ToInt32(values[0]),
+                        IsSubCategory = Convert.ToBoolean(values[1]),
+                        ScopeTypeID = Convert.ToInt32((string)values[2]),
+                        CategoryID = !String.IsNullOrWhiteSpace((string)values[3]) ? Convert.ToInt32((string)values[3]) : (int?)null,
+                        LevelID = !String.IsNullOrWhiteSpace((string)values[4]) ? Convert.ToInt32((string)values[4]) : (int?)null,
+                        Name = values[5],
+                    };
+
+                    variable.VariableValues = game.VariableValues?.Split("^^")
+                                                  .Where(i => i.Split("|", 3)[1] == variable.ID.ToString())
+                                                  .Select(i => new VariableValue
+                                                  {
+                                                      ID = Convert.ToInt32(i.Split("|", 3)[0]),
+                                                      Name = i.Split("|", 3)[2]
+                                                  }).ToList();
+
+                    foreach (var variableValue in variable.VariableValues)
+                    {
+                        variableValue.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.VariableValues != null && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString()));
+                    }
+
+                    Variables.Add(variable);
                 }
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
@@ -192,3 +226,4 @@ namespace SpeedRunApp.Model.ViewModels
         }
     }
 }
+

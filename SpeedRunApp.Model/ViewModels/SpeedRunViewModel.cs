@@ -96,11 +96,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 GameTime = new TimeSpan(run.GameTime.Value);
             }
-
-            if (run.ExaminerUserID.HasValue)
-            {
-                Examiner = new IDNamePair { ID = run.ExaminerUserID.Value, Name = run.ExaminerUserName };
-            }
         }
 
         public int ID { get; set; }
@@ -121,7 +116,6 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan? RealTimeWithoutLoads { get; set; }
         public TimeSpan? GameTime { get; set; }
         public string Comment { get; set; }
-        public IDNamePair Examiner { get; set; }
         public string SplitsLink { get; set; }
         public DateTime? RunDate { get; set; }
         public DateTime? DateSubmitted { get; set; }

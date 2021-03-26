@@ -30,8 +30,6 @@ namespace SpeedRunApp.Model.Data
         public long? RealTimeWithoutLoads { get; set; }
         public long? GameTime { get; set; }
         public string Comment { get; set; }
-        public int? ExaminerUserID { get; set; }
-        public string ExaminerUserName { get; set; }
         public string SpeedRunComUrl { get; set; }
         public string SplitsUrl { get; set; }
         public DateTime? RunDate { get; set; }

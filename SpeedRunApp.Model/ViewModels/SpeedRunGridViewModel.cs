@@ -16,8 +16,8 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
-            SpeedRunComLink = run.SpeedRunComUrl;
-            SplitsLink = run.SplitsUrl;
+            //SpeedRunComLink = run.SpeedRunComUrl;
+            //SplitsLink = run.SplitsUrl;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
@@ -57,9 +57,13 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     foreach (var guest in run.Guests.Split("^^"))
                     {
-                        Players.Add(new IDNamePair { ID = 0, Name = guest });
+                        var guestValue = guest.Split("|", 2);
+                        int guestID;
+                        int.TryParse(guestValue[0], out guestID);
+                        Players.Add(new IDNamePair { ID = 0, Name = guestValue[1] });
                     }
                 }
+
             }
 
             if (run.PrimaryTime.HasValue)

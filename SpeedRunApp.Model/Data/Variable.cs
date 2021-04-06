@@ -16,7 +16,14 @@ namespace SpeedRunApp.Model.Data
         public object Clone()
         {
             Variable variable = (Variable)this.MemberwiseClone();
-            //variable.VariableValues = new List<VariableValue>(this.VariableValues);
+
+            var list = new List<VariableValue>();
+            foreach (var variableValue in VariableValues)
+            {
+                var variableValueClone = (VariableValue)variableValue.Clone();
+                list.Add(variableValueClone);
+            }
+            variable.VariableValues = list;
 
             return variable;
         }

@@ -893,12 +893,12 @@ function search() {
     });
 
     if (gameIDs.length > 0) {
-        tabItems = $(tabItems).filter(function () { return gameIDs.indexOf(this.id) > -1 }).get();
+        tabItems = $(tabItems).filter(function () { return gameIDs.indexOf(this.id.toString()) > -1 }).get();
     }
 
     if (categoryTypeID != -1) {
         $(tabItems).each(function () {
-            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeID == this.id }).get();
+            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeID == this.id.toString() }).get();
             //this.categories = $(this.categories).filter(function () { return categoryTypeID = this.categoryTypeID }).value();
             //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return (categoryTypeID == 0 && (this.scopeTypeID == 0 || this.scopeTypeID == 1)) || (categoryTypeID == 1 && (this.scopeTypeID == 2 || this.scopeTypeID == 3)) }).value();
         });
@@ -906,9 +906,9 @@ function search() {
 
     if (categoryIDs.length > 0) {
         $(tabItems).each(function () {
-            this.categories = $(this.categories).filter(function () { return categoryIDs.indexOf(this.id) > -1 }).get();
+            this.categories = $(this.categories).filter(function () { return categoryIDs.indexOf(this.id.toString()) > -1 }).get();
             var categoryTypeIDs = $(this.categories).map(function () { return this.categoryTypeID.toString() }).get();
-            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeIDs.indexOf(this.id) > -1 }).get();
+            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeIDs.indexOf(this.id.toString()) > -1 }).get();
 
             //var filteredCategoryIDs = $(this.categories).map(function () { return this.id; })
             //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredCategoryIDs.indexOf(this.categoryID) > -1 }).value();
@@ -917,7 +917,7 @@ function search() {
 
     if (levelIDs.length > 0) {
         $(tabItems).each(function () {
-            this.levels = $(this.levels).filter(function () { return levelIDs.indexOf(this.id) > -1 }).get();
+            this.levels = $(this.levels).filter(function () { return levelIDs.indexOf(this.id.toString()) > -1 }).get();
             //var filteredLevelIDs = $(this.categories).map(function () { return this.id; })
             //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredLevelIDs.indexOf(this.levelID) > -1 }).value();
         });
@@ -968,7 +968,7 @@ function cloneVariables(variables) {
 function filterVariableValues(variables, variableID, variableValueIDs) {
     $(variables).each(function () {
         if (this.id == variableID) {
-            this.variableValues = $(this.variableValues).filter(function () { return variableValueIDs.indexOf(this.id) > -1 }).get();
+            this.variableValues = $(this.variableValues).filter(function () { return variableValueIDs.indexOf(this.id.toString()) > -1 }).get();
         }
 
         var subVariables = $(this.variableValues).map(function () { return this.subVariables; }).get();

@@ -83,16 +83,11 @@ namespace SpeedRunApp.Model.ViewModels
                                                       Name = i.Split("|", 3)[2]
                                                   }).ToList();
 
-                    foreach (var variableValue in variable.VariableValues)
-                    {
-                        variableValue.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.VariableValues != null && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString()));
-                    }
-
                     Variables.Add(variable);
                 }
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetAdjustedVariables(subVariables);
+                SubCategoryVariables = GetAdjustedVariables(subVariables, runVMs);
             }
 
             if (!string.IsNullOrWhiteSpace(game.Platforms))
@@ -116,7 +111,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public List<Variable> GetAdjustedVariables(List<Variable> variables)
+        public List<Variable> GetAdjustedVariables(List<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs)
         {
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();
             var categories = Categories.Reverse<Category>();
@@ -177,6 +172,17 @@ namespace SpeedRunApp.Model.ViewModels
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.CategoryID.HasValue && !i.LevelID.HasValue);
             variables = variables.OrderBy(i => i.ID).ToList();
+
+            foreach (var variable in variables)
+            {
+                foreach(var variableValue in variable.VariableValues)
+                {
+                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
+                                                          && i.LevelID == variable.LevelID
+                                                          && i.VariableValues != null
+                                                          && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString()));
+                }
+            }
 
             var nestedVariables = GetNestedVariables(variables);
 

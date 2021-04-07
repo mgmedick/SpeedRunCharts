@@ -38,7 +38,7 @@ namespace SpeedRunApp.Model.ViewModels
                         CategoryTypeID = Convert.ToInt32((string)values[1]),
                         Name = values[2]
                     };
-                    category.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.CategoryID == category.ID);
+                    category.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
                 }
             }
@@ -54,7 +54,7 @@ namespace SpeedRunApp.Model.ViewModels
                         ID = Convert.ToInt32(values[0]),
                         Name = values[1]
                     };
-                    level.HasData = runVMs != null && runVMs.Any(i => i.GameID == game.ID && i.LevelID == level.ID);
+                    level.HasData = runVMs != null && runVMs.Any(i => i.LevelID == level.ID);
                     Levels.Add(level);
                 }
             }

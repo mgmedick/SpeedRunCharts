@@ -76,18 +76,21 @@
             <% }) %>
             <div id="divHideEmpty" class="form-group row no-gutters" style="<%= (item.sender == 'User') ? 'display:none' : '' %>">
                 <div class="col-sm-2">
-                    <label class="col-sm-2 col-form-label"></label>
+                    <label for="drpCategories" class="col-form-label">Hide Empty</label>
                 </div>
                 <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
+                    <div class="form-check form-check-inline pt-2">
                         <input class="form-check-input" type="checkbox" id="chkHideEmpty">
-                        <label class="form-check-label" for="chkHideEmpty">Hide Empty</label>
+                        <!--<label class="form-check-label" for="chkHideEmpty">Hide Empty</label>-->
                     </div>
                 </div>
             </div>
             <div class="row no-gutters pt-1">
                 <div class="form-group">
                     <input id="btnSearch" type="button" class="btn btn-primary" value="Search" onclick="search()" />
+                </div>
+                <div class="form-group pl-3">
+                    <input id="btnSearch" type="button" class="btn btn-primary" value="Clear" onclick="clearSearch()" />
                 </div>
             </div>
         </div>

@@ -9,27 +9,27 @@
                     <label for="drpGames" class="col-form-label">Game</label>
                 </div>
                 <div class="col-sm-10">
-                    <select id="drpGames" class="select2" multiple="multiple" style="width:auto;">
+                    <select id="drpGames" class="custom-select form-control" style="width:auto;">
                         <% _.each(item.tabItems, function(op, index) { %>
                         <option value="<%= op.id %>" <%= (item.sender == 'Game') && index == 0 ? ' selected' : '' %>><%= op.name %></option>
                         <% }); %>
                     </select>
                 </div>
             </div>
-            <div class="form-group row no-gutters">
+            <div id="divCategoryTypes" class="form-group row no-gutters" style="<%= (item.sender == 'User') ? 'display:none' : '' %>">
                 <div class="col-sm-2">
                     <label for="drpCategoryTypes" class="col-form-label">Category Type</label>
                 </div>
-                <div class="col-sm-10">
-                    <select id="drpCategoryTypes" class="custom-select form-control" style="width:auto;">
-                        <option value="-1" selected>All</option>
-                        <% _.chain(item.tabItems).pluck('categoryTypes').flatten().uniq(function(op) { return [op.id, op.name].join() }).each(function(op, index) { %>
-                        <option value="<%= op.id %>"><%= op.name %></option>
-                        <% }); %>
-                    </select>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-secondary">
+                        <input id="chkPerGame" type="radio" class="categoryTypes" name="options" value="0"> PerGame
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input id="chkPerLevel" type="radio" class="categoryTypes" name="options" value="1"> PerLevel
+                    </label>
                 </div>
             </div>
-            <div class="form-group row no-gutters">
+            <div id="divCategories" class="form-group row no-gutters" style="display:none;">
                 <div class="col-sm-2">
                     <label for="drpCategories" class="col-form-label">Category</label>
                 </div>
@@ -48,7 +48,7 @@
                     </select>
                 </div>
             </div>
-            <div id="divLevels" class="form-group row no-gutters" style="<%= (!_.chain(item.tabItems).pluck('levels').flatten().first().value()) ? 'display:none' : '' %>">
+            <div id="divLevels" class="form-group row no-gutters" style="display:none;">
                 <div class="col-sm-2">
                     <label for="drpLevels" class="col-form-label">Level</label>
                 </div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <% _.chain(item.tabItems).pluck('variables').flatten().filter(function(op) { return op && op.isSubCategory }).each(function(op, index) { %>
-            <div id="divVariable-<%= index %>" class="form-group row no-gutters variable-search" style="<%= item.sender == 'User' || op.categoryID || op.levelID ? 'display:none' : '' %>" data-variableid="<%= op.id %>" data-scopetypeid="<%= op.scopeTypeID %>" data-categoryid="<%= op.categoryID %>" data-levelid="<%= op.levelID %>">
+            <div id="divVariable-<%= index %>" class="form-group row no-gutters variable-search" style="display:none;" data-variableid="<%= op.id %>" data-scopetypeid="<%= op.scopeTypeID %>" data-categoryid="<%= op.categoryID %>" data-levelid="<%= op.levelID %>">
                 <div class="col-sm-2">
                     <label for="drpVariable-<%= index %>" class="col-form-label"><%= op.name %><% if(op.categoryID || op.levelID) { %><i class="pl-1">(<%=(op.categoryID && _.chain(item.tabItems).pluck('categories').flatten().filter(function(ft) { return ft && ft.id == op.categoryID }).first().value() ? _.chain(item.tabItems).pluck('categories').flatten().filter(function(ft) { return ft && ft.id == op.categoryID }).first().value().name : '')%><%= (op.levelID ? ' - ' : '') %><%= (op.levelID && _.chain(item.tabItems).pluck('levels').flatten().filter(function(ft) { return ft && ft.id == op.levelID }).first().value() ? _.chain(item.tabItems).pluck('levels').flatten().filter(function(ft) { return ft && ft.id == op.levelID }).first().value().name : '') %>)</i><% } %></label>
                 </div>

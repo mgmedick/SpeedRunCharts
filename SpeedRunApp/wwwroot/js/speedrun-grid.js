@@ -87,10 +87,14 @@ function initializeSearchSpeedRunGridEvents(element) {
         onGameChange(this);
     });
 
-    $('#drpCategoryTypes').change(function () {
+    //$('#drpCategoryTypes').change(function () {
+    //    onCategoryTypeChange(this);
+    //});
+
+    $('.categoryTypes').change(function () {
         onCategoryTypeChange(this);
     });
-
+    
     $('#drpCategories').change(function () {
         onCategoryChange(this);
     });
@@ -101,6 +105,26 @@ function initializeSearchSpeedRunGridEvents(element) {
 }
 
 function onGameChange(element) {
+    var selectedGameID = $(element).val();
+    var selectedGame = $(sra.speedRunGridModel.tabItems).filter(function () { return selectedGameID == this.id }).get(0);
+    var categoryTypes = selectedGame.categoryTypes;
+
+    if (categoryTypes.length > 0) {
+        if (categoryTypes.filter(function () { return this.id == 0 }).length == 0) {
+            $('#chkPerGame').hide();
+        } else if (categoryTypes.filter(function () { return this.id == 1 }).length == 0) {
+            $('#chkPerLevel').hide();
+        } else {
+            $('#chkPerGame').show();
+            $('#chkPerLevel').show();
+        }
+
+        $('#divCategoryTypes').show();
+    } else {
+        $('#divCategoryTypes').hide();
+    }
+
+    /*
     var selectedGameIDs = $(element).val();
     var selectedGames = $(sra.speedRunGridModel.tabItems).filter(function () {
         return selectedGameIDs.indexOf(this.id) > -1
@@ -110,8 +134,8 @@ function onGameChange(element) {
     var categoryTypes = $(selectedGames).map(function () { return this.categoryTypes }).get();
     var levels = $(selectedGames).map(function () { return this.levels }).get();
     var variableIDs = $(selectedGames).map(function () { return this.variables }).filter(function () { return this.isSubCategory }).map(function () { return this.id }).get();
+    var selectedCategoryTypeID = $('.categoryTypes:checked').val() ? $('.categoryTypes:checked').val() : -1;
 
-    var selectedCategoryTypeID = $('#drpCategoryTypes').val();
     categories = $(categories).filter(function () {
         return selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID;
     }).get();
@@ -154,72 +178,42 @@ function onGameChange(element) {
     categories = _.chain(categories).map(function (item) { return { id: item.id, name: item.name, group: item.categoryTypeID == 0 ? 'PerGame' : 'PerLevel' } }).sortBy(function (item) { return [item.group, item.name].join(); }).value();
     levels = _.chain(levels).sortBy(function (item) { return item.name; }).value();
 
-    populateDropDown($('#drpCategoryTypes'), categoryTypes);
+    //populateDropDown($('#drpCategoryTypes'), categoryTypes);
     populateDropDown($('#drpCategories'), categories);
     populateDropDown($('#drpLevels'), levels);
+    */
 }
 
 function onCategoryTypeChange(element) {
-    var selectedCategoryTypeID = $(element).val();
-    var selectedGameIDs = $('#drpGames').val();
-    var selectedGames = $(sra.speedRunGridModel.tabItems).filter(function () {
-        return selectedGameIDs.indexOf(this.id) > -1
-    }).get();
-    var selectedGameCategoryIDs = $(selectedGames).map(function () { return this.categories }).map(function () { return this.id; }).get()
-
-    var categories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () {
-        return (selectedCategoryTypeID == -1 || this.categoryTypeID == selectedCategoryTypeID) && (selectedGameCategoryIDs.length == 0 || selectedGameCategoryIDs.indexOf(this.id) > -1);
-    }).get();
-    var levels = $(selectedGames).map(function () { return this.levels }).get();
-    var variableIDs = $(selectedGames).map(function () { return this.variables }).filter(function () { return this.isSubCategory }).map(function () { return this.id }).get();
-
-    if (selectedCategoryTypeID == 0) {
-        $('#divLevels').hide();
-        $('#divLevels').val('');
-    } else {
-        $('#divLevels').show();
-    }
-
-    $('.variable-search').each(function () {
-        var variableID = $(this).data("variableid");
-        var scopeTypeID = $(this).data("scopetypeid");
-        var categoryID = $(this).data("categoryid");
-        var levelID = $(this).data("levelid");
-
-        if (selectedCategoryTypeID == 0) {
-            if (!categoryID && !levelID && [0, 1].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-                $(this).find('.variable-select').val('').trigger("change")
-            }
-        } else if (selectedCategoryTypeID == 1) {
-            if (!categoryID && !levelID && [0, 2, 3].indexOf(scopeTypeID) > -1 && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-                $(this).find('.variable-select').val('').trigger("change")
-            }
-        } else {
-            if (!categoryID && !levelID && (variableIDs.length == 0 || variableIDs.indexOf(variableID) > -1)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-                $(this).find('.variable-select').val('').trigger("change")
-            }
-        }
-    });
-
-    categories = _.chain(categories).map(function (item) { return { id: item.id, name: item.name, group: item.categoryTypeID == 0 ? 'PerGame' : 'PerLevel' } }).sortBy(function (item) { return [item.group, item.name].join(); }).value();
+    var selectedCategoryTypeID = $(element).val() ? $(element).val() : -1;
+    var selectedGameID = $('#drpGames').val();
+    var selectedGame = $(sra.speedRunGridModel.tabItems).filter(function () { return selectedGameID == this.id }).get(0);
+    var categories = $(selectedGame.categories).filter(function () { return this.categoryTypeID == selectedCategoryTypeID; }).get();
+    var levels = selectedGame.levels;
+    categories = _.chain(categories).sortBy(function (item) { return item.name; }).value();
     levels = _.chain(levels).sortBy(function (item) { return item.name; }).value();
 
     populateDropDown($('#drpCategories'), categories);
     populateDropDown($('#drpLevels'), levels);
+
+    if (selectedCategoryTypeID == 0) {
+        $('#divCategories').show();
+        $('#divLevels').hide();
+        $('#drpLevels').val('');
+    } else if (selectedCategoryTypeID == 1) {
+        $('#divCategories').show();
+        $('#divLevels').show();
+    } else {
+        $('#divCategories').hide();
+        $('#drpCategories').val('');
+        $('#divLevels').hide();
+        $('#drpLevels').val('');
+    }
 }
 
 function onCategoryChange(element) {
     var selectedCategoryIDs = $(element).val();
-    var selectedCategoryTypeID = $('#divCategoryType').val();
+    var selectedCategoryTypeID = $('.categoryTypes:checked').val() ? $('.categoryTypes:checked').val() : -1;
     var levelCategories = $(sra.speedRunGridModel.tabItems).map(function () { return this.categories }).filter(function () { return selectedCategoryIDs.indexOf(this.id) > -1 && this.categoryTypeID == 1 }).get();
 
     if ((selectedCategoryIDs.length == 0 && (selectedCategoryTypeID == -1 || selectedCategoryTypeID == 1)) || levelCategories.length > 0) {
@@ -881,7 +875,7 @@ function initializeCharts(element, data) {
 /**Search functions **/
 function search() {
     var gameIDs = $('#drpGames').val();
-    var categoryTypeID = $('#drpCategoryTypes').val();
+    var categoryTypeID = $('.categoryTypes:checked').val();
     var categoryIDs = $('#drpCategories').val();
     var levelIDs = $('#drpLevels').val();
     var hideEmpty = $('#chkHideEmpty').prop("checked");

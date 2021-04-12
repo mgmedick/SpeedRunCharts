@@ -7,8 +7,8 @@ function speedRunGridModel(sender, tabItems) {
         this.tabItems = tabItems
 }
 
-function speedRunGridVariableModel(subCategoryVariables, classPrefix, gameID, categoryTypeID, categoryID, levelID, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, prevID, prevData, count) {
-    this.subCategoryVariables = subCategoryVariables,
+function speedRunGridVariableModel(subCategoryVariablesTabs, classPrefix, gameID, categoryTypeID, categoryID, levelID, gameIndex, categoryTypeIndex, categoryIndex, levelIndex, prevID, prevData, count) {
+    this.subCategoryVariablesTabs = subCategoryVariablesTabs,
     this.classPrefix = classPrefix,
     this.gameID = gameID,
     this.categoryTypeID = categoryTypeID,
@@ -102,22 +102,35 @@ function initializeSearchSpeedRunGridEvents(element) {
 
 function onGameChange(element) {
     var selectedGameID = $(element).val();
-    var selectedGame = $(sra.speedRunGridModel.tabItems).filter(function () { return selectedGameID == this.id }).get(0);
-    var categoryTypes = selectedGame.categoryTypes;
 
-    if (categoryTypes.length > 0) {
-        if (categoryTypes.filter(function () { return this.id == 0 }).length == 0) {
-            $('#chkPerGame').hide();
-        } else if (categoryTypes.filter(function () { return this.id == 1 }).length == 0) {
-            $('#chkPerLevel').hide();
+    if (selectedGameID > 0) {
+        var selectedGame = $(sra.speedRunGridModel.tabItems).filter(function () { return selectedGameID == this.id }).get(0);
+        var categoryTypes = selectedGame.categoryTypes;
+
+        $('.categoryTypes').prop('checked', false);
+        $('.categoryTypes').parent().removeClass('active');
+        if (categoryTypes.length > 0) {
+            if ($(categoryTypes).filter(function () { return this.id == 0 }).length == 0) {
+                $('#chkPerGame').parent().hide();
+            } else if ($(categoryTypes).filter(function () { return this.id == 1 }).length == 0) {
+                $('#chkPerLevel').parent().hide();
+            } else {
+                $('.categoryTypes').parent().show();
+            }
+
+            $('#divCategoryTypes').show();
         } else {
-            $('#chkPerGame').show();
-            $('#chkPerLevel').show();
+            $('#divCategoryTypes').hide();
         }
 
-        $('#divCategoryTypes').show();
+        $('#divCategories').hide();
+        $('#drpCategories').val('').trigger("change");
+        $('#divLevels').hide();
+        $('#drpLevels').val('').trigger("change");
+        $('.variable-search').hide();
+        $('.variable-select').val('').trigger("change");
     } else {
-        $('#divCategoryTypes').hide();
+        clearSearch();
     }
 }
 
@@ -135,41 +148,55 @@ function onCategoryTypeChange(element) {
         $('#divCategories').show();
         $('#divLevels').hide();
         $('#drpLevels').val('').trigger("change");
+        $('.variable-search').hide();
+        $('.variable-select').val('').trigger("change");
     } else if (selectedCategoryTypeID == 1) {
         if (categories.length > 0) {
             $('#divCategories').show();
         } else {
             $('#divCategories').hide();
+            $('#drpCategories').val('').trigger("change");
         }
         $('#divLevels').show();
+        $('.variable-search').hide();
+        $('.variable-select').val('').trigger("change");
     } else {
         $('#divCategories').hide();
         $('#drpCategories').val('').trigger("change");
         $('#divLevels').hide();
         $('#drpLevels').val('').trigger("change");
+        $('.variable-search').hide();
+        $('.variable-select').val('').trigger("change");
     }
 }
 
 function onCategoryChange(element) {
     var selectedCategoryIDs = $(element).val();
+    var selectedGameID = $('#drpGames').val();
     var selectedCategoryTypeID = $('.categoryTypes:checked').val() ? $('.categoryTypes:checked').val() : -1;
     var selectedLevelIDs = $('#drpLevels').val();
 
     $('.variable-search').each(function () {
+        var gameID = $(this).data("gameid");
         var scopeTypeID = $(this).data("scopetypeid");
         var categoryID = $(this).data("categoryid");
         var levelID = $(this).data("levelid");
 
-        if (selectedCategoryTypeID == 0) {
-            if (([0, 1].indexOf(scopeTypeID) > -1 && selectedCategoryIDs.indexOf(categoryID.toString()) > -1)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-                $(this).find('.variable-select').val('').trigger("change")
-            }
-        } else if (selectedCategoryTypeID == 1) {
-            if ([0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID.toString()) > -1) && (selectedLevelIDs.indexOf(levelID.toString()) > -1)) {
-                $(this).show();
+        if (gameID == selectedGameID) {
+            if (selectedCategoryTypeID == 0) {
+                if ([0, 1].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID.toString()) > -1)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    $(this).find('.variable-select').val('').trigger("change")
+                }
+            } else if (selectedCategoryTypeID == 1) {
+                if ([0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID.toString()) > -1) && (!levelID || selectedLevelIDs.indexOf(levelID.toString()) > -1)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                    $(this).find('.variable-select').val('').trigger("change")
+                }
             } else {
                 $(this).hide();
                 $(this).find('.variable-select').val('').trigger("change")
@@ -177,20 +204,22 @@ function onCategoryChange(element) {
         } else {
             $(this).hide();
             $(this).find('.variable-select').val('').trigger("change")
-        }
+        } 
     });
 }
 
 function onLevelChange(element) {
     var selectedLevelIDs = $(element).val();
+    var selectedGameID = $('#drpGames').val();
     var selectedCategoryIDs = $('#drpCategories').val();
 
     $('.variable-search').each(function () {
+        var gameID = $(this).data("gameid");
         var scopeTypeID = $(this).data("scopetypeid");
         var categoryID = $(this).data("categoryid");
         var levelID = $(this).data("levelid");
 
-        if ([0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID.toString()) > -1) && (selectedLevelIDs.indexOf(levelID.toString()) > -1)) {
+        if (gameID == selectedGameID && [0, 2, 3].indexOf(scopeTypeID) > -1 && (!categoryID || selectedCategoryIDs.indexOf(categoryID.toString()) > -1) && (!levelID || selectedLevelIDs.indexOf(levelID.toString()) > -1)) {
             $(this).show();
         } else {
             $(this).hide();
@@ -818,63 +847,49 @@ function initializeCharts(element, data) {
 /**Search functions **/
 function search() {
     var gameID = $('#drpGames').val();
-    var categoryTypeID = $('.categoryTypes:checked').val();
-    var categoryIDs = $('#drpCategories').val();
-    var levelIDs = $('#drpLevels').val();
-    var hideEmpty = $('#chkHideEmpty').prop("checked");
     var tabItems = sra.speedRunGridModel.tabItems.map(a => Object.assign({}, a));
-    $(tabItems).each(function () {
-        if (this.subCategoryVariables) {
-            this.subCategoryVariables = cloneVariables(this.subCategoryVariables);
-        }
-    });
-
-    if (gameID) {
-        tabItems = $(tabItems).filter(function () { return gameID == this.id }).get();
-    }
-
-    if (categoryTypeID) {
-        $(tabItems).each(function () {
-            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeID == this.id }).get();
-            //this.categories = $(this.categories).filter(function () { return categoryTypeID = this.categoryTypeID }).value();
-            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return (categoryTypeID == 0 && (this.scopeTypeID == 0 || this.scopeTypeID == 1)) || (categoryTypeID == 1 && (this.scopeTypeID == 2 || this.scopeTypeID == 3)) }).value();
-        });
-    }
-
-    if (categoryIDs.length > 0) {
-        $(tabItems).each(function () {
-            this.categories = $(this.categories).filter(function () { return categoryIDs.indexOf(this.id.toString()) > -1 }).get();
-            var categoryTypeIDs = $(this.categories).map(function () { return this.categoryTypeID.toString() }).get();
-            this.categoryTypes = $(this.categoryTypes).filter(function () { return categoryTypeIDs.indexOf(this.id.toString()) > -1 }).get();
-
-            //var filteredCategoryIDs = $(this.categories).map(function () { return this.id; })
-            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredCategoryIDs.indexOf(this.categoryID) > -1 }).value();
-        });
-    }
-
-    if (levelIDs.length > 0) {
-        $(tabItems).each(function () {
-            this.levels = $(this.levels).filter(function () { return levelIDs.indexOf(this.id.toString()) > -1 }).get();
-            //var filteredLevelIDs = $(this.categories).map(function () { return this.id; })
-            //this.subCategoryVariables = $(this.subCategoryVariables).filter(function () { return filteredLevelIDs.indexOf(this.levelID) > -1 }).value();
-        });
-    }
-
-    $('.variable-select').each(function () {
-        var variableID = $(this).data('variableid');
-        var variableValueIDs = $(this).val();
-        if (variableValueIDs.length > 0) {
-            var variables = $(tabItems).map(function () { return this.subCategoryVariables }).get();
-            filterVariableValues(variables, variableID, variableValueIDs);
-        }
-    });
+    var hideEmpty = $('#chkHideEmpty').prop("checked");
 
     if (hideEmpty) {
         $(tabItems).each(function () {
             this.categories = $(this.categories).filter(function () { return this.hasData }).get();
-            this.levels = $(this.levels).filter(function () { return this.hasData }).get();
-            hideEmptyVariableValues(this.subCategoryVariables);
+            this.levelTabs = $(this.levelTabs).filter(function () { return this.hasData }).get();
+            hideEmptyVariableValues(this.subCategoryVariablesTabs);
         });
+    }
+
+    if (gameID > 0) {
+        var game = $(tabItems).filter(function () { return this.id == gameID }).get(0);
+        var categoryTypeID = $('.categoryTypes:checked').val();
+        var categoryIDs = $('#drpCategories').val();
+        var levelIDs = $('#drpLevels').val();
+
+        if (game.subCategoryVariablesTabs) {
+            game.subCategoryVariablesTabs = cloneVariables(game.subCategoryVariablesTabs);
+        }
+
+        if (categoryTypeID) {
+            game.categoryTypes = $(game.categoryTypes).filter(function () { return this.id == categoryTypeID }).get();
+            game.categories = $(game.categories).filter(function () { return this.categoryTypeID == categoryTypeID }).get();
+        }
+
+        if (categoryIDs.length > 0) {
+            game.categories = $(game.categories).filter(function () { return categoryIDs.indexOf(this.id.toString()) > -1 }).get();
+        }
+
+        if (levelIDs.length > 0) {
+            game.levelTabs = $(game.levelTabs).filter(function () { return levelIDs.indexOf(this.id.toString()) > -1 }).get();
+        }
+
+        $('.variable-select').each(function () {
+            var variableID = $(this).data('variableid');
+            var variableValueIDs = $(this).val();
+            if (variableValueIDs.length > 0) {
+                filterVariableValues(game.subCategoryVariablesTabs, variableID, variableValueIDs);
+            }
+        });
+
+        tabItems = [game];
     }
 
     $('#divSpeedRunGridContainer').hide();
@@ -893,7 +908,7 @@ function cloneVariables(variables) {
     $(clonedVariables).each(function () {
         this.variableValues = this.variableValues.map(a => Object.assign({}, a));
         $(this.variableValues).each(function () {
-            if (this.subVariables.length > 0) {
+            if (this.subVariables && this.subVariables.length > 0) {
                 this.subVariables = cloneVariables(this.subVariables);
             }
         });
@@ -939,7 +954,7 @@ function clearSearch() {
 
     if (sra.sender == "User") {
         $('#divCategoryTypes').hide();
-        $('#divGames').val('');
+        $('#drpGames').val('');
         $('#divGames').show();
     } else {
         $('#divGames').hide();

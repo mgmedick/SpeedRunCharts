@@ -1,4 +1,4 @@
-﻿<% _.each(item.subCategoryVariables, function(variable, variableIndex) {%>
+﻿<% _.each(item.subCategoryVariablesTabs, function(variable, variableIndex) {%>
 <% item.count++ %>
 <% _.each(variable.variableValues, function(variableValue, variableValueIndex) { %>
 <div id="divGame-<%= item.gameIndex %>-CategoryType-<%= item.categoryTypeIndex %>-Category-<%= item.categoryIndex %>-Level-<%= item.levelIndex %><%= item.prevID %>-Variable-<%= item.count %>-VariableValue-<%= variableValueIndex %>-charts" class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts <%= (variableValueIndex == 0) ? ' show' : '' %>" data-class="<%= item.classPrefix %>-variable-<%= item.count %>-tab-pane-charts">

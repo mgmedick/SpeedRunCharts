@@ -45,17 +45,32 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
-                Levels = new List<TabItem>();
+                Levels = new List<IDNamePair>();
                 foreach (var levelString in game.Levels.Split("^^"))
                 {
                     var values = levelString.Split("|", 2);
-                    var level = new TabItem
+                    var level = new IDNamePair
                     {
                         ID = Convert.ToInt32(values[0]),
                         Name = values[1]
                     };
-                    level.HasData = runVMs != null && runVMs.Any(i => i.LevelID == level.ID);
                     Levels.Add(level);
+                }
+
+                LevelTabs = new List<LevelTab>();
+                var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).ToList();
+                foreach (var levelCategory in levelCategories) {
+                    foreach (var level in Levels)
+                    {
+                        var levelTab = new LevelTab
+                        {
+                            ID = level.ID,
+                            Name = level.Name,
+                            CategoryID = levelCategory.ID,
+                            HasData = runVMs != null && runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
+                        };
+                        LevelTabs.Add(levelTab);
+                    }
                 }
             }
 
@@ -88,6 +103,8 @@ namespace SpeedRunApp.Model.ViewModels
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
                 SubCategoryVariables = GetAdjustedVariables(subVariables, runVMs);
+                SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
+                SetVariablesHasValue(SubCategoryVariablesTabs, runVMs);
             }
 
             if (!string.IsNullOrWhiteSpace(game.Platforms))
@@ -154,39 +171,39 @@ namespace SpeedRunApp.Model.ViewModels
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.FullGame && !i.CategoryID.HasValue);
 
-            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.CategoryID.HasValue && !i.LevelID.HasValue).Reverse().ToList();
+            var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue).Reverse().ToList();
             var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
             foreach (var allLevelVariable in allLevelVariables)
             {
+                //foreach (var category in levelCategories)
+                //{
+                foreach (var level in Levels)
+                {
+                    var variable = (Variable)allLevelVariable.Clone();
+                    //variable.CategoryID = category.ID;
+                    variable.LevelID = level.ID;
+                    variables.Insert(0, variable);
+                }
+                //}
+            }
+
+            variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue);
+
+            var singleLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.SingleLevel && !i.CategoryID.HasValue).Reverse().ToList();
+            foreach (var singleLevelVariable in singleLevelVariables)
+            {
                 foreach (var category in levelCategories)
                 {
-                    foreach (var level in Levels)
-                    {
-                        var variable = (Variable)allLevelVariable.Clone();
-                        variable.CategoryID = category.ID;
-                        variable.LevelID = level.ID;
-                        variables.Insert(0, variable);
-                    }
+                    var variable = (Variable)singleLevelVariable.Clone();
+                    variable.CategoryID = category.ID;
+                    variables.Insert(0, variable);
                 }
             }
 
-            variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.CategoryID.HasValue && !i.LevelID.HasValue);
+            variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.SingleLevel && !i.CategoryID.HasValue);
             variables = variables.OrderBy(i => i.ID).ToList();
 
-            foreach (var variable in variables)
-            {
-                foreach(var variableValue in variable.VariableValues)
-                {
-                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
-                                                          && i.LevelID == variable.LevelID
-                                                          && i.VariableValues != null
-                                                          && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString()));
-                }
-            }
-
-            var nestedVariables = GetNestedVariables(variables);
-
-            return nestedVariables;
+            return variables;
         }
 
         public List<Variable> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)
@@ -205,10 +222,37 @@ namespace SpeedRunApp.Model.ViewModels
                     Name = h.Name,
                     HasData = h.HasData,
                     SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID), count + 1)
-                })
+                }).ToList()
             });
 
             return results.GroupBy(i => new { i.CategoryID, i.LevelID }).Select(i => i.FirstOrDefault()).ToList();
+        }
+
+        public void SetVariablesHasValue(IEnumerable<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs, List<Tuple<int,int>> parentVariableValues = null)
+        {
+            foreach (var variable in variables)
+            {
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    if (parentVariableValues == null)
+                    {
+                        parentVariableValues = new List<Tuple<int, int>>();
+                    }
+
+                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
+                                      && i.LevelID == variable.LevelID
+                                      && i.VariableValues != null                                  
+                                      && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Item1 == g.Item1.ToString() && h.Item2 == g.Item2.ToString())) == parentVariableValues.Count()
+                                      && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString())); ;
+
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        parentVariableValues.Add(new Tuple<int, int>(variable.ID, variableValue.ID));
+                        SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues);
+                        parentVariableValues = null;
+                    }
+                }
+            }
         }
 
         public int ID { get; set; }
@@ -218,9 +262,11 @@ namespace SpeedRunApp.Model.ViewModels
         public int? YearOfRelease { get; set; }
         public List<IDNamePair> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
-        public List<TabItem> Levels { get; set; }
+        public List<IDNamePair> Levels { get; set; }
+        public List<LevelTab> LevelTabs { get; set; }
         public List<Variable> Variables { get; set; }
         public List<Variable> SubCategoryVariables { get; set; }
+        public List<Variable> SubCategoryVariablesTabs { get; set; }
         public List<IDNamePair> Platforms { get; set; }
         public List<IDNamePair> Moderators { get; set; }
         public string PlatformsString

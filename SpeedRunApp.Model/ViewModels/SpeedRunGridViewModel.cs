@@ -1,9 +1,8 @@
 ﻿using SpeedRunApp.Model.Data;
-using SpeedRunCommon;
+using SpeedRunCommon.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SpeedRunApp.Model.Helpers;
 
 namespace SpeedRunApp.Model.ViewModels
 {

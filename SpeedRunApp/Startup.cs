@@ -37,6 +37,8 @@ namespace SpeedRunApp
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(o => o.LoginPath = new PathString("/SpeedRun/Login"));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.Scan(scanner =>
             {
                 scanner.TheCallingAssembly();
@@ -44,7 +46,7 @@ namespace SpeedRunApp
                 scanner.Assembly("SpeedRunApp.Service");
                 scanner.Assembly("SpeedRunApp.Repository");
                 scanner.WithDefaultConventions();
-                scanner.SingleImplementationsOfInterface();
+                scanner.SingleImplementationsOfInterface();                
             });
 
             var connString = Configuration.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;

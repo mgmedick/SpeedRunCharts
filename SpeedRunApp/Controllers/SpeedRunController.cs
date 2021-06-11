@@ -5,12 +5,13 @@ using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunCommon;
+using SpeedRunCommon.Extensions;
 using System.Security.Claims;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -20,15 +21,13 @@ namespace SpeedRunApp.WebUI.Controllers
         private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
         private readonly IUserAccountService _userAcctService = null;
-        private readonly IConfiguration _config = null;
 
-        public SpeedRunController(ISpeedRunService speedRunService, IGameService gamesService, IUserService userService, IUserAccountService userAcctService, IConfiguration config)
+        public SpeedRunController(ISpeedRunService speedRunService, IGameService gamesService, IUserService userService, IUserAccountService userAcctService)
         {
             _speedRunService = speedRunService;
             _gamesService = gamesService;
             _userService = userService;
             _userAcctService = userAcctService;
-            _config = config;
         }
 
         public ViewResult SpeedRunList()
@@ -75,63 +74,37 @@ namespace SpeedRunApp.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userAcct = _userAcctService.GetUserAccountForLogin(loginVM.Username);
+                var login = _userAcctService.ValidateLogin(loginVM);
+                var userAcct = login.Item1;
+                var errorList = login.Item2;
 
-                if (userAcct == null)
+                if (errorList.Any())
                 {
-                    ModelState.AddModelError("BadLogin", "Invalid username/password.");
+                    foreach (var error in errorList)
+                    {
+                        ModelState.AddModelError("BadLogin", error);
+                    }
                 }
-                else if (userAcct.Locked)
+                else if (userAcct.PromptToChange)
                 {
-                    ModelState.AddModelError("BadLogin", "The account has been locked due to too many failed login attempts. Please contact support to unlock the account.");
+                    return RedirectToAction("ChangePassword");
                 }
                 else
                 {
-                    string encodedPassword = loginVM.Password.EncodeString(userAcct.Salt);
-
-                    if (encodedPassword != userAcct.Password)
+                    var claims = new List<Claim>
                     {
-                        var attemptCount = HttpContext.Session.Get<int>("PasswordAttempts");
-                        var maxPasswordAttempts = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("MaxPasswordAttempts").Value);
+                        new Claim("UserID", userAcct.ID.ToString()),
+                        new Claim("Email", userAcct.Email),
+                        new Claim("Username", userAcct.Username)
+                    };
 
-                        attemptCount++;
-                        HttpContext.Session.Set<int>("PasswordAttempts", attemptCount);
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                        if (attemptCount > maxPasswordAttempts)
-                        {
-                            _userAcctService.LockUserAccount(userAcct.ID);
-                            ModelState.AddModelError("BadLogin", "The account has been locked due to too many failed login attempts. Please contact support to unlock the account.");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("BadLogin", "Invalid username/password.");
-                        }
-                    }
-                    else 
-                    {
-                        if (userAcct.PromptToChange)
-                        {
-                            HttpContext.Session.Set<string>("LoginUserName", userAcct.Username);
-                            return RedirectToAction("ChangePassword");
-                        }
-                        else 
-                        {
-                            var claims = new List<Claim>
-                            {
-                                new Claim("UserID", userAcct.ID.ToString()),
-                                new Claim("Email", userAcct.Email),
-                                new Claim("Username", userAcct.Username)
-                            };
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(identity));
 
-                            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                            await HttpContext.SignInAsync(
-                                CookieAuthenticationDefaults.AuthenticationScheme,
-                                new ClaimsPrincipal(identity));
-
-                            return Json(new { success = true });
-                        }
-                    }
+                    return Json(new { success = true });
                 }
             }
 
@@ -142,6 +115,29 @@ namespace SpeedRunApp.WebUI.Controllers
         public ActionResult SignUp()
         {
             var signUpVM = new SignUpViewModel();
+
+            return PartialView("_SignUp", signUpVM);
+        }
+
+        [HttpPost]
+        public ActionResult SignUp(SignUpViewModel signUpVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorList = _userAcctService.SignUp(signUpVM);
+
+                if (errorList.Any())
+                {
+                    foreach (var error in errorList)
+                    {
+                        ModelState.AddModelError("BadSignUp", error);
+                    }
+                }
+                else
+                {
+                    return Json(new { success = true });
+                }
+            }
 
             return PartialView("_SignUp", signUpVM);
         }

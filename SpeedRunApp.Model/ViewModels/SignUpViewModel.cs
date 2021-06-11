@@ -2,7 +2,7 @@
 using SpeedRunApp.Model.Data;
 using System.Collections.Generic;
 using System.Linq;
-using SpeedRunCommon;
+using SpeedRunCommon.Extensions;
 using System.ComponentModel.DataAnnotations;
 
 namespace SpeedRunApp.Model.ViewModels
@@ -11,7 +11,7 @@ namespace SpeedRunApp.Model.ViewModels
     {
         public string Username { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string ConfrimEmail { get; set; }
     }
 }
 

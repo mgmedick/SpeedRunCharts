@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.ViewModels;
-using SpeedRunCommon;
+using SpeedRunCommon.Extensions;
 using System.Collections.Generic;
 
 namespace SpeedRunApp.WebUI.Controllers

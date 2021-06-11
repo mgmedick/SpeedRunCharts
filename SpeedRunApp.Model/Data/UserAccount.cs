@@ -10,7 +10,6 @@ namespace SpeedRunApp.Model.Data
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string Salt { get; set; }
         public bool PromptToChange { get; set; }
         public bool Active { get; set; }
         public bool Deleted { get; set; }

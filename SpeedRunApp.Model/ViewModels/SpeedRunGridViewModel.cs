@@ -1,10 +1,8 @@
 ﻿using SpeedRunApp.Model.Data;
-using SpeedRunCommon.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-
+using SpeedRunCommon.Extensions;
 
 namespace SpeedRunApp.Model.ViewModels
 {

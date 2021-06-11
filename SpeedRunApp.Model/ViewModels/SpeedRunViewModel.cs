@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
 namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunViewModel

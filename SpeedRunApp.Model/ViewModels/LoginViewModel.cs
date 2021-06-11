@@ -5,6 +5,8 @@ using System.Linq;
 using SpeedRunCommon.Extensions;
 using System.ComponentModel.DataAnnotations;
 
+
+
 namespace SpeedRunApp.Model.ViewModels
 {
     public class LoginViewModel

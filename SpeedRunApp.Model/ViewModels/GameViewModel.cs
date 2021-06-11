@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon.Extensions;
 
+
+
 namespace SpeedRunApp.Model.ViewModels
 {
     public class GameViewModel

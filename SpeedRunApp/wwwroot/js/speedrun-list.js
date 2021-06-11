@@ -62,15 +62,15 @@ function getSpeedRunList() {
 }
 
 function showSpeedRunDetails(speedRunID, gameID) {
-    var $modal = $('#editModal');
-    var $modalTitle = $('#editModal').find('.modal-title');
-    var $modalBody = $('#editModal').find('.modal-body');
-    var $modalLoading = $('#editModal').find('.modal-loading');
-    $modalTitle.html("<h5>Details</h5>");
+    var $modal = $('#detailsModal');
+    var $modalTitle = $modal.find('.modal-title');
+    var $modalBody = $modal.find('.modal-body');
+    var $modalLoading = $modal.find('.modal-loading');
 
     $modalBody.hide();
     $modalLoading.show();
     $modal.modal('show');
+
     $.get('../templates/SpeedRunEdit.html?_t=' + (new Date()).getTime(), function (detailsTemplate, status) {
         $.get('SpeedRun/GetEditSpeedRun?gameID=' + gameID + '&speedRunID=' + speedRunID + '&isReadOnly=true', function (data, status) {
             renderTemplate($modalBody, detailsTemplate, data).then(function () {

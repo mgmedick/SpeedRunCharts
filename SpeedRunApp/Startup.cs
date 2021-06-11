@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,9 @@ namespace SpeedRunApp
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o => o.LoginPath = new PathString("/SpeedRun/Login"));
+
             services.Scan(scanner =>
             {
                 scanner.TheCallingAssembly();
@@ -55,7 +60,7 @@ namespace SpeedRunApp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/SpeedRun/Error");
                 app.UseHsts();
             }
 
@@ -65,6 +70,7 @@ namespace SpeedRunApp
 
             app.UseCookiePolicy();
             app.UseSession();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -684,15 +684,15 @@ h6, .h6 {
 }
 
 .form-control::-webkit-input-placeholder {
-  color: var(--grey);
+    color: var(--gray) !important;
 }
 
 .form-control::-ms-input-placeholder {
-  color: var(--grey);
+    color: var(--gray) !important;
 }
 
 .form-control::placeholder {
-  color: var(--grey);
+    color: var(--gray) !important;
 }
 
 .form-control:disabled, .form-control[readonly] {
@@ -1431,9 +1431,9 @@ select.form-control:focus::-ms-value {
   /*text-decoration: underline;*/
 }
 
-.btn-link:disabled, .btn-link.disabled {
-  color: var(--grey);
-}
+    .btn-link:disabled, .btn-link.disabled {
+        color: var(--gray);
+    }
 
 .btn-lg, .btn-group-lg > .btn {
   font-size: 1.171875rem;
@@ -1470,13 +1470,13 @@ select.form-control:focus::-ms-value {
   background-color: var(--primary);
 }
 
-.dropdown-item.disabled, .dropdown-item:disabled {
-  color: var(--grey);
-}
+    .dropdown-item.disabled, .dropdown-item:disabled {
+        color: var(--gray);
+    }
 
 .dropdown-header {
-  font-size: 0.8203125rem;
-  color: var(--grey);
+    font-size: 0.8203125rem;
+    color: var(--gray);
 }
 
 .dropdown-item-text {
@@ -1532,9 +1532,9 @@ select.form-control:focus::-ms-value {
   border-color: var(--background-color30);
 }
 
-.custom-control-input[disabled] ~ .custom-control-label, .custom-control-input:disabled ~ .custom-control-label {
-  color: var(--grey);
-}
+    .custom-control-input[disabled] ~ .custom-control-label, .custom-control-input:disabled ~ .custom-control-label {
+        color: var(--gray);
+    }
 
 .custom-control-input[disabled] ~ .custom-control-label::before, .custom-control-input:disabled ~ .custom-control-label::before {
   background-color: var(--background-color21);
@@ -1848,11 +1848,11 @@ select.form-control:focus::-ms-value {
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-  color: var(--grey);
+    color: var(--gray);
 }
 
 .breadcrumb-item.active {
-  color: var(--grey);
+    color: var(--gray);
 }
 
 .page-link {
@@ -2149,8 +2149,8 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .list-group-item.disabled, .list-group-item:disabled {
-  color: var(--grey);
-  background-color: var(--background-color4);
+    color: var(--gray);
+    background-color: var(--background-color4);
 }
 
 .list-group-item.active {
@@ -2293,7 +2293,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .toast-header {
-  color: var(--grey);
+    color: var(--gray);
 }
 
 .theme-dark .toast-header {
@@ -2577,7 +2577,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-muted {
-  color: var(--grey) !important;
+    color: var(--gray) !important;
 }
 
 .text-black-50 {

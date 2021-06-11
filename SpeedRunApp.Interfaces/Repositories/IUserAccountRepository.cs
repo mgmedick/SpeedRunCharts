@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 
 namespace SpeedRunApp.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IUserAccountRepository
     {
-        IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);
-        IEnumerable<SearchResult> SearchUsers(string searchText);
+        IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate);
+        void SaveUserAccount(UserAccount userAcct);
     }
 }
 

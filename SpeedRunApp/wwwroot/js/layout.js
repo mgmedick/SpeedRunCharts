@@ -57,6 +57,10 @@ function initializeGlobalEvents() {
         response: function (event, ui) {
             $(this).parent().removeClass("loading-icon");
         },
+        focus: function (event, ui) {
+            event.preventDefault();
+            this.value = ui.item.label;
+        },
         select: function (event, ui) {
             var item = ui.item;
             if (item) {
@@ -102,6 +106,79 @@ function initializeGlobalEvents() {
         }
     };
 }
+
+function showLogin() {
+    var $modal = $('#loginModal');
+    var $modalBody = $modal.find('.modal-body');
+    var $modalTitle = $modal.find('.modal-title');
+    $modalTitle.html("<h5>Log In</h5>");
+
+    $.get('/SpeedRun/Login', function (data) {
+        $modalBody.html(data);
+        $modal.modal('show');
+    }, "html");
+}
+
+function login() {
+    var $modal = $('#loginModal');
+    var $modalBody = $modal.find('.modal-body');
+    var formData = new FormData($('#frmLogin')[0]);
+
+    $.ajax({
+        url: "/SpeedRun/Login",
+        processData: false,
+        contentType: false,
+        type: "POST",
+        data: formData,
+        success: function (data) {
+            if (data.success) {
+                $modal.modal('hide');
+                location.reload();
+            } else {
+                $modalBody.html(data);
+            }
+        }
+    });
+}
+
+function showSignUp() {
+    var $modal = $('#loginModal');
+    var $modalBody = $modal.find('.modal-body');
+    var $modalTitle = $modal.find('.modal-title');
+    $modalTitle.html("<h5>Sign Up</h5>");
+
+    $.get('/SpeedRun/SignUp', function (data) {
+        $modalBody.html(data);
+        $modal.modal('show');
+    }, "html");
+}
+
+function signUp() {
+    var $modal = $('#loginModal');
+    var $modalBody = $modal.find('.modal-body');
+    var formData = new FormData($('#frmSignUp')[0]);
+
+    $.ajax({
+        url: "/SpeedRun/SignUp",
+        processData: false,
+        contentType: false,
+        type: "POST",
+        data: formData,
+        success: function (data) {
+            if (data.success) {
+                $modal.modal('hide');
+            } else {
+                $modalBody.html(data);
+            }
+        }
+    });
+}
+
+
+
+
+
+
 
 
 

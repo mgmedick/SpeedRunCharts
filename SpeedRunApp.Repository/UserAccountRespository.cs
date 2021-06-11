@@ -12,21 +12,26 @@ using System.Linq.Expressions;
 
 namespace SpeedRunApp.Repository
 {
-    public class UserRespository : BaseRepository, IUserRepository
+    public class UserAccountRespository : BaseRepository, IUserAccountRepository
     {
-        public IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate)
+        public IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<UserView>().Where(predicate).ToList();
+                return db.Query<UserAccount>().Where(predicate).ToList();
             }
         }
 
-        public IEnumerable<SearchResult> SearchUsers(string searchText)
+        public void SaveUserAccount(UserAccount userAcct)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_User tu WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+                using (var tran = db.GetTransaction())
+                {
+                    db.Save<UserAccount>(userAcct);
+
+                    tran.Complete();
+                }
             }
         }
     }

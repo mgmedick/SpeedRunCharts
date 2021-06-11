@@ -1,0 +1,34 @@
+﻿@model SpeedRunApp.Model.ViewModels.SignUpViewModel
+
+<div id="divSignUp" class="container">
+    <form id="frmSignUp">
+        @Html.ValidationSummary()
+        <div class="form-group row no-gutters">
+            <label class="col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(i => i.Username, new { @autocomplete = "off", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(i => i.Email, new { @autocomplete = "off", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-3 col-form-label">Confirm Email</label>
+            <div class="col-sm-4">
+                <input autocomplete="off" class="form-control" name="EmailConfirm" type="text" value="">
+            </div>
+        </div>
+        <div class="row no-gutters pt-1">
+            <div class="form-group mx-auto">
+                <input id="btnSignUp" type="button" class="btn btn-primary" value="SignUp" onclick="signUp()" />
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+

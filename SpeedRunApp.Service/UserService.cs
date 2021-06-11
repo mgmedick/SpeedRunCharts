@@ -22,9 +22,9 @@ namespace SpeedRunApp.Service
             _gameRepo = gameRepo;
         }
 
-        public UserViewModel GetUser(string userID)
+        public UserViewModel GetUser(int userID)
         {
-            var user = _userRepo.GetUserViews(i => i.ID == userID);
+            var user = _userRepo.GetUserViews(i => i.ID == userID).FirstOrDefault();
             var userVM = new UserViewModel(user);
 
             return userVM;

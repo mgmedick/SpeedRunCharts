@@ -689,24 +689,6 @@ function initializeGrid(grid, pagerID, localData, columnModel, columnNames) {
 
     function initializeGridEvents(element) {
         $grid = $(element);
-        $grid.find('[data-toggle="modal"]').click(function () {
-            var $target = $($(this).data("target"));
-            $target.find('.modal-body').hide();
-            $target.find('.modal-loading').show();
-
-            $.get($(this).attr("href"), function (data) {
-                var $header = $(data).find('.header');
-                var $body = $(data).find('.header').next();
-
-                $target.find('.modal-header .close').prevAll().remove();
-                $target.find('.modal-header').prepend($header);
-                $target.find('.modal-body').html($body);
-
-                $target.find('.modal-loading').hide();
-                $target.find('.modal-body').show();
-            });
-        });
-
         $grid.find('[data-toggle="tooltip"]').tooltip();
     }
 

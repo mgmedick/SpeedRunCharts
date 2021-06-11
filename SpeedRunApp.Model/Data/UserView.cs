@@ -6,7 +6,7 @@ namespace SpeedRunApp.Model.Data
 {
     public class UserView
     {
-        public string ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }

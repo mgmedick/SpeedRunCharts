@@ -15,8 +15,8 @@
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
 
-        <link rel="stylesheet" href="~/css/site.css?v=01/20/2021" />
-        <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=12/22/2020" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-theme.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
 
         <link rel="stylesheet" href="~/css/site.css?v=01/20/2021" />
-        <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=12/22/2020" />
+        <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=06/10/2021" />
     </environment>
     @RenderSection("Styles", required: false)
     <environment include="Development">
@@ -36,8 +36,8 @@
         <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
         <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
+        <script src="@Url.Content("~/js/common.js")"></script>
+        <script src="@Url.Content("~/js/layout.js")"></script>
     </environment>
     <environment exclude="Development">
         <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
@@ -48,7 +48,7 @@
         <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
         <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=01/20/2021")"></script>
+        <script src="@Url.Content("~/js/layout.js?v=06/10/2021")"></script>
     </environment>
     <script type="text/javascript">
         $().ready(function () {
@@ -84,6 +84,9 @@
                 <span class="icon-wrapper">
                     <input id="txtMenuSearch" class="form-control mr-sm-2" type="text" placeholder="Search Games, Users, etc." aria-label="Search" style="width:300px;">
                 </span>
+            </form>
+            @if (User.Identity.IsAuthenticated)
+            {
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>
@@ -95,9 +98,23 @@
                             <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" @((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark" ? "checked" : string.Empty)>
                             <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                         </div>
+                        <div class="dropdown-item">
+                            <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
+                        </div>
                     </div>
                 </div>
-            </form>
+            }
+            else
+            {
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:showLogin();">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:showSignUp();">Sign Up</a>
+                    </li>
+                </ul>
+            }
         </div>
     </nav>
     <div class="container-fluid body-content">
@@ -106,6 +123,20 @@
         <footer class="footer">
             <p>&copy; 2021 - SpeedRunCharts</p>
         </footer>
+    </div>
+    <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-0">
+                    <div class="modal-title align-self-center pl-3" id="modal-title"><h5>Login</h5></div>
+                    <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0 mt-3">
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

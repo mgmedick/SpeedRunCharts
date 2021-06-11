@@ -14,7 +14,7 @@ namespace SpeedRunApp.WebUI.Controllers
             _userService = userService;
         }
 
-        public ViewResult UserDetails(string userID)
+        public ViewResult UserDetails(int userID)
         {
             var userVM = _userService.GetUser(userID);
 

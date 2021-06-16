@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.Configuration
+@using System.Security.Claims;
 @inject IConfiguration Configuration
 
 <!DOCTYPE html>
@@ -48,7 +49,7 @@
         <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
         <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=06/10/2021")"></script>
+        <script src="@Url.Content("~/js/layout.js?v=06/15/2021")"></script>
     </environment>
     <script type="text/javascript">
         $().ready(function () {
@@ -90,7 +91,7 @@
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>
-                            <i class="fa fa-user"></i>
+                            <i class="fa fa-user"></i><span class="pl-2">@User.FindFirst(ClaimTypes.Name).Value</span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
@@ -133,7 +134,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body p-0 mt-3">
+                <div class="modal-body p-0 m-3">
                 </div>
             </div>
         </div>

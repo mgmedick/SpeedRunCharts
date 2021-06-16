@@ -5,13 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NPoco" Version="5.0.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SpeedRunApp.Interfaces\SpeedRunApp.Interfaces.csproj" />
     <ProjectReference Include="..\SpeedRunApp.Model\SpeedRunApp.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NPoco" Version="4.0.3" />
+  </ItemGroup>
 </Project>

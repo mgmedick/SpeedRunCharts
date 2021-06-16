@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
 using System.Linq;
+using Serilog;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -21,13 +22,15 @@ namespace SpeedRunApp.WebUI.Controllers
         private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
         private readonly IUserAccountService _userAcctService = null;
+        private readonly ILogger _logger = null;
 
-        public SpeedRunController(ISpeedRunService speedRunService, IGameService gamesService, IUserService userService, IUserAccountService userAcctService)
+        public SpeedRunController(ISpeedRunService speedRunService, IGameService gamesService, IUserService userService, IUserAccountService userAcctService, ILogger logger)
         {
             _speedRunService = speedRunService;
             _gamesService = gamesService;
             _userService = userService;
             _userAcctService = userAcctService;
+            _logger = logger;
         }
 
         public ViewResult SpeedRunList()
@@ -35,6 +38,11 @@ namespace SpeedRunApp.WebUI.Controllers
             var runListVM = _speedRunService.GetSpeedRunList();
 
             return View(runListVM);
+        }
+
+        public ViewResult Error()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -70,45 +78,49 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginViewModel loginVM)
+        public ActionResult Login(LoginViewModel loginVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var login = _userAcctService.ValidateLogin(loginVM);
-                var userAcct = login.Item1;
-                var errorList = login.Item2;
-
-                if (errorList.Any())
+                if (ModelState.IsValid)
                 {
-                    foreach (var error in errorList)
+                    var login = _userAcctService.ValidateLogin(loginVM);
+                    var userAcct = login.Item1;
+                    var errorList = login.Item2;
+
+                    if (errorList.Any())
                     {
-                        ModelState.AddModelError("BadLogin", error);
+                        foreach (var error in errorList)
+                        {
+                            ModelState.AddModelError("BadLogin", error);
+                        }
+                    }
+                    else if (userAcct.PromptToChange)
+                    {
+                        return RedirectToAction("ChangePassword");
+                    }
+                    else
+                    {
+                        LoginUserAccount(userAcct);
+                        return Json(new { success = true });
                     }
                 }
-                else if (userAcct.PromptToChange)
-                {
-                    return RedirectToAction("ChangePassword");
-                }
-                else
-                {
-                    var claims = new List<Claim>
-                    {
-                        new Claim("UserID", userAcct.ID.ToString()),
-                        new Claim("Email", userAcct.Email),
-                        new Claim("Username", userAcct.Username)
-                    };
-
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(identity));
-
-                    return Json(new { success = true });
-                }
+            }
+            catch(Exception ex)
+            {
+                _logger.Error(ex, "Login");
+                return Json(new { success = false, message = "Error logging user in." });
             }
 
             return PartialView("_Login", loginVM);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return Redirect(Request.Headers["Referer"].ToString());
         }
 
         [HttpGet]
@@ -122,32 +134,85 @@ namespace SpeedRunApp.WebUI.Controllers
         [HttpPost]
         public ActionResult SignUp(SignUpViewModel signUpVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var errorList = _userAcctService.SignUp(signUpVM);
-
-                if (errorList.Any())
+                if (ModelState.IsValid)
                 {
-                    foreach (var error in errorList)
+                    var errorList = _userAcctService.ValidateSignUp(signUpVM);
+
+                    if (errorList.Any())
                     {
-                        ModelState.AddModelError("BadSignUp", error);
+                        foreach (var error in errorList)
+                        {
+                            ModelState.AddModelError("BadSignUp", error);
+                        }
+                    }
+                    else
+                    {
+                        _userAcctService.SendActivationEmail(signUpVM.Email);
+                        return Json(new { success = true });
                     }
                 }
-                else
-                {
-                    return Json(new { success = true });
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "SignUp");
+                return Json(new { success = false, message = "Error signing up user." });
             }
 
             return PartialView("_SignUp", signUpVM);
         }
 
         [HttpGet]
-        public async Task<ActionResult> Logout()
+        public ViewResult Activate(string email, long expirationTime, string token)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var activateUserAcctVM = _userAcctService.GetActivateUserAccount(email, expirationTime, token);
+            HttpContext.Session.Set<string>("Email", email);
 
-            return Redirect(Request.Headers["Referer"].ToString());
+            return View(activateUserAcctVM);
+        }
+
+        [HttpPost]
+        public ActionResult Activate(ActivateViewModel activateUserAcctVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorList = _userAcctService.ValidateActivateUserAccount(activateUserAcctVM);
+
+                if (errorList.Any())
+                {
+                    foreach (var error in errorList)
+                    {
+                        ModelState.AddModelError("BadActivate", error);
+                    }
+                }
+                else
+                {
+                    _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
+                    var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
+                    LoginUserAccount(userAcct);
+
+                    return Redirect("SpeedRunList");
+                }
+            }
+
+            return View(activateUserAcctVM);
+        }
+
+        private async void LoginUserAccount(UserAccount userAcct)
+        {
+            var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, userAcct.ID.ToString()),
+                            new Claim(ClaimTypes.Email, userAcct.Email),
+                            new Claim(ClaimTypes.Name, userAcct.Username)
+                        };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity));
         }
     }
 }

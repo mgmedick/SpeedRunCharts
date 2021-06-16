@@ -10,12 +10,12 @@ namespace SpeedRunApp.Repository
     {
         public DataMappings()
         {
-            For<SpeedRunView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRun");
-            For<SpeedRunGridView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRunGrid");
-            For<SpeedRunSummaryView>().PrimaryKey("ID", true).TableName("dbo.vw_SpeedRunSummary");
-            For<GameView>().PrimaryKey("ID", true).TableName("dbo.vw_Game");
-            For<UserView>().PrimaryKey("ID", true).TableName("dbo.vw_User");
-            For<UserAccount>().PrimaryKey("ID", true).TableName("dbo.tbl_UserAccount");
+            For<SpeedRunView>().TableName("dbo.vw_SpeedRun");
+            For<SpeedRunGridView>().TableName("dbo.vw_SpeedRunGrid");
+            For<SpeedRunSummaryView>().TableName("dbo.vw_SpeedRunSummary");
+            For<GameView>().TableName("dbo.vw_Game");
+            For<UserView>().TableName("dbo.vw_User");
+            For<UserAccount>().PrimaryKey("ID").TableName("dbo.tbl_UserAccount");
         }
     }
 }

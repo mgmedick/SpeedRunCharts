@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace SpeedRunApp
 {
@@ -23,6 +24,10 @@ namespace SpeedRunApp
                         {
                             services.AddControllers();
                         });
+                    })
+                    .UseSerilog((hostingContext, loggerConfiguration) =>
+                    {
+                        loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
                     });
     }
 }

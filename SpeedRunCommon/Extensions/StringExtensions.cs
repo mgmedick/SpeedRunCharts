@@ -23,17 +23,30 @@ namespace SpeedRunCommon.Extensions
             return param.Split(new string[] { delimiter }, StringSplitOptions.None);
         }
 
-        public static string HashPassword(this string pass)
+        public static string HashString(this string pass)
         {
             string result = BCrypt.Net.BCrypt.HashPassword(pass);
 
             return result;
         }
 
-        public static bool VerifyPassword(this string pass, string passHash)
+        public static bool VerifyHash(this string pass, string passHash)
         {
             bool result = BCrypt.Net.BCrypt.Verify(pass, passHash);
 
+            return result;
+        }
+
+        public static string GetHMACSHA256Hash(this string plaintext, string salt)
+        {
+            string result = string.Empty;
+            var enc = Encoding.Default;
+            byte[]
+            baText2BeHashed = enc.GetBytes(plaintext),
+            baSalt = enc.GetBytes(salt);
+            System.Security.Cryptography.HMACSHA256 hasher = new HMACSHA256(baSalt);
+            byte[] baHashedText = hasher.ComputeHash(baText2BeHashed);
+            result = string.Join(string.Empty, baHashedText.ToList().Select(b => b.ToString("x2")).ToArray());
             return result;
         }
     }

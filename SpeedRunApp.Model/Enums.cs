@@ -221,4 +221,10 @@ namespace SpeedRunApp.Model
         Game = 0,
         User = 1
     }
+
+    public enum Template
+    {
+        ActivateUserAccount = 1,
+        PasswordReset = 2
+    }
 }

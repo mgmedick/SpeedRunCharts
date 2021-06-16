@@ -134,6 +134,8 @@ function login() {
             if (data.success) {
                 $modal.modal('hide');
                 location.reload();
+            } else if (data.success === false) {
+                $modalBody.html(data.message);
             } else {
                 $modalBody.html(data);
             }
@@ -156,7 +158,12 @@ function showSignUp() {
 function signUp() {
     var $modal = $('#loginModal');
     var $modalBody = $modal.find('.modal-body');
+    var $loading = $modal.find('.signup-loading');
+    var $successmsg = $modal.find('.signup-successmsg');
     var formData = new FormData($('#frmSignUp')[0]);
+
+    $successmsg.hide();
+    $loading.show();
 
     $.ajax({
         url: "/SpeedRun/SignUp",
@@ -166,7 +173,10 @@ function signUp() {
         data: formData,
         success: function (data) {
             if (data.success) {
-                $modal.modal('hide');
+                $loading.hide();
+                $successmsg.show();
+            } else if (data.success === false) {
+                $modalBody.html(data.message);
             } else {
                 $modalBody.html(data);
             }

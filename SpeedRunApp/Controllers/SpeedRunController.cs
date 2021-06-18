@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
 using System.Linq;
 using Serilog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SpeedRunApp.WebUI.Controllers
 {
@@ -84,25 +85,21 @@ namespace SpeedRunApp.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var login = _userAcctService.ValidateLogin(loginVM);
-                    var userAcct = login.Item1;
-                    var errorList = login.Item2;
+                    if (!_userAcctService.UsernameExists(loginVM.Username, true))
+                    {
+                        ModelState.AddModelError("Login", "Invalid username");
+                    }
 
-                    if (errorList.Any())
+                    if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
                     {
-                        foreach (var error in errorList)
-                        {
-                            ModelState.AddModelError("BadLogin", error);
-                        }
+                        ModelState.AddModelError("Login", "Invalid password");
                     }
-                    else if (userAcct.PromptToChange)
+
+                    if(ModelState.IsValid)
                     {
-                        return RedirectToAction("ChangePassword");
-                    }
-                    else
-                    {
+                        var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
                         LoginUserAccount(userAcct);
-                        return Json(new { success = true });
+                        loginVM.Success = true;
                     }
                 }
             }
@@ -138,21 +135,9 @@ namespace SpeedRunApp.WebUI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var errorList = _userAcctService.ValidateSignUp(signUpVM);
-
-                    if (errorList.Any())
-                    {
-                        foreach (var error in errorList)
-                        {
-                            ModelState.AddModelError("BadSignUp", error);
-                        }
-                    }
-                    else
-                    {
-                        _userAcctService.SendActivationEmail(signUpVM.Email);
-                        return Json(new { success = true });
-                    }
-                }
+                    _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    signUpVM.Success = true;
+                }              
             }
             catch (Exception ex)
             {
@@ -177,16 +162,12 @@ namespace SpeedRunApp.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var errorList = _userAcctService.ValidateActivateUserAccount(activateUserAcctVM);
-
-                if (errorList.Any())
+                if (_userAcctService.UsernameExists(activateUserAcctVM.Username, false))
                 {
-                    foreach (var error in errorList)
-                    {
-                        ModelState.AddModelError("BadActivate", error);
-                    }
+                    ModelState.AddModelError("Activate", "Username already exists");
                 }
-                else
+
+                if (ModelState.IsValid)
                 {
                     _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
                     var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
@@ -213,6 +194,58 @@ namespace SpeedRunApp.WebUI.Controllers
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
+        }
+
+        [HttpGet]
+        public ViewResult ResetPassword()
+        {
+            var resetPassVM = new ResetPasswordViewModel();
+            return View(resetPassVM);
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPasswordViewModel resetPassVM)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
+                {
+                    ModelState.AddModelError("Activate", "Username does not exist");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    resetPassVM.Success = true;
+                }
+            }
+
+            return View(resetPassVM);
+        }
+
+        //jqvalidate
+        [HttpGet]
+        public IActionResult UsernameExists(string username, bool activeFilter)
+        {
+            var result = _userAcctService.UsernameExists(username, activeFilter);
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult PasswordMatches(string password, string username)
+        {
+            var result = _userAcctService.PasswordMatches(password, username);
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public IActionResult EmailNotExists(string email)
+        {
+            var result = !_userAcctService.EmailExists(email);
+
+            return Json(result);
         }
     }
 }

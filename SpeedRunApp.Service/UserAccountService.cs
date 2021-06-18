@@ -32,70 +32,9 @@ namespace SpeedRunApp.Service
             _config = config;
         }
 
-        public Tuple<UserAccount, IEnumerable<string>> ValidateLogin(LoginViewModel loginVM)
-        {
-            var errorList = new List<string>();
-            var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == loginVM.Username && i.Active).FirstOrDefault();
 
-            if (userAcct == null)
-            {
-                errorList.Add("Invalid username/password.");
-            }
-            else if (userAcct.Locked)
-            {
-                errorList.Add("The account has been locked due to too many failed login attempts. Please contact support to unlock the account.");
-            }
-            else if (!loginVM.Password.VerifyHash(userAcct.Password))
-            {
-                var attemptCount = _context.HttpContext.Session.Get<int>("PasswordAttempts");
-                var maxPasswordAttempts = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("MaxPasswordAttempts").Value);
 
-                attemptCount++;
-                _context.HttpContext.Session.Set<int>("PasswordAttempts", attemptCount);
-
-                if (attemptCount > maxPasswordAttempts)
-                {
-                    LockUserAccount(userAcct.ID);
-                    errorList.Add("The account has been locked due to too many failed login attempts. Please contact support to unlock the account.");
-                }
-                else
-                {
-                    errorList.Add("Invalid username/password.");
-                }
-            }
-
-            return new Tuple<UserAccount, IEnumerable<string>>(userAcct, errorList);
-        }
-
-        public IEnumerable<string> ValidateSignUp(SignUpViewModel signUpVM)
-        {
-            var errorList = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(signUpVM.Email))
-            {
-                errorList.Add("Email is required.");
-            }
-
-            if (!new EmailAddressAttribute().IsValid(signUpVM.Email))
-            {
-                errorList.Add("Email is invalid.");
-            }
-
-            if (!string.IsNullOrWhiteSpace(signUpVM.Email) && !string.IsNullOrWhiteSpace(signUpVM.ConfrimEmail) && signUpVM.Email != signUpVM.ConfrimEmail)
-            {
-                errorList.Add("Email does not match Confirm Email.");
-            }
-
-            var existingEmail = _userAcctRepo.GetUserAccounts(i => i.Email == signUpVM.Email).FirstOrDefault();
-            if (existingEmail != null)
-            {
-                errorList.Add("Email already exists.");
-            }
-
-            return errorList;
-        }
-
-        public void SendActivationEmail(string email)
+        public async Task SendActivationEmail(string email)
         {
             var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
             var baseUrl = string.Format("{0}://{1}{2}", _context.HttpContext.Request.Scheme, _context.HttpContext.Request.Host, _context.HttpContext.Request.PathBase);
@@ -108,7 +47,7 @@ namespace SpeedRunApp.Service
                 ActivateLink = string.Format("{0}/SpeedRun/Activate?{1}&token={2}", baseUrl, queryParams, token)
             };
 
-            _emailService.SendEmailTemplate(email, "Create your speedruncharts.com account", Template.ActivateUserAccount.ToString(), activateUserAcct);
+            await _emailService.SendEmailTemplate(email, "Create your speedruncharts.com account", Template.ActivateUserAccount.ToString(), activateUserAcct);
         }
 
         public ActivateViewModel GetActivateUserAccount(string email, long expirationTime, string token)
@@ -122,45 +61,6 @@ namespace SpeedRunApp.Service
             var activateUserAcctVM = new ActivateViewModel() { IsValid = isValid };
 
             return activateUserAcctVM;
-        }
-
-        public IEnumerable<string> ValidateActivateUserAccount(ActivateViewModel activateUserAcctVM)
-        {
-            var errorList = new List<string>();
-
-            if (string.IsNullOrWhiteSpace(activateUserAcctVM.Username))
-            {
-                errorList.Add("Username is required.");
-            }
-
-            if (string.IsNullOrWhiteSpace(activateUserAcctVM.Password))
-            {
-                errorList.Add("Password is required.");
-            }
-
-            if (string.IsNullOrWhiteSpace(activateUserAcctVM.ConfirmPassword))
-            {
-                errorList.Add("Confirm Password is required.");
-            }
-
-            if (!string.IsNullOrWhiteSpace(activateUserAcctVM.Password) && !string.IsNullOrWhiteSpace(activateUserAcctVM.ConfirmPassword) && activateUserAcctVM.Password != activateUserAcctVM.ConfirmPassword)
-            {
-                errorList.Add("Password does not match Confirm Password.");
-            }
-
-            var usernameRegex = new Regex(@"^(?=.{3,15}$)([A-Za-z0-9][._()\[\]-]?)*$");
-            if (!usernameRegex.IsMatch(activateUserAcctVM.Username))
-            {
-                errorList.Add("Username is invalid.");
-            }
-
-            var existingUserAcct = _userAcctRepo.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
-            if (existingUserAcct != null)
-            {
-                errorList.Add("Username already exists, please select another.");
-            }
-
-            return errorList;
         }
 
         public void CreateUserAccount(string username, string email, string pass)
@@ -178,19 +78,81 @@ namespace SpeedRunApp.Service
             _userAcctRepo.SaveUserAccount(userAcct);
         }
 
-        public void LockUserAccount(int userID)
-        {
-            var userAcct = _userAcctRepo.GetUserAccounts(i => i.ID == userID).FirstOrDefault();
-            if (userAcct != null)
-            {
-                userAcct.Locked = true;
-                _userAcctRepo.SaveUserAccount(userAcct);
-            }
-        }
-
         public IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate)
         {
             return _userAcctRepo.GetUserAccounts(predicate);
+        }
+
+        public async Task SendResetPasswordEmail(string username)
+        {
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == username).FirstOrDefault();
+            var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
+            var baseUrl = string.Format("{0}://{1}{2}", _context.HttpContext.Request.Scheme, _context.HttpContext.Request.Host, _context.HttpContext.Request.PathBase);
+            var queryParams = string.Format("username={0}&email={1}&expirationTime={1}", userAcct.Username, userAcct.Email, DateTime.UtcNow.AddHours(48).Ticks);
+            var token = string.Format("{0}&password={1}", queryParams, userAcct.Password).GetHMACSHA256Hash(hashKey);
+
+            var activateUserAcct = new
+            {
+                Email = userAcct.Email,
+                ActivateLink = string.Format("{0}/SpeedRun/Activate?{1}&token={2}", baseUrl, queryParams, token)
+            };
+
+            await _emailService.SendEmailTemplate(userAcct.Email, "Create your speedruncharts.com account", Template.ActivateUserAccount.ToString(), activateUserAcct);
+        }
+
+        public ResetPasswordViewModel GetResetPassword(string username, string email, long expirationTime, string token)
+        {
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == username).FirstOrDefault();
+            var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
+            var strToHash = string.Format("username={0}&email={1}&expirationTime={2}&password={3}", username, email, expirationTime, userAcct.Password);
+            var hash = strToHash.GetHMACSHA256Hash(hashKey);
+            var expirationDate = new DateTime(expirationTime);
+            var isValid = (hash == token) && expirationDate > DateTime.UtcNow;
+            var resetPassVM = new ResetPasswordViewModel() { Success = isValid };
+
+            return resetPassVM;
+        }
+
+        //jqvalidate
+        public bool EmailExists(string email)
+        {
+            var result = true;
+
+            var existingEmail = _userAcctRepo.GetUserAccounts(i => i.Email == email).FirstOrDefault();
+            if (existingEmail != null)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+        public bool PasswordMatches(string password, string username)
+        {
+            var result = true;
+
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == username && i.Active).FirstOrDefault();
+
+            if (password.VerifyHash(userAcct?.Password))
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+        public bool UsernameExists(string username, bool activeFilter)
+        {
+            var result = true;
+
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == username && (i.Active || i.Active == activeFilter)).FirstOrDefault();
+
+            if (userAcct == null)
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 }

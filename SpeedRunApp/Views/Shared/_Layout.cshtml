@@ -29,17 +29,17 @@
         <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=06/10/2021" />
     </environment>
     @RenderSection("Styles", required: false)
-    <environment include="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
-        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
+<environment include="Development">
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
+    <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js")"></script>
-        <script src="@Url.Content("~/js/layout.js")"></script>
-    </environment>
+    <script src="@Url.Content("~/js/common.js")"></script>
+    <script src="@Url.Content("~/js/layout.js")"></script>
+</environment>
     <environment exclude="Development">
         <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
         <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
@@ -53,6 +53,7 @@
     </environment>
     <script type="text/javascript">
         $().ready(function () {
+
             var maxElementsPerPage = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("MaxElementsPerPage").Value);
             var requestLimit = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("RequestLimit").Value);
             var timeLimitMS = @Json.Serialize(Configuration.GetSection("ApiSettings").GetSection("TimeLimitMS").Value);

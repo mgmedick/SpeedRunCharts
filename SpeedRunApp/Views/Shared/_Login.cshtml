@@ -1,7 +1,36 @@
 ﻿@model SpeedRunApp.Model.ViewModels.LoginViewModel
 
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+
+    function login() {
+        var $modal = $('#loginModal');
+        var $modalBody = $modal.find('.modal-body');
+        var formData = new FormData($('#frmLogin')[0]);
+
+        if ($('#frmSignUp').valid()) {
+            $loading.show();
+
+            $.ajax({
+                url: "/SpeedRun/Login",
+                processData: false,
+                contentType: false,
+                type: "POST",
+                data: formData,
+                success: function (data) {
+                    if (data.success) {
+                        $modal.modal('hide');
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
+
+</script>
+
 <div id="divLogin" class="container">
-    <form id="frmLogin">
+    <form asp-controller="SpeedRun" asp-action="SignUp" method="post" id="frmLogin" role="form">
         @Html.ValidationSummary()
         <div class="form-group row no-gutters">
             <label class="col-sm-3 col-form-label">Username</label>
@@ -18,6 +47,7 @@
         <div class="row no-gutters pt-1">
             <div class="form-group mx-auto">
                 <input id="btnLogin" type="button" class="btn btn-primary" value="Log In" onclick="login()" />
+                <a class="btn btn-secondary ml-2" href="/SpeedRun/ResetPassword" role="button">Forgot Password</a>
             </div>
         </div>
     </form>

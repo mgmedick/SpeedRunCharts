@@ -119,30 +119,6 @@ function showLogin() {
     }, "html");
 }
 
-function login() {
-    var $modal = $('#loginModal');
-    var $modalBody = $modal.find('.modal-body');
-    var formData = new FormData($('#frmLogin')[0]);
-
-    $.ajax({
-        url: "/SpeedRun/Login",
-        processData: false,
-        contentType: false,
-        type: "POST",
-        data: formData,
-        success: function (data) {
-            if (data.success) {
-                $modal.modal('hide');
-                location.reload();
-            } else if (data.success === false) {
-                $modalBody.html(data.message);
-            } else {
-                $modalBody.html(data);
-            }
-        }
-    });
-}
-
 function showSignUp() {
     var $modal = $('#loginModal');
     var $modalBody = $modal.find('.modal-body');
@@ -155,34 +131,7 @@ function showSignUp() {
     }, "html");
 }
 
-function signUp() {
-    var $modal = $('#loginModal');
-    var $modalBody = $modal.find('.modal-body');
-    var $loading = $modal.find('.signup-loading');
-    var $successmsg = $modal.find('.signup-successmsg');
-    var formData = new FormData($('#frmSignUp')[0]);
 
-    $successmsg.hide();
-    $loading.show();
-
-    $.ajax({
-        url: "/SpeedRun/SignUp",
-        processData: false,
-        contentType: false,
-        type: "POST",
-        data: formData,
-        success: function (data) {
-            if (data.success) {
-                $loading.hide();
-                $successmsg.show();
-            } else if (data.success === false) {
-                $modalBody.html(data.message);
-            } else {
-                $modalBody.html(data);
-            }
-        }
-    });
-}
 
 
 

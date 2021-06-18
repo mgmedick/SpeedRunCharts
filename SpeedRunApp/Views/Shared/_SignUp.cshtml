@@ -1,7 +1,36 @@
 ﻿@model SpeedRunApp.Model.ViewModels.SignUpViewModel
 
+@{ ViewBag.Title = "Sign Up"; }
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+
+    function signUp() {
+        var $modal = $('#loginModal');
+        var $modalBody = $modal.find('.modal-body');
+        var $loading = $modal.find('.signup-loading');
+        var formData = new FormData($('#frmSignUp')[0]);
+
+        if ($('#frmSignUp').valid()) {
+            $loading.show();
+
+            $.ajax({
+                url: "/SpeedRun/SignUp",
+                processData: false,
+                contentType: false,
+                type: "POST",
+                data: formData,
+                success: function (data) {
+                    $modalBody.html(data);
+                }
+            });
+        }
+    }
+
+</script>
+
 <div id="divSignUp" class="container">
-    <form id="frmSignUp">
+    <form asp-controller="SpeedRun" asp-action="SignUp" method="post" id="frmSignUp" role="form">
         @Html.ValidationSummary()
         <div class="form-group row no-gutters">
             <label class="col-sm-3 col-form-label">Email</label>
@@ -9,43 +38,38 @@
                 @Html.TextBoxFor(i => i.Email, new { @autocomplete = "off", @class = "form-control" })
             </div>
         </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-3 col-form-label">Confirm Email</label>
-            <div class="col-sm-auto">
-                @Html.TextBoxFor(i => i.ConfrimEmail, new { @autocomplete = "off", @class = "form-control" })
-            </div>
-        </div>
         <div class="row no-gutters pt-1">
             <div class="form-group mx-auto">
                 <input id="btnSignUp" type="button" class="btn btn-primary" value="SignUp" onclick="signUp()" />
             </div>
         </div>
+        <div>
+            <div class="signup-loading" style="display:none;">
+                <div class="container d-flex p-3">
+                    <div class="mx-auto align-self-center">
+                        <i class="fa fa-spinner fa-spin fa-lg"></i>
+                    </div>
+                </div>
+            </div>
+            <div style="@(Model.Success ? "" : "display:none;")">
+                <div class="container p-3" style="max-width: 400px;">
+                    <div class="mx-auto">
+                        <span>To Activate your account click the activation link in the email we just sent you.</span>
+                        <br />
+                        <br />
+                        <span>If your email has not arrived try these steps:</span>
+                        <ul class="pl-4">
+                            <li>Wait 30 mins</li>
+                            <li>Check your spam folder</li>
+                            <li>Try Sign Up again</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-    <div>
-        <div class="signup-loading" style="display:none;">
-            <div class="container d-flex p-3">
-                <div class="mx-auto align-self-center">
-                    <i class="fa fa-spinner fa-spin fa-lg"></i>
-                </div>
-            </div>
-        </div>
-        <div class="signup-successmsg" style="display:none;">
-            <div class="container p-3" style="max-width: 400px;">
-                <div class="mx-auto">
-                    <span>To Activate your account click the activation link in the email we just sent you.</span>
-                    <br />
-                    <br />
-                    <span>If your email has not arrived try these steps:</span>
-                    <ul class="pl-4">
-                        <li>Wait 30 mins</li>
-                        <li>Check your spam folder</li>
-                        <li>Try Sign Up again</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
 
 
 

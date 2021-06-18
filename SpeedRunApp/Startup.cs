@@ -14,12 +14,14 @@ namespace SpeedRunApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public IConfiguration _config { get; }
+        public IWebHostEnvironment _env { get; }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration config, IWebHostEnvironment env)
+        {
+            _config = config;
+            _env = env;
+        }
 
         public void ConfigureContainer(ServiceRegistry services)
         {
@@ -27,7 +29,13 @@ namespace SpeedRunApp
             services.AddLogging();
             services.AddMemoryCache();
             services.AddSession();
-            services.AddMvc().AddRazorRuntimeCompilation();
+            services.AddMvc().AddRazorRuntimeCompilation().AddViewOptions(options =>
+             {
+                 if (_env.IsDevelopment())
+                 {
+                     options.HtmlHelperOptions.ClientValidationEnabled = true;
+                 }
+             });
 
             services.Configure<CookieTempDataProviderOptions>(options =>
             {
@@ -49,7 +57,7 @@ namespace SpeedRunApp
                 scanner.SingleImplementationsOfInterface();                
             });
 
-            var connString = Configuration.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;
+            var connString = _config.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;
             NPocoBootstrapper.Configure(connString);
         }
 

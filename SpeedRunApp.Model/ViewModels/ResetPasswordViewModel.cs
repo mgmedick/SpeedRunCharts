@@ -7,16 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class LoginViewModel
+    public class ResetPasswordViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Username required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the Username")]
         [Remote(action: "UsernameExists", controller: "SpeedRun")]
         public string Username { get; set; }
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Password required")]
-        [Remote(action: "PasswordMatches", controller: "SpeedRun", AdditionalFields = nameof(Username))]
-        public string Password { get; set; }
-
         public bool Success { get; set; }
     }
 }

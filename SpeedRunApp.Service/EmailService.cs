@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Net;
 using Serilog;
 using SpeedRunApp.Interfaces.Services;
+using System.Threading.Tasks;
 
 namespace SpeedRunApp.Service
 {
@@ -22,17 +23,17 @@ namespace SpeedRunApp.Service
             _logger = logger;
         }
 
-        public void SendEmailTemplate(string emailTo, string subject, string templateName, object parameters)
+        public async Task SendEmailTemplate(string emailTo, string subject, string templateName, object parameters)
         {
             var htmlBody = _templateService.RenderTemplate(templateName, parameters);
 
             if (!string.IsNullOrWhiteSpace(htmlBody))
             {
-                SendEmail(emailTo, subject, htmlBody);
+                await SendEmail(emailTo, subject, htmlBody);
             }
         }
 
-        public void SendEmail(string emailTo, string subject, string htmlBody)
+        public async Task SendEmail(string emailTo, string subject, string htmlBody)
         {
             var emailFrom = _config.GetSection("SiteSettings").GetSection("FromEmail").Value;
             var emailPassword = _config.GetSection("SiteSettings").GetSection("EmailPassword").Value;
@@ -48,7 +49,7 @@ namespace SpeedRunApp.Service
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(emailFrom, emailPassword);
-                client.Send(message);
+                await client.SendMailAsync(message);
             }
         }
     }

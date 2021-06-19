@@ -224,7 +224,7 @@ namespace SpeedRunApp.Model
 
     public enum Template
     {
-        ActivateUserAccount = 1,
-        ResetUserAccountPassword = 2
+        ActivateEmail = 1,
+        ResetPasswordEmail = 2
     }
 }

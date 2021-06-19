@@ -36,6 +36,7 @@ namespace SpeedRunApp.Service
         public async Task SendEmail(string emailTo, string subject, string htmlBody)
         {
             var emailFrom = _config.GetSection("SiteSettings").GetSection("FromEmail").Value;
+            var emailUsername = _config.GetSection("SiteSettings").GetSection("EmailUsername").Value;
             var emailPassword = _config.GetSection("SiteSettings").GetSection("EmailPassword").Value;
 
             var smtpHost = _config.GetSection("SiteSettings").GetSection("SmtpHost").Value;
@@ -48,7 +49,7 @@ namespace SpeedRunApp.Service
             {
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(emailFrom, emailPassword);
+                client.Credentials = new NetworkCredential(emailUsername, emailPassword);
                 await client.SendMailAsync(message);
             }
         }

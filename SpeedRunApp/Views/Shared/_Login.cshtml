@@ -1,7 +1,9 @@
 ﻿@model SpeedRunApp.Model.ViewModels.LoginViewModel
 
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
 <script>
+
     function login() {
         var $modal = $('#loginModal');
         var $modalBody = $modal.find('.modal-body');
@@ -29,6 +31,7 @@
             });
         }
     }
+
 </script>
 
 <div id="divLogin" class="container">

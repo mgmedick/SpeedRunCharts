@@ -10,14 +10,12 @@ namespace SpeedRunApp.Model.ViewModels
     public class LoginViewModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Username required")]
-        [Remote(action: "UsernameExists", controller: "SpeedRun")]
+        [Remote(action: "ActiveUsernameExists", controller: "SpeedRun", ErrorMessage = "Invalid Username")]
         public string Username { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password required")]
-        [Remote(action: "PasswordMatches", controller: "SpeedRun", AdditionalFields = nameof(Username))]
+        [Remote(action: "PasswordMatches", controller: "SpeedRun", AdditionalFields = nameof(Username), ErrorMessage = "Invalid Password")]
         public string Password { get; set; }
-
-        public bool Success { get; set; }
     }
 }
 

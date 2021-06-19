@@ -131,6 +131,19 @@ function showSignUp() {
     }, "html");
 }
 
+function showResetPass() {
+    var $modal = $('#loginModal');
+    var $modalBody = $modal.find('.modal-body');
+    var $modalTitle = $modal.find('.modal-title');
+    $modalTitle.html("<h5>Reset Password</h5>");
+
+    $.get('/SpeedRun/ResetPassword', function (data) {
+        $modalBody.html(data);
+        $modal.modal('show');
+    }, "html");
+}
+
+
 
 
 

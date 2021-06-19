@@ -11,11 +11,9 @@ namespace SpeedRunApp.Model.ViewModels
     public class SignUpViewModel
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Email required")]
-        [EmailAddress]
-        [RemoteWithServerSideAttribute(action: "EmailNotExists", controller: "SpeedRun", ErrorMessage = "Email already exists")]
+        [EmailAddress(ErrorMessage = "Invalid Email format")]
+        [Remote(action: "EmailNotExists", controller: "SpeedRun", ErrorMessage = "Email already exists for another user")]
         public string Email { get; set; }
-
-        public bool Success { get; set; }
     }
 }
 

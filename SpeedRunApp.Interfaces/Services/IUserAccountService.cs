@@ -15,7 +15,8 @@ namespace SpeedRunApp.Interfaces.Services
         void CreateUserAccount(string username, string email, string pass);
         IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate);
         Task SendResetPasswordEmail(string username);
-        ResetPasswordViewModel GetResetPassword(string username, string email, long expirationTime, string token);
+        ChangePasswordViewModel GetChangePassword(string username, string email, long expirationTime, string token);
+        void ChangeUserAcctPassword(string username, string pass);
         bool EmailExists(string email);
         bool PasswordMatches(string password, string username);
         bool UsernameExists(string username, bool activeFilter);

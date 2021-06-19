@@ -7,16 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class ActivateViewModel
+    public class ChangePasswordViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Username required")]
-        [Remote(action: "UsernameNotExists", controller: "SpeedRun", ErrorMessage = "Username already exists for another user")]
-        [RegularExpression(@"^[._()-\/#&$@+\w\s]{3,30}$", ErrorMessage = @"Username must be between 3 - 30 alphanumeric/special characters")]
-        public string Username { get; set; }
-
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password required")]
         [Compare(otherProperty: nameof(ConfirmPassword))]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[._()-\/#&$@+\w\s]{8,30}$", ErrorMessage = @"Password must be between 8 - 30 alphanumeric/special characters with 1 number and letter")]
+        [Remote(action: "PasswordNotMatches", controller: "SpeedRun", ErrorMessage = "Password must differ from current password")]
         public string Password { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Confirm Password required")]

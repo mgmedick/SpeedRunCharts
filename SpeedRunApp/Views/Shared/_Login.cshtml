@@ -2,15 +2,14 @@
 
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-
     function login() {
         var $modal = $('#loginModal');
         var $modalBody = $modal.find('.modal-body');
         var formData = new FormData($('#frmLogin')[0]);
+        var $summaryul = $modal.find('.validation-summary-errors ul');
+        $summaryul.empty()
 
-        if ($('#frmSignUp').valid()) {
-            $loading.show();
-
+        if ($('#frmLogin').valid()) {
             $.ajax({
                 url: "/SpeedRun/Login",
                 processData: false,
@@ -21,16 +20,19 @@
                     if (data.success) {
                         $modal.modal('hide');
                         location.reload();
+                    } else if (data.success === false) {
+                        $modalBody.html(data.message);
+                    } else {
+                        $modalBody.html(data);
                     }
                 }
             });
         }
     }
-
 </script>
 
 <div id="divLogin" class="container">
-    <form asp-controller="SpeedRun" asp-action="SignUp" method="post" id="frmLogin" role="form">
+    <form asp-controller="SpeedRun" asp-action="Login" method="post" id="frmLogin" role="form">
         @Html.ValidationSummary()
         <div class="form-group row no-gutters">
             <label class="col-sm-3 col-form-label">Username</label>
@@ -47,7 +49,7 @@
         <div class="row no-gutters pt-1">
             <div class="form-group mx-auto">
                 <input id="btnLogin" type="button" class="btn btn-primary" value="Log In" onclick="login()" />
-                <a class="btn btn-secondary ml-2" href="/SpeedRun/ResetPassword" role="button">Forgot Password</a>
+                <input id="btnResetPass" type="button" class="btn btn-secondary" value="Forgot Password" onclick="showResetPass()" />
             </div>
         </div>
     </form>

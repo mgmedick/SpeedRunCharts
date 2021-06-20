@@ -6,7 +6,7 @@
                     <img src="<%= item.gameCoverImageLink %>" class="img-fluid" alt="Responsive image">
                 </div>
             </div>
-            <div class="pl-2 col-7 align-self-center">
+            <div class="col-7 align-self-center">
                 <div>
                     <small class="text-muted">Verified <%= item.relativeVerifyDateString %></small>
                 </div>
@@ -26,7 +26,7 @@
                     <%= item.primaryTimeString %>
                 </div>
             </div>
-            <div class="details ml-auto align-self-center">
+            <div class="details p-0 col-auto ml-auto align-self-center">
                 <a title="Details" href="javascript:showSpeedRunDetails('<%= item.id %>','<%= item.game.id %>');" class="btn btn-primary detail" style="font-size:12px;">Details</a>
             </div>
         </div>

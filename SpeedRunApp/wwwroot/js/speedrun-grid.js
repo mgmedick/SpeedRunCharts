@@ -961,7 +961,7 @@ function showSpeedRunSummary(gridID, rowID) {
                 var $header = $(result).find('.header');
                 var $body = $(result).find('.body');
 
-                $header.find('.details').remove();
+                $header.find('.details').hide();
                 $modalTitle.html($header);
                 $modalBody.html($body);
                 $modalBody.show();

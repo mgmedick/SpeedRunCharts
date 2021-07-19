@@ -103,6 +103,25 @@ function renderTemplate(element, template, data, functions) {
     return def.promise();
 }
 
+function renderVueTemplate(element, template, data, vueObj) {
+    var def = $.Deferred();
+
+    if (vueObj) {
+        vueObj.template = template;
+        vueObj.data = function () { return data };
+    } else {
+        vueObj = {
+            template: template,
+            data: function () { return data }
+        }
+    }
+
+    Vue.createApp(vueObj).mount(element);
+    def.resolve();
+
+    return def.promise();
+}
+
 function setCookie(key, value, days) {
     var expires = new Date();
     var cookieString = key + '=' + value;

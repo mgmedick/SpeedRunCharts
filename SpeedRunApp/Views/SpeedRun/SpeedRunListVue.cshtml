@@ -1,0 +1,81 @@
+﻿@using SpeedRunCommon.Extensions;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
+@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
+
+@{ ViewBag.Title = "SpeedRunList"; }
+
+@section Scripts {
+    <script src="@Url.Content("~/js/speedrun-edit.js?v=12/22/2020")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/speedrun-edit-vue.js?v=12/22/2020")" type="text/javascript"></script>
+    <script src="@Url.Content("~/js/speedrun-list.js?v=06/10/2021")" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+            var _elementsPerPage = @Json.Serialize(Model.ElementsPerPage);
+
+            initializeClient(_elementsPerPage);
+        })
+    </script>
+}
+
+<div>
+    <div id="divSpeedRunListSort">
+        <div class="mx-auto p-2" style="max-width:598px; margin-bottom:20px;">
+            <div id="btnGrpCategory" class="btn-group btn-group-toggle categoryGroup pr-2" data-toggle="buttons">
+                <label class="btn btn-primary btn-sm active">
+                    <input type="radio" class="category" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" checked><i class="fa fa-certificate fa-lg"></i>&nbsp;New
+                </label>
+                <label class="btn btn-primary btn-sm">
+                    <input type="radio" class="category" id="btnCategory1" name="btnCategory" autocomplete="off" value="1"><i class="fa fa-percentage fa-lg"></i>&nbsp;Top 5%
+                </label>
+                <label class="btn btn-primary btn-sm">
+                    <input type="radio" class="category" id="btnCategory2" name="btnCategory" autocomplete="off" value="2"><i class="fa fa-award fa-lg"></i>&nbsp;First
+                </label>
+                <label class="btn btn-primary btn-sm">
+                    <input type="radio" class="category" id="btnCategory3" name="btnCategory" autocomplete="off" value="3"><i class="fa fa-fire fa-lg"></i>&nbsp;Top 3
+                </label>
+                <label class="btn btn-primary btn-sm">
+                    <input type="radio" class="category" id="btnCategory4" name="btnCategory" autocomplete="off" value="4"><i class="fa fa-star fa-lg"></i>&nbsp;PBs
+                </label>
+                <i class="fa fa-info-circle pl-1" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<b>New:</b> Newly verified runs.<br/><br/><b>Top 5%:</b> Runs with rank in top 5% of category.<br/><br/><b>First:</b> Runs with 1st place in category.<br/><br/><b>Top 3:</b> Runs in top 3 with 20 or more runs.<br/><br/><b>PBs:</b> Personal Bests for that category."></i>
+            </div>
+        </div>
+    </div>
+    <div id="divSpeedRunList">
+        <speedrun-list class="speedrunlist" :categoryid="0" :topamt="20" :offset="0"></speedrun-list>
+    </div>
+    <div id="loading">
+        <div class="d-flex">
+            <div class="mx-auto">
+                <i class="fas fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+    </div>
+    <div id="detailsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header p-0">
+                    <div class="modal-title col-sm-10 align-self-center"><h5>Details</h5></div>
+                    <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0 mt-3" style="display:none;">
+                    <speedrun-edit :runid=""></speedrun-edit>
+                </div>
+                <div class="modal-loading">
+                    <div class="container d-flex" style="height:465px;">
+                        <div class="mx-auto align-self-center">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @(("wwwroot/templates/SpeedRunEditVue.html").IncludeFile(hostingEnv))
+</div>
+
+
+
+

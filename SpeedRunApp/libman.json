@@ -46,7 +46,7 @@
       "destination": "wwwroot/lib/underscore.js/",
       "files": [
         "underscore-min.js",
-        "underscore.js" 
+        "underscore.js"
       ]
     },
     {
@@ -114,6 +114,20 @@
       "files": [
         "jquery.mousewheel.js"
       ]
+    },
+    {
+      "library": "vue@3.1.4",
+      "destination": "wwwroot/lib/vue/",
+      "files": [
+        "vue.global.js",
+        "vue.global.min.js",
+        "vue.global.prod.js",
+        "vue.global.prod.min.js"
+      ]
+    },
+    {
+      "library": "axios@0.21.1",
+      "destination": "wwwroot/lib/axios/"
     }
   ]
 }

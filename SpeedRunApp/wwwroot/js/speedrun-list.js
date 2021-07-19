@@ -1,9 +1,9 @@
-﻿if (!sra) {
-    var sra = {};
-}
+﻿////if (!sra) {
+////    var sra = {};
+////}
 
-var throttleTimer = null;
-var throttleDelay = 500;
+//var throttleTimer = null;
+//var throttleDelay = 500;
 
 function initializeClient(elementsPerPage) {
     initalizeConstants(elementsPerPage);
@@ -16,15 +16,19 @@ function initalizeConstants(elementsPerPage) {
 }
 
 function initializeEvents() {
-    $('.categoryGroup input').change(onCategoryChange);
+    //$('.categoryGroup input').change(onCategoryChange);
     $('[data-toggle="tooltip"]').tooltip();
 
-    $(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
+//    $(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
 }
 
+/*
 function onCategoryChange() {
     $('#divSpeedRunList').empty();
     getSpeedRunList();
+
+    var categoryID = $('.categoryGroup input:checked').val();
+    $('.speedrunlist').attr("categoryid", categoryID);
 }
 
 function OnWindowScroll() {
@@ -40,6 +44,9 @@ function getSpeedRunList() {
     var categoryID = $('.categoryGroup input:checked').val();
     var orderValues = $('.orderValue').map(function () { return parseInt($(this).val()) });
     var offset = orderValues.length > 0 ? Math.min.apply(null, orderValues) : null;
+    $('.speedrunlist').attr("categoryid", categoryID);
+    $('.speedrunlist').attr("topamt", sra.elementsPerPage);
+    $('.speedrunlist').attr("offset", offset);
 
     $('#loading').show();
     $.get('../templates/SpeedRunSummary.html?_t=' + (new Date()).getTime(), function (summaryTemplate, status) {
@@ -81,6 +88,10 @@ function showSpeedRunDetails(speedRunID, gameID) {
         });
     });
 }
+*/
+
+
+
 
 
 

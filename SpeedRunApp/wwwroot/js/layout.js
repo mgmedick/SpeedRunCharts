@@ -18,6 +18,19 @@ function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS
         sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
     }
 
+    if (!sra.app) {
+        sra["app"] = Vue.createApp({
+            components: {
+                'speedrun-list-category': speedRunListCategoryVue,
+                'speedrun-edit': speedRunEditVue
+            }
+        });
+
+        sra.app.component("speedrun-list", speedRunListVue);
+        sra.app.component("speedrun-summary", speedRunSummaryVue);
+        sra.app.mount('#vue-app');
+    }
+
     if (!getCookie('theme')) {
         setCookie('theme', defaultTheme);
     }

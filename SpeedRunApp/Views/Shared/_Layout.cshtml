@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.Configuration
 @using System.Security.Claims;
+@using SpeedRunCommon.Extensions;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
 @inject IConfiguration Configuration
 
 <!DOCTYPE html>
@@ -36,8 +38,15 @@
         <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
         <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
         <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
+        <script src="@Url.Content("~/lib/vue/vue.global.js")"></script>
+        <script src="@Url.Content("~/lib/axios/axios.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+
+        <script src="@Url.Content("~/js/common.js?v=07/09/2021")"></script>
         <script src="@Url.Content("~/js/layout.js")"></script>
     </environment>
     <environment exclude="Development">
@@ -47,6 +56,13 @@
         <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
         <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
         <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/lib/vue/vue.global.prod.min.js")"></script>
+        <script src="@Url.Content("~/lib/axios/axios.min.js")"></script>
+
+        <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+        <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
 
         <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
         <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
@@ -119,7 +135,7 @@
             }
         </div>
     </nav>
-    <div class="container-fluid body-content">
+    <div id="vue-app" class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer class="footer">
@@ -140,5 +156,9 @@
             </div>
         </div>
     </div>
+    @(("wwwroot/components/SpeedRunListCategoryVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunListVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunSummaryVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunEditVue.html").IncludeFile(hostingEnv))
 </body>
 </html>

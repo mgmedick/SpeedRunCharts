@@ -17,6 +17,14 @@
                     <div class="text-secondary">
                         <small>{{ item.category.name }}{{ (item.subCategoryVariableValuesString) ? ' - ' : '' }}{{ item.subCategoryVariableValuesString }}</small>
                     </div>
+                    <div class="text-secondary" style="font-size:14px;">
+                        {{ (item.rankString) ? item.rankString + ' - ' : '' }}
+                        <template v-for="(player, index) in item.players">
+                            <a :href="'../User/UserDetails?userID=' + player.id" class="text-secondary">{{ player.name }}</a>{{ (item.players.length == index) ? ', ' : '' }}
+                        </template>
+                        &nbsp;-&nbsp;
+                        {{ item.primaryTimeString }}
+                    </div>
                 </div>
                 <div class="details p-0 col-auto ml-auto align-self-center">
                     <a title="Details" href="'javascript:showSpeedRunDetails(' + item.id + ',' + item.game.id');'" class="btn btn-primary detail" style="font-size:12px;">Details</a>

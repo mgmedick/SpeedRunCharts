@@ -6,8 +6,9 @@
         }
     },
     methods: {
-        onCategoryChange: function () {
-            this.categoryid = document.querySelectorAll("input.category:checked")[0].value;
+        onCategoryChange: function (event) {
+            Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
+            event.target.parentElement.classList.add("active");
         }
     }
 };

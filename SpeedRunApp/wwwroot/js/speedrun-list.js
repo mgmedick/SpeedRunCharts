@@ -8,7 +8,7 @@
 function initializeClient(elementsPerPage) {
     initalizeConstants(elementsPerPage);
     initializeEvents();
-    getSpeedRunList();
+    //getSpeedRunList();
 }
 
 function initalizeConstants(elementsPerPage) {
@@ -19,7 +19,7 @@ function initializeEvents() {
     //$('.categoryGroup input').change(onCategoryChange);
     $('[data-toggle="tooltip"]').tooltip();
 
-//    $(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
+    //$(window).off('scroll', OnWindowScroll).on('scroll', OnWindowScroll);
 }
 
 /*

@@ -26,16 +26,115 @@
         <div class="form-group row no-gutters" v-if="item.speedRunVM.statusType.id != 0">
             <label class="col-sm-2 col-form-label">Verified Date</label>
             <div class="col-sm-10">
-                <input id="txtVerifiedDate" type="text" name="verifiedDate" class="date form-control" v-model="item.speedRunVM.verifyDateString" />
+                <!--<vuejs-datepicker class="form-control" :value="item.speedRunVM.verifyDate" name="verifyDate"></vuejs-datepicker>-->
             </div>
         </div>
         <div class="form-group row no-gutters">
             <label class="col-sm-2 col-form-label">Players</label>
             <div class="col-sm-10">
-                <!--<select id="lstUserSearch" name="players" class="user-search" placeholder="Search Users" v-model="playerids" multiple>
-                    <option v-for="player in item.speedRunVM.players" :value="player.id">{{ player.name }}</option>
-                </select>-->
-                <multi-select :options="item.speedRunVM.players" :selected="playerids" :width="300"></multi-select>
+                <div style="width:300px;">
+                    <multi-select :options="item.speedRunVM.players" :selected="playerids"></multi-select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Emulated</label>
+            <div class="col-sm-10">
+                <div class="custom-control custom-switch pt-2">
+                    <input id="chkIsEmulated1" type="checkbox" class="custom-control-input" v-model="item.speedRunVM.isEmulated">
+                    <label class="custom-control-label" for="chkIsEmulated1"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Category Type</label>
+            <div class="col-sm-10">
+                <select id="drpCategoryType" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.categoryType.id">
+                    <option v-for="categoryType in item.categoryTypes" :value="categoryType.id">{{ categoryType.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Platform</label>
+            <div class="col-sm-10">
+                <select id="drpPlatform" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.platform.id">
+                    <option v-for="platform in item.platforms" :value="platform.id">{{ platform.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+                <select id="drpCategory" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.category.id">
+                    <option v-for="category in item.categories" :value="category.id">{{ category.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row no-gutters" v-if="item.speedRunVM.level">
+            <label class="col-sm-2 col-form-label">Level</label>
+            <div class="col-sm-10">
+                <select id="drpLevel" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.level.id">
+                    <option v-for="level in item.levels" :value="level.id">{{ level.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Times</label>
+            <div class="col-sm-auto pl-0">
+                <table class="table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="font-weight-normal p-1" style="font-size:12px;">Primary Time</th>
+                            <th class="font-weight-normal p-1" style="font-size:12px;">Real Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="txtPrimaryTime" type="text" name="primaryTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.primaryTimeString" />
+                            </td>
+                            <td>
+                                <input id="txtRealTime" type="text" name="realTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.realTimeString" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-auto pl-0">
+                <table class="table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="font-weight-normal p-1" style="font-size:12px;">Real Time w/o Loads</th>
+                            <th class="font-weight-normal p-1" style="font-size:12px;">Game Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="txtRealTimeWithoutLoads" type="text" name="realTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.realTimeWithoutLoadsString" />
+                            </td>
+                            <td>
+                                <input id="txtGameTime" type="text" name="gameTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.gameTimeString" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <div class="col-sm-10 m-auto">
+                <div class="p-0 embed-responsive embed-responsive-16by9">
+                    <iframe :src="item.speedRunVM.videoLink"
+                            loading="lazy"
+                            frameborder="0"
+                            scrolling="no"
+                            allowfullscreen="true"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row no-gutters pt-1" v-if="!item.isreadonly">
+            <div class="form-group">
+                <input id="btnSave" type="button" class="btn btn-primary" value="Save" @click="save" />
             </div>
         </div>
     </div>

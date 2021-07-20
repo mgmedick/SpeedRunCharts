@@ -42,7 +42,7 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID, bool isReadOnly)
+        public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID)
         {
             var gameVM = _gamesService.GetGame(gameID);
             var statusTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)RunStatusType.New, Name = RunStatusType.New .ToString() },
@@ -56,7 +56,7 @@ namespace SpeedRunApp.Service
                 runVM = new SpeedRunViewModel(run);
             }
 
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM, isReadOnly);
+            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM);
 
             return editSpeedRunVM;
         }

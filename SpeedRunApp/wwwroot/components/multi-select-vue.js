@@ -2,7 +2,6 @@
     template: "#multi-select",
     props: {
         selected: Array,
-        width: String,
         options: Array
     },
     data: function () {

@@ -55,9 +55,9 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null, bool isReadOnly = false)
+        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
         {
-            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID, isReadOnly);
+            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID);
 
             return Json(results);
         }

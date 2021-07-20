@@ -134,6 +134,14 @@
         "choices.min.css",
         "choices.css"
       ]
+    },
+    {
+      "library": "vuejs-datepicker@1.6.2",
+      "destination": "wwwroot/lib/vuejs-datepicker/",
+      "files": [
+        "vuejs-datepicker.min.js",
+        "vuejs-datepicker.js"
+      ]
     }
   ]
 }

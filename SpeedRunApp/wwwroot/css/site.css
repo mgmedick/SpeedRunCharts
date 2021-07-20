@@ -185,6 +185,78 @@ div.chart-placeholder + div.chart-placeholder {
     border: none !important;
 }
 
+.modal-mask {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+/** choices **/
+.choices__inner {
+    padding: 2.5px 2.5px 3.75px;
+    min-height: 28px;
+    background-color: #444;
+    border: 1px solid #222;
+}
+
+.choices__inner .choices__list--multiple .choices__item--selectable {
+    background-color: #262626;
+    border-color: #262626;
+    border-radius: 5px;
+}
+
+.choices__inner .choices__input {
+    background-color: #444;
+}
+
+.is-focused .choices__inner,
+.is-open .choices__inner {
+    border-color: #222;
+}
+
+.choices__list {
+    background-color: #444;
+}
+
+.choices__list--multiple .choices__item {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: #444;
+    color: #fff;
+}
+
+.is-open .choices__list--dropdown {
+    border-color: #222;
+}
+
+
+
+
+
+
+
+
+
 
 
 

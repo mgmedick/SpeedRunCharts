@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
+        <link rel="stylesheet" href="~/lib/choices.js/choices.css" />
 
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/bootstrap-theme.css" />
@@ -26,6 +27,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.min.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+        <link rel="stylesheet" href="~/lib/choices.js/choices.min.css" />
 
         <link rel="stylesheet" href="~/css/site.css?v=01/20/2021" />
         <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=06/10/2021" />
@@ -36,8 +38,9 @@
         <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
         <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
         <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
+        <script src="@Url.Content("~/lib/choices.js/choices.js")"></script>
+
         <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
-        @*<script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>*@
         <script src="@Url.Content("~/lib/vue/vue.global.js")"></script>
         <script src="@Url.Content("~/lib/axios/axios.js")"></script>
 
@@ -45,6 +48,7 @@
         <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
         <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
         <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+        <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
 
         <script src="@Url.Content("~/js/common.js?v=07/09/2021")"></script>
         <script src="@Url.Content("~/js/layout.js")"></script>
@@ -54,8 +58,8 @@
         <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
         <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
         <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
+        <script src="@Url.Content("~/lib/choices.js/choices.min.js")"></script>
         <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
-        @*<script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>*@
         <script src="@Url.Content("~/lib/vue/vue.global.prod.min.js")"></script>
         <script src="@Url.Content("~/lib/axios/axios.min.js")"></script>
 
@@ -63,6 +67,7 @@
         <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
         <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
         <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+        <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
 
         <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
         <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
@@ -160,5 +165,6 @@
     @(("wwwroot/components/SpeedRunListVue.html").IncludeFile(hostingEnv))
     @(("wwwroot/components/SpeedRunSummaryVue.html").IncludeFile(hostingEnv))
     @(("wwwroot/components/SpeedRunEditVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/MultiSelectVue.html").IncludeFile(hostingEnv))
 </body>
 </html>

@@ -6,10 +6,6 @@
       "library": "twitter-bootstrap@4.5.2",
       "destination": "wwwroot/lib/bootstrap",
       "files": [
-        "js/bootstrap.js",
-        "js/bootstrap.min.js",
-        "js/bootstrap.bundle.js",
-        "js/bootstrap.bundle.min.js",
         "css/bootstrap.css",
         "css/bootstrap.min.css"
       ]
@@ -128,6 +124,16 @@
     {
       "library": "axios@0.21.1",
       "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "library": "choices.js@9.0.1",
+      "destination": "wwwroot/lib/choices.js/",
+      "files": [
+        "choices.min.js",
+        "choices.js",
+        "choices.min.css",
+        "choices.css"
+      ]
     }
   ]
 }

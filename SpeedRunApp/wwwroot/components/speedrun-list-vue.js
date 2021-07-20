@@ -35,15 +35,13 @@
             var that = this;
             this.loading = true;
 
-            var prms = axios.get('../SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
-                .then(res => {
+            axios.get('../SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
+                 .then(res => {
                     that.items = that.items.concat(res.data);
-                    this.loading = false;
+                    that.loading = false;
                     return res;
-                })
-                .catch(err => { console.error(err); return Promise.reject(err); });
-
-            return prms;
+                  })
+                 .catch(err => { console.error(err); return Promise.reject(err); });
         },
         onWindowScroll: function () {
             var that = this;

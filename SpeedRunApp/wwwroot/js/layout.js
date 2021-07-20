@@ -21,13 +21,15 @@ function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS
     if (!sra.app) {
         sra["app"] = Vue.createApp({
             components: {
-                'speedrun-list-category': speedRunListCategoryVue,
-                'speedrun-edit': speedRunEditVue
+                'speedrun-list-category': speedRunListCategoryVue
             }
         });
 
+        sra.app.component("multi-select", multiSelectVue);
+        sra.app.component("speedrun-edit", speedRunEditVue);
         sra.app.component("speedrun-list", speedRunListVue);
         sra.app.component("speedrun-summary", speedRunSummaryVue);
+
         sra.app.mount('#vue-app');
     }
 

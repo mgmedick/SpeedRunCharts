@@ -1,11 +1,41 @@
 ﻿<script id="speedrun-edit" type="text/html">
-    <div id="divSpeedRunEdit" class="container">
+    <div v-if="loading">
+        <div class="d-flex">
+            <div class="mx-auto">
+                <i class="fas fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+    </div>
+    <div id="divSpeedRunEdit" class="container" v-else>
         <div class="form-group row no-gutters">
             <label class="col-sm-2 col-form-label">Game</label>
             <div class="col-sm-10">
                 <span class="icon-wrapper">
-                    <input id="txtGameSearch" type="text" name="game" class="form-control mr-sm-2 game-search" style="width:300px;" placeholder="Search Games" aria-label="Search" v-model="gamename">
-                 </span>
+                    <input id="txtGameSearch" type="text" name="game" class="form-control mr-sm-2 game-search" style="width:300px;" placeholder="Search Games" aria-label="Search" v-model="item.speedRunVM.game.name">
+                </span>
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+                <select id="drpStatus" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.statusType.id">
+                    <option v-for="statusType in item.statusTypes" :value="statusType.id">{{ statusType.name }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row no-gutters" v-if="item.speedRunVM.statusType.id != 0">
+            <label class="col-sm-2 col-form-label">Verified Date</label>
+            <div class="col-sm-10">
+                <input id="txtVerifiedDate" type="text" name="verifiedDate" class="date form-control" v-model="item.speedRunVM.verifyDateString" />
+            </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-2 col-form-label">Players</label>
+            <div class="col-sm-10">
+                <!--<select id="lstUserSearch" name="players" class="user-search" placeholder="Search Users" v-model="playerids" multiple>
+                    <option v-for="player in item.speedRunVM.players" :value="player.id">{{ player.name }}</option>
+                </select>-->
+                <multi-select :options="item.speedRunVM.players" :selected="playerids" :width="300"></multi-select>
             </div>
         </div>
     </div>

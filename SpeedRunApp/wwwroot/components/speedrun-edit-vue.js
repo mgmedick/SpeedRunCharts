@@ -14,6 +14,9 @@
     computed: {
         playerids: function () {
             return this.item.speedRunVM.players.map(i => i.id.toString());
+        },
+        exampleDate: function () {
+            return new Date().toISOString().split('T')[0];
         }
     },
     created() {
@@ -39,7 +42,8 @@
             if (this.readonly) {
                 Array.from(document.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=radio], select')).forEach((el) => el.disabled = true);
             }
-        }
+        },
+        save: function () { }
     }
 };
 

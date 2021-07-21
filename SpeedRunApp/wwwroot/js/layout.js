@@ -25,7 +25,7 @@ function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS
             }
         });
 
-        sra.app.component("vuejs-datepicker", vuejsDatepicker);
+        sra.app.component("datepicker", datepickerVue);
         sra.app.component("multi-select", multiSelectVue);
         sra.app.component("speedrun-edit", speedRunEditVue);
         sra.app.component("speedrun-list", speedRunListVue);

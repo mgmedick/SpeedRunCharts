@@ -6,7 +6,8 @@
     },
     data() {
         return {
-            showModal: false
+            showModal: false,
+            exampleDate: new Date("05/15/2021").toISOString()
         }
     },
     methods: {

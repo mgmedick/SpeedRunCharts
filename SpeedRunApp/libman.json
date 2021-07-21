@@ -150,6 +150,7 @@
   "destination": "wwwroot/lib/vanillajs-datepicker/",
   "files": [
     "dist/css/datepicker-bs4.css",
+    "dist/css/datepicker.css",
     "dist/js/datepicker-full.js",
     "dist/js/datepicker-full.min.js",
     "dist/css/datepicker-bs4.min.css"

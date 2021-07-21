@@ -10,17 +10,20 @@
             dtFormat: this.format ? this.format : 'mm/dd/yyyy'
         };
     },
-    template: '<input v-model="value" name="date-picker"/>',
-    mounted: function() {        
+    template: '<input v-model="dt" name="date-picker" />',
+    mounted: function () {
+        var that = this;
         var datepicker = new Datepicker(this.$el, {
             buttonClass: 'btn',
-            format: this.format
+            format: this.dtFormat
         });
+
+        this.$el.addEventListener('changeDate', function (e) { that.dateChanged(e); });
     },
     methods: {
-        dateChanged: function (event) {
-            this.dt = event.target.value;
-            this.$emit('selected', date);
+        dateChanged: function (e) {
+            this.dt = e.target.value;
+            this.$emit('dateChanged', this.dt, this.index);
         },
     }
 };

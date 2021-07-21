@@ -14,9 +14,6 @@
     computed: {
         playerids: function () {
             return this.item.speedRunVM.players.map(i => i.id.toString());
-        },
-        exampleDate: function () {
-            return new Date().toISOString().split('T')[0];
         }
     },
     created() {

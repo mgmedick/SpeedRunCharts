@@ -1,21 +1,23 @@
 ﻿const datepickerVue = {
-    template: "#datepicker",
+    template: '<input type="text" v-model="dt" name="date-picker" />',
     props: {
         date: String,
-        format: String
+        format: String,
+        container: String
     },
     data: function () {
         return {
             dt: this.date ? this.date : '',
-            dtFormat: this.format ? this.format : 'mm/dd/yyyy'
+            dtFormat: this.format ? this.format : 'mm/dd/yyyy',
+            dtContainer: this.container ? this.container : 'body'
         };
     },
-    template: '<input v-model="dt" name="date-picker" />',
     mounted: function () {
         var that = this;
         var datepicker = new Datepicker(this.$el, {
             buttonClass: 'btn',
-            format: this.dtFormat
+            format: that.dtFormat,
+            container: that.dtContainer
         });
 
         this.$el.addEventListener('changeDate', function (e) { that.dateChanged(e); });

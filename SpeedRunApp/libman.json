@@ -112,16 +112,6 @@
       ]
     },
     {
-      "library": "vue@3.1.4",
-      "destination": "wwwroot/lib/vue/",
-      "files": [
-        "vue.global.js",
-        "vue.global.min.js",
-        "vue.global.prod.js",
-        "vue.global.prod.min.js"
-      ]
-    },
-    {
       "library": "axios@0.21.1",
       "destination": "wwwroot/lib/axios/"
     },
@@ -142,19 +132,28 @@
         "vuejs-datepicker.min.js",
         "vuejs-datepicker.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vanillajs-datepicker@1.1.4",
+      "destination": "wwwroot/lib/vanillajs-datepicker/",
+      "files": [
+        "dist/css/datepicker-bs4.css",
+        "dist/css/datepicker.css",
+        "dist/js/datepicker-full.js",
+        "dist/js/datepicker-full.min.js",
+        "dist/css/datepicker-bs4.min.css"
+      ]
+    },
+    {
+      "library": "vue@3.1.5",
+      "destination": "wwwroot/lib/vue/",
+      "files": [
+        "vue.global.js",
+        "vue.global.min.js",
+        "vue.global.prod.js",
+        "vue.global.prod.min.js"
+      ]
     }
-  ,
-{
-  "provider": "unpkg",
-  "library": "vanillajs-datepicker@1.1.4",
-  "destination": "wwwroot/lib/vanillajs-datepicker/",
-  "files": [
-    "dist/css/datepicker-bs4.css",
-    "dist/css/datepicker.css",
-    "dist/js/datepicker-full.js",
-    "dist/js/datepicker-full.min.js",
-    "dist/css/datepicker-bs4.min.css"
   ]
-}
-]
 }

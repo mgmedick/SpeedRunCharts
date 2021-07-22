@@ -53,11 +53,20 @@ var Vue = (function (exports) {
 
   const range = 2;
   function generateCodeFrame(source, start = 0, end = source.length) {
-      const lines = source.split(/\r?\n/);
+      // Split the content into individual lines but capture the newline sequence
+      // that separated each line. This is important because the actual sequence is
+      // needed to properly take into account the full line length for offset
+      // comparison
+      let lines = source.split(/(\r?\n)/);
+      // Separate the lines and newline sequences into separate arrays for easier referencing
+      const newlineSequences = lines.filter((_, idx) => idx % 2 === 1);
+      lines = lines.filter((_, idx) => idx % 2 === 0);
       let count = 0;
       const res = [];
       for (let i = 0; i < lines.length; i++) {
-          count += lines[i].length + 1;
+          count +=
+              lines[i].length +
+                  ((newlineSequences[i] && newlineSequences[i].length) || 0);
           if (count >= start) {
               for (let j = i - range; j <= i + range || end > count; j++) {
                   if (j < 0 || j >= lines.length)
@@ -65,9 +74,10 @@ var Vue = (function (exports) {
                   const line = j + 1;
                   res.push(`${line}${' '.repeat(Math.max(3 - String(line).length, 0))}|  ${lines[j]}`);
                   const lineLength = lines[j].length;
+                  const newLineSeqLength = (newlineSequences[j] && newlineSequences[j].length) || 0;
                   if (j === i) {
                       // push underline
-                      const pad = start - (count - lineLength) + 1;
+                      const pad = start - (count - (lineLength + newLineSeqLength));
                       const length = Math.max(1, end > count ? lineLength - pad : end - start);
                       res.push(`   |  ` + ' '.repeat(pad) + '^'.repeat(length));
                   }
@@ -76,7 +86,7 @@ var Vue = (function (exports) {
                           const length = Math.max(Math.min(end - count, lineLength), 1);
                           res.push(`   |  ` + '^'.repeat(length));
                       }
-                      count += lineLength + 1;
+                      count += lineLength + newLineSeqLength;
                   }
               }
               break;
@@ -569,17 +579,16 @@ var Vue = (function (exports) {
   function createArrayInstrumentations() {
       const instrumentations = {};
       ['includes', 'indexOf', 'lastIndexOf'].forEach(key => {
-          const method = Array.prototype[key];
           instrumentations[key] = function (...args) {
               const arr = toRaw(this);
               for (let i = 0, l = this.length; i < l; i++) {
                   track(arr, "get" /* GET */, i + '');
               }
               // we run the method using the original args first (which may be reactive)
-              const res = method.apply(arr, args);
+              const res = arr[key](...args);
               if (res === -1 || res === false) {
                   // if that didn't work, run it again using raw values.
-                  return method.apply(arr, args.map(toRaw));
+                  return arr[key](...args.map(toRaw));
               }
               else {
                   return res;
@@ -587,10 +596,9 @@ var Vue = (function (exports) {
           };
       });
       ['push', 'pop', 'shift', 'unshift', 'splice'].forEach(key => {
-          const method = Array.prototype[key];
           instrumentations[key] = function (...args) {
               pauseTracking();
-              const res = method.apply(this, args);
+              const res = toRaw(this)[key].apply(this, args);
               resetTracking();
               return res;
           };
@@ -1127,18 +1135,19 @@ var Vue = (function (exports) {
       return createRef(value, true);
   }
   class RefImpl {
-      constructor(_rawValue, _shallow) {
-          this._rawValue = _rawValue;
+      constructor(value, _shallow = false) {
           this._shallow = _shallow;
           this.__v_isRef = true;
-          this._value = _shallow ? _rawValue : convert(_rawValue);
+          this._rawValue = _shallow ? value : toRaw(value);
+          this._value = _shallow ? value : convert(value);
       }
       get value() {
           track(toRaw(this), "get" /* GET */, 'value');
           return this._value;
       }
       set value(newVal) {
-          if (hasChanged(toRaw(newVal), this._rawValue)) {
+          newVal = this._shallow ? newVal : toRaw(newVal);
+          if (hasChanged(newVal, this._rawValue)) {
               this._rawValue = newVal;
               this._value = this._shallow ? newVal : convert(newVal);
               trigger(toRaw(this), "set" /* SET */, 'value', newVal);
@@ -2091,9 +2100,10 @@ var Vue = (function (exports) {
           message: (comp) => {
               const configMsg = `opt-in to ` +
                   `Vue 3 behavior on a per-component basis with \`compatConfig: { ${"COMPONENT_V_MODEL" /* COMPONENT_V_MODEL */}: false }\`.`;
-              if (comp.props && isArray(comp.props)
-                  ? comp.props.includes('modelValue')
-                  : hasOwn(comp.props, 'modelValue')) {
+              if (comp.props &&
+                  (isArray(comp.props)
+                      ? comp.props.includes('modelValue')
+                      : hasOwn(comp.props, 'modelValue'))) {
                   return (`Component delcares "modelValue" prop, which is Vue 3 usage, but ` +
                       `is running under Vue 2 compat v-model behavior. You can ${configMsg}`);
               }
@@ -3381,9 +3391,11 @@ var Vue = (function (exports) {
       };
   }
   function traverse(value, seen = new Set()) {
-      if (!isObject(value) ||
-          seen.has(value) ||
-          value["__v_skip" /* SKIP */]) {
+      if (!isObject(value) || value["__v_skip" /* SKIP */]) {
+          return value;
+      }
+      seen = seen || new Set();
+      if (seen.has(value)) {
           return value;
       }
       seen.add(value);
@@ -5172,6 +5184,9 @@ var Vue = (function (exports) {
                   updated: dir
               };
           }
+          if (dir.deep) {
+              traverse(value);
+          }
           bindings.push({
               dir,
               instance,
@@ -5852,7 +5867,7 @@ var Vue = (function (exports) {
       const { insert: hostInsert, remove: hostRemove, patchProp: hostPatchProp, forcePatchProp: hostForcePatchProp, createElement: hostCreateElement, createText: hostCreateText, createComment: hostCreateComment, setText: hostSetText, setElementText: hostSetElementText, parentNode: hostParentNode, nextSibling: hostNextSibling, setScopeId: hostSetScopeId = NOOP, cloneNode: hostCloneNode, insertStaticContent: hostInsertStaticContent } = options;
       // Note: functions inside this closure should use `const xxx = () => {}`
       // style in order to prevent being inlined by minifiers.
-      const patch = (n1, n2, container, anchor = null, parentComponent = null, parentSuspense = null, isSVG = false, slotScopeIds = null, optimized = false) => {
+      const patch = (n1, n2, container, anchor = null, parentComponent = null, parentSuspense = null, isSVG = false, slotScopeIds = null, optimized = isHmrUpdating ? false : !!n2.dynamicChildren) => {
           // patching & not same type, unmount old tree
           if (n1 && !isSameVNodeType(n1, n2)) {
               anchor = getNextHostNode(n1);
@@ -5925,19 +5940,7 @@ var Vue = (function (exports) {
           }
       };
       const mountStaticNode = (n2, container, anchor, isSVG) => {
-          // static nodes are only present when used with compiler-dom/runtime-dom
-          // which guarantees presence of hostInsertStaticContent.
-          const nodes = hostInsertStaticContent(n2.children, container, anchor, isSVG, 
-          // pass cached nodes if the static node is being mounted multiple times
-          // so that runtime-dom can simply cloneNode() instead of inserting new
-          // HTML
-          n2.staticCache);
-          // first mount - this is the orignal hoisted vnode. cache nodes.
-          if (!n2.el) {
-              n2.staticCache = nodes;
-          }
-          n2.el = nodes[0];
-          n2.anchor = nodes[nodes.length - 1];
+          [n2.el, n2.anchor] = hostInsertStaticContent(n2.children, container, anchor, isSVG);
       };
       /**
        * Dev / HMR only
@@ -5994,7 +5997,7 @@ var Vue = (function (exports) {
                   hostSetElementText(el, vnode.children);
               }
               else if (shapeFlag & 16 /* ARRAY_CHILDREN */) {
-                  mountChildren(vnode.children, el, null, parentComponent, parentSuspense, isSVG && type !== 'foreignObject', slotScopeIds, optimized || !!vnode.dynamicChildren);
+                  mountChildren(vnode.children, el, null, parentComponent, parentSuspense, isSVG && type !== 'foreignObject', slotScopeIds, optimized);
               }
               if (dirs) {
                   invokeDirectiveHook(vnode, null, parentComponent, 'created');
@@ -7630,7 +7633,6 @@ var Vue = (function (exports) {
           target: vnode.target,
           targetAnchor: vnode.targetAnchor,
           staticCount: vnode.staticCount,
-          staticCache: vnode.staticCache,
           shapeFlag: vnode.shapeFlag,
           // if the vnode is cloned with extra props, we can no longer assume its
           // existing patch flag to be reliable and need to add the FULL_PROPS flag.
@@ -8674,24 +8676,34 @@ var Vue = (function (exports) {
       return props;
   }
   /**
-   * Runtime helper for storing and resuming current instance context in
-   * async setup().
+   * `<script setup>` helper for persisting the current instance context over
+   * async/await flows.
+   *
+   * `@vue/compiler-sfc` converts the following:
+   *
+   * ```ts
+   * const x = await foo()
+   * ```
+   *
+   * into:
+   *
+   * ```ts
+   * let __temp, __restore
+   * const x = (([__temp, __restore] = withAsyncContext(() => foo())),__temp=await __temp,__restore(),__temp)
+   * ```
+   * @internal
    */
-  function withAsyncContext(awaitable) {
+  function withAsyncContext(getAwaitable) {
       const ctx = getCurrentInstance();
-      setCurrentInstance(null); // unset after storing instance
-      if (!ctx) {
-          warn(`withAsyncContext() called when there is no active context instance.`);
+      let awaitable = getAwaitable();
+      setCurrentInstance(null);
+      if (isPromise(awaitable)) {
+          awaitable = awaitable.catch(e => {
+              setCurrentInstance(ctx);
+              throw e;
+          });
       }
-      return isPromise(awaitable)
-          ? awaitable.then(res => {
-              setCurrentInstance(ctx);
-              return res;
-          }, err => {
-              setCurrentInstance(ctx);
-              throw err;
-          })
-          : awaitable;
+      return [awaitable, () => setCurrentInstance(ctx)];
   }
 
   // Actual implementation
@@ -8919,7 +8931,7 @@ var Vue = (function (exports) {
   }
 
   // Core API ------------------------------------------------------------------
-  const version = "3.1.4";
+  const version = "3.1.5";
   /**
    * SSR utils for \@vue/server-renderer. Only exposed in cjs builds.
    * @internal
@@ -8936,6 +8948,7 @@ var Vue = (function (exports) {
 
   const svgNS = 'http://www.w3.org/2000/svg';
   const doc = (typeof document !== 'undefined' ? document : null);
+  const staticTemplateCache = new Map();
   const nodeOps = {
       insert: (child, parent, anchor) => {
           parent.insertBefore(child, anchor || null);
@@ -8986,82 +8999,56 @@ var Vue = (function (exports) {
           return cloned;
       },
       // __UNSAFE__
-      // Reason: insertAdjacentHTML.
+      // Reason: innerHTML.
       // Static content here can only come from compiled templates.
       // As long as the user only uses trusted templates, this is safe.
-      insertStaticContent(content, parent, anchor, isSVG, cached) {
-          if (cached) {
-              let first;
-              let last;
-              let i = 0;
-              let l = cached.length;
-              for (; i < l; i++) {
-                  const node = cached[i].cloneNode(true);
-                  if (i === 0)
-                      first = node;
-                  if (i === l - 1)
-                      last = node;
-                  parent.insertBefore(node, anchor);
-              }
-              return [first, last];
-          }
+      insertStaticContent(content, parent, anchor, isSVG) {
           // <parent> before | first ... last | anchor </parent>
           const before = anchor ? anchor.previousSibling : parent.lastChild;
-          if (anchor) {
-              let insertionPoint;
-              let usingTempInsertionPoint = false;
-              if (anchor instanceof Element) {
-                  insertionPoint = anchor;
+          let template = staticTemplateCache.get(content);
+          if (!template) {
+              const t = doc.createElement('template');
+              t.innerHTML = isSVG ? `<svg>${content}</svg>` : content;
+              template = t.content;
+              if (isSVG) {
+                  // remove outer svg wrapper
+                  const wrapper = template.firstChild;
+                  while (wrapper.firstChild) {
+                      template.appendChild(wrapper.firstChild);
+                  }
+                  template.removeChild(wrapper);
               }
-              else {
-                  // insertAdjacentHTML only works for elements but the anchor is not an
-                  // element...
-                  usingTempInsertionPoint = true;
-                  insertionPoint = isSVG
-                      ? doc.createElementNS(svgNS, 'g')
-                      : doc.createElement('div');
-                  parent.insertBefore(insertionPoint, anchor);
-              }
-              insertionPoint.insertAdjacentHTML('beforebegin', content);
-              if (usingTempInsertionPoint) {
-                  parent.removeChild(insertionPoint);
-              }
+              staticTemplateCache.set(content, template);
           }
-          else {
-              parent.insertAdjacentHTML('beforeend', content);
-          }
-          let first = before ? before.nextSibling : parent.firstChild;
-          const last = anchor ? anchor.previousSibling : parent.lastChild;
-          const ret = [];
-          while (first) {
-              ret.push(first);
-              if (first === last)
-                  break;
-              first = first.nextSibling;
-          }
-          return ret;
+          parent.insertBefore(template.cloneNode(true), anchor);
+          return [
+              // first
+              before ? before.nextSibling : parent.firstChild,
+              // last
+              anchor ? anchor.previousSibling : parent.lastChild
+          ];
       }
   };
 
   // compiler should normalize class + :class bindings on the same element
   // into a single binding ['staticClass', dynamic]
   function patchClass(el, value, isSVG) {
-      if (value == null) {
-          value = '';
+      // directly setting className should be faster than setAttribute in theory
+      // if this is an element during a transition, take the temporary transition
+      // classes into account.
+      const transitionClasses = el._vtc;
+      if (transitionClasses) {
+          value = (value
+              ? [value, ...transitionClasses]
+              : [...transitionClasses]).join(' ');
       }
-      if (isSVG) {
+      if (value == null) {
+          el.removeAttribute('class');
+      }
+      else if (isSVG) {
           el.setAttribute('class', value);
       }
       else {
-          // directly setting className should be faster than setAttribute in theory
-          // if this is an element during a transition, take the temporary transition
-          // classes into account.
-          const transitionClasses = el._vtc;
-          if (transitionClasses) {
-              value = (value
-                  ? [value, ...transitionClasses]
-                  : [...transitionClasses]).join(' ');
-          }
           el.className = value;
       }
   }
@@ -9204,7 +9191,11 @@ var Vue = (function (exports) {
           }
           else if (type === 'number') {
               // e.g. <img :width="null">
-              el[key] = 0;
+              // the value of some IDL attr must be greater than 0, e.g. input.size = 0 -> error
+              try {
+                  el[key] = 0;
+              }
+              catch (_a) { }
               el.removeAttribute(key);
               return;
           }
@@ -9439,13 +9430,27 @@ var Vue = (function (exports) {
           vnode = vnode.component.subTree;
       }
       if (vnode.shapeFlag & 1 /* ELEMENT */ && vnode.el) {
-          const style = vnode.el.style;
-          for (const key in vars) {
-              style.setProperty(`--${key}`, vars[key]);
-          }
+          setVarsOnNode(vnode.el, vars);
       }
       else if (vnode.type === Fragment) {
           vnode.children.forEach(c => setVarsOnVNode(c, vars));
+      }
+      else if (vnode.type === Static) {
+          let { el, anchor } = vnode;
+          while (el) {
+              setVarsOnNode(el, vars);
+              if (el === anchor)
+                  break;
+              el = el.nextSibling;
+          }
+      }
+  }
+  function setVarsOnNode(el, vars) {
+      if (el.nodeType === 1) {
+          const style = el.style;
+          for (const key in vars) {
+              style.setProperty(`--${key}`, vars[key]);
+          }
       }
   }
 
@@ -9924,6 +9929,8 @@ var Vue = (function (exports) {
       }
   };
   const vModelCheckbox = {
+      // #4096 array checkboxes need to be deep traversed
+      deep: true,
       created(el, _, vnode) {
           el._assign = getModelAssigner(vnode);
           addEventListener(el, 'change', () => {
@@ -9993,6 +10000,8 @@ var Vue = (function (exports) {
       }
   };
   const vModelSelect = {
+      // <select multiple> value need to be deep traversed
+      deep: true,
       created(el, { value, modifiers: { number } }, vnode) {
           const isSetModel = isSet(value);
           addEventListener(el, 'change', () => {
@@ -10620,7 +10629,7 @@ var Vue = (function (exports) {
   const nonIdentifierRE = /^\d|[^\$\w]/;
   const isSimpleIdentifier = (name) => !nonIdentifierRE.test(name);
   const validFirstIdentCharRE = /[A-Za-z_$\xA0-\uFFFF]/;
-  const validIdentCharRE = /[\.\w$\xA0-\uFFFF]/;
+  const validIdentCharRE = /[\.\?\w$\xA0-\uFFFF]/;
   const whitespaceRE = /\s+[.[]\s*|\s*[.[]\s+/g;
   /**
    * Simple lexer to check if an expression is a member expression. This is
@@ -10632,17 +10641,23 @@ var Vue = (function (exports) {
       // remove whitespaces around . or [ first
       path = path.trim().replace(whitespaceRE, s => s.trim());
       let state = 0 /* inMemberExp */;
-      let prevState = 0 /* inMemberExp */;
+      let stateStack = [];
       let currentOpenBracketCount = 0;
+      let currentOpenParensCount = 0;
       let currentStringType = null;
       for (let i = 0; i < path.length; i++) {
           const char = path.charAt(i);
           switch (state) {
               case 0 /* inMemberExp */:
                   if (char === '[') {
-                      prevState = state;
+                      stateStack.push(state);
                       state = 1 /* inBrackets */;
                       currentOpenBracketCount++;
+                  }
+                  else if (char === '(') {
+                      stateStack.push(state);
+                      state = 2 /* inParens */;
+                      currentOpenParensCount++;
                   }
                   else if (!(i === 0 ? validFirstIdentCharRE : validIdentCharRE).test(char)) {
                       return false;
@@ -10650,8 +10665,8 @@ var Vue = (function (exports) {
                   break;
               case 1 /* inBrackets */:
                   if (char === `'` || char === `"` || char === '`') {
-                      prevState = state;
-                      state = 2 /* inString */;
+                      stateStack.push(state);
+                      state = 3 /* inString */;
                       currentStringType = char;
                   }
                   else if (char === `[`) {
@@ -10659,19 +10674,38 @@ var Vue = (function (exports) {
                   }
                   else if (char === `]`) {
                       if (!--currentOpenBracketCount) {
-                          state = prevState;
+                          state = stateStack.pop();
                       }
                   }
                   break;
-              case 2 /* inString */:
+              case 2 /* inParens */:
+                  if (char === `'` || char === `"` || char === '`') {
+                      stateStack.push(state);
+                      state = 3 /* inString */;
+                      currentStringType = char;
+                  }
+                  else if (char === `(`) {
+                      currentOpenParensCount++;
+                  }
+                  else if (char === `)`) {
+                      // if the exp ends as a call then it should not be considered valid
+                      if (i === path.length - 1) {
+                          return false;
+                      }
+                      if (!--currentOpenParensCount) {
+                          state = stateStack.pop();
+                      }
+                  }
+                  break;
+              case 3 /* inString */:
                   if (char === currentStringType) {
-                      state = prevState;
+                      state = stateStack.pop();
                       currentStringType = null;
                   }
                   break;
           }
       }
-      return !currentOpenBracketCount;
+      return !currentOpenBracketCount && !currentOpenParensCount;
   };
   function getInnerRange(loc, offset, length) {
       const source = loc.source.substr(offset, length);
@@ -13431,7 +13465,8 @@ var Vue = (function (exports) {
           switch (child.type) {
               case 1 /* ELEMENT */:
                   if (child.tagType === 2 /* SLOT */ ||
-                      (child.tagType === 0 /* ELEMENT */ &&
+                      ((child.tagType === 0 /* ELEMENT */ ||
+                          child.tagType === 3 /* TEMPLATE */) &&
                           hasForwardedSlots(child.children))) {
                       return true;
                   }

@@ -306,7 +306,7 @@ body {
 
 body.theme-dark {
     color: #fff;
-    background-color:#222 !important;
+    background-color: #222 !important;
 }
 
 body.theme-light {
@@ -3017,5 +3017,65 @@ a.text-dark:hover, a.text-dark:focus {
 .theme-dark .ui-jqgrid.ui-jqgrid-bootstrap .ui-jqgrid-caption, .ui-jqdialog.ui-jqgrid-bootstrap .ui-jqdialog-titlebar {
     background-color: #303030 !important;
 }
+
+/*datepicker*/
+.theme-dark .datepicker-picker {
+    color: #fff;
+    background-color: #303030 !important;
+}
+
+.theme-dark .datepicker-controls .btn {
+    background-color: #303030 !important;
+}
+
+.theme-dark .datepicker-controls .btn {
+    background-color: #303030 !important;
+}
+
+.theme-dark .datepicker-cell.focused:not(.selected) {
+    background-color: #222 !important;
+}
+
+.theme-dark .datepicker-cell:not(.disabled):hover {
+    background-color: #222 !important;
+}
+
+.datepicker-input {
+    background-color:#444;
+}
+
+/** choices **/
+.theme-dark .choices__inner {
+    background-color: #444;
+    border: 1px solid #222;
+}
+
+.theme-dark .choices__inner .choices__list--multiple .choices__item--selectable {
+    background-color: #262626;
+    border-color: #262626;
+}
+
+.theme-dark .choices__inner .choices__input {
+    background-color: #444;
+}
+
+.theme-dark .is-focused .choices__inner,
+.theme-dark .is-open .choices__inner {
+    border-color: #222;
+}
+
+.theme-dark .choices__list {
+    background-color: #444;
+}
+
+.theme-dark .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: #444;
+    color: #fff;
+}
+
+.theme-dark .is-open .choices__list--dropdown {
+    border-color: #222;
+}
+
 
 

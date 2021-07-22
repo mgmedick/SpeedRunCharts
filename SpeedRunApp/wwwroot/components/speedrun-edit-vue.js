@@ -16,7 +16,7 @@
             return this.item.speedRunVM.players.map(i => i.id.toString());
         }
     },
-    created() {
+    created: function() {
         this.loadData().then(i => { this.init(); });       
     },
     methods: {
@@ -37,7 +37,7 @@
         },
         init: function () {
             if (this.readonly) {
-                Array.from(document.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=radio], select')).forEach((el) => el.disabled = true);
+                Array.from(this.$el.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=radio], select')).forEach((el) => el.disabled = true);
             }
         },
         save: function () { }

@@ -1,8 +1,9 @@
 ﻿const multiSelectVue = {
-    template: "#multi-select",
+    template: '<select multiple></select>',
     props: {
         selected: Array,
-        options: Array
+        options: Array,
+        disabled: Boolean
     },
     data: function () {
         return {
@@ -43,6 +44,10 @@
             searchFields: ['label']
         });
 
+        if (this.disabled) {
+            this.choices.disable();
+        }
+
         this.choices.setChoiceByValue(this.values);
 
         this.$el.addEventListener('change',
@@ -68,7 +73,6 @@
             this.values = this.selected;
             this.choices.setChoiceByValue(this.values);
         },
-
     }
 };
 

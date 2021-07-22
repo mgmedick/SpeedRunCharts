@@ -185,6 +185,7 @@ div.chart-placeholder + div.chart-placeholder {
     border: none !important;
 }
 
+/** modal **/
 .modal-mask {
     background-color: rgba(0, 0, 0, 0.5);
     display: table;
@@ -207,29 +208,12 @@ div.chart-placeholder + div.chart-placeholder {
 
 /** choices **/
 .choices__inner {
-    padding: 1px 1px 1px 3px;
+    padding: 3px;
     min-height: 28px;
-    background-color: #444;
-    border: 1px solid #222;
 }
 
 .choices__inner .choices__list--multiple .choices__item--selectable {
-    background-color: #262626;
-    border-color: #262626;
     border-radius: 5px;
-}
-
-.choices__inner .choices__input {
-    background-color: #444;
-}
-
-.is-focused .choices__inner,
-.is-open .choices__inner {
-    border-color: #222;
-}
-
-.choices__list {
-    background-color: #444;
 }
 
 .choices__list--multiple .choices__item {
@@ -240,14 +224,11 @@ div.chart-placeholder + div.chart-placeholder {
     margin-bottom: 1px;
 }
 
-.choices__list--dropdown .choices__item--selectable.is-highlighted {
-    background-color: #444;
-    color: #fff;
-}
 
-.is-open .choices__list--dropdown {
-    border-color: #222;
-}
+
+
+
+
 
 
 

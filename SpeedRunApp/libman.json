@@ -154,6 +154,14 @@
         "vue.global.prod.js",
         "vue.global.prod.min.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vue-final-modal@3.3.1",
+      "destination": "wwwroot/lib/vue-final-modal/",
+      "files": [
+        "dist/VueFinalModal.umd.js"
+      ]
     }
   ]
 }

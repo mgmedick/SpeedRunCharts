@@ -30,53 +30,57 @@
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
         <link rel="stylesheet" href="~/lib/choices.js/choices.min.css" />
         <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker-bs4.min.css" />
+        <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker-bs4.css" />
 
         <link rel="stylesheet" href="~/css/site.css?v=01/20/2021" />
         <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=06/10/2021" />
     </environment>
     @RenderSection("Styles", required: false)
-    <environment include="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
-        <script src="@Url.Content("~/lib/choices.js/choices.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
-        <script src="@Url.Content("~/lib/vue/vue.global.js")"></script>
-        <script src="@Url.Content("~/lib/axios/axios.js")"></script>
-        <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.js")"></script>
+<environment include="Development">
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
+    <script src="@Url.Content("~/lib/choices.js/choices.js")"></script>
+    <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
+    <script src="@Url.Content("~/lib/vue/vue.global.js")"></script>
+    <script src="@Url.Content("~/lib/axios/axios.js")"></script>
+    <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.js")"></script>
+    <script src="@Url.Content("~/lib/vue-final-modal/dist/VueFinalModal.umd.js")"></script>
 
-        <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
-        <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
-        <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+    <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
+    <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
+    <script src="@Url.Content("~/components/custom-modal-vue.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js?v=07/09/2021")"></script>
-        <script src="@Url.Content("~/js/layout.js")"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
-        <script src="@Url.Content("~/lib/choices.js/choices.min.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
-        <script src="@Url.Content("~/lib/vue/vue.global.prod.min.js")"></script>
-        <script src="@Url.Content("~/lib/axios/axios.min.js")"></script>
-        <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.min.js")"></script>
+    <script src="@Url.Content("~/js/common.js?v=07/09/2021")"></script>
+    <script src="@Url.Content("~/js/layout.js")"></script>
+</environment>
+<environment exclude="Development">
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
+    <script src="@Url.Content("~/lib/choices.js/choices.min.js")"></script>
+    <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
+    <script src="@Url.Content("~/lib/vue/vue.global.prod.min.js")"></script>
+    <script src="@Url.Content("~/lib/axios/axios.min.js")"></script>
+    <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.min.js")"></script>
+    <script src="@Url.Content("~/lib/vue-final-modal/dist/vue-final-modal.umd.min.js")"></script>
 
-        <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
-        <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
-        <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
-        <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+    <script src="@Url.Content("~/components/multi-select-vue.js")"></script>
+    <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
-    </environment>
+    <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
+    <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
+</environment>
     <script type="text/javascript">
         $().ready(function () {
 
@@ -170,5 +174,6 @@
     @(("wwwroot/components/SpeedRunListVue.html").IncludeFile(hostingEnv))
     @(("wwwroot/components/SpeedRunSummaryVue.html").IncludeFile(hostingEnv))
     @(("wwwroot/components/SpeedRunEditVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/CustomModalVue.html").IncludeFile(hostingEnv))
 </body>
 </html>

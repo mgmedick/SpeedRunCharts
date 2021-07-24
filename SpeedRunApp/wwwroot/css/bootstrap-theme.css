@@ -3041,7 +3041,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .datepicker-input {
-    background-color:#444;
+    background-color: #444;
 }
 
 /** choices **/
@@ -3076,6 +3076,23 @@ a.text-dark:hover, a.text-dark:focus {
 .theme-dark .is-open .choices__list--dropdown {
     border-color: #222;
 }
+
+.theme-dark .choices.is-disabled .choices__inner, .choices.is-disabled .choices__input {
+    background-color: #444;
+}
+
+.theme-dark .is-disabled .choices__list--multiple .choices__item {
+    color: #888;
+}
+
+.theme-dark .is-disabled .choices__list--multiple .choices__item .choices__button {
+    color: #888;
+}
+
+
+
+
+
 
 
 

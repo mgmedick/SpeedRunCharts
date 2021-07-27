@@ -15,13 +15,15 @@ namespace SpeedRunApp.Service
         private readonly IConfiguration _config = null;
         private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
+        private readonly ICacheService _cacheService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
 
-        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ISpeedRunRepository speedRunRepo)
+        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo)
         {
             _config = config;
             _gamesService = gamesService;
             _userService = userService;
+            _cacheService = cacheService;
             _speedRunRepo = speedRunRepo;
         }
 
@@ -48,7 +50,7 @@ namespace SpeedRunApp.Service
             var statusTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)RunStatusType.New, Name = RunStatusType.New .ToString() },
                                                        new IDNamePair() { ID = (int)RunStatusType.Rejected, Name = RunStatusType.Rejected .ToString() },
                                                        new IDNamePair() { ID = (int)RunStatusType.Verified, Name = RunStatusType.Verified .ToString() } };
-            
+
             SpeedRunViewModel runVM = null;
             if (speedRunID.HasValue)
             {
@@ -56,7 +58,7 @@ namespace SpeedRunApp.Service
                 runVM = new SpeedRunViewModel(run);
             }
 
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM);
+            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, runVM.Players, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM);
 
             return editSpeedRunVM;
         }

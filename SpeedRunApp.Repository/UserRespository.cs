@@ -29,6 +29,14 @@ namespace SpeedRunApp.Repository
                 return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_User tu WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
             }
         }
+
+        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<User>().Where(predicate ?? (x => true)).ToList();
+            }
+        }
     }
 }
 

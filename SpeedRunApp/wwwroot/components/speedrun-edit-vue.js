@@ -13,7 +13,7 @@
     },
     computed: {
         playerids: function () {
-            return this.item.speedRunVM.players.map(i => i.id.toString());
+            return this.item.speedRunVM.players.map(i => i.id);
         }
     },
     created: function() {

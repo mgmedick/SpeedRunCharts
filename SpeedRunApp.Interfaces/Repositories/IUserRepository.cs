@@ -11,6 +11,7 @@ namespace SpeedRunApp.Interfaces.Repositories
     {
         IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);
         IEnumerable<SearchResult> SearchUsers(string searchText);
+        IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null);
     }
 }
 

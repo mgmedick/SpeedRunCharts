@@ -162,6 +162,17 @@
       "files": [
         "dist/VueFinalModal.umd.js"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vue-next-select@2.8.0",
+      "destination": "wwwroot/lib/vue-next-select/",
+      "files": [
+        "dist/index.css",
+        "dist/index.min.css",
+        "dist/vue-next-select.iife.js",
+        "dist/vue-next-select.iife.prod.js"
+      ]
     }
   ]
 }

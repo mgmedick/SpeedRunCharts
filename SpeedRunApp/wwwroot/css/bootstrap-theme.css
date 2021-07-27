@@ -3089,6 +3089,58 @@ a.text-dark:hover, a.text-dark:focus {
     color: #888;
 }
 
+/** vue-select **/
+.vue-select {
+    width: auto;
+    border:none;
+}
+
+.vue-select-header {
+    padding: 3px;
+    min-height: 28px;
+}
+
+.vue-dropdown {
+    border:none;
+}
+
+.theme-dark .vue-dropdown {
+    background-color: #444;
+}
+
+.theme-dark .vue-select-header {
+    background-color: #444;
+    border: 1px solid #222;
+}
+
+.vue-tag.selected {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+.theme-dark .vue-tag.selected {
+    background-color: #262626;
+    border-color: #262626;
+}
+
+.theme-dark .vue-dropdown-item.selected {
+    background-color: #0d6efd;
+}
+
+.theme-dark .vue-dropdown-item.selected.highlighted {
+    background-color: #0d6efd;
+}
+
+.theme-dark .vue-dropdown-item.highlighted {
+    background-color: rgba(255,255,255,.15);
+}
+
+
+
+
 
 
 

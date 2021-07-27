@@ -9,7 +9,7 @@
             loading: true,
             throttleTimer: null,
             throttleDelay: 500,
-            topamt: 20,
+            topamt: 10,
             offset: null
         }
     },

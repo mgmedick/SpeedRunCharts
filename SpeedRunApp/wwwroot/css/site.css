@@ -214,9 +214,9 @@ div.chart-placeholder + div.chart-placeholder {
     min-height: 28px;
 }
 
-    .choices__inner .choices__list--multiple .choices__item--selectable {
-        border-radius: 5px;
-    }
+.choices__inner .choices__list--multiple .choices__item--selectable {
+    border-radius: 5px;
+}
 
 .choices__list--multiple .choices__item {
     padding: 2px 5px;
@@ -224,6 +224,36 @@ div.chart-placeholder + div.chart-placeholder {
     font-weight: 500;
     margin-right: 2px;
     margin-bottom: 1px;
+}
+
+/** vue-select **/
+.vue-select {
+    width: auto;
+    border: none;
+}
+
+.vue-select-header {
+    padding: 3px;
+    min-height: 32px;
+}
+
+.vue-dropdown {
+    border: none;
+}
+
+.vue-tag.selected {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+.vue-tag.selected .icon.delete {
+    content: "\f00d";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color:#fff;
 }
 
 /** vue-final-modal **/

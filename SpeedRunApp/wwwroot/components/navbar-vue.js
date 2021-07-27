@@ -1,7 +1,9 @@
 ﻿const navbarVue = {
     template: "#navbar",
     props: {
-        isauth: Boolean
+        isauth: Boolean,
+        isdarktheme: Boolean,
+        username: String
     },
     data: function () {
         return {

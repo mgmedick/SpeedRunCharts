@@ -155,7 +155,7 @@
             </div>
         </nav>*@
     <div id="vue-app">
-        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)"></navbar>
+        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :username="@Json.Serialize(User.FindFirst(ClaimTypes.Name)?.Value)" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></navbar>
         <div class="container-fluid body-content">
             @RenderBody()
             <hr />

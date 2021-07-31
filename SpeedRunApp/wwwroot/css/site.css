@@ -232,9 +232,37 @@ div.chart-placeholder + div.chart-placeholder {
     border: none;
 }
 
+.vue-dropdown-item {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 15px;
+    padding: 4px 24px 4px 24px;
+}
+
+.vue-dropdown-item.group {
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.vue-dropdown-item.highlighted:not(.group) {
+    text-decoration: none;
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+    border: none !important;
+}
+
 .vue-select-header {
     padding: 3px;
-    min-height: 32px;
+    /*min-height: 32px;*/
+}
+
+.vue-input {
+    padding:0px;
+}
+
+.vue-input input {
+    font-size: 0.9375rem;
+    padding: 6px 12px 6px 12px;
 }
 
 .vue-dropdown {

@@ -3099,6 +3099,11 @@ a.text-dark:hover, a.text-dark:focus {
     border: 1px solid #222;
 }
 
+.theme-dark .vue-select-header .vue-input input {
+    background-color: #444;
+    color:#fff;
+}
+
 .theme-dark .vue-tag.selected {
     background-color: #262626;
     border-color: #262626;

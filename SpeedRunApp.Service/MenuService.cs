@@ -22,14 +22,19 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SearchResult> Search(string searchText)
         {
-            searchText = searchText.Trim();
-            var games = _gamesService.SearchGames(searchText);
-            var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
-            var users = _userService.SearchUsers(searchText);
-            var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
+            var results = new List<SearchResult>();
 
-            var results = new List<SearchResult> { gamesGroup, usersGroup };
-            //var results = new List<SearchResult> { gamesGroup };
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                searchText = searchText.Trim();
+                var games = _gamesService.SearchGames(searchText).ToList();
+                var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
+                var users = _userService.SearchUsers(searchText);
+                var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
+
+                results.Add(gamesGroup);
+                results.Add(usersGroup);
+            }
 
             return results;
         }

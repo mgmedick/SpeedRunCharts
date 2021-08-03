@@ -9,7 +9,10 @@
         return {
             searchSelected: null,
             searchOptions: [],
-            searchLoading: false
+            searchLoading: false,
+            showLoginModal: false,
+            showResetModal: false,
+            showDropdown: false
         }
     },
     computed: {
@@ -46,6 +49,9 @@
             var params = "gameID=" + option.value;
 
             location.href = encodeURI('../' + controller + "/" + action + "?" + params);
+        },
+        onForgotPassword: function (option) {
+
         }
     }
 };

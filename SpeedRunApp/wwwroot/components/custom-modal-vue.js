@@ -1,5 +1,8 @@
 ﻿const customModalVue = {
-    template: '#custom-modal'
+    template: '#custom-modal',
+    props: {
+        contentclass: String
+    }
 };
 
 

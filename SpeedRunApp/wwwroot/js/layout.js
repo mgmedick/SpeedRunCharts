@@ -27,13 +27,15 @@ function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS
             componentName: 'VueFinalModal',
             key: '$vfm',
             dynamicContainerName: 'ModalsContainer'
-        });
+        }).use(vuelidate.default);
 
+        sra.app.component("button-dropdown", buttonDropdownVue);
         sra.app.component("navbar", navbarVue);
         sra.app.component("datepicker", datepickerVue);
-        sra.app.component("multi-select", multiSelectVue);
         sra.app.component('vue-next-select', VueNextSelect);
         sra.app.component('custom-modal', customModalVue);
+        sra.app.component("reset-password", resetPasswordVue);
+        sra.app.component("login", loginVue);
         sra.app.component("speedrun-edit", speedRunEditVue);
         sra.app.component("speedrun-list", speedRunListVue);
         sra.app.component("speedrun-summary", speedRunSummaryVue);

@@ -285,7 +285,7 @@ div.chart-placeholder + div.chart-placeholder {
 }
 
 /** vue-final-modal **/
-/*::v-deep .modal-container {
+::v-deep .modal-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -326,7 +326,7 @@ div.chart-placeholder + div.chart-placeholder {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-}*/
+}
 
 
 

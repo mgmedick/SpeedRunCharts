@@ -39,11 +39,11 @@
                         allowfullscreen="true"></iframe>
             </div>
             <input type="hidden" class="orderValue" :value="item.id" />
-            <custom-modal v-model="showModal" v-if="showModal">
+            <custom-modal v-model="showModal" v-if="showModal" contentclass="modal-lg">
                 <template v-slot:title>
                     Details
                 </template>
-                <speedrun-edit :gameid="item.game.id" :speedrunid="item.id" :readonly="false" />
+                <speedrun-edit :gameid="item.game.id" :speedrunid="item.id" :readonly="true" />
             </custom-modal>
         </div>
     </div>

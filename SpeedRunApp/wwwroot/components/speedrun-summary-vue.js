@@ -8,11 +8,6 @@
         return {
             showModal: false
         }
-    },
-    methods: {
-        showDetails: function () {
-            this.showModal = true;
-        }
     }
 };
 

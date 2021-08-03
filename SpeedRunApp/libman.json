@@ -116,24 +116,6 @@
       "destination": "wwwroot/lib/axios/"
     },
     {
-      "library": "choices.js@9.0.1",
-      "destination": "wwwroot/lib/choices.js/",
-      "files": [
-        "choices.min.js",
-        "choices.js",
-        "choices.min.css",
-        "choices.css"
-      ]
-    },
-    {
-      "library": "vuejs-datepicker@1.6.2",
-      "destination": "wwwroot/lib/vuejs-datepicker/",
-      "files": [
-        "vuejs-datepicker.min.js",
-        "vuejs-datepicker.js"
-      ]
-    },
-    {
       "provider": "unpkg",
       "library": "vanillajs-datepicker@1.1.4",
       "destination": "wwwroot/lib/vanillajs-datepicker/",
@@ -172,6 +154,23 @@
         "dist/index.min.css",
         "dist/vue-next-select.iife.js",
         "dist/vue-next-select.iife.prod.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vuelidate@0.7.4",
+      "destination": "wwwroot/lib/vuelidate/",
+      "files": [
+        "dist/validators.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@vuelidate/core@2.0.0-alpha.22",
+      "destination": "wwwroot/lib/vuelidatecore/",
+      "files": [
+        "dist/index.js",
+        "dist/index.min.js"
       ]
     }
   ]

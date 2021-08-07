@@ -31,69 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Templates\" />
     <Folder Include="Models\" />
     <Folder Include="Templates\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\css\bootstrap_lumen.css" />
-    <Content Remove="wwwroot\css\bootstrap_theme_dark.css" />
-    <Content Remove="wwwroot\css\bootstrap-theme %28copy%29.css" />
-    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
-    <Content Remove="wwwroot\templates\SpeedRunGrid %28copy%29.html" />
-    <Content Remove="wwwroot\css\bootstrap-darkly-orig.css" />
-    <Content Remove="wwwroot\css\bootstrap-flatly-orig.css" />
-    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css" />
-    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-dark copy.css.bak" />
-    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-light copy.css" />
-    <Content Remove="wwwroot\css\OperationSamePage\bootstrap-theme-light copy.css.bak" />
-    <Content Remove="wwwroot\css\OperationSamePage2\bootstrap-theme-light_copy.css" />
     <Content Remove="Properties\launchSettings.json" />
-    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
-    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
-    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
-    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.js" />
-    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
-    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.js" />
-    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
-    <Content Remove="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
-    <Content Remove="wwwroot\lib\jquery-validation\.bower.json" />
-    <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-    <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Components\speedrun-edit.js" />
-    <None Remove="Components\Templates\SpeedRunEditVue.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\speedrun-edit.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\lib\font-awesome\js\all.js" />
-    <None Include="wwwroot\lib\font-awesome\js\all.min.js" />
-    <None Include="wwwroot\lib\font-awesome\sprites\brands.svg" />
-    <None Include="wwwroot\lib\font-awesome\sprites\regular.svg" />
-    <None Include="wwwroot\lib\font-awesome\sprites\solid.svg" />
-    <None Include="wwwroot\lib\free-jqgrid\jquery.jqgrid.min.js" />
-    <None Include="wwwroot\lib\free-jqgrid\jquery.jqgrid.src.js" />
-    <None Include="wwwroot\lib\fusioncharts\fusioncharts.charts.js" />
-    <None Include="wwwroot\lib\fusioncharts\fusioncharts.js" />
-    <None Include="wwwroot\lib\fusioncharts\fusioncharts.widgets.js" />
-    <None Include="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.candy.js" />
-    <None Include="wwwroot\lib\fusioncharts\themes\fusioncharts.theme.fusion.js" />
-    <None Include="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.js" />
-    <None Include="wwwroot\lib\jquery-fusioncharts\dist\fusioncharts.jqueryplugin.min.js" />
-    <None Include="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.js" />
-    <None Include="wwwroot\lib\jquery-ui-multiselect-widget\jquery.multiselect.min.js" />
-    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\SpeedRun\UserDetails.cshtml">

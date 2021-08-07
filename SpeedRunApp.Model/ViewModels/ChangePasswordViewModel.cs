@@ -12,7 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password required")]
         [Compare(otherProperty: nameof(ConfirmPassword))]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[._()-\/#&$@+\w\s]{8,30}$", ErrorMessage = @"Password must be between 8 - 30 alphanumeric/special characters with 1 number and letter")]
-        [Remote(action: "PasswordNotMatches", controller: "SpeedRun", ErrorMessage = "Password must differ from current password")]
+        //[Remote(action: "PasswordNotMatches", controller: "SpeedRun", ErrorMessage = "Password must differ from current password")]
         public string Password { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Confirm Password required")]

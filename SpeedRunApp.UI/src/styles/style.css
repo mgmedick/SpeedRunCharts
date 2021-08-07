@@ -1,0 +1,331 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+@import './bootstrap-theme.css';
+
+body {
+    padding-bottom: 30px;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    height: 30px;
+    line-height: 30px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.img-round {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+    .img-round > img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+/** select2 **/
+.select2-container {
+    font-size: 13px;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+    max-height: 240px !important;
+}
+
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+    min-height: 32px;
+}
+
+    .select2-container .select2-selection--multiple .select2-selection__rendered li.select2-search input[type="search"] {
+        font-size: 14px;
+        height: 15px;
+        padding: 0;
+        padding-left: 5px;
+    }
+
+.select2-results__options {
+    line-height: 14px;
+}
+
+input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+select:not(.ui-pg-selbox) {
+    height: 32px;
+}
+
+input.date {
+    font-size: 20px !important;
+    padding: 0px 10px 0 40px !important;
+    font-weight: 200;
+    cursor: pointer
+}
+
+.icon-wrapper {
+    position: relative;
+    font-size: 20px;
+    display: block;
+    line-height: 32px;
+}
+
+.icon-wrapper.date-icon:before {
+    content: "\f133";
+    font-family: 'Font Awesome 5 Free';
+    left: 10px;
+    position: absolute;
+}
+
+.icon-wrapper.loading-icon:before {
+    content: "\f110";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    right: 15px;
+    position: absolute;
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+.date {
+    width: 170px !important;
+}
+
+.form .row {
+    padding-bottom: 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+a.linkToggle:before {
+    content: "\f054";
+    font-family: 'Font Awesome 5 Free';
+    padding-right: 5px;
+    font-weight: 900;
+}
+
+a.linkToggle.expanded:before {
+    content: "\f078";
+    font-family: 'Font Awesome 5 Free';
+    padding-right: 5px;
+    font-weight: 900;
+}
+
+/**Chart Container**/
+div.chart-placeholder {
+    height: 500px;
+    width: 500px;
+    display: flex;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+/*
+div.chart-placeholder + div.chart-placeholder {
+    margin-top:10px;
+    margin-right: 10px;
+}
+*/
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.tooltip {
+    pointer-events: none;
+}
+
+.ui-autocomplete {
+    width: 300px;
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 100000;
+}
+
+.ui-menu-item-wrapper {
+    padding: 4px 24px !important;
+}
+
+.ui-autocomplete-category {
+    padding: 8px 24px !important;
+    color: #888;
+    font-size: 14px;
+}
+
+.ui-state-hover,
+.ui-state-active,
+.ui-state-focus {
+    text-decoration: none;
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+    border: none !important;
+}
+
+/** modal **/
+/*
+.modal-mask {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+    .modal-enter .modal-container,
+    .modal-leave-active .modal-container {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+*/
+
+/** choices **/
+.choices__inner {
+    padding: 3px;
+    min-height: 28px;
+}
+
+    .choices__inner .choices__list--multiple .choices__item--selectable {
+        border-radius: 5px;
+    }
+
+.choices__list--multiple .choices__item {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+/** vue-select **/
+.vue-select {
+    width: auto;
+    border: none;
+}
+
+.vue-dropdown-item {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 15px;
+    padding: 4px 24px 4px 24px;
+}
+
+.vue-dropdown-item.group {
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.vue-dropdown-item.highlighted:not(.group) {
+    text-decoration: none;
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+    border: none !important;
+}
+
+.vue-select-header {
+    padding: 3px;
+    /*min-height: 32px;*/
+}
+
+.vue-input {
+    padding: 0px;
+}
+
+.vue-input input {
+    font-size: 0.9375rem;
+    padding: 6px 12px 6px 12px;
+}
+
+.vue-dropdown {
+    border: none;
+}
+
+.vue-tag.selected {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+.vue-tag.selected .icon.delete {
+    content: "\f00d";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #fff;
+}
+
+/** vue-final-modal **/
+::v-deep .modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::v-deep .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 90%;
+    margin: 0 1rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    background: #fff;
+}
+
+.modal__title {
+    margin: 0 2rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal__content {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.modal__action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 1rem 0 0;
+}
+
+.modal__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+

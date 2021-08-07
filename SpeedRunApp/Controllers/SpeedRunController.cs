@@ -86,29 +86,26 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
-                if (ModelState.IsValid)
+                if (!_userAcctService.UsernameExists(loginVM.Username, true))
                 {
-                    if (!_userAcctService.UsernameExists(loginVM.Username, true))
-                    {
-                        ModelState.AddModelError("Login", "Invalid username");
-                    }
+                    ModelState.AddModelError("Login", "Invalid username");
+                }
 
-                    if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
-                    {
-                        ModelState.AddModelError("Login", "Invalid password");
-                    }
+                if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
+                {
+                    ModelState.AddModelError("Login", "Invalid password");
+                }
 
-                    if(ModelState.IsValid)
-                    {
-                        var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
-                        LoginUserAccount(userAcct);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
+                if(ModelState.IsValid)
+                {
+                    var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
+                    LoginUserAccount(userAcct);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
             catch(Exception ex)
@@ -145,24 +142,21 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
+                if (_userAcctService.EmailExists(signUpVM.Email))
+                {
+                    ModelState.AddModelError("SignUp", "Email already exists for another user");
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (_userAcctService.EmailExists(signUpVM.Email))
-                    {
-                        ModelState.AddModelError("SignUp", "Email already exists for another user");
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
-                }              
+                    _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -183,9 +177,12 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Activate(ActivateViewModel activateUserAcctVM)
+        public JsonResult Activate(ActivateViewModel activateUserAcctVM)
         {
-            if (ModelState.IsValid)
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
             {
                 if (_userAcctService.UsernameExists(activateUserAcctVM.Username, false))
                 {
@@ -197,12 +194,22 @@ namespace SpeedRunApp.WebUI.Controllers
                     _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
                     var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
                     LoginUserAccount(userAcct);
-
-                    return Redirect("SpeedRunList");
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "ResetPassword");
+                success = false;
+                errorMessages = new List<string>() { "Error resetting password" };
+            }
 
-            return View(activateUserAcctVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]
@@ -222,24 +229,21 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
+                if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
+                {
+                    ModelState.AddModelError("ResetPassword", "Username not found");
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
-                    {
-                        ModelState.AddModelError("Activate", "Username not found");
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
-                }                
+                    _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -261,9 +265,12 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordViewModel changePassVM)
+        public JsonResult ChangePassword(ChangePasswordViewModel changePassVM)
         {
-            if (ModelState.IsValid)
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
             {
                 var username = HttpContext.Session.Get<string>("Username");
                 if (_userAcctService.PasswordMatches(changePassVM.Password, username))
@@ -274,12 +281,22 @@ namespace SpeedRunApp.WebUI.Controllers
                 if (ModelState.IsValid)
                 {
                     _userAcctService.ChangeUserAcctPassword(username, changePassVM.Password);
-
-                    return Redirect("SpeedRunList");
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "ChangePassword");
+                success = false;
+                errorMessages = new List<string>() { "Error changing password" };
+            }
 
-            return View(changePassVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         private async void LoginUserAccount(UserAccount userAcct)

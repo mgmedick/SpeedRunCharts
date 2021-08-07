@@ -12,7 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Email required")]
         [EmailAddress(ErrorMessage = "Invalid Email format")]
-        [Remote(action: "EmailNotExists", controller: "SpeedRun", ErrorMessage = "Email already exists for another user")]
+        //[Remote(action: "EmailNotExists", controller: "SpeedRun", ErrorMessage = "Email already exists for another user")]
         public string Email { get; set; }
     }
 }

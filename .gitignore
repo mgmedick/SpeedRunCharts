@@ -341,3 +341,4 @@ healthchecksdb
 /SpeedrunComSharp.Common
 
 /SpeedRunApp/logs
+SpeedRunApp/wwwroot/dist

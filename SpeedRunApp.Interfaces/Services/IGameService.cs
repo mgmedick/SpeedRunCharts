@@ -10,6 +10,6 @@ namespace SpeedRunApp.Interfaces.Services
     {
         GameViewModel GetGame(int gameID);
         IEnumerable<SearchResult> SearchGames(string searchText);
-        SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID);
+        SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID); 
     }
 }

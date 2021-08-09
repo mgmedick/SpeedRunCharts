@@ -35,6 +35,16 @@ namespace SpeedRunApp.Service
             return _userRepo.SearchUsers(searchText);
         }
 
+        public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int userID)
+        {
+            var games = _gameRepo.GetGamesByUserID(userID);
+            var tabItems = games.Select(i => new GameViewModel(i));
+            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+
+            return gridVM;
+        }
+
+        /*
         public SpeedRunGridContainerViewModel GetSpeedRunGrid(int userID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridViewsByUserID(userID);
@@ -45,5 +55,6 @@ namespace SpeedRunApp.Service
 
             return gridVM;
         }
+        */
     }
 }

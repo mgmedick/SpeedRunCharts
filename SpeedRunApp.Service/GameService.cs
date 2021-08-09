@@ -33,6 +33,16 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
+        public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
+        {
+            var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
+            var tabItems = new List<GameViewModel>() { new GameViewModel(game) };
+            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+
+            return gridVM;
+        }
+
+        /*
         public SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.Rank.HasValue).OrderBy(i => i.Rank);
@@ -42,7 +52,8 @@ namespace SpeedRunApp.Service
             var gridVM = new SpeedRunGridContainerViewModel(new SpeedRunGridTabViewModel("Game", tabItems), runVMs);
 
             return gridVM;
-        }
+        } 
+        */
     }
 }
 

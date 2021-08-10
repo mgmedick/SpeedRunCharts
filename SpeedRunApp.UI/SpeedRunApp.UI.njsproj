@@ -34,7 +34,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="src\components\SpeedRunGridVue.vue" />
+    <Content Include="src\components\SpeedRunGridTabVue.vue" />
     <Content Include="src\components\ActivateVue.vue" />
     <Content Include="src\components\ButtonDropdownVue.vue" />
     <Content Include="src\components\component-loader.js">

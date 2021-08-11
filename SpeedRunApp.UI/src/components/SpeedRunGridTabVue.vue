@@ -1,14 +1,14 @@
 ﻿<template>
     <div style="overflow:auto;">
         <div v-if="!loading" id="divGridContainer" class="pt-2" style="max-width:1200px">
-            <div v-if="isgame" class="row no-gutters px-1 pt-1 pb-0">
-                <div class="col-sm-2 align-self-top pt-2">
-                    <label>Game:</label>
+            <div v-if="!isgame" class="row no-gutters px-1 pt-1 pb-0">
+                <div class="col-sm-1 align-self-top pt-1">
+                    <label class="tab-row-name">Game:</label>
                 </div>
                 <div class="col pl-2">
                     <ul class="nav nav-pills">
                         <li class="nav-item p-1" v-for="(game, gameIndex) in items" :key="game.id">
-                            <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
+                            <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
                         </li>
                     </ul>
                 </div>
@@ -16,13 +16,13 @@
             <div v-for="(game, gameIndex) in items" :key="game.id">
                 <div v-if="gameID == game.id" v-for="(game, gameIndex) in items" :key="game.id" class="p-0">
                     <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                        <div class="col-sm-2 align-self-top pt-2">
-                            <label>Category Type:</label>
+                        <div class="col-sm-1 align-self-top pt-1">
+                            <label class="tab-row-name">Category Type:</label>
                         </div>
                         <div class="col pl-2">
                             <ul class="nav nav-pills">
                                 <li class="nav-item p-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                    <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
+                                    <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -31,13 +31,13 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                            <div class="col-sm-2 align-self-top pt-2">
-                                <label>Category:</label>
+                            <div class="col-sm-1 align-self-top pt-1">
+                                <label class="tab-row-name">Category:</label>
                             </div>
                             <div class="col pl-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item p-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                        <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
+                                        <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -55,21 +55,21 @@
                                 </div>
                                 <div v-else>
                                     <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                                        <div class="col-sm-2 align-self-top pt-2">
-                                            <label>Level:</label>
+                                        <div class="col-sm-1 align-self-top pt-1">
+                                            <label class="tab-row-name">Level:</label>
                                         </div>
                                         <div class="col pl-2">
                                             <ul class="nav nav-pills">
                                                 <li class="nav-item p-1" v-for="(level, levelIndex) in game.levels" :key="level.id">
-                                                    <a class="level nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
+                                                    <a class="level nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div v-for="(level, levelIndex) in game.levels" :key="level.id">
                                         <div v-if="levelID == level.id">
-                                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
+                                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
+                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <div class="grid" :gameid="game.id" :categorytypeid="categoryType.id" :categoryid="category.id" :levelid="''" :variablevalues="''"></div>
@@ -154,11 +154,11 @@
                 if (!this.variableValueIDs) {
                     this.variableValueIDs = {};
                     if (this.categoryTypeID == 0) {
-                        game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
+                        game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
                             .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
 
                     } else if (this.categoryTypeID == 1) {
-                        game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
+                        game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
                             .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
                     }
                 }
@@ -181,15 +181,15 @@
                 }
 
                 var variableValueIDs = this.selected.find(item => item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && (!that.levelID || item.levelID == that.levelID) && item.variableValueIDs)?.variableValueIDs;
-
                 if (variableValueIDs) {
-                    this.variableValueIDs = variableValueIDs;
+                    var variableVauleIDsCopy = Object.assign({}, variableValueIDs); 
+                    this.variableValueIDs = variableVauleIDsCopy;
                 } else if (this.categoryTypeID == 0) {
                     game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
                         .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
 
                 } else if (this.categoryTypeID == 1) {
-                    game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
+                    game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
                         .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
                 }
             },
@@ -240,12 +240,14 @@
                 var that = this;
                 this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && (that.categoryTypeID == 0 && !item.levelID || item.levelID == that.levelID) && item.variableValueIDs));
 
-                var variableValueIDsCopy = {};
-                for (var key in this.variableValueIDs) {
-                    //var value = this.variableValueIDs[key];
-                    var value = this.variableValueIDs[key].slice();
-                    variableValueIDsCopy[key] = value;
-                }
+                var variableValueIDsCopy = Object.assign({}, this.variableValueIDs);
+                //var variableValueIDsCopy = JSON.parse(JSON.stringify(this.variableValueIDs));                
+                //var variableValueIDsCopy = {};
+                //for (var key in this.variableValueIDs) {
+                //    var value = this.variableValueIDs[key];
+                //    var value = this.variableValueIDs[key].slice();
+                //    variableValueIDsCopy[key] = value;
+                //}
 
                 this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, levelID: that.categoryTypeID == 1 ? this.levelID : '', variableValueIDs: variableValueIDsCopy });
 
@@ -257,11 +259,18 @@
 <style>
     .nav-link {
         background-color: #313131;
+        font-size: 14px;
     }
 
     .nav-link:hover {
         background-color: #2b2a2a;
     }
+
+   .tab-row-name {
+        font-size: 14px !important;
+        line-height: 18px;
+        font-weight: bold;
+    } 
 </style>
 
 

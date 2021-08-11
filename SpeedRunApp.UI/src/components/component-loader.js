@@ -16,6 +16,7 @@ import speedRunListVue from './SpeedRunListVue.vue';
 import speedRunSummaryVue from './SpeedRunSummaryVue.vue';
 import speedRunListCategoryVue from './SpeedRunListCategoryVue.vue';
 import speedRunGridTabVue from './SpeedRunGridTabVue.vue';
+import speedRunGridTabVariableVue from './SpeedRunGridTabVariableVue.vue';
 
 export default {
     loadComponents() {
@@ -44,6 +45,7 @@ export default {
         app.component("speedrun-list", speedRunListVue);
         app.component("speedrun-summary", speedRunSummaryVue);
         app.component("speedrun-grid-tab", speedRunGridTabVue);
+        app.component("speedrun-grid-tab-variable", speedRunGridTabVariableVue);
 
         app.mount('#vue-app');
     }

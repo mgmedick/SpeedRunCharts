@@ -37,12 +37,12 @@ namespace SpeedRunApp.Service
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw) };
-            var game = tabItems.FirstOrDefault();
-            var categoryTypeID = game.CategoryTypes.Select(i => i.ID).FirstOrDefault();
-            var categoryID = game.Categories.Select(i => i.ID).FirstOrDefault();
-            var levelID = game.Levels?.Select(i => i.ID).FirstOrDefault();
+            //var game = tabItems.FirstOrDefault();
+            //var categoryTypeID = game.CategoryTypes.Select(i => i.ID).FirstOrDefault();
+            //var categoryID = game.Categories.Select(i => i.ID).FirstOrDefault();
+            //var levelID = game.Levels?.Select(i => i.ID).FirstOrDefault();
 
-            var gridVM = new SpeedRunGridTabViewModel(tabItems, gameID, categoryTypeID, categoryID, levelID);
+            var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
             return gridVM;
         }

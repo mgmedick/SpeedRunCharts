@@ -6,9 +6,7 @@
             </div>
         </div>
     </div>
-    <div v-else>
-        <div id="tblGrid"></div>
-    </div>
+    <div id="tblGrid"></div>
 </template>
 <script>
     import axios from 'axios';
@@ -59,12 +57,12 @@
                     movableColumns: true,      //allow column order to be changed
                     resizableRows: true,       //allow row order to be changed
                     initialSort: [             //set the initial sort order of the data
-                        { column: "Rank", dir: "asc" },
+                        { column: "rank", dir: "asc" },
                     ],
                     columns: [
                         { title: "", field: "id", width: 100, formatter: that.optionsFormatter, hozAlign: "center" },
                         { title: "Rank", field: "rank", width: 75, sorter: "number", formatter: that.rankFormatter },
-                        { title: "Players", field: "rank", width: 160, formatter: that.playerFormatter },
+                        { title: "Players", field: "players", width: 160, formatter: that.playerFormatter },
                         { title: "Platform", field: "platformName", width: 160 },
                         { title: "Emulated", field: "isEmulatedString", width: 125 },
                         { title: "Time", field: "primaryTimeString", width: 160 },

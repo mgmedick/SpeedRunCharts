@@ -184,10 +184,10 @@
                     this.variableValueIDs = variableVauleIDsCopy;
                 } else {
                     if (this.categoryTypeID == 0) {
-                        game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
+                        game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
                             .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id });
                     } else {
-                        game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
+                        game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
                             .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id });
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿<template>
+<div>
     <div v-if="loading">
         <div class="d-flex">
             <div class="mx-auto">
@@ -6,7 +7,29 @@
             </div>
         </div>
     </div>
-    <div id="tblGrid"></div>
+    <div class="mt-2" :style="[ loading ? { display: 'none'} : null ]">
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="pl-2 pr-1">Field</label>
+                <select class="custom-select form-control" style="width:220px;" v-model="filterField" @change="updateFilter">
+                    <option v-for="column in columns" :value="column.value" :key="column.value">{{ column.text }}</option>
+                </select>    
+            </div>       
+            <div class="form-group pr-2">
+                <label class="pl-2 pr-1">Type</label>
+                <select class="custom-select form-control" style="width:220px;" v-model="filterType" @change="updateFilter">
+                    <option v-for="type in filterTypes" :value="type" :key="type">{{ type }}</option>
+                </select>    
+            </div>
+            <div class="form-group pr-2">
+                <label class="pl-2 pr-1">Value</label>
+                <input type="text" class="form-control" placeholder="Filter Value" v-model.lazy="filterValue" @change="updateFilter">
+            </div>        
+            <input id="btnSave" type="button" class="btn btn-primary" value="Clear" @click="clearFilter" />
+        </div>
+        <div id="tblGrid" class="mt-1"></div>
+    </div>
+ </div>   
 </template>
 <script>
     import axios from 'axios';
@@ -25,6 +48,18 @@
         },
         data() {
             return {
+                table: {},
+                filterValue: '',
+                filterField: '',
+                filterType: '',
+                columns: [{value:'rank', text:'Rank'},
+                          {value:'players', text:'Players'},
+                          {value:'platformName', text:'Platform'},
+                          {value:'isEmulatedString', text:'Emulated'},
+                          {value:'primaryTimeString', text:'Time'},
+                          {value:'dateSubmittedString', text:'Submitted Date'},
+                          {value:'verifyDateString', text:'Verified Date'}],
+                filterTypes: ['=','<','<=','>','>=','!=','like'],
                 loading: true
             }
         },
@@ -47,7 +82,7 @@
             },
             initGrid: function (tableData) {
                 var that = this;
-                var table = new Tabulator("#tblGrid", {
+                this.table = new Tabulator("#tblGrid", {
                     data: tableData,           //load row data from array
                     layout: "fitColumns",      //fit columns to width of table
                     responsiveLayout: "hide",  //hide columns that dont fit on the table
@@ -111,7 +146,19 @@
                 });
 
                 return html;
-            }
+            },
+            updateFilter: function() {
+                if (this.filterValue){
+                    this.table.setFilter(this.filterField, this.filterType, this.filterValue);
+                }
+           },
+           clearFilter: function() {
+               this.filterField = '';
+               this.filterType = '';
+               this.filterValue = '';
+
+               this.table.clearFilter();
+           }                                  
         }
     };
 </script>

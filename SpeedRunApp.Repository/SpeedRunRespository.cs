@@ -34,7 +34,8 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>().Where(predicate).ToList();
+                var results = db.Query<SpeedRunGridView>().Where(predicate).ToList();
+                return results;
             }
         }
 

@@ -73,7 +73,7 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunGridViewModel> GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string variableValueIDs)
         {
-            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && i.LevelID == levelID && i.VariableValues == variableValueIDs && i.Rank.HasValue).OrderBy(i => i.Rank);
+            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && (!levelID.HasValue || i.LevelID == levelID) && i.VariableValueIDs == variableValueIDs && i.Rank.HasValue).OrderBy(i => i.Rank);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
 
             return runVMs;

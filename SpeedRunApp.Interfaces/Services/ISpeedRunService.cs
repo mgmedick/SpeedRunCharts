@@ -11,6 +11,7 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset);
         EditSpeedRunViewModel GetEditSpeedRun(int gamID, int? speedRunID);
         SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID);
+        IEnumerable<SpeedRunGridViewModel> GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string variableValueIDs);
     }
 }
 

@@ -25,16 +25,19 @@ namespace SpeedRunApp.Model.ViewModels
             if (run.PlatformID.HasValue)
             {
                 Platform = new IDNamePair { ID = run.PlatformID.Value, Name = run.PlatformName };
+                PlatformName = run.PlatformName;
             }
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                VariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.VariableValues.Split(","))
-                {
-                    var variableValue = value.Split("|", 2);
-                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                }
+                VariableValuesIDs = run.VariableValues;
+
+                //VariableValues = new List<Tuple<string, string>>();
+                //foreach (var value in run.VariableValues.Split(","))
+                //{
+                //    var variableValue = value.Split("|", 2);
+                //    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                //}
             }
 
             if (!string.IsNullOrWhiteSpace(run.Players) || !string.IsNullOrWhiteSpace(run.Guests))
@@ -77,7 +80,9 @@ namespace SpeedRunApp.Model.ViewModels
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public IDNamePair Platform { get; set; }
-        public List<Tuple<string, string>> VariableValues { get; set; }
+        public string PlatformName { get; set; }
+        //public List<Tuple<string, string>> VariableValues { get; set; }
+        public string VariableValuesIDs { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public bool IsEmulated { get; set; }

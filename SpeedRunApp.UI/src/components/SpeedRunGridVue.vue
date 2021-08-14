@@ -7,7 +7,7 @@
             </div>
         </div>
     </div>
-    <div class="mt-2" :style="[ loading ? { display: 'none'} : null ]">
+    <div class="mt-2 grid-container" style="width: 1100px;" :style="[ loading ? { display: 'none'} : null ]">
         <div class="form-inline">
             <div class="form-group">
                 <label class="pl-2 pr-1">Field</label>
@@ -35,7 +35,7 @@
     import axios from 'axios';
     import { getIntOrdinalString } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
-    import 'tabulator-tables/dist/css/tabulator.min.css'
+    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
 
     export default {
         name: "SpeedRunGridVue",
@@ -101,8 +101,10 @@
                         { title: "Platform", field: "platformName", width: 160 },
                         { title: "Emulated", field: "isEmulatedString", width: 125 },
                         { title: "Time", field: "primaryTimeString", width: 160 },
-                        { title: "Submitted Date", field: "dateSubmittedString", width: 160 },
-                        { title: "Verified Date", field: "verifyDateString", width: 160 }
+                        { title: "Submitted Date", field: "dateSubmitted", width: 160, formatter: that.dateFormatter, tooltip: that.dateSubmittedToolTip },
+                        { title: "Verified Date", field: "verifyDate", width: 160, formatter: that.dateFormatter, tooltip: that.verifyDateToolTip },
+                        { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
+                        { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                     ],
                 });
             },
@@ -112,7 +114,7 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell pl-1' style='border:none; padding:0px; width:30px;'>";
+                html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
                 html += "<a href=\"javascript:showSpeedRunSummary('" + value + "');\"><i class='fas fa-play-circle'></i></a>";
                 html += "</div>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
@@ -146,6 +148,27 @@
                 });
 
                 return html;
+            },
+            dateFormatter(cell, formatterParams, onRendered) {
+                var html = '';
+                var value = cell.getValue();
+
+                if (value) {
+                    var date = new Date(value);
+                    html += (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+                }
+
+                return html;
+            },
+            dateSubmittedToolTip(cell) {
+                var relativeDateSubmittedString = cell.getRow().getCell("relativeDateSubmittedString").getValue();
+
+                return relativeDateSubmittedString;
+            },
+            verifyDateToolTip(cell) {
+                var relativeVerifyDateString = cell.getRow().getCell("relativeVerifyDateString").getValue();
+
+                return relativeVerifyDateString;
             },
             updateFilter: function() {
                 if (this.filterValue){

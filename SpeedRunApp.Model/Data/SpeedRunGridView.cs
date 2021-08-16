@@ -14,6 +14,7 @@ namespace SpeedRunApp.Model.Data
         public int? PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string VariableValueIDs { get; set; }
+        public string Variables { get; set; }
         public string VariableValues { get; set; }
         public bool IsEmulated { get; set; }
         public string Players { get; set; }

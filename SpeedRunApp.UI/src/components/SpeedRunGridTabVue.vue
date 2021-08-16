@@ -48,7 +48,7 @@
                                             <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                         </div>
                                         <div v-else>
-                                            <speedrun-grid :gameid="game.id" :categorytypeid="categoryType.id" :categoryid="category.id" :levelid="''" :variablevalues="''"></speedrun-grid>
+                                            <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''"></speedrun-grid>
                                         </div>
                                     </div>
                                     <div v-else>
@@ -70,7 +70,7 @@
                                                     <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                                 </div>
                                                 <div v-else>
-                                                    <speedrun-grid :gameid="game.id" :categorytypeid="categoryType.id" :categoryid="category.id" :levelid="level.id" :variablevalues="''"></speedrun-grid>
+                                                    <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''"></speedrun-grid>
                                                 </div>
                                             </div>
                                         </div>

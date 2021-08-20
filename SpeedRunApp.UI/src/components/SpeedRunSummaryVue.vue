@@ -43,7 +43,7 @@
                 <template v-slot:title>
                     Details
                 </template>
-                <speedrun-edit :gameid="item.game.id" :speedrunid="item.id" :readonly="true" />
+                <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />
             </custom-modal>
         </div>
     </div>

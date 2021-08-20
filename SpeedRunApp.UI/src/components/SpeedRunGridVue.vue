@@ -1,16 +1,22 @@
 ﻿<template>
-<div>
-    <div v-if="loading">
-        <div class="d-flex">
-            <div class="mx-auto">
-                <i class="fas fa-spinner fa-spin fa-lg"></i>
+    <div>    
+        <div v-if="loading">
+            <div class="d-flex">
+                <div class="mx-auto">
+                    <i class="fas fa-spinner fa-spin fa-lg"></i>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="mt-2 grid-container" :style="[ loading ? { display: 'none'} : null ]">
-        <div id="tblGrid" class="mt-1"></div>
-    </div>
- </div>   
+        <div class="mt-2 mx-0 grid-container container-lg" style="width:auto;">
+            <div id="tblGrid" class="mt-1"></div>
+        </div>
+        <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
+            <template v-slot:title>
+                Details
+            </template>
+            <speedrun-edit :gameid="gameid" :speedrunid="speedRunID" :readonly="true" />
+        </custom-modal>    
+    </div>   
 </template>
 <script>
     window.moment = require('moment');   
@@ -18,7 +24,9 @@
     import { getIntOrdinalString } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import Datepicker from 'vanillajs-datepicker/Datepicker';
+    import _ from 'lodash';
+    import tippy from 'tippy.js'
+    import 'tippy.js/dist/tippy.css'
 
     export default {
         name: "SpeedRunGridVue",
@@ -32,13 +40,18 @@
         data() {
             return {
                 table: {},
-                loading: true
+                loading: true,
+                speedRunID: String,
+                showDetailModal: false
             }
         },
         computed: {
         },
         created: function () {
             this.loadData();
+        },
+        mounted: function() {
+            window.speedRunGridVue = this;
         },
         methods: {
             loadData() {
@@ -47,25 +60,24 @@
 
                 axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues } })
                     .then(res => {
-                        that.initGrid(res.data);
-                        that.loading = false;
+                        that.initGrid(res.data); 
+                        that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            },
-            initGrid: function (tableData) {
+            },                                                          
+            initGrid(tableData) {
                 var that = this;
-                var players = [...new Set(tableData.flatMap(el => el.players.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 
                 var columns = [
-                    { title: "", field: "id", width: 100, formatter: that.optionsFormatter, hozAlign: "center", headerSort:false },
-                    { title: "Rank", field: "rank", width: 75, sorter: "number", formatter: that.rankFormatter },
-                    { title: "Players", field: "players", width: 160, sorter:that.playerSorter, formatter: that.playerFormatter, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter },
-                    { title: "Platform", field: "platformName", width: 160, headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in" },
-                    { title: "Emulated", field: "isEmulatedString", width: 125 },
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 160 },
-                    { title: "Submitted Date", field: "dateSubmitted", width: 160, tooltip: that.dateSubmittedToolTip, formatter: "datetime", formatterParams:{ outputFormat:"MM/DD/YYYY HH:MM" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter },
-                    { title: "Verified Date", field: "verifyDate", width: 160, tooltip: that.verifyDateToolTip, formatter: "datetime", formatterParams:{ outputFormat:"MM/DD/YYYY HH:MM" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter  },
-                    { title: "primaryTimeString", field: "primaryTimeString", width: 160, visible: false },
+                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort:false, width:50, widthShrink: 2 }, //, minWidth:30, maxWidth:50 
+                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc: that.rankHeaderFilter, width:75 }, //minWidth:40, maxWidth:75
+                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:125, widthGrow:2 }, //minWidth:125
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width:125 }, //minWidth:100, maxWidth:125                    
+                    { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:2 }, //minWidth:100
+                    { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "Verified Date", field: "verifyDate", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
@@ -78,27 +90,44 @@
                     }
                 });
 
-                var variables = tableData.flatMap(el => el.variables.map(el => el));
+                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.map(el => el));
                 var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )                
 
                 distinctVariables?.forEach(variable => { 
-                    columns.push({ title: variable.name, field: variable.id.toString(), width: 120 },)
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:75 },)
                 });
 
+                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort:false, width:50 });
+
                 this.table = new Tabulator("#tblGrid", {
-                    data: tableData,           //load row data from array
-                    layout: "fitColumns",      //fit columns to width of table
-                    responsiveLayout: "collapse",  //hide columns that dont fit on the table
-                    tooltips: true,            //show tool tips on cells
-                    pagination: "local",       //paginate the data
-                    paginationSize: 50,        //allow 7 rows per page of data
-                    movableColumns: true,      //allow column order to be changed
-                    resizableRows: true,       //allow row order to be changed
+                    data: tableData,
+                    layout: "fitColumns",
+                    //responsiveLayout: false,
+                    tooltips: false,
+                    tooltipsHeader:false,
+                    pagination: "local",
+                    paginationSize: 50,
+                    movableColumns: true,
+                    resizableRows: true,
                     initialSort: [             //set the initial sort order of the data
                         { column: "rank", dir: "asc" },
                     ],
-                    columns: columns
-                });
+                    columns: columns,
+                    renderComplete:function() {
+                        Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
+                            var value = el.getAttribute('data-content');
+                            var cellElement = el.closest('.tabulator-cell');
+
+                            tippy(cellElement, {
+                                content: _.escape(value),
+                                allowHTML: true,
+                                arrow:false,
+                                placement:'bottom',
+                                maxWidth:"200px"
+                            })
+                        });
+                    },
+                });                
             },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
@@ -106,11 +135,8 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:showSpeedRunSummary('" + value + "');\"><i class='fas fa-play-circle'></i></a>";
-                html += "</div>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:showSpeedRunDetails('" + value + "');\"><i class='fas fa-edit'></i></a>";
+                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
@@ -128,10 +154,11 @@
                 return html;
             },
             playerFormatter(cell, formatterParams, onRendered) {
-                var html = '';
                 var value = cell.getValue();
+                var valueString = value?.map(el => el.name).join();
+                var html = valueString ? '<span class="tippy-tooltip" data-content="' + _.escape(valueString) + '">' : '<span>'
 
-                value.forEach(el => {
+                value?.forEach(el => {
                     if (el.id > 0) {
                         html += "<a href='../User/UserDetails?userID=" + el.id + "'>" + el.name + "</a><br/>";
                     } else {
@@ -139,19 +166,10 @@
                     }          
                 });
 
+                html += '</span>'
+
                 return html;
             },
-            // dateFormatter(cell, formatterParams, onRendered) {
-            //     var html = '';
-            //     var value = cell.getValue();
-
-            //     if (value) {
-            //         var date = new Date(value);
-            //         html += ("0" + (date.getMonth() + 1).toString()).substr(-2) + "/" + ("0" + date.getDate().toString()).substr(-2)  + "/" + (date.getFullYear().toString());
-            //     }
-
-            //     return html;
-            // },
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var value = cell.getRow().getCell("primaryTimeString").getValue();
@@ -162,28 +180,61 @@
 
                 return html;
             },
+            dateFormatter(cell, formatterParams, onRendered) {
+                var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
+                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + _.escape(tooltip) + '">' : '<span>'
+                var value = cell.getValue();
+                var formatString = formatterParams.outputFormat;
+
+                if(value){
+                    html +=  new moment(value).format(formatString);
+                }
+
+                html+='</span>'
+
+                return html;
+            },
+            commentFormatter(cell, formatterParams, onRendered) {
+                var html = '';
+                var value = cell.getValue();
+
+                if (value != null) {
+                    html = '<i class="far fa-comment tippy-tooltip" data-content="' + _.escape(value) + '"></i>'
+                }
+
+                return html;
+            },                     
             dateSorter(a, b, aRow, bRow, column, dir, sorterParams){
                 return new Date(a) - new Date(b);
             },            
             playerSorter(a, b, aRow, bRow, column, dir, sorterParams){
-                return a?.toLowerCase().localeCompare(b?.toLowerCase());
-            },
-            dateSubmittedToolTip(cell) {
-                var relativeDateSubmittedString = cell.getRow().getCell("relativeDateSubmittedString").getValue();
-
-                return relativeDateSubmittedString;
-            },
-            verifyDateToolTip(cell) {
-                var relativeVerifyDateString = cell.getRow().getCell("relativeVerifyDateString").getValue();
-
-                return relativeVerifyDateString;
-            },
+                return a[0]?.name.toLowerCase().localeCompare(b[0]?.name.toLowerCase());
+            }, 
             dateEditor (cell, onRendered, success, cancel, editorParams){
+                var editorDiv = document.createElement("div");   
+
                 var editor = document.createElement("input");
                 editor.setAttribute("type", "date");
-
-                editor.style.width = "100%";
+                editor.style.width = "90%";
                 editor.style.boxSizing = "border-box";
+                editor.style.fontSize = "12px";
+
+                editor.addEventListener("change", successFunc);
+                editor.addEventListener("blur", successFunc);
+                editor.addEventListener("keydown", onKeydown);
+
+                var button = document.createElement("button");
+                button.innerHTML = "x";
+                button.classList.add("px-1");
+                button.style.width = "10%;";
+                button.style.border = "none";
+                button.style.backgroundColor = "#303030";
+                button.style.color = "#fff";
+                                
+                button.addEventListener("click", onClearClick);
+
+                editorDiv.appendChild(editor);
+                editorDiv.appendChild(button);
 
                 function successFunc(el){
                     var dateString = '';
@@ -201,23 +252,30 @@
                     }
                 }
 
+                function onClearClick(event){
+                    clearFunc(event.target.previousSibling);
+                }
+
                 function clearFunc(el){
                     el.value='';
                     el.dispatchEvent(new Event('change'));
                 }
 
-                editor.addEventListener("change", successFunc);
-                editor.addEventListener("blur", successFunc);
-                editor.addEventListener("keydown", onKeydown);
+                return editorDiv;
+            },            
+            rankHeaderFilter(headerValue, rowValue, rowData, filterParams){
+                if(headerValue.length == 0){
+                    return true;
+                }
 
-                return editor;
-            },                   
+                return headerValue.indexOf(rowValue?.toString()) > -1 
+            },                     
             playerHeaderFilter(headerValue, rowValue, rowData, filterParams){
                 if(headerValue.length == 0){
                     return true;
                 }
 
-                return rowValue.filter(el => { 
+                return rowValue?.filter(el => { 
                     return headerValue.indexOf(el.name) > -1 
                     }).length > 0;
             },        
@@ -226,21 +284,18 @@
                     return true;
                 }
 
-                var value = new moment(rowValue).format("MM/DD/YYYY"); 
+                var value = new moment.utc(rowValue).format("MM/DD/YYYY"); 
 
                 return headerValue == value; 
-            },                 
-            clearFilter: function() {
-                this.filterField = '';
-                this.filterType = '';
-                this.filterValue = '';
-                this.filterPlayerIDs= [];
-
-                this.table.clearFilter();
-            }                                  
+            },                                 
+            showSpeedRunDetails(id) {
+                this.speedRunID = id;
+                this.showDetailModal = true;
+            }                              
         }
     };
 </script>
+
 
 
 

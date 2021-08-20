@@ -1,10 +1,10 @@
 import { createApp } from "vue/dist/vue.esm-bundler";
 import { vfmPlugin } from 'vue-final-modal';
 import vueNextSelect from 'vue-next-select'
+//import VueTippy from 'vue-tippy'
 
 import buttonDropdownVue from './ButtonDropdownVue.vue';
 import navbarVue from './NavbarVue.vue';
-import datepickerVue from './DatepickerVue.vue';
 import customModalVue from './CustomModalVue.vue';
 import resetPasswordVue from './ResetPasswordVue.vue';
 import changePasswordVue from './ChangePasswordVue.vue';
@@ -26,15 +26,9 @@ export default {
                 'speedrun-list-category': speedRunListCategoryVue
             }
         }).use(vfmPlugin);
-        //.use(VueFinalModal(), {
-        //    componentName: 'VueFinalModal',
-        //    key: '$vfm',
-        //    dynamicContainerName: 'ModalsContainer'
-        //});
 
         app.component("button-dropdown", buttonDropdownVue);
         app.component("navbar", navbarVue);
-        app.component("datepicker", datepickerVue);
         app.component('vue-next-select', vueNextSelect);
         app.component('custom-modal', customModalVue);
         app.component("reset-password", resetPasswordVue);
@@ -50,6 +44,7 @@ export default {
         app.component("speedrun-grid", speedRunGridVue);
 
         app.mount('#vue-app');
+        app.provide('app', 'Vue3');
     }
 }
 

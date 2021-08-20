@@ -22,7 +22,7 @@ html {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-top: 30px;
+    padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -154,9 +154,9 @@ div.chart-placeholder + div.chart-placeholder {
     border-bottom: none;
 }
 
-.tooltip {
+/* .tooltip {
     pointer-events: none;
-}
+} */
 
 .ui-autocomplete {
     width: 300px;
@@ -246,8 +246,6 @@ div.chart-placeholder + div.chart-placeholder {
 
 .vue-dropdown-item.highlighted:not(.group) {
     text-decoration: none;
-    color: #262626 !important;
-    background-color: #E0E0E0 !important;
     cursor: pointer;
     border: none !important;
 }
@@ -290,6 +288,11 @@ div.chart-placeholder + div.chart-placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.modal-container {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 ::v-deep .modal-content {

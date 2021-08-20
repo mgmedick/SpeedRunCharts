@@ -1,47 +1,49 @@
 ﻿<template>
-    <form v-if="islinkvalid" @submit.prevent="submitForm">
-        <div>
-            <ul>
-                <li v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
-                <li v-for="error of v$.$errors" :key="error.$uid">{{ error.$message }}</li>
-            </ul>
-        </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-4 col-form-label">Password</label>
-            <div class="col-sm-auto">
-                <input type="password" class="form-control" autocomplete="off" v-model.trim="v$.form.Password.$model">
-            </div>
-        </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-4 col-form-label">Confirm Password</label>
-            <div class="col-sm-auto">
-                <input type="password" class="form-control" autocomplete="off" v-model.trim="v$.form.ConfirmPassword.$model">
-            </div>
-        </div>
-        <div class="row no-gutters pt-1">
-            <div class="form-group mx-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-        <div v-if="showSuccess" style="text-align:center;">
-            <i class="fa fa-circle-check"></i>
+    <div>
+        <form v-if="islinkvalid" @submit.prevent="submitForm">
             <div>
-                Successfully reset password.
+                <ul>
+                    <li v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                    <li v-for="error of v$.$errors" :key="error.$uid">{{ error.$message }}</li>
+                </ul>
+            </div>
+            <div class="form-group row no-gutters">
+                <label class="col-sm-4 col-form-label">Password</label>
+                <div class="col-sm-auto">
+                    <input type="password" class="form-control" autocomplete="off" v-model.trim="v$.form.Password.$model">
+                </div>
+            </div>
+            <div class="form-group row no-gutters">
+                <label class="col-sm-4 col-form-label">Confirm Password</label>
+                <div class="col-sm-auto">
+                    <input type="password" class="form-control" autocomplete="off" v-model.trim="v$.form.ConfirmPassword.$model">
+                </div>
+            </div>
+            <div class="row no-gutters pt-1">
+                <div class="form-group mx-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <div v-if="showSuccess" style="text-align:center;">
+                <i class="fa fa-circle-check"></i>
+                <div>
+                    Successfully reset password.
+                </div>
+            </div>
+        </form>
+        <div v-else style="text-align:center;">
+            <i class="fa fa-hourglass-end"></i>
+            <div>
+                Reset Password link has expired, please <a href="#" @click="showResetModal = true">Reset Password</a> to try again.
             </div>
         </div>
-    </form>
-    <div v-else style="text-align:center;">
-        <i class="fa fa-hourglass-end"></i>
-        <div>
-            Reset Password link has expired, please <a href="#" @click="showResetModal = true">Reset Password</a> to try again.
-        </div>
+        <custom-modal v-model="showResetModal" v-if="showResetModal" contentclass="modal-md">
+            <template v-slot:title>
+                Reset Password
+            </template>
+            <reset-password />
+        </custom-modal>
     </div>
-    <custom-modal v-model="showResetModal" v-if="showResetModal" contentclass="modal-md">
-        <template v-slot:title>
-            Reset Password
-        </template>
-        <reset-password />
-    </custom-modal>
 </template>
 <script>
     import { getFormData } from '../js/common.js';

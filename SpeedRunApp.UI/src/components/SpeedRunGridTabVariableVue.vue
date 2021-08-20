@@ -1,11 +1,11 @@
 ﻿<template>
     <div v-for="(variable, variableIndex) in items" :key="variable.id">
         <div v-if="variablevalueids[variable.id]">
-            <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
+            <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
                 <div class="col-sm-1 align-self-top pt-1">
                     <label class="tab-row-name">{{ variable.name }}:</label>
                 </div>
-                <div class="col pl-2">
+                <div class="col pl-2 tab-list">
                     <ul class="nav nav-pills">
                         <li class="nav-item p-1" v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                             <a class="variableValue nav-link p-2" :class="{ 'active' : variablevalueids[variable.id] == variableValue.id }" href="#/" :data-variable="variable.id" :data-value="variableValue.id" data-toggle="pill" @click="$emit('variablevalueclick', $event)">{{ variableValue.name }}</a>
@@ -18,7 +18,7 @@
                     <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalueids="variablevalueids" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" @variablevalueclick="$emit('variablevalueclick', $event)"></speed-run-grid-tab-variable>
                 </div>
                 <div v-else-if="variablevalueids[variable.id] == variableValue.id">
-                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')"></speedrun-grid>
+                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" ref="speedRunGridVue"></speedrun-grid>
                 </div>
             </div>
         </div>

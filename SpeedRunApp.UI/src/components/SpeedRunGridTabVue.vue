@@ -1,77 +1,75 @@
 ﻿<template>
-    <div style="overflow:auto;">
-        <div v-if="!loading" id="divGridContainer" class="pt-2" style="max-width:1200px">
-            <div class="row no-gutters px-1 pt-1 pb-0">
-                <div class="col-sm-1 align-self-top pt-1">
-                    <label class="tab-row-name">Game:</label>
-                </div>
-                <div class="col pl-2">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item p-1" v-for="(game, gameIndex) in items" :key="game.id">
-                            <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
-                        </li>
-                    </ul>
-                </div>
+    <div v-if="!loading" id="divGridContainer">
+        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0">
+            <div class="col-sm-1 align-self-top pt-1">
+                <label class="tab-row-name">Game:</label>
             </div>
-            <div v-for="(game, gameIndex) in items" :key="game.id">
-                <div v-if="gameID == game.id">
-                    <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                        <div class="col-sm-1 align-self-top pt-1">
-                            <label class="tab-row-name">Category Type:</label>
-                        </div>
-                        <div class="col pl-2">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item p-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                    <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
-                                </li>
-                            </ul>
-                        </div>
+            <div class="col pl-2 tab-list">
+                <ul class="nav nav-pills">
+                    <li class="nav-item p-1" v-for="(game, gameIndex) in items" :key="game.id">
+                        <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div v-for="(game, gameIndex) in items" :key="game.id">
+            <div v-if="gameID == game.id">
+                <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                    <div class="col-sm-1 align-self-top pt-1">
+                        <label class="tab-row-name">Category Type:</label>
                     </div>
-                    <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                        <div v-if="categoryTypeID == categoryType.id">
-                            <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                                <div class="col-sm-1 align-self-top pt-1">
-                                    <label class="tab-row-name">Category:</label>
-                                </div>
-                                <div class="col pl-2">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item p-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                            <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <div class="col pl-2 tab-list">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item p-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                                <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                    <div v-if="categoryTypeID == categoryType.id">
+                        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                            <div class="col-sm-1 align-self-top pt-1">
+                                <label class="tab-row-name">Category:</label>
                             </div>
-                            <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                <div v-if="categoryID == category.id">
-                                    <div v-if="categoryTypeID == 0">
-                                        <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                            <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
-                                        </div>
-                                        <div v-else>
-                                            <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''"></speedrun-grid>
-                                        </div>
+                            <div class="col pl-2 tab-list">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item p-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                        <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                            <div v-if="categoryID == category.id">
+                                <div v-if="categoryTypeID == 0">
+                                    <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
+                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
-                                        <div class="row no-gutters pl-1 pt-1 pb-0 pr-0">
-                                            <div class="col-sm-1 align-self-top pt-1">
-                                                <label class="tab-row-name">Level:</label>
-                                            </div>
-                                            <div class="col pl-2">
-                                                <ul class="nav nav-pills">
-                                                    <li class="nav-item p-1" v-for="(level, levelIndex) in game.levels" :key="level.id">
-                                                        <a class="level nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                        <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" ref="speedRunGridVue"></speedrun-grid>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                                        <div class="col-sm-1 align-self-top pt-1">
+                                            <label class="tab-row-name">Level:</label>
                                         </div>
-                                        <div v-for="(level, levelIndex) in game.levels" :key="level.id">
-                                            <div v-if="levelID == level.id">
-                                                <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                    <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
-                                                </div>
-                                                <div v-else>
-                                                    <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''"></speedrun-grid>
-                                                </div>
+                                        <div class="col pl-2 tab-list">
+                                            <ul class="nav nav-pills">
+                                                <li class="nav-item p-1" v-for="(level, levelIndex) in game.levels" :key="level.id">
+                                                    <a class="level nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div v-for="(level, levelIndex) in game.levels" :key="level.id">
+                                        <div v-if="levelID == level.id">
+                                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
+                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
+                                            </div>
+                                            <div v-else>
+                                                <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" ref="speedRunGridVue"></speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -246,14 +244,19 @@
     };
 </script>
 <style>
-    .nav-link {
+    .tab-list .nav-link {
         background-color: #313131;
-        font-size: 14px;
+        font-size: 13px;
+        font-weight: bold;
     }
 
-    .nav-link:hover {
+    .tab-list .nav-link:hover {
         background-color: #2b2a2a;
     }
+
+   .tab-list {
+       max-width:900px;
+   }
 
    .tab-row-name {
         font-size: 14px !important;

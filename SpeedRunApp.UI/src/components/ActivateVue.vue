@@ -1,49 +1,51 @@
 ﻿<template>
-    <form v-if="islinkvalid" @submit.prevent="submitForm">
-        <div>
-            <ul>
-                <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
-            </ul>
-        </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-4 col-form-label">Username</label>
-            <div class="col-sm-auto">
-                <input type="text" name="Username" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch" />
-                <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
+    <div>
+        <form v-if="islinkvalid" @submit.prevent="submitForm">
+            <div>
+                <ul>
+                    <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                </ul>
+            </div>
+            <div class="form-group row no-gutters">
+                <label class="col-sm-4 col-form-label">Username</label>
+                <div class="col-sm-auto">
+                    <input type="text" name="Username" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch" />
+                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
+                </div>
+            </div>
+            <div class="form-group row no-gutters">
+                <label class="col-sm-4 col-form-label">Password</label>
+                <div class="col-sm-auto">
+                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
+                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
+                </div>
+            </div>
+            <div class="form-group row no-gutters">
+                <label class="col-sm-4 col-form-label">Confirm Password</label>
+                <div class="col-sm-auto">
+                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.ConfirmPassword" @blur="v$.form.ConfirmPassword.$touch">
+                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.ConfirmPassword.$errors">{{ error.$message }}</span>
+                </div>
+            </div>
+            <div class="row no-gutters pt-1">
+                <div class="form-group mx-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+        <div v-else style="text-align:center;">
+            <i class="fa fa-hourglass-end"></i>
+            <div>
+                Activation link has expired, please <a href="#" @click="showSignUpModal = true">Sign Up</a> to try again.
             </div>
         </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-4 col-form-label">Password</label>
-            <div class="col-sm-auto">
-                <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
-                <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
-            </div>
-        </div>
-        <div class="form-group row no-gutters">
-            <label class="col-sm-4 col-form-label">Confirm Password</label>
-            <div class="col-sm-auto">
-                <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.ConfirmPassword" @blur="v$.form.ConfirmPassword.$touch">
-                <span class="text-danger small font-weight-bold" v-for="error of v$.form.ConfirmPassword.$errors">{{ error.$message }}</span>
-            </div>
-        </div>
-        <div class="row no-gutters pt-1">
-            <div class="form-group mx-auto">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </form>
-    <div v-else style="text-align:center;">
-        <i class="fa fa-hourglass-end"></i>
-        <div>
-            Activation link has expired, please <a href="#" @click="showSignUpModal = true">Sign Up</a> to try again.
-        </div>
+        <custom-modal v-model="showSignUpModal" v-if="showSignUpModal" contentclass="modal-md">
+            <template v-slot:title>
+                Sign Up
+            </template>
+            <signup />
+        </custom-modal>
     </div>
-    <custom-modal v-model="showSignUpModal" v-if="showSignUpModal" contentclass="modal-md">
-        <template v-slot:title>
-            Sign Up
-        </template>
-        <signup />
-    </custom-modal>
 </template>
 <script>
     import { getFormData } from '../js/common.js';

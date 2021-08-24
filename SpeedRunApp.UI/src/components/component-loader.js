@@ -17,6 +17,12 @@ import speedRunListCategoryVue from './SpeedRunListCategoryVue.vue';
 import speedRunGridTabVue from './SpeedRunGridTabVue.vue';
 import speedRunGridTabVariableVue from './SpeedRunGridTabVariableVue.vue';
 import speedRunGridVue from './SpeedRunGridVue.vue';
+import VueFusionCharts from 'vue-fusioncharts';
+import FusionCharts from 'fusioncharts';
+import StackedBar2D from 'fusioncharts/fusioncharts.charts';
+import Pie3D from 'fusioncharts/fusioncharts.charts';
+import MSLine from 'fusioncharts/fusioncharts.charts';
+import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.candy';
 
 export default {
     loadComponents() {
@@ -24,7 +30,8 @@ export default {
             components: {
                 'speedrun-list-category': speedRunListCategoryVue
             }
-        }).use(vfmPlugin);
+        }).use(vfmPlugin)
+          .use(VueFusionCharts, FusionCharts, StackedBar2D, Pie3D, MSLine, FusionTheme);
 
         app.component("button-dropdown", buttonDropdownVue);
         app.component("navbar", navbarVue);

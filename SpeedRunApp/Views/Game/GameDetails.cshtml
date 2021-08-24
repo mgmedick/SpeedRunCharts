@@ -13,43 +13,45 @@
 
 <div class="container-fluid p-0">
     <div class="container ml-0 p-2 d-flex">
-        <div class="col-sm-2 p-0 align-self-end">
+        <div class="col-sm-2 p-2 align-self-end">
             <div class="img-round">
                 <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
             </div>
         </div>
         <div class="col-sm p-2 align-self-end">
-            <h4 class="m-0">@Model.Name</h3>
+            <h4 class="m-0 font-weight-bold">@Model.Name</h4>
         </div>
     </div>
-    <div class="container ml-0 p-0 pt-2">
-        <h5>Details</h4>
-        <div class="pl-3">
-            <div class="form-group row no-gutters mb-2">
-                <label for="spnYearOfRelease" class="col-sm-2 col-form-label font-weight-bold">Release Year</label>
-                <div class="col-sm col-form-label">
-                    <span id="spnYearOfRelease">@Model.YearOfRelease</span>
+    <div class="ml-md-3">
+        <div class="container ml-0 p-0 pt-2">
+            <h5 class="font-weight-bold">Details</h5>
+            <div class="pl-3">
+                <div class="form-group row no-gutters mb-2">
+                    <label for="spnYearOfRelease" class="col-sm-2 col-form-label font-weight-bold">Release Year</label>
+                    <div class="col-sm-5 col-form-label">
+                        <span id="spnYearOfRelease">@Model.YearOfRelease</span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row no-gutters mb-2">
-                <label for="spnPlatforms" class="col-sm-2 col-form-label font-weight-bold">Platforms</label>
-                <div class="col-sm col-form-label">
-                    <span id="spnPlatforms">@Model.PlatformsString</span>
+                <div class="form-group row no-gutters mb-2">
+                    <label for="spnPlatforms" class="col-sm-2 col-form-label font-weight-bold">Platforms</label>
+                    <div class="col-sm-5 col-form-label">
+                        <span id="spnPlatforms">@Model.PlatformsString</span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row no-gutters mb-2">
-                <label for="spnModerators" class="col-sm-2 col-form-label font-weight-bold">Moderators</label>
-                <div class="col-sm col-form-label">
-                    <span id="spnModerators">
-                        @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
-                    </span>
+                <div class="form-group row no-gutters mb-2">
+                    <label for="spnModerators" class="col-sm-2 col-form-label font-weight-bold">Moderators</label>
+                    <div class="col-sm-5 col-form-label">
+                        <span id="spnModerators">
+                            @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid p-0 pt-3">
-        <h5>Leaderboards</h4>
-        <speedrun-grid-tab :isgame="true" :id="'@Model.ID'"></speedrun-grid-tab>
+        <div class="container-fluid p-0 pt-3">
+            <h5 class="font-weight-bold">Leaderboards</h5>
+            <speedrun-grid-tab :isgame="true" :id="'@Model.ID'"></speedrun-grid-tab>
+        </div>
     </div>
 </div>
 

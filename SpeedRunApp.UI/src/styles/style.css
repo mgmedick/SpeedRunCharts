@@ -332,3 +332,29 @@ div.chart-placeholder + div.chart-placeholder {
     right: 0.5rem;
 }
 
+@media (min-width: 992px) {
+    .navbar-expand .navbar-collapse {
+        display: block;
+    }
+}
+
+.brand-logo {
+    width: 25px;
+}
+
+/*.twitter-logo {
+    background: url(../fonts/Twitter_Logo_WhiteOnBlue.svg)
+}
+
+.twitch-logo {
+    background: url(../fonts/TwitchGlitchPurple.svg)
+}
+
+.youtube-logo {
+    background: url(../fonts/youtube_social_square_red.svg)
+}
+*/
+
+
+
+

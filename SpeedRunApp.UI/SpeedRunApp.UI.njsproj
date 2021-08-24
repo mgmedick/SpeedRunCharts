@@ -49,18 +49,19 @@
     <Content Include="src\components\ResetPasswordVue.vue" />
     <Content Include="src\components\SignUpVue.vue" />
     <Content Include="src\components\SpeedRunEditVue.vue" />
+    <Content Include="src\components\SpeedRunGridVue_Old.vue" />
     <Content Include="src\components\SpeedRunListCategoryVue.vue" />
     <Content Include="src\components\SpeedRunListVue.vue" />
-    <Content Include="src\components\DatepickerVue.vue" />
     <Content Include="src\components\SpeedRunSummaryVue.vue" />
-    <Content Include="src\images\banner1.svg" />
-    <Content Include="src\images\banner2.svg" />
-    <Content Include="src\images\banner3.svg" />
-    <Content Include="src\images\SpaceInvader.svg" />
-    <Content Include="src\images\SplitsLogo.svg" />
-    <Content Include="src\images\TwitchGlitchPurple.svg" />
-    <Content Include="src\images\Twitter_Logo_WhiteOnBlue.svg" />
-    <Content Include="src\images\youtube_social_square_red.svg" />
+    <Content Include="src\fonts\banner1.svg" />
+    <Content Include="src\fonts\banner2.svg" />
+    <Content Include="src\fonts\banner3.svg" />
+    <Content Include="src\fonts\pie-chart.svg" />
+    <Content Include="src\fonts\SpaceInvader.svg" />
+    <Content Include="src\fonts\SplitsLogo.svg" />
+    <Content Include="src\fonts\TwitchGlitchPurple.svg" />
+    <Content Include="src\fonts\Twitter_Logo_WhiteOnBlue.svg" />
+    <Content Include="src\fonts\youtube_social_square_red.svg" />
     <Content Include="src\index.js" />
     <Content Include="src\js\common.js" />
     <Content Include="src\styles\bootstrap-theme.css" />
@@ -77,7 +78,7 @@
   <ItemGroup>
     <Folder Include="src\" />
     <Folder Include="src\components\" />
-    <Folder Include="src\images\" />
+    <Folder Include="src\fonts\" />
     <Folder Include="src\js\" />
     <Folder Include="src\styles\" />
   </ItemGroup>

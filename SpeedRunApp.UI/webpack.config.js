@@ -74,13 +74,6 @@ module.exports = {
                         }
                     }
                 ]
-            },
-            {
-                test: require.resolve("jquery"),
-                loader: "expose-loader",
-                options: {
-                    exposes: ["$", "jQuery"],
-                },
             }
         ]
     },
@@ -100,7 +93,7 @@ module.exports = {
         chunkFilename: '[name].min.js',
         globalObject: 'this',
         path: `${bldPath}`,
-        publicPath: '/wwwroot/dist/'
+        publicPath: '/dist/'
     },
     plugins: [
         new CleanWebpackPlugin({

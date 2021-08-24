@@ -1,5 +1,5 @@
 ﻿<template>
-    <div v-if="!loading" id="divGridContainer">
+    <div v-if="!loading" id="divGridContainer" class="container-lg m-0 p-0">
         <div class="row no-gutters pl-3 pr-1 pt-1 pb-0">
             <div class="col-sm-1 align-self-top pt-1">
                 <label class="tab-row-name">Game:</label>
@@ -253,10 +253,6 @@
     .tab-list .nav-link:hover {
         background-color: #2b2a2a;
     }
-
-   .tab-list {
-       max-width:900px;
-   }
 
    .tab-row-name {
         font-size: 14px !important;

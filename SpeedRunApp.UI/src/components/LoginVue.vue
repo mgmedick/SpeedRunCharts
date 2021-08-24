@@ -9,14 +9,14 @@
             <div class="form-group row no-gutters">
                 <label class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-auto">
-                    <input type="text" class="form-control" autocomplete="chrome-off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
+                    <input type="text" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
                     <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
                 </div>
             </div>
             <div class="form-group row no-gutters">
                 <label class="col-sm-3 col-form-label">Password</label>
                 <div class="col-sm-auto">
-                    <input type="password" class="form-control" autocomplete="chrome-off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
+                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
                     <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
                 </div>
             </div>

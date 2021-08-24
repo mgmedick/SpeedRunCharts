@@ -1,7 +1,6 @@
 import { createApp } from "vue/dist/vue.esm-bundler";
 import { vfmPlugin } from 'vue-final-modal';
 import vueNextSelect from 'vue-next-select'
-//import VueTippy from 'vue-tippy'
 
 import buttonDropdownVue from './ButtonDropdownVue.vue';
 import navbarVue from './NavbarVue.vue';

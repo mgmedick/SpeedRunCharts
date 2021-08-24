@@ -1,38 +1,31 @@
 ﻿@model SpeedRunApp.Model.ViewModels.UserViewModel
 
-@section Styles {
-    <style>
-    </style>
-}
-
-@section Scripts {
-    <script>
-    </script>
-}
-
 <div class="container-fluid p-0">
     <div class="container ml-0 p-2 d-flex">
-        <div class="col-sm-2 p-2 align-self-end" style="@((Model.ProfileImage == null) ? "display:none" : "")">
+        <div class="col-sm-2 p-0 align-self-end" style="@((Model.ProfileImage == null) ? "display:none" : "")">
             <div class="img-round">
                 <img src="@Model.ProfileImage" class="img-fluid" alt="Responsive image">
             </div>
         </div>
         <div class="col-sm-auto p-2 align-self-end">
-            <h3 class="m-0">@Model.Name</h3>
+            <h4 class="m-0 font-weight-bold">@Model.Name</h4>
         </div>
         <div class="col-sm-2 p-2 align-self-end">
-            <a href="@Model.TwitterProfile"><img src="@Url.Content("~/images/Twitter_Logo_WhiteOnBlue.svg")" class="img-fluid brand-logo p-1" style="@((Model.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-            <a href="@Model.TwitchProfile"><img src="@Url.Content("~/images/TwitchGlitchPurple.svg")" class="img-fluid brand-logo p-1" style="@((Model.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-            <a href="@Model.YoutubeProfile"><img src="@Url.Content("~/images/youtube_social_square_red.svg")" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+            <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
+            <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
+            <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
         </div>
     </div>
-    <div class="container-fluid p-2 pt-3">
-        <h4>SpeedRuns</h4>
-        <div id="divSpeedRunGridContainer" class="pl-3 pt-2">
-            <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
-        </div>
+    <div class="container-fluid p-0 pt-3 ml-md-3">
+        <h5 class="font-weight-bold">SpeedRuns</h5>
+        <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
     </div>
 </div>
+
+
+
+
+
 
 
 

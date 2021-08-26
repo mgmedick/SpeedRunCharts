@@ -1830,6 +1830,7 @@ select.form-control:focus::-ms-value {
 
 .theme-dark .card-header {
     background-color: #303030;
+    border-bottom: 2px solid #444;
 }
 
 .theme-dark .card-footer {

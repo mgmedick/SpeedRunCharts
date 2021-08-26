@@ -34,6 +34,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="src\components\SpeedRunGridChartVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVariableVue.vue" />
     <Content Include="src\components\SpeedRunGridVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVue.vue" />
@@ -49,7 +50,6 @@
     <Content Include="src\components\ResetPasswordVue.vue" />
     <Content Include="src\components\SignUpVue.vue" />
     <Content Include="src\components\SpeedRunEditVue.vue" />
-    <Content Include="src\components\SpeedRunGridVue_Old.vue" />
     <Content Include="src\components\SpeedRunListCategoryVue.vue" />
     <Content Include="src\components\SpeedRunListVue.vue" />
     <Content Include="src\components\SpeedRunSummaryVue.vue" />

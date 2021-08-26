@@ -41,10 +41,10 @@
                             </span>
                         </template>
                         <template v-slot:options>
-                            <li class="dropdown-item custom-control custom-switch">
+                            <!--<li class="dropdown-item custom-control custom-switch">
                                 <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
                                 <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
-                            </li>
+                            </li>-->
                             <li class="dropdown-item">
                                 <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                             </li>

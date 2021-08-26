@@ -38,7 +38,61 @@ const getIntOrdinalString = value => {
     return result;
 }
 
-export { getFormData, getIntOrdinalString }
+const getDateDiffList = (datePart, startDate, endDate) => {
+    var dates = [];
+    switch (datePart.toLowerCase()) {
+        case "day":
+            while (startDate <= endDate) {
+                dates.push(startDate);
+                startDate = moment(startDate).add(1, 'day').toDate();
+            }
+            break;
+        case "month":
+            var startMonthYear = moment([startDate.getFullYear(), startDate.getMonth(), 1]).toDate();
+            var endMonthYear = moment([endDate.getFullYear(), endDate.getMonth(), 1]).toDate();
+            while (startMonthYear <= endMonthYear) {
+                dates.push(startMonthYear);
+                startMonthYear = moment(startMonthYear).add(1, 'month').toDate();
+            }
+            break;
+    }
+
+    return dates;
+}
+
+const formatTime = (timepart, value) => {
+    var result;
+    var date = moment().startOf('day');
+
+    switch (timepart) {
+        case 'milliseconds':
+            result = date.milliseconds(value);
+            break;
+        case 'seconds':
+            result = date.seconds(value);
+            break;
+        case 'minutes':
+            result = date.minutes(value);
+            break;
+        case 'hours':
+            result = date.hours(value);
+            break;
+    }
+
+    if (date.hours() > 0) {
+        result = date.format("hh[h] mm[m] ss[s]")
+    } else if (date.minutes() > 0) {
+        result = date.format("mm[m] ss[s]")
+    } else if (date.seconds() > 0) {
+        result = date.format("ss[s]")
+    } else {
+        result = date.format("SSS[ms]")
+    }
+
+    return result;
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime }
 
 
 

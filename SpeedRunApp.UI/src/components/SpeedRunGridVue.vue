@@ -7,7 +7,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2 mx-0 grid-container container-lg" style="width:auto;">
+        <div class="mt-2 mx-0 grid-container container-lg p-0" style="width:auto;">
+            <speedrun-grid-chart v-if="!loading" :tabledata="tableData"></speedrun-grid-chart>
             <div id="tblGrid" class="mt-1"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
@@ -40,6 +41,7 @@
         data() {
             return {
                 table: {},
+                tableData: [],
                 loading: true,
                 speedRunID: String,
                 showDetailModal: false
@@ -60,6 +62,7 @@
 
                 axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues } })
                     .then(res => {
+                        that.tableData = res.data;
                         that.initGrid(res.data); 
                         that.loading = false;                      
                     })

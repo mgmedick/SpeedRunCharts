@@ -15,7 +15,7 @@ module.exports = {
         master: path.resolve(srcPath, 'index.js'),
         style: `${stylePath}/style.css`
     },
-    mode: 'development',
+    mode: 'production',
     watch: true,
     module: {
         rules: [

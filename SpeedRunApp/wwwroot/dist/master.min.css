@@ -1,0 +1,28 @@
+/*!************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[12].use[0]!./src/components/SpeedRunGridTabVue.vue?vue&type=style&index=0&id=224635aa&lang=css ***!
+  \************************************************************************************************************************************************************************************************************************************************************/
+
+.tab-list .nav-link {
+        background-color: #313131;
+        font-size: 13px;
+        font-weight: bold;
+}
+.tab-list .nav-link:hover {
+        background-color: #2b2a2a;
+}
+.tab-row-name {
+        font-size: 14px !important;
+        line-height: 18px;
+        font-weight: bold;
+} 
+
+/*!**************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[12].use[0]!./src/components/SpeedRunGridChartVue.vue?vue&type=style&index=0&id=7499c842&lang=css ***!
+  \**************************************************************************************************************************************************************************************************************************************************************/
+
+.fusioncharts-container>svg>g:nth-of-type(2){
+        display:none !important;
+}
+
+
+/*# sourceMappingURL=master.min.css.map*/

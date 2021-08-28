@@ -11,9 +11,9 @@
             <h4 class="m-0 font-weight-bold">@Model.Name</h4>
         </div>
         <div class="col-sm-2 p-2 align-self-end">
-            <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
-            <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
-            <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" alt="Responsive image"></a>
+            <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+            <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+            <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
         </div>
     </div>
     <div class="container-fluid p-0 pt-3 ml-lg-3">

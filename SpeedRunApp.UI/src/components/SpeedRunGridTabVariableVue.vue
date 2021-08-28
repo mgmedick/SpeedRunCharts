@@ -18,7 +18,7 @@
                     <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalueids="variablevalueids" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" @variablevalueclick="$emit('variablevalueclick', $event)"></speed-run-grid-tab-variable>
                 </div>
                 <div v-else-if="variablevalueids[variable.id] == variableValue.id">
-                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" ref="speedRunGridVue"></speedrun-grid>
+                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid"></speedrun-grid>
                 </div>
             </div>
         </div>
@@ -35,6 +35,7 @@
             categoryid: String,
             levelid: String,
             variablevalueids: Object,
+            userid: String,
             prevdata: String
         }
     };

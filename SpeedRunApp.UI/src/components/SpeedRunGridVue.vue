@@ -36,7 +36,8 @@
             categorytypeid: String,
             categoryid: String,
             levelid: String,
-            variablevalues: String
+            variablevalues: String,
+            userid: String
         },
         data() {
             return {
@@ -60,7 +61,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues } })
+                axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data); 
@@ -111,7 +112,7 @@
                     pagination: "local",
                     paginationSize: 50,
                     movableColumns: true,
-                    resizableRows: true,
+                    //resizableRows: true,
                     initialSort: [             //set the initial sort order of the data
                         { column: "rank", dir: "asc" },
                     ],
@@ -139,7 +140,7 @@
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle'></i></a>";
+                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";

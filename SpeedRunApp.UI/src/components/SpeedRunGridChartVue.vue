@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header" id="headingOne">
             <h5 class="mb-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @click="showCharts = !showCharts">Charts</button>
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @click="showCharts = !showCharts">Show Charts</button>
             </h5>
         </div>
         <div class="container row" :style="[ showCharts ? null : { display:'none' } ]">

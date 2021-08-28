@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark pr-5">
             <a class="navbar-brand" href="../">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
                 SpeedRunCharts

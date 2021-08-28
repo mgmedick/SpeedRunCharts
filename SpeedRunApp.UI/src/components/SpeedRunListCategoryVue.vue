@@ -7,10 +7,10 @@
                         <input type="radio" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-certificate fa-lg"></i>&nbsp;New
                     </label>
                     <label class="btn btn-primary btn-sm category">
-                        <input type="radio" id="btnCategory1" name="btnCategory" autocomplete="off" value="1" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-percentage fa-lg"></i>&nbsp;First
+                        <input type="radio" id="btnCategory1" name="btnCategory" autocomplete="off" value="1" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-percentage fa-lg"></i>&nbsp;Top 5%
                     </label>
                     <label class="btn btn-primary btn-sm category">
-                        <input type="radio" id="btnCategory2" name="btnCategory" autocomplete="off" value="2" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-award fa-lg"></i>&nbsp;Top 5%
+                        <input type="radio" id="btnCategory2" name="btnCategory" autocomplete="off" value="2" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-award fa-lg"></i>&nbsp;First
                     </label>
                     <label class="btn btn-primary btn-sm category">
                         <input type="radio" id="btnCategory3" name="btnCategory" autocomplete="off" value="3" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-fire fa-lg"></i>&nbsp;Top 3

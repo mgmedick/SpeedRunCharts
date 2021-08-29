@@ -47,6 +47,19 @@ namespace SpeedRunApp.Service
             return gridVM;
         }
 
+        public SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID)
+        {
+            var games = _gameRepo.GetGamesByUserID(userID);
+            var tabItems = games.Select(i => new GameViewModel(i));
+            //var game = tabItems.FirstOrDefault();
+            //var categoryTypeID = game.CategoryTypes.Select(i => i.ID).FirstOrDefault();
+            //var categoryID = game.Categories.Select(i => i.ID).FirstOrDefault();
+            //var levelID = game.Levels.Select(i => i.ID).FirstOrDefault();
+            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+
+            return gridVM;
+        }
+
         /*
         public SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID)
         {

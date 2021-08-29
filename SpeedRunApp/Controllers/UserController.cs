@@ -20,15 +20,7 @@ namespace SpeedRunApp.WebUI.Controllers
 
             return View(userVM);
         }
-
-        [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int ID)
-        {
-            var gridVM = _userService.GetSpeedRunGridTabs(ID);
-
-            return Json(gridVM);
-        }
-
+        
         [HttpGet]
         public JsonResult SearchUsers(string term)
         {

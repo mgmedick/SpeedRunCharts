@@ -26,13 +26,13 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int ID)
+        public JsonResult GetSpeedRunGridTabs(int ID, bool isGame)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabs(ID);
+            var gridVM = isGame ? _gameService.GetSpeedRunGridTabs(ID) : _gameService.GetSpeedRunGridTabsForUser(ID);
 
             return Json(gridVM);
         }
-
+        
         [HttpGet]
         public JsonResult SearchGames(string term)
         {

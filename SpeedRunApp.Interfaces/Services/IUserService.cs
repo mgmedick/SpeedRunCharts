@@ -9,6 +9,5 @@ namespace SpeedRunApp.Interfaces.Services
     {
         UserViewModel GetUser(int userID);
         IEnumerable<SearchResult> SearchUsers(string searchText);
-        SpeedRunGridTabViewModel GetSpeedRunGridTabs(int userID);
     }
 }

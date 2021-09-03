@@ -3,7 +3,7 @@
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <slot name="text"></slot>
         </button>
-        <ul class="dropdown-menu" :class="{ show : state }" aria-labelledby="dropdownMenuButton">
+        <ul class="dropdown-menu dropdown-menu-sm-right" :class="{ show : state }" aria-labelledby="dropdownMenuButton">
             <slot name="options"></slot>
         </ul>
     </div>

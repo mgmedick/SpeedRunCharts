@@ -20,6 +20,7 @@
     </div>   
 </template>
 <script>
+    window.moment = require('moment');  
     import moment from 'moment';
     import axios from 'axios';
     import { getIntOrdinalString } from '../js/common.js';
@@ -68,7 +69,7 @@
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            },                                                          
+            },                                                                 
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });

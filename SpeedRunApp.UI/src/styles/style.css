@@ -42,8 +42,8 @@ html {
         object-fit: cover;
     }
 
-/** select2 **/
-.select2-container {
+/* select2 */
+/* .select2-container {
     font-size: 13px;
 }
 
@@ -56,16 +56,16 @@ html {
     min-height: 32px;
 }
 
-    .select2-container .select2-selection--multiple .select2-selection__rendered li.select2-search input[type="search"] {
-        font-size: 14px;
-        height: 15px;
-        padding: 0;
-        padding-left: 5px;
-    }
+.select2-container .select2-selection--multiple .select2-selection__rendered li.select2-search input[type="search"] {
+    font-size: 14px;
+    height: 15px;
+    padding: 0;
+    padding-left: 5px;
+}
 
 .select2-results__options {
     line-height: 14px;
-}
+} */
 
 input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
@@ -210,7 +210,7 @@ div.chart-placeholder + div.chart-placeholder {
 */
 
 /** choices **/
-.choices__inner {
+/* .choices__inner {
     padding: 3px;
     min-height: 28px;
 }
@@ -225,7 +225,7 @@ div.chart-placeholder + div.chart-placeholder {
     font-weight: 500;
     margin-right: 2px;
     margin-bottom: 1px;
-}
+} */
 
 /** vue-select **/
 .vue-select {
@@ -241,6 +241,7 @@ div.chart-placeholder + div.chart-placeholder {
 
 .vue-dropdown-item.group {
     font-weight: bold;
+    padding-left:15px;
     pointer-events: none;
 }
 

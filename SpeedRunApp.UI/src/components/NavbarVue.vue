@@ -122,7 +122,7 @@
                                         value: constructor.subItems.map(method => method.value),
                                         isConstructor: true
                                     })
-                                    .concat(constructor.subItems.map(method => ({ label: method.label, value: method.value })))
+                                    .concat(constructor.subItems.map(method => ({ label: method.label, value: method.value, category: constructor.label })))
                             }, []);
                             that.searchLoading = false;
 
@@ -132,9 +132,19 @@
                 }
             },
             onSearchSelected: function (option) {
-                var controller = "Game";
-                var action = "GameDetails";
-                var params = "gameID=" + option.value;
+                var controller;
+                var action;
+                var params;
+
+                if (option.category == 'Games') {
+                    controller = "Game";
+                    action = "GameDetails"
+                    params = "gameID=" + option.value;
+                } else {
+                    controller = "User";
+                    action = "UserDetails"
+                    params = "userID=" + option.value;
+                } 
 
                 location.href = encodeURI('../' + controller + "/" + action + "?" + params);
             }

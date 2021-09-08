@@ -20,13 +20,12 @@
     </div>   
 </template>
 <script>
-    window.moment = require('moment');  
     import moment from 'moment';
-    import axios from 'axios';
+    import axios from 'axios';    
     import { getIntOrdinalString } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import _ from 'lodash';
+    import { escape } from 'lodash';
     import tippy from 'tippy.js'
     import 'tippy.js/dist/tippy.css'
 
@@ -48,8 +47,6 @@
                 speedRunID: String,
                 showDetailModal: false
             }
-        },
-        computed: {
         },
         created: function () {
             this.loadData();
@@ -124,7 +121,7 @@
                             var cellElement = el.closest('.tabulator-cell');
 
                             tippy(cellElement, {
-                                content: _.escape(value),
+                                content: escape(value),
                                 allowHTML: true,
                                 arrow:false,
                                 placement:'bottom',
@@ -161,7 +158,7 @@
             playerFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
                 var valueString = value?.map(el => el.name).join();
-                var html = valueString ? '<span class="tippy-tooltip" data-content="' + _.escape(valueString) + '">' : '<span>'
+                var html = valueString ? '<span class="tippy-tooltip" data-content="' + escape(valueString) + '">' : '<span>'
 
                 value?.forEach(el => {
                     if (el.id > 0) {
@@ -187,7 +184,7 @@
             },
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
-                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + _.escape(tooltip) + '">' : '<span>'
+                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escape(tooltip) + '">' : '<span>'
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
@@ -204,7 +201,7 @@
                 var value = cell.getValue();
 
                 if (value != null) {
-                    html = '<i class="far fa-comment tippy-tooltip" data-content="' + _.escape(value) + '"></i>'
+                    html = '<i class="far fa-comment tippy-tooltip" data-content="' + escape(value) + '"></i>'
                 }
 
                 return html;

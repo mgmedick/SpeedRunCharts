@@ -1,4 +1,5 @@
-import { createApp } from "vue/dist/vue.esm-bundler";
+//import { createApp } from "vue/dist/vue.esm-bundler";
+import { createApp } from "vue";
 import { vfmPlugin } from 'vue-final-modal';
 import vueNextSelect from 'vue-next-select'
 

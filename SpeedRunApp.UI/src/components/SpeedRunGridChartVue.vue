@@ -25,7 +25,8 @@
 </template>
 <script>
     import moment from 'moment';
-    import _ from 'lodash';
+    //import { chain, clone, map, value, join } from 'lodash';
+    import { chain } from 'lodash';    
     import { getDateDiffList, formatTime } from '../js/common.js';
 
     export default {
@@ -60,7 +61,8 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = _.chain(this.tabledata).clone().value();
+                    //var _data = _.chain(this.tabledata).clone().value();
+                    var _data = chain(this.tabledata).clone().value();                    
                     var dates = _data.map(item => { return new Date(item.dateSubmitted) });
                     var maxDate = moment(Math.max.apply(null, dates)).toDate();
                     var minDate = moment(maxDate).add(-24, "months").toDate();
@@ -73,7 +75,8 @@
 
                     var timePeriods = getDateDiffList("month", minDate, maxDate).map(x => { return moment(x).format("MM/YYYY") });
 
-                    var _timePeriods = _.chain(timePeriods).clone().value();
+                    //var _timePeriods = _.chain(timePeriods).clone().value();
+                    var _timePeriods = chain(timePeriods).clone().value();
                     var groupedObj = {};
                     var chartDataObj = {};
                     var categoryObj = {};
@@ -112,7 +115,8 @@
                     }
 
                     for (var key in chartDataObj) {
-                        var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
+                        //var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
+                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();                        
                         if (data.length > 0) {
                             data = data.sort((a, b) => {
                                 var monthyeara = a.category.split("/");
@@ -167,7 +171,8 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = _.chain(this.tabledata).clone().value();
+                    //var _data = _.chain(this.tabledata).clone().value();
+                    var _data = chain(this.tabledata).clone().value();
                     var allSpeedRunTimes = _data.sort((a, b) => { return a?.PrimaryTimeMilliseconds - b?.PrimaryTimeMilliseconds; });
 
                     var chartDataObj = {};
@@ -254,14 +259,16 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = _.chain(this.tabledata).clone().value();
+                    //var _data = _.chain(this.tabledata).clone().value();
+                    var _data = chain(this.tabledata).clone().value();
                     var sortedData = _data.sort((a, b) => { return a?.PrimaryTimeMilliseconds - b?.PrimaryTimeMilliseconds; });
                     var data = sortedData.slice(0, 10);
 
                     var chartDataObj = {};
                     var categoryObj = {};
                     data.forEach(item => {
-                        var playerNames = _.chain(item.players).map(function (item) { return item.name }).value().join(",");
+                        //var playerNames = _.chain(item.players).map(function (item) { return item.name }).value().join(",");
+                        var playerNames = chain(item.players).map(function (item) { return item.name }).value().join(",");
 
                         chartDataObj[playerNames] = chartDataObj[playerNames] || [];
                         chartDataObj[playerNames] = item.primaryTimeMilliseconds;

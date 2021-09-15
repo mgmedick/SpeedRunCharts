@@ -1,12 +1,23 @@
 ﻿<template>
-    <div>    
+    <div>   
+        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0">
+            <div class="col-sm-1 align-self-top pt-1">
+                <label class="tab-row-name">Show All Data:</label>
+            </div>
+            <div class="col pl-2 align-self-center">
+                <div class="custom-control custom-switch">
+                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
+                    <label class="custom-control-label" for="chkShowAllData"></label>
+                </div>
+            </div>
+        </div>           
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
                     <i class="fas fa-spinner fa-spin fa-lg"></i>
                 </div>
             </div>
-        </div>
+        </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="width:auto;">
             <speedrun-grid-chart v-if="!loading" :tabledata="tableData"></speedrun-grid-chart>
             <div id="tblGrid" class="mt-1"></div>
@@ -45,7 +56,8 @@
                 tableData: [],
                 loading: true,
                 speedRunID: String,
-                showDetailModal: false
+                showDetailModal: false,
+                showAllData: false
             }
         },
         created: function () {
@@ -62,7 +74,8 @@
                 axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
-                        that.initGrid(res.data); 
+                        var data = res.data.filter(x => x.rank);
+                        that.initGrid(data);
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
@@ -108,11 +121,11 @@
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
-                    paginationSize: 50,
+                    paginationSize: 20,
                     movableColumns: true,
                     //resizableRows: true,
                     initialSort: [             //set the initial sort order of the data
-                        { column: "rank", dir: "asc" },
+                        { column: "primaryTime.ticks", dir: "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {
@@ -130,6 +143,11 @@
                         });
                     },
                 });                
+            },
+            onShowAllDataClick: function (event) {
+                this.showAllData = !this.showAllData;
+                var data = this.showAllData ? this.tableData : this.tableData.filter(x => x.rank);
+                this.table.setData(data);
             },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();

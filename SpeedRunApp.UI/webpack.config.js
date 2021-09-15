@@ -15,6 +15,11 @@ module.exports = {
         master: path.resolve(srcPath, 'index.js'),
         style: `${stylePath}/style.css`
     },
+    resolve: {  
+        alias: {
+            'vue': 'vue/dist/vue.esm-bundler.js'
+        }
+    },     
     mode: 'production',
     watch: true,
     module: {

@@ -147,7 +147,8 @@
             onShowAllDataClick: function (event) {
                 this.showAllData = !this.showAllData;
                 var data = this.showAllData ? this.tableData : this.tableData.filter(x => x.rank);
-                this.table.setData(data);
+                this.table.replaceData(data);
+                //this.table.updateData(data);
             },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();

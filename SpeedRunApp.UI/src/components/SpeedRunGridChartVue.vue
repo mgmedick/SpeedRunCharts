@@ -156,7 +156,7 @@
                     dataSource: {
                         chart: {
                             caption: 'World Records',
-                            subCaption: 'Per Month',
+                            subCaption: 'Fastest Per Month',
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
                             labelDisplay: "rotate",
@@ -392,6 +392,7 @@
                 if (this.tabledata?.length > 0) {
                     //var _data = _.chain(this.tabledata).clone().value();
                     var _data = chain(this.tabledata).clone().value();
+                    _data = _data.filter(x => x.rank);
                     var sortedData = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
                     var data = sortedData.slice(0, 10);
 
@@ -429,7 +430,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Runs',
+                            caption: 'Top 10 Ranked Runs',
                             subCaption: '',
                             xAxis: '',
                             yAxis: 'Time (Minutes)',

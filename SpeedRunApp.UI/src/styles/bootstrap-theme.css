@@ -3090,9 +3090,9 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 /** tabulator **/
-.theme-dark .grid-container {
+/* .theme-dark .grid-container {
     background-color: #303030;
-}
+} */
 
 .theme-dark .tabulator {
     background-color: #303030;

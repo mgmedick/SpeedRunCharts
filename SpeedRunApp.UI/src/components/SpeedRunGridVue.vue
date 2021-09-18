@@ -18,9 +18,9 @@
                 </div>
             </div>
         </div>        
-        <div class="mt-2 mx-0 grid-container container-lg p-0" style="width:auto;">
+        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:900px;">
             <speedrun-grid-chart v-if="!loading" :tabledata="tableData"></speedrun-grid-chart>
-            <div id="tblGrid" class="mt-1"></div>
+            <div id="tblGrid"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
             <template v-slot:title>
@@ -64,6 +64,7 @@
             this.loadData();
         },
         mounted: function() {
+            //this.loadData();
             window.speedRunGridVue = this;
         },
         methods: {
@@ -109,7 +110,7 @@
                 var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )                
 
                 distinctVariables?.forEach(variable => { 
-                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100 },)
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:2 },)
                 });
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, minWidth: 50, widthShrink:2 });

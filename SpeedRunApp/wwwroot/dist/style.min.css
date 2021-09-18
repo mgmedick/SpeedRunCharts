@@ -3182,7 +3182,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .tabulator .tabulator-footer .tabulator-page.active {
-    background-color: var(--primary) !important;
+    background-color: #444 !important;
 }
 
 /** tippy **/

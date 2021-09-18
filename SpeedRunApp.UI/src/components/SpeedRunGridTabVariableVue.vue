@@ -2,7 +2,7 @@
     <div v-for="(variable, variableIndex) in items" :key="variable.id">
         <div v-if="variablevalueids[variable.id]">
             <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
-                <div class="col-sm-1 align-self-top pt-1">
+                <div class="col-sm-1 align-self-top pt-1 overflow-hidden">
                     <label class="tab-row-name">{{ variable.name }}:</label>
                 </div>
                 <div class="col pl-2 tab-list">

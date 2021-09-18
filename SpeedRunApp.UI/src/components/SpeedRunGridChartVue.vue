@@ -74,14 +74,18 @@
                         _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
                                      .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                     }
-                    //filteredData = filteredData.slice(0, 20);
+                    filteredData = filteredData.slice(0, 20);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').add(1, "days").toDate();
+                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();
                     var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
-                    //var minDate = moment(maxDate).add(-24, "months");
-                    //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
 
+                    //var minDate = moment(maxDate).add(-12, "months").toDate();
+                    //var minDataDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
+                    //minDate = minDataDate > minDate ? minDataDate : minDate;
+                    //filteredData = filteredData.filter(x => {
+                    //    return new Date(x.dateSubmitted) >= minDate;
+                    //});
                     var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return moment(x).format("MM/DD/YYYY") });
 
                     var groupedObj = {};
@@ -115,11 +119,11 @@
                             //chartDataObj[minKey][key] = groupedObj[key]                                                     
                         }
 
-                        categoryObj["category"] = _timePeriods.map(item => {
-                            var labelObj = {};
-                            labelObj["label"] = item
-                            return labelObj;
-                        });
+                        //categoryObj["category"] = _timePeriods.map(item => {
+                        //    var labelObj = {};
+                        //    labelObj["label"] = item
+                        //    return labelObj;
+                        //});
                         //categories.push(categoryObj);
                         
                         for (var key in chartDataObj) {
@@ -167,7 +171,7 @@
                     dataSource: {
                         chart: {
                             caption: 'World Records',
-                            subCaption: '',
+                            subCaption: 'Last 20 Runs',
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
                             canvasPadding: 5, 

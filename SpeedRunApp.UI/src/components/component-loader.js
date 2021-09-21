@@ -24,7 +24,6 @@ import FusionCharts from 'fusioncharts';
 import StackedBar2D from 'fusioncharts/fusioncharts.charts';
 import Pie3D from 'fusioncharts/fusioncharts.charts';
 import MSLine from 'fusioncharts/fusioncharts.charts';
-import Line from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.candy';
 
 export default {
@@ -34,7 +33,7 @@ export default {
                 'speedrun-list-category': speedRunListCategoryVue
             }
         }).use(vfmPlugin)
-          .use(VueFusionCharts, FusionCharts, StackedBar2D, Pie3D, MSLine, Line, FusionTheme);
+            .use(VueFusionCharts, FusionCharts, StackedBar2D, Pie3D, MSLine, FusionTheme);
 
         app.component("button-dropdown", buttonDropdownVue);
         app.component("navbar", navbarVue);

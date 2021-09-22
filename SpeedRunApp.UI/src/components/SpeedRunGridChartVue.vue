@@ -419,7 +419,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Ranked Runs',
+                            caption: 'Top 10 Ranked',
                             subCaption: '',
                             xAxis: '',
                             yAxis: 'Time (Minutes)',

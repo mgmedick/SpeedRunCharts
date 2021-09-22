@@ -29,7 +29,7 @@ namespace SpeedRunCommon.Extensions
                     if (path.StartsWith(@"/videos/"))
                     {
                         videoIDString = uri.Segments.Last();
-                        uriString = string.Format(@"https://player.twitch.tv/?video={0}&parent=localhost&parent=speedruncharts.com&autoplay=false&muted=true", videoIDString);
+                        uriString = string.Format(@"https://player.twitch.tv/?video={0}&parent=localhost&parent=speedruncharts.com&parent=www.speedruncharts.com&autoplay=false&muted=true", videoIDString);
                     }
                 }
                 else if (domain.Contains("youtube.com") || domain.Contains("youtu.be"))

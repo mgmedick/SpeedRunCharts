@@ -113,7 +113,7 @@
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 },)
                 });
 
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, minWidth: 50, widthShrink:2 });
+                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
 
                 this.table = new Tabulator("#tblGrid", {
                     data: tableData,

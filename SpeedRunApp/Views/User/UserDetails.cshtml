@@ -16,11 +16,27 @@
             <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
         </div>
     </div>
-    <div class="container-fluid p-0 pt-3 ml-lg-3">
-        <h5 class="font-weight-bold">SpeedRuns</h5>
-        <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
+    <div class="ml-lg-3">
+        <div class="container ml-0 p-0 pt-2">
+            <h5 class="font-weight-bold">Details</h5>
+            <div class="pl-3">
+                <div class="form-group row no-gutters mb-0">
+                    <label for="spnTotalWorldRecords" class="col-sm-2 col-form-label font-weight-bold">Total World Records</label>
+                    <div class="col-sm-5 col-form-label">
+                        <span id="spnTotalWorldRecords">@Model.TotalWorldRecords</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid p-0 pt-2">
+            <h5 class="font-weight-bold">SpeedRuns</h5>
+            <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
+        </div>
     </div>
 </div>
+
+
+
 
 
 

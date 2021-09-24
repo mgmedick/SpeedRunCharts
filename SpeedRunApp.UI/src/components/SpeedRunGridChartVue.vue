@@ -6,19 +6,19 @@
                     <a class="btn btn-link font-weight-bold" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;Hide Charts</a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link font-weight-bold" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Show Charts</a>               
+                    <a class="btn btn-link font-weight-bold" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Show Charts</a>
                 </div>
             </h5>
         </div>
         <div class="container row" :style="[ showCharts ? null : { display:'none' } ]">
             <div class="col-sm-4">
-                <div id="divGameSpeedRunsByMonthChart"></div>
+                <div id="divChart1"></div>
             </div>
             <div class="col-sm-4">
-                <div id="divGameSpeedRunsPercentileChart"></div>
+                <div id="divChart2"></div>
             </div>
             <div class="col-sm-4">
-                <div id="divGameTopSpeedRunChart"></div>
+                <div id="divChart3"></div>
             </div>
         </div>
     </div>
@@ -32,11 +32,12 @@
     export default {
         name: "SpeedRunGridChartsVue",
         props: {
-            tabledata: Array
+            tabledata: Array,
+            isgame: Boolean
         },
         data() {
             return {
-                showCharts: false
+                showCharts: false,
             }
         },
         created: function () {
@@ -46,17 +47,26 @@
             loadData() {
                 var that = this;
                 FusionCharts.ready(function () {
-                    var gameWorldRecordChart = new FusionCharts(that.getGameWorldRecordChart2());
-                    var gameSpeedRunsPercentileChart = new FusionCharts(that.getGameSpeedRunsPercentileChart());
-                    var gameTopSpeedRunChart = new FusionCharts(that.getGameTopSpeedRunChart());
+                    if (that.isgame) {
+                        var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerMonthChart('divChart1'));
+                        var gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
+                        var gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
 
-                    gameWorldRecordChart.render();
-                    gameSpeedRunsPercentileChart.render();
-                    gameTopSpeedRunChart.render();
+                        gameWorldRecordChart.render();
+                        gameSpeedRunsPercentileChart.render();
+                        gameTopSpeedRunChart.render();
+                    } else {
+                        var userSpeedRunsByMonth = new FusionCharts(that.getFastestSpeedRunsPerDayChart('divChart1'));
+                        var userSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
+                        var userTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
+
+                        userSpeedRunsByMonth.render();
+                        userSpeedRunsPercentileChart.render();
+                        userTopSpeedRunChart.render();
+                    }
                 });
             },               
-            getGameWorldRecordChart2() {
-                var that = this;
+            getWorldRecordPerMonthChart(container) {
                 var categories = [];
                 var dataset = [];
 
@@ -136,7 +146,7 @@
 
                 const chartConfig = {
                     type: "msline",
-                    renderAt: "divGameSpeedRunsByMonthChart",
+                    renderAt: container,
                     width: "100%",
                     dataFormat: "json",
                     dataSource: {
@@ -173,38 +183,32 @@
                 };
 
                 return chartConfig;
-            },                      
-            getGameSpeedRunsByMonthChart() {
-                var that = this;
+            },
+            getFastestSpeedRunsPerDayChart(container) {
                 var categories = [];
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    //var _data = _.chain(this.tabledata).clone().value();
-                    var _data = chain(this.tabledata).clone().value();                    
+                    var _data = chain(this.tabledata).clone().value();
                     var dates = _data.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).toDate();
-                    var minDate = moment(maxDate).add(-24, "months").toDate();
-                    var minDataDate = moment(Math.min.apply(null, dates)).toDate();
-                    minDate = minDataDate > minDate ? minDataDate : minDate;
+                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();
+                    var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
 
                     var filteredData = _data.filter((x, i) => {
                         return new Date(x.dateSubmitted) >= minDate
                     }).sort((a, b) => { return new Date(a.dateSubmitted) - new Date(b.dateSubmitted) });
 
-                    var _timePeriods = getDateDiffList("month", minDate, maxDate).map(x => { return moment(x).format("MM/YYYY") });
-
-                    //var _timePeriods = _.chain(timePeriods).clone().value();
-                    //var _timePeriods = chain(timePeriods).clone().value();
+                    var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return moment(x).format("MM/DD/YYYY") });
                     var groupedObj = {};
                     var chartDataObj = {};
                     var categoryObj = {};
 
                     filteredData.forEach(item => {
-                        var monthYear = item.monthYearSubmitted;
+                        var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
+                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join(",");
 
-                        groupedObj[monthYear] = groupedObj[monthYear] || [];
-                        groupedObj[monthYear].push(item.primaryTimeMilliseconds);
+                        groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
+                        groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });
                     });
 
                     if (Object.keys(groupedObj).length > 0) {
@@ -213,8 +217,8 @@
                         for (var key in groupedObj) {
                             chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
-                            var min = Math.min.apply(null, groupedObj[key]);
-                            chartDataObj[minKey][key] = min;
+                            var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
+                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };
                         }
 
                         categoryObj["category"] = _timePeriods.map(item => {
@@ -227,21 +231,20 @@
                         for (var key in chartDataObj) {
                             _timePeriods.forEach(timePeriod => {
                                 if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
-                                    chartDataObj[key][timePeriod] = null;
+                                    chartDataObj[key][timePeriod] = { value: null, tooltext: ' ' };
                                 }
                             })
                         }
                     }
 
                     for (var key in chartDataObj) {
-                        //var data = _.chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();
-                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1] } }).value();                        
+                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext } }).value();
                         if (data.length > 0) {
                             data = data.sort((a, b) => {
-                                var monthyeara = a.category.split("/");
-                                var monthyearb = b.category.split("/");
+                                var monthdayyeara = a.category.split("/");
+                                var monthdayyearb = b.category.split("/");
 
-                                return new Date(monthyeara[1], monthyeara[0] - 1) - new Date(monthyearb[1], monthyearb[0] - 1)
+                                return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1]);
                             });
                             dataset.push({ seriesname: key, data: data });
                         }
@@ -250,16 +253,18 @@
 
                 const chartConfig = {
                     type: "msline",
-                    renderAt: "divGameSpeedRunsByMonthChart",
+                    renderAt: container,
                     width: "100%",
-                    //height: "350",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Fastest Per Month',
-                            subCaption: 'Last 2 Years',
+                            caption: 'Personal Bests',
+                            subCaption: 'Per Day',
+                            subcaptionFontSize: 12,
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
+                            labelDisplay: "rotate",
+                            labelFontSize: 12,
                             exportEnabled: 0,
                             showValues: 0,
                             formatNumberScale: 1,
@@ -272,6 +277,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
+                            plotBinSize: 1,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: "#303030",
@@ -285,12 +291,10 @@
 
                 return chartConfig;
             },
-            getGameSpeedRunsPercentileChart() {
-                var that = this;
+            getSpeedRunsPercentileChart(container) {
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    //var _data = _.chain(this.tabledata).clone().value();
                     var _data = chain(this.tabledata).clone().value();
                     var allSpeedRunTimes = _data.sort((a, b) => { return a?.PrimaryTimeMilliseconds - b?.PrimaryTimeMilliseconds; });
 
@@ -345,9 +349,8 @@
 
                 const chartConfig = {
                     type: "pie3d",
-                    renderAt: "divGameSpeedRunsPercentileChart",
+                    renderAt: container,
                     width: "100%",
-                    //height: "350",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
@@ -373,25 +376,25 @@
 
                 return chartConfig;
             },
-            getGameTopSpeedRunChart() {
-                var that = this;
+            getTopSpeedRunChart(container, isGame) {
                 var categories = [];
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    //var _data = _.chain(this.tabledata).clone().value();
                     var _data = chain(this.tabledata).clone().value();
-                    _data = _data.filter(x => x.rank);
+
+                    if (isGame) {
+                        _data = _data.filter(x => x.rank);
+                    }
+
                     var sortedData = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
                     var data = sortedData.slice(0, 10);
 
                     var chartDataObj = {};
                     var categoryObj = {};
                     data.forEach(item => {
-                        //var playerNames = _.chain(item.players).map(function (item) { return item.name }).value().join(",");
                         var playerNames = chain(item.players).map(function (item) { return item.name }).value().join("{br}");
 
-                        //chartDataObj[playerNames] = chartDataObj[playerNames] || [];
                         chartDataObj[playerNames] = item.primaryTimeMilliseconds;
                     });
 
@@ -405,27 +408,25 @@
                     categories.push(categoryObj);
 
                     var dataValues = data.map(item => {
-                        return { value: item.primaryTimeMilliseconds};
-                    });                    
+                        return { value: item.primaryTimeMilliseconds };
+                    });
 
                     dataset.push({ seriesname: '', data: dataValues });
                 }
 
                 const chartConfig = {
                     type: "stackedBar2D",
-                    renderAt: "divGameTopSpeedRunChart",
+                    renderAt: container,
                     width: "100%",
-                    //height: "350",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Ranked',
+                            caption: isGame ? 'Top 10 Ranked' : 'Top 10',
                             subCaption: '',
                             xAxis: '',
                             yAxis: 'Time (Minutes)',
                             labelFontSize: 12,
                             labelVAlign: 'middle',
-                            //plotSpacePercent: 10,
                             exportEnabled: 0,
                             showValues: 1,
                             formatNumberScale: 1,

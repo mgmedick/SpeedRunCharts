@@ -1,6 +1,6 @@
 ﻿<template>
     <div>   
-        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0">
+        <div v-if="!userid" class="row no-gutters pl-3 pr-1 pt-1 pb-0">
             <div class="col-sm-1 align-self-top pt-1">
                 <label class="tab-row-name">Show All Data:</label>
             </div>
@@ -19,7 +19,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:900px;">
-            <speedrun-grid-chart v-if="!loading" :tabledata="tableData"></speedrun-grid-chart>
+            <speedrun-grid-chart v-if="!loading" :tabledata="tableData" :isgame="!userid"></speedrun-grid-chart>
             <div id="tblGrid"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
@@ -75,7 +75,7 @@
                 axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
-                        var data = res.data.filter(x => x.rank);
+                        var data = that.userid ? res.data : res.data.filter(x => x.rank);
                         that.initGrid(data);
                         that.loading = false;                      
                     })

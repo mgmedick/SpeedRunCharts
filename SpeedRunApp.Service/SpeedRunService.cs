@@ -73,10 +73,10 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID)
         {
-            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1).OrderBy(i => i.CategoryName).OrderBy(i => i.LevelName).ToList();
-
+            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1).ToList();
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
-
+            runVMs = runVMs.Where(i => i.VariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.CategoryID == i.CategoryID).Select(h => h.VariableValueIDs?.Split(",").Count()).Max()).ToList();
+            
             return runVMs;
         }
 

@@ -19,6 +19,8 @@ import speedRunGridTabVue from './SpeedRunGridTabVue.vue';
 import speedRunGridTabVariableVue from './SpeedRunGridTabVariableVue.vue';
 import speedRunGridVue from './SpeedRunGridVue.vue';
 import speedRunGridChartVue from './SpeedRunGridChartVue.vue';
+import worldRecordGridVue from './WorldRecordGridVue.vue';
+import worldRecordGridTabVue from './WorldRecordGridTabVue.vue';
 import VueFusionCharts from 'vue-fusioncharts';
 import FusionCharts from 'fusioncharts';
 import StackedBar2D from 'fusioncharts/fusioncharts.charts';
@@ -51,6 +53,8 @@ export default {
         app.component("speedrun-grid-tab-variable", speedRunGridTabVariableVue);
         app.component("speedrun-grid", speedRunGridVue);
         app.component("speedrun-grid-chart", speedRunGridChartVue);
+        app.component("worldrecord-grid-tab", worldRecordGridTabVue);
+        app.component("worldrecord-grid", worldRecordGridVue);
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

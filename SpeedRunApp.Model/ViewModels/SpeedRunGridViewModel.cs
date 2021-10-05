@@ -14,7 +14,9 @@ namespace SpeedRunApp.Model.ViewModels
             GameID = run.GameID;
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
+            CategoryName = run.CategoryName;
             LevelID = run.LevelID;
+            LevelName = run.LevelName;
             //SpeedRunComLink = run.SpeedRunComUrl;
             //SplitsLink = run.SplitsUrl;
             VariableValueIDs = run.VariableValueIDs;
@@ -87,7 +89,9 @@ namespace SpeedRunApp.Model.ViewModels
         public int GameID { get; set; }
         public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
         public int? LevelID { get; set; }
+        public string LevelName { get; set; }
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string VariableValueIDs { get; set; }

@@ -5,7 +5,7 @@ using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon.Extensions;
 using System.Collections.Generic;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class GameController : Controller
     {
@@ -23,6 +23,14 @@ namespace SpeedRunApp.WebUI.Controllers
             var gameVM = _gameService.GetGame(gameID);
 
             return View(gameVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridTabs(int gameID)
+        {
+            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
+
+            return Json(gridVM);
         }
 
         [HttpGet]

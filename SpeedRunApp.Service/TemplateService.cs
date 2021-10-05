@@ -48,13 +48,13 @@ namespace SpeedRunApp.Service
 
         private string GetTemplateContents(string templateFileName)
         {
-            var assembly = Assembly.Load("SpeedRunApp.WebUI");
+            var assembly = Assembly.Load("SpeedRunApp.MVC");
 
             if (assembly != null)
             {
                 StringBuilder sb = new StringBuilder();
 
-                using (StreamReader sr = new StreamReader(assembly.GetManifestResourceStream(String.Format("SpeedRunApp.WebUI.Templates.{0}.cshtml", templateFileName))))
+                using (StreamReader sr = new StreamReader(assembly.GetManifestResourceStream(String.Format("SpeedRunApp.MVC.Templates.{0}.cshtml", templateFileName))))
                 {
                     while (!sr.EndOfStream)
                     {

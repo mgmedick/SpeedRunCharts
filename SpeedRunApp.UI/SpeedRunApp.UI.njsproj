@@ -36,6 +36,8 @@
   <ItemGroup>
     <Content Include="src\components\SpeedRunGridChartVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVariableVue.vue" />
+    <Content Include="src\components\WorldRecordGridTabVue.vue" />
+    <Content Include="src\components\WorldRecordGridVue.vue" />
     <Content Include="src\components\SpeedRunGridVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVue.vue" />
     <Content Include="src\components\ActivateVue.vue" />

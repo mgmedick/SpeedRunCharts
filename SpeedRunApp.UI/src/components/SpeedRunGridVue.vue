@@ -99,14 +99,17 @@
                 ];
 
                 tableData.forEach(item => {
-                    if(item.variableValues){
+                    if (item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
-                            item[variableID] = item.variableValues[variableID].name;
+                            if (item.variableValueIDs?.split(",").indexOf(variableID.toString()) == -1) {
+                                item[variableID] = item.variableValues[variableID].name;
+                            }
                         })
                     }
                 });
 
-                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.map(el => el));
+                //var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.map(el => el));
+                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.id]));
                 var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )                
 
                 distinctVariables?.forEach(variable => { 

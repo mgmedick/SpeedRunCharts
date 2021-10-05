@@ -15,7 +15,7 @@ using System.Linq;
 using Serilog;
 using Microsoft.AspNetCore.Authorization;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class SpeedRunController : Controller
     {
@@ -66,6 +66,14 @@ namespace SpeedRunApp.WebUI.Controllers
         public JsonResult GetSpeedRunSummary(int speedRunID)
         {
             var results = _speedRunService.GetSpeedRunSummary(speedRunID);
+
+            return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID)
+        {
+            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID);
 
             return Json(results);
         }

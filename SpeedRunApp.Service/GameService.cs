@@ -33,6 +33,14 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
+        public List<IDNamePair> GetWorldRecordGridTabs(int gameID)
+        {
+            var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
+            var gameVM = new GameViewModel(gamevw);
+
+            return gameVM.CategoryTypes;
+        }
+
         public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();

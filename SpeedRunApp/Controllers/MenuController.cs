@@ -4,7 +4,7 @@ using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model;
 using SpeedRunApp.Model.ViewModels;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class MenuController : Controller
     {

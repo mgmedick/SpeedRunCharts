@@ -1,4 +1,10 @@
+/*!**********************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/bootstrap-theme.css ***!
+  \**********************************************************************************/
 @import url(https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap);
+/*!**************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/bootstrap-theme.css (1) ***!
+  \**************************************************************************************/
 .theme-light {
     --blue: #2c3e50;
     --indigo: #6610f2;
@@ -3197,6 +3203,9 @@ a.text-dark:hover, a.text-dark:focus {
 
 
 
+/*!************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/styles/style.css ***!
+  \************************************************************************/
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 
@@ -3558,3 +3567,5 @@ div.chart-placeholder + div.chart-placeholder {
 
 
 
+
+/*# sourceMappingURL=style.min.css.map*/

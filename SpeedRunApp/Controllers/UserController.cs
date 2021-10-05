@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
 using System.Linq;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class UserController : Controller
     {

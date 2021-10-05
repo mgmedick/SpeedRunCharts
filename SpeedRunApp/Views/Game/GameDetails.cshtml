@@ -49,6 +49,10 @@
             </div>
         </div>
         <div class="container-fluid p-0 pt-2">
+            <h5 class="font-weight-bold">World Records</h5>
+            <worldrecord-grid-tab :gameid="'@Model.ID'"></worldrecord-grid-tab>
+        </div>
+        <div class="container-fluid p-0 pt-2">
             <h5 class="font-weight-bold">Leaderboards</h5>
             <speedrun-grid-tab :isgame="true" :id="'@Model.ID'"></speedrun-grid-tab>
         </div>

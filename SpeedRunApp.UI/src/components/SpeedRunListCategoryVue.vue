@@ -18,7 +18,7 @@
                     <label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 4 }">
                         <input type="radio" id="btnCategory4" name="btnCategory" autocomplete="off" value="4" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-star fa-lg"></i>&nbsp;PBs
                     </label>
-                    <div v-tippy="'<b>New:</b><br/>Newly verified runs.<br/><br/><b>Top 5%:</b>.<br/>Runs with rank in top 5% of category<br/><br/><b>First:</b><br/>Runs with 1st place in category<br/><br/><b>Top 3:</b><br/>Runs in top 3 with 20 or more runs<br/><br/><b>PBs:</b><br/>Personal Bests for that category'"><i class="fa fa-info-circle pl-1"></i></div>
+                    <div v-tippy="'<b>New:</b><br/>Newly verified runs<br/><br/><b>Top 5%:</b><br/>Runs with rank in top 5% of category with pre-existing runs<br/><br/><b>First:</b><br/>Runs with 1st place in category with pre-existing runs<br/><br/><b>Top 3:</b><br/>Runs in top 3 in category with pre-existing runs<br/><br/><b>PBs:</b><br/>PB for category where user has pre-existing runs'"><i class="fa fa-info-circle pl-1"></i></div>
                 </div>
             </div>
         </div>

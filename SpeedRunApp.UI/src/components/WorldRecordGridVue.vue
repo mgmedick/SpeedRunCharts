@@ -70,8 +70,8 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 var gameNames = [...new Set(tableData.map(el => el.gameName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 var categoryNames = [...new Set(tableData.map(el => el.categoryName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var subCategoryVariableValueNames = [...new Set(tableData.map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var levelNames = [...new Set(tableData.map(el => el.levelName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                var subCategoryVariableValueNames = [...new Set(tableData.filter(el => el.subCategoryVariableValues).map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                var levelNames = [...new Set(tableData.filter(el => el.levelName).map(el => el.levelName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50

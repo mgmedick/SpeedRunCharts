@@ -39,11 +39,11 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, string variableValueIDs, int userID)
+        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID @0, @1, @2, @3, @4, @5", gameID, categoryTypeID, categoryID, levelID, variableValueIDs, userID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID @0, @1, @2, @3, @4, @5", gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
             }
         }
 

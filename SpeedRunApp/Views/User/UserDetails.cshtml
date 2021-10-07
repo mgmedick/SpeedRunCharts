@@ -17,19 +17,37 @@
         </div>
     </div>
     <div class="ml-lg-3">
-        <div class="container ml-0 p-0 pt-2">
+        <div class="container ml-0 p-0 pt-3">
             <h5 class="font-weight-bold">Details</h5>
-            <div class="pl-3">
+            <div class="ml-lg-2">
                 <div class="form-group row no-gutters mb-0">
-                    <label for="spnTotalWorldRecords" class="col-sm-2 col-form-label font-weight-bold">Total World Records</label>
-                    <div class="col-sm-5 col-form-label">
+                    <label for="spnTotalSpeedRuns" class="col-sm-1 col-form-label font-weight-bold">Runs</label>
+                    <div class="col-sm-5 col-form-label pl-1">
+                        <span id="spnTotalSpeedRuns">@Model.TotalSpeedRuns</span>
+                    </div>
+                </div>
+                <div class="form-group row no-gutters mb-0">
+                    <label for="spnTotalWorldRecords" class="col-sm-1 col-form-label font-weight-bold">WRs</label>
+                    <div class="col-sm-5 col-form-label pl-1">
                         <span id="spnTotalWorldRecords">@Model.TotalWorldRecords</span>
+                    </div>
+                </div>
+                <div class="form-group row no-gutters mb-0">
+                    <label for="spnTotalPersonalBests" class="col-sm-1 col-form-label font-weight-bold">PBs</label>
+                    <div class="col-sm-5 col-form-label pl-1">
+                        <span id="spnTotalPersonalBests">@Model.TotalPersonalBests</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-fluid p-0 pt-2">
-            <h5 class="font-weight-bold">SpeedRuns</h5>
+        <div class="container-fluid p-0 pt-3">
+            <div class="row no-gutters">
+                <h5 class="font-weight-bold">Personal Bests</h5><div v-tippy="'Filter Rank to 1st to see World Records'" class="pl-1"><i class="fa fa-info-circle pl-1"></i></div>
+            </div>
+            <worldrecord-grid-tab :isgame="false" :id="'@Model.ID'"></worldrecord-grid-tab>
+        </div>
+        <div class="container-fluid p-0 pt-3">
+            <h5 class="font-weight-bold">Runs</h5>
             <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
         </div>
     </div>

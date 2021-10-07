@@ -33,7 +33,7 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
-        public List<IDNamePair> GetWorldRecordGridTabs(int gameID)
+        public IEnumerable<IDNamePair> GetWorldRecordGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var gameVM = new GameViewModel(gamevw);
@@ -45,11 +45,6 @@ namespace SpeedRunApp.Service
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw) };
-            //var game = tabItems.FirstOrDefault();
-            //var categoryTypeID = game.CategoryTypes.Select(i => i.ID).FirstOrDefault();
-            //var categoryID = game.Categories.Select(i => i.ID).FirstOrDefault();
-            //var levelID = game.Levels?.Select(i => i.ID).FirstOrDefault();
-
             var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
             return gridVM;
@@ -59,13 +54,21 @@ namespace SpeedRunApp.Service
         {
             var games = _gameRepo.GetGamesByUserID(userID);
             var tabItems = games.Select(i => new GameViewModel(i));
-            //var game = tabItems.FirstOrDefault();
-            //var categoryTypeID = game.CategoryTypes.Select(i => i.ID).FirstOrDefault();
-            //var categoryID = game.Categories.Select(i => i.ID).FirstOrDefault();
-            //var levelID = game.Levels.Select(i => i.ID).FirstOrDefault();
             var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
             return gridVM;
+        }
+
+        public IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID)
+        {
+            var games = _gameRepo.GetGamesByUserID(userID);
+            var tabItems = games.Select(i => new GameViewModel(i));
+            var categoryTypes = tabItems.SelectMany(i => i.CategoryTypes)
+                                        .GroupBy(g => new { g.ID })
+                                        .Select(i => i.First())
+                                        .ToList();
+
+            return categoryTypes;
         }
 
         /*

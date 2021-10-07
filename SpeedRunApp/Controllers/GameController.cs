@@ -26,9 +26,9 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetWorldRecordGridTabs(int gameID)
+        public JsonResult GetWorldRecordGridTabs(int ID, bool isGame)
         {
-            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
+            var gridVM = isGame ? _gameService.GetWorldRecordGridTabs(ID) : _gameService.GetPersonalBestGridTabs(ID);
 
             return Json(gridVM);
         }

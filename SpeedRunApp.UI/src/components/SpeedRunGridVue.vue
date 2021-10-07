@@ -1,10 +1,10 @@
 ﻿<template>
     <div>   
-        <div v-if="!userid" class="row no-gutters pl-3 pr-1 pt-1 pb-0">
-            <div class="col-sm-1 align-self-top pt-1">
-                <label class="tab-row-name">Show All Data:</label>
+        <div v-if="!userid" class="row no-gutters pr-1 pt-1 pb-0">
+            <div class="col-sm-1 align-self-end pt-1">
+                <label class="tab-row-name">Show All Runs:</label>
             </div>
-            <div class="col pl-2 align-self-center">
+            <div class="col align-self-center">
                 <div class="custom-control custom-switch">
                     <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
                     <label class="custom-control-label" for="chkShowAllData"></label>
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>        
-        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:900px;">
+        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <speedrun-grid-chart v-if="!loading" :tabledata="tableData" :isgame="!userid"></speedrun-grid-chart>
             <div id="tblGrid"></div>
         </div>
@@ -72,7 +72,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, variableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
                         var data = that.userid ? res.data : res.data.filter(x => x.rank);
@@ -101,15 +101,12 @@
                 tableData.forEach(item => {
                     if (item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
-                            if (item.variableValueIDs?.split(",").indexOf(variableID.toString()) == -1) {
-                                item[variableID] = item.variableValues[variableID].name;
-                            }
+                            item[variableID] = item.variableValues[variableID].name;
                         })
                     }
                 });
 
-                //var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.map(el => el));
-                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.id]));
+                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.map(el => el));
                 var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )                
 
                 distinctVariables?.forEach(variable => { 

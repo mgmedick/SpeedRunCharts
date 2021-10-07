@@ -71,17 +71,17 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID)
+        public JsonResult GetWorldRecordGridData(int ID, bool isGame, int categoryTypeID)
         {
-            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID);
+            var results = isGame ? _speedRunService.GetWorldRecordGridData(ID, categoryTypeID) : _speedRunService.GetPersonalBestGridData(ID, categoryTypeID);
 
             return Json(results);
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string variableValueIDs, int? userID)
+        public JsonResult GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID)
         {
-            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryTypeID, categoryID, levelID, variableValueIDs, userID);
+            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, userID);
 
             return Json(results);
         }

@@ -23,24 +23,24 @@
         </div>
     </div>
     <div class="ml-lg-3">
-        <div class="container ml-0 p-0 pt-2">
+        <div class="container ml-0 p-0 pt-3">
             <h5 class="font-weight-bold">Details</h5>
-            <div class="pl-3">
+            <div class="ml-lg-2">
                 <div class="form-group row no-gutters mb-0">
-                    <label for="spnYearOfRelease" class="col-sm-2 col-form-label font-weight-bold">Release Year</label>
-                    <div class="col-sm-5 col-form-label">
+                    <label for="spnYearOfRelease" class="col-sm-1 col-form-label font-weight-bold">Release Year</label>
+                    <div class="col-sm-5 col-form-label pl-1">
                         <span id="spnYearOfRelease">@Model.YearOfRelease</span>
                     </div>
                 </div>
                 <div class="form-group row no-gutters mb-0">
-                    <label for="spnPlatforms" class="col-sm-2 col-form-label font-weight-bold">Platforms</label>
-                    <div class="col-sm-5 col-form-label">
+                    <label for="spnPlatforms" class="col-sm-1 col-form-label font-weight-bold">Platforms</label>
+                    <div class="col-sm-5 col-form-label pl-1">
                         <span id="spnPlatforms">@Model.PlatformsString</span>
                     </div>
                 </div>
                 <div class="form-group row no-gutters mb-0">
-                    <label for="spnModerators" class="col-sm-2 col-form-label font-weight-bold">Moderators</label>
-                    <div class="col-sm-5 col-form-label">
+                    <label for="spnModerators" class="col-sm-1 col-form-label font-weight-bold">Moderators</label>
+                    <div class="col-sm-5 col-form-label pl-1">
                         <span id="spnModerators">
                             @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
                         </span>
@@ -48,11 +48,11 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid p-0 pt-2">
+        <div class="container-fluid p-0 pt-3">
             <h5 class="font-weight-bold">World Records</h5>
-            <worldrecord-grid-tab :gameid="'@Model.ID'"></worldrecord-grid-tab>
+            <worldrecord-grid-tab :isgame="true" :id="'@Model.ID'"></worldrecord-grid-tab>
         </div>
-        <div class="container-fluid p-0 pt-2">
+        <div class="container-fluid p-0 pt-3">
             <h5 class="font-weight-bold">Leaderboards</h5>
             <speedrun-grid-tab :isgame="true" :id="'@Model.ID'"></speedrun-grid-tab>
         </div>

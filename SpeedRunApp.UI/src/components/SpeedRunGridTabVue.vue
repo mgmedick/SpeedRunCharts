@@ -1,6 +1,6 @@
 ﻿<template>
-    <div v-if="!loading" id="divGridContainer" class="container-lg m-0 p-0">
-        <div v-if="!isgame" class="row no-gutters pl-3 pr-1 pt-1 pb-0">
+    <div v-if="!loading" id="divGridContainer" class="container-lg ml-lg-2 p-0">
+        <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col-sm-1 align-self-top pt-1">
                 <label class="tab-row-name">Game:</label>
             </div>
@@ -14,7 +14,7 @@
         </div>
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
-                <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                     <div class="col-sm-1 align-self-top pt-1">
                         <label class="tab-row-name">Category Type:</label>
                     </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
-                        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                             <div class="col-sm-1 align-self-top pt-1">
                                 <label class="tab-row-name">Category:</label>
                             </div>
@@ -44,14 +44,14 @@
                             <div v-if="categoryID == category.id">
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalueids="variableValueIDs" :userid="userID" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
                                         <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID"></speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+                                    <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                                         <div class="col-sm-1 align-self-top pt-1">
                                             <label class="tab-row-name">Level:</label>
                                         </div>
@@ -66,7 +66,7 @@
                                     <div v-for="(level, levelIndex) in game.levels" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalueids="variableValueIDs" :userid="userID" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" @variablevalueclick="onVariableValueClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID"></speedrun-grid>
@@ -99,7 +99,7 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
-                variableValueIDs: {},
+                subCategoryVariableValueIDs: {},
                 loading: true
             }
         },
@@ -123,7 +123,7 @@
                                     that.categoryTypeID = res.data.categoryTypeID;
                                     that.categoryID = res.data.categoryID;
                                     that.levelID = res.data.levelID;
-                                    that.variableValueIDs = res.data.variableValueIDs;
+                                    that.subCategoryVariableValueIDs = res.data.subCategoryVariableValueIDs;
                                     that.initSelected();
                                     that.loading = false;
                                     return res;
@@ -148,15 +148,15 @@
                     this.levelID = '';
                 }
 
-                if (!this.variableValueIDs) {
-                    this.variableValueIDs = {};
+                if (!this.subCategoryVariableValueIDs) {
+                    this.subCategoryVariableValueIDs = {};
                     if (this.categoryTypeID == 0) {
                         game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
-                            .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
+                            .forEach(variable => { that.subCategoryVariableValueIDs[variable.id] = variable.variableValues[0].id })
 
                     } else if (this.categoryTypeID == 1) {
                         game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
-                            .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id })
+                            .forEach(variable => { that.subCategoryVariableValueIDs[variable.id] = variable.variableValues[0].id })
                     }
                 }
             },
@@ -177,17 +177,17 @@
                     this.levelID = '';
                 }
 
-                var variableValueIDs = this.selected.find(item => item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && (!that.levelID || item.levelID == that.levelID) && item.type == 'variable')?.variableValueIDs;
-                if (variableValueIDs) {
-                    var variableVauleIDsCopy = Object.assign({}, variableValueIDs);
-                    this.variableValueIDs = variableVauleIDsCopy;
+                var subCategoryVariableValueIDs = this.selected.find(item => item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && (!that.levelID || item.levelID == that.levelID) && item.type == 'variable')?.subCategoryVariableValueIDs;
+                if (subCategoryVariableValueIDs) {
+                    var subCategoryVariableVauleIDsCopy = Object.assign({}, subCategoryVariableValueIDs);
+                    this.subCategoryVariableValueIDs = subCategoryVariableVauleIDsCopy;
                 } else {
                     if (this.categoryTypeID == 0) {
                         game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
-                            .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id });
+                            .forEach(variable => { that.subCategoryVariableValueIDs[variable.id] = variable.variableValues[0].id });
                     } else {
                         game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
-                            .forEach(variable => { that.variableValueIDs[variable.id] = variable.variableValues[0].id });
+                            .forEach(variable => { that.subCategoryVariableValueIDs[variable.id] = variable.variableValues[0].id });
                     }
                 }
             },
@@ -231,13 +231,13 @@
             onVariableValueClick: function (event) {
                 var variableID = event.target.getAttribute('data-variable');
                 var value = event.target.getAttribute('data-value');
-                this.variableValueIDs[variableID] = value;
+                this.subCategoryVariableValueIDs[variableID] = value;
 
                 var that = this;
                 this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && (!item.levelID || item.levelID == that.levelID) && item.type == 'variable'));
 
-                var variableValueIDsCopy = Object.assign({}, this.variableValueIDs);
-                this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, levelID: this.levelID, variableValueIDs: variableValueIDsCopy, type: 'variable' });
+                var subCategoryVariableValueIDsCopy = Object.assign({}, this.subCategoryVariableValueIDs);
+                this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, levelID: this.levelID, subCategoryVariableValueIDs: subCategoryVariableValueIDsCopy, type: 'variable' });
 
                 this.resetSelected();
             }

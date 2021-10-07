@@ -2,6 +2,7 @@
 import { createApp } from "vue";
 import { vfmPlugin } from 'vue-final-modal';
 import vueNextSelect from 'vue-next-select'
+import VueTippy from "vue-tippy";
 
 import buttonDropdownVue from './ButtonDropdownVue.vue';
 import navbarVue from './NavbarVue.vue';
@@ -35,6 +36,7 @@ export default {
                 'speedrun-list-category': speedRunListCategoryVue
             }
         }).use(vfmPlugin)
+            .use(VueTippy, { defaultProps: { allowHTML: true } })
             .use(VueFusionCharts, FusionCharts, StackedBar2D, Pie3D, MSLine, FusionTheme);
 
         app.component("button-dropdown", buttonDropdownVue);
@@ -55,6 +57,7 @@ export default {
         app.component("speedrun-grid-chart", speedRunGridChartVue);
         app.component("worldrecord-grid-tab", worldRecordGridTabVue);
         app.component("worldrecord-grid", worldRecordGridVue);
+        app.component("personalbest-grid-tab", worldRecordGridTabVue);
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

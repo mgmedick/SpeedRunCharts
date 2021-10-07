@@ -20,7 +20,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return View(userVM);
         }
-        
+
         [HttpGet]
         public JsonResult SearchUsers(string term)
         {

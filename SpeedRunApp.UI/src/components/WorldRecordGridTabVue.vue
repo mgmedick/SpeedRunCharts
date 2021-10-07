@@ -1,6 +1,6 @@
 ﻿<template>
-    <div v-if="!loading" id="divGridContainer" class="container-lg m-0 p-0">
-        <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+    <div v-if="!loading" id="divGridContainer" class="container-lg ml-lg-2 p-0">
+        <div class="row no-gutters pl-0 pr-1 pt-1 pb-0 pr-0">
             <div class="col-sm-1 align-self-top pt-1">
                 <label class="tab-row-name">Category Type:</label>
             </div>
@@ -14,7 +14,7 @@
         </div>
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <worldrecord-grid :gameid="gameid" :categorytypeid="categoryTypeID.toString()"></worldrecord-grid>
+                <worldrecord-grid :isgame="isgame" :id="id" :categorytypeid="categoryTypeID.toString()"></worldrecord-grid>
             </div>
         </div>
     </div>
@@ -25,7 +25,8 @@
     export default {
         name: "WorldRecordGridTabVue",
         props: {
-            gameid: String
+            isgame: Boolean,
+            id: String
         },
         data() {
             return {
@@ -42,7 +43,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../Game/GetWorldRecordGridTabs', { params: { gameID: this.gameid } })
+                var prms = axios.get('../Game/GetWorldRecordGridTabs', { params: { ID: this.id, isGame: this.isgame } })
                                 .then(res => {
                                     that.categoryTypes = res.data;
                                     that.categoryTypeID = res.data[0].id;

@@ -1,23 +1,23 @@
 ﻿<template>
     <div v-for="(variable, variableIndex) in items" :key="variable.id">
-        <div v-if="variablevalueids[variable.id]">
-            <div class="row no-gutters pl-3 pr-1 pt-1 pb-0 pr-0">
+        <div v-if="subcategoryvariablevalueids[variable.id]">
+            <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                 <div class="col-sm-1 align-self-top pt-1 overflow-hidden">
                     <label class="tab-row-name">{{ variable.name }}:</label>
                 </div>
                 <div class="col pl-2 tab-list">
                     <ul class="nav nav-pills">
                         <li class="nav-item p-1" v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
-                            <a class="variableValue nav-link p-2" :class="{ 'active' : variablevalueids[variable.id] == variableValue.id }" href="#/" :data-variable="variable.id" :data-value="variableValue.id" data-toggle="pill" @click="$emit('variablevalueclick', $event)">{{ variableValue.name }}</a>
+                            <a class="variableValue nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.id] == variableValue.id }" href="#/" :data-variable="variable.id" :data-value="variableValue.id" data-toggle="pill" @click="$emit('variablevalueclick', $event)">{{ variableValue.name }}</a>
                         </li>
                     </ul>
                 </div>
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
-                <div v-if="variableValue.subVariables.length > 0 && variablevalueids[variable.id] == variableValue.id">
-                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalueids="variablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" @variablevalueclick="$emit('variablevalueclick', $event)"></speed-run-grid-tab-variable>
+                <div v-if="variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.id] == variableValue.id">
+                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" @variablevalueclick="$emit('variablevalueclick', $event)"></speed-run-grid-tab-variable>
                 </div>
-                <div v-else-if="variablevalueids[variable.id] == variableValue.id">
+                <div v-else-if="subcategoryvariablevalueids[variable.id] == variableValue.id">
                     <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid"></speedrun-grid>
                 </div>
             </div>
@@ -34,7 +34,7 @@
             categorytypeid: String,
             categoryid: String,
             levelid: String,
-            variablevalueids: Object,
+            subcategoryvariablevalueids: Object,
             userid: String,
             prevdata: String
         }

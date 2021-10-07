@@ -12,7 +12,8 @@ namespace SpeedRunApp.Interfaces.Services
         EditSpeedRunViewModel GetEditSpeedRun(int gamID, int? speedRunID);
         SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID);
         IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID);
-        IEnumerable<SpeedRunGridViewModel> GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string variableValueIDs, int? userID);
+        IEnumerable<SpeedRunGridViewModel> GetPersonalBestGridData(int userID, int categoryTypeID);
+        IEnumerable<SpeedRunGridViewModel> GetSpeedRunGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID);
     }
 }
 

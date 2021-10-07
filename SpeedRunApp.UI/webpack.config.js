@@ -10,7 +10,7 @@ const stylePath = path.resolve(srcPath, './styles');
 const bldPath = path.resolve('../SpeedRunApp/wwwroot/dist');
 
 module.exports = {
-    devtool: 'source-map',
+    //devtool: 'source-map',
     entry: {
         master: path.resolve(srcPath, 'index.js'),
         style: `${stylePath}/style.css`
@@ -20,8 +20,8 @@ module.exports = {
             'vue': 'vue/dist/vue.esm-bundler.js'
         }
     },     
-    //mode: 'production',
-    mode: 'development',
+    mode: 'production',
+    //mode: 'development',
     watch: true,
     module: {
         rules: [

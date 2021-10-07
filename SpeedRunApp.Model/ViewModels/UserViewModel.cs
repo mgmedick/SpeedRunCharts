@@ -20,7 +20,9 @@ namespace SpeedRunApp.Model.ViewModels
             TwitterProfile = user.TwitterProfileUrl;
             SpeedRunsLiveProfile = user.SpeedRunsLiveProfileUrl;
             ProfileImage = Task.Run<string>(async () => await ParseProfileImageLink(user.ProfileImageUrl)).Result;
+            TotalSpeedRuns = user.TotalSpeedRuns;
             TotalWorldRecords = user.TotalWorldRecords;
+            TotalPersonalBests = user.TotalPersonalBests;
         }
 
         public int ID { get; set; }
@@ -34,7 +36,9 @@ namespace SpeedRunApp.Model.ViewModels
         public string YoutubeProfile { get; set; }
         public string TwitterProfile { get; set; }
         public string SpeedRunsLiveProfile { get; set; }
+        public int TotalSpeedRuns { get; set; }
         public int TotalWorldRecords { get; set; }
+        public int TotalPersonalBests { get; set; }
         private async Task<string> ParseProfileImageLink(string profileImageUrl)
         {
             string profileImageLink = profileImageUrl;

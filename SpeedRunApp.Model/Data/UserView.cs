@@ -17,6 +17,8 @@ namespace SpeedRunApp.Model.Data
         public string YoutubeProfileUrl { get; set; }
         public string TwitterProfileUrl { get; set; }
         public string SpeedRunsLiveProfileUrl { get; set; }
+        public int TotalSpeedRuns { get; set; }
         public int TotalWorldRecords { get; set; }
+        public int TotalPersonalBests { get; set; }
     }
 } 

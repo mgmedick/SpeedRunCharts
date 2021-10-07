@@ -12,6 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             GameID = run.GameID;
+            GameName = run.GameName;
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
@@ -19,7 +20,8 @@ namespace SpeedRunApp.Model.ViewModels
             LevelName = run.LevelName;
             //SpeedRunComLink = run.SpeedRunComUrl;
             //SplitsLink = run.SplitsUrl;
-            VariableValueIDs = run.VariableValueIDs;
+            SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
+            SubCategoryVariableValues = run.SubCategoryVariableValues;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
@@ -87,6 +89,7 @@ namespace SpeedRunApp.Model.ViewModels
 
         public int ID { get; set; }
         public int GameID { get; set; }
+        public string GameName { get; set; }
         public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
@@ -94,7 +97,8 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
-        public string VariableValueIDs { get; set; }
+        public string SubCategoryVariableValueIDs { get; set; }
+        public string SubCategoryVariableValues { get; set; }
         public List<IDNamePair> Variables { get; set; }
         public Dictionary<int, IDNamePair> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }

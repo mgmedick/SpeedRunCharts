@@ -151,7 +151,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'World Records',
+                            caption: 'World Record Progression',
                             subCaption: 'Per Month',
                             subcaptionFontSize: 12,
                             xAxis: 'Date',
@@ -258,7 +258,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Personal Bests',
+                            caption: 'Personal Best Progression',
                             subCaption: 'Per Day',
                             subcaptionFontSize: 12,
                             xAxis: 'Date',

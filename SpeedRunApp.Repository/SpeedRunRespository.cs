@@ -47,11 +47,11 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int userID, int categoryTypeID)
+        public IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int categoryID, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1", userID, categoryTypeID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3", gameID, categoryTypeID, categoryID, userID).ToList();
             }
         }
 

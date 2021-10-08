@@ -33,13 +33,14 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
-        public IEnumerable<IDNamePair> GetWorldRecordGridTabs(int gameID)
-        {
-            var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var gameVM = new GameViewModel(gamevw);
+        //public IEnumerable<SpeedRunGridTabViewModel> GetWorldRecordGridTabs(int gameID)
+        //{
+        //    var games = _gameRepo.GetGamesByUserID(userID);
+        //    var tabItems = games.Select(i => new GameViewModel(i));
+        //    var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
-            return gameVM.CategoryTypes;
-        }
+        //    return gridVM;
+        //}
 
         public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
         {
@@ -59,17 +60,17 @@ namespace SpeedRunApp.Service
             return gridVM;
         }
 
-        public IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID)
-        {
-            var games = _gameRepo.GetGamesByUserID(userID);
-            var tabItems = games.Select(i => new GameViewModel(i));
-            var categoryTypes = tabItems.SelectMany(i => i.CategoryTypes)
-                                        .GroupBy(g => new { g.ID })
-                                        .Select(i => i.First())
-                                        .ToList();
+        //public IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID)
+        //{
+        //    var games = _gameRepo.GetGamesByUserID(userID);
+        //    var tabItems = games.Select(i => new GameViewModel(i));
+        //    var categoryTypes = tabItems.SelectMany(i => i.CategoryTypes)
+        //                                .GroupBy(g => new { g.ID })
+        //                                .Select(i => i.First())
+        //                                .ToList();
 
-            return categoryTypes;
-        }
+        //    return categoryTypes;
+        //}
 
         /*
         public SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID)

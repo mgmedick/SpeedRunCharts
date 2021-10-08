@@ -71,18 +71,36 @@ namespace SpeedRunApp.Service
             return runVM;
         }
 
-        public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1).OrderBy(i => i.SubCategoryVariableValueIDs).ToList();
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
-            runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
+        //public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID)
+        //{
+        //    var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1).OrderBy(i => i.SubCategoryVariableValueIDs).ToList();
+        //    var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+        //    runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
 
-            return runVMs;
-        }
+        //    return runVMs;
+        //}
 
-        public IEnumerable<SpeedRunGridViewModel> GetPersonalBestGridData(int userID, int categoryTypeID)
+        //public IEnumerable<SpeedRunGridViewModel> GetPersonalBestGridData(int userID, int categoryTypeID)
+        //{
+        //    var runs = _speedRunRepo.GetPersonalBestsByUserID(userID, categoryTypeID);
+        //    var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+        //    runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
+
+        //    return runVMs;
+        //}
+
+        public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID, int categoryID, int? userID)
         {
-            var runs = _speedRunRepo.GetPersonalBestsByUserID(userID, categoryTypeID);
+            var runs = new List<SpeedRunGridView>();
+            if (userID.HasValue)
+            {
+                runs = _speedRunRepo.GetPersonalBestsByUserID(gameID, categoryTypeID, categoryID, userID.Value).ToList();
+            }
+            else
+            {
+                runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && i.Rank == 1).OrderBy(i => i.PrimaryTime).ToList();
+            }
+
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
 

@@ -25,13 +25,13 @@ namespace SpeedRunApp.MVC.Controllers
             return View(gameVM);
         }
 
-        [HttpGet]
-        public JsonResult GetWorldRecordGridTabs(int ID, bool isGame)
-        {
-            var gridVM = isGame ? _gameService.GetWorldRecordGridTabs(ID) : _gameService.GetPersonalBestGridTabs(ID);
+        //[HttpGet]
+        //public JsonResult GetWorldRecordGridTabs(int ID, bool isGame)
+        //{
+        //    var gridVM = isGame ? _gameService.GetWorldRecordGridTabs(ID) : _gameService.GetPersonalBestGridTabs(ID);
 
-            return Json(gridVM);
-        }
+        //    return Json(gridVM);
+        //}
 
         [HttpGet]
         public JsonResult GetSpeedRunGridTabs(int ID, bool isGame)

@@ -14,7 +14,7 @@
             <template v-slot:title>
                 Details
             </template>
-            <speedrun-edit :gameid="gameID" :speedrunid="speedRunID" :readonly="true" />
+            <speedrun-edit :gameid="gameid" :speedrunid="speedRunID" :readonly="true" />
         </custom-modal>    
     </div>   
 </template>
@@ -31,9 +31,15 @@
     export default {
         name: "WorldRecordGridVue",
         props: {
-            isgame: Boolean,
-            id: String,
-            categorytypeid: String
+            //isgame: Boolean,
+            //id: String,
+            //categorytypeid: String
+            gameid: String,
+            categorytypeid: String,
+            categoryid: String,
+            levelid: String,
+            variablevalues: String,
+            userid: String
         },
         data() {
             return {
@@ -41,7 +47,6 @@
                 tableData: [],
                 loading: true,
                 speedRunID: String,
-                gameID: String,
                 showDetailModal: false,
                 showAllData: false
             }
@@ -57,7 +62,8 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { ID: this.id, isGame: this.isgame, categoryTypeID: this.categorytypeid } })
+                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, userID: this.userid } })
+                //axios.get('../SpeedRun/GetWorldRecordGridData', { params: { ID: this.id, isGame: this.isgame, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data);
@@ -68,27 +74,29 @@
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var gameNames = [...new Set(tableData.map(el => el.gameName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var categoryNames = [...new Set(tableData.map(el => el.categoryName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var subCategoryVariableValueNames = [...new Set(tableData.filter(el => el.subCategoryVariableValues).map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var levelNames = [...new Set(tableData.filter(el => el.levelName).map(el => el.levelName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                //var gameNames = [...new Set(tableData.map(el => el.gameName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                //var categoryNames = [...new Set(tableData.map(el => el.categoryName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                //var subCategoryVariableValueNames = [...new Set(tableData.filter(el => el.subCategoryVariableValues).map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
+                var levelNames = [...new Set(tableData.filter(el => el.levelID).sort((a, b) => { return a?.levelID - b?.levelID }).map(x => x.levelName))];
 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
-                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75, visible: !that.isgame }, //minWidth:40, maxWidth:75
+                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75, visible: that.userid }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 125, widthGrow: 1 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
-                    { title: "Game", field: "gameName", formatter: that.gameFormatter, headerFilter: "select", headerFilterParams: { values: gameNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: !that.isgame }, //minWidth:100
-                    { title: "Category", field: "categoryName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: categoryNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 }, //minWidth:100
-                    { title: "Sub Categories", field: "subCategoryVariableValues", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: subCategoryVariableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.subCategoryVisible() },
+                    //{ title: "Game", field: "gameName", formatter: that.gameFormatter, headerFilter: "select", headerFilterParams: { values: gameNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: !that.isgame }, //minWidth:100
+                    //{ title: "Category", field: "categoryName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: categoryNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 }, //minWidth:100
+                    //{ title: "Sub Categories", field: "subCategoryVariableValues", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: subCategoryVariableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.subCategoryVisible() },
                     { title: "Level", field: "levelName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: levelNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.categorytypeid == 1 }, //minWidth:100
-                    { title: "gameID", field: "gameID", visible: false },
+                    //{ title: "gameID", field: "gameID", visible: false },
+                    //{ title: "categoryID", field: "categoryID", visible: false },
+                    { title: "levelID", field: "levelID", visible: false },
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
 
-                this.tableData.filter(x => x.subCategoryVariableValueIDs).length > 0
+                //this.tableData.filter(x => x.subCategoryVariableValueIDs).length > 0
 
                 //var itemCategories = {};
                 //tableData.forEach(item => {
@@ -97,35 +105,49 @@
                 //});
 
                 //Object.keys(itemCategories).filter(categoryID => itemCategories[categoryID].length > 1).map(categoryID => itemCategories[categoryID]).flat().forEach(item => {
-                //    if (item.variableValueIDs && item.variableValues) {
+                //    if (item.subCategoryVariableValueIDs && item.variableValues) {
                 //        Object.keys(item.variableValues).forEach(variableID => {
-                //            if (item.variableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
-                //                var variableName = item.variables.filter(x => x.id == variableID)[0].name;
-                //                item[variableName] = item.variableValues[variableID].name;
+                //            if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
+                //                //var variableName = item.variables.filter(x => x.id == variableID)[0].name;
+                //                item[variableID] = item.variableValues[variableID].name;
                 //            }
                 //        })
                 //    }
                 //});
 
-                //var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.name]));
-                //var distinctVariables = [...new Set(variables?.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) })
+                tableData.forEach(item => {
+                    if (item.subCategoryVariableValueIDs && item.variableValues) {
+                        Object.keys(item.variableValues).forEach(variableID => {
+                            if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
+                                //var variableName = item.variables.filter(x => x.id == variableID)[0].name;
+                                item[variableID] = item.variableValues[variableID].name;
+                                item[variableID + 'sort'] = item.variableValues[variableID].id;
+                            }
+                        })
+                    }
+                });
 
-                //distinctVariables?.forEach(variable => {
-                //    columns.push({ title: variable.name, field: variable.name, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 },)
-                //});
+                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.id.toString()]));
+                var distinctVariables = [...new Set(variables.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) })
+
+                distinctVariables?.forEach(variable => {
+                    var variableValuesSorted = tableData.filter(el => el.subCategoryVariableValueIDs && el.variableValues).flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1).map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
+                    var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 },)
+                    columns.push({ title: variable.name + 'sort', field: variable.id.toString() + 'sort', visible: false },)
+                });
 
                 columns.push({ title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 150 });
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 });
 
                 var sortList = [];
-                //distinctVariables?.slice().reverse().forEach(variable => {
-                //    sortList.push({ column: variable.name, dir: "asc" })
-                //});
+                distinctVariables?.slice().reverse().forEach(variable => {
+                    sortList.push({ column: variable.id + 'sort', dir: "asc" })
+                });
 
-                sortList.push({ column: "levelName", dir: "asc" })
-                sortList.push({ column: "subCategoryVariableValues", dir: "asc" })
-                sortList.push({ column: "categoryName", dir: "asc" })
-                sortList.push({ column: "gameName", dir: "asc" })
+                sortList.push({ column: "levelID", dir: "asc" })
+                //sortList.push({ column: "categoryID", dir: "asc" })
+                //sortList.push({ column: "gameID", dir: "asc" })
 
                 this.table = new Tabulator("#tblWorldRecordGrid", {
                     data: tableData,
@@ -157,13 +179,13 @@
             },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
-                var gameID = cell.getRow().getCell("gameID").getValue();
+                //var gameID = cell.getRow().getCell("gameID").getValue();
 
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:window.worldRecordGridVue.showSpeedRunDetails('" + value + "','" + gameID + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
+                html += "<a href=\"javascript:window.worldRecordGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
@@ -197,19 +219,19 @@
 
                 return html;
             },
-            gameFormatter(cell, formatterParams, onRendered) {
-                var html = '';
-                var value = cell.getValue();
-                var gameID = cell.getRow().getCell("gameID").getValue();
+            //gameFormatter(cell, formatterParams, onRendered) {
+            //    var html = '';
+            //    var value = cell.getValue();
+            //    var gameID = cell.getRow().getCell("gameID").getValue();
 
-                if (value) {
-                    html += '<span class="tippy-tooltip" data-content="' + escape(value) + '">';
-                    html += "<a href='../Game/GameDetails?gameID=" + gameID + "'>" + value + "</a><br/>";
-                    html += '</span>';
-                }
+            //    if (value) {
+            //        html += '<span class="tippy-tooltip" data-content="' + escape(value) + '">';
+            //        html += "<a href='../Game/GameDetails?gameID=" + gameID + "'>" + value + "</a><br/>";
+            //        html += '</span>';
+            //    }
 
-                return html;
-            },
+            //    return html;
+            //},
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var value = cell.getRow().getCell("primaryTimeString").getValue();
@@ -342,11 +364,10 @@
 
                 return headerValue == value; 
             },                                 
-            showSpeedRunDetails(id, gameID) {
+            showSpeedRunDetails(id) {
                 this.speedRunID = id;
-                this.gameID = gameID;
                 this.showDetailModal = true;
-            }                              
+            }
         }
     };
 </script>

@@ -62,13 +62,8 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
                     {
-                        var link = embeddedVideoLink;
-                        if (embeddedVideoLink.Contains("youtube"))
-                        {
-                            link += "?autoplay=0";
-                        }
-                        EmbeddedVideoLinks.Add(link.Replace("&amp;", "&"));
-                    }
+                        EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
+                    }                    
                 }
             }
 

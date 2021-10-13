@@ -33,7 +33,9 @@
             </div>
             <div class="body p-0 embed-responsive embed-responsive-16by9">
                 <iframe :src="item.videoLink"
+                        loading="lazy"
                         frameborder="0"
+                        autoplay="0"
                         scrolling="no"
                         allowfullscreen="true"></iframe>
             </div>

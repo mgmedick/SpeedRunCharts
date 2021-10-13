@@ -13,7 +13,9 @@
                     <div class="p-0 embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item"
                                 :src="item.speedRunVM.videoLink"
+                                loading="lazy"
                                 frameborder="0"
+                                autoplay="0"
                                 scrolling="no"
                                 allowfullscreen="true"></iframe>
                     </div>

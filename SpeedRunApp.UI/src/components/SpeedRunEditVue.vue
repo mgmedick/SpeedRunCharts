@@ -43,7 +43,7 @@
                     <input type="date" class="form-control" value="item.speedRunVM.verifyDateString" style="width:170px;">
                 </div>
             </div>
-            <div class="form-group row no-gutters mb-2">
+            <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.players">
                 <label class="col-sm-2 col-form-label">Players</label>
                 <div class="col-sm-10">
                     <div style="width:300px;">
@@ -51,6 +51,14 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.guests">
+                <label class="col-sm-2 col-form-label">Guests</label>
+                <div class="col-sm-10">
+                    <div style="width:300px;">
+                        <vue-next-select v-model="guestids" :options="item.guests" label-by="name" value-by="id" :disabled="readonly" multiple taggable></vue-next-select>
+                    </div>
+                </div>
+            </div> 
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Emulated</label>
                 <div class="col-sm-10">
@@ -162,7 +170,10 @@
         computed: {
             playerids: function () {
                 return this.item.speedRunVM.players.map(i => i.id);
-            }
+            },
+            guestids: function () {
+                return this.item.speedRunVM.guests.map(i => i.id);
+            }                                                
         },
         created: function () {
             this.loadData().then(i => { this.init(); });

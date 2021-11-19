@@ -49,11 +49,19 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("|", 2);
-                    int playerID;
-                    int.TryParse(playerValue[0], out playerID);
                     Players.Add(new IDNamePair { ID = Convert.ToInt32(playerValue[0]), Name = playerValue[1] });
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(run.Guests))
+            {
+                Guests = new List<IDNamePair>();
+                foreach (var guest in run.Guests.Split("^^"))
+                {
+                    var guestValue = guest.Split("|", 2);
+                    Guests.Add(new IDNamePair { ID = Convert.ToInt32(guestValue[0]), Name = guestValue[1] });
+                }
+            } 
 
             if (!string.IsNullOrWhiteSpace(run.VideoLinks))
             {
@@ -106,6 +114,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Platform { get; set; }
         public List<Tuple<string, string>> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
+        public List<IDNamePair> Guests { get; set; } 
         public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public bool IsEmulated { get; set; }

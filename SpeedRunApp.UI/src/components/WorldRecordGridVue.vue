@@ -114,27 +114,29 @@
                 //        })
                 //    }
                 //});
-
+                
                 tableData.forEach(item => {
                     if (item.subCategoryVariableValueIDs && item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
                             if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
-                                //var variableName = item.variables.filter(x => x.id == variableID)[0].name;
-                                item[variableID] = item.variableValues[variableID].name;
-                                item[variableID + 'sort'] = item.variableValues[variableID].id;
+                                var variableName = item.variables.filter(x => x.id == variableID)[0].name;
+                                item[variableName] = item.variableValues[variableID].name;
+                                item[variableName + 'sort'] = item.variableValues[variableID].id;
                             }
                         })
                     }
                 });
 
-                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.id.toString()]));
-                var distinctVariables = [...new Set(variables.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) })
+                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.name]));
+                var distinctVariables = [...new Set(variables.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) });
 
                 distinctVariables?.forEach(variable => {
-                    var variableValuesSorted = tableData.filter(el => el.subCategoryVariableValueIDs && el.variableValues).flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1).map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
+                    var variableValuesSorted = tableData.filter(el => el.subCategoryVariableValueIDs && el.variableValues)
+                                                        .flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1)
+                                                        .map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.id.toString(), formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 },)
-                    columns.push({ title: variable.name + 'sort', field: variable.id.toString() + 'sort', visible: false },)
+                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 },)
+                    columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
                 });
 
                 columns.push({ title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 150 });

@@ -1,14 +1,24 @@
 
+.tab-list .nav {
+        /*overflow: hidden; */
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+}
 .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
 }
-
-/*    .tab-list .nav-link:hover {
-        background-color: #2b2a2a;
-    }
-*/
+.tab-list .dropdown .btn.dropdown-toggle {
+        background-color: #313131;
+        font-size: 13px;
+        font-weight: bold;
+        border: none !important;
+        padding: 0.5rem !important;
+}
+.tab-list .dropdown.active .btn.dropdown-toggle {
+        background-color: var(--primary);
+}
 .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;

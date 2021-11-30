@@ -11,6 +11,11 @@ namespace SpeedRunApp.Interfaces.Repositories
     {
         IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate);
         void SaveUserAccount(UserAccount userAcct);
+        IEnumerable<UserAccountView> GetUserAccountViews(Expression<Func<UserAccountView, bool>> predicate);
+        void SaveUserAccountSetting(UserAccountSetting userAcctSetting);
+        IEnumerable<UserAccountSpeedRunListCategory> GetUserAccountSpeedRunListCategories(Expression<Func<UserAccountSpeedRunListCategory, bool>> predicate);
+        void SaveUserAccountSpeedRunListCategories(IEnumerable<UserAccountSpeedRunListCategory> userAcctSpeedRunListCategories);
+        void DeleteUserAccountSpeedRunListCategories(Expression<Func<UserAccountSpeedRunListCategory, bool>> predicate);
     }
 }
 

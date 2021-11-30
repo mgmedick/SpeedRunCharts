@@ -1,7 +1,13 @@
 ﻿import moment from 'moment';
 
 const getFormData = object => Object.keys(object).reduce((formData, key) => {
-    formData.append(key, object[key]);
+    if (Array.isArray(object[key])) {
+        for (var i = 0; i < object[key].length; i++) {
+            formData.append(key, object[key][i]);
+        }
+    } else {
+        formData.append(key, object[key]);
+    }
     return formData;
 }, new FormData());
 

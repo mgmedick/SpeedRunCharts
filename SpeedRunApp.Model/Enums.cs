@@ -207,14 +207,14 @@ namespace SpeedRunApp.Model
     }
 
     //Web
-    public enum SpeedRunListCategory
-    {
-        New = 0,
-        Top5Perc = 1,
-        First = 2,
-        Top3 = 3,
-        PersonalBest = 4
-    }
+    //public enum SpeedRunListCategory
+    //{
+    //    New = 0,
+    //    Top5Perc = 1,
+    //    First = 2,
+    //    Top3 = 3,
+    //    PersonalBest = 4
+    //}
 
     public enum SearchCategory
     {

@@ -1,12 +1,12 @@
 ﻿<template>
-    <div v-if="!loading" id="divGridContainer" class="container-lg ml-lg-2 p-0">
+    <div v-if="!loading" id="divGridContainer" class="container-lg p-0">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
-            <div class="col-sm-1 align-self-top pt-1">
+            <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                 <label class="tab-row-name">Game:</label>
-            </div>
-            <div class="col pl-2 tab-list">
+            </div>-->
+            <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="nav-item p-1" v-for="(game, gameIndex) in items" :key="game.id">
+                    <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
                         <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
                     </li>
                 </ul>
@@ -15,12 +15,12 @@
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
                 <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                    <div class="col-sm-1 align-self-top pt-1">
+                    <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                         <label class="tab-row-name">Category Type:</label>
-                    </div>
-                    <div class="col pl-2 tab-list">
+                    </div>-->
+                    <div class="col tab-list">
                         <ul class="nav nav-pills">
-                            <li class="nav-item p-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                            <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                                 <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
@@ -29,12 +29,12 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                            <div class="col-sm-1 align-self-top pt-1">
+                            <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                                 <label class="tab-row-name">Category:</label>
-                            </div>
-                            <div class="col pl-2 tab-list">
+                            </div>-->
+                            <div class="col tab-list">
                                 <ul class="nav nav-pills">
-                                    <li class="nav-item p-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                    <li class="nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                         <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
                                     </li>
                                 </ul>

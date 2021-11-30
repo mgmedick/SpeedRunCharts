@@ -1,7 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
-@using Microsoft.Extensions.Configuration
-@using System.Security.Claims;
-@using SpeedRunCommon.Extensions;
+﻿@using Microsoft.Extensions.Configuration
+@using System.Security.Claims
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
 @inject IConfiguration Configuration
 
@@ -27,7 +25,7 @@
 </head>
 <body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <div id="vue-app">
-        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></navbar>
+        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value'" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></navbar>
         <div class="container-fluid body-content">
             @RenderBody()
             <hr />

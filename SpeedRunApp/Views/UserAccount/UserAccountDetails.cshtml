@@ -1,0 +1,35 @@
+﻿@using System.Security.Claims
+
+<div class="container p-0">
+    <h5 class="m-0 font-weight-bold m-0">@User.FindFirst(ClaimTypes.Name).Value</h5>
+    <div>
+        <useraccount :useraccountid="'@User.FindFirst(ClaimTypes.NameIdentifier).Value'"></useraccount>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

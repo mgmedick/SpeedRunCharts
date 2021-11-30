@@ -46,6 +46,9 @@
                                 <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                             </li>-->
                             <li class="dropdown-item">
+                                <a :href="'../UserAccount/UserAccountDetails?userID=' + userid" class="text-secondary pl-4"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            </li>
+                            <li class="dropdown-item">
                                 <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                             </li>
                         </template>
@@ -89,7 +92,8 @@
         props: {
             isauth: Boolean,
             isdarktheme: Boolean,
-            username: String
+            username: String,
+            userid: String
         },
         data: function () {
             return {

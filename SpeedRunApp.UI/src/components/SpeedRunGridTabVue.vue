@@ -1,42 +1,62 @@
 ﻿<template>
-    <div v-if="!loading" id="divGridContainer" class="container-lg ml-lg-2 p-0">
-        <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
-            <div class="col-sm-1 align-self-top pt-1">
+    <div v-if="!loading" id="divGridContainer" class="container-lg p-0">
+        <div v-if="!isgame" class="gamerow row no-gutters pr-1 pt-1 pb-0">
+            <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                 <label class="tab-row-name">Game:</label>
-            </div>
-            <div class="col pl-2 tab-list">
+            </div>-->
+            <div class="col-sm-auto tab-list">
                 <ul class="nav nav-pills">
-                    <li class="nav-item p-1" v-for="(game, gameIndex) in items" :key="game.id">
-                        <a class="game nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
+                    <li class="game nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
+                        <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
                     </li>
+                    <button-dropdown v-if="additionalItems.length > 0" class="py-1 pr-1" :class="{ 'active' : isMoreItemsSelected }">
+                        <template v-slot:text>
+                            <span>More...</span>
+                        </template>
+                        <template v-slot:options>
+                            <li class="game dropdown-item" v-for="(game, gameIndex) in additionalItems">
+                                <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" :data-value="game.id" data-ismore="true" data-toggle="pill" @click="onGameClick">{{ game.name }}</a>
+                            </li>
+                        </template>
+                    </button-dropdown>
                 </ul>
             </div>
         </div>
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
                 <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                    <div class="col-sm-1 align-self-top pt-1">
+                    <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                         <label class="tab-row-name">Category Type:</label>
-                    </div>
-                    <div class="col pl-2 tab-list">
+                    </div>-->
+                    <div class="col tab-list">
                         <ul class="nav nav-pills">
-                            <li class="nav-item p-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="categoryType nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
+                            <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                                <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" :data-value="categoryType.id" href="#/" data-toggle="pill" @click="onCategoryTypeClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
-                        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                            <div class="col-sm-1 align-self-top pt-1">
+                        <div class="categoryrow row no-gutters pr-1 pt-1 pb-0 pr-0">
+                            <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                                 <label class="tab-row-name">Category:</label>
-                            </div>
-                            <div class="col pl-2 tab-list">
+                            </div>-->
+                            <div class="col tab-list">
                                 <ul class="nav nav-pills">
-                                    <li class="nav-item p-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                        <a class="category nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
+                                    <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                        <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" :data-value="category.id" href="#/" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
                                     </li>
+                                    <button-dropdown v-if="additionalCategories.length > 0" class="py-1 pr-1" :class="{ 'active' : isMoreCategoriesSelected }">
+                                        <template v-slot:text>
+                                            <span>More...</span>
+                                        </template>
+                                        <template v-slot:options>
+                                            <li class="category dropdown-item" v-for="(category, categoryIndex) in additionalCategories">
+                                                <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" :data-value="category.id" data-ismore="true" data-toggle="pill" @click="onCategoryClick">{{ category.name }}</a>
+                                            </li>
+                                        </template>
+                                    </button-dropdown>
                                 </ul>
                             </div>
                         </div>
@@ -51,15 +71,25 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                                        <div class="col-sm-1 align-self-top pt-1">
+                                    <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                        <!--<div class="col-sm-1 align-self-top pt-1 mr-2">
                                             <label class="tab-row-name">Level:</label>
-                                        </div>
-                                        <div class="col pl-2 tab-list">
+                                        </div>-->
+                                        <div class="col tab-list">
                                             <ul class="nav nav-pills">
-                                                <li class="nav-item p-1" v-for="(level, levelIndex) in game.levels" :key="level.id">
-                                                    <a class="level nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
+                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels" :key="level.id">
+                                                    <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" :data-value="level.id" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
                                                 </li>
+                                                <button-dropdown v-if="additionalLevels.length > 0" class="py-1 pr-1" :class="{ 'active' : isMoreLevelsSelected }">
+                                                    <template v-slot:text>
+                                                        <span>More...</span>
+                                                    </template>
+                                                    <template v-slot:options>
+                                                        <li class="level dropdown-item" v-for="(level, levelIndex) in additionalLevels">
+                                                            <a class="nav-link p-2" :class="{ 'active' : level == level.id }" href="#/" :data-value="level.id" data-ismore="true" data-toggle="pill" @click="onLevelClick">{{ level.name }}</a>
+                                                        </li>
+                                                    </template>
+                                                </button-dropdown>
                                             </ul>
                                         </div>
                                     </div>
@@ -100,7 +130,13 @@
                 categoryID: '',
                 levelID: '',
                 subCategoryVariableValueIDs: {},
-                loading: true
+                loading: true,
+                additionalItems: [],
+                isMoreItemsSelected: false,
+                additionalCategories: [],
+                isMoreCategoriesSelected: false,
+                additionalLevels: [],
+                isMoreLevelsSelected: false
             }
         },
         computed: {
@@ -110,6 +146,11 @@
         },
         created: function () {
             this.loadData();
+        },
+        updated: function () {
+            this.setAdditionalItems();
+            this.setAdditionalCategories();
+            this.setAdditionalLevels();
         },
         methods: {
             loadData() {
@@ -195,6 +236,7 @@
                 var value = event.target.getAttribute('data-value');
                 this.gameID = value;
 
+                this.isMoreItemsSelected = event.target.getAttribute('data-ismore') ? true : false;
                 this.resetSelected();
             },
             onCategoryTypeClick: function (event) {
@@ -215,7 +257,7 @@
                 this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.type == 'category'));
                 this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, type: 'category' });
 
-
+                this.isMoreCategoriesSelected = event.target.getAttribute('data-ismore') ? true : false;
                 this.resetSelected();
             },
             onLevelClick: function (event) {
@@ -226,6 +268,7 @@
                 this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.categoryID == that.categoryID && item.type == 'level'));
                 this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, levelID: this.levelID, type: 'level' });
 
+                this.isMoreLevelsSelected = event.target.getAttribute('data-ismore') ? true : false;
                 this.resetSelected();
             },
             onVariableValueClick: function (event) {
@@ -240,22 +283,81 @@
                 this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, levelID: this.levelID, subCategoryVariableValueIDs: subCategoryVariableValueIDsCopy, type: 'variable' });
 
                 this.resetSelected();
+            },
+            setAdditionalItems: function () {
+                var totalWidth = 0;
+                var items = document.querySelectorAll('.tab-list li.game');
+
+                for (var i = 0; i < items.length; i++) {
+                    totalWidth += items[i].offsetWidth;
+                    if (totalWidth > (document.querySelector('.gamerow').offsetWidth - 100)) {
+                        var achorItem = items[i].querySelector('a');
+                        var id = achorItem.getAttribute('data-value')
+                        var name = achorItem.innerHTML;
+                        this.additionalItems.push({ id: id, name: name });
+                        items[i].remove();
+                    }
+                }
+            },
+            setAdditionalCategories: function () {
+                var totalWidth = 0;
+                var items = document.querySelectorAll('.tab-list li.category');
+
+                for (var i = 0; i < items.length; i++) {
+                    totalWidth += items[i].offsetWidth;
+                    if (totalWidth > (document.querySelector('.categoryrow').offsetWidth - 100)) {
+                        var achorItem = items[i].querySelector('a');
+                        var id = achorItem.getAttribute('data-value')
+                        var name = achorItem.innerHTML;
+                        this.additionalCategories.push({ id: id, name: name });
+                        items[i].remove();
+                    }
+                }
+            },
+            setAdditionalLevels: function () {
+                var totalWidth = 0;
+                var items = document.querySelectorAll('.tab-list li.level');
+
+                for (var i = 0; i < items.length; i++) {
+                    totalWidth += items[i].offsetWidth;
+                    if (totalWidth > (document.querySelector('.levelrow').offsetWidth - 100)) {
+                        var achorItem = items[i].querySelector('a');
+                        var id = achorItem.getAttribute('data-value')
+                        var name = achorItem.innerHTML;
+                        this.additionalLevels.push({ id: id, name: name });
+                        items[i].remove();
+                    }
+                }
             }
         }
     };
 </script>
 <style>
+    .tab-list .nav {
+        /*overflow: hidden; */
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+    }
+
     .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
     }
 
-/*    .tab-list .nav-link:hover {
-        background-color: #2b2a2a;
+    .tab-list .dropdown .btn.dropdown-toggle {
+        background-color: #313131;
+        font-size: 13px;
+        font-weight: bold;
+        border: none !important;
+        padding: 0.5rem !important;
     }
-*/
-   .tab-row-name {
+
+    .tab-list .dropdown.active .btn.dropdown-toggle {
+        background-color: var(--primary);
+    }
+
+    .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;

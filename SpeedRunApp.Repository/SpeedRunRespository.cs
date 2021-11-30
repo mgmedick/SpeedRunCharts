@@ -14,11 +14,11 @@ namespace SpeedRunApp.Repository
 {
     public class SpeedRunRespository : BaseRepository, ISpeedRunRepository
     {
-        public IEnumerable<SpeedRunSummaryView> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
+        public IEnumerable<SpeedRunSummaryView> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunSummaryView>("EXEC dbo.GetLatestSpeedRuns @0, @1, @2", (int)category, topAmount, orderValueOffset).ToList();
+                return db.Query<SpeedRunSummaryView>("EXEC dbo.GetLatestSpeedRuns @0, @1, @2", category, topAmount, orderValueOffset).ToList();
             }
         }
 
@@ -27,6 +27,15 @@ namespace SpeedRunApp.Repository
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_RunStatusType").ToList();
+            }
+        }
+
+        public IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunListCategory>().Where(predicate ?? (x => true)).ToList();
+                return results;
             }
         }
 

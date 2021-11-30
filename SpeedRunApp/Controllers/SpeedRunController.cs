@@ -47,7 +47,16 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
+        public JsonResult GetSpeedRunListCategories()
+        {
+            var currUserAccountID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var runListCategories = _speedRunService.GetSpeedRunListCategories(currUserAccountID);
+
+            return Json(runListCategories);
+        }
+
+        [HttpGet]
+        public JsonResult GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
         {
             var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
 

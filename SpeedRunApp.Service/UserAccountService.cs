@@ -23,13 +23,15 @@ namespace SpeedRunApp.Service
         private readonly IEmailService _emailService = null;
         private readonly IHttpContextAccessor _context = null;
         private readonly IConfiguration _config = null;
+        private readonly ISpeedRunRepository _speedRunRepo = null;
 
-        public UserAccountService(IUserAccountRepository userAcctRepo, IEmailService emailService, IHttpContextAccessor context, IConfiguration config)
+        public UserAccountService(IUserAccountRepository userAcctRepo, IEmailService emailService, IHttpContextAccessor context, IConfiguration config, ISpeedRunRepository speedRunRepo)
         {
             _userAcctRepo = userAcctRepo;
             _emailService = emailService;
             _context = context;
             _config = config;
+            _speedRunRepo = speedRunRepo;
         }
 
         public async Task SendActivationEmail(string email)
@@ -119,6 +121,48 @@ namespace SpeedRunApp.Service
             userAcct.ModifiedDate = DateTime.UtcNow;
 
             _userAcctRepo.SaveUserAccount(userAcct);
+        }
+
+        public UserAccountViewModel GetUserAccount(int userAccountID)
+        {
+            var userAcctView = _userAcctRepo.GetUserAccountViews(i => i.UserAccountID == userAccountID).FirstOrDefault();
+            var userAcctVM = new UserAccountViewModel(userAcctView);
+            userAcctVM.SpeedRunListCategories = _speedRunRepo.SpeedRunListCategories().ToList();
+
+            return userAcctVM;
+        }
+
+        public void SaveUserAccount(UserAccountViewModel userAcctVM, int currUserAccountID)
+        {
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.ID == userAcctVM.UserAccountID).FirstOrDefault();
+
+            if (userAcct != null)
+            {
+                var userAcctSetting = new UserAccountSetting()
+                {
+                    UserAccountID = userAcctVM.UserAccountID,
+                    IsDarkTheme = userAcctVM.IsDarkTheme
+                };
+
+                var userAcctSpeedRunListCategories = userAcctVM.SpeedRunListCategoryIDs?.Select(i => new UserAccountSpeedRunListCategory() { UserAccountID = userAcct.ID, SpeedRunListCategoryID = i });
+
+                _userAcctRepo.SaveUserAccountSetting(userAcctSetting);
+                SaveUserAccountSpeedRunListCategories(userAcct.ID, userAcctSpeedRunListCategories);
+
+                userAcct.ModifiedDate = DateTime.UtcNow;
+                userAcct.ModifiedBy = currUserAccountID;
+                _userAcctRepo.SaveUserAccount(userAcct);
+            }
+        }
+
+        public void SaveUserAccountSpeedRunListCategories(int userAccountID, IEnumerable<UserAccountSpeedRunListCategory> userAcctSpeedRunListCategories)
+        {
+            _userAcctRepo.DeleteUserAccountSpeedRunListCategories(i => i.UserAccountID == userAccountID);
+
+            if (userAcctSpeedRunListCategories != null && userAcctSpeedRunListCategories.Any())
+            {
+                _userAcctRepo.SaveUserAccountSpeedRunListCategories(userAcctSpeedRunListCategories);
+            }
         }
 
         //jqvalidate

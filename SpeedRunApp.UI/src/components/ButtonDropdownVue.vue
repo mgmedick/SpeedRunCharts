@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="dropdown" :class="{ show : state }" @click.stop="toggleDropdown">
+    <div class="dropdown" :class="{ show : state }" @click="toggleDropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <slot name="text"></slot>
         </button>

@@ -7,6 +7,7 @@ using SpeedRunApp.Model.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace SpeedRunApp.Service
 {
@@ -17,26 +18,35 @@ namespace SpeedRunApp.Service
         private readonly IUserService _userService = null;
         private readonly ICacheService _cacheService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
+        private readonly IUserAccountRepository _userAcctRepo = null;
 
-        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo)
+        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserAccountRepository userAcctRepo)
         {
             _config = config;
             _gamesService = gamesService;
             _userService = userService;
             _cacheService = cacheService;
             _speedRunRepo = speedRunRepo;
+            _userAcctRepo = userAcctRepo;
         }
 
         public SpeedRunListViewModel GetSpeedRunList()
         {
             var elementsPerPage = Convert.ToInt32(_config.GetSection("ApiSettings").GetSection("SpeedRunListElementsPerPage").Value);
-
             var runListVM = new SpeedRunListViewModel(elementsPerPage);
 
             return runListVM;
         }
 
-        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
+        public IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(int currUserAccountID)
+        {
+            var speedRunListCategoryIDs = _userAcctRepo.GetUserAccountSpeedRunListCategories(i => i.UserAccountID == currUserAccountID).Select(i => i.SpeedRunListCategoryID);
+            var speedRunListCategories = speedRunListCategoryIDs.Any() ? _speedRunRepo.SpeedRunListCategories(i => speedRunListCategoryIDs.Contains(i.ID)) : _speedRunRepo.SpeedRunListCategories(i => i.IsDefault);
+
+            return speedRunListCategories;
+        }
+
+        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
         {
             var runs = _speedRunRepo.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
             IEnumerable<SpeedRunSummaryViewModel> runVMs = runs.Select(i => new SpeedRunSummaryViewModel(i));
@@ -70,6 +80,7 @@ namespace SpeedRunApp.Service
 
             return runVM;
         }
+
 
         //public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID)
         //{

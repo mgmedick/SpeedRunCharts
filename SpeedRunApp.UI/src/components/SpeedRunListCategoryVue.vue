@@ -3,10 +3,11 @@
         <div>
             <div class="mx-auto p-2" style="max-width:598px; margin-bottom:20px;">
                 <div class="btn-group btn-group-toggle pr-2">
-                    <label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 0 }">
-                        <input type="radio" id="btnCategory0" name="btnCategory" autocomplete="off" value="0" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-certificate fa-lg"></i>&nbsp;New
+                    <!--<div v-for="(game, gameIndex) in items" :key="game.id">-->
+                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == item.id }" v-tippy="item.description">
+                        <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @click="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName }}
                     </label>
-                    <label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 1 }">
+                    <!--<label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 1 }">
                         <input type="radio" id="btnCategory1" name="btnCategory" autocomplete="off" value="1" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-percentage fa-lg"></i>&nbsp;Top 5%
                     </label>
                     <label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 2 }">
@@ -17,8 +18,8 @@
                     </label>
                     <label class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == 4 }">
                         <input type="radio" id="btnCategory4" name="btnCategory" autocomplete="off" value="4" v-model="categoryid" @click="onCategoryChange"><i class="fa fa-star fa-lg"></i>&nbsp;PBs
-                    </label>
-                    <div v-tippy="'<b>New:</b><br/>Newly verified runs<br/><br/><b>Top 5%:</b><br/>Runs with rank in top 5% of category with pre-existing runs<br/><br/><b>First:</b><br/>Runs with 1st place in category with pre-existing runs<br/><br/><b>Top 3:</b><br/>Runs in top 3 in category with pre-existing runs<br/><br/><b>PBs:</b><br/>PB for category where user has pre-existing runs'"><i class="fa fa-info-circle pl-1"></i></div>
+                    </label>-->
+                    <!--<div v-tippy="'<b>New:</b><br/>Newly verified runs<br/><br/><b>Top 5%:</b><br/>Runs with rank in top 5% of category with pre-existing runs<br/><br/><b>First:</b><br/>Runs with 1st place in category with pre-existing runs<br/><br/><b>Top 3:</b><br/>Runs in top 3 in category with pre-existing runs<br/><br/><b>PBs:</b><br/>PB for category where user has pre-existing runs'"><i class="fa fa-info-circle pl-1"></i></div>-->
                 </div>
             </div>
         </div>
@@ -28,14 +29,55 @@
     </div>
 </template>
 <script>
+    import axios from 'axios';
+
     export default {
         name: 'SpeedRunListCategoryVue',
         data: function () {
             return {
-                categoryid: "0"
+                items: [],
+                categoryid: 0
             }
         },
+        created() {
+            this.loadData();
+        },
         methods: {
+            loadData: function () {
+                var that = this;
+                this.loading = true;
+
+                axios.get('../SpeedRun/GetSpeedRunListCategories')
+                    .then(res => {
+                        that.items = res.data;
+                        that.loading = false;
+                        return res;
+                    })
+                    .catch(err => { console.error(err); return Promise.reject(err); });
+            },
+            getIconClass: function (id) {
+                var iconClass = '';
+
+                switch (id) {
+                    case 0:
+                        iconClass = 'fa fa-certificate fa-lg';
+                        break;
+                    case 1:
+                        iconClass = 'fa fa-percentage fa-lg';
+                        break;
+                    case 2:
+                        iconClass = 'fa fa-award fa-lg';
+                        break;
+                    case 3:
+                        iconClass = 'fa fa-fire fa-lg';
+                        break;
+                    case 4:
+                        iconClass = 'fa fa-star fa-lg';
+                        break;
+                }
+
+                return iconClass;
+            },
             onCategoryChange: function (event) {
                 Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");

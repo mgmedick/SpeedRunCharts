@@ -2,12 +2,12 @@
     <div v-for="(variable, variableIndex) in items" :key="variable.id">
         <div v-if="subcategoryvariablevalueids[variable.id]">
             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                <div class="col-sm-1 align-self-top pt-1 overflow-hidden">
+                <!--<div class="col-sm-1 align-self-top pt-1 mr-2 overflow-hidden">
                     <label class="tab-row-name">{{ variable.name }}:</label>
-                </div>
-                <div class="col pl-2 tab-list">
+                </div>-->
+                <div class="col" :class="'variable-' + variableIndex + '-tab-list'">
                     <ul class="nav nav-pills">
-                        <li class="nav-item p-1" v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
+                        <li class="nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                             <a class="variableValue nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.id] == variableValue.id }" href="#/" :data-variable="variable.id" :data-value="variableValue.id" data-toggle="pill" @click="$emit('variablevalueclick', $event)">{{ variableValue.name }}</a>
                         </li>
                     </ul>

@@ -28,6 +28,7 @@ import StackedBar2D from 'fusioncharts/fusioncharts.charts';
 import Pie3D from 'fusioncharts/fusioncharts.charts';
 import MSLine from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.candy';
+import userAccountVue from './UserAccountVue.vue';
 
 export default {
     loadComponents() {
@@ -58,6 +59,7 @@ export default {
         app.component("worldrecord-grid-tab", worldRecordGridTabVue);
         app.component("worldrecord-grid", worldRecordGridVue);
         app.component("personalbest-grid-tab", worldRecordGridTabVue);
+        app.component("useraccount", userAccountVue);
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

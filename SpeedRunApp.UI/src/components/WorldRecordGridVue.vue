@@ -114,7 +114,7 @@
                 //        })
                 //    }
                 //});
-
+                
                 tableData.forEach(item => {
                     if (item.subCategoryVariableValueIDs && item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {

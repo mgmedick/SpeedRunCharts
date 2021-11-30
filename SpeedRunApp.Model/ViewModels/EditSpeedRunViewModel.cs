@@ -7,10 +7,11 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class EditSpeedRunViewModel
     {
-        public EditSpeedRunViewModel(IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> players, IEnumerable<IDNamePair> categoryTypes, IEnumerable<Category> categories, IEnumerable<IDNamePair> levels, IEnumerable<IDNamePair> platforms, IEnumerable<Variable> variables, SpeedRunViewModel speedRunVM)
+        public EditSpeedRunViewModel(IEnumerable<IDNamePair> statusTypes, IEnumerable<IDNamePair> players, IEnumerable<IDNamePair> guests, IEnumerable<IDNamePair> categoryTypes, IEnumerable<Category> categories, IEnumerable<IDNamePair> levels, IEnumerable<IDNamePair> platforms, IEnumerable<Variable> variables, SpeedRunViewModel speedRunVM)
         {
             StatusTypes = statusTypes;
             Players = players;
+            Guests = guests;
             CategoryTypes = categoryTypes;
             Categories = categories;
             Levels = levels;
@@ -21,6 +22,7 @@ namespace SpeedRunApp.Model.ViewModels
 
         public IEnumerable<IDNamePair> StatusTypes { get; set; }
         public IEnumerable<IDNamePair> Players { get; set; }
+        public IEnumerable<IDNamePair> Guests { get; set; }
         public IEnumerable<IDNamePair> CategoryTypes { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<IDNamePair> Levels { get; set; }

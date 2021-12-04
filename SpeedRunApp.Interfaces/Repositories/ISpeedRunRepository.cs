@@ -13,6 +13,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<IDNamePair> RunStatusTypes();
         IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null);
         IEnumerable<SpeedRunGridView> GetSpeedRunGridViews(Expression<Func<SpeedRunGridView, bool>> predicate);
+        IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate);
         IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID);
         IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int categoryID, int userID);
         IEnumerable<SpeedRunView> GetSpeedRunViews(Expression<Func<SpeedRunView, bool>> predicate);

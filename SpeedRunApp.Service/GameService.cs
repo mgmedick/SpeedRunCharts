@@ -45,7 +45,9 @@ namespace SpeedRunApp.Service
         public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw) };
+            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID);
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+            var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };
             var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
             return gridVM;

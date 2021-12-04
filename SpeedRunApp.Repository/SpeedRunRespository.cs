@@ -48,6 +48,15 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        public IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunGridTabView>().Where(predicate).ToList();
+                return results;
+            }
+        } 
+
         public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())

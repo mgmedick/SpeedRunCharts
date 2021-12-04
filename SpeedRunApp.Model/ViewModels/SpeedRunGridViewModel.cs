@@ -8,6 +8,28 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunGridViewModel
     {
+        public SpeedRunGridViewModel(SpeedRunGridTabView run)
+        {
+            ID = run.ID;
+            GameID = run.GameID;
+            GameName = run.GameName;
+            CategoryTypeID = run.CategoryTypeID;
+            CategoryID = run.CategoryID;
+            CategoryName = run.CategoryName;
+            LevelID = run.LevelID;
+            LevelName = run.LevelName;
+
+            if (!string.IsNullOrWhiteSpace(run.VariableValues))
+            {
+                VariableValues = new Dictionary<int, IDNamePair>();
+                foreach (var variableValue in run.VariableValues.Split("^^"))
+                {
+                    var values = variableValue.Split("|", 3);
+                    VariableValues.Add(Convert.ToInt32(values[0]), new IDNamePair { ID = Convert.ToInt32(values[1]), Name = values[2]});
+                }
+            }            
+        }
+        
         public SpeedRunGridViewModel(SpeedRunGridView run)
         {
             ID = run.ID;

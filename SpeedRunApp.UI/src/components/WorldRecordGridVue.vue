@@ -62,7 +62,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, userID: this.userid } })
+                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })
                 //axios.get('../SpeedRun/GetWorldRecordGridData', { params: { ID: this.id, isGame: this.isgame, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.tableData = res.data;
@@ -77,7 +77,7 @@
                 //var gameNames = [...new Set(tableData.map(el => el.gameName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 //var categoryNames = [...new Set(tableData.map(el => el.categoryName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 //var subCategoryVariableValueNames = [...new Set(tableData.filter(el => el.subCategoryVariableValues).map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                var levelNames = [...new Set(tableData.filter(el => el.levelID).sort((a, b) => { return a?.levelID - b?.levelID }).map(x => x.levelName))];
+                // var levelNames = [...new Set(tableData.filter(el => el.levelID).sort((a, b) => { return a?.levelID - b?.levelID }).map(x => x.levelName))];
 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
@@ -87,10 +87,10 @@
                     //{ title: "Game", field: "gameName", formatter: that.gameFormatter, headerFilter: "select", headerFilterParams: { values: gameNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: !that.isgame }, //minWidth:100
                     //{ title: "Category", field: "categoryName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: categoryNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 }, //minWidth:100
                     //{ title: "Sub Categories", field: "subCategoryVariableValues", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: subCategoryVariableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.subCategoryVisible() },
-                    { title: "Level", field: "levelName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: levelNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.categorytypeid == 1 }, //minWidth:100
+                    //{ title: "Level", field: "levelName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: levelNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.categorytypeid == 1 }, //minWidth:100
                     //{ title: "gameID", field: "gameID", visible: false },
                     //{ title: "categoryID", field: "categoryID", visible: false },
-                    { title: "levelID", field: "levelID", visible: false },
+                    // { title: "levelID", field: "levelID", visible: false },
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
@@ -147,7 +147,7 @@
                     sortList.push({ column: variable.id + 'sort', dir: "asc" })
                 });
 
-                sortList.push({ column: "levelID", dir: "asc" })
+                //sortList.push({ column: "levelID", dir: "asc" })
                 //sortList.push({ column: "categoryID", dir: "asc" })
                 //sortList.push({ column: "gameID", dir: "asc" })
 

@@ -1,5 +1,12 @@
 ﻿<template>
-    <div v-if="!loading" id="divSpeedRunGridTabContainer" class="container-lg p-0">
+    <div v-if="loading">
+        <div class="d-flex">
+            <div class="mx-auto">
+                <i class="fas fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+    </div> 
+    <div v-else id="divSpeedRunGridTabContainer" class="container-lg p-0">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
@@ -231,28 +238,13 @@
             },
             setSubCategoryVariableValueIDs: function(variables) {
                 var that = this;
-                variables.forEach(variable => {
+                variables?.forEach(variable => {
                     if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
                         that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
                     }
                     variable.variableValues.forEach(variableValue => {
                         if (variableValue.subVariables && variableValue.subVariables.length > 0) {
                             that.setSubCategoryVariableValueIDs(variableValue.subVariables);
-                        }
-                    });    
-                });
-            },
-            resetSubCategoryVariableValueIDs: function(variables, newSubCategoryVariableValueIDs) {
-                var that = this;
-                variables.forEach(variable => {
-                    if(!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
-                        var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-                        newSubCategoryVariableValueIDs[variable.name] = va.name;
-                    }
-
-                    variable.variableValues.forEach(variableValue => {
-                        if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                            that.resetSubCategoryVariableValueIDs(variableValue.subVariables, newSubCategoryVariableValueIDs);
                         }
                     });    
                 });
@@ -292,6 +284,21 @@
                 // });
 
                 this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
+            },
+            resetSubCategoryVariableValueIDs: function(variables, newSubCategoryVariableValueIDs) {
+                var that = this;
+                variables?.forEach(variable => {
+                    if(!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
+                        var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
+                        newSubCategoryVariableValueIDs[variable.name] = va.name;
+                    }
+
+                    variable.variableValues.forEach(variableValue => {
+                        if (variableValue.subVariables && variableValue.subVariables.length > 0) {
+                            that.resetSubCategoryVariableValueIDs(variableValue.subVariables, newSubCategoryVariableValueIDs);
+                        }
+                    });    
+                });
             },
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');

@@ -80,9 +80,9 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID, int categoryID, int? userID)
+        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, int? userID)
         {
-            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID, categoryID, userID);
+            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID, categoryID, levelID, userID);
 
             return Json(results);
         }

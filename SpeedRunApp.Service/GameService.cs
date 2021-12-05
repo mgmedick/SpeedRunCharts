@@ -56,36 +56,11 @@ namespace SpeedRunApp.Service
         public SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID)
         {
             var games = _gameRepo.GetGamesByUserID(userID);
-            var tabItems = games.Select(i => new GameViewModel(i));
+            var tabItems = games.Select(i => new GameViewModel(i, null, true));
             var gridVM = new SpeedRunGridTabViewModel(tabItems);
 
             return gridVM;
         }
-
-        //public IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID)
-        //{
-        //    var games = _gameRepo.GetGamesByUserID(userID);
-        //    var tabItems = games.Select(i => new GameViewModel(i));
-        //    var categoryTypes = tabItems.SelectMany(i => i.CategoryTypes)
-        //                                .GroupBy(g => new { g.ID })
-        //                                .Select(i => i.First())
-        //                                .ToList();
-
-        //    return categoryTypes;
-        //}
-
-        /*
-        public SpeedRunGridContainerViewModel GetSpeedRunGrid(int gameID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.Rank.HasValue).OrderBy(i => i.Rank);
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
-            var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var tabItems = new List<GameViewModel>() { new GameViewModel(game, runVMs) };
-            var gridVM = new SpeedRunGridContainerViewModel(new SpeedRunGridTabViewModel("Game", tabItems), runVMs);
-
-            return gridVM;
-        } 
-        */
     }
 }
 

@@ -1,5 +1,12 @@
 ﻿<template>
-    <div v-if="!loading" id="divWorldRecorGridTabContainer" class="container-lg p-0">
+    <div v-if="loading">
+        <div class="d-flex">
+            <div class="mx-auto">
+                <i class="fas fa-spinner fa-spin fa-lg"></i>
+            </div>
+        </div>
+    </div>
+    <div v-else id="divWorldRecorGridTabContainer" class="container-lg p-0">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
@@ -60,10 +67,38 @@
                                     </button-dropdown>                                     
                                 </ul>
                             </div>
-                        </div>
+                        </div>                        
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                             <div v-if="categoryID == category.id">
-                                <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :userid="userID"></worldrecord-grid>
+                                <div v-if="categoryTypeID == 0">
+                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="userID"></worldrecord-grid>
+                                </div>
+                                <div v-else>
+                                    <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                        <div class="col tab-list">
+                                            <ul class="nav nav-pills">
+                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                    <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                </li>
+                                                <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['level'] }">
+                                                    <template v-slot:text>
+                                                        <span>More...</span>
+                                                    </template>
+                                                    <template v-slot:options>
+                                                        <li class="dropdown-item" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                        </li>
+                                                    </template>
+                                                </button-dropdown>   
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                        <div v-if="levelID == level.id">                                            
+                                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="userID"></worldrecord-grid>
+                                        </div>
+                                    </div>                                                                        
+                                </div>                            
                             </div>
                         </div>
                     </div>
@@ -87,6 +122,7 @@
                 gameID: '',
                 categoryTypeID: '',
                 categoryID: '',
+                levelID: '',
                 moreActive: {},
                 loading: true
             }
@@ -132,7 +168,13 @@
 
                 this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
 
-                this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID).id;
+                this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID)?.id;
+
+                if (this.categoryTypeID == 1) {
+                    this.levelID = this.levelID || (game.levelTabs ? game.levelTabs.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id : '');
+                } else {
+                    this.levelID = '';
+                }                
             },
             resetSelected: function () {
                 var that = this;
@@ -142,9 +184,17 @@
                     this.categoryTypeID = game.categoryTypes[0].id;
                 }
 
-                if (game.categories.filter(i => i.id == that.categoryID).length == 0) {
-                    this.categoryID = game.categories[0].id;
+                if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID).length == 0) {
+                    this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID)[0]?.id;
                 }
+
+                if (this.categoryTypeID == 1) {
+                    if(game.levelTabs.filter(i => i.categoryID == that.categoryID && i.id == that.levelID).length == 0) {
+                        this.levelID = game.levelTabs.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id;
+                    }
+                } else {
+                    this.levelID = '';
+                }                
             },
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
@@ -160,7 +210,10 @@
                         break;
                     case 'category':
                         this.categoryID = value;
-                        break;                                                                                                  
+                        break;
+                    case 'level':
+                        this.levelID = value;
+                        break;                                                                                                                          
                 }
 
                 this.moreActive[type] = isMore;

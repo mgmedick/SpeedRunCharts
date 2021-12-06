@@ -1,7 +1,7 @@
 ﻿<template>
     <div>   
-        <div v-if="!userid" class="row no-gutters pr-1 pt-1 pb-0">
-            <div class="col-sm-1 align-self-end pt-1">
+        <div v-if="!userid" class="row no-gutters pr-1 pt-0">
+            <div class="col-auto pr-2">
                 <label class="tab-row-name">Show All Runs:</label>
             </div>
             <div class="col align-self-center">

@@ -13,7 +13,7 @@
                     <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
                         <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['game'] }">
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -34,7 +34,7 @@
                             <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['categoryType'] }">
+                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
@@ -55,7 +55,7 @@
                                     <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
                                         <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
                                     </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['category'] }">
+                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                         <template v-slot:text>
                                             <span>More...</span>
                                         </template>
@@ -72,12 +72,12 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :moreactive="moreActive" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
-                                        <div v-if="isgame" class="row no-gutters pr-1 pt-1 pb-0">
-                                            <div class="col-sm-1 align-self-end pt-1">
-                                                <label class="tab-row-name">Hide Empty:</label>
+                                        <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                            <div class="col-auto">
+                                                <label class="tab-row-name pr-2">Hide Empty:</label>
                                             </div>
                                             <div class="col align-self-center">
                                                 <div class="custom-control custom-switch">
@@ -96,7 +96,7 @@
                                                 <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['level'] }">
+                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                                     <template v-slot:text>
                                                         <span>More...</span>
                                                     </template>
@@ -112,12 +112,12 @@
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :moreactive="moreActive" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
-                                                <div v-if="isgame" class="row no-gutters pr-1 pt-1 pb-0">
-                                                    <div class="col-sm-1 align-self-end pt-1">
-                                                        <label class="tab-row-name">Hide Empty:</label>
+                                                <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                                    <div class="col-auto">
+                                                        <label class="tab-row-name pr-2">Hide Empty:</label>
                                                     </div>
                                                     <div class="col align-self-center">
                                                         <div class="custom-control custom-switch">
@@ -157,7 +157,6 @@
                 levelID: '',
                 subCategoryVariableValueIDs: {},
                 variableIndex: 0,
-                moreActive: {},
                 hideEmpty: true,
                 loading: true
             }
@@ -323,10 +322,7 @@
                         this.subCategoryVariableValueIDs[variableName] = value;
                         break;                                                                                                   
                 }
-                
-                var moreKey = (type == 'variableValue') ? variableName : type;                    
-                this.moreActive[moreKey] = isMore;                
-
+                                
                 this.resetSelected();                
             },
             onHideEmptyClick: function (event) {
@@ -382,7 +378,7 @@
         padding: 0.5rem !important;
     }
 
-    .tab-list .dropdown.active .btn.dropdown-toggle {
+    .tab-list .dropdown .btn.dropdown-toggle.active {
         background-color: var(--primary) !important;
     }
 

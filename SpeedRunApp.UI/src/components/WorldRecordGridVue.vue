@@ -128,7 +128,7 @@
                 });
 
                 var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.name]));
-                var distinctVariables = [...new Set(variables.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) });
+                var distinctVariables = [...new Set(variables.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
 
                 distinctVariables?.forEach(variable => {
                     var variableValuesSorted = tableData.filter(el => el.subCategoryVariableValueIDs && el.variableValues)

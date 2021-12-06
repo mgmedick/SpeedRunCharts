@@ -105,7 +105,7 @@ namespace SpeedRunApp.Service
             var runs = new List<SpeedRunGridView>();
             if (userID.HasValue)
             {
-                runs = _speedRunRepo.GetPersonalBestsByUserID(gameID, categoryTypeID, categoryID, userID.Value).ToList();
+                runs = _speedRunRepo.GetPersonalBestsByUserID(gameID, categoryTypeID, categoryID, levelID, userID.Value).ToList();
             }
             else
             {

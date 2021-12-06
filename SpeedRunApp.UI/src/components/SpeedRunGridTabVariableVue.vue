@@ -7,7 +7,7 @@
                         <li class="variableValue nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
                             <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
-                        <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreactive[variable.name] }">
+                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                             <template v-slot:text>
                                 <span>More...</span>
                             </template>
@@ -22,11 +22,11 @@
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                 <div v-if="variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name] == variableValue.name">
-                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :moreactive="moreactive" :hideempty="hideempty" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)"></speed-run-grid-tab-variable>
+                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)"></speed-run-grid-tab-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalueids[variable.name] == variableValue.name">
-                    <div v-if="!userid" class="row no-gutters pr-1 pt-1 pb-0">
-                        <div class="col-sm-1 align-self-end pt-1">
+                    <div v-if="!userid" class="row no-gutters pr-1 pt-1">
+                        <div class="col-auto pr-2">
                             <label class="tab-row-name">Hide Empty:</label>
                         </div>
                         <div class="col align-self-center">
@@ -56,7 +56,6 @@
             userid: String,
             prevdata: String,
             variableindex: Number,
-            moreactive: Object,
             hideempty: Boolean
         }
     };

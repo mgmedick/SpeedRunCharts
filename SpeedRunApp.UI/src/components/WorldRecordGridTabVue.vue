@@ -13,7 +13,7 @@
                     <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
                         <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['game'] }">
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-left'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -34,7 +34,7 @@
                             <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['categoryType'] }">
+                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
@@ -55,7 +55,7 @@
                                     <li class="nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                         <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
                                     </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['category'] }">
+                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                         <template v-slot:text>
                                             <span>More...</span>
                                         </template>
@@ -77,15 +77,15 @@
                                     <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
                                         <div class="col tab-list">
                                             <ul class="nav nav-pills">
-                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :class="{ 'active' : moreActive['level'] }">
+                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
                                                     <template v-slot:text>
                                                         <span>More...</span>
                                                     </template>
                                                     <template v-slot:options>
-                                                        <li class="dropdown-item" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                        <li class="dropdown-item" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                             <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                         </li>
                                                     </template>
@@ -123,7 +123,6 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
-                moreActive: {},
                 loading: true
             }
         },
@@ -199,7 +198,6 @@
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');
-                var isMore = event.target.parentElement.classList.contains('dropdown-item');
 
                 switch(type) {
                     case 'game':
@@ -215,8 +213,6 @@
                         this.levelID = value;
                         break;                                                                                                                          
                 }
-
-                this.moreActive[type] = isMore;
 
                 this.resetSelected();                
             },
@@ -275,21 +271,35 @@
     };
 </script>
 <style>
+    .tab-list .nav {
+        /*overflow: hidden; */
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+    }
+
     .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
     }
 
-/*    .tab-list .nav-link:hover {
-        background-color: #2b2a2a;
+    .tab-list .dropdown .btn.dropdown-toggle {
+        background-color: #313131;
+        font-size: 13px;
+        font-weight: bold;
+        border: none !important;
+        padding: 0.5rem !important;
     }
-*/
-   .tab-row-name {
+
+    .tab-list .dropdown .btn.dropdown-toggle.active {
+        background-color: var(--primary) !important;
+    }
+
+    .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
-    } 
+    }  
 </style>
 
 

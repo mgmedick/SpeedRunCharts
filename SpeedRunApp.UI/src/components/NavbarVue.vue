@@ -34,7 +34,7 @@
                                     :style="{ width: 300 + 'px', marginRight:8 + 'px' }" />
                 </form>
                 <div v-if="isauth">
-                    <button-dropdown>
+                    <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
                         <template v-slot:text>
                             <span>
                                 <i class="fa fa-user"></i><span class="pl-2">{{ username }}</span>

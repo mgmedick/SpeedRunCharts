@@ -1,9 +1,9 @@
 ﻿<template>
     <div class="dropdown" :class="{ show : state }" @click="toggleDropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn dropdown-toggle" :class="btnclasses" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ref="btn">
             <slot name="text"></slot>
         </button>
-        <ul class="dropdown-menu dropdown-menu-sm-right" :class="{ show : state }" aria-labelledby="dropdownMenuButton">
+        <ul class="dropdown-menu" :class="[state ? 'show' : '', listclasses]" aria-labelledby="dropdownMenuButton" ref="list">
             <slot name="options"></slot>
         </ul>
     </div>
@@ -11,6 +11,10 @@
 <script>
     export default {
         name: "ButtonDropdownVue",
+        props: {
+            btnclasses: String,
+            listclasses: String
+        },
         data() {
             return {
                 state: false
@@ -22,8 +26,15 @@
             },
             close(e) {
                 if (!this.$el.contains(e.target)) {
-                    this.state = false
+                    this.state = false;
                 }
+            }
+        },
+        updated: function(){
+            if (this.$refs.list?.querySelectorAll('li:not(.d-none) .active').length > 0) {
+                this.$refs.btn?.classList.add('active');         
+            } else {
+                this.$refs.btn?.classList.remove('active');         
             }
         },
         mounted() {
@@ -34,6 +45,12 @@
         }
     };
 </script>
+<style>
+    .dropdown-menu{
+        overflow-y: auto;
+        max-height: 300px;
+    }
+</style>
 
 
 

@@ -79,7 +79,7 @@
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Platform</label>
                 <div class="col-sm-10">
-                    <select id="drpPlatform" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.platform.id">
+                    <select id="drpPlatform" class="custom-select form-control" style="width:220px;" :v-model="item.speedRunVM.platform?.id">
                         <option v-for="platform in item.platforms" :value="platform.id">{{ platform.name }}</option>
                     </select>
                 </div>

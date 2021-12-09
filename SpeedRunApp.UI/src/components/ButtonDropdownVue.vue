@@ -3,9 +3,9 @@
         <button class="btn dropdown-toggle" :class="btnclasses" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ref="btn">
             <slot name="text"></slot>
         </button>
-        <ul class="dropdown-menu" :class="[state ? 'show' : '', listclasses]" aria-labelledby="dropdownMenuButton" ref="list">
+        <div class="dropdown-menu" :class="[state ? 'show' : '', listclasses]" aria-labelledby="dropdownMenuButton" ref="list">
             <slot name="options"></slot>
-        </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -31,7 +31,7 @@
             }
         },
         updated: function(){
-            if (this.$refs.list?.querySelectorAll('li:not(.d-none) .active').length > 0) {
+            if (this.$refs.list?.querySelectorAll('a.dropdown-item:not(.d-none).active').length > 0) {
                 this.$refs.btn?.classList.add('active');         
             } else {
                 this.$refs.btn?.classList.remove('active');         

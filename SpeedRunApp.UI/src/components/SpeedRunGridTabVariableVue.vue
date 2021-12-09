@@ -12,9 +12,9 @@
                                 <span>More...</span>
                             </template>
                             <template v-slot:options>
-                                <li class="dropdown-item" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
-                                    <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
-                                </li>
+                                <template v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
+                                    <a class="dropdown-item d-none" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                                </template>
                             </template>
                         </button-dropdown>                  
                     </ul>

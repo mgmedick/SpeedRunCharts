@@ -33,15 +33,6 @@ namespace SpeedRunApp.Service
             return _gameRepo.SearchGames(searchText);
         }
 
-        //public IEnumerable<SpeedRunGridTabViewModel> GetWorldRecordGridTabs(int gameID)
-        //{
-        //    var games = _gameRepo.GetGamesByUserID(userID);
-        //    var tabItems = games.Select(i => new GameViewModel(i));
-        //    var gridVM = new SpeedRunGridTabViewModel(tabItems);
-
-        //    return gridVM;
-        //}
-
         public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
@@ -61,6 +52,21 @@ namespace SpeedRunApp.Service
 
             return gridVM;
         }
+
+        public SpeedRunGridTabViewModel GetWorldRecordGridTabs(int gameID)
+        {
+            var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
+            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID);
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+            var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };
+            foreach(var tabItem in tabItems){
+                tabItem.Categories = tabItem.Categories.Where(i => i.HasData).ToList();
+                tabItem.LevelTabs = tabItem.LevelTabs?.Where(i => i.HasData).ToList();            
+            }                                    
+            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+
+            return gridVM;
+        }        
     }
 }
 

@@ -18,9 +18,9 @@
                             <span>More...</span>
                         </template>
                         <template v-slot:options>
-                            <li class="dropdown-item" v-for="(game, gameIndex) in items" :key="game.id">
-                                <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
-                            </li>
+                            <template v-for="(game, gameIndex) in items" :key="game.id">
+                                <a class="dropdown-item d-none" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" @click="onTabClick">{{ game.name }}</a>
+                            </template>
                         </template>
                     </button-dropdown>                       
                 </ul>
@@ -39,9 +39,9 @@
                                     <span>More...</span>
                                 </template>
                                 <template v-slot:options>
-                                    <li class="dropdown-item" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                        <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
-                                    </li>
+                                    <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
+                                    </template>
                                 </template>
                             </button-dropdown>                                
                         </ul>
@@ -60,9 +60,9 @@
                                             <span>More...</span>
                                         </template>
                                         <template v-slot:options>
-                                            <li class="dropdown-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                                <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
-                                            </li>
+                                            <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                                <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
+                                            </template>
                                         </template>
                                     </button-dropdown>                                     
                                 </ul>
@@ -85,9 +85,9 @@
                                                         <span>More...</span>
                                                     </template>
                                                     <template v-slot:options>
-                                                        <li class="dropdown-item" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
-                                                        </li>
+                                                        <template v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                                            <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                        </template>
                                                     </template>
                                                 </button-dropdown>   
                                             </ul>
@@ -143,7 +143,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../Game/GetSpeedRunGridTabs', { params: { ID: this.id, isGame: this.isgame } })
+                var prms = axios.get('../Game/GetWorldRecordGridTabs', { params: { ID: this.id, isGame: this.isgame } })
                                 .then(res => {
                                     that.items = res.data.tabItems;
                                     //that.gameID = res.data.gameID;
@@ -222,7 +222,7 @@
                 for (var g = 0; g < rows.length; g++) {
                     var totalWidth = 0;
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var moreItems = rows[g].querySelectorAll('li.dropdown-item');
+                    var moreItems = rows[g].querySelectorAll('a.dropdown-item');
                     var morebtn =  rows[g].querySelector('.more');
 
                     for (var i = 0; i < tabitems.length; i++) {
@@ -238,41 +238,14 @@
                         }
                     }
 
-                    morebtn.style.display = morebtn.querySelectorAll('li:not(.d-none)').length > 0 ? 'block' : 'none';
+                    morebtn.style.display = morebtn.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
                }
             }                        
-            // onGameClick: function (event) {
-            //     var value = event.target.getAttribute('data-value');
-            //     this.gameID = value;
-
-            //     this.resetSelected();
-            // },
-            // onCategoryTypeClick: function (event) {
-            //     var value = event.target.getAttribute('data-value');
-            //     this.categoryTypeID = value;
-
-            //     var that = this;
-            //     this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.type == 'categorytype'));
-            //     this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, type: 'categorytype' });
-
-            //     this.resetSelected();
-            // },
-            // onCategoryClick: function (event) {
-            //     var value = event.target.getAttribute('data-value');
-            //     this.categoryID = value;
-
-            //     var that = this;
-            //     this.selected = this.selected.filter(item => !(item.gameID == that.gameID && item.categoryTypeID == that.categoryTypeID && item.type == 'category'));
-            //     this.selected.push({ gameID: this.gameID, categoryTypeID: this.categoryTypeID, categoryID: this.categoryID, type: 'category' });
-
-            //     this.resetSelected();
-            // }
         }
     };
 </script>
 <style>
     .tab-list .nav {
-        /*overflow: hidden; */
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
     }

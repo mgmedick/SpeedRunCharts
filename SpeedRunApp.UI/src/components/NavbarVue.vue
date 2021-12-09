@@ -41,16 +41,8 @@
                             </span>
                         </template>
                         <template v-slot:options>
-                            <!--<li class="dropdown-item custom-control custom-switch">
-                                <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
-                                <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
-                            </li>-->
-                            <li class="dropdown-item">
-                                <a :href="'../UserAccount/UserAccountDetails?userID=' + userid" class="text-secondary pl-4"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
-                            </li>
-                            <li class="dropdown-item">
-                                <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
-                            </li>
+                            <a :href="'../UserAccount/UserAccountDetails?userID=' + userid" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="/SpeedRun/Logout" class="dropdown-item text-secondary"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
                 </div>
@@ -119,6 +111,7 @@
 
                     axios.get('../Menu/Search', { params: { term: e.target.value } })
                         .then(res => {
+                            //that.searchOptions = [];
                             that.searchOptions = res.data.reduce((flat, constructor) => {
                                 return flat
                                     .concat({

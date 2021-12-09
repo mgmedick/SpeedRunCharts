@@ -18,30 +18,34 @@
                 <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
             </div>
         </div>
-        <div class="col-sm px-1 align-self-end ml-n8">
+        <div class="col-sm px-1 align-self-end ml-n3">
             <h5 class="m-0 font-weight-bold">@Model.Name</h5>
         </div>
     </div>
     <div>
         <div class="container ml-0 p-0 mt-4">
-            <h5 class="font-weight-bold mb-1">Details</h5>
-            <div>
-                <div class="form-group no-gutters mb-0">
-                    <label for="spnYearOfRelease" class="col-sm-1 col-form-label pt-0 pb-1">Release Year</label>
-                    <div class="col-sm">
-                        <span id="spnYearOfRelease" class="form-control" style="width:120px; font-size:14px;">@Model.YearOfRelease</span>
+            <h5 class="font-weight-bold mb-2">Details</h5>
+             <div class="row no-gutters">
+                <div class="col-auto pr-2">
+                    <label for="spnYearOfRelease" class="col-form-label pt-0 pb-1 font-weight-bold">Release</label>
+                    <div>
+                        <span id="spnYearOfRelease" class="form-control" style="width: auto; height: auto; font-size:14px;">@Model.YearOfRelease</span>
                     </div>
                 </div>
-                <div class="form-group no-gutters mb-0 pt-1">
-                    <label for="spnPlatforms" class="col-sm-1 col-form-label pt-0 pb-1">Platforms</label>
-                    <div class="d-flex">
-                        <span id="spnPlatforms" class="form-control" style="max-width: 500px; width: auto; height: auto; font-size:14px;">@Model.PlatformsString</span>
+            </div>                
+            <div class="row no-gutters pt-1">
+                @if (!string.IsNullOrWhiteSpace(Model.PlatformsString)) {
+                    <div class="col-auto pr-2">
+                        <label for="spnPlatforms" class="col-form-label pt-0 pb-1 font-weight-bold">Platforms</label>
+                        <div>
+                            <span id="spnPlatforms" class="form-control" style="max-width: 300px; width: auto; height: auto; font-size:14px;">@Model.PlatformsString</span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group no-gutters mb-0 pt-1">
-                    <label for="spnModerators" class="col-sm-1 col-form-label pt-0 pb-1">Moderators</label>
-                    <div class="d-flex">
-                        <span id="spnModerators" class="form-control" style="max-width: 500px; width:auto; height:auto; font-size:14px;">
+                }
+                <div class="col-auto">
+                    <label for="spnModerators" class="col-form-label pt-0 pb-1 font-weight-bold">Moderators</label>
+                    <div>
+                        <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px;">
                             @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
                         </span>
                     </div>

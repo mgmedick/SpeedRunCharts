@@ -261,8 +261,8 @@
                 }
 
                 if (this.categoryTypeID == 1) {
-                    if(game.levelTabs.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideEmpty || i.hasData)).length == 0) {
-                        this.levelID = game.levelTabs.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id;
+                    if(game.levelTabs?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideEmpty || i.hasData)).length == 0) {
+                        this.levelID = game.levelTabs?.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id;
                     }
                 } else {
                     this.levelID = '';

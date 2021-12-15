@@ -22,13 +22,13 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<GameView> GetGamesByUserID(int userID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<GameView>("EXEC dbo.GetGamesByUserID @0", userID).ToList();
-            }
-        }
+        // public IEnumerable<GameView> GetGamesByUserID(int userID)
+        // {
+        //     using (IDatabase db = DBFactory.GetDatabase())
+        //     {
+        //         return db.Query<GameView>("EXEC dbo.GetGamesByUserID @0", userID).ToList();
+        //     }
+        // }
 
         public IEnumerable<SearchResult> SearchGames(string searchText)
         {

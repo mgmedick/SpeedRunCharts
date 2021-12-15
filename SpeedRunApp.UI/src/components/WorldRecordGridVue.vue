@@ -31,9 +31,6 @@
     export default {
         name: "WorldRecordGridVue",
         props: {
-            //isgame: Boolean,
-            //id: String,
-            //categorytypeid: String
             gameid: String,
             categorytypeid: String,
             categoryid: String,
@@ -63,7 +60,6 @@
                 this.loading = true;
 
                 axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })
-                //axios.get('../SpeedRun/GetWorldRecordGridData', { params: { ID: this.id, isGame: this.isgame, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data);
@@ -74,47 +70,17 @@
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                //var gameNames = [...new Set(tableData.map(el => el.gameName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                //var categoryNames = [...new Set(tableData.map(el => el.categoryName))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                //var subCategoryVariableValueNames = [...new Set(tableData.filter(el => el.subCategoryVariableValues).map(el => el.subCategoryVariableValues))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                // var levelNames = [...new Set(tableData.filter(el => el.levelID).sort((a, b) => { return a?.levelID - b?.levelID }).map(x => x.levelName))];
 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
                     { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75, visible: that.userid }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 125, widthGrow: 1 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
-                    //{ title: "Game", field: "gameName", formatter: that.gameFormatter, headerFilter: "select", headerFilterParams: { values: gameNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: !that.isgame }, //minWidth:100
-                    //{ title: "Category", field: "categoryName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: categoryNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 }, //minWidth:100
-                    //{ title: "Sub Categories", field: "subCategoryVariableValues", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: subCategoryVariableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.subCategoryVisible() },
-                    //{ title: "Level", field: "levelName", formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: levelNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 2, visible: that.categorytypeid == 1 }, //minWidth:100
-                    //{ title: "gameID", field: "gameID", visible: false },
-                    //{ title: "categoryID", field: "categoryID", visible: false },
-                    // { title: "levelID", field: "levelID", visible: false },
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
 
-                //this.tableData.filter(x => x.subCategoryVariableValueIDs).length > 0
-
-                //var itemCategories = {};
-                //tableData.forEach(item => {
-                //    itemCategories[item.categoryID] = itemCategories[item.categoryID] || [];
-                //    itemCategories[item.categoryID].push(item);
-                //});
-
-                //Object.keys(itemCategories).filter(categoryID => itemCategories[categoryID].length > 1).map(categoryID => itemCategories[categoryID]).flat().forEach(item => {
-                //    if (item.subCategoryVariableValueIDs && item.variableValues) {
-                //        Object.keys(item.variableValues).forEach(variableID => {
-                //            if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
-                //                //var variableName = item.variables.filter(x => x.id == variableID)[0].name;
-                //                item[variableID] = item.variableValues[variableID].name;
-                //            }
-                //        })
-                //    }
-                //});
-                
                 tableData.forEach(item => {
                     if (item.subCategoryVariableValueIDs && item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
@@ -147,10 +113,6 @@
                     sortList.push({ column: variable.id + 'sort', dir: "asc" })
                 });
 
-                //sortList.push({ column: "levelID", dir: "asc" })
-                //sortList.push({ column: "categoryID", dir: "asc" })
-                //sortList.push({ column: "gameID", dir: "asc" })
-
                 this.table = new Tabulator("#tblWorldRecordGrid", {
                     data: tableData,
                     layout: "fitColumns",
@@ -181,7 +143,6 @@
             },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
-                //var gameID = cell.getRow().getCell("gameID").getValue();
 
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
@@ -221,19 +182,6 @@
 
                 return html;
             },
-            //gameFormatter(cell, formatterParams, onRendered) {
-            //    var html = '';
-            //    var value = cell.getValue();
-            //    var gameID = cell.getRow().getCell("gameID").getValue();
-
-            //    if (value) {
-            //        html += '<span class="tippy-tooltip" data-content="' + escape(value) + '">';
-            //        html += "<a href='../Game/GameDetails?gameID=" + gameID + "'>" + value + "</a><br/>";
-            //        html += '</span>';
-            //    }
-
-            //    return html;
-            //},
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var value = cell.getRow().getCell("primaryTimeString").getValue();

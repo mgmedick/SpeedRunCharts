@@ -30,13 +30,9 @@
 <script>
     import { getFormData } from '../js/common.js';
     import axios from 'axios';
-    //import useVuelidate from '@vuelidate/core';
 
     export default {
         name: 'UserAccountEditVue',
-        //setup() {
-        //    return { v$: useVuelidate() }
-        //},
         props: {
             userid: String
         },
@@ -73,9 +69,6 @@
                 return prms;
             },
             async submitForm() {
-                //const isValid = await this.v$.$validate()
-                //if (!isValid) return
-
                 var that = this;
                 var formData = getFormData(this.form);
 

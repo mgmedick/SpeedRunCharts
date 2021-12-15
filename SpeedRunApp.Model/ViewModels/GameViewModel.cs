@@ -7,22 +7,29 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameViewModel
     {
-        public GameViewModel(GameView game, IEnumerable<SpeedRunGridViewModel> runVMs = null, bool allHasValue = false)
+        public GameViewModel(GameView game, IEnumerable<SpeedRunGridViewModel> runVMs = null)
         {
             ID = game.ID;
             Name = game.Name;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUrl;
             SpeedRunComLink = game.SpeedRunComUrl;
-            AllHasData = allHasValue;
             
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
-                CategoryTypes = new List<IDNamePair>();
+                CategoryTypes = new List<TabItem>();
                 foreach (var categoryType in game.CategoryTypes.Split("^^"))
                 {
                     var values = categoryType.Split("|", 2);
-                    CategoryTypes.Add(new IDNamePair { ID = Convert.ToInt32(values[0]), Name = values[1] });
+                    var categoryTypeTab = new TabItem() { ID = Convert.ToInt32(values[0]), Name = values[1] };
+                    categoryTypeTab.HasData = runVMs != null && runVMs.Any(i => i.CategoryTypeID == categoryTypeTab.ID);
+                    CategoryTypes.Add(categoryTypeTab);
+                }
+            }
+
+            foreach(var categoryType in CategoryTypes){
+                if (!categoryType.HasData) {
+                    categoryType.Name += " (empty)";
                 }
             }
 
@@ -38,7 +45,7 @@ namespace SpeedRunApp.Model.ViewModels
                         CategoryTypeID = Convert.ToInt32((string)values[1]),
                         Name = values[2]
                     };
-                    category.HasData = AllHasData || (runVMs != null && runVMs.Any(i => i.CategoryID == category.ID));
+                    category.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
                 }
             }
@@ -73,7 +80,7 @@ namespace SpeedRunApp.Model.ViewModels
                             ID = level.ID,
                             Name = level.Name,
                             CategoryID = levelCategory.ID,
-                            HasData =  AllHasData || (runVMs != null && runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID))
+                            HasData = runVMs != null && runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
                         };
                         LevelTabs.Add(levelTab);
                     }
@@ -111,14 +118,14 @@ namespace SpeedRunApp.Model.ViewModels
                                                   }).ToList();
 
                     foreach(var variableValue in variable.VariableValues){
-                        variableValue.HasData = AllHasData || (runVMs != null && runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID)));
+                        variableValue.HasData = runVMs != null && runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
                     }
 
                     Variables.Add(variable);
                 }
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetAdjustedVariables(subVariables, runVMs);
+                SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
                 SetVariablesHasValue(SubCategoryVariablesTabs, runVMs);          
                 SetParentVariablesHasValue(SubCategoryVariablesTabs);
@@ -145,7 +152,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public List<Variable> GetAdjustedVariables(List<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs)
+        public List<Variable> GetAdjustedVariables(List<Variable> variables)
         {
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();
             var categories = Categories.Reverse<Category>();
@@ -291,10 +298,6 @@ namespace SpeedRunApp.Model.ViewModels
                                      && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ID.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
                                      && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())); ;
                    
-                   if (AllHasData) {
-                       variableValue.HasData = true;
-                   }
-
                    if (!variableValue.HasData) {
                        variableValue.Name += " (empty)";
                    }
@@ -313,7 +316,7 @@ namespace SpeedRunApp.Model.ViewModels
             foreach(var variable in variables) {
                 foreach (var variableValue in variable.VariableValues) {
                     if (variableValue.SubVariables.Any() && variableValue.SubVariables.SelectMany(i => i.VariableValues).Count(i => !i.HasData) == variableValue.SubVariables.SelectMany(i => i.VariableValues).Count()) {
-                        variableValue.HasData = AllHasData || false;
+                        variableValue.HasData = false;
                         
                         if (!variableValue.HasData) {
                             variableValue.Name += " (empty)";
@@ -333,7 +336,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string CoverImageUri { get; set; }
         public string SpeedRunComLink { get; set; }
         public int? YearOfRelease { get; set; }
-        public List<IDNamePair> CategoryTypes { get; set; }
+        public List<TabItem> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
         public List<IDNamePair> Levels { get; set; }
         public List<LevelTab> LevelTabs { get; set; }
@@ -348,11 +351,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return Platforms != null ? string.Join(", ", Platforms.Select(i => i.Name)) : null;
             }
-        }
-
-        public bool AllHasData {
-            get;
-            set;
         }
     }
 }

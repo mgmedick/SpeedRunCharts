@@ -111,7 +111,6 @@
 
                     axios.get('../Menu/Search', { params: { term: e.target.value } })
                         .then(res => {
-                            //that.searchOptions = [];
                             that.searchOptions = res.data.reduce((flat, constructor) => {
                                 return flat
                                     .concat({

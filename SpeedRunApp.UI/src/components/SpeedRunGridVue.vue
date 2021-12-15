@@ -64,7 +64,6 @@
             this.loadData();
         },
         mounted: function() {
-            //this.loadData();
             window.speedRunGridVue = this;
         },
         methods: {

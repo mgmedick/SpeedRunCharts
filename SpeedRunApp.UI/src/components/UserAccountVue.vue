@@ -90,7 +90,6 @@
                 var that = this;
                 this.item.speedRunListCategoryIDs = this.item.speedRunListCategoryIDs.map(i => i);
                 var formData = getFormData(this.item);
-                //var formData = JSON.stringify(this.item);
                 this.loading = true;
 
                 axios.post('/UserAccount/SaveUserAccount', formData)

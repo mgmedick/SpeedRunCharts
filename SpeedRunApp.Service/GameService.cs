@@ -48,7 +48,7 @@ namespace SpeedRunApp.Service
         {
             var runs = _speedRunRepo.GetSpeedRunGridTabUserViews(i => i.UserID == userID);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();            
-            var gameIDs = runs.Select(i => i.GameID).Distinct().ToList();
+            var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
             var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(g => g.GameID == i.ID).ToList())).ToList();
             FilterTabsByHasData(tabItems, true);                             
@@ -73,8 +73,12 @@ namespace SpeedRunApp.Service
             foreach (var tabItem in tabItems) {
                 tabItem.CategoryTypes = tabItem.CategoryTypes.Where(i => i.HasData == hasData).ToList();
                 tabItem.Categories = tabItem.Categories.Where(i => i.HasData == hasData).ToList();
-                tabItem.LevelTabs = tabItem.LevelTabs?.Where(i => i.HasData == hasData).ToList();     
-                FilterSubCategoryVariablesTabsByHasData(tabItem.SubCategoryVariablesTabs, hasData);     
+                tabItem.LevelTabs = tabItem.LevelTabs?.Where(i => i.HasData == hasData).ToList();
+
+                if(tabItem.SubCategoryVariablesTabs != null && tabItem.SubCategoryVariablesTabs.Any())
+                {
+                    FilterSubCategoryVariablesTabsByHasData(tabItem.SubCategoryVariablesTabs, hasData);
+                }
             }   
         }
 

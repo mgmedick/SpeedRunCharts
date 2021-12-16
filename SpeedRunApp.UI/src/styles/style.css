@@ -339,6 +339,12 @@ div.chart-placeholder + div.chart-placeholder {
     }
 }
 
+/*@media (min-width: 992px) {
+    .chart-container {
+        display: block !important;
+    }
+}*/
+
 .brand-logo {
     width: 25px;
 }

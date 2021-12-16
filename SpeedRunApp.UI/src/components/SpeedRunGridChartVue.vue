@@ -2,15 +2,15 @@
     <div class="card">
         <div class="card-header" id="headingOne">
             <h5 class="mb-0">
-                <div v-if="showCharts">
-                    <a class="btn btn-link font-weight-bold" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;Hide Charts</a>
+                <div v-if="showcharts">
+                    <a class="btn btn-link font-weight-bold" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;Hide Charts</a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link font-weight-bold" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Show Charts</a>
+                    <a class="btn btn-link font-weight-bold" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Show Charts</a>
                 </div>
             </h5>
         </div>
-        <div class="container row" :style="[ showCharts ? null : { display:'none' } ]">
+        <div class="container row chart-container" :style="[ showcharts ? null : { display:'none' } ]">
             <div class="col-sm-4">
                 <div id="divChart1"></div>
             </div>
@@ -31,14 +31,11 @@
 
     export default {
         name: "SpeedRunGridChartsVue",
+        emits: ["onshowchartsclick"],
         props: {
             tabledata: Array,
-            isgame: Boolean
-        },
-        data() {
-            return {
-                showCharts: false,
-            }
+            isgame: Boolean,
+            showcharts: Boolean
         },
         created: function () {
             this.loadData();
@@ -65,7 +62,7 @@
                         userTopSpeedRunChart.render();
                     }
                 });
-            },               
+            },
             getWorldRecordPerMonthChart(container) {
                 var categories = [];
                 var dataset = [];

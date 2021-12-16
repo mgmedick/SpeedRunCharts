@@ -19,7 +19,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart v-if="!loading" :tabledata="tableData" :isgame="!userid"></speedrun-grid-chart>
+            <speedrun-grid-chart v-if="!loading" :tabledata="tableData" :isgame="!userid" :showcharts="showcharts" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
             <div id="tblGrid"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
@@ -42,13 +42,15 @@
 
     export default {
         name: "SpeedRunGridVue",
+        emits: ["onshowchartsclick1"],
         props: {
             gameid: String,
             categorytypeid: String,
             categoryid: String,
             levelid: String,
             variablevalues: String,
-            userid: String
+            userid: String,
+            showcharts: Boolean
         },
         data() {
             return {

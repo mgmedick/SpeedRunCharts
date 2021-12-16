@@ -37,7 +37,6 @@
     <Content Include="src\components\UserAccountVue.vue" />
     <Content Include="src\components\SpeedRunGridChartVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVariableVue.vue" />
-    <Content Include="src\components\PersonalBestGridTabVue.vue" />
     <Content Include="src\components\WorldRecordGridTabVue.vue" />
     <Content Include="src\components\WorldRecordGridVue.vue" />
     <Content Include="src\components\SpeedRunGridVue.vue" />

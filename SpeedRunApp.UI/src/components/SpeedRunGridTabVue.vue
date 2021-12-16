@@ -72,7 +72,7 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" :showcharts="showCharts" @onshowchartsclick2="onShowChartsClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
                                         <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -86,7 +86,7 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                        <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID"></speedrun-grid>
+                                        <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showcharts="showCharts" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -112,7 +112,7 @@
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" :showcharts="showCharts" @onshowchartsclick2="onShowChartsClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -126,7 +126,7 @@
                                                         </div>
                                                     </div>
                                                 </div>                                                 
-                                                <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID"></speedrun-grid>
+                                                <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showcharts="showCharts" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -158,6 +158,7 @@
                 subCategoryVariableValueIDs: {},
                 variableIndex: 0,
                 hideEmpty: true,
+                showCharts: true,
                 loading: true
             }
         },
@@ -167,6 +168,12 @@
             }
         },
         created: function () {
+            if (window.innerWidth > 992) {
+                this.showCharts = true;
+            } else {
+                this.showCharts = false;
+            }
+
             this.loadData();
             window.addEventListener('resize', this.resizeSRTabs);
         },       
@@ -284,21 +291,34 @@
 
                 this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
             },
-            resetSubCategoryVariableValueIDs: function(variables, newSubCategoryVariableValueIDs) {
+            resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs) {
                 var that = this;
                 variables?.forEach(variable => {
-                    if(!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
+                    if (!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
                         var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
                         newSubCategoryVariableValueIDs[variable.name] = va.name;
-                    }
 
-                    variable.variableValues.forEach(variableValue => {
-                        if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                            that.resetSubCategoryVariableValueIDs(variableValue.subVariables, newSubCategoryVariableValueIDs);
+                        if (va.subVariables && va.subVariables.length > 0) {
+                            that.resetSubCategoryVariableValueIDs(va.subVariables, newSubCategoryVariableValueIDs);
                         }
-                    });    
+                    }
                 });
             },
+            //resetSubCategoryVariableValueIDs: function(variables, newSubCategoryVariableValueIDs) {
+            //    var that = this;
+            //    variables?.forEach(variable => {
+            //        if(!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
+            //            var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
+            //            newSubCategoryVariableValueIDs[variable.name] = va.name;
+            //        }
+
+            //        variable.variableValues.forEach(variableValue => {
+            //            if (variableValue.subVariables && variableValue.subVariables.length > 0) {
+            //                that.resetSubCategoryVariableValueIDs(variableValue.subVariables, newSubCategoryVariableValueIDs);
+            //            }
+            //        });    
+            //    });
+            //},
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');
@@ -328,7 +348,10 @@
             onHideEmptyClick: function (event) {
                 this.hideEmpty = !this.hideEmpty;
                 this.resetSelected();
-            },            
+            },
+            onShowChartsClick: function (event) {
+                this.showCharts = !this.showCharts;
+            },
             resizeSRTabs: function () {
                 var rows = document.querySelectorAll('#divSpeedRunGridTabContainer .tab-list');
 

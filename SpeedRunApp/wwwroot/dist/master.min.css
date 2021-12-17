@@ -5,6 +5,13 @@
 }
 
 
+.nowrap-elipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+}
+
+
 .tab-list .nav {
         /*overflow: hidden; */
         flex-wrap: nowrap !important;

@@ -49,23 +49,29 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.VideoLinks))
             {
                 VideoLinks = new List<string>();
+                EmbeddedVideoLinks = new List<string>();
                 foreach (var videoLink in run.VideoLinks.Split(","))
                 {
                     VideoLinks.Add(videoLink.Replace("&amp;", "&"));
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
+            foreach (var videoLink in VideoLinks)
             {
-                EmbeddedVideoLinks = new List<string>();
-                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
-                {
-                    if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
-                    {
-                        EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
-                    }                    
-                }
+                EmbeddedVideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
             }
+
+            //if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
+            //{
+            //    EmbeddedVideoLinks = new List<string>();
+            //    foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
+            //    {
+            //        if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
+            //        {
+            //            EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
+            //        }                    
+            //    }
+            //}
 
             if (run.PrimaryTime.HasValue)
             {
@@ -107,6 +113,14 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return EmbeddedVideoLinks?.FirstOrDefault();
+            }
+        }
+
+        public string VideoThumbnailLink
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(VideoLinks?.FirstOrDefault()) ? null : new Uri(VideoLinks?.FirstOrDefault()).ToThumbnailURIString();
             }
         }
 

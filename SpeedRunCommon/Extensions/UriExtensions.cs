@@ -36,7 +36,7 @@ namespace SpeedRunCommon.Extensions
                 {
                     var queryDictionary = QueryHelpers.ParseQuery(query);
                     videoIDString = queryDictionary.ContainsKey("v") ? queryDictionary["v"].ToString() : uri.Segments.Last();
-                    uriString = string.Format(@"https://www.youtube.com/embed/{0}", videoIDString);
+                    uriString = string.Format(@"https://www.youtube.com/embed/{0}?autoplay=0&muted=1", videoIDString);
                 }
                 else if (domain.Contains("vimeo.com"))
                 {

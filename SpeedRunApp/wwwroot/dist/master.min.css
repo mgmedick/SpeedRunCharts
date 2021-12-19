@@ -5,11 +5,35 @@
 }
 
 
+.image-container {
+        position: relative;
+        width: 90px;
+        margin-left:auto;
+}
+.image-container img{
+        width: 90px;
+}
+.image-container .play-icon{
+        cursor: pointer;
+        position: absolute;
+        top : 50%;
+        left : 50%;
+        transform: translate(-50%, -50%);
+}
 .nowrap-elipsis {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
+.gold {
+        color: gold;
+}
+.silver {
+        color: silver;
+}
+.bronze {
+        color: #b08d57;
+}      
 
 
 .tab-list .nav {

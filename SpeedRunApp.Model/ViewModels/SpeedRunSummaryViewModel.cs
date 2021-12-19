@@ -45,33 +45,32 @@ namespace SpeedRunApp.Model.ViewModels
                     Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
                 }
             }
-
+            
             if (!string.IsNullOrWhiteSpace(run.VideoLinks))
             {
-                VideoLinks = new List<string>();
-                EmbeddedVideoLinks = new List<string>();
+                VideoLinks = new List<string>();               
                 foreach (var videoLink in run.VideoLinks.Split(","))
                 {
                     VideoLinks.Add(videoLink.Replace("&amp;", "&"));
                 }
             }
 
-            foreach (var videoLink in VideoLinks)
-            {
-                EmbeddedVideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
-            }
+            // foreach (var videoLink in VideoLinks)
+            // {
+            //     EmbeddedVideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
+            // }
 
-            //if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
-            //{
-            //    EmbeddedVideoLinks = new List<string>();
-            //    foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
-            //        {
-            //            EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
-            //        }                    
-            //    }
-            //}
+            if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
+            {
+               EmbeddedVideoLinks = new List<string>();
+               foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
+               {
+                   if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
+                   {
+                       EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
+                   }                    
+               }
+            }
 
             if (run.PrimaryTime.HasValue)
             {
@@ -107,6 +106,13 @@ namespace SpeedRunApp.Model.ViewModels
                 return _subCategoryVariableValuesString;
             }
         }
+
+        // public List<string> EmbeddedVideoLinks { 
+        //     get
+        //     {
+        //         return VideoLinks?.Where(i => !string.IsNullOrWhiteSpace(i)).Select(i=>new Uri(i).ToEmbeddedURIString()).ToList();
+        //     } 
+        // }
 
         public string VideoLink
         {
@@ -163,5 +169,13 @@ namespace SpeedRunApp.Model.ViewModels
                 return VerifyDate?.ToRealtiveDateString();
             }
         }
+
+        public string RelativeVerifyDateStringShort
+        {
+            get
+            {
+                return VerifyDate?.ToRealtiveDateString(true);
+            }
+        }        
     }
 }

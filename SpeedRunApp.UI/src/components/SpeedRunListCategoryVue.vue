@@ -10,7 +10,7 @@
             </div>
         </div>
         <div>
-            <speedrun-list :categoryid="categoryid"></speedrun-list>
+            <speedrun-list :categoryid="categoryid.toString()"></speedrun-list>
         </div>
     </div>
 </template>

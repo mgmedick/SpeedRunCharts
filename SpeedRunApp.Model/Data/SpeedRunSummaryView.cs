@@ -20,6 +20,7 @@ namespace SpeedRunApp.Model.Data
         public string PlayerIDs { get; set; }
         public string VideoLinks { get; set; }
         public string EmbeddedVideoLinks { get; set; }
+        public string VideoThumbnailLinks { get; set; }
         public int? Rank { get; set; }
         public long? PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }

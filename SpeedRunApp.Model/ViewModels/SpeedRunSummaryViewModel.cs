@@ -55,11 +55,6 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            // foreach (var videoLink in VideoLinks)
-            // {
-            //     EmbeddedVideoLinks.Add(new Uri(videoLink).ToEmbeddedURIString());
-            // }
-
             if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
             {
                EmbeddedVideoLinks = new List<string>();
@@ -68,6 +63,18 @@ namespace SpeedRunApp.Model.ViewModels
                    if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
                    {
                        EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
+                   }                    
+               }
+            }
+
+            if (!string.IsNullOrWhiteSpace(run.VideoThumbnailLinks))
+            {
+               VideoThumbnailLinks = new List<string>();
+               foreach (var videoThumbnailLink in run.VideoThumbnailLinks.Split(","))
+               {
+                   if (!string.IsNullOrWhiteSpace(videoThumbnailLink))
+                   {
+                       VideoThumbnailLinks.Add(videoThumbnailLink.Replace("&amp;", "&"));
                    }                    
                }
             }
@@ -88,6 +95,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
+        public List<string> VideoThumbnailLinks { get; set; }        
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
@@ -126,9 +134,9 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return string.IsNullOrWhiteSpace(VideoLinks?.FirstOrDefault()) ? null : new Uri(VideoLinks?.FirstOrDefault()).ToThumbnailURIString();
+                return VideoThumbnailLinks?.FirstOrDefault();
             }
-        }
+        }        
 
         public string RankString
         {

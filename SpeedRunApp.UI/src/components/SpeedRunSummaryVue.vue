@@ -74,7 +74,7 @@
                             </template>                            
                         </div>
                     </div>
-                    <div class="col-sm-2 align-self-center p-0">
+                    <div class="col-sm-2 ml-auto align-self-center p-0">
                         <div class="image-container" @click="showVideo = !showVideo">
                             <img :src="item.videoThumbnailLink" />
                             <i class="play-icon fa fa-play"></i>

@@ -160,7 +160,7 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 foreach (var category in categories)
                 {
-                    if (category.CategoryTypeID == (int)CategoryType.PerLevel)
+                    if (category.CategoryTypeID == (int)CategoryType.PerLevel && Levels != null)
                     {
                         foreach (var level in Levels)
                         {

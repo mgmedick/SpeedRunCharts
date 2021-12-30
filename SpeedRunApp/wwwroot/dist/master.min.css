@@ -33,7 +33,14 @@
 }
 .bronze {
         color: #b08d57;
-}      
+}
+
+
+@media (min-width: 768px) {
+.category {
+            font-size: 14px;
+}
+}
 
 
 .tab-list .nav {

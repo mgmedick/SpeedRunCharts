@@ -3,8 +3,8 @@
         <div>
             <div class="mx-auto p-2" style="max-width:598px; margin-bottom:20px;">
                 <div class="btn-group btn-group-toggle pr-2">
-                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == item.id }" v-tippy="item.description">
-                        <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @click="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName }}
+                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == item.id }" style="font-size:12px;" v-tippy="item.description">
+                        <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @click="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;&nbsp;{{ item.displayName }}
                     </label>
                 </div>
             </div>
@@ -23,6 +23,11 @@
             return {
                 items: [],
                 categoryid: 0
+            }
+        },
+        computed: {
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
             }
         },
         created() {
@@ -46,20 +51,26 @@
 
                 switch (id) {
                     case 0:
-                        iconClass = 'fa fa-certificate fa-lg';
+                        iconClass = 'fa fa-certificate';
                         break;
                     case 1:
-                        iconClass = 'fa fa-percentage fa-lg';
+                        iconClass = 'fa fa-percentage';
                         break;
                     case 2:
-                        iconClass = 'fa fa-award fa-lg';
+                        iconClass = 'fa fa-award';
                         break;
                     case 3:
-                        iconClass = 'fa fa-fire fa-lg';
+                        iconClass = 'fa fa-fire';
                         break;
                     case 4:
-                        iconClass = 'fa fa-star fa-lg';
+                        iconClass = 'fa fa-star';
                         break;
+                }
+
+                if (this.isMediaMedium) {
+                    iconClass += " fa-lg";
+                } else {
+                    iconClass += " fa-sm";
                 }
 
                 return iconClass;
@@ -71,5 +82,12 @@
         }
     };
 </script>
+<style>
+    @media (min-width: 768px) {
+        .category {
+            font-size: 14px;
+        }
+    }
+</style>
 
 

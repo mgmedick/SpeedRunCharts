@@ -14,7 +14,7 @@ namespace SpeedRunApp.Model.ViewModels
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUrl;
             SpeedRunComLink = game.SpeedRunComUrl;
-            
+
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
                 CategoryTypes = new List<TabItem>();
@@ -27,11 +27,16 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            foreach(var categoryType in CategoryTypes){
-                if (!categoryType.HasData) {
-                    categoryType.Name += " (empty)";
+            var categoryTypeIDsToRemove = new List<int>();
+            foreach (var categoryType in CategoryTypes)
+            {
+                if (!categoryType.HasData)
+                {
+                    categoryTypeIDsToRemove.Add(categoryType.ID);
                 }
             }
+
+            CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
 
             if (!string.IsNullOrWhiteSpace(game.Categories))
             {

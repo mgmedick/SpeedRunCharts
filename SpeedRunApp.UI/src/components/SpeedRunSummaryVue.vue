@@ -1,35 +1,42 @@
 ﻿<template>
     <div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
         <div class="speedRunSummary bg-dark">
-            <template v-if="isMediaLarge">
-                <div class="container p-2 d-flex">
-                    <div class="p-0 col-sm-2 align-self-center">
-                        <div class="img-round">
-                            <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
+            <template v-if="isMediaMedium">
+                <div class="container pt-2 px-2 pb-0 d-flex">
+                    <div class="p-0 col-1">
+                        <div style="max-width:37px;">
+                            <div class="img-round">
+                                <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-7 align-self-center">
-                        <div>
-                            <small class="text-muted">Verified {{ item.relativeVerifyDateString }}</small>
-                        </div>
-                        <div>
-                            <a :href="'../Game/GameDetails?gameID=' + item.game.id" class="text-primary">{{ item.game.name }}</a>
-                        </div>
-                        <div class="text-secondary">
-                            <small>{{ item.category.name }}{{ (item.subCategoryVariableValuesString) ? ' - ' : '' }}{{ item.subCategoryVariableValuesString }}</small>
-                        </div>
-                        <div class="text-secondary" style="font-size: 13px;">
-                            {{ (item.rankString) ? item.rankString + ' - ' : '' }}
+                    <div class="col-auto nowrap-elipsis p-0 align-self-end" style="max-width:70%;">
+                        <a :href="'../Game/GameDetails?gameID=' + item.game.id" class="text-primary">{{ item.game.name }}</a>
+                    </div>
+                    <div class="col-auto pl-2 align-self-end">
+                        &middot;
+                        <small class="text-secondary pl-1">{{ item.relativeVerifyDateStringShort }}</small>
+                    </div>
+                    <div class="col-auto ml-auto p-0 align-self-start">
+                        <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>
+                    </div>
+                </div>
+                <div class="container px-2 pb-2 pt-1 d-flex">
+                    <div class="col-auto p-0 align-self-center">
+                        <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
+                            <i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;
                             <template v-for="(player, index) in item.players">
-                                <a :href="'../User/UserDetails?userID=' + player.id" class="text-secondary">{{ player.name }}</a>
-                                {{ (item.players.length == index) ? ', ' : '' }}
-                            </template>
-                            &nbsp;-&nbsp;
-                            {{ item.primaryTimeString }}
+                                <a :href="'../User/UserDetails?userID=' + player.id" class="text-primary">{{ player.name }}</a>
+                                {{ (item.players.length -1 != index) ? ', ' : '' }}
+                            </template>&nbsp;-&nbsp;<small>{{ item.primaryTimeString }}</small>
                         </div>
-                    </div>
-                    <div class="details p-0 col-auto ml-auto align-self-center">
-                        <button class="btn btn-primary detail" @click="showModal = true" style="font-size:12px;">Details</button>
+                        <div class="py-1">
+                            <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.category?.name }}</span>
+                            <span v-if="item.level?.name" class="pr-1"><span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.level?.name }}</span></span>
+                            <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">
+                                <span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ subCategoryVariableValueName }}</span>
+                            </template>
+                        </div>
                     </div>
                 </div>
                 <div class="body p-0 embed-responsive embed-responsive-16by9">
@@ -48,30 +55,34 @@
                             <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>
-                    <div class="col-auto nowrap-elipsis pl-2 pr-0 align-self-center" style="max-width:60%">
-                        <a :href="'../Game/GameDetails?gameID=' + item.game.id" class="text-primary">{{ item.game.name }}</a>
+                    <div class="col-auto nowrap-elipsis pl-2 pr-0 align-self-end" style="max-width:60%;">
+                        <a :href="'../Game/GameDetails?gameID=' + item.game.id" class="text-primary" style="font-size:14px;">{{ item.game.name }}</a>
                     </div>
-                    <div class="col-auto pl-2 align-self-center">
+                    <div class="col-auto pl-2 align-self-end">
                         &middot;
                         <small class="text-secondary pl-1">{{ item.relativeVerifyDateStringShort }}</small>
                     </div>
-                    <div class="col-auto ml-auto p-0 align-self-center">
+                    <div class="col-auto ml-auto p-0 align-self-start">
                         <button class="btn btn-secondary detail px-1 py-1" @click="showModal = true" style="font-size:12px;">Details</button>
                     </div>                      
                 </div>
                 <div class="container p-2 d-flex">
                     <div class="col-8 p-0 align-self-center">
-                        <div class="text-secondary nowrap-elipsis" style="font-size: 15px;">
-                            <i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span class="pr-2">{{ item.rankString }}</span><small>{{ item.primaryTimeString }}</small>
-                        </div>                      
-                        <div class="text-secondary nowrap-elipsis">
-                            <small>{{ item.category.name }}{{ (item.subCategoryVariableValuesString) ? ' - ' : '' }}{{ item.subCategoryVariableValuesString }}</small>
-                        </div>
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
+                            <i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;<small>{{ item.primaryTimeString }}</small>
+                        </div>
+                        <div class="text-secondary nowrap-elipsis" style="font-size: 14px; ">
                             <template v-for="(player, index) in item.players">
-                                <a :href="'../User/UserDetails?userID=' + player.id" class="text-secondary">{{ player.name }}</a>
-                                {{ (item.players.length == index) ? ', ' : '' }}
-                            </template>                            
+                                <a :href="'../User/UserDetails?userID=' + player.id" class="text-primary">{{ player.name }}</a>
+                                {{ (item.players.length -1 != index) ? ', ' : '' }}
+                            </template>
+                        </div>
+                        <div class="py-1">
+                            <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.category?.name }}</span>
+                            <span v-if="item.level?.name" class="pr-1"><span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.level?.name }}</span></span>
+                            <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">
+                                <span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ subCategoryVariableValueName }}</span>
+                            </template>
                         </div>
                     </div>
                     <div class="col-sm-2 ml-auto align-self-center p-0">
@@ -114,8 +125,8 @@
             }
         },
         computed: {
-            isMediaLarge: function () {
-                return window.innerWidth > 992;
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
             }
         },
         methods: {
@@ -170,11 +181,11 @@
 
     .silver {
         color: silver;
-    }    
+    }
 
     .bronze {
         color: #b08d57;
-    }      
+    }
 </style>
 
 

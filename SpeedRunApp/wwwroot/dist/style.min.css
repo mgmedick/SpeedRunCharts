@@ -3557,6 +3557,12 @@ div.chart-placeholder + div.chart-placeholder {
     }
 }
 
+@media (min-width: 768px) {
+    .img-width {
+        max-width: 126px !important;
+    }
+}
+
 /*@media (min-width: 992px) {
     .chart-container {
         display: block !important;

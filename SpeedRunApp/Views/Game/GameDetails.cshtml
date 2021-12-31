@@ -13,12 +13,14 @@
 
 <div class="container p-0">
     <div class="container ml-0 p-0 d-flex">
-        <div class="col-sm-2 pl-0 align-self-end">
-            <div class="img-round">
-                <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
-            </div>
+        <div class="col-sm-2 p-0 align-self-end img-width" style="max-width:84px;">
+            <div class="img-width" style="max-width:84px;">
+                <div class="img-round">
+                    <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>            
         </div>
-        <div class="col-sm px-1 align-self-end ml-n3">
+        <div class="col-sm px-1 align-self-end">
             <h5 class="m-0 font-weight-bold">@Model.Name</h5>
         </div>
     </div>

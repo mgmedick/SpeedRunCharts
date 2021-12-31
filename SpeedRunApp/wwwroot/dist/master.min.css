@@ -36,13 +36,6 @@
 }
 
 
-@media (min-width: 768px) {
-.category {
-            font-size: 14px;
-}
-}
-
-
 .tab-list .nav {
         /*overflow: hidden; */
         flex-wrap: nowrap !important;

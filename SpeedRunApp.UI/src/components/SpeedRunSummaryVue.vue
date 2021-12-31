@@ -24,7 +24,7 @@
                 <div class="container px-2 pb-2 pt-1 d-flex">
                     <div class="col-auto p-0 align-self-center">
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                            <i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;
+                            <template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template>
                             <template v-for="(player, index) in item.players">
                                 <a :href="'../User/UserDetails?userID=' + player.id" class="text-primary">{{ player.name }}</a>
                                 {{ (item.players.length -1 != index) ? ', ' : '' }}
@@ -69,7 +69,7 @@
                 <div class="container p-2 d-flex">
                     <div class="col-8 p-0 align-self-center">
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                            <i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;<small>{{ item.primaryTimeString }}</small>
+                            <template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template>
                         </div>
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px; ">
                             <template v-for="(player, index) in item.players">

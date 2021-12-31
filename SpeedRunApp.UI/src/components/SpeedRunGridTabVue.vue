@@ -60,7 +60,7 @@
                                             <span>More...</span>
                                         </template>
                                         <template v-slot:options>
-                                            <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                            <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
                                                 <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
                                             </template>
                                         </template>

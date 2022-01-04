@@ -6,14 +6,14 @@
             </div>
         </div>
     </div> 
-    <div v-else id="divSpeedRunGridTabContainer" class="container-lg p-0">
+    <div v-else id="divSpeedRunGridTabContainer">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
                         <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -34,7 +34,7 @@
                             <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
@@ -55,7 +55,7 @@
                                     <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
                                         <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
                                     </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                         <template v-slot:text>
                                             <span>More...</span>
                                         </template>
@@ -96,7 +96,7 @@
                                                 <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                                     <template v-slot:text>
                                                         <span>More...</span>
                                                     </template>
@@ -246,15 +246,20 @@
                 var that = this;
                 variables?.forEach(variable => {
                     if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
-                        that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
-                    }
-                    variable.variableValues.forEach(variableValue => {
-                        if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                            that.setSubCategoryVariableValueIDs(variableValue.subVariables);
+                        var va = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
+                        that.subCategoryVariableValueIDs[variable.name] = va.name;//variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
+                    
+                        if (va.subVariables && va.subVariables.length > 0) {
+                            that.setSubCategoryVariableValueIDs(va.subVariables);
                         }
-                    });    
+                    }
+                    // variable.variableValues.forEach(variableValue => {
+                    //     if (variableValue.subVariables && variableValue.subVariables.length > 0) {
+                    //         that.setSubCategoryVariableValueIDs(variableValue.subVariables);
+                    //     }
+                    // });    
                 });
-            },            
+            },                                    
             resetSelected: function () {
                 var that = this;
                 var game = this.items.find(game => game.id == that.gameID);
@@ -382,7 +387,7 @@
 </script>
 <style>
     .tab-list .nav {
-        /*overflow: hidden; */
+        /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
     }

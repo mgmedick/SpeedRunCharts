@@ -6,14 +6,14 @@
             </div>
         </div>
     </div>
-    <div v-else id="divWorldRecorGridTabContainer" class="container-lg p-0">
+    <div v-else id="divWorldRecorGridTabContainer">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
                         <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-left'">
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -34,7 +34,7 @@
                             <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
@@ -55,7 +55,7 @@
                                     <li class="nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                         <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
                                     </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                         <template v-slot:text>
                                             <span>More...</span>
                                         </template>
@@ -80,7 +80,7 @@
                                                 <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                                     <template v-slot:text>
                                                         <span>More...</span>
                                                     </template>

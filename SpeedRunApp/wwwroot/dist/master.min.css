@@ -37,7 +37,7 @@
 
 
 .tab-list .nav {
-        /*overflow: hidden; */
+        /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
 }

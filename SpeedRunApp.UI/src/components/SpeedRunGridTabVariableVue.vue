@@ -7,7 +7,7 @@
                         <li class="variableValue nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
                             <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
-                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                             <template v-slot:text>
                                 <span>More...</span>
                             </template>

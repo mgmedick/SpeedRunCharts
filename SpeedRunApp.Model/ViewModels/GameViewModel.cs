@@ -290,30 +290,33 @@ namespace SpeedRunApp.Model.ViewModels
         {
            foreach (var variable in variables)
            {
-               foreach (var variableValue in variable.VariableValues)
-               {
-                   if (parentVariableValues == null)
-                   {
-                       parentVariableValues = new List<Tuple<int, int>>();
-                   }
+                if (parentVariableValues == null)
+                {
+                    parentVariableValues = new List<Tuple<int, int>>();
+                }
 
-                   variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
-                                     && i.LevelID == variable.LevelID
-                                     && i.VariableValues != null                                  
-                                     && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ID.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
-                                     && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())); ;
-                   
-                   if (!variableValue.HasData) {
-                       variableValue.Name += " (empty)";
-                   }
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
+                                        && i.LevelID == variable.LevelID
+                                        && i.VariableValues != null                                  
+                                        && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ID.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
+                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())); ;
+                    
+                    if (!variableValue.HasData) {
+                        variableValue.Name += " (empty)";
+                    }
 
-                   if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
-                   {
-                       parentVariableValues.Add(new Tuple<int, int>(variable.ID, variableValue.ID));
-                       SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues);
-                       parentVariableValues = null;
-                   }
-               }
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        var parentVariableValues1 = new List<Tuple<int, int>>();
+                        parentVariableValues1.AddRange(parentVariableValues);
+                        parentVariableValues1.Add(new Tuple<int, int>(variable.ID, variableValue.ID));
+                        SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues1);
+                    }
+                }
+
+                parentVariableValues = null;
            }
         }
 
@@ -323,7 +326,7 @@ namespace SpeedRunApp.Model.ViewModels
                     if (variableValue.SubVariables.Any() && variableValue.SubVariables.SelectMany(i => i.VariableValues).Count(i => !i.HasData) == variableValue.SubVariables.SelectMany(i => i.VariableValues).Count()) {
                         variableValue.HasData = false;
                         
-                        if (!variableValue.HasData) {
+                        if (!variableValue.HasData && !variableValue.Name.EndsWith(" (empty)")) {
                             variableValue.Name += " (empty)";
                         }
                     }

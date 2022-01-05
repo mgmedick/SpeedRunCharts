@@ -51,7 +51,7 @@
     import { getFormData } from '../js/common.js';
     import axios from 'axios';
     import useVuelidate from '@vuelidate/core';
-    import { required, email, helpers } from '@vuelidate/validators';
+    import { required, email, helpers, sameAs } from '@vuelidate/validators';
     const { withAsync } = helpers;
 
     const usernameFormat = helpers.regex(/^[._()-\/#&$@+\w\s]{3,30}$/)
@@ -80,7 +80,7 @@
                 form: {
                     Username: '',
                     Password: '',
-                    ConfirmPasword: ''
+                    ConfirmPassword: ''
                 },
                 errorMessages: []
             }
@@ -121,7 +121,7 @@
                         required: helpers.withMessage('Password is required', required),
                         passwordFormat: helpers.withMessage('Must be between 8 - 30 characters with at least 1 number and letter', passwordFormat)
                     },
-                    ConfirmPasword: {
+                    ConfirmPassword: {
                         sameAsPassword: helpers.withMessage('Must match Password', sameAs(this.form.Password))
                     }
                 }

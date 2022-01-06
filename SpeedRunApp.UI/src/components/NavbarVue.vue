@@ -31,7 +31,7 @@
                                     close-on-select
                                     openDirection="bottom"
                                     placeholder="Search games, users"
-                                    :style="{ width: 300 + 'px', marginRight:8 + 'px' }" />
+                                    :style="{ width:100 + '%' }" />
                 </form>
                 <div v-if="isauth">
                     <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -147,6 +147,13 @@
         }
     };
 </script>
+<style scoped>
+/*    ::v-deep .vue-dropdown {
+        width: 100%;
+    }*/
+</style>
+
+
 
 
 

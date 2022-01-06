@@ -5,6 +5,11 @@
 }
 
 
+/*    ::v-deep .vue-dropdown {
+        width: 100%;
+    }*/
+
+
 .image-container {
         position: relative;
         width: 90px;

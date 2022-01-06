@@ -3222,6 +3222,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 body {
     padding-bottom: 30px;
+    /*    overflow-x: hidden;*/
 }
 
 html {
@@ -3243,7 +3244,6 @@ html {
     padding-top: 15px;
     padding-left: 15px;
     padding-right: 15px;
-    /* overflow-x: hidden; */
 }
 
 .img-round {
@@ -3456,6 +3456,9 @@ div.chart-placeholder + div.chart-placeholder {
     font-family: Arial,Helvetica,sans-serif;
     font-size: 15px;
     padding: 4px 24px 4px 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .vue-dropdown-item.group {
@@ -3486,6 +3489,8 @@ div.chart-placeholder + div.chart-placeholder {
 
 .vue-dropdown {
     border: none;
+    max-height: none !important;
+    overflow-y: auto;
 }
 
 .vue-tag.selected {
@@ -3597,6 +3602,15 @@ div.chart-placeholder + div.chart-placeholder {
     padding: 4px 8px;
     line-height: 18px;
 }
+
+.btn-group-vertical > .btn.active, .btn-group-vertical > .btn:active, .btn-group-vertical > .btn:focus, .btn-group > .btn.active, .btn-group > .btn:active, .btn-group > .btn:focus{
+    z-index:0;
+}
+
+/*.vue-select {
+    width:100% !important;
+}*/
+
 
 
 

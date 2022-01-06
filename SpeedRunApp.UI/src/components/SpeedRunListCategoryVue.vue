@@ -67,11 +67,12 @@
                         break;
                 }
 
-                if (this.isMediaMedium) {
-                    iconClass += " fa-lg";
-                } else {
-                    iconClass += " fa-sm";
-                }
+                iconClass += " fa-sm";
+                // if (this.isMediaMedium) {
+                //     iconClass += " fa-lg";
+                // } else {
+                //     iconClass += " fa-sm";
+                // }
 
                 return iconClass;
             },

@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <form v-if="islinkvalid" @submit.prevent="submitForm">
+        <form v-if="islinkvalid" @submit.prevent="submitForm" autocomplete="off">
             <div>
                 <ul>
                     <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
@@ -16,14 +16,14 @@
             <div class="form-group row no-gutters">
                 <label class="col-sm-4 col-form-label">Password</label>
                 <div class="col-sm-auto">
-                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
+                    <input type="password" class="form-control" autocomplete="new-password" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
                     <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
                 </div>
             </div>
             <div class="form-group row no-gutters">
                 <label class="col-sm-4 col-form-label">Confirm Password</label>
                 <div class="col-sm-auto">
-                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.ConfirmPassword" @blur="v$.form.ConfirmPassword.$touch">
+                    <input type="password" class="form-control" autocomplete="new-password" v-model.lazy="form.ConfirmPassword" @blur="v$.form.ConfirmPassword.$touch">
                     <span class="text-danger small font-weight-bold" v-for="error of v$.form.ConfirmPassword.$errors">{{ error.$message }}</span>
                 </div>
             </div>
@@ -51,18 +51,18 @@
     import { getFormData } from '../js/common.js';
     import axios from 'axios';
     import useVuelidate from '@vuelidate/core';
-    import { required, email, helpers, sameAs } from '@vuelidate/validators';
+    import { required, helpers, sameAs } from '@vuelidate/validators';
     const { withAsync } = helpers;
 
     const usernameFormat = helpers.regex(/^[._()-\/#&$@+\w\s]{3,30}$/)
     const passwordFormat = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[._()-\/#&$@+\w\s]{8,30}$/)
 
-    const asyncUsernameNotExists = async (value) => {
-        if (value === '') return true;
+    const asyncUsernameNotExists = async (value) => {  
+        if(value === '') { return true; };            
 
         return await axios.get('../SpeedRun/UsernameNotExists', { params: { username: value } })
             .then(res => {
-                return res.data;
+                return Promise.resolve(res.data);
             })
             .catch(err => { console.error(err); return Promise.reject(err); });
     }
@@ -82,7 +82,8 @@
                     Password: '',
                     ConfirmPassword: ''
                 },
-                errorMessages: []
+                errorMessages: [],
+                showSignUpModal: false
             }
         },
         computed: {
@@ -107,7 +108,7 @@
                         }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            }
+            }          
         },
         validations() {
             return {

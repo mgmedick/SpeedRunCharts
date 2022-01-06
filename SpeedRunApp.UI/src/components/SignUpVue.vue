@@ -8,8 +8,8 @@
             </div>
             <div class="form-group row no-gutters">
                 <label class="col-sm-3 col-form-label">Email</label>
-                <div class="col-sm-auto">
-                    <input type="text" name="Email" class="form-control" autocomplete="off" v-model.lazy="form.Email" @blur="v$.form.Email.$touch">
+                <div class="col">
+                    <input type="text" name="Email" class="form-control" autocomplete="off" v-model.lazy="form.Email" @blur="v$.form.Email.$touch" style="width:100%;">
                     <span class="text-danger small font-weight-bold" v-for="error of v$.form.Email.$errors">{{ error.$message }}</span>
                 </div>
             </div>

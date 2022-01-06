@@ -5,9 +5,17 @@
 }
 
 
-/*    ::v-deep .vue-dropdown {
-        width: 100%;
-    }*/
+@media (min-width: 992px) {
+[data-v-2aa5b692] .vue-select {
+            min-width: 400px !important;
+            margin-right: 8px;
+}
+[data-v-2aa5b692] .vue-dropdown {
+            min-width: 400px !important;
+            max-width: 500px;
+            width: auto !important;
+}
+}
 
 
 .image-container {
@@ -39,6 +47,13 @@
 .bronze {
         color: #b08d57;
 }
+
+
+@media (max-width: 575px) {
+.category[data-v-172982f6] {
+            font-size: 10px !important;
+}
+}    
 
 
 .tab-list .nav {

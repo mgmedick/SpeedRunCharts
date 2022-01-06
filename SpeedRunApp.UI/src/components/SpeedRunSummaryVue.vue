@@ -15,7 +15,7 @@
                     </div>
                     <div class="col-auto pl-2 align-self-end">
                         &middot;
-                        <small class="text-secondary pl-1">{{ item.relativeVerifyDateStringShort }}</small>
+                        <small class="text-secondary px-1">{{ item.relativeVerifyDateStringShort }}</small>
                     </div>
                     <div class="col-auto ml-auto p-0 align-self-start">
                         <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>
@@ -58,7 +58,7 @@
                     <div class="col-auto nowrap-elipsis pl-2 pr-0 align-self-end" style="max-width:60%;">
                         <a :href="'../Game/GameDetails?gameID=' + item.game.id" class="text-primary" style="font-size:14px;">{{ item.game.name }}</a>
                     </div>
-                    <div class="col-auto pl-2 align-self-end">
+                    <div class="col-auto px-1 align-self-end">
                         &middot;
                         <small class="text-secondary pl-1">{{ item.relativeVerifyDateStringShort }}</small>
                     </div>

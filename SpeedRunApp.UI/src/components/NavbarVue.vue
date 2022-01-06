@@ -148,9 +148,18 @@
     };
 </script>
 <style scoped>
-/*    ::v-deep .vue-dropdown {
-        width: 100%;
-    }*/
+    @media (min-width: 992px) {
+        ::v-deep .vue-select {
+            min-width: 400px !important;
+            margin-right: 8px;
+        }
+
+        ::v-deep .vue-dropdown {
+            min-width: 400px !important;
+            max-width: 500px;
+            width: auto !important;
+        }
+    }
 </style>
 
 

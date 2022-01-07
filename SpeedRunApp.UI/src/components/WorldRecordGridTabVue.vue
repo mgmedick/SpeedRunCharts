@@ -224,6 +224,7 @@
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
                     var moreItems = rows[g].querySelectorAll('a.dropdown-item');
                     var morebtn =  rows[g].querySelector('.more');
+                    var moredrp = morebtn.querySelector('.dropdown-menu');
 
                     for (var i = 0; i < tabitems.length; i++) {
                         tabitems[i].style.left = "-10000px";

@@ -3,7 +3,7 @@
         <div>
             <div class="mx-auto p-2" style="max-width:598px; margin-bottom:20px;">
                 <div class="btn-group btn-group-toggle pr-2">
-                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:12px;" v-tippy="item.description">
+                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:13px;" v-tippy="item.description">
                         <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @click="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName }}
                     </label>
                 </div>
@@ -86,7 +86,7 @@
 <style scoped>
     @media (max-width: 575px) {
         .category {
-            font-size: 10px !important;
+            font-size: 11px !important;
         }
     }    
 </style>

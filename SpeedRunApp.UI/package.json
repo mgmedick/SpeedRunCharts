@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@vuelidate/core": "^2.0.0-alpha.22",
-    "@vuelidate/validators": "^2.0.0-alpha.19",
+    "@vuelidate/core": "^2.0.0-alpha.33",
+    "@vuelidate/validators": "^2.0.0-alpha.26",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "core-js": "^3.16.0",

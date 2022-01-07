@@ -80,7 +80,24 @@
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
-} 
+}
+
+/*    @media (min-width: 576px) {
+        ::v-deep .vue-select {
+            min-width: 400px !important;
+            margin-right: 8px;
+        }
+
+        ::v-deep .vue-dropdown {
+            min-width: 400px !important;
+            max-width: 500px;
+            width: auto !important;
+        }
+
+        ::v-deep .dropdown-menu {
+            max-width:
+        }
+    }*/
 
 
 .fusioncharts-container>svg>g:nth-of-type(2){

@@ -3,7 +3,7 @@
         <button class="btn dropdown-toggle" :class="btnclasses" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ref="btn">
             <slot name="text"></slot>
         </button>
-        <div class="dropdown-menu" :class="[state ? 'show' : '', listclasses]" aria-labelledby="dropdownMenuButton" ref="list">
+        <div class="dropdown-menu" :class="[listclasses]" aria-labelledby="dropdownMenuButton" ref="list" :style="[ state ? { display:'block' } : { display:'none' } ] ">
             <slot name="options"></slot>
         </div>
     </div>

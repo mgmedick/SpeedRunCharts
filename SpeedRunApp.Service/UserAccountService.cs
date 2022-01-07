@@ -63,6 +63,17 @@ namespace SpeedRunApp.Service
             return activateUserAcctVM;
         }
 
+        public async Task SendConfirmRegistrationEmail(string email, string username)
+        {
+            var confirmRegistration = new
+            {
+                Username = username,
+                SupportEmail = _config.GetSection("SiteSettings").GetSection("FromEmail").Value
+            };
+
+            await _emailService.SendEmailTemplate(email, "Thanks for registering at speedruncharts.com", Template.ConfirmRegistration.ToString(), confirmRegistration);
+        }
+
         public async Task SendResetPasswordEmail(string username)
         {
             var userAcct = _userAcctRepo.GetUserAccounts(i => i.Username == username).FirstOrDefault();

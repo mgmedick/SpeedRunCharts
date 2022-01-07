@@ -219,6 +219,7 @@ namespace SpeedRunApp.MVC.Controllers
                     _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
                     var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
                     LoginUserAccount(userAcct);
+                    _ = _userAcctService.SendConfirmRegistrationEmail(userAcct.Email, userAcct.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
                 }
                 else

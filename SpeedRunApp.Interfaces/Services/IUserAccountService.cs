@@ -22,5 +22,6 @@ namespace SpeedRunApp.Interfaces.Services
         bool UsernameExists(string username, bool activeFilter);
         UserAccountViewModel GetUserAccount(int userID);
         void SaveUserAccount(UserAccountViewModel userAcctVM, int currUserAcctID);
+        Task SendConfirmRegistrationEmail(string email, string username);
     }
 }

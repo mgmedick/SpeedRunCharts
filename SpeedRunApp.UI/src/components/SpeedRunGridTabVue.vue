@@ -365,6 +365,7 @@
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
                     var morebtn =  rows[g].querySelector('.more');
                     var moreItems = morebtn.querySelectorAll('a.dropdown-item');
+                    var moredrp = morebtn.querySelector('.dropdown-menu');
 
                     for (var i = 0; i < tabitems.length; i++) {
                         tabitems[i].style.left = "-10000px";
@@ -380,8 +381,32 @@
                     }
 
                     morebtn.style.display = morebtn.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
+
+                    var ww = document.documentElement.clientWidth;
+                    var pos = this.getPosition(morebtn);
+                    if (pos.x > (ww / 2)) {
+                        moredrp.classList.remove('dropdown-menu-left');
+                        moredrp.classList.add('dropdown-menu-right');
+                    } else {
+                        moredrp.classList.remove('dropdown-menu-right');
+                        moredrp.classList.add('dropdown-menu-left');
+                    }
                }
-            }                                   
+            },
+            getPosition: function (element) {
+                var xPosition = 0;
+                var yPosition = 0;
+
+                while (element) {
+                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+                    element = element.offsetParent;
+                }
+                return {
+                    x: xPosition,
+                    y: yPosition
+                };
+            }
         }
     };
 </script>
@@ -414,7 +439,24 @@
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
-    } 
+    }
+
+/*    @media (min-width: 576px) {
+        ::v-deep .vue-select {
+            min-width: 400px !important;
+            margin-right: 8px;
+        }
+
+        ::v-deep .vue-dropdown {
+            min-width: 400px !important;
+            max-width: 500px;
+            width: auto !important;
+        }
+
+        ::v-deep .dropdown-menu {
+            max-width:
+        }
+    }*/
 </style>
 
 

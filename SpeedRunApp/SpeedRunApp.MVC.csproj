@@ -32,11 +32,11 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Templates\" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Properties\launchSettings.json" />
+    <Content Remove="Templates\ConfirmRegistration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\SpeedRun\UserDetails.cshtml">
@@ -48,6 +48,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Templates\ConfirmRegistration.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Templates\ResetPasswordEmail.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

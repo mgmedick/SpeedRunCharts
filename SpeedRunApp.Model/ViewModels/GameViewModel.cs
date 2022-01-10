@@ -122,12 +122,18 @@ namespace SpeedRunApp.Model.ViewModels
                                                       Name = i.Split("|", 3)[2]
                                                   }).ToList();
 
-                    foreach(var variableValue in variable.VariableValues){
-                        variableValue.HasData = runVMs != null && runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
+                    if (variable.VariableValues != null)
+                    {
+                        foreach (var variableValue in variable.VariableValues)
+                        {
+                            variableValue.HasData = runVMs != null && runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
+                        }
                     }
 
                     Variables.Add(variable);
                 }
+
+                Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
                 SubCategoryVariables = GetAdjustedVariables(subVariables);

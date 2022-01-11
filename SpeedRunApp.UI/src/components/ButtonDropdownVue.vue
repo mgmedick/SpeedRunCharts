@@ -45,8 +45,8 @@
         }
     };
 </script>
-<style>
-    .dropdown-menu{
+<style scoped>
+    .dropdown-menu {
         overflow-y: auto;
         max-height: 300px;
     }

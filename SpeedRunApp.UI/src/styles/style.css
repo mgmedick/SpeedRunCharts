@@ -291,7 +291,7 @@ div.chart-placeholder + div.chart-placeholder {
 }
 
 /** vue-final-modal **/
-::v-deep .modal-container {
+:deep(.modal-container) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -302,7 +302,7 @@ div.chart-placeholder + div.chart-placeholder {
     overflow-y: auto;
 }
 
-::v-deep .modal-content {
+:deep(.modal-content) {
     position: relative;
     display: flex;
     flex-direction: column;

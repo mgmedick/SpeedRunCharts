@@ -1,16 +1,16 @@
 
-.dropdown-menu{
+.dropdown-menu[data-v-56d48be8] {
         overflow-y: auto;
         max-height: 300px;
 }
 
 
 @media (min-width: 992px) {
-[data-v-2aa5b692] .vue-select {
+[data-v-ed4b5058] .vue-select {
             min-width: 400px !important;
             margin-right: 8px;
 }
-[data-v-2aa5b692] .vue-dropdown {
+[data-v-ed4b5058] .vue-dropdown {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;
@@ -56,48 +56,39 @@
 }    
 
 
-.tab-list .nav {
+[data-v-1a45a9be] .tab-list .nav {
         /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
 }
-.tab-list .nav-link {
+[data-v-1a45a9be] .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
 }
-.tab-list .dropdown .btn.dropdown-toggle {
+[data-v-1a45a9be] .tab-list .nav-link.active {
+        background-color: var(--primary) !important;
+}
+[data-v-1a45a9be] .tab-list .dropdown .btn.dropdown-toggle {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
         border: none !important;
         padding: 0.5rem !important;
 }
-.tab-list .dropdown .btn.dropdown-toggle.active {
+[data-v-1a45a9be] .tab-list .dropdown .btn.dropdown-toggle.active {
         background-color: var(--primary) !important;
 }
-.tab-row-name {
+[data-v-1a45a9be] .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
 }
-
-/*    @media (min-width: 576px) {
-        ::v-deep .vue-select {
-            min-width: 400px !important;
-            margin-right: 8px;
-        }
-
-        ::v-deep .vue-dropdown {
-            min-width: 400px !important;
-            max-width: 500px;
-            width: auto !important;
-        }
-
-        ::v-deep .dropdown-menu {
-            max-width:
-        }
-    }*/
+@media (max-width: 575px) {
+[data-v-1a45a9be] .tab-list .dropdown .dropdown-menu {
+            max-width: 200px;
+}
+}
 
 
 .fusioncharts-container>svg>g:nth-of-type(2){
@@ -105,28 +96,37 @@
 }
 
 
-.tab-list .nav {
+[data-v-2ac13716] .tab-list .nav {
+        /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
 }
-.tab-list .nav-link {
+[data-v-2ac13716] .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
 }
-.tab-list .dropdown .btn.dropdown-toggle {
+[data-v-2ac13716] .tab-list .nav-link.active {
+        background-color: var(--primary) !important;
+}
+[data-v-2ac13716] .tab-list .dropdown .btn.dropdown-toggle {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
         border: none !important;
         padding: 0.5rem !important;
 }
-.tab-list .dropdown .btn.dropdown-toggle.active {
+[data-v-2ac13716] .tab-list .dropdown .btn.dropdown-toggle.active {
         background-color: var(--primary) !important;
 }
-.tab-row-name {
+[data-v-2ac13716] .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
-}  
+}
+@media (max-width: 575px) {
+[data-v-2ac13716] .tab-list .dropdown .dropdown-menu {
+            max-width: 200px;
+}
+}
 

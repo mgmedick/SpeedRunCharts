@@ -79,22 +79,31 @@ namespace SpeedRunCommon.Extensions
         #region TimeSpan
         public static string ToShortString(this TimeSpan Ts)
         {
+            var result = string.Empty;
+
             if (Ts.TotalDays > 1d)
-                return Ts.ToString("d'd 'h'h 'm'm 's's'");
+            {
+                result = Ts.ToString("d'd 'h'h 'm'm 's's'");
+            }
+            else if (Ts.TotalHours > 1d)
+            {
+                result = Ts.ToString("h'h 'm'm 's's'");
+            }
+            else if (Ts.TotalMinutes > 1d)
+            {
+                result = Ts.ToString("m'm 's's'");
+            }
+            else if (Ts.TotalSeconds > 1d)
+            {
+                result = Ts.ToString("s's'");
+            }
 
-            if (Ts.TotalHours > 1d)
-                return Ts.ToString("h'h 'm'm 's's'");
+            if (Ts.Milliseconds > 0d)
+            {
+                result = (string.Format("{0} {1}ms", result, Ts.Milliseconds).Trim());
+            }
 
-            if (Ts.TotalMinutes > 1d)
-                return Ts.ToString("m'm 's's'");
-
-            if (Ts.TotalSeconds > 1d)
-                return Ts.ToString("s's'");
-
-            if (Ts.TotalMilliseconds > 1d)
-                return Ts.ToString("fff'ms'");
-
-            return Ts.ToString();
+            return result;
         }
         #endregion
     }

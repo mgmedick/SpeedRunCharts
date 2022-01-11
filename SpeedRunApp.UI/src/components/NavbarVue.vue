@@ -149,12 +149,12 @@
 </script>
 <style scoped>
     @media (min-width: 992px) {
-        ::v-deep .vue-select {
+        :deep(.vue-select) {
             min-width: 400px !important;
             margin-right: 8px;
         }
 
-        ::v-deep .vue-dropdown {
+        :deep(.vue-dropdown) {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;

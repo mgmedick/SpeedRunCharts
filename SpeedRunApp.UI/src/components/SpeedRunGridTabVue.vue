@@ -410,20 +410,24 @@
         }
     };
 </script>
-<style>
-    .tab-list .nav {
+<style scoped>
+    :deep(.tab-list .nav) {
         /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
     }
 
-    .tab-list .nav-link {
+    :deep(.tab-list .nav-link) {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
     }
 
-    .tab-list .dropdown .btn.dropdown-toggle {
+    :deep(.tab-list .nav-link.active) {
+        background-color: var(--primary) !important;
+    }
+
+    :deep(.tab-list .dropdown .btn.dropdown-toggle) {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
@@ -431,33 +435,25 @@
         padding: 0.5rem !important;
     }
 
-    .tab-list .dropdown .btn.dropdown-toggle.active {
+    :deep(.tab-list .dropdown .btn.dropdown-toggle.active) {
         background-color: var(--primary) !important;
     }
 
-    .tab-row-name {
+    :deep(.tab-row-name) {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
     }
 
-/*    @media (min-width: 576px) {
-        ::v-deep .vue-select {
-            min-width: 400px !important;
-            margin-right: 8px;
+    @media (max-width: 575px) {
+        :deep(.tab-list .dropdown .dropdown-menu) {
+            max-width: 200px;
         }
-
-        ::v-deep .vue-dropdown {
-            min-width: 400px !important;
-            max-width: 500px;
-            width: auto !important;
-        }
-
-        ::v-deep .dropdown-menu {
-            max-width:
-        }
-    }*/
+    }
 </style>
+
+
+
 
 
 

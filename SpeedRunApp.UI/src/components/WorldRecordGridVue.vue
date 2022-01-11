@@ -48,6 +48,11 @@
                 showAllData: false
             }
         },
+        computed: {
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
+            }
+        },            
         created: function () {
             this.loadData();
         },
@@ -73,8 +78,8 @@
 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
-                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75, visible: that.userid }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 125, widthGrow: 1 }, //minWidth:125
+                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75 }, //minWidth:40, maxWidth:75
+                    { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135, widthGrow: 1 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
@@ -101,7 +106,7 @@
                                                         .flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1)
                                                         .map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 100, widthGrow: 1 },)
+                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150, widthGrow: 1 },)
                     columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
                 });
 
@@ -121,7 +126,8 @@
                     tooltipsHeader:false,
                     pagination: "local",
                     paginationSize: 10,
-                    movableColumns: true,
+                    movableColumns: this.isMediaMedium,
+                    resizableColumns: this.isMediaMedium ? "header" : false,
                     //resizableRows: true,
                     initialSort: sortList,
                     columns: columns,

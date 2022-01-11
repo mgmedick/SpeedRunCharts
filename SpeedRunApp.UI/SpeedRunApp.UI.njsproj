@@ -59,6 +59,7 @@
     <Content Include="src\fonts\banner1.svg" />
     <Content Include="src\fonts\banner2.svg" />
     <Content Include="src\fonts\banner3.svg" />
+    <Content Include="src\fonts\bar-chart.svg" />    
     <Content Include="src\fonts\pie-chart.svg" />
     <Content Include="src\fonts\SpaceInvader.svg" />
     <Content Include="src\fonts\SplitsLogo.svg" />

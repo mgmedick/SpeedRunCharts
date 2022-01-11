@@ -62,6 +62,11 @@
                 showAllData: false
             }
         },
+        computed: {
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
+            }
+        },        
         created: function () {
             this.loadData();
         },
@@ -89,7 +94,7 @@
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2 }, //, minWidth:30, maxWidth:50
                     { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:125, widthGrow:2 }, //minWidth:125
+                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
                     { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
@@ -122,7 +127,7 @@
                 var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )
 
                 distinctVariables?.forEach(variable => { 
-                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 },)
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:150, widthGrow:1 },)
                 });
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
@@ -135,8 +140,9 @@
                     tooltipsHeader:false,
                     pagination: "local",
                     paginationSize: 20,
-                    movableColumns: true,
-                    //resizableRows: true,
+                    movableColumns: this.isMediaMedium,
+                    resizableColumns: this.isMediaMedium ? "header" : false,
+                    //resizableRows: false,
                     initialSort: [             //set the initial sort order of the data
                         { column: "primaryTime.ticks", dir: "asc" },
                     ],

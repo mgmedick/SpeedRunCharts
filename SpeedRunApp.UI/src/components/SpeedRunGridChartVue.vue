@@ -3,10 +3,10 @@
         <div class="card-header" id="headingOne">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link font-weight-bold" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;Hide Charts</a>
+                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Charts</a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link font-weight-bold" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right"></i>&nbsp;&nbsp;Show Charts</a>
+                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Show Charts</a>
                 </div>
             </h5>
         </div>

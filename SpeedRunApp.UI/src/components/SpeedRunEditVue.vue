@@ -20,7 +20,7 @@
                                 allowfullscreen="true"></iframe>
                     </div>
                 </div>
-            </div>        
+            </div>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Game</label>
                 <div class="col-sm-10">
@@ -58,7 +58,7 @@
                         <vue-next-select v-model="guestids" :options="item.guests" label-by="name" value-by="id" :disabled="readonly" multiple taggable></vue-next-select>
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Emulated</label>
                 <div class="col-sm-10">
@@ -100,6 +100,22 @@
                     </select>
                 </div>
             </div>
+            <div class="form-group row no-gutters mb-2" v-for="(variable, variableIndex) in item.variables.filter(i => i.categoryID == item.speedRunVM.category.id && i.levelID == item.speedRunVM.level?.id)">
+                <label class="col-sm-2 col-form-label">{{ variable.name }}</label>
+                <div class="col-sm-10">
+                    <select :id="drpVariable + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
+                        <option v-for="variableValue in variable.variableValues" :value="variableValue.id">{{ variableValue.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <!--<div class="form-group row no-gutters mb-2" v-for="(variable, variableIndex) in item.variables.filter(i => !i.isSubCategory == item.speedRunVM.category.id)">
+                <label class="col-sm-2 col-form-label">{{ variable.name }}</label>
+                <div class="col-sm-10">
+                    <select :id="drpVariable + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
+                        <option v-for="variableValue in variable.variableValues" :value="variableValue.id">{{ variableValue.name }}</option>
+                    </select>
+                </div>
+            </div>-->
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Times</label>
                 <div class="col-sm-auto pl-0">

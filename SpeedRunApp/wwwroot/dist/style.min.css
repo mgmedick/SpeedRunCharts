@@ -3493,6 +3493,10 @@ div.chart-placeholder + div.chart-placeholder {
     overflow-y: auto;
 }
 
+.vue-tags[data-disabled="true"] {
+    color: #888 !important;
+}
+
 .vue-tag.selected {
     padding: 2px 5px;
     font-size: 12px;

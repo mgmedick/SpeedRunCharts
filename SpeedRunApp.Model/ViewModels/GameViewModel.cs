@@ -22,7 +22,7 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     var values = categoryType.Split("|", 2);
                     var categoryTypeTab = new TabItem() { ID = Convert.ToInt32(values[0]), Name = values[1] };
-                    categoryTypeTab.HasData = runVMs != null && runVMs.Any(i => i.CategoryTypeID == categoryTypeTab.ID);
+                    categoryTypeTab.HasData = runVMs == null || runVMs.Any(i => i.CategoryTypeID == categoryTypeTab.ID);
                     CategoryTypes.Add(categoryTypeTab);
                 }
             }
@@ -50,7 +50,7 @@ namespace SpeedRunApp.Model.ViewModels
                         CategoryTypeID = Convert.ToInt32((string)values[1]),
                         Name = values[2]
                     };
-                    category.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == category.ID);
+                    category.HasData = runVMs == null || runVMs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
                 }
             }
@@ -85,7 +85,7 @@ namespace SpeedRunApp.Model.ViewModels
                             ID = level.ID,
                             Name = level.Name,
                             CategoryID = levelCategory.ID,
-                            HasData = runVMs != null && runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
+                            HasData = runVMs == null || runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
                         };
                         LevelTabs.Add(levelTab);
                     }
@@ -126,7 +126,7 @@ namespace SpeedRunApp.Model.ViewModels
                     {
                         foreach (var variableValue in variable.VariableValues)
                         {
-                            variableValue.HasData = runVMs != null && runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
+                            variableValue.HasData = runVMs == null || runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
                         }
                     }
 
@@ -303,11 +303,11 @@ namespace SpeedRunApp.Model.ViewModels
 
                 foreach (var variableValue in variable.VariableValues)
                 {
-                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
+                    variableValue.HasData = runVMs == null || (runVMs.Any(i => i.CategoryID == variable.CategoryID
                                         && i.LevelID == variable.LevelID
-                                        && i.VariableValues != null                                  
+                                        && i.VariableValues != null
                                         && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ID.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
-                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())); ;
+                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())));
                     
                     if (!variableValue.HasData) {
                         variableValue.Name += " (empty)";

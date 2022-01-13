@@ -35,11 +35,14 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                VariableValues = new List<Tuple<string, string>>();
+                VariableValues = new Dictionary<string, string>();
                 foreach (var value in run.VariableValues.Split(","))
                 {
                     var variableValue = value.Split("|", 2);
-                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    if (!VariableValues.ContainsKey(variableValue[0]))
+                    {
+                        VariableValues.Add(variableValue[0], variableValue[1]);
+                    }
                 }
             }
 
@@ -112,7 +115,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; }
         public IDNamePair Platform { get; set; }
-        public List<Tuple<string, string>> VariableValues { get; set; }
+        public Dictionary<string, string> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<IDNamePair> Guests { get; set; } 
         public List<string> VideoLinks { get; set; }

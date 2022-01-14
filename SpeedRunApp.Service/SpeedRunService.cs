@@ -68,7 +68,7 @@ namespace SpeedRunApp.Service
                 runVM = new SpeedRunViewModel(run);
             }
 
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, runVM.Players, runVM.Guests, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, runVM);
+            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, runVM.Players, runVM.Guests, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, gameVM.SubCategoryVariables, runVM);
 
             return editSpeedRunVM;
         }

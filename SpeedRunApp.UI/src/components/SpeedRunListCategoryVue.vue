@@ -22,7 +22,7 @@
         data: function () {
             return {
                 items: [],
-                categoryid: 0
+                categoryid: 5
             }
         },
         computed: {

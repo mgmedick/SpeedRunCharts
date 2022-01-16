@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Serilog;
 using Microsoft.AspNetCore.Authorization;
+using System.Xml;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -339,6 +341,36 @@ namespace SpeedRunApp.MVC.Controllers
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
+        }
+
+        [Route("/sitemap.xml")]
+        public void SitemapXml()
+        {
+            string host = Request.Scheme + "://" + Request.Host;
+
+            Response.ContentType = "application/xml";
+
+            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+            if (syncIOFeature != null)
+            {
+                syncIOFeature.AllowSynchronousIO = true;
+            }
+
+            using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
+            {
+                xml.WriteStartDocument();
+                xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+                xml.WriteStartElement("url");
+                xml.WriteElementString("loc", host);
+                xml.WriteEndElement();
+
+                xml.WriteStartElement("url");
+                xml.WriteElementString("loc", Url.Action("About", "Menu"));
+                xml.WriteEndElement();
+
+                xml.WriteEndElement();
+            }
         }
 
         //jqvalidate

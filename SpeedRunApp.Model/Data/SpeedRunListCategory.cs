@@ -11,5 +11,6 @@ namespace SpeedRunApp.Model.Data
         public string DisplayName { get; set; }
         public string Description { get; set; }
         public bool IsDefault { get; set; }
+        public int? DefaultSortOrder { get; set; }
     }
 } 

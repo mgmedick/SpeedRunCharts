@@ -22,7 +22,7 @@
         data: function () {
             return {
                 items: [],
-                categoryid: 0
+                categoryid: 5
             }
         },
         computed: {
@@ -60,11 +60,14 @@
                         iconClass = 'fa fa-award';
                         break;
                     case 3:
-                        iconClass = 'fa fa-fire';
+                        iconClass = 'fa fa-cubes';
                         break;
                     case 4:
                         iconClass = 'fa fa-star';
                         break;
+                    case 5:
+                        iconClass = 'fa fa-fire';
+                        break;                        
                 }
 
                 iconClass += " fa-sm";

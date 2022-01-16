@@ -366,7 +366,7 @@ namespace SpeedRunApp.MVC.Controllers
                 xml.WriteEndElement();
 
                 xml.WriteStartElement("url");
-                xml.WriteElementString("loc", Url.Action("About", "Menu"));
+                xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
                 xml.WriteEndElement();
 
                 xml.WriteEndElement();

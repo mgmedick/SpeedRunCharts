@@ -22,7 +22,7 @@
         data: function () {
             return {
                 items: [],
-                categoryid: 5
+                categoryid: 0
             }
         },
         computed: {
@@ -41,6 +41,7 @@
                 axios.get('../SpeedRun/GetSpeedRunListCategories')
                     .then(res => {
                         that.items = res.data;
+                        that.categoryid = res.data[0].id;
                         that.loading = false;
                         return res;
                     })

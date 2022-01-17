@@ -2,23 +2,36 @@
     <div class="container ml-0">
         <h4>What is it?</h4>
         <div class="pl-3">
-            This site focuses on trends and analysis of the data from <a href="https://www.speedrun.com/">speedrun.com</a>. It’s designed to have a discoverable front end (like reddit) with more analysis features as the user drills in. The idea is to be more browsable for casual fans of speed running, as well as offer analysis features.
+            This site focuses on trends and analysis of the data from <a href="https://www.speedrun.com/">speedrun.com</a>. It’s designed to have a discoverable front end (like reddit) with more analysis features as the user drills in. The idea is to be more browsable for casual fans of speed running and off more analysis features.
+        </div>
+    </div>
+    <div class="container pt-3">
+        <h4>What data are you importing from speedrun.com?</h4>
+        <div class="pl-3">
+            We import all Game data that we can from the API. We only import verified Runs and Users with verified runs.
         </div>
     </div>
     <div class="container pt-3">
         <h4>How frequently is the data updated?</h4>
         <div class="pl-3">
-            The speedruns are updated every 5 mins via the speedrun.com API. The Games are updated weekly to keep up with changes.
+            We use 3 steps to keep the site up to date:
+            <ul>
+                <li>Every 15 mins import newly verified runs (based on verified date)</li>
+                <li>Every night update all Games that changed (categories, levels, variables, etc) and re-import all verified runs for those games</li>
+                <li>Every quarter re-import of all data. Unfortunately this is needed because our data can go stagnant (ex. run is deleted and no changes are made to the game, so our nightly process doesn't pick it up'</li>
+            </ul>
         </div>
     </div>
     <div class="container pt-3">
         <h4>Any future plans?</h4>
         <div class="pl-3">
-            The site is made by just me so far, so time permitting looking to implement some of the following:
+            Time permitting looking to implement some of the following:
             <ul>
-                <li>Implement user login and offer additional features for users with accounts</li>
-                <li>Look into allowing users to submit speedruns from this site to speedrun.comli>
-                <li>Make the site more mobile friendly as well as more analysis features</li>
+                <li>Add more category feeds to front page</li>
+                <li>Add more analysis features</li>
+                <li>Add ability to link speedruncharts.com user to speedrun.com user</li>
+                <li>Add ability to import to speedrun.com API, potentially support bulk import from spreadsheet</li>
+                <li>Add css light mode</li>
             </ul>
         </div>
     </div>

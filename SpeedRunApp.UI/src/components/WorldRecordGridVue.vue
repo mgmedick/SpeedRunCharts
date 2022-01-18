@@ -106,7 +106,7 @@
                                                         .flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1)
                                                         .map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150, widthGrow: 1 },)
+                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
                     columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
                 });
 

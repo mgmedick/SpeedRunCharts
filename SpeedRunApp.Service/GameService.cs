@@ -23,7 +23,7 @@ namespace SpeedRunApp.Service
         public GameViewModel GetGame(int gameID)
         {
             var game = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var gameVM = new GameViewModel(game);
+            var gameVM = game != null ? new GameViewModel(game) : null;
 
             return gameVM;
         }
@@ -71,8 +71,8 @@ namespace SpeedRunApp.Service
 
         private void FilterTabsByHasData(List<GameViewModel> tabItems, bool hasData) {
             foreach (var tabItem in tabItems) {
-                tabItem.CategoryTypes = tabItem.CategoryTypes.Where(i => i.HasData == hasData).ToList();
-                tabItem.Categories = tabItem.Categories.Where(i => i.HasData == hasData).ToList();
+                tabItem.CategoryTypes = tabItem.CategoryTypes?.Where(i => i.HasData == hasData).ToList();
+                tabItem.Categories = tabItem.Categories?.Where(i => i.HasData == hasData).ToList();
                 tabItem.LevelTabs = tabItem.LevelTabs?.Where(i => i.HasData == hasData).ToList();
 
                 if(tabItem.SubCategoryVariablesTabs != null && tabItem.SubCategoryVariablesTabs.Any())

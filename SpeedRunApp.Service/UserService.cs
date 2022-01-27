@@ -25,7 +25,7 @@ namespace SpeedRunApp.Service
         public UserViewModel GetUser(int userID)
         {
             var user = _userRepo.GetUserViews(i => i.ID == userID).FirstOrDefault();
-            var userVM = new UserViewModel(user);
+            var userVM = user != null ? new UserViewModel(user) : null;
 
             return userVM;
         }

@@ -25,18 +25,18 @@ namespace SpeedRunApp.Model.ViewModels
                     categoryTypeTab.HasData = runVMs == null || runVMs.Any(i => i.CategoryTypeID == categoryTypeTab.ID);
                     CategoryTypes.Add(categoryTypeTab);
                 }
-            }
 
-            var categoryTypeIDsToRemove = new List<int>();
-            foreach (var categoryType in CategoryTypes)
-            {
-                if (!categoryType.HasData)
+                var categoryTypeIDsToRemove = new List<int>();
+                foreach (var categoryType in CategoryTypes)
                 {
-                    categoryTypeIDsToRemove.Add(categoryType.ID);
+                    if (!categoryType.HasData)
+                    {
+                        categoryTypeIDsToRemove.Add(categoryType.ID);
+                    }
                 }
-            }
 
-            CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
+                CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
+            }
 
             if (!string.IsNullOrWhiteSpace(game.Categories))
             {
@@ -53,14 +53,16 @@ namespace SpeedRunApp.Model.ViewModels
                     category.HasData = runVMs == null || runVMs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
                 }
-            }
 
-            foreach(var category in Categories){
-                if (!category.HasData) {
-                    category.Name += " (empty)";
+                foreach (var category in Categories)
+                {
+                    if (!category.HasData)
+                    {
+                        category.Name += " (empty)";
+                    }
                 }
-            }            
-
+            }
+            
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
                 Levels = new List<IDNamePair>();

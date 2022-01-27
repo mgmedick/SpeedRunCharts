@@ -1,57 +1,69 @@
 ﻿@model SpeedRunApp.Model.ViewModels.UserViewModel
 
 <div class="container p-0">
-    <div class="container d-flex p-0">
-        <div class="col-auto p-0 align-self-end">
-            <h5 class="m-0 font-weight-bold">@Model.Name</h5>
+    @if (Model == null)
+    {
+        <div class="container mx-auto p-0" style="max-width:500px;">
+            <div style="text-align:center;">
+                <i class="fa fa-search fa-lg"></i>
+                <div><span>User not found, please search for the user by name and try again</span></div>
+            </div>
         </div>
-        <div class="col-sm-2 pl-1 align-self-end">
-            <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-            <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-            <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+    }
+    else
+    {
+         <div class="container d-flex p-0">
+            <div class="col-auto p-0 align-self-end">
+                <h5 class="m-0 font-weight-bold">@Model.Name</h5>
+            </div>
+            <div class="col-sm-2 pl-1 align-self-end">
+                <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+                <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+                <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+            </div>
         </div>
-    </div>
-    <div class="ml-lg-3">
-        <div class="container ml-0 p-0 mt-4">
-            <h5 class="font-weight-bold mb-1">Details</h5>
-            <div class="row no-gutters">
-                <div class="col-sm-auto pl-0">
-                    <table class="table-responsive">
-                        <thead>
-                            <tr>
-                                <th class="font-weight-normal pr-2" style="font-size:14px;">Total Runs</th>
-                                <th class="font-weight-normal px-2" style="font-size:14px;">World Records</th>
-                                <th class="font-weight-normal px-2" style="font-size:14px;">Personal Bests</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="pr-2">
-                                    <span id="spnTotalSpeedRuns" class="form-control" style="width:100px;">@Model.TotalSpeedRuns</span>
-                                </td>
-                                <td class="px-2">
-                                    <span id="spnTotalWorldRecords" class="form-control" style="width:100px;">@Model.TotalWorldRecords</span>
-                                </td>
-                                <td class="px-2">
-                                    <span id="spnTotalPersonalBests" class="form-control" style="width:100px;">@Model.TotalPersonalBests</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div>
+            <div class="container ml-0 p-0 mt-4">
+                <h5 class="font-weight-bold mb-1">Details</h5>
+                <div class="row no-gutters">
+                    <div class="col-sm-auto pl-0">
+                        <table class="table-responsive">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-normal pr-2" style="font-size:14px;">Total Runs</th>
+                                    <th class="font-weight-normal px-2" style="font-size:14px;">World Records</th>
+                                    <th class="font-weight-normal px-2" style="font-size:14px;">Personal Bests</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="pr-2">
+                                        <span id="spnTotalSpeedRuns" class="form-control" style="width:100px;">@Model.TotalSpeedRuns</span>
+                                    </td>
+                                    <td class="px-2">
+                                        <span id="spnTotalWorldRecords" class="form-control" style="width:100px;">@Model.TotalWorldRecords</span>
+                                    </td>
+                                    <td class="px-2">
+                                        <span id="spnTotalPersonalBests" class="form-control" style="width:100px;">@Model.TotalPersonalBests</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container-fluid p-0 mt-4">
-            <div class="row no-gutters">
-                <h5 class="font-weight-bold mb-1">Personal Bests</h5><div v-tippy="'Filter Rank to 1st to see World Records'" class="pl-1"><i class="fa fa-info-circle pl-1"></i></div>
+            <div class="container-fluid p-0 mt-4">
+                <div class="row no-gutters">
+                    <h5 class="font-weight-bold mb-1">Personal Bests</h5><div v-tippy="'Filter Rank to 1st to see World Records'" class="pl-1"><i class="fa fa-info-circle pl-1"></i></div>
+                </div>
+                <worldrecord-grid-tab :isgame="false" :id="'@Model.ID'"></worldrecord-grid-tab>
             </div>
-            <worldrecord-grid-tab :isgame="false" :id="'@Model.ID'"></worldrecord-grid-tab>
+            <div class="container-fluid p-0 mt-4">
+                <h5 class="font-weight-bold mb-1">Runs</h5>
+                <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
+            </div>
         </div>
-        <div class="container-fluid p-0 mt-4">
-            <h5 class="font-weight-bold mb-1">Runs</h5>
-            <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
-        </div>
-    </div>
+    }
 </div>
 
 

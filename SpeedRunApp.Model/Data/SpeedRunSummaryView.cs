@@ -15,9 +15,7 @@ namespace SpeedRunApp.Model.Data
         public int? LevelID { get; set; }
         public string LevelName { get; set; }
         public string SubCategoryVariableValues { get; set; }
-        public string SubCategoryVariableValueNames { get; set; }
         public string Players { get; set; }
-        public string PlayerIDs { get; set; }
         public string VideoLinks { get; set; }
         public string EmbeddedVideoLinks { get; set; }
         public string VideoThumbnailLinks { get; set; }

@@ -22,16 +22,13 @@ namespace SpeedRunApp.Model.ViewModels
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
                 SubCategoryVariableValues = new List<Tuple<string, string>>();
+                SubCategoryVariableValueNames = new List<string>();
                 foreach (var value in run.SubCategoryVariableValues.Split(","))
                 {
-                    var variableValue = value.Split("|", 2);
+                    var variableValue = value.Split("|", 3);
                     SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    SubCategoryVariableValueNames.Add(variableValue[2]);
                 }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValueNames))
-            {
-                SubCategoryVariableValueNames = run.SubCategoryVariableValueNames.Split(",").ToList();
             }
 
             if (!string.IsNullOrWhiteSpace(run.Players))
@@ -45,38 +42,24 @@ namespace SpeedRunApp.Model.ViewModels
                     Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
                 }
             }
-            
-            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
-            {
-                VideoLinks = new List<string>();               
-                foreach (var videoLink in run.VideoLinks.Split(","))
-                {
-                    VideoLinks.Add(videoLink.Replace("&amp;", "&"));
-                }
-            }
 
             if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
             {
-               EmbeddedVideoLinks = new List<string>();
-               foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
-               {
-                   if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
-                   {
-                       EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
-                   }                    
-               }
-            }
+                EmbeddedVideoLinks = new List<string>();
+                VideoThumbnailLinks = new List<string>();
+                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
+                {
+                    var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 2);
+                    if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[0]))
+                    {
+                        EmbeddedVideoLinks.Add(embeddedVideoLinkValue[0].Replace("&amp;", "&"));
 
-            if (!string.IsNullOrWhiteSpace(run.VideoThumbnailLinks))
-            {
-               VideoThumbnailLinks = new List<string>();
-               foreach (var videoThumbnailLink in run.VideoThumbnailLinks.Split(","))
-               {
-                   if (!string.IsNullOrWhiteSpace(videoThumbnailLink))
-                   {
-                       VideoThumbnailLinks.Add(videoThumbnailLink.Replace("&amp;", "&"));
-                   }                    
-               }
+                        if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[1]))
+                        {
+                            VideoThumbnailLinks.Add(embeddedVideoLinkValue[1].Replace("&amp;", "&"));
+                        }
+                    }                    
+                }
             }
 
             if (run.PrimaryTime.HasValue)
@@ -93,7 +76,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
         public List<IDNamePair> Players { get; set; }
-        public List<string> VideoLinks { get; set; }
+        //public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public List<string> VideoThumbnailLinks { get; set; }        
         public int? Rank { get; set; }

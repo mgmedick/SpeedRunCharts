@@ -66,19 +66,19 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID @0, @1, @2, @3, @4, @5", gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID @0, @1, @2, @3, @4", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int categoryID, int? levelID, int userID)
+        public IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryID, int? levelID, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3, @4", gameID, categoryTypeID, categoryID, levelID, userID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3", gameID, categoryID, levelID, userID).ToList();
             }
         }
 

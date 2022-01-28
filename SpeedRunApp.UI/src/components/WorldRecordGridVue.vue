@@ -64,7 +64,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })
+                axios.get('../SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data);

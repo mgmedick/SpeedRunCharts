@@ -12,12 +12,8 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             GameID = run.GameID;
-            GameName = run.GameName;
-            CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
-            CategoryName = run.CategoryName;
             LevelID = run.LevelID;
-            LevelName = run.LevelName;
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
@@ -34,16 +30,9 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             GameID = run.GameID;
-            GameName = run.GameName;
-            CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
-            CategoryName = run.CategoryName;
             LevelID = run.LevelID;
-            LevelName = run.LevelName;
-            //SpeedRunComLink = run.SpeedRunComUrl;
-            //SplitsLink = run.SplitsUrl;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
-            //SubCategoryVariableValues = run.SubCategoryVariableValues;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
@@ -111,21 +100,15 @@ namespace SpeedRunApp.Model.ViewModels
 
         public int ID { get; set; }
         public int GameID { get; set; }
-        public string GameName { get; set; }
-        public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
         public int? LevelID { get; set; }
-        public string LevelName { get; set; }
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        //public string SubCategoryVariableValues { get; set; }
         public List<IDNamePair> Variables { get; set; }
         public Dictionary<int, IDNamePair> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
-        public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public string Comment { get; set; }
@@ -155,14 +138,6 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return VerifyDate?.ToRealtiveDateString();
-            }
-        }
-
-        public string IsEmulatedString
-        {
-            get
-            {
-                return IsEmulated.ToString();
             }
         }
 

@@ -15,6 +15,17 @@ namespace SpeedRunApp.Model.ViewModels
             CoverImageUri = game.CoverImageUrl;
             SpeedRunComLink = game.SpeedRunComUrl;
 
+            if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
+            {
+                CategoryTypes = new List<TabItem>();
+                foreach (var categoryType in game.CategoryTypes.Split("^^"))
+                {
+                    var values = categoryType.Split("|", 2);
+                    var categoryTypeTab = new TabItem() { ID = Convert.ToInt32(values[0]), Name = values[1] };
+                    CategoryTypes.Add(categoryTypeTab);
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(game.Categories))
             {
                 Categories = new List<Category>();
@@ -39,21 +50,13 @@ namespace SpeedRunApp.Model.ViewModels
                     }
                 }             
             }
-                        
-            if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
-            {
-                CategoryTypes = new List<TabItem>();
-                foreach (var categoryType in game.CategoryTypes.Split("^^"))
-                {
-                    var values = categoryType.Split("|", 2);
-                    var categoryTypeTab = new TabItem() { ID = Convert.ToInt32(values[0]), Name = values[1] };
-                    categoryTypeTab.HasData = Categories.Any(i => i.CategoryTypeID == categoryTypeTab.ID && i.HasData);
-                    CategoryTypes.Add(categoryTypeTab);
-                }
 
+            if (CategoryTypes != null) {
                 var categoryTypeIDsToRemove = new List<int>();
                 foreach (var categoryType in CategoryTypes)
                 {
+                    categoryType.HasData = Categories.Any(i => i.CategoryTypeID == categoryType.ID && i.HasData);
+                    
                     if (!categoryType.HasData)
                     {
                         categoryTypeIDsToRemove.Add(categoryType.ID);
@@ -62,7 +65,7 @@ namespace SpeedRunApp.Model.ViewModels
 
                 CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
             }
-            
+                                                
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
                 Levels = new List<IDNamePair>();

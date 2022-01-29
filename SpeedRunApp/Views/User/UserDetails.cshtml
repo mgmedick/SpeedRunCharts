@@ -52,16 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid p-0 mt-4">
-                <div class="row no-gutters">
-                    <h5 class="font-weight-bold mb-1">Personal Bests</h5><div v-tippy="'Filter Rank to 1st to see World Records'" class="pl-1"><i class="fa fa-info-circle pl-1"></i></div>
-                </div>
-                <worldrecord-grid-tab :isgame="false" :id="'@Model.ID'"></worldrecord-grid-tab>
-            </div>
-            <div class="container-fluid p-0 mt-4">
-                <h5 class="font-weight-bold mb-1">Runs</h5>
-                <speedrun-grid-tab :isgame="false" :id="'@Model.ID'"></speedrun-grid-tab>
-            </div>
+            <grid-tab-container :isgame="false" :id="'@Model.ID'"></grid-tab-container>
         </div>
     }
 </div>

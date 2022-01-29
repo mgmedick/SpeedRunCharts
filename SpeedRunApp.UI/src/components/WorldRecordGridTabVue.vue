@@ -269,47 +269,7 @@
         }
     };
 </script>
-<style scoped>
-    :deep(.tab-list .nav) {
-        /*overflow-y: hidden;*/
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-    }
 
-    :deep(.tab-list .nav-link) {
-        background-color: #313131;
-        font-size: 13px;
-        font-weight: bold;
-    }
-
-    :deep(.tab-list .nav-link.active) {
-        background-color: var(--primary) !important;
-    }
-
-    :deep(.tab-list .dropdown .btn.dropdown-toggle) {
-        background-color: #313131;
-        font-size: 13px;
-        font-weight: bold;
-        border: none !important;
-        padding: 0.5rem !important;
-    }
-
-    :deep(.tab-list .dropdown .btn.dropdown-toggle.active) {
-        background-color: var(--primary) !important;
-    }
-
-    :deep(.tab-row-name) {
-        font-size: 14px !important;
-        line-height: 18px;
-        font-weight: bold;
-    }
-
-    @media (max-width: 575px) {
-        :deep(.tab-list .dropdown .dropdown-menu) {
-            max-width: 200px;
-        }
-    }
-</style>
 
 
 

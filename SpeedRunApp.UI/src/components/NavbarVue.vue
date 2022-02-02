@@ -17,7 +17,7 @@
                         <a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedrun.com API</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
+                <form class="form-inline">
                     <vue-next-select v-model="searchSelected"
                                     :options="searchOptions"
                                     :loading="searchLoading"

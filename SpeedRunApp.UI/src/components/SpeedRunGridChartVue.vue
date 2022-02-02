@@ -450,8 +450,8 @@
         }
     }
 </script>
-<style>
-   .fusioncharts-container>svg>g:nth-of-type(2){
+<style scoped>
+   :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
         display:none !important;
     }
 </style>

@@ -25,11 +25,6 @@
                 categoryid: 0
             }
         },
-        computed: {
-            isMediaMedium: function () {
-                return window.innerWidth > 768;
-            }
-        },
         created() {
             this.loadData();
         },
@@ -72,11 +67,6 @@
                 }
 
                 iconClass += " fa-sm";
-                // if (this.isMediaMedium) {
-                //     iconClass += " fa-lg";
-                // } else {
-                //     iconClass += " fa-sm";
-                // }
 
                 return iconClass;
             },

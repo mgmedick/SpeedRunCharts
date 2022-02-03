@@ -103,7 +103,8 @@
                 });
                 
                 var variables = that.variables?.filter(i => tableData.filter(el => el[i.name]).length > 0);
-                variables?.forEach(variable => {                             
+                var distinctVariables = [...new Set(variables.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
+                distinctVariables?.forEach(variable => {                             
                     var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.name + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
                     columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
@@ -114,7 +115,7 @@
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 });
 
                 var sortList = [];
-                variables?.slice().reverse().forEach(variable => {
+                distinctVariables?.slice().reverse().forEach(variable => {
                     sortList.push({ column: variable.id + 'sort', dir: "asc" })
                 });
 

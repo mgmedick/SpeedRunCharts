@@ -44,23 +44,17 @@ namespace SpeedRunApp.Model.ViewModels
                 PlatformName = run.PlatformName;
             }
 
-            if (!string.IsNullOrWhiteSpace(run.Variables))
-            {
-                Variables = new List<IDNamePair>();
-                foreach (var variable in run.Variables.Split("^^"))
-                {
-                    var values = variable.Split("|", 2);
-                    Variables.Add(new IDNamePair { ID = Convert.ToInt32(values[0]), Name = values[1] });
-                }
-            }
-
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
+                Variables = new List<IDNamePair>();
                 VariableValues = new Dictionary<int, IDNamePair>();
                 foreach (var variableValue in run.VariableValues.Split("^^"))
                 {
-                    var values = variableValue.Split("|", 3);
-                    VariableValues.Add(Convert.ToInt32(values[0]), new IDNamePair { ID = Convert.ToInt32(values[1]), Name = values[2]});
+                    var values = variableValue.Split("¦", 2);
+                    var variableString= values[0].Split("|");
+                    var variableValueString = values[1].Split("|");
+                    Variables.Add(new IDNamePair { ID = Convert.ToInt32(variableString[0]), Name = variableString[1] });
+                    VariableValues.Add(Convert.ToInt32(variableString[0]), new IDNamePair { ID = Convert.ToInt32(variableValueString[0]), Name = variableValueString[1]});
                 }
             }
 

@@ -71,7 +71,7 @@
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                             <div v-if="categoryID == category.id">
                                 <div v-if="categoryTypeID == 0">
-                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="userID"></worldrecord-grid>
+                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="userID" :variables="game.variables"></worldrecord-grid>
                                 </div>
                                 <div v-else>
                                     <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -95,7 +95,7 @@
                                     </div>
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">                                            
-                                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="userID"></worldrecord-grid>
+                                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="userID" :variables="game.variables"></worldrecord-grid>
                                         </div>
                                     </div>                                                                        
                                 </div>                            

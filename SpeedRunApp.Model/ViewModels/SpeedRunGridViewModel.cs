@@ -17,11 +17,11 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                VariableValues = new Dictionary<int, IDNamePair>();
-                foreach (var variableValue in run.VariableValues.Split("^^"))
+                VariableValues = new Dictionary<int, int>();
+                foreach (var variableValue in run.VariableValues.Split(","))
                 {
-                    var values = variableValue.Split("|", 3);
-                    VariableValues.Add(Convert.ToInt32(values[0]), new IDNamePair { ID = Convert.ToInt32(values[1]), Name = values[2]});
+                    var values = variableValue.Split("|", 2);
+                    VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
                 }
             }            
         }
@@ -46,15 +46,11 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                Variables = new List<IDNamePair>();
-                VariableValues = new Dictionary<int, IDNamePair>();
-                foreach (var variableValue in run.VariableValues.Split("^^"))
+                VariableValues = new Dictionary<int, int>();
+                foreach (var variableValue in run.VariableValues.Split(","))
                 {
-                    var values = variableValue.Split("¦", 2);
-                    var variableString= values[0].Split("|");
-                    var variableValueString = values[1].Split("|");
-                    Variables.Add(new IDNamePair { ID = Convert.ToInt32(variableString[0]), Name = variableString[1] });
-                    VariableValues.Add(Convert.ToInt32(variableString[0]), new IDNamePair { ID = Convert.ToInt32(variableValueString[0]), Name = variableValueString[1]});
+                    var values = variableValue.Split("|", 2);
+                    VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
                 }
             }
 
@@ -99,8 +95,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public List<IDNamePair> Variables { get; set; }
-        public Dictionary<int, IDNamePair> VariableValues { get; set; }
+        public Dictionary<int, int> VariableValues { get; set; }
         public List<IDNamePair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }

@@ -131,7 +131,7 @@ namespace SpeedRunApp.Model.ViewModels
                     {
                         foreach (var variableValue in variable.VariableValues)
                         {
-                            variableValue.HasData = runVMs == null || runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value.ID == variableValue.ID));
+                            variableValue.HasData = runVMs == null || runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value == variableValue.ID));
                         }
                     }
 
@@ -311,8 +311,8 @@ namespace SpeedRunApp.Model.ViewModels
                     variableValue.HasData = runVMs == null || (runVMs.Any(i => i.CategoryID == variable.CategoryID
                                         && i.LevelID == variable.LevelID
                                         && i.VariableValues != null
-                                        && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ID.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
-                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ID.ToString() == variableValue.ID.ToString())));
+                                        && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
+                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ToString() == variableValue.ID.ToString())));
                     
                     if (!variableValue.HasData) {
                         variableValue.Name += " (empty)";

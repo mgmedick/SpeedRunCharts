@@ -50,7 +50,8 @@
             levelid: String,
             variablevalues: String,
             userid: String,
-            showcharts: Boolean
+            showcharts: Boolean,
+            variables: Array
         },
         data() {
             return {
@@ -104,29 +105,22 @@
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
 
-                //tableData.forEach(item => {
-                //    if (item.variableValues) {
-                //        Object.keys(item.variableValues).forEach(variableID => {
-                //            item[variableID] = item.variableValues[variableID].name;
-                //        })
-                //    }
-                //});
-
                 tableData.forEach(item => {
-                    if (item.subCategoryVariableValueIDs && item.variableValues) {
+                    if (item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
-                            if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) == -1) {
-                                //var variableName = item.variables.filter(x => x.id == variableID)[0].name;
-                                item[variableID] = item.variableValues[variableID].name;
+                            var variable = that.variables?.filter(x => x.id == variableID)[0];
+                            if (variable && !variable.isSubCategory) {
+                                var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
+                                if (variableValue) {
+                                    item[variableID] = variableValue.name;
+                                }
                             }
                         })
                     }
                 });
-
-                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.id]));
-                var distinctVariables = [ ...new Set( variables.map( obj => obj.id) ) ].map( id => { return variables.find(obj => obj.id === id) } )
-
-                distinctVariables?.forEach(variable => { 
+                                
+                var variables = that.variables?.filter(i => tableData.filter(el => el[i.id]).length > 0);
+                variables?.forEach(variable => { 
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
                 });
 

@@ -36,7 +36,8 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,
-            userid: String
+            userid: String,
+            variables: Array
         },
         data() {
             return {
@@ -87,24 +88,23 @@
                 ];
 
                 tableData.forEach(item => {
-                    if (item.subCategoryVariableValueIDs && item.variableValues) {
+                    if (item.variableValues) {
                         Object.keys(item.variableValues).forEach(variableID => {
-                            if (item.subCategoryVariableValueIDs.split(",").indexOf(item.variableValues[variableID].id.toString()) > -1) {
-                                var variableName = item.variables.filter(x => x.id == variableID)[0].name;
-                                item[variableName] = item.variableValues[variableID].name;
-                                item[variableName + 'sort'] = item.variableValues[variableID].id;
+                            var variable = that.variables?.filter(x => x.id == variableID)[0];
+                            if (variable && variable.isSubCategory) {
+                                var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
+                                if (variableValue) {
+                                    item[variable.name] = variableValue.name;
+                                    item[variable.name + 'sort'] = variableValue.id;
+                                }
                             }
                         })
                     }
                 });
-
-                var variables = tableData.filter(el => el.variables).flatMap(el => el.variables.filter(variable => el[variable.name]));
-                var distinctVariables = [...new Set(variables.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
-
-                distinctVariables?.forEach(variable => {
-                    var variableValuesSorted = tableData.filter(el => el.subCategoryVariableValueIDs && el.variableValues)
-                                                        .flatMap(el => Object.keys(el.variableValues).filter(variableID => variableID == variable.id.toString() && el.subCategoryVariableValueIDs.split(",").indexOf(el.variableValues[variableID].id.toString()) > -1)
-                                                        .map(x => el.variableValues[x])).sort((a, b) => { return a?.id - b?.id });
+                
+                var variables = that.variables?.filter(i => tableData.filter(el => el[i.name]).length > 0);
+                variables?.forEach(variable => {                             
+                    var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.name + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
                     columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
                     columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
@@ -114,7 +114,7 @@
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 });
 
                 var sortList = [];
-                distinctVariables?.slice().reverse().forEach(variable => {
+                variables?.slice().reverse().forEach(variable => {
                     sortList.push({ column: variable.id + 'sort', dir: "asc" })
                 });
 

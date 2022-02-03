@@ -101,9 +101,9 @@
                         })
                     }
                 });
-                
+
                 var variables = that.variables?.filter(i => tableData.filter(el => el[i.name]).length > 0);
-                var distinctVariables = [...new Set(variables.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
+                var distinctVariables = [...new Set(variables?.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
                 distinctVariables?.forEach(variable => {                             
                     var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.name + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];

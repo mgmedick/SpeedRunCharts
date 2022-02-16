@@ -14,12 +14,19 @@ namespace SpeedRunApp.MVC.Controllers
             _userService = userService;
         }
 
-        public ViewResult UserDetails(int userID)
+        public ViewResult UserDetails(string ID)
         {
-            var userVM = _userService.GetUser(userID);
+            var userVM = _userService.GetUser(ID);
 
             return View(userVM);
         }
+
+        //public ViewResult UserDetails(int userID)
+        //{
+        //    var userVM = _userService.GetUser(userID);
+
+        //    return View(userVM);
+        //}
 
         [HttpGet]
         public JsonResult SearchUsers(string term)

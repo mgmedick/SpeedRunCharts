@@ -18,25 +18,48 @@ namespace SpeedRunApp.MVC.Controllers
             _speedRunsService = speedRunsService;
         }
 
-        public ViewResult GameDetails(int gameID)
+        public ViewResult GameDetails(string ID)
         {
-            var gameVM = _gameService.GetGame(gameID);
+            var gameVM = _gameService.GetGame(ID);
 
             return View(gameVM);
         }
 
+        //public ViewResult GameDetails(int gameID)
+        //{
+        //    var gameVM = _gameService.GetGame(gameID);
+
+        //    return View(gameVM);
+        //}
+
         [HttpGet]
-        public JsonResult GetWorldRecordGridTabs(int ID, bool isGame)
+        public JsonResult GetWorldRecordGridTabsForUser(int userID)
         {
-           var gridVM = isGame ? _gameService.GetWorldRecordGridTabs(ID) : _gameService.GetSpeedRunGridTabsForUser(ID);
+            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID);
+
+            return Json(gridVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridTabs(int gameID)
+        {
+            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
 
            return Json(gridVM);
         }
-        
+
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int ID, bool isGame)
+        public JsonResult GetSpeedRunGridTabsForUser(int userID)
         {
-            var gridVM = isGame ? _gameService.GetSpeedRunGridTabs(ID) : _gameService.GetSpeedRunGridTabsForUser(ID);
+            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID);
+
+            return Json(gridVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetSpeedRunGridTabs(int gameID)
+        {
+            var gridVM = _gameService.GetSpeedRunGridTabs(gameID);
 
             return Json(gridVM);
         }

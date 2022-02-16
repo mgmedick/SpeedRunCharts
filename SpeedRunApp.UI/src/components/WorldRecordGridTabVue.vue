@@ -143,7 +143,8 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../Game/GetWorldRecordGridTabs', { params: { ID: this.id, isGame: this.isgame } })
+                var url = this.isgame ? '/Game/GetWorldRecordGridTabs?gameID=' + this.id : '/Game/GetWorldRecordGridTabsForUser?userID=' + this.id;
+                var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
                                     //that.gameID = res.data.gameID;

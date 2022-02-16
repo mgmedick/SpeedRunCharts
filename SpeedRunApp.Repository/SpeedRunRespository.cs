@@ -18,7 +18,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunSummaryView>("EXEC dbo.GetLatestSpeedRuns @0, @1, @2", category, topAmount, orderValueOffset).ToList();
+                return db.Query<SpeedRunSummaryView>("EXEC dbo.GetLatestSpeedRuns2 @0, @1, @2", category, topAmount, orderValueOffset).ToList();
             }
         }
 
@@ -70,7 +70,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID @0, @1, @2, @3, @4", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetSpeedRunsByUserID2 @0, @1, @2, @3, @4", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
             }
         }
 
@@ -78,7 +78,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3", gameID, categoryID, levelID, userID).ToList();
+                return db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID2 @0, @1, @2, @3", gameID, categoryID, levelID, userID).ToList();
             }
         }
 

@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Abbr { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }
         public string SpeedRunComUrl { get; set; }

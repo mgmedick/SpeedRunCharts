@@ -11,13 +11,23 @@ namespace SpeedRunApp.Service
 {
     public class GamesService : IGameService
     {
-        private readonly IGameRepository _gameRepo = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
+        private readonly IGameRepository _gameRepo = null;
+        private readonly ICacheService _cacheService = null;
 
-        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
+            _cacheService = cacheService;
+        }
+
+        public GameViewModel GetGame(string gameAbbr)
+        {
+            var game = _gameRepo.GetGameViews(i => i.Abbr == gameAbbr).FirstOrDefault();
+            var gameVM = game != null ? new GameViewModel(game) : null;
+
+            return gameVM;
         }
 
         public GameViewModel GetGame(int gameID)

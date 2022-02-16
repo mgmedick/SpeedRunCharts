@@ -9,6 +9,8 @@ using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Interfaces.Repositories;
 using System.Threading.Tasks;
 using SpeedRunApp.Model.Data;
+using SpeedRunApp.Model;
+using System.Linq.Expressions;
 
 namespace SpeedRunApp.Service
 {
@@ -16,11 +18,13 @@ namespace SpeedRunApp.Service
     {
         public IMemoryCache _cache { get; set; }
         public IUserRepository _userRepo { get; set; }
+        public IGameRepository _gameRepo { get; set; }
 
-        public CacheService(IMemoryCache cache, IUserRepository userRepo)
+        public CacheService(IMemoryCache cache, IUserRepository userRepo, IGameRepository gameRepo)
         {
             _cache = cache;
             _userRepo = userRepo;
+            _gameRepo = gameRepo;
         }
 
         public IEnumerable<User> GetUsers()
@@ -33,6 +37,30 @@ namespace SpeedRunApp.Service
             }
 
             return users;
+        }
+
+        public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()
+        {
+            IEnumerable<IDNameAbbrPair> gameIDNameAbbrs = null;
+            if (!_cache.TryGetValue<IEnumerable<IDNameAbbrPair>>("gameIDNameAbbrs", out gameIDNameAbbrs))
+            {
+                gameIDNameAbbrs = _gameRepo.GetGameIDNameAbbrs();
+                _cache.Set("gameIDNameAbbrs", gameIDNameAbbrs);
+            }
+
+            return gameIDNameAbbrs;
+        }
+
+        public IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs()
+        {
+            IEnumerable<IDNameAbbrPair> userIDNameAbbrs = null;
+            if (!_cache.TryGetValue<IEnumerable<IDNameAbbrPair>>("userIDNameAbbrs", out userIDNameAbbrs))
+            {
+                userIDNameAbbrs = _userRepo.GetUserIDNameAbbrs();
+                _cache.Set("userIDNameAbbrs", userIDNameAbbrs);
+            }
+
+            return userIDNameAbbrs;
         }
     }
 }

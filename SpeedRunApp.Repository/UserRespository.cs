@@ -26,7 +26,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_User tu WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+                return db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_User tu WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
             }
         }
 
@@ -35,6 +35,14 @@ namespace SpeedRunApp.Repository
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 return db.Query<User>().Where(predicate ?? (x => true)).ToList();
+            }
+        }
+
+        public IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs()
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<IDNameAbbrPair>("SELECT ID, [Name], [Abbr] FROM dbo.tbl_User WITH (NOLOCK)").ToList();
             }
         }
     }

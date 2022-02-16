@@ -26,7 +26,15 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
+                return db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
+            }
+        }
+
+        public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<IDNameAbbrPair>("SELECT ID, [Name], [Abbr] FROM dbo.tbl_Game WITH (NOLOCK)").ToList();
             }
         }
     }

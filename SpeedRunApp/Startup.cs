@@ -84,7 +84,7 @@ namespace SpeedRunApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}");
+                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}/{id?}");
             });
         }
     }

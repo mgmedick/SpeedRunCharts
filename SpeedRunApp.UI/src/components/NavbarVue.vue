@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="../">
+            <a class="navbar-brand" href="/">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
                 SpeedRunCharts
             </a>
@@ -41,7 +41,7 @@
                             </span>
                         </template>
                         <template v-slot:options>
-                            <a :href="'../UserAccount/UserAccountDetails?userID=' + userid" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="../UserAccount/UserAccountDetails" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
                             <a href="/SpeedRun/Logout" class="dropdown-item text-secondary"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
@@ -135,14 +135,12 @@
                 if (option.category == 'Games') {
                     controller = "Game";
                     action = "GameDetails"
-                    params = "gameID=" + option.value;
                 } else {
                     controller = "User";
                     action = "UserDetails"
-                    params = "userID=" + option.value;
                 } 
 
-                location.href = encodeURI('../' + controller + "/" + action + "?" + params);
+                location.href = encodeURI('../' + controller + "/" + action + "/" + option.value);
             }
         }
     };

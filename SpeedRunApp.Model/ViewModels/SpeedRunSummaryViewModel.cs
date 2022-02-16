@@ -12,7 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunSummaryViewModel(SpeedRunSummaryView run)
         {
             ID = run.ID;
-            Game = new IDNamePair { ID = run.GameID, Name = run.GameName };
+            Game = new IDNameAbbrPair { ID = run.GameID, Name = run.GameName, Abbr = run.GameAbbr };
             GameCoverImageLink = run.GameCoverImageUrl;
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
@@ -33,13 +33,13 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.Players))
             {
-                Players = new List<IDNamePair>();
+                Players = new List<IDNameAbbrPair>();
                 foreach (var player in run.Players.Split("^^"))
                 {
-                    var playerValue = player.Split("|", 2);
+                    var playerValue = player.Split("¦", 3);
                     int playerID;
                     int.TryParse(playerValue[0], out playerID);
-                    Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
+                    Players.Add(new IDNameAbbrPair { ID = playerID, Name = playerValue[1], Abbr = playerValue[2] });
                 }
             }
 
@@ -69,13 +69,13 @@ namespace SpeedRunApp.Model.ViewModels
         }
 
         public int ID { get; set; }
-        public IDNamePair Game { get; set; }
+        public IDNameAbbrPair Game { get; set; }
         public string GameCoverImageLink { get; set; }
         public IDNamePair Level { get; set; }
         public IDNamePair Category { get; set; }
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
-        public List<IDNamePair> Players { get; set; }
+        public List<IDNameAbbrPair> Players { get; set; }
         //public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public List<string> VideoThumbnailLinks { get; set; }        

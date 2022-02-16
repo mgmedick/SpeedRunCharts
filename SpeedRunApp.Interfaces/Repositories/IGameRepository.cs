@@ -10,6 +10,7 @@ namespace SpeedRunApp.Interfaces.Repositories
     {
         IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate);
         IEnumerable<SearchResult> SearchGames(string searchText);
+        IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs();
     }
 }
 

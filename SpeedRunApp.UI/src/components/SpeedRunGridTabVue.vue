@@ -185,7 +185,8 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../Game/GetSpeedRunGridTabs', { params: { ID: this.id, isGame: this.isgame } })
+                var url = this.isgame ? '/Game/GetSpeedRunGridTabs?gameID=' + this.id : '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id;
+                var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
                                     that.gameID = res.data.gameID;

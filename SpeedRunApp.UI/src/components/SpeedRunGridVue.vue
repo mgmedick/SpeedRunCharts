@@ -79,7 +79,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
                         var data = that.userid ? res.data : res.data.filter(x => x.rank);
@@ -194,7 +194,7 @@
 
                 value?.forEach(el => {
                     if (el.id > 0) {
-                        html += "<a href='../User/UserDetails?userID=" + el.id + "'>" + el.name + "</a><br/>";
+                        html += "<a href='/User/UserDetails/" + el.abbr + "'>" + el.name + "</a><br/>";
                     } else {
                         html += el.name;
                     }          

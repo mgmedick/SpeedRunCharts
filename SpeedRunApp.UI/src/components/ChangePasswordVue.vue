@@ -57,7 +57,7 @@
     const asyncPasswordNotMatches = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('../SpeedRun/PasswordNotMatches', { params: { password: value } })
+        return await axios.get('/SpeedRun/PasswordNotMatches', { params: { password: value } })
             .then(res => {
                 return res.data;
             })

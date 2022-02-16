@@ -6,11 +6,11 @@
 
 
 @media (min-width: 992px) {
-[data-v-5d0003b0] .vue-select {
+[data-v-ccf102b0] .vue-select {
             min-width: 400px !important;
             margin-right: 8px;
 }
-[data-v-5d0003b0] .vue-dropdown {
+[data-v-ccf102b0] .vue-dropdown {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;
@@ -18,63 +18,63 @@
 }
 
 
-.image-container[data-v-e2dc3690] {
+.image-container[data-v-4b0ca178] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-e2dc3690]{
+.image-container img[data-v-4b0ca178]{
         width: 90px;
 }
-.image-container .play-icon[data-v-e2dc3690]{
+.image-container .play-icon[data-v-4b0ca178]{
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-e2dc3690] {
+.nowrap-elipsis[data-v-4b0ca178] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-e2dc3690] {
+.gold[data-v-4b0ca178] {
         color: gold;
 }
-.silver[data-v-e2dc3690] {
+.silver[data-v-4b0ca178] {
         color: silver;
 }
-.bronze[data-v-e2dc3690] {
+.bronze[data-v-4b0ca178] {
         color: #b08d57;
 }
 @media (max-width: 768px) {
-.btn[data-v-e2dc3690] {
+.btn[data-v-4b0ca178] {
             font-size:11px;
             padding:4px 6px;
 }
-.game-title[data-v-e2dc3690] {
+.game-title[data-v-4b0ca178] {
             font-size: 14px;
             padding-left: 8px !important;
 }
-.show-md[data-v-e2dc3690] {
+.show-md[data-v-4b0ca178] {
             display: none;
 }
-.show-sm[data-v-e2dc3690] {
+.show-sm[data-v-4b0ca178] {
             display: block;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-e2dc3690] {
+.show-md[data-v-4b0ca178] {
             display: block;
 }
-.show-sm[data-v-e2dc3690] {
+.show-sm[data-v-4b0ca178] {
             display: none;
 }
 }    
 
 
 @media (max-width: 575px) {
-.category[data-v-0ef55fc5] {
+.category[data-v-fe69e676] {
             font-size: 11px !important;
 }
 }    

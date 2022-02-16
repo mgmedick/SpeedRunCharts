@@ -56,7 +56,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../UserAccount/UserAccountSettings', { params: { userID: this.userid } })
+                var prms = axios.get('/UserAccount/UserAccountSettings', { params: { userID: this.userid } })
                     .then(res => {
                         that.item = res.data;
                         that.feedids = res.data.feedIDs;

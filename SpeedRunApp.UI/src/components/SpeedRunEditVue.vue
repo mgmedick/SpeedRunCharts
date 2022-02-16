@@ -203,7 +203,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../SpeedRun/GetEditSpeedRun', { params: { gameID: this.gameid, speedRunID: this.speedrunid } })
+                var prms = axios.get('/SpeedRun/GetEditSpeedRun', { params: { gameID: this.gameid, speedRunID: this.speedrunid } })
                     .then(res => {
                         that.item = res.data;
                         that.loading = false;

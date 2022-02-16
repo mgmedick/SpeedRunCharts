@@ -60,7 +60,7 @@
     const asyncUsernameNotExists = async (value) => {  
         if(value === '') { return true; };            
 
-        return await axios.get('../SpeedRun/UsernameNotExists', { params: { username: value } })
+        return await axios.get('/SpeedRun/UsernameNotExists', { params: { username: value } })
             .then(res => {
                 return Promise.resolve(res.data);
             })

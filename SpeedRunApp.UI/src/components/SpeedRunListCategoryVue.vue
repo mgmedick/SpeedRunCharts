@@ -33,7 +33,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetSpeedRunListCategories')
+                axios.get('/SpeedRun/GetSpeedRunListCategories')
                     .then(res => {
                         that.items = res.data;
                         that.categoryid = res.data[0].id;

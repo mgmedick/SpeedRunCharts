@@ -55,7 +55,7 @@
     const asyncEmailNotExists = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('../SpeedRun/EmailNotExists', { params: { email: value } })
+        return await axios.get('/SpeedRun/EmailNotExists', { params: { email: value } })
             .then(res => {
                 return res.data;
             })

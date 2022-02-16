@@ -39,7 +39,7 @@
     const asyncActiveUsernameExists = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('../SpeedRun/ActiveUsernameExists', { params: { username: value } })
+        return await axios.get('/SpeedRun/ActiveUsernameExists', { params: { username: value } })
             .then(res => {
                 return res.data;
             })

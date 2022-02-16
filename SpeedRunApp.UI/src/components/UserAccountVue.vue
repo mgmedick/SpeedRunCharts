@@ -75,7 +75,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('../UserAccount/GetUserAccount', { params: { userAccountID: this.useraccountid } })
+                var prms = axios.get('/UserAccount/GetUserAccount', { params: { userAccountID: this.useraccountid } })
                     .then(res => {
                         that.item = res.data;
                         that.loading = false;

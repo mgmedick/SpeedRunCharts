@@ -41,7 +41,7 @@
                             </span>
                         </template>
                         <template v-slot:options>
-                            <a href="../UserAccount/UserAccountDetails" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="/UserAccount/UserAccountDetails" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
                             <a href="/SpeedRun/Logout" class="dropdown-item text-secondary"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
@@ -109,7 +109,7 @@
                     var that = this;
                     this.searchLoading = true;
 
-                    axios.get('../Menu/Search', { params: { term: e.target.value } })
+                    axios.get('/Menu/Search', { params: { term: e.target.value } })
                         .then(res => {
                             that.searchOptions = res.data.reduce((flat, constructor) => {
                                 return flat
@@ -140,7 +140,7 @@
                     action = "UserDetails"
                 } 
 
-                location.href = encodeURI('../' + controller + "/" + action + "/" + option.value);
+                location.href = encodeURI('/' + controller + "/" + action + "/" + option.value);
             }
         }
     };

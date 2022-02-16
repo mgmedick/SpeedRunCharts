@@ -50,7 +50,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('../SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
+                axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
                     .then(res => {
                         that.items = that.items.concat(res.data);
                         that.loading = false;

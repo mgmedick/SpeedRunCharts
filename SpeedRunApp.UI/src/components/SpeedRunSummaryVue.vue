@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
+    <div class="speedRunSummaryContainer container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
         <div class="speedRunSummary bg-dark">
             <div class="container pt-2 px-2 pb-0 d-flex">
                 <div class="p-0 col-1">
@@ -167,7 +167,11 @@
 
         .show-sm {
             display: block;
-        }        
+        }
+
+        .speedRunSummaryContainer {
+            min-height: 124px;
+        }
     }
 
     @media (min-width: 768px) {
@@ -178,6 +182,10 @@
         .show-sm {
             display: none;
         }
+
+        .speedRunSummaryContainer {
+            min-height: 445px;
+        } 
     }    
 </style>
 

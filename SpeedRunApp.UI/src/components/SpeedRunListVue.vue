@@ -24,7 +24,7 @@
                 loading: true,
                 throttleTimer: null,
                 throttleDelay: 500,
-                topamt: 10,
+                topamt: 20,
                 offset: null
             }
         },
@@ -44,30 +44,48 @@
                 var offset = orderValues.length > 0 ? Math.min.apply(null, orderValues) : null;
 
                 this.offset = offset;
-                this.loadData();
+                return this.loadData();
             },
             loadData: function () {
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
+                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
                     .then(res => {
                         that.items = that.items.concat(res.data);
                         that.loading = false;
                         return res;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
+
+                return prms;
             },
             onWindowScroll: function () {
                 var that = this;
 
                 clearTimeout(this.throttleTimer);
                 this.throttleTimer = setTimeout(function () {
-                    if ((window.scrollY + window.innerHeight) > document.getElementsByTagName("body")[0].clientHeight - 200) {
+                    that.showHideElementsInView();
+                    if ((window.scrollY + window.innerHeight) > document.getElementsByTagName("body")[0].clientHeight - 1000) {
                         that.reLoadData();
                     }
                 }, this.throttleDelay);
-            }
+            },      
+            showHideElementsInView: function(){
+                var that = this;
+                
+                Array.from(document.querySelectorAll('.speedRunSummary')).forEach(el => {
+                    if (that.isElementOutViewport(el)){
+                        el.classList.add('d-none');
+                    } else {
+                        el.classList.remove('d-none');
+                    }                    
+                });   
+            },   
+            isElementOutViewport: function(el) {
+                var rect = el.getBoundingClientRect();
+                return rect.bottom < 0 || rect.top > window.innerHeight;
+            }      
         }
     };
 </script>

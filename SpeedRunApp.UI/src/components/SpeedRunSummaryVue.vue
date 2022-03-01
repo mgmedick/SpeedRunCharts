@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="container px-2 pb-2 pt-1 d-flex">
-                <div class="col-sm-11 p-0 align-self-center">
+                <div class="col-9 p-0 align-self-center">
                     <div class="text-secondary nowrap-elipsis show-md" style="font-size: 14px;">
                         <template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template>
                         <template v-for="(player, index) in item.players">
@@ -48,12 +48,12 @@
                         </template>
                     </div>                      
                 </div>
-                <div class="col-sm-1 ml-auto align-self-center p-0 show-sm image-container" @click="showVideoSm = !showVideoSm">
+                <div class="col-sm-3 ml-auto align-self-center p-0 show-sm image-container" @click="showVideoSm = !showVideoSm">
                     <img :src="item.videoThumbnailLink" />
                     <i class="play-icon fa fa-play"></i>
                 </div>                    
             </div>
-            <div class="body p-0 embed-responsive embed-responsive-16by9 show-md">
+            <div v-if="isMediaMedium" class="body p-0 embed-responsive embed-responsive-16by9 show-md">
                 <iframe :src="item.videoLink"
                         loading="lazy"
                         frameborder="0"
@@ -61,7 +61,7 @@
                         scrolling="no"
                         allowfullscreen="true"></iframe>
             </div>            
-            <div v-if="showVideoSm" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
+            <div v-else-if="showVideoSm" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
                 <iframe :src="item.videoLink"
                         loading="lazy"
                         frameborder="0"
@@ -92,6 +92,11 @@
                 showVideoSm: false
             }
         },
+        computed: {
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
+            }
+        },        
         methods: {
             getIconClass: function (rank) {
                 var iconClass = '';
@@ -168,10 +173,6 @@
         .show-sm {
             display: block;
         }
-
-        .speedRunSummaryContainer {
-            min-height: 124px;
-        }
     }
 
     @media (min-width: 768px) {
@@ -182,10 +183,6 @@
         .show-sm {
             display: none;
         }
-
-        .speedRunSummaryContainer {
-            min-height: 445px;
-        } 
     }    
 </style>
 

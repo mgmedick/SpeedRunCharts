@@ -62,30 +62,14 @@
             },
             onWindowScroll: function () {
                 var that = this;
-
+                
                 clearTimeout(this.throttleTimer);
                 this.throttleTimer = setTimeout(function () {
-                    that.showHideElementsInView();
-                    if ((window.scrollY + window.innerHeight) > document.getElementsByTagName("body")[0].clientHeight - 1000) {
+                    if (Math.ceil(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight) {  
                         that.reLoadData();
                     }
                 }, this.throttleDelay);
-            },      
-            showHideElementsInView: function(){
-                var that = this;
-                
-                Array.from(document.querySelectorAll('.speedRunSummary')).forEach(el => {
-                    if (that.isElementOutViewport(el)){
-                        el.classList.add('d-none');
-                    } else {
-                        el.classList.remove('d-none');
-                    }                    
-                });   
-            },   
-            isElementOutViewport: function(el) {
-                var rect = el.getBoundingClientRect();
-                return rect.bottom < 0 || rect.top > window.innerHeight;
-            }      
+            }   
         }
     };
 </script>

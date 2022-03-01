@@ -18,63 +18,57 @@
 }
 
 
-.image-container[data-v-5728614b] {
+.image-container[data-v-2945f5f8] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-5728614b]{
+.image-container img[data-v-2945f5f8]{
         width: 90px;
 }
-.image-container .play-icon[data-v-5728614b]{
+.image-container .play-icon[data-v-2945f5f8]{
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-5728614b] {
+.nowrap-elipsis[data-v-2945f5f8] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-5728614b] {
+.gold[data-v-2945f5f8] {
         color: gold;
 }
-.silver[data-v-5728614b] {
+.silver[data-v-2945f5f8] {
         color: silver;
 }
-.bronze[data-v-5728614b] {
+.bronze[data-v-2945f5f8] {
         color: #b08d57;
 }
 @media (max-width: 768px) {
-.btn[data-v-5728614b] {
+.btn[data-v-2945f5f8] {
             font-size:11px;
             padding:4px 6px;
 }
-.game-title[data-v-5728614b] {
+.game-title[data-v-2945f5f8] {
             font-size: 14px;
             padding-left: 8px !important;
 }
-.show-md[data-v-5728614b] {
+.show-md[data-v-2945f5f8] {
             display: none;
 }
-.show-sm[data-v-5728614b] {
+.show-sm[data-v-2945f5f8] {
             display: block;
-}
-.speedRunSummaryContainer[data-v-5728614b] {
-            min-height: 124px;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-5728614b] {
+.show-md[data-v-2945f5f8] {
             display: block;
 }
-.show-sm[data-v-5728614b] {
+.show-sm[data-v-2945f5f8] {
             display: none;
-}
-.speedRunSummaryContainer[data-v-5728614b] {
-            min-height: 445px;
 }
 }    
 

@@ -14,18 +14,23 @@ namespace SpeedRunApp.Model.ViewModels
             ID = run.ID;
             Game = new IDNameAbbrPair { ID = run.GameID, Name = run.GameName, Abbr = run.GameAbbr };
             GameCoverImageLink = run.GameCoverImageUrl;
+            CategoryType = new IDNamePair { ID = run.CategoryTypeID, Name = run.CategoryTypeName };
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
 
+            if(run.LevelID.HasValue) {
+                Level = new IDNamePair { ID = run.LevelID.Value, Name = run.LevelName };                            
+            }
+
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
                 SubCategoryVariableValues = new List<Tuple<string, string>>();
                 SubCategoryVariableValueNames = new List<string>();
-                foreach (var value in run.SubCategoryVariableValues.Split(","))
+                foreach (var value in run.SubCategoryVariableValues.Split("^^"))
                 {
-                    var variableValue = value.Split("|", 3);
+                    var variableValue = value.Split("¦", 3);
                     SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
                     SubCategoryVariableValueNames.Add(variableValue[2]);
                 }
@@ -71,8 +76,9 @@ namespace SpeedRunApp.Model.ViewModels
         public int ID { get; set; }
         public IDNameAbbrPair Game { get; set; }
         public string GameCoverImageLink { get; set; }
-        public IDNamePair Level { get; set; }
+        public IDNamePair CategoryType { get; set; }
         public IDNamePair Category { get; set; }
+        public IDNamePair Level { get; set; } 
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
         public List<IDNameAbbrPair> Players { get; set; }

@@ -41,6 +41,7 @@
                         </div>
                     </div>                            
                     <div class="py-1">
+                        <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.categoryType?.name }}</span>
                         <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.category?.name }}</span>
                         <span v-if="item.level?.name" class="pr-1"><span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.level?.name }}</span></span>
                         <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">

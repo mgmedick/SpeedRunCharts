@@ -63,7 +63,10 @@
                         break;
                     case 5:
                         iconClass = 'fa fa-fire';
-                        break;                        
+                        break;
+                    case 7:
+                        iconClass = 'fa fa-gamepad';
+                        break;                                                  
                 }
 
                 iconClass += " fa-sm";

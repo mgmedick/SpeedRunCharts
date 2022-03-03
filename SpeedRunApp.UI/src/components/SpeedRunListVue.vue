@@ -35,6 +35,7 @@
         watch: {
             categoryid: function (val, oldVal) {
                 this.items = [];
+                this.offset = null;
                 this.loadData();
             }
         },

@@ -45,8 +45,7 @@
                 var that = this;
                 FusionCharts.ready(function () {
                     if (that.isgame) {
-                        //var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerMonthChart('divChart1'));
-                        var gameWorldRecordChart = new FusionCharts(that.getGameWorldRecordChart('divChart1'));
+                        var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1'));
                         var gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
                         var gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
 
@@ -54,7 +53,7 @@
                         gameSpeedRunsPercentileChart.render();
                         gameTopSpeedRunChart.render();
                     } else {
-                        var userSpeedRunsByMonth = new FusionCharts(that.getFastestSpeedRunsPerDayChart('divChart1'));
+                        var userSpeedRunsByMonth = new FusionCharts(that.getPersonalPerDayChart('divChart1'));
                         var userSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
                         var userTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
 
@@ -64,7 +63,7 @@
                     }
                 });
             },
-            getGameWorldRecordChart(container) {
+            getWorldRecordPerDayChart(container) {
                 var that = this;
                 var categories = [];
                 var dataset = [];
@@ -83,10 +82,10 @@
                         _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
                                      .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                     }
-                    //filteredData = filteredData.slice(0, 15);
+                    filteredData = filteredData.slice(0, 20);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').add(1, "days").toDate();
+                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();
                     var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
                     //var minDate = moment(maxDate).add(-24, "months");
                     //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
@@ -98,11 +97,6 @@
                     var categoryObj = {};
 
                     filteredData.forEach(item => {
-                        // var monthYear = moment(item.dateSubmitted).format("MM/YYYY")
-
-                        // groupedObj[monthYear] = groupedObj[monthYear] || [];
-                        // groupedObj[monthYear].push(item.primaryTimeMilliseconds);
-                        
                         var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
                         var playerNames = chain(item.players).map(function (user) { return user.name }).value().join("{br}");
                         
@@ -116,19 +110,13 @@
                         for (var key in groupedObj) {
                             chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
-                            //var min = Math.min.apply(null, groupedObj[key].primaryTimeMilliseconds);
                             var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
-                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };
-
-                            //var min = Math.min.apply(null, groupedObj[key]);
-                            //chartDataObj[minKey][key] = groupedObj[key]                                                     
+                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
                         }
 
                         categoryObj["category"] = _timePeriods.map(item => {
                             var labelObj = {};
                             labelObj["label"] = item;
-                            //labelObj["showLabel"] = new Date(item).getDate() == 1 ? 1 : 0;
-                            //labelObj["showLabel"] = Object.keys(chartDataObj[minKey]).indexOf(item) > -1 ? 1 : 0;
                             return labelObj;
                         });
                         categories.push(categoryObj);
@@ -137,7 +125,6 @@
                             _timePeriods.forEach(timePeriod => {
                                 if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
                                     chartDataObj[key][timePeriod] = { value: null, tooltext: ' ' };
-                                    //chartDataObj[key][timePeriod] = null;
                                 }
                             })
                         }
@@ -146,12 +133,6 @@
                     for (var key in chartDataObj) {
                         var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext } }).value();
                         if (data.length > 0) {
-                            // data = data.sort((a, b) => {
-                            //     var monthyeara = a.category.split("/");
-                            //     var monthyearb = b.category.split("/");
-
-                            //     return new Date(monthyeara[1], monthyeara[0] - 1) - new Date(monthyearb[1], monthyearb[0] - 1)
-                            // });
                             data = data.sort((a, b) => {
                                 var monthdayyeara = a.category.split("/");
                                 var monthdayyearb = b.category.split("/");
@@ -159,54 +140,28 @@
                                 return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
                             });    
 
-                            //data = data.map(x => { return x.value ? x : { value: null } });
+                            //data = data.map(x => { return x.tooltext ? x : { category: x.category, value: x.value, anchorAlpha: "0", showToolTip: "0" } });
 
                             dataset.push({ seriesname: key, data: data });
                         }
                     }
-
-                    // for (var key in chartDataObj) {
-                    //     var data = chain(Object.entries(chartDataObj[key])).map(function (x) { 
-                    //         return { label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext, showLabel: x[1]?.showlabel };
-                    //     }).value();
-
-                    //     if (data.length > 0) {
-                    //         // data = data.sort((a, b) => {
-                    //         //     var monthyeara = a.category.split("/");
-                    //         //     var monthyearb = b.category.split("/");
-
-                    //         //     return new Date(monthyeara[1], monthyeara[0] - 1) - new Date(monthyearb[1], monthyearb[0] - 1)
-                    //         // });
-                    //         data = data.sort((a, b) => {
-                    //             var monthdayyeara = a.label.split("/");
-                    //             var monthdayyearb = b.label.split("/");
-
-                    //             return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
-                    //         });    
-
-                    //         data = data.map(x => { return x.showLabel != null ? x : { label: x.label, value: x.value, tooltext: x.tooltext } });
-
-                    //         //dataset.push({ seriesname: key, data: data });
-                    //     }
-                    // }
                 }
 
                 const chartConfig = {
-                    //type: "line",
                     type: "msline",
                     renderAt: container,
                     width: "100%",
-                    //height: "350",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'World Records',
-                            subCaption: '',
+                            caption: 'World Record Progression',
+                            subCaption: 'Per Day (Last 20 World Records)',
+                            subCaptionFontSize: 12,
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
                             // canvasPadding: 5, 
                             labelDisplay: "ROTATE",
-                            labelFontSize: 12,
+                            labelFontSize: 11,
                             //labelDisplay: "NONE",
                             showLabels: 1,
                             rotateLabels: 1,
@@ -214,8 +169,10 @@
                             //labelStep: 5,
                             showToolTip: 1,
                             lineThickness: 2,
-                            //plottooltext:"<div>$label:</div><hr class='demo'>Time: <b>$dataValue</b>",
-                            //plottooltext:"<span>$dataValue</span>",                                                        
+                            //anchorAlpha: "0",
+                            anchorRadius: "5",
+                            //plottooltext:null,
+                            //plottooltext:"$dataValue",                                                        
                             exportEnabled: 0,
                             showValues: 0,
                             formatNumberScale: 1,
@@ -228,7 +185,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 1,
+                            plotBinSize: 5,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: "#303030",
@@ -241,8 +198,9 @@
                 };
 
                 return chartConfig;
-            },                
-            getWorldRecordPerMonthChart(container) {
+            },
+            getPersonalPerDayChart(container) {
+                var that = this;
                 var categories = [];
                 var dataset = [];
 
@@ -260,131 +218,26 @@
                         _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
                                      .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                     }
+                    //filteredData = filteredData.slice(0, 20);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).toDate();
-                    var minDate = moment(Math.min.apply(null, dates)).toDate();
-
-                    var _timePeriods = getDateDiffList("month", minDate, maxDate).map(x => { return moment(x).format("MM/YYYY") });
-
-                    var groupedObj = {};
-                    var chartDataObj = {};
-                    var categoryObj = {};
-
-                    filteredData.forEach(item => {
-                        var monthYear = moment(item.dateSubmitted).format("MM/YYYY")
-
-                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join("{br}");
-                        groupedObj[monthYear] = groupedObj[monthYear] || [];
-                        groupedObj[monthYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                  
-                    });
-
-                    if (Object.keys(groupedObj).length > 0) {
-                        var minKey = 'Min Time';
-                        chartDataObj[minKey] = {};
-                        for (var key in groupedObj) {
-                            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
-
-                            var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
-                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };
-                        }
-
-                        categoryObj["category"] = _timePeriods.map(item => {
-                            var labelObj = {};
-                            labelObj["label"] = item
-                            return labelObj;
-                        });
-                        categories.push(categoryObj);
-
-                        for (var key in chartDataObj) {
-                            _timePeriods.forEach(timePeriod => {
-                                if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
-                                    chartDataObj[key][timePeriod] = { value: null, tooltext: ' ' };
-                                }
-                            })
-                        }
-                    }
-
-                    for (var key in chartDataObj) {
-                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext } }).value();
-                        if (data.length > 0) {
-                            data = data.sort((a, b) => {
-                                var monthyeara = a.category.split("/");
-                                var monthyearb = b.category.split("/");
-
-                                return new Date(monthyeara[1], monthyeara[0] - 1) - new Date(monthyearb[1], monthyearb[0] - 1)
-                            });
-
-                            dataset.push({ seriesname: key, data: data });
-                        }
-                    }
-                }
-
-                const chartConfig = {
-                    type: "msline",
-                    renderAt: container,
-                    width: "100%",
-                    dataFormat: "json",
-                    dataSource: {
-                        chart: {
-                            caption: 'World Record Progression',
-                            subCaption: 'Per Month',
-                            subcaptionFontSize: 12,
-                            xAxis: 'Date',
-                            yAxis: 'Time (Minutes)',
-                            labelDisplay: "rotate",
-                            labelFontSize: 12,
-                            exportEnabled: 0,
-                            showValues: 0,
-                            formatNumberScale: 1,
-                            numberOfDecimals: 0,
-                            useRoundEdges: 1,
-                            numberscalevalue: "1000,60,60",
-                            numberscaleunit: "s,m,h",
-                            defaultnumberscale: "ms",
-                            scalerecursively: "1",
-                            maxscalerecursion: "-1",
-                            scaleseparator: " ",
-                            connectNullData: 1,
-                            plotBinSize: 1,
-                            setAdaptiveYMin: 1,
-                            theme: "candy",
-                            bgColor: "#303030",
-                            baseFontColor: "#fff",
-                            outCnvBaseFontColor: "#fff"
-                        },
-                        categories: categories,
-                        dataset: dataset
-                    }
-                };
-
-                return chartConfig;
-            },
-            getFastestSpeedRunsPerDayChart(container) {
-                var categories = [];
-                var dataset = [];
-
-                if (this.tabledata?.length > 0) {
-                    var _data = chain(this.tabledata).clone().value();
-                    var dates = _data.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();
+                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();
                     var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
-
-                    var filteredData = _data.filter((x, i) => {
-                        return new Date(x.dateSubmitted) >= minDate
-                    }).sort((a, b) => { return new Date(a.dateSubmitted) - new Date(b.dateSubmitted) });
+                    //var minDate = moment(maxDate).add(-24, "months");
+                    //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
 
                     var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return moment(x).format("MM/DD/YYYY") });
+
                     var groupedObj = {};
                     var chartDataObj = {};
                     var categoryObj = {};
 
                     filteredData.forEach(item => {
                         var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
-                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join(",");
-
+                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join("{br}");
+                        
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
-                        groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });
+                        groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
                     });
 
                     if (Object.keys(groupedObj).length > 0) {
@@ -394,16 +247,16 @@
                             chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
 
                             var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
-                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };
+                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
                         }
 
                         categoryObj["category"] = _timePeriods.map(item => {
                             var labelObj = {};
-                            labelObj["label"] = item
+                            labelObj["label"] = item;
                             return labelObj;
                         });
                         categories.push(categoryObj);
-
+                        
                         for (var key in chartDataObj) {
                             _timePeriods.forEach(timePeriod => {
                                 if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
@@ -420,8 +273,11 @@
                                 var monthdayyeara = a.category.split("/");
                                 var monthdayyearb = b.category.split("/");
 
-                                return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1]);
-                            });
+                                return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
+                            });    
+
+                            //data = data.map(x => { return x.tooltext ? x : { category: x.category, value: x.value, anchorAlpha: "0", showToolTip: "0" } });
+
                             dataset.push({ seriesname: key, data: data });
                         }
                     }
@@ -436,11 +292,23 @@
                         chart: {
                             caption: 'Personal Best Progression',
                             subCaption: 'Per Day',
-                            subcaptionFontSize: 12,
+                            subCaptionFontSize: 12,
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
-                            labelDisplay: "rotate",
-                            labelFontSize: 12,
+                            // canvasPadding: 5, 
+                            labelDisplay: "ROTATE",
+                            labelFontSize: 11,
+                            //labelDisplay: "NONE",
+                            showLabels: 1,
+                            rotateLabels: 1,
+                            slantLabels: 1,
+                            //labelStep: 5,
+                            showToolTip: 1,
+                            lineThickness: 2,
+                            //anchorAlpha: "0",
+                            anchorRadius: "5",
+                            //plottooltext:null,
+                            //plottooltext:"$dataValue",                                                        
                             exportEnabled: 0,
                             showValues: 0,
                             formatNumberScale: 1,
@@ -453,7 +321,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 1,
+                            plotBinSize: 5,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: "#303030",

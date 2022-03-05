@@ -9,7 +9,7 @@
         </div>
         <div v-else id="divSpeedRunEdit" class="container p-0">
             <div class="form-group row no-gutters mb-2">
-                <div class="col-sm-10 m-auto">
+                <div v-if="item.speedRunVM.videoLink" class="col-sm-10 m-auto">
                     <div class="p-0 embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item"
                                 :src="item.speedRunVM.videoLink"
@@ -18,8 +18,11 @@
                                 autoplay="0"
                                 scrolling="no"
                                 allowfullscreen="true"></iframe>
-                    </div>
+                    </div>                     
                 </div>
+                <div v-else class="col-sm-10 ml-auto form-message text-muted">
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;&nbsp;No Video Available
+                </div>                               
             </div>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Game</label>

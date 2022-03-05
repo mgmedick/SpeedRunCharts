@@ -227,7 +227,7 @@
                     }
 
                     this.subCategoryVariableValueIDs = {};
-                    this.setSubCategoryVariableValueIDs(eligibleVariables);
+                    this.setSubCategoryVariableValueIDs(eligibleVariables, 0);
                     // this.subCategoryVariableValueIDs = {};
                     // eligibleVariables.forEach(variable => {    
                     //     that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name            
@@ -243,15 +243,15 @@
                     // }
                 }
             },
-            setSubCategoryVariableValueIDs: function(variables) {
+            setSubCategoryVariableValueIDs: function(variables, count) {
                 var that = this;
                 variables?.forEach(variable => {
-                    if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
+                    if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
                         var va = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-                        that.subCategoryVariableValueIDs[variable.name] = va.name;//variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
+                        that.subCategoryVariableValueIDs[variable.name + count] = va.name;//variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
                     
                         if (va.subVariables && va.subVariables.length > 0) {
-                            that.setSubCategoryVariableValueIDs(va.subVariables);
+                            that.setSubCategoryVariableValueIDs(va.subVariables, count + 1);
                         }
                     }
                     // variable.variableValues.forEach(variableValue => {
@@ -289,7 +289,7 @@
                 }
 
                 var newSubCategoryVariableValueIDs = {};
-                this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs);
+                this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs, 0);
                 // eligibleVariables.forEach(variable => {    
                 //     var variableValue = variable.variableValues.filter(variableValue => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == variableValue.name).length > 0 && (!that.hideEmpty || variableValue.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
                 //     newSubCategoryVariableValueIDs[variable.name] = variableValue?.name;              
@@ -297,15 +297,15 @@
 
                 this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
             },
-            resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs) {
-                var that = this;
+            resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs, count) {
+                var that = this;                                                                               
                 variables?.forEach(variable => {
-                    if (!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
+                    if (!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
                         var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-                        newSubCategoryVariableValueIDs[variable.name] = va.name;
+                        newSubCategoryVariableValueIDs[variable.name + count] = va.name;
 
                         if (va.subVariables && va.subVariables.length > 0) {
-                            that.resetSubCategoryVariableValueIDs(va.subVariables, newSubCategoryVariableValueIDs);
+                            that.resetSubCategoryVariableValueIDs(va.subVariables, newSubCategoryVariableValueIDs, count + 1);
                         }
                     }
                 });

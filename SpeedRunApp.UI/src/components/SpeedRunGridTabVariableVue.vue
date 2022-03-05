@@ -1,11 +1,11 @@
 ﻿<template>
     <div v-for="variable in items" :key="variable.id">
-        <div v-if="subcategoryvariablevalueids[variable.name]">
+        <div v-if="subcategoryvariablevalueids[variable.name + variableindex]">
             <div class="variablerow row no-gutters pr-1 pt-1 pb-0 pr-0">
                 <div class="col tab-list">
                     <ul class="nav nav-pills">
                         <li class="variableValue nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
-                            <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                            <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
                         <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                             <template v-slot:text>
@@ -13,7 +13,7 @@
                             </template>
                             <template v-slot:options>
                                 <template v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
-                                    <a class="dropdown-item d-none" :class="{ 'active' : subcategoryvariablevalueids[variable.name] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                                    <a class="dropdown-item d-none" :class="{ 'active' : subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                                 </template>
                             </template>
                         </button-dropdown>                  
@@ -21,10 +21,10 @@
                 </div>
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
-                <div v-if="variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name] == variableValue.name">
+                <div v-if="variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
                     <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" :showcharts="showcharts" :variables="variables" @onshowchartsclick2="$emit('onshowchartsclick2', $event)"></speed-run-grid-tab-variable>
                 </div>
-                <div v-else-if="subcategoryvariablevalueids[variable.name] == variableValue.name">
+                <div v-else-if="subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
                     <div v-if="!userid" class="row no-gutters pr-1 pt-1">
                         <div class="col-auto pr-2">
                             <label class="tab-row-name">Hide Empty:</label>

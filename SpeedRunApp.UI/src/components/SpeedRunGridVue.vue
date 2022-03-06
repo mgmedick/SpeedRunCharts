@@ -1,16 +1,5 @@
 ﻿<template>
-    <div>   
-        <div v-if="!userid" class="row no-gutters pr-1 pt-0">
-            <div class="col-auto pr-2">
-                <label class="tab-row-name">Show All Runs:</label>
-            </div>
-            <div class="col align-self-center">
-                <div class="custom-control custom-switch">
-                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
-                    <label class="custom-control-label" for="chkShowAllData"></label>
-                </div>
-            </div>
-        </div>           
+    <div>      
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
@@ -50,6 +39,7 @@
             levelid: String,
             variablevalues: String,
             userid: String,
+            showalldata: Boolean,
             showcharts: Boolean,
             variables: Array
         },
@@ -59,15 +49,20 @@
                 tableData: [],
                 loading: true,
                 speedRunID: String,
-                showDetailModal: false,
-                showAllData: false
+                showDetailModal: false
             }
         },
         computed: {
             isMediaMedium: function () {
                 return window.innerWidth > 768;
             }
-        },        
+        },
+        watch: {
+            showalldata: function (val, oldVal) {
+                var data = this.showalldata ? this.tableData : this.tableData.filter(x => x.rank);
+                this.table.replaceData(data);
+            }
+        },                
         created: function () {
             this.loadData();
         },
@@ -82,8 +77,7 @@
                 axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tableData = res.data;
-                        var data = that.userid ? res.data : res.data.filter(x => x.rank);
-                        that.initGrid(data);
+                        that.initGrid(res.data);
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
@@ -126,14 +120,15 @@
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
 
+                var filteredTableData = that.userid || that.showalldata ? tableData : tableData.filter(x => x.rank);
                 this.table = new Tabulator("#tblGrid", {
-                    data: tableData,
+                    data: filteredTableData,
                     layout: "fitColumns",
                     //responsiveLayout: false,
                     tooltips: false,
                     tooltipsHeader:false,
-                    pagination: "local",
-                    paginationSize: 20,
+                    // pagination: "local",
+                    // paginationSize: 20,
                     movableColumns: this.isMediaMedium,
                     resizableColumns: this.isMediaMedium ? "header" : false,
                     //resizableRows: false,
@@ -155,14 +150,8 @@
                             })
                         });
                     },
-                });                
-            },
-            onShowAllDataClick: function (event) {
-                this.showAllData = !this.showAllData;
-                var data = this.showAllData ? this.tableData : this.tableData.filter(x => x.rank);
-                this.table.replaceData(data);
-                //this.table.updateData(data);
-            },
+                });
+            },                        
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 

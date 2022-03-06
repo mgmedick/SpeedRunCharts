@@ -45,8 +45,7 @@
                 tableData: [],
                 loading: true,
                 speedRunID: String,
-                showDetailModal: false,
-                showAllData: false
+                showDetailModal: false
             }
         },
         computed: {
@@ -125,8 +124,8 @@
                     //responsiveLayout: false,
                     tooltips: false,
                     tooltipsHeader:false,
-                    pagination: "local",
-                    paginationSize: 10,
+                    // pagination: "local",
+                    // paginationSize: 10,
                     movableColumns: this.isMediaMedium,
                     resizableColumns: this.isMediaMedium ? "header" : false,
                     //resizableRows: true,

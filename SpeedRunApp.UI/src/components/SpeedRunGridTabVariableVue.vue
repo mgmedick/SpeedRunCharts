@@ -22,21 +22,34 @@
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                 <div v-if="variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
-                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" :showcharts="showcharts" :variables="variables" @onshowchartsclick2="$emit('onshowchartsclick2', $event)"></speed-run-grid-tab-variable>
+                    <speed-run-grid-tab-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" :showalldata="showalldata" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" @onshowalldataclick="$emit('onshowalldataclick', $event)" :showcharts="showcharts" :variables="variables" @onshowchartsclick2="$emit('onshowchartsclick2', $event)"></speed-run-grid-tab-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
-                    <div v-if="!userid" class="row no-gutters pr-1 pt-1">
-                        <div class="col-auto pr-2">
-                            <label class="tab-row-name">Hide Empty:</label>
-                        </div>
-                        <div class="col align-self-center">
-                            <div class="custom-control custom-switch">
-                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideempty" @click="$emit('onhideemptyclick', $event)">
-                                <label class="custom-control-label" for="chkHideEmpty"></label>
+                    <div v-if="!userid">
+                        <div class="row no-gutters pr-1 pt-1">
+                            <div class="col-auto pr-2">
+                                <label class="tab-row-name">Hide Empty:</label>
+                            </div>
+                            <div class="col align-self-center">
+                                <div class="custom-control custom-switch">
+                                    <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideempty" @click="$emit('onhideemptyclick', $event)">
+                                    <label class="custom-control-label" for="chkHideEmpty"></label>
+                                </div>
                             </div>
                         </div>
-                    </div>                    
-                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid" :showcharts="showcharts" :variables="variables" @onshowchartsclick1="$emit('onshowchartsclick2', $event)"></speedrun-grid>
+                        <div class="row no-gutters pr-1 pt-0">
+                            <div class="col-auto pr-2">
+                                <label class="tab-row-name">Show All Runs:</label>
+                            </div>
+                            <div class="col align-self-center">
+                                <div class="custom-control custom-switch">
+                                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showalldata" @click="$emit('onshowalldataclick', $event)">
+                                    <label class="custom-control-label" for="chkShowAllData"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                    <speedrun-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid" :showalldata="showalldata" :showcharts="showcharts" :variables="variables" @onshowchartsclick1="$emit('onshowchartsclick2', $event)"></speedrun-grid>
                 </div>
             </div>
         </div>
@@ -45,7 +58,7 @@
 <script>
     export default {
         name: "speed-run-grid-tab-variable",
-        emits: ["ontabclick", "onhideemptyclick", "onshowchartsclick2"],
+        emits: ["ontabclick", "onhideemptyclick", "onshowalldataclick", "onshowchartsclick2"],
         props: {
             items: Array,
             gameid: String,
@@ -57,6 +70,7 @@
             prevdata: String,
             variableindex: Number,
             hideempty: Boolean,
+            showalldata: Boolean,
             showcharts: Boolean,
             variables: Array
         }

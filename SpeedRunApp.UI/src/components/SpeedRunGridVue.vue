@@ -127,8 +127,8 @@
                     //responsiveLayout: false,
                     tooltips: false,
                     tooltipsHeader:false,
-                    // pagination: "local",
-                    // paginationSize: 20,
+                    pagination: "local",
+                    paginationSize: 100,
                     movableColumns: this.isMediaMedium,
                     resizableColumns: this.isMediaMedium ? "header" : false,
                     //resizableRows: false,
@@ -151,7 +151,7 @@
                         });
                     },
                 });
-            },                        
+            },
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 

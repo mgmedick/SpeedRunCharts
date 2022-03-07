@@ -37,6 +37,11 @@
             isgame: Boolean,
             showcharts: Boolean
         },
+        computed: {
+            isMediaMedium: function () {
+                return window.innerWidth > 768;
+            }
+        },        
         created: function () {
             this.loadData();
         },
@@ -170,7 +175,7 @@
                             showToolTip: 1,
                             lineThickness: 2,
                             //anchorAlpha: "0",
-                            anchorRadius: "5",
+                            anchorRadius: this.isMediaMedium ? 5: 8,
                             //plottooltext:null,
                             //plottooltext:"$dataValue",                                                        
                             exportEnabled: 0,
@@ -185,7 +190,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 5,
+                            plotBinSize: 8,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: "#303030",
@@ -306,7 +311,7 @@
                             showToolTip: 1,
                             lineThickness: 2,
                             //anchorAlpha: "0",
-                            anchorRadius: "5",
+                            anchorRadius: this.isMediaMedium ? 5 : 8,
                             //plottooltext:null,
                             //plottooltext:"$dataValue",                                                        
                             exportEnabled: 0,
@@ -321,7 +326,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 5,
+                            plotBinSize: 8,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: "#303030",

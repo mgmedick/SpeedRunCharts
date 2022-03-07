@@ -61,6 +61,7 @@
             showalldata: function (val, oldVal) {
                 var data = this.showalldata ? this.tableData : this.tableData.filter(x => x.rank);
                 this.table.replaceData(data);
+                this.table.redraw();
             }
         },                
         created: function () {

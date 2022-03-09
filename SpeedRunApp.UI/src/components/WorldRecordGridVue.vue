@@ -21,10 +21,9 @@
 <script>
     import moment from 'moment';
     import axios from 'axios';    
-    import { getIntOrdinalString } from '../js/common.js';
+    import { getIntOrdinalString, escapeHtml } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import { escape } from 'lodash';
     import tippy from 'tippy.js'
     import 'tippy.js/dist/tippy.css'
 
@@ -137,7 +136,7 @@
                             var cellElement = el.closest('.tabulator-cell');
 
                             tippy(cellElement, {
-                                content: escape(value),
+                                content: escapeHtml(value),
                                 allowHTML: true,
                                 arrow:false,
                                 placement: 'bottom',
@@ -174,7 +173,7 @@
             playerFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
                 var valueString = value?.map(el => el.name).join();
-                var html = valueString ? '<span class="tippy-tooltip" data-content="' + escape(valueString) + '">' : '<span>'
+                var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
 
                 value?.forEach(el => {
                     if (el.id > 0) {
@@ -202,7 +201,7 @@
                 var value = cell.getValue();
                 var html = '';
                 if (value) {
-                    html += '<span class="tippy-tooltip" data-content="' + escape(value) + '">';
+                    html += '<span class="tippy-tooltip" data-content="' + escapeHtml(value) + '">';
                     html += value;
                     html += '</span>';
                 }
@@ -211,7 +210,7 @@
             },
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
-                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escape(tooltip) + '">' : '<span>'
+                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
@@ -228,7 +227,7 @@
                 var value = cell.getValue();
 
                 if (value != null) {
-                    html = '<i class="far fa-comment tippy-tooltip" data-content="' + escape(value) + '"></i>'
+                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + escapeHtml(value) + '"></i>'
                 }
 
                 return html;

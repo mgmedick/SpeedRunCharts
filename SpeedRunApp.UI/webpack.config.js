@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { VueLoaderPlugin } = require("vue-loader");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const srcPath = path.resolve(__dirname, './src');
 const stylePath = path.resolve(srcPath, './styles');
@@ -11,6 +12,7 @@ const bldPath = path.resolve('../SpeedRunApp/wwwroot/dist');
 
 module.exports = {
     //devtool: 'source-map',
+    devtool: false,
     entry: {
         master: path.resolve(srcPath, 'index.js'),
         style: `${stylePath}/style.css`
@@ -24,21 +26,7 @@ module.exports = {
     //mode: 'development',
     watch: true,
     module: {
-        rules: [
-            {
-                test: /\.scss$/,
-                use: [{ loader: 'style-loader' },
-                      { loader: 'css-loader' },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                postcssOptions: {
-                                    plugins: [ require('autoprefixer') ]
-                                    }
-                                }                       
-                        },
-                    { loader: 'sass-loader' }]
-            },
+        rules: [                     
             {
                 exclude: /(node_modules|bower_components)/,
                 include: srcPath,
@@ -90,6 +78,7 @@ module.exports = {
                     chunks: 'all',
                     name: 'vendor',
                     test: /[\\/]node_modules[\\/]/
+                    // maxSize: 248832
                 }
             }
         },
@@ -111,6 +100,13 @@ module.exports = {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: '[name].min.css'
-        })
+        }),
+        new BundleAnalyzerPlugin(),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/), 
+        new webpack.DefinePlugin({
+            PRODUCTION: JSON.stringify(true),
+            __VUE_OPTIONS_API__: true,
+            __VUE_PROD_DEVTOOLS__: false
+        }),
     ]
 };

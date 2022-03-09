@@ -25,9 +25,13 @@
 </template>
 <script>
     import moment from 'moment';
-    //import { chain, clone, map, value, join } from 'lodash';
-    import { chain } from 'lodash';    
     import { getDateDiffList, formatTime } from '../js/common.js';
+    import FusionCharts from 'fusioncharts/core';
+    import StackedBar2D from 'fusioncharts/viz/stackedbar2d';
+    import Pie3D from 'fusioncharts/viz/pie3d';
+    import MSLine from 'fusioncharts/viz/msline';    
+    import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";
+    FusionCharts.addDep(StackedBar2D, Pie3D, MSLine, CandyTheme);
 
     export default {
         name: "SpeedRunGridChartsVue",
@@ -74,7 +78,7 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = chain(this.tabledata).clone().value();
+                    var _data = JSON.parse(JSON.stringify(this.tabledata)); 
                     _data = _data.sort((a, b) => { 
                         return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds
                     });                    
@@ -103,8 +107,8 @@
 
                     filteredData.forEach(item => {
                         var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
-                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join("{br}");
-                        
+                        var playerNames = item.players?.map(user => user.name).join("{br}");
+
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
                         groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
                     });
@@ -136,7 +140,8 @@
                     }
 
                     for (var key in chartDataObj) {
-                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext } }).value();
+                        var data = Object.entries(chartDataObj[key])?.map(x => ({ category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
+                        
                         if (data.length > 0) {
                             data = data.sort((a, b) => {
                                 var monthdayyeara = a.category.split("/");
@@ -210,7 +215,7 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = chain(this.tabledata).clone().value();
+                    var _data = JSON.parse(JSON.stringify(this.tabledata)); 
                     _data = _data.sort((a, b) => { 
                         return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds
                     });                    
@@ -239,8 +244,8 @@
 
                     filteredData.forEach(item => {
                         var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
-                        var playerNames = chain(item.players).map(function (user) { return user.name }).value().join("{br}");
-                        
+                        var playerNames = item.players?.map(user => user.name).join("{br}");
+
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
                         groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
                     });
@@ -272,7 +277,8 @@
                     }
 
                     for (var key in chartDataObj) {
-                        var data = chain(Object.entries(chartDataObj[key])).map(function (x) { return { category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext } }).value();
+                        var data = Object.entries(chartDataObj[key])?.map(x => ({ category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                                                
+                        
                         if (data.length > 0) {
                             data = data.sort((a, b) => {
                                 var monthdayyeara = a.category.split("/");
@@ -344,7 +350,7 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = chain(this.tabledata).clone().value();
+                    var _data = JSON.parse(JSON.stringify(this.tabledata)); 
                     var allSpeedRunTimes = _data.sort((a, b) => { return a?.PrimaryTimeMilliseconds - b?.PrimaryTimeMilliseconds; });
 
                     var chartDataObj = {};
@@ -430,7 +436,7 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var _data = chain(this.tabledata).clone().value();
+                    var _data = JSON.parse(JSON.stringify(this.tabledata)); 
 
                     if (isGame) {
                         _data = _data.filter(x => x.rank);
@@ -442,7 +448,7 @@
                     var chartDataObj = {};
                     var categoryObj = {};
                     data.forEach(item => {
-                        var playerNames = chain(item.players).map(function (item) { return item.name }).value().join("{br}");
+                        var playerNames = item.players?.map(user => user.name).join("{br}");
 
                         chartDataObj[playerNames] = item.primaryTimeMilliseconds;
                     });

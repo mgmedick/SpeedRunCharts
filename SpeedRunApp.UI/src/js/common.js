@@ -99,7 +99,15 @@ const formatTime = (timepart, value) => {
     return result;
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime }
+const escapeHtml = (value) => {
+    return value.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("\'", "&#039;");
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml }
 
 
 

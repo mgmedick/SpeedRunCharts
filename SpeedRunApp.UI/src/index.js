@@ -5,11 +5,11 @@ import 'vue-next-select/dist/index.min.css'
 import { library, dom } from '@fortawesome/fontawesome-svg-core'
 import { faCertificate, faPercentage, faAward, faCubes, faStar, faFire, faGamepad, faSpinner, 
          faSearch, faComment, faChevronDown, faChevronRight, faHourglassEnd, faCircleCheck, 
-         faExclamationCircle, faPlayCircle, faTrophy } from '@fortawesome/free-solid-svg-icons'
+         faExclamationCircle, faPlayCircle, faTrophy, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faCertificate, faPercentage, faAward, faCubes, faStar, faFire, faGamepad, faSpinner, 
             faSearch, faComment, faChevronDown, faChevronRight, faHourglassEnd, faCircleCheck,
-            faExclamationCircle, faPlayCircle, faTrophy);
+            faExclamationCircle, faPlayCircle, faTrophy, faPlay);
 dom.watch();
 
 import './fonts/TwitchGlitchPurple.svg';

@@ -19,7 +19,9 @@
     </div>   
 </template>
 <script>
-    import moment from 'moment';
+    const dayjs = require('dayjs');
+    const utc = require('dayjs/plugin/utc')
+    dayjs.extend(utc);    
     import axios from 'axios';    
     import { getIntOrdinalString, escapeHtml } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
@@ -215,7 +217,7 @@
                 var formatString = formatterParams.outputFormat;
 
                 if(value){
-                    html +=  new moment(value).format(formatString);
+                    html += dayjs(value).format(formatString);
                 }
 
                 html+='</span>'
@@ -270,7 +272,7 @@
                 function successFunc(el){
                     var dateString = '';
                     if(editor.value){
-                        dateString = new moment(editor.value).format("MM/DD/YYYY");
+                        dateString = dayjs(editor.value).format("MM/DD/YYYY");
                     }
 
                     success(dateString);
@@ -315,7 +317,7 @@
                     return true;
                 }
 
-                var value = new moment.utc(rowValue).format("MM/DD/YYYY"); 
+                var value = dayjs.utc(rowValue).format("MM/DD/YYYY"); 
 
                 return headerValue == value; 
             },                                 

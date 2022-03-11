@@ -1,4 +1,4 @@
-﻿import moment from 'moment';
+﻿const dayjs = require('dayjs');
 
 const getFormData = object => Object.keys(object).reduce((formData, key) => {
     if (Array.isArray(object[key])) {
@@ -51,15 +51,15 @@ const getDateDiffList = (datePart, startDate, endDate) => {
         case "day":
             while (startDate <= endDate) {
                 dates.push(startDate);
-                startDate = moment(startDate).add(1, 'day').toDate();
+                startDate = dayjs(startDate).add(1, 'day').toDate();
             }
             break;
         case "month":
-            var startMonthYear = moment([startDate.getFullYear(), startDate.getMonth(), 1]).toDate();
-            var endMonthYear = moment([endDate.getFullYear(), endDate.getMonth(), 1]).toDate();
+            var startMonthYear = dayjs([startDate.getFullYear(), startDate.getMonth(), 1]).toDate();
+            var endMonthYear = dayjs([endDate.getFullYear(), endDate.getMonth(), 1]).toDate();
             while (startMonthYear <= endMonthYear) {
                 dates.push(startMonthYear);
-                startMonthYear = moment(startMonthYear).add(1, 'month').toDate();
+                startMonthYear = dayjs(startMonthYear).add(1, 'month').toDate();
             }
             break;
     }
@@ -69,28 +69,28 @@ const getDateDiffList = (datePart, startDate, endDate) => {
 
 const formatTime = (timepart, value) => {
     var result;
-    var date = moment().startOf('day');
+    var date = dayjs().startOf('day');
 
     switch (timepart) {
         case 'milliseconds':
-            result = date.milliseconds(value);
+            result = date.millisecond(value);                       
             break;
         case 'seconds':
-            result = date.seconds(value);
+            result = date.second(value);
             break;
         case 'minutes':
-            result = date.minutes(value);
+            result = date.minute(value);
             break;
         case 'hours':
-            result = date.hours(value);
+            result = date.hour(value);
             break;
     }
 
-    if (date.hours() > 0) {
+    if (date.hour() > 0) {
         result = date.format("hh[h] mm[m] ss[s]")
-    } else if (date.minutes() > 0) {
+    } else if (date.minute() > 0) {
         result = date.format("mm[m] ss[s]")
-    } else if (date.seconds() > 0) {
+    } else if (date.second() > 0) {
         result = date.format("ss[s]")
     } else {
         result = date.format("SSS[ms]")

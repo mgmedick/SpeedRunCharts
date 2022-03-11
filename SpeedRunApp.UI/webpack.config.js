@@ -24,7 +24,7 @@ module.exports = {
     },     
     mode: 'production',
     //mode: 'development',
-    watch: true,
+    watch: false,
     module: {
         rules: [                     
             {
@@ -102,7 +102,6 @@ module.exports = {
             filename: '[name].min.css'
         }),
         new BundleAnalyzerPlugin(),
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|en/), 
         new webpack.DefinePlugin({
             PRODUCTION: JSON.stringify(true),
             __VUE_OPTIONS_API__: true,

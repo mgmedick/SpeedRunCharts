@@ -24,15 +24,16 @@
     </div>
 </template>
 <script>
-    import moment from 'moment';
+    const dayjs = require('dayjs');
     import { getDateDiffList, formatTime } from '../js/common.js';
     import FusionCharts from 'fusioncharts/core';
+    //import Bar2D from 'fusioncharts/viz/bar2d';
     import StackedBar2D from 'fusioncharts/viz/stackedbar2d';
-    import Pie3D from 'fusioncharts/viz/pie3d';
-    import MSLine from 'fusioncharts/viz/msline';    
+    import Pie2D from 'fusioncharts/viz/pie2d';
+    import Line from 'fusioncharts/viz/line';    
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";
-    FusionCharts.addDep(StackedBar2D, Pie3D, MSLine, CandyTheme);
-
+    FusionCharts.addDep(StackedBar2D, Pie2D, Line, CandyTheme);
+    
     export default {
         name: "SpeedRunGridChartsVue",
         emits: ["onshowchartsclick"],
@@ -53,28 +54,17 @@
             loadData() {
                 var that = this;
                 FusionCharts.ready(function () {
-                    if (that.isgame) {
-                        var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1'));
-                        var gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
-                        var gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
+                    var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1', that.isgame));
+                    var gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
+                    var gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
 
-                        gameWorldRecordChart.render();
-                        gameSpeedRunsPercentileChart.render();
-                        gameTopSpeedRunChart.render();
-                    } else {
-                        var userSpeedRunsByMonth = new FusionCharts(that.getPersonalPerDayChart('divChart1'));
-                        var userSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
-                        var userTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
-
-                        userSpeedRunsByMonth.render();
-                        userSpeedRunsPercentileChart.render();
-                        userTopSpeedRunChart.render();
-                    }
+                    gameWorldRecordChart.render();
+                    gameSpeedRunsPercentileChart.render();
+                    gameTopSpeedRunChart.render();                        
                 });
             },
-            getWorldRecordPerDayChart(container) {
+            getWorldRecordPerDayChart(container, isGame) {
                 var that = this;
-                var categories = [];
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
@@ -91,22 +81,24 @@
                         _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
                                      .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                     }
-                    filteredData = filteredData.slice(0, 20);
+
+                    if (isGame) {
+                        filteredData = filteredData.slice(0, 20);
+                    }
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();
-                    var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
-                    //var minDate = moment(maxDate).add(-24, "months");
+                    var maxDate = dayjs(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();
+                    var minDate = dayjs(Math.min.apply(null, dates)).startOf('day').toDate();
+                    //var minDate = dayjs(maxDate).add(-24, "months");
                     //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
 
-                    var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return moment(x).format("MM/DD/YYYY") });
+                    var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return dayjs(x).format("MM/DD/YYYY") });
 
                     var groupedObj = {};
                     var chartDataObj = {};
-                    var categoryObj = {};
 
                     filteredData.forEach(item => {
-                        var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
+                        var monthDayYear = dayjs(item.dateSubmitted).format("MM/DD/YYYY")
                         var playerNames = item.players?.map(user => user.name).join("{br}");
 
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
@@ -114,217 +106,59 @@
                     });
 
                     if (Object.keys(groupedObj).length > 0) {
-                        var minKey = 'Min Time';
-                        chartDataObj[minKey] = {};
                         for (var key in groupedObj) {
-                            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
+                            chartDataObj[key] = chartDataObj[key] || [];
 
                             var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
-                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
+                            chartDataObj[key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
                         }
 
-                        categoryObj["category"] = _timePeriods.map(item => {
-                            var labelObj = {};
-                            labelObj["label"] = item;
-                            return labelObj;
+                        _timePeriods.forEach(timePeriod => {
+                            if (!chartDataObj.hasOwnProperty(timePeriod)) {
+                                chartDataObj[timePeriod] = { value: null, tooltext: ' ' };
+                            }
                         });
-                        categories.push(categoryObj);
-                        
-                        for (var key in chartDataObj) {
-                            _timePeriods.forEach(timePeriod => {
-                                if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
-                                    chartDataObj[key][timePeriod] = { value: null, tooltext: ' ' };
-                                }
-                            })
-                        }
                     }
 
-                    for (var key in chartDataObj) {
-                        var data = Object.entries(chartDataObj[key])?.map(x => ({ category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
-                        
-                        if (data.length > 0) {
-                            data = data.sort((a, b) => {
-                                var monthdayyeara = a.category.split("/");
-                                var monthdayyearb = b.category.split("/");
+                    dataset = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
+                    
+                    if (dataset.length > 0) {
+                        dataset = dataset.sort((a, b) => {
+                            var monthdayyeara = a.label.split("/");
+                            var monthdayyearb = b.label.split("/");
 
-                                return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
-                            });    
-
-                            //data = data.map(x => { return x.tooltext ? x : { category: x.category, value: x.value, anchorAlpha: "0", showToolTip: "0" } });
-
-                            dataset.push({ seriesname: key, data: data });
-                        }
+                            return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
+                        });
                     }
                 }
 
                 const chartConfig = {
-                    type: "msline",
+                    type: "line",
                     renderAt: container,
                     width: "100%",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'World Record Progression',
-                            subCaption: 'Per Day (Last 20 World Records)',
-                            subCaptionFontSize: 12,
-                            xAxis: 'Date',
-                            yAxis: 'Time (Minutes)',
-                            // canvasPadding: 5, 
-                            labelDisplay: "ROTATE",
-                            labelFontSize: 11,
-                            //labelDisplay: "NONE",
-                            showLabels: 1,
-                            rotateLabels: 1,
-                            slantLabels: 1,
-                            //labelStep: 5,
-                            showToolTip: 1,
-                            lineThickness: 2,
-                            //anchorAlpha: "0",
-                            anchorRadius: this.isMediaMedium ? 5: 8,
-                            //plottooltext:null,
-                            //plottooltext:"$dataValue",                                                        
-                            exportEnabled: 0,
-                            showValues: 0,
-                            formatNumberScale: 1,
-                            numberOfDecimals: 0,
-                            useRoundEdges: 1,
-                            numberscalevalue: "1000,60,60",
-                            numberscaleunit: "s,m,h",
-                            defaultnumberscale: "ms",
-                            scalerecursively: "1",
-                            maxscalerecursion: "-1",
-                            scaleseparator: " ",
-                            connectNullData: 1,
-                            plotBinSize: 8,
-                            setAdaptiveYMin: 1,
-                            theme: "candy",
-                            bgColor: "#303030",
-                            baseFontColor: "#fff",
-                            outCnvBaseFontColor: "#fff"
-                        },
-                        categories: categories,
-                        dataset: dataset
-                    }
-                };
-
-                return chartConfig;
-            },
-            getPersonalPerDayChart(container) {
-                var that = this;
-                var categories = [];
-                var dataset = [];
-
-                if (this.tabledata?.length > 0) {
-                    var _data = JSON.parse(JSON.stringify(this.tabledata)); 
-                    _data = _data.sort((a, b) => { 
-                        return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds
-                    });                    
-
-                    var filteredData = [];
-                    while (_data.length > 0) {
-                        var item = _data[0];
-                        filteredData.push(item);
-
-                        _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
-                                     .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
-                    }
-                    //filteredData = filteredData.slice(0, 20);
-
-                    var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = moment(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();
-                    var minDate = moment(Math.min.apply(null, dates)).startOf('day').toDate();
-                    //var minDate = moment(maxDate).add(-24, "months");
-                    //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
-
-                    var _timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return moment(x).format("MM/DD/YYYY") });
-
-                    var groupedObj = {};
-                    var chartDataObj = {};
-                    var categoryObj = {};
-
-                    filteredData.forEach(item => {
-                        var monthDayYear = moment(item.dateSubmitted).format("MM/DD/YYYY")
-                        var playerNames = item.players?.map(user => user.name).join("{br}");
-
-                        groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
-                        groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
-                    });
-
-                    if (Object.keys(groupedObj).length > 0) {
-                        var minKey = 'Min Time';
-                        chartDataObj[minKey] = {};
-                        for (var key in groupedObj) {
-                            chartDataObj[minKey][key] = chartDataObj[minKey][key] || [];
-
-                            var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
-                            chartDataObj[minKey][key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
-                        }
-
-                        categoryObj["category"] = _timePeriods.map(item => {
-                            var labelObj = {};
-                            labelObj["label"] = item;
-                            return labelObj;
-                        });
-                        categories.push(categoryObj);
-                        
-                        for (var key in chartDataObj) {
-                            _timePeriods.forEach(timePeriod => {
-                                if (!chartDataObj[key].hasOwnProperty(timePeriod)) {
-                                    chartDataObj[key][timePeriod] = { value: null, tooltext: ' ' };
-                                }
-                            })
-                        }
-                    }
-
-                    for (var key in chartDataObj) {
-                        var data = Object.entries(chartDataObj[key])?.map(x => ({ category: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                                                
-                        
-                        if (data.length > 0) {
-                            data = data.sort((a, b) => {
-                                var monthdayyeara = a.category.split("/");
-                                var monthdayyearb = b.category.split("/");
-
-                                return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
-                            });    
-
-                            //data = data.map(x => { return x.tooltext ? x : { category: x.category, value: x.value, anchorAlpha: "0", showToolTip: "0" } });
-
-                            dataset.push({ seriesname: key, data: data });
-                        }
-                    }
-                }
-
-                const chartConfig = {
-                    type: "msline",
-                    renderAt: container,
-                    width: "100%",
-                    dataFormat: "json",
-                    dataSource: {
-                        chart: {
-                            caption: 'Personal Best Progression',
+                            caption: isGame ? 'World Record Progression' : 'Personal Best Progression',
                             subCaption: 'Per Day',
                             subCaptionFontSize: 12,
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
-                            // canvasPadding: 5, 
+                            canvasPadding: 5, 
                             labelDisplay: "ROTATE",
                             labelFontSize: 11,
-                            //labelDisplay: "NONE",
                             showLabels: 1,
                             rotateLabels: 1,
                             slantLabels: 1,
-                            //labelStep: 5,
                             showToolTip: 1,
                             lineThickness: 2,
-                            //anchorAlpha: "0",
-                            anchorRadius: this.isMediaMedium ? 5 : 8,
-                            //plottooltext:null,
-                            //plottooltext:"$dataValue",                                                        
+                            anchorRadius: 5,
+                            anchorBgColor: "#303030",
+                            anchorBorderThickness: 1,                                                   
                             exportEnabled: 0,
                             showValues: 0,
                             formatNumberScale: 1,
                             numberOfDecimals: 0,
-                            useRoundEdges: 1,
                             numberscalevalue: "1000,60,60",
                             numberscaleunit: "s,m,h",
                             defaultnumberscale: "ms",
@@ -339,8 +173,7 @@
                             baseFontColor: "#fff",
                             outCnvBaseFontColor: "#fff"
                         },
-                        categories: categories,
-                        dataset: dataset
+                        data: dataset
                     }
                 };
 
@@ -375,7 +208,7 @@
                         var values = allSpeedRunTimes.filter((x, i) => { return i <= index });
 
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                            values = allSpeedRunTimes.filter((x, i) => { return i >= prevTotal });
+                            values = allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
                             key = '> ' + formatTime("milliseconds", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                             chartDataObj[key] = values;
@@ -403,7 +236,7 @@
                 }
 
                 const chartConfig = {
-                    type: "pie3d",
+                    type: "pie2d",
                     renderAt: container,
                     width: "100%",
                     dataFormat: "json",
@@ -431,6 +264,62 @@
 
                 return chartConfig;
             },
+            // getTopSpeedRunChart(container, isGame) {
+            //     var dataset = [];
+
+            //     if (this.tabledata?.length > 0) {
+            //         var _data = JSON.parse(JSON.stringify(this.tabledata)); 
+
+            //         if (isGame) {
+            //             _data = _data.filter(x => x.rank);
+            //         }
+
+            //         var sortedData = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
+            //         var data = sortedData.slice(0, 10);
+
+            //         dataset = data.map(item => {
+            //             return { label: item.players?.map(item => { return item.name; }).join("{br}"), 
+            //                      value: item.primaryTimeMilliseconds };
+            //         });
+            //     }
+
+            //     const chartConfig = {
+            //         type: "bar2d",
+            //         renderAt: container,
+            //         width: "100%",
+            //         dataFormat: "json",
+            //         dataSource: {
+            //             chart: {
+            //                 caption: isGame ? 'Top 10 Ranked' : 'Top 10',
+            //                 subCaption: '',
+            //                 xAxis: '',
+            //                 yAxis: 'Time (Minutes)',
+            //                 labelFontSize: 11,
+            //                 labelVAlign: 'middle',
+            //                 exportEnabled: 0,
+            //                 showValues: 1,
+            //                 placeValuesInside: 1,
+            //                 valueFontSize: 12,
+            //                 formatNumberScale: 1,
+            //                 numberOfDecimals: 0,
+            //                 useRoundEdges: 0,
+            //                 numberscalevalue: "1000,60,60",
+            //                 numberscaleunit: "s,m,h",
+            //                 defaultnumberscale: "ms",
+            //                 scalerecursively: "1",
+            //                 maxscalerecursion: "-1",
+            //                 scaleseparator: "",
+            //                 theme: "candy",
+            //                 bgColor: "#303030",
+            //                 baseFontColor: "#fff",
+            //                 outCnvBaseFontColor: "#fff"
+            //             },
+            //             data: dataset
+            //         }
+            //     };
+
+            //     return chartConfig;
+            // },
             getTopSpeedRunChart(container, isGame) {
                 var categories = [];
                 var dataset = [];
@@ -480,13 +369,14 @@
                             subCaption: '',
                             xAxis: '',
                             yAxis: 'Time (Minutes)',
-                            labelFontSize: 12,
-                            labelVAlign: 'middle',
+                            labelFontSize: 11,
+                            labelVAlign: 'middle',                            
                             exportEnabled: 0,
                             showValues: 1,
+                            valueFontSize: 11,
                             formatNumberScale: 1,
                             numberOfDecimals: 0,
-                            useRoundEdges: 1,
+                            useRoundEdges: 0,
                             numberscalevalue: "1000,60,60",
                             numberscaleunit: "s,m,h",
                             defaultnumberscale: "ms",
@@ -504,7 +394,7 @@
                 };
 
                 return chartConfig;
-            }
+            }            
         }
     }
 </script>

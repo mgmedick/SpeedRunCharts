@@ -208,7 +208,7 @@
                         var values = allSpeedRunTimes.filter((x, i) => { return i <= index });
 
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                            values = allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
+                            values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
                             key = '> ' + formatTime("milliseconds", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                             chartDataObj[key] = values;

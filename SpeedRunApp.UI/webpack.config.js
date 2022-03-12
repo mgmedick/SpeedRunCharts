@@ -22,8 +22,9 @@ module.exports = {
             'vue': 'vue/dist/vue.esm-bundler.js'
         }
     },     
-    mode: 'production',
     //mode: 'development',
+    mode: 'production',
+    //watch: true,
     watch: false,
     module: {
         rules: [                     
@@ -103,6 +104,7 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin(),
         new webpack.DefinePlugin({
+            // PRODUCTION: JSON.stringify(false),
             PRODUCTION: JSON.stringify(true),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false

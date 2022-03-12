@@ -20,8 +20,6 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    const utc = require('dayjs/plugin/utc')
-    dayjs.extend(utc);    
     import axios from 'axios';    
     import { getIntOrdinalString, escapeHtml } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
@@ -229,9 +227,9 @@
                 var value = cell.getValue();
 
                 if (value != null) {
-                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + escapeHtml(value) + '"></i>'
+                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + value + '"></i>'
                 }
-
+                
                 return html;
             },
             subCategoryVisible() {
@@ -317,7 +315,7 @@
                     return true;
                 }
 
-                var value = dayjs.utc(rowValue).format("MM/DD/YYYY"); 
+                var value = dayjs(rowValue).format("MM/DD/YYYY");
 
                 return headerValue == value; 
             },                                 

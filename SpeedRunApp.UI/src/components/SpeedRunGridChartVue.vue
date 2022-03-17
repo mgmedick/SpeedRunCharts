@@ -59,6 +59,7 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,            
+            userid: String,            
             isgame: Boolean,
             showcharts: Boolean
         },

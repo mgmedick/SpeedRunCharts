@@ -10,30 +10,30 @@
                 </div>
             </h5>
         </div>
-        <div class="container row chart-container" style="min-height:300px;" :style="[ showcharts ? null : { display:'none' } ]">
-            <div class="col-sm-4">
-                <div v-if="loading" class="d-flex" style="height:300px;">
+        <div class="container row chart-container" :style="[ showcharts ? null : { display:'none' } ]">
+            <div class="col-sm-4" style="min-height:300px;">
+                <div v-if="loading" class="d-flex" style="height:100%;">
                     <div class="m-auto">
                         <i class="fas fa-spinner fa-spin fa-lg"></i>
                     </div>
                 </div>
-                <div id="divChart1"></div>
+                <div id="divChart1" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
-            <div class="col-sm-4">
-                <div v-if="loading" class="d-flex" style="height:300px;">
+            <div class="col-sm-4" style="min-height:300px;">
+                <div v-if="loading" class="d-flex" style="height:100%;">
                     <div class="m-auto">
                         <i class="fas fa-spinner fa-spin fa-lg"></i>
                     </div>
                 </div>
-                <div id="divChart2"></div>
+                <div id="divChart2" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
-            <div class="col-sm-4">
-                <div v-if="loading" class="d-flex" style="height:300px;">
+            <div class="col-sm-4" style="min-height:300px;">
+                <div v-if="loading" class="d-flex" style="height:100%;">
                     <div class="m-auto">
                         <i class="fas fa-spinner fa-spin fa-lg"></i>
                     </div>
                 </div>              
-                <div id="divChart3"></div>
+                <div id="divChart3" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
     </div>

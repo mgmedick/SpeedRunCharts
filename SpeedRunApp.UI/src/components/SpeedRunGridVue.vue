@@ -9,7 +9,7 @@
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
-            <div id="tblGrid" ref="table"></div>
+            <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
             <template v-slot:title>
@@ -58,7 +58,7 @@
         },
         watch: {
             showalldata: function (val, oldVal) {
-                this.loadData(true);
+                this.loadData();
             }            
         },
         mounted: function() {
@@ -68,19 +68,13 @@
         methods: {
             loadData(isReload) {
                 var that = this;
-                if (isReload) {
-                    this.$refs.table.classList.add("d-none");
-                }
                 this.loading = true;
 
                 axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
-                        if (isReload) {
-                            that.$refs.table.classList.remove("d-none"); 
-                        }                                                
-                        that.initGrid(res.data);  
-                        that.loading = false;  
+                        that.initGrid(res.data); 
+                        that.loading = false;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },                                                                              
@@ -122,7 +116,7 @@
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
 
-                this.table = new Tabulator(that.$refs.table, {
+                this.table = new Tabulator("#tblGrid", {
                     data: tableData,
                     layout: "fitColumns",
                     reactiveData:true,
@@ -320,6 +314,11 @@
         }
     };
 </script>
+<style scoped>
+    :deep(.tabulator-header .tabulator-headers .tabulator-col) {
+        height: 71px !important;
+    }
+</style>
 
 
 

@@ -104,7 +104,7 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin(),
         new webpack.DefinePlugin({
-            // PRODUCTION: JSON.stringify(false),
+            //PRODUCTION: JSON.stringify(false),
             PRODUCTION: JSON.stringify(true),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false

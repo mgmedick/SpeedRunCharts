@@ -8,8 +8,8 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart v-if="!loading" :tabledata="tableData" :isgame="!userid" :showcharts="showcharts" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
-            <div id="tblGrid"></div>
+            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues"  @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
+            <div id="tblGrid" ref="table"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
             <template v-slot:title>
@@ -58,30 +58,32 @@
         },
         watch: {
             showalldata: function (val, oldVal) {
-                var data = this.showalldata ? this.tableData : this.tableData.filter(x => x.rank);
-                this.table.replaceData(data);
-                this.table.redraw();
-            }
-        },                
-        created: function () {
-            this.loadData();
+                this.loadData(true);
+            }            
         },
         mounted: function() {
+            this.loadData();
             window.speedRunGridVue = this;
         },
         methods: {
-            loadData() {
+            loadData(isReload) {
                 var that = this;
+                if (isReload) {
+                    this.$refs.table.classList.add("d-none");
+                }
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
-                        that.initGrid(res.data);
-                        that.loading = false;                      
+                        if (isReload) {
+                            that.$refs.table.classList.remove("d-none"); 
+                        }                                                
+                        that.initGrid(res.data);  
+                        that.loading = false;  
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            },                                                                 
+            },                                                                              
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
@@ -120,10 +122,10 @@
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
 
-                var filteredTableData = that.userid || that.showalldata ? tableData : tableData.filter(x => x.rank);
-                this.table = new Tabulator("#tblGrid", {
-                    data: filteredTableData,
+                this.table = new Tabulator(that.$refs.table, {
+                    data: tableData,
                     layout: "fitColumns",
+                    reactiveData:true,
                     //responsiveLayout: false,
                     tooltips: false,
                     tooltipsHeader:false,

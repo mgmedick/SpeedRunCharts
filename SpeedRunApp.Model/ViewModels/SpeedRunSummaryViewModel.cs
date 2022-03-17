@@ -57,11 +57,11 @@ namespace SpeedRunApp.Model.ViewModels
                     var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 2);
                     if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[0]))
                     {
-                        EmbeddedVideoLinks.Add(embeddedVideoLinkValue[0].Replace("&amp;", "&"));
+                        EmbeddedVideoLinks.Add(embeddedVideoLinkValue[0]);
 
                         if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[1]))
                         {
-                            VideoThumbnailLinks.Add(embeddedVideoLinkValue[1].Replace("&amp;", "&"));
+                            VideoThumbnailLinks.Add(embeddedVideoLinkValue[1]);
                         }
                     }                    
                 }

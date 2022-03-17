@@ -69,22 +69,7 @@ const getDateDiffList = (datePart, startDate, endDate) => {
 
 const formatTime = (timepart, value) => {
     var result;
-    var date = dayjs().startOf('day');
-
-    switch (timepart) {
-        case 'milliseconds':
-            result = date.millisecond(value);                       
-            break;
-        case 'seconds':
-            result = date.second(value);
-            break;
-        case 'minutes':
-            result = date.minute(value);
-            break;
-        case 'hours':
-            result = date.hour(value);
-            break;
-    }
+    var date = dayjs().startOf('day').add(value, timepart);
 
     if (date.hour() > 0) {
         result = date.format("hh[h] mm[m] ss[s]")
@@ -105,6 +90,9 @@ const escapeHtml = (value) => {
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
                 .replace("\'", "&#039;");
+    // let div = document.createElement('div');
+    // div.innerText = value;
+    // return div.innerHTML;            
 }
 
 export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml }

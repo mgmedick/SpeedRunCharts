@@ -90,9 +90,9 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID)
+        public JsonResult GetSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID, bool showAllData)
         {
-            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID);
+            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID, showAllData);
 
             return Json(results);
         }

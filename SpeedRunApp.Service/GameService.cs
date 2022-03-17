@@ -46,7 +46,7 @@ namespace SpeedRunApp.Service
         public SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID);
+            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank.HasValue);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };
             var gridVM = new SpeedRunGridTabViewModel(tabItems);
@@ -56,7 +56,7 @@ namespace SpeedRunApp.Service
         
         public SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID)
         {
-            var runs = _speedRunRepo.GetSpeedRunGridTabUserViews(i => i.UserID == userID);
+            var runs = _speedRunRepo.GetSpeedRunGridTabUserViews(i => i.UserID == userID && i.Rank.HasValue);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();            
             var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
@@ -70,7 +70,7 @@ namespace SpeedRunApp.Service
         public SpeedRunGridTabViewModel GetWorldRecordGridTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID);
+            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank.HasValue);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };    
             FilterTabsByHasData(tabItems, true);                             

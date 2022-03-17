@@ -71,7 +71,7 @@ namespace SpeedRunApp.Model.ViewModels
                 VideoLinks = new List<string>();
                 foreach (var videoLink in run.VideoLinks.Split(","))
                 {
-                    VideoLinks.Add(videoLink.Replace("&amp;", "&"));
+                    VideoLinks.Add(videoLink);
                 }
             }
 
@@ -82,7 +82,7 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     if (!string.IsNullOrWhiteSpace(embeddedVideoLink))
                     {
-                        EmbeddedVideoLinks.Add(embeddedVideoLink.Replace("&amp;", "&"));
+                        EmbeddedVideoLinks.Add(embeddedVideoLink);
                     }
                 }
             }

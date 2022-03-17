@@ -10,20 +10,36 @@
                 </div>
             </h5>
         </div>
-        <div class="container row chart-container" :style="[ showcharts ? null : { display:'none' } ]">
+        <div class="container row chart-container" style="min-height:300px;" :style="[ showcharts ? null : { display:'none' } ]">
             <div class="col-sm-4">
+                <div v-if="loading" class="d-flex" style="height:300px;">
+                    <div class="m-auto">
+                        <i class="fas fa-spinner fa-spin fa-lg"></i>
+                    </div>
+                </div>
                 <div id="divChart1"></div>
             </div>
             <div class="col-sm-4">
+                <div v-if="loading" class="d-flex" style="height:300px;">
+                    <div class="m-auto">
+                        <i class="fas fa-spinner fa-spin fa-lg"></i>
+                    </div>
+                </div>
                 <div id="divChart2"></div>
             </div>
             <div class="col-sm-4">
+                <div v-if="loading" class="d-flex" style="height:300px;">
+                    <div class="m-auto">
+                        <i class="fas fa-spinner fa-spin fa-lg"></i>
+                    </div>
+                </div>              
                 <div id="divChart3"></div>
             </div>
         </div>
     </div>
 </template>
 <script>
+    import axios from 'axios';
     const dayjs = require('dayjs');
     import { getDateDiffList, formatTime } from '../js/common.js';
     import FusionCharts from 'fusioncharts/core';
@@ -38,10 +54,20 @@
         name: "SpeedRunGridChartsVue",
         emits: ["onshowchartsclick"],
         props: {
-            tabledata: Array,
+            gameid: String,
+            categorytypeid: String,
+            categoryid: String,
+            levelid: String,
+            variablevalues: String,            
             isgame: Boolean,
             showcharts: Boolean
         },
+        data() {
+            return {
+                tabledata: [],
+                loading: true
+            }
+        },        
         computed: {
             isMediaMedium: function () {
                 return window.innerWidth > 768;
@@ -52,6 +78,18 @@
         },
         methods: {
             loadData() {
+                var that = this;
+                this.loading = true;
+
+                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: true } })
+                    .then(res => {
+                        that.tabledata = res.data;                                             
+                        that.loadCharts();  
+                        that.loading = false;  
+                    })
+                    .catch(err => { console.error(err); return Promise.reject(err); });
+            },            
+            loadCharts() {
                 var that = this;
                 FusionCharts.ready(function () {
                     var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1', that.isgame));
@@ -210,13 +248,13 @@
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
                             values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = '> ' + formatTime("milliseconds", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                            key = '> ' + formatTime("millisecond", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                             chartDataObj[key] = values;
                             break;
                         } else {
                             time = allSpeedRunTimes[index].primaryTimeMilliseconds;
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = '<= ' + formatTime("milliseconds", time) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                            key = '<= ' + formatTime("millisecond", time) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
 
                             if (index != prevIndex) {
                                 chartDataObj[key] = values;

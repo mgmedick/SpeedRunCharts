@@ -30,6 +30,14 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        public IEnumerable<IDNamePair> ExportTypes()
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_ExportType").ToList();
+            }
+        }        
+
         public IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -38,7 +46,7 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }
-
+        
         public IEnumerable<SpeedRunGridView> GetSpeedRunGridViews(Expression<Func<SpeedRunGridView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())

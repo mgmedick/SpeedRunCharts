@@ -52,6 +52,11 @@
         font-size: 13px;
         font-weight: bold;
     }
+    
+    :deep(.btn) {
+        font-size: 13px;
+        font-weight: bold;
+    }    
 
     :deep(.tab-list .nav-link.active) {
         background-color: var(--primary) !important;

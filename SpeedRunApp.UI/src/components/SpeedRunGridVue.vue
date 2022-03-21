@@ -21,6 +21,8 @@
 </template>
 <script>
     const dayjs = require('dayjs');
+    import XLSX from 'xlsx/dist/xlsx.full.min.js';
+    window.XLSX = XLSX; 
     import axios from 'axios';    
     import { getIntOrdinalString, escapeHtml } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
@@ -38,7 +40,6 @@
             levelid: String,
             variablevalues: String,
             userid: String,
-            showalldata: Boolean,
             showcharts: Boolean,
             variables: Array
         },
@@ -56,28 +57,39 @@
                 return window.innerWidth > 768;
             }
         },
-        watch: {
-            showalldata: function (val, oldVal) {
-                this.loadData();
-            }            
-        },
         mounted: function() {
-            this.loadData();
+            this.loadData(false);
             window.speedRunGridVue = this;
         },
         methods: {
-            loadData(isReload) {
+            loadData(showAllData) {
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
+                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: showAllData } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data); 
                         that.loading = false;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            },                                                                              
+            },  
+            export(exportTypeID) {
+                var exportType = '';
+                switch(exportTypeID){
+                    case "0":
+                        exportType = 'csv';
+                        break;
+                    case "1":
+                        exportType = 'json';
+                        break;
+                    case "2":
+                        exportType = 'xlsx';
+                        break;                    
+                }
+                
+                this.table.download(exportType, "data." + exportType, {sheetName:"My Data"});
+            },                                                                                        
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });

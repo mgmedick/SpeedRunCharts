@@ -49,7 +49,8 @@ namespace SpeedRunApp.Service
             var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank.HasValue);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };
-            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+            var exportTypes = _cacheService.GetExportTypes();                            
+            var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;
         }
@@ -61,8 +62,9 @@ namespace SpeedRunApp.Service
             var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
             var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(g => g.GameID == i.ID).ToList())).ToList();
-            FilterTabsByHasData(tabItems, true);                             
-            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+            FilterTabsByHasData(tabItems, true); 
+            var exportTypes = _cacheService.GetExportTypes();                            
+            var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;
         } 
@@ -74,7 +76,8 @@ namespace SpeedRunApp.Service
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };    
             FilterTabsByHasData(tabItems, true);                             
-            var gridVM = new SpeedRunGridTabViewModel(tabItems);
+            var exportTypes = _cacheService.GetExportTypes();                            
+            var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;
         }

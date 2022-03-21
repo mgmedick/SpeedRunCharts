@@ -12,5 +12,6 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<User> GetUsers();
         IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs();
         IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs();
+        IEnumerable<IDNamePair> GetExportTypes();
     }
 }

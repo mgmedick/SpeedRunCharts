@@ -24,7 +24,7 @@
                         </template>
                     </button-dropdown>    
                 </ul>
-            </div>
+            </div>          
         </div>
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
@@ -45,11 +45,11 @@
                                 </template>
                             </button-dropdown>                       
                         </ul>
-                    </div>
+                    </div>                    
                 </div>
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
-                        <div class="categoryrow row no-gutters pr-1 pt-1 pb-0 pr-0">
+                        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                             <div class="col tab-list">
                                 <ul class="nav nav-pills">
                                     <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
@@ -66,44 +66,53 @@
                                         </template>
                                     </button-dropdown>    
                                 </ul>
-                            </div>
+                            </div>                           
                         </div>
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick2="onShowChartsClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" :exporttypes="exportTypes" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
-                                        <div v-if="isgame">
-                                            <div class="row no-gutters pr-1 pt-1">
-                                                <div class="col-auto">
-                                                    <label class="tab-row-name pr-2">Hide Empty:</label>
+                                        <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                            <div class="col-auto">
+                                                <label class="tab-row-name pr-2">Hide Empty:</label>
+                                            </div>
+                                            <div class="col align-self-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
+                                                    <label class="custom-control-label" for="chkHideEmpty"></label>
                                                 </div>
-                                                <div class="col align-self-center">
-                                                    <div class="custom-control custom-switch">
-                                                        <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
-                                                        <label class="custom-control-label" for="chkHideEmpty"></label>
-                                                    </div>
+                                            </div>
+                                        </div> 
+                                        <div v-if="isgame" class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
+                                            <div class="col-auto pr-2">
+                                                <label class="tab-row-name">Show All Runs:</label>
+                                            </div>
+                                            <div class="col align-self-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
+                                                    <label class="custom-control-label" for="chkShowAllData"></label>
                                                 </div>
-                                            </div> 
-                                            <div class="row no-gutters pr-1 pt-0">
-                                                <div class="col-auto pr-2">
-                                                    <label class="tab-row-name">Show All Runs:</label>
-                                                </div>
-                                                <div class="col align-self-center">
-                                                    <div class="custom-control custom-switch">
-                                                        <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
-                                                        <label class="custom-control-label" for="chkShowAllData"></label>
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                        </div>                                       
-                                        <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                            </div>                                                
+                                        </div>  
+                                        <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
+                                            <div class="col-auto pr-2 ">
+                                                <input id="btnExport" type="button" class="btn btn-primary" value="Export" @click="onExportClick" />
+                                            </div>                                                          
+                                            <div class="col-auto align-self-end">
+                                                <select id="drpExportType" class="custom-select form-control" @change="onExportTypeChange">
+                                                    <option v-for="exportType in exportTypes" :value="exportType.id">{{ exportType.name }}</option>
+                                                </select>
+                                            </div>                                                                                          
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                    <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                                         <div class="col tab-list">
                                             <ul class="nav nav-pills">
                                                 <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
@@ -120,39 +129,48 @@
                                                     </template>
                                                 </button-dropdown>   
                                             </ul>
-                                        </div>
+                                        </div>                                      
                                     </div>
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick2="onShowChartsClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" :exporttypes="exportTypes" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
-                                                <div v-if="isgame">
-                                                    <div class="row no-gutters pr-1 pt-1">
-                                                        <div class="col-auto">
-                                                            <label class="tab-row-name pr-2">Hide Empty:</label>
-                                                        </div>
-                                                        <div class="col align-self-center">
-                                                            <div class="custom-control custom-switch">
-                                                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
-                                                                <label class="custom-control-label" for="chkHideEmpty"></label>
-                                                            </div>
+                                                <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                                    <div class="col-auto">
+                                                        <label class="tab-row-name pr-2">Hide Empty:</label>
+                                                    </div>
+                                                    <div class="col align-self-center">
+                                                        <div class="custom-control custom-switch">
+                                                            <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
+                                                            <label class="custom-control-label" for="chkHideEmpty"></label>
                                                         </div>
                                                     </div>
-                                                    <div class="row no-gutters pr-1 pt-0">
-                                                        <div class="col-auto pr-2">
-                                                            <label class="tab-row-name">Show All Runs:</label>
-                                                        </div>
-                                                        <div class="col align-self-center">
-                                                            <div class="custom-control custom-switch">
-                                                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
-                                                                <label class="custom-control-label" for="chkShowAllData"></label>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <div v-if="isgame" class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
+                                                    <div class="col-auto pr-2">
+                                                        <label class="tab-row-name">Show All Runs:</label>
                                                     </div>
-                                                </div>                                                                                                  
-                                                <speedrun-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                                    <div class="col align-self-center">
+                                                        <div class="custom-control custom-switch">
+                                                            <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
+                                                            <label class="custom-control-label" for="chkShowAllData"></label>
+                                                        </div>
+                                                    </div>                                                        
+                                                </div>
+                                                <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
+                                                    <div class="col-auto pr-2 ">
+                                                        <input id="btnExport" type="button" class="btn btn-primary" value="Export" @click="onExportClick" />
+                                                    </div>                                                          
+                                                    <div class="col-auto align-self-end">
+                                                        <select id="drpExportType" class="custom-select form-control" @change="onExportTypeChange">
+                                                            <option v-for="exportType in exportTypes" :value="exportType.id">{{ exportType.name }}</option>
+                                                        </select>
+                                                    </div>                                                                                          
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showcharts="showCharts" :variables="game.variables" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -186,6 +204,8 @@
                 hideEmpty: true,
                 showCharts: true,
                 showAllData: false,
+                exportTypeID: '0',
+                exportTypes: [],
                 loading: true
             }
         },
@@ -216,6 +236,7 @@
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
+                                    that.exportTypes = res.data.exportTypes,
                                     that.gameID = res.data.gameID;
                                     that.categoryTypeID = res.data.categoryTypeID;
                                     that.categoryID = res.data.categoryID;
@@ -384,10 +405,27 @@
             },
             onShowAllDataClick: function (event) {
                 this.showAllData = !this.showAllData;
+                var speedrungrid = this.getSpeedRunGrid(this);
+                speedrungrid.loadData(this.showAllData);                
             },            
             onShowChartsClick: function (event) {
                 this.showCharts = !this.showCharts;
             },
+            onExportTypeChange: function (event) {
+                this.exportTypeID = event.target.value;
+            },            
+            onExportClick: function (obj) {
+                var speedrungrid = this.getSpeedRunGrid(this);
+                speedrungrid.export(this.exportTypeID);
+            },  
+            getSpeedRunGrid: function (obj) {
+                var speedrungrid = obj.$refs.speedrungrid;
+                if (speedrungrid) {
+                    return speedrungrid;
+                } else {
+                    return this.getSpeedRunGrid(obj.$refs.speedrungridtabvariable);
+                }
+            },                      
             resizeSRTabs: function () {
                 var rows = document.querySelectorAll('#divSpeedRunGridTabContainer .tab-list');
 

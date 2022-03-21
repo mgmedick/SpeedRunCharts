@@ -19,12 +19,13 @@ namespace SpeedRunApp.Service
         public IMemoryCache _cache { get; set; }
         public IUserRepository _userRepo { get; set; }
         public IGameRepository _gameRepo { get; set; }
-
-        public CacheService(IMemoryCache cache, IUserRepository userRepo, IGameRepository gameRepo)
+        public ISpeedRunRepository _speedRunRepo { get; set; }
+        public CacheService(IMemoryCache cache, IUserRepository userRepo, IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
         {
             _cache = cache;
             _userRepo = userRepo;
             _gameRepo = gameRepo;
+            _speedRunRepo = speedRunRepo;
         }
 
         public IEnumerable<User> GetUsers()
@@ -37,6 +38,18 @@ namespace SpeedRunApp.Service
             }
 
             return users;
+        }
+        
+        public IEnumerable<IDNamePair> GetExportTypes()
+        {
+            IEnumerable<IDNamePair> exportTypes = null;
+            if (!_cache.TryGetValue<IEnumerable<IDNamePair>>("exportTypes", out exportTypes))
+            {
+                exportTypes = _speedRunRepo.ExportTypes();
+                _cache.Set("exportTypes", exportTypes);
+            }
+
+            return exportTypes;
         }
 
         public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()

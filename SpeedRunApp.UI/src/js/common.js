@@ -95,7 +95,11 @@ const escapeHtml = (value) => {
     // return div.innerHTML;            
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml }
+const formatFileName = (value) => {
+    return value.replaceAll("[\\\\/:*?\"<>|]", "");           
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml, formatFileName }
 
 
 

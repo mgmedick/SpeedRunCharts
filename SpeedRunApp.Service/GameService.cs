@@ -49,7 +49,8 @@ namespace SpeedRunApp.Service
             var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank.HasValue);
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };
-            var exportTypes = _cacheService.GetExportTypes();                            
+            var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
+                                                       new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                                      
             var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;
@@ -63,7 +64,8 @@ namespace SpeedRunApp.Service
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
             var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(g => g.GameID == i.ID).ToList())).ToList();
             FilterTabsByHasData(tabItems, true); 
-            var exportTypes = _cacheService.GetExportTypes();                            
+            var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
+                                                       new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            
             var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;
@@ -76,7 +78,8 @@ namespace SpeedRunApp.Service
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var tabItems = new List<GameViewModel>() { new GameViewModel(gamevw, runVMs) };    
             FilterTabsByHasData(tabItems, true);                             
-            var exportTypes = _cacheService.GetExportTypes();                            
+            var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
+                                                       new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            
             var gridVM = new SpeedRunGridTabViewModel(tabItems, exportTypes);
 
             return gridVM;

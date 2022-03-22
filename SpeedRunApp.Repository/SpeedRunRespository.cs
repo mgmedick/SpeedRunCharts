@@ -29,15 +29,7 @@ namespace SpeedRunApp.Repository
                 return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_RunStatusType").ToList();
             }
         }
-
-        public IEnumerable<IDNamePair> ExportTypes()
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<IDNamePair>("SELECT ID, Name FROM dbo.tbl_ExportType").ToList();
-            }
-        }        
-
+        
         public IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())

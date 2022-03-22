@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
+            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
@@ -21,10 +21,8 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    import XLSX from 'xlsx/dist/xlsx.full.min.js';
-    window.XLSX = XLSX; 
     import axios from 'axios';    
-    import { getIntOrdinalString, escapeHtml } from '../js/common.js';
+    import { getIntOrdinalString, escapeHtml, formatFileName } from '../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
     import tippy from 'tippy.js'
@@ -41,7 +39,8 @@
             variablevalues: String,
             userid: String,
             showcharts: Boolean,
-            variables: Array
+            variables: Array,
+            title: String
         },
         data() {
             return {
@@ -75,34 +74,29 @@
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
             export(exportTypeID) {
-                var exportType = '';
+                var title = formatFileName(this.title);
                 switch(exportTypeID){
                     case "0":
-                        exportType = 'csv';
+                        this.table.download('csv', title + ".csv");
                         break;
                     case "1":
-                        exportType = 'json';
-                        break;
-                    case "2":
-                        exportType = 'xlsx';
-                        break;                    
-                }
-                
-                this.table.download(exportType, "data." + exportType, {sheetName:"My Data"});
+                        this.table.download('json', title + ".json");
+                        break;              
+                }                
             },                                                                                        
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2 }, //, minWidth:30, maxWidth:50
+                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
+                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, accessorDownload: that.playerDownloadAccessor, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
+                    { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
                     { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
                     { title: "Verified Date", field: "verifyDate", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
-                    { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
@@ -126,7 +120,7 @@
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
                 });
 
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink:2 });
+                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, accessorDownload: that.commentDownloadAccessor, hozAlign: "center", headerSort: false, width: 50, widthShrink:2, titleDownload:"Comment" });
 
                 this.table = new Tabulator("#tblGrid", {
                     data: tableData,
@@ -200,7 +194,10 @@
                 html += '</span>'
 
                 return html;
-            },
+            },   
+            playerDownloadAccessor(value, data, type, params, column) {
+                return value?.map(el => el.name).join('\r\n');
+            },                        
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var value = cell.getRow().getCell("primaryTimeString").getValue();
@@ -211,6 +208,16 @@
 
                 return html;
             },
+            primaryTimeDownloadAccessor(value, data, type, params, column) {
+                var html = '';
+                var value = cell.getRow().getCell("primaryTimeString").getValue();
+
+                if (value) {
+                    html += value
+                }
+
+                return html;
+            },            
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
                 var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
@@ -234,7 +241,10 @@
                 }
 
                 return html;
-            },                     
+            },
+            commentDownloadAccessor(value, data, type, params, column) {
+                return value ?? '';
+            },                                   
             dateSorter(a, b, aRow, bRow, column, dir, sorterParams){
                 return new Date(a) - new Date(b);
             },            

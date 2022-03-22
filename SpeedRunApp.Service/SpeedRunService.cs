@@ -57,10 +57,7 @@ namespace SpeedRunApp.Service
         public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID)
         {
             var gameVM = _gamesService.GetGame(gameID);
-            var statusTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)RunStatusType.New, Name = RunStatusType.New .ToString() },
-                                                       new IDNamePair() { ID = (int)RunStatusType.Rejected, Name = RunStatusType.Rejected .ToString() },
-                                                       new IDNamePair() { ID = (int)RunStatusType.Verified, Name = RunStatusType.Verified .ToString() } };
-
+            var statusTypes = _cacheService.GetRunStatusTypes();
             SpeedRunViewModel runVM = null;
             if (speedRunID.HasValue)
             {

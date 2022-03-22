@@ -11,7 +11,6 @@ namespace SpeedRunApp.Interfaces.Repositories
     {
         IEnumerable<SpeedRunSummaryView> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset);
         IEnumerable<IDNamePair> RunStatusTypes();
-        IEnumerable<IDNamePair> ExportTypes();
         IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null);
         IEnumerable<SpeedRunGridView> GetSpeedRunGridViews(Expression<Func<SpeedRunGridView, bool>> predicate);
         IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate);

@@ -61,7 +61,8 @@
             variablevalues: String,            
             userid: String,            
             isgame: Boolean,
-            showcharts: Boolean
+            showcharts: Boolean,
+            title: String
         },
         data() {
             return {
@@ -178,9 +179,10 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: isGame ? 'World Record Progression' : 'Personal Best Progression',
-                            subCaption: 'Per Day',
-                            subCaptionFontSize: 12,
+                            caption: isGame ? 'World Records (Last 20)' : 'Personal Bests',
+                            captionFontSize: 14,                           
+                            subCaption: that.title,
+                            subCaptionFontSize: 11,
                             xAxis: 'Date',
                             yAxis: 'Time (Minutes)',
                             canvasPadding: 5, 
@@ -194,7 +196,7 @@
                             anchorRadius: 5,
                             anchorBgColor: "#303030",
                             anchorBorderThickness: 1,                                                   
-                            exportEnabled: 0,
+                            exportEnabled: 1,
                             showValues: 0,
                             formatNumberScale: 1,
                             numberOfDecimals: 0,
@@ -219,6 +221,7 @@
                 return chartConfig;
             },
             getSpeedRunsPercentileChart(container) {
+                var that = this;
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
@@ -282,14 +285,16 @@
                     dataSource: {
                         chart: {
                             caption: 'Time Percentiles',
-                            subCaption: '',
+                            captionFontSize: 14,                            
+                            subCaption: that.title,
+                            subCaptionFontSize: 11,
                             showValues: 1,
                             legendItemFontSize: 12,
                             formatNumberScale: 0,
                             numberOfDecimals: 0,
                             showPercentValues: 0,
                             showPercentInTooltip: 0,
-                            exportEnabled: 0,
+                            exportEnabled: 1,
                             showLegend: 1,
                             showLabels: 0,
                             theme: "candy",
@@ -360,6 +365,7 @@
             //     return chartConfig;
             // },
             getTopSpeedRunChart(container, isGame) {
+                var that = this;                
                 var categories = [];
                 var dataset = [];
 
@@ -404,13 +410,15 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: isGame ? 'Top 10 Ranked' : 'Top 10',
-                            subCaption: '',
+                            caption: 'Top 10',
+                            captionFontSize: 14,                            
+                            subCaption: that.title,
+                            subCaptionFontSize: 11,
                             xAxis: '',
                             yAxis: 'Time (Minutes)',
                             labelFontSize: 11,
                             labelVAlign: 'middle',                            
-                            exportEnabled: 0,
+                            exportEnabled: 1,
                             showValues: 1,
                             valueFontSize: 11,
                             formatNumberScale: 1,
@@ -441,6 +449,25 @@
    :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
         display:none !important;
     }
+   :deep(.fusioncharts-container>svg>g>g:last-of-type>g>g>rect) {
+        fill:#444 !important;
+        stroke: #222 !important;
+    }    
+   :deep(.fusioncharts-container > svg + div) {
+        background:#444 !important;
+        box-shadow: none !important;
+        border-color: #222 !important;
+    }      
+   :deep(.fusioncharts-container > svg + div div) {
+        background:#444 !important;
+    }             
+   :deep(.fusioncharts-container > svg + div div span) {
+        color: #fff !important;        
+        background:#444 !important;
+    }     
+   :deep(.fusioncharts-container > svg + div div span:hover) {
+        background-color: rgba(255,255,255,.15) !important;
+    }        
 </style>
 
 

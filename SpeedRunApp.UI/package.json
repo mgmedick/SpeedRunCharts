@@ -47,7 +47,6 @@
     "vue": "^3.1.5",
     "vue-final-modal": "^3.4.0",
     "vue-next-select": "^2.8.0",
-    "vue-tippy": "^6.0.0-alpha.33",
-    "xlsx": "^0.18.4"
+    "vue-tippy": "^6.0.0-alpha.33"
   }
 }

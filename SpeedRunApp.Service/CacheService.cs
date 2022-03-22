@@ -40,16 +40,16 @@ namespace SpeedRunApp.Service
             return users;
         }
         
-        public IEnumerable<IDNamePair> GetExportTypes()
+        public IEnumerable<IDNamePair> GetRunStatusTypes()
         {
-            IEnumerable<IDNamePair> exportTypes = null;
-            if (!_cache.TryGetValue<IEnumerable<IDNamePair>>("exportTypes", out exportTypes))
+            IEnumerable<IDNamePair> runStatusTypes = null;
+            if (!_cache.TryGetValue<IEnumerable<IDNamePair>>("runStatusTypes", out runStatusTypes))
             {
-                exportTypes = _speedRunRepo.ExportTypes();
-                _cache.Set("exportTypes", exportTypes);
+                runStatusTypes = _speedRunRepo.RunStatusTypes();
+                _cache.Set("runStatusTypes", runStatusTypes);
             }
 
-            return exportTypes;
+            return runStatusTypes;
         }
 
         public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()

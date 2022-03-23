@@ -216,18 +216,16 @@
             title: function () {
                 var result = '';
                 var game = this.items.filter(i=>i.id == this.gameID)[0];
+                var gameName = game.name;
                 var categoryTypeName = game.categoryTypes.filter(i => i.id == this.categoryTypeID)[0]?.name;
                 var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
                 var levelName = game.levelTabs?.filter(i=>i.id == this.levelID)[0]?.name;
-                var variableValueNames = Object.keys(this.subCategoryVariableValueIDs).map(i => this.subCategoryVariableValueIDs[i]).join(' - ');
+                var variableValueNames = Object.keys(this.subCategoryVariableValueIDs).map(i => this.subCategoryVariableValueIDs[i]).join(' - ');              
                 
-                if(levelName) {
-                    result = [game.name, categoryTypeName, categoryName, levelName, variableValueNames].join(' - ');
-                } else {
-                    result = [game.name, categoryTypeName, categoryName, variableValueNames].join(' - ');
-                }
+                result = [gameName, categoryTypeName, categoryName, levelName, variableValueNames].join(' - ');
+                result = result.replace(/^[ -]+|[ -]+$/g, '');
                 
-                return result.slice(0, -3);
+                return result;
             }
         },    
         created: function () {

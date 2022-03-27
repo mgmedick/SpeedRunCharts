@@ -53,7 +53,7 @@
                             <label for="spnModerators" class="col-form-label pt-0 pb-1 font-weight-bold">Moderators</label>
                             <div>
                                 <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px;">
-                                    @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
+                                    @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { ID = i.ID }).ToHtmlString()))
                                 </span>
                             </div>
                         </div>

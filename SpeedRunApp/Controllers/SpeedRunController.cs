@@ -343,35 +343,35 @@ namespace SpeedRunApp.MVC.Controllers
                 new ClaimsPrincipal(identity));
         }
 
-        [Route("/sitemap.xml")]
-        public void SitemapXml()
-        {
-            string host = Request.Scheme + "://" + Request.Host;
+        // [Route("/sitemap.xml")]
+        // public void SitemapXml()
+        // {
+        //     string host = Request.Scheme + "://" + Request.Host;
 
-            Response.ContentType = "application/xml";
+        //     Response.ContentType = "application/xml";
 
-            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
-            if (syncIOFeature != null)
-            {
-                syncIOFeature.AllowSynchronousIO = true;
-            }
+        //     var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+        //     if (syncIOFeature != null)
+        //     {
+        //         syncIOFeature.AllowSynchronousIO = true;
+        //     }
 
-            using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
-            {
-                xml.WriteStartDocument();
-                xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        //     using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
+        //     {
+        //         xml.WriteStartDocument();
+        //         xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-                xml.WriteStartElement("url");
-                xml.WriteElementString("loc", host);
-                xml.WriteEndElement();
+        //         xml.WriteStartElement("url");
+        //         xml.WriteElementString("loc", host);
+        //         xml.WriteEndElement();
 
-                xml.WriteStartElement("url");
-                xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
-                xml.WriteEndElement();
+        //         xml.WriteStartElement("url");
+        //         xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
+        //         xml.WriteEndElement();
 
-                xml.WriteEndElement();
-            }
-        }
+        //         xml.WriteEndElement();
+        //     }
+        // }
 
         //jqvalidate
         [AllowAnonymous]

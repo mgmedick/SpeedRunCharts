@@ -160,11 +160,11 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.Moderators))
             {
-                Moderators = new List<IDNamePair>();
+                Moderators = new List<IDNameAbbrPair>();
                 foreach (var moderator in game.Moderators.Split("^^"))
                 {
-                    var values = moderator.Split("|", 2);
-                    Moderators.Add(new IDNamePair { ID = Convert.ToInt32(values[0]), Name = values[1] });
+                    var values = moderator.Split("¦", 3);
+                    Moderators.Add(new IDNameAbbrPair { ID = Convert.ToInt32(values[0]), Name = values[1], Abbr = values[2] });
                 }
             }
         }
@@ -365,7 +365,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Variable> SubCategoryVariables { get; set; }
         public List<Variable> SubCategoryVariablesTabs { get; set; }
         public List<IDNamePair> Platforms { get; set; }
-        public List<IDNamePair> Moderators { get; set; }
+        public List<IDNameAbbrPair> Moderators { get; set; }
         public string PlatformsString
         {
             get

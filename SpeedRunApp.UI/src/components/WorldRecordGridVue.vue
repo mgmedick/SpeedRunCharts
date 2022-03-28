@@ -51,11 +51,9 @@
             isMediaMedium: function () {
                 return window.innerWidth > 768;
             }
-        },            
-        created: function () {
-            this.loadData();
         },
         mounted: function() {
+            this.loadData();
             window.worldRecordGridVue = this;
         },
         methods: {

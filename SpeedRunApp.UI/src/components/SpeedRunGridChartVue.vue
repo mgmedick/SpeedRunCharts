@@ -75,7 +75,7 @@
                 return window.innerWidth > 768;
             }
         },        
-        created: function () {
+        mounted: function () {
             this.loadData();
         },
         methods: {

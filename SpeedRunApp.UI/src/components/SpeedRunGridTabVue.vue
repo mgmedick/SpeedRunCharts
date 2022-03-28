@@ -72,7 +72,7 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
                                         <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -108,7 +108,7 @@
                                             </div>                                                                                          
                                         </div>
                                         <div class="clearfix"></div>
-                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showcharts="showCharts" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -134,7 +134,7 @@
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showalldata="showAllData" :showcharts="showCharts" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -170,7 +170,7 @@
                                                     </div>                                                                                          
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showcharts="showCharts" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -228,7 +228,7 @@
                 return result;
             }
         },    
-        created: function () {
+        mounted: function () {
             if (window.innerWidth > 992) {
                 this.showCharts = true;
             } else {
@@ -418,9 +418,7 @@
                 this.resetSelected();
             },
             onShowAllDataClick: function (event) {
-                this.showAllData = !this.showAllData;
-                var speedrungrid = this.getSpeedRunGrid(this);
-                speedrungrid.loadData(this.showAllData);                
+                this.showAllData = !this.showAllData;              
             },            
             onShowChartsClick: function (event) {
                 this.showCharts = !this.showCharts;

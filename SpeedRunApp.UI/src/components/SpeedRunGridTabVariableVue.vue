@@ -58,7 +58,7 @@
                         </div>                                                                                               
                     </div>   
                     <div class="clearfix"></div>
-                    <speedrun-grid ref="speedrungrid" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid" :showcharts="showcharts" :variables="variables" :exporttypes="exporttypes" :title="title" @onshowchartsclick1="$emit('onshowchartsclick2', $event)" @onexportclick="$emit('onexportclick', $event)"></speedrun-grid>
+                    <speedrun-grid ref="speedrungrid" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :userid="userid" :showcharts="showcharts" :showalldata="showalldata" :variables="variables" :exporttypes="exporttypes" :title="title" @onshowchartsclick1="$emit('onshowchartsclick2', $event)" @onexportclick="$emit('onexportclick', $event)"></speedrun-grid>
                 </div>
             </div>
         </div>

@@ -39,6 +39,7 @@
             variablevalues: String,
             userid: String,
             showcharts: Boolean,
+            showalldata: Boolean,
             variables: Array,
             title: String
         },
@@ -56,16 +57,21 @@
                 return window.innerWidth > 768;
             }
         },
+        watch: {
+            showalldata: function (val, oldVal) {
+                this.loadData();
+            }
+        },            
         mounted: function() {
-            this.loadData(false);
+            this.loadData();
             window.speedRunGridVue = this;
         },
         methods: {
-            loadData(showAllData) {
+            loadData() {
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: showAllData } })
+                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data); 

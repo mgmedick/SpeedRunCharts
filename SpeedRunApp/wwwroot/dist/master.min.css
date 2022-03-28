@@ -119,31 +119,31 @@
 }
 
 
-[data-v-9b3949c8] .tabulator-header .tabulator-headers .tabulator-col {
+[data-v-3926aade] .tabulator-header .tabulator-headers .tabulator-col {
         height: 71px !important;
 }
 
 
-[data-v-570799d4] .fusioncharts-container>svg>g:nth-of-type(2) {
+[data-v-7a658964] .fusioncharts-container>svg>g:nth-of-type(2) {
         display:none !important;
 }
-[data-v-570799d4] .fusioncharts-container>svg>g>g:last-of-type>g>g>rect {
+[data-v-7a658964] .fusioncharts-container>svg>g>g:last-of-type>g>g>rect {
         fill:#444 !important;
         stroke: #222 !important;
 }
-[data-v-570799d4] .fusioncharts-container > svg + div {
+[data-v-7a658964] .fusioncharts-container > svg + div {
         background:#444 !important;
         box-shadow: none !important;
         border-color: #222 !important;
 }
-[data-v-570799d4] .fusioncharts-container > svg + div div {
+[data-v-7a658964] .fusioncharts-container > svg + div div {
         background:#444 !important;
 }
-[data-v-570799d4] .fusioncharts-container > svg + div div span {
+[data-v-7a658964] .fusioncharts-container > svg + div div span {
         color: #fff !important;        
         background:#444 !important;
 }
-[data-v-570799d4] .fusioncharts-container > svg + div div span:hover {
+[data-v-7a658964] .fusioncharts-container > svg + div div span:hover {
         background-color: rgba(255,255,255,.15) !important;
 }        
 

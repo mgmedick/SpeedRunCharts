@@ -131,7 +131,7 @@
                 return this.isgame ? '' : this.id;
             }
         },
-        created: function () {
+        mounted: function () {
             this.loadData();            
             window.addEventListener('resize', this.resizeWRTabs);
         },

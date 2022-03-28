@@ -187,11 +187,12 @@
             playerFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
                 var valueString = value?.map(el => el.name).join();
-                var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                //var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                var html = '<span>'
 
                 value?.forEach(el => {
                     if (el.id > 0) {
-                        html += "<a href='/User/UserDetails/" + el.abbr + "'>" + el.name + "</a><br/>";
+                        html += "<a href='/User/UserDetails/" + el.abbr + "' class='text-primary'>" + el.name + "</a><br/>";
                     } else {
                         html += el.name;
                     }          

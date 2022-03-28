@@ -305,23 +305,39 @@ body {
     font-size: 0.9375rem;
 }
 
-    body.theme-dark {
-        color: #fff;
-        background-color: #222 !important;
-    }
+body.theme-dark {
+    color: #fff;
+    background-color: #222 !important;
+}
 
-    body.theme-light {
-        background-color: #fff !important;
-    }
+body.theme-light {
+    background-color: #fff !important;
+}
 
 a {
     color: #158cba;
 }
 
-    a:hover {
-        color: #0d5875;
-        /*text-decoration: underline;*/
-    }
+a:hover {
+    color: #0d5875;
+    /*text-decoration: underline;*/
+}
+
+.theme-dark a.text-primary:focus, a.text-primary:hover {
+    color: #158cba !important;
+}
+
+.theme-dark .bg-secondary a .text-secondary:hover, a.text-primary:focus {
+    color: #158cba !important;
+}
+
+.theme-dark .bg-dark a .text-secondary:hover, a.text-primary:focus {
+    color: #158cba !important;
+} 
+
+.theme-dark .bg-dark a .text-primary:hover, a.text-primary:focus {
+    color: #158cba !important;
+}
 
 caption {
     color: var(--gray);

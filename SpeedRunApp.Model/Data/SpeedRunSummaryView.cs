@@ -26,5 +26,6 @@ namespace SpeedRunApp.Model.Data
         public long? PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public DateTime ImportedDate { get; set; }
     }
 } 

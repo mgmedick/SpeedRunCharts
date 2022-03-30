@@ -18,6 +18,7 @@ namespace SpeedRunApp.Model.ViewModels
             Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
+            ImportedDate = run.ImportedDate;
             Rank = run.Rank;
 
             if(run.LevelID.HasValue) {
@@ -89,7 +90,7 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-
+        public DateTime ImportedDate { get; set; }
         string _subCategoryVariableValuesString = null;
         public string SubCategoryVariableValuesString
         {
@@ -173,6 +174,14 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return VerifyDate?.ToRealtiveDateString(true);
             }
-        }        
+        }
+
+        public string RelativeImportedDateStringShort
+        {
+            get
+            {
+                return ImportedDate.ToRealtiveDateString(true);
+            }
+        }                
     }
 }

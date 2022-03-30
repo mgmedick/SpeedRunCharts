@@ -41,7 +41,7 @@
         },
         methods: {
             reLoadData: function () {
-                var orderValues = Array.prototype.map.call(document.getElementsByClassName('orderValue'), i => i.value);
+                var orderValues = Array.from(document.querySelectorAll('.orderValue')).map(i => i.value);
                 var offset = orderValues.length > 0 ? Math.min.apply(null, orderValues) : null;
 
                 this.offset = offset;

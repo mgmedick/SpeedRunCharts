@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-auto pl-1 align-self-end">
                     &middot;
-                    <small class="text-secondary pl-1">{{ item.relativeVerifyDateStringShort }}</small>
+                    <small class="text-secondary pl-1">{{ item.relativeImportedDateStringShort }}</small>
                 </div>
                 <div class="col-auto ml-auto p-0 align-self-start">
                     <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>

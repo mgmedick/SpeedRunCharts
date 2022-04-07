@@ -79,12 +79,14 @@
                         that.initGrid(res.data);                        
                         that.loading = false;
                         if (that.speedrunid) {
+                            var index = that.tableData.findIndex(i => i.id == that.speedrunid);
+                            if (index > -1) {
                                 that.table.selectRow(that.speedrunid);
-                                var index = that.tableData.findIndex(i => i.id == that.speedrunid) + 1;
                                 var page = Math.ceil(index / that.pageSize);
                                 if(page > 1) {
                                     that.table.setPage(page);
                                 }
+                            }
                         }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });

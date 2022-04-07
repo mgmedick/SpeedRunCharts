@@ -72,7 +72,7 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
+                                        <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedrunid" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
                                         <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -108,7 +108,7 @@
                                             </div>                                                                                          
                                         </div>
                                         <div class="clearfix"></div>
-                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedrunid" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -134,7 +134,7 @@
                                     <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
+                                                <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedrunid" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <div v-if="isgame" class="row no-gutters pr-1 pt-1">
@@ -170,7 +170,7 @@
                                                     </div>                                                                                          
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedrunid" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :title="title" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +190,8 @@
         name: "SpeedRunGridTabVue",
         props: {
             isgame: Boolean,
-            id: String
+            id: String,
+            speedrunid: String
         },
         data() {
             return {
@@ -246,7 +247,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = this.isgame ? '/Game/GetSpeedRunGridTabs?gameID=' + this.id : '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id;
+                var url = this.isgame ? '/Game/GetSpeedRunGridTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid : '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id + '&speedRunID=' + this.speedrunid;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
@@ -256,6 +257,7 @@
                                     that.categoryID = res.data.categoryID;
                                     that.levelID = res.data.levelID;
                                     that.subCategoryVariableValueIDs = res.data.subCategoryVariableValueIDs;
+                                    that.showAllData = res.data.showAllData;
                                     that.initSelected();
                                     that.loading = false;
                                     return res;
@@ -444,9 +446,10 @@
                 for (var g = 0; g < rows.length; g++) {
                     var totalWidth = 0;
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morebtn =  rows[g].querySelector('.more');
-                    var moreItems = morebtn.querySelectorAll('a.dropdown-item');
-                    var moredrp = morebtn.querySelector('.dropdown-menu');
+                    var morediv =  rows[g].querySelector('.more');
+                    var morebtn =  morediv.querySelector('.btn');
+                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
+                    var moredrp = morediv.querySelector('.dropdown-menu');
 
                     for (var i = 0; i < tabitems.length; i++) {
                         tabitems[i].style.left = "-10000px";
@@ -461,10 +464,16 @@
                         }
                     }
 
-                    morebtn.style.display = morebtn.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
+                    morediv.style.display = morediv.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
+                    
+                    if (morediv.querySelectorAll('a:not(.d-none).active').length > 0) {
+                        morebtn.classList.add('active');
+                    } else {
+                        morebtn.classList.remove('active');
+                    }
 
                     var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morebtn);
+                    var pos = this.getPosition(morediv);
                     if (pos.x > (ww / 2)) {
                         moredrp.classList.remove('dropdown-menu-left');
                         moredrp.classList.add('dropdown-menu-right');

@@ -326,7 +326,11 @@ a:hover {
     color: #158cba !important;
 }
 
-.theme-dark .bg-secondary a .text-secondary:hover, a.text-primary:focus {
+.theme-dark a.text-secondary:focus, a.text-secondary:hover {
+    color: #158cba !important;
+}
+
+/* .theme-dark .bg-secondary a .text-secondary:hover, a.text-primary:focus {
     color: #158cba !important;
 }
 
@@ -336,7 +340,7 @@ a:hover {
 
 .theme-dark .bg-dark a .text-primary:hover, a.text-primary:focus {
     color: #158cba !important;
-}
+} */
 
 caption {
     color: var(--gray);
@@ -2544,9 +2548,9 @@ a .text-primary:hover, a.text-primary:focus {
     color: var(--text-color27) !important;
 }
 
-a.text-secondary:hover, a.text-secondary:focus {
+/* a.text-secondary:hover, a.text-secondary:focus {
     color: var(--text-color28) !important;
-}
+} */
 
 .theme-light .bg-secondary .text-secondary {
     color: #ccc !important;
@@ -3201,6 +3205,12 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .theme-dark .tabulator-row.tabulator-selectable:hover{
+    /* color: #262626 !important;
+    background-color: #E0E0E0 !important;     */
+    background-color: rgba(255,255,255,.15) !important;
+}
+
+.theme-dark .tabulator-row.tabulator-selected{
     /* color: #262626 !important;
     background-color: #E0E0E0 !important;     */
     background-color: rgba(255,255,255,.15) !important;

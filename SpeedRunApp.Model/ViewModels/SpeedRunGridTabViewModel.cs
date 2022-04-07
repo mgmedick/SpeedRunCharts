@@ -11,15 +11,17 @@ namespace SpeedRunApp.Model.ViewModels
             ExportTypes = exportTypes;
         }
 
-        public SpeedRunGridTabViewModel(IEnumerable<GameViewModel> tabItems, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<int, int> variableValueIDs)
+        public SpeedRunGridTabViewModel(IEnumerable<GameViewModel> tabItems, IEnumerable<IDNamePair> exportTypes, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<string, string> subCategoryVariableValueIDs, bool showAllData)
         {
             TabItems = tabItems;
+            ExportTypes = exportTypes;
             GameID = gameID;
             CategoryTypeID = categoryTypeID;
             CategoryID = categoryID;
             LevelID = levelID;
-            VariableValueIDs = variableValueIDs;
-        }
+            SubCategoryVariableValueIDs = subCategoryVariableValueIDs;
+            ShowAllData = showAllData;
+        }        
 
         public IEnumerable<GameViewModel> TabItems { get; set; }
         public IEnumerable<IDNamePair> ExportTypes { get; set; }
@@ -27,6 +29,7 @@ namespace SpeedRunApp.Model.ViewModels
         public int? CategoryTypeID { get; set; }
         public int? CategoryID { get; set; }
         public int? LevelID { get; set; }
-        public Dictionary<int, int> VariableValueIDs { get; set; }
+        public Dictionary<string, string> SubCategoryVariableValueIDs { get; set; }
+        public bool? ShowAllData { get; set; }
     }
 }

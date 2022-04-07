@@ -13,7 +13,7 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <speedrun-grid-tab :isgame="isgame" :id="id"></speedrun-grid-tab>
+            <speedrun-grid-tab :isgame="isgame" :id="id" :speedrunid="speedrunid"></speedrun-grid-tab>
         </div>
         <div v-else>
             <worldrecord-grid-tab :isgame="isgame" :id="id"></worldrecord-grid-tab>   
@@ -25,7 +25,8 @@
         name: "GridTabContainerVue",
         props: {
             isgame: Boolean,
-            id: String
+            id: String,
+            speedrunid: String
         },
         data() {
             return {

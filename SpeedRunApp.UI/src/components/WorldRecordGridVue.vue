@@ -44,7 +44,8 @@
                 tableData: [],
                 loading: true,
                 speedRunID: String,
-                showDetailModal: false
+                showDetailModal: false,
+                pageSize: 100
             }
         },
         computed: {
@@ -122,9 +123,9 @@
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
-                    paginationSize: 100,
-                    movableColumns: this.isMediaMedium,
-                    resizableColumns: this.isMediaMedium ? "header" : false,
+                    paginationSize: that.pageSize,
+                    movableColumns: that.isMediaMedium,
+                    resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: true,
                     initialSort: sortList,
                     columns: columns,

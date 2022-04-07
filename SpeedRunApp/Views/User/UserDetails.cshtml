@@ -1,4 +1,4 @@
-﻿@model SpeedRunApp.Model.ViewModels.UserViewModel
+﻿@model SpeedRunApp.Model.ViewModels.UserDetailsViewModel
 
 <div class="container p-0">
     @if (Model == null)
@@ -14,12 +14,12 @@
     {
          <div class="container d-flex p-0">
             <div class="col-auto p-0 align-self-end">
-                <h5 class="m-0 font-weight-bold">@Model.Name</h5>
+                <h5 class="m-0 font-weight-bold">@Model.UserVM.Name</h5>
             </div>
             <div class="col-sm-2 pl-1 align-self-end">
-                <a href="@Model.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-                <a href="@Model.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" style="@((Model.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
-                <a href="@Model.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+                <a href="@Model.UserVM.TwitterProfile"><img src="/dist/fonts/Twitter_Logo_WhiteOnBlue.svg" class="img-fluid brand-logo p-1" style="@((Model.UserVM.TwitterProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+                <a href="@Model.UserVM.TwitchProfile"><img src="/dist/fonts/TwitchGlitchPurple.svg" class="img-fluid brand-logo p-1" style="@((Model.UserVM.TwitchProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
+                <a href="@Model.UserVM.YoutubeProfile"><img src="/dist/fonts/youtube_social_square_red.svg" class="img-fluid brand-logo p-1" style="@((Model.UserVM.YoutubeProfile == null) ? "display:none" : "")" alt="Responsive image"></a>
             </div>
         </div>
         <div>
@@ -38,13 +38,13 @@
                             <tbody>
                                 <tr>
                                     <td class="pr-2">
-                                        <span id="spnTotalSpeedRuns" class="form-control" style="width:100px;">@Model.TotalSpeedRuns</span>
+                                        <span id="spnTotalSpeedRuns" class="form-control" style="width:100px;">@Model.UserVM.TotalSpeedRuns</span>
                                     </td>
                                     <td class="px-2">
-                                        <span id="spnTotalWorldRecords" class="form-control" style="width:100px;">@Model.TotalWorldRecords</span>
+                                        <span id="spnTotalWorldRecords" class="form-control" style="width:100px;">@Model.UserVM.TotalWorldRecords</span>
                                     </td>
                                     <td class="px-2">
-                                        <span id="spnTotalPersonalBests" class="form-control" style="width:100px;">@Model.TotalPersonalBests</span>
+                                        <span id="spnTotalPersonalBests" class="form-control" style="width:100px;">@Model.UserVM.TotalPersonalBests</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <grid-tab-container :isgame="false" :id="'@Model.ID'"></grid-tab-container>
+            <grid-tab-container :isgame="false" :id="'@Model.UserVM.ID'" :speedrunid="'@Model.SpeedRunID'"></grid-tab-container>
         </div>
     }
 </div>

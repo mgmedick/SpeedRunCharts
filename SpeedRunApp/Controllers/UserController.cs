@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
 using System.Linq;
+using SpeedRunApp.Model.ViewModels;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -14,11 +15,11 @@ namespace SpeedRunApp.MVC.Controllers
             _userService = userService;
         }
 
-        public ViewResult UserDetails(string ID)
+        public ViewResult UserDetails(string ID, int? speedRunID)
         {
-            var userVM = _userService.GetUser(ID);
-
-            return View(userVM);
+            var userDetailsVM = _userService.GetUserDetails(ID, speedRunID);
+            
+            return View(userDetailsVM);
         }
 
         //public ViewResult UserDetails(int userID)

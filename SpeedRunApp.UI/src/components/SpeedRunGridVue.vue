@@ -37,6 +37,7 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,
+            speedrunid: String,
             userid: String,
             showcharts: Boolean,
             showalldata: Boolean,
@@ -48,8 +49,9 @@
                 table: {},
                 tableData: [],
                 loading: true,
-                speedRunID: String,
-                showDetailModal: false
+                speedRunID: '',
+                showDetailModal: false,
+                pageSize: 100
             }
         },
         computed: {
@@ -74,8 +76,16 @@
                 axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
-                        that.initGrid(res.data); 
+                        that.initGrid(res.data);                        
                         that.loading = false;
+                        if (that.speedrunid) {
+                                that.table.selectRow(that.speedrunid);
+                                var index = that.tableData.findIndex(i => i.id == that.speedrunid) + 1;
+                                var page = Math.ceil(index / that.pageSize);
+                                if(page > 1) {
+                                    that.table.setPage(page);
+                                }
+                        }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
@@ -133,12 +143,13 @@
                     layout: "fitColumns",
                     reactiveData:true,
                     //responsiveLayout: false,
+                    selectable: false,
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
-                    paginationSize: 100,
-                    movableColumns: this.isMediaMedium,
-                    resizableColumns: this.isMediaMedium ? "header" : false,
+                    paginationSize: that.pageSize,
+                    movableColumns: that.isMediaMedium,
+                    resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: false,
                     initialSort: [             //set the initial sort order of the data
                         { column: "primaryTime.ticks", dir: "asc" },
@@ -157,7 +168,7 @@
                                 //maxWidth:"200px"
                             })
                         });
-                    },
+                    }
                 });
             },
             optionsFormatter(cell, formatterParams, onRendered) {
@@ -340,7 +351,7 @@
                 this.speedRunID = id;
                 this.showDetailModal = true;
             }                              
-        }
+        }             
     };
 </script>
 <style scoped>

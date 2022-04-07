@@ -22,30 +22,23 @@
             </div>
             <div class="container px-2 pb-2 pt-1 d-flex">
                 <div class="col-9 p-0 align-self-center">
-                    <div class="text-secondary nowrap-elipsis show-md" style="font-size: 14px;">
-                        <template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template>
-                        <template v-for="(player, index) in item.players">
-                            <a :href="'/User/UserDetails/' + player.abbr" class="text-primary">{{ player.name }}</a>
-                            {{ (item.players.length -1 != index) ? ', ' : '' }}
-                        </template>&nbsp;-&nbsp;<small>{{ item.primaryTimeString }}</small>
-                    </div>
-                    <div class="show-sm">
+                     <div>   
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                            <template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small>
+                            <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.id" class="text-secondary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
                         </div>
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px; ">
                             <template v-for="(player, index) in item.players">
-                                <a :href="'/User/UserDetails/' + player.abbr" class="text-primary">{{ player.name }}</a>
+                                <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.id" class="text-secondary font-weight-bold">{{ player.name }}</a>
                                 {{ (item.players.length -1 != index) ? ', ' : '' }}
                             </template>
                         </div>
                     </div>                            
                     <div class="py-1">
-                        <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.categoryType?.name }}</span>
-                        <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.category?.name }}</span>
-                        <span v-if="item.level?.name" class="pr-1"><span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ item.level?.name }}</span></span>
+                        <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1">{{ item.categoryType?.name }}</span>
+                        <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1">{{ item.category?.name }}</span>
+                        <span v-if="item.level?.name" class="pr-1"><span class="badge badge-secondary font-weight-normal mr-1">{{ item.level?.name }}</span></span>
                         <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">
-                            <span class="badge badge-secondary font-weight-normal mr-1" style="font-size:12px;">{{ subCategoryVariableValueName }}</span>
+                            <span class="badge badge-secondary font-weight-normal mr-1">{{ subCategoryVariableValueName }}</span>
                         </template>
                     </div>                      
                 </div>
@@ -154,6 +147,10 @@
 
     .bronze {
         color: #b08d57;
+    }
+
+    .badge {
+        font-size: 85% !important;
     }
 
     @media (max-width: 768px) {

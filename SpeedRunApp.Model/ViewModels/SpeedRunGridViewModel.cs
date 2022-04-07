@@ -14,7 +14,8 @@ namespace SpeedRunApp.Model.ViewModels
             GameID = run.GameID;
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
-
+            Rank = run.Rank;
+                        
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
                 VariableValues = new Dictionary<int, int>();

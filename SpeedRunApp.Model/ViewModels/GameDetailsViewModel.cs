@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class UserDetailsViewModel
+    public class GameDetailsViewModel
     {
-        public UserDetailsViewModel(UserViewModel userVM, int? speedRunID)
+        public GameDetailsViewModel(GameViewModel gameVM, int? speedRunID)
         {
-            UserVM = userVM;
+            GameVM = gameVM;
             SpeedRunID = speedRunID;
         }
                 
-        public UserViewModel UserVM { get; set; }
+        public GameViewModel GameVM { get; set; }
         public int? SpeedRunID { get; set; }
     }
 }

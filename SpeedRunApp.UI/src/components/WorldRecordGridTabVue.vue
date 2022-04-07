@@ -219,13 +219,14 @@
             },
             resizeWRTabs: function () {
                 var rows = document.querySelectorAll('#divWorldRecorGridTabContainer .tab-list');
-
+                
                 for (var g = 0; g < rows.length; g++) {
                     var totalWidth = 0;
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var moreItems = rows[g].querySelectorAll('a.dropdown-item');
-                    var morebtn =  rows[g].querySelector('.more');
-                    var moredrp = morebtn.querySelector('.dropdown-menu');
+                    var morediv =  rows[g].querySelector('.more');
+                    var morebtn =  morediv.querySelector('.btn');
+                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
+                    var moredrp = morediv.querySelector('.dropdown-menu');
 
                     for (var i = 0; i < tabitems.length; i++) {
                         tabitems[i].style.left = "-10000px";
@@ -240,17 +241,23 @@
                         }
                     }
 
-                    morebtn.style.display = morebtn.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
+                    morediv.style.display = morediv.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
+                    
+                    if (morediv.querySelectorAll('a:not(.d-none).active').length > 0) {
+                        morebtn.classList.add('active');
+                    } else {
+                        morebtn.classList.remove('active');
+                    }
 
                     var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morebtn);
+                    var pos = this.getPosition(morediv);
                     if (pos.x > (ww / 2)) {
                         moredrp.classList.remove('dropdown-menu-left');
                         moredrp.classList.add('dropdown-menu-right');
                     } else {
                         moredrp.classList.remove('dropdown-menu-right');
                         moredrp.classList.add('dropdown-menu-left');
-                    } 
+                    }
                }
             },
             getPosition: function (element) {

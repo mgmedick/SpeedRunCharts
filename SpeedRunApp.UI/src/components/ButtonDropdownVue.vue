@@ -30,13 +30,6 @@
                 }
             }
         },
-        updated: function(){
-            if (this.$refs.list?.querySelectorAll('a.dropdown-item:not(.d-none).active').length > 0) {
-                this.$refs.btn?.classList.add('active');         
-            } else {
-                this.$refs.btn?.classList.remove('active');         
-            }
-        },
         mounted() {
             document.addEventListener('click', this.close)
         },
@@ -51,6 +44,8 @@
         max-height: 300px;
     }
 </style>
+
+
 
 
 

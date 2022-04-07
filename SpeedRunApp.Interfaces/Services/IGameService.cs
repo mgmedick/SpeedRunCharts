@@ -8,12 +8,13 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IGameService
     {
+        GameDetailsViewModel GetGameDetails(string gameAbbr, int? speedRunID);
         GameViewModel GetGame(string gameAbbr);
         GameViewModel GetGame(int gameID);
         IEnumerable<SearchResult> SearchGames(string searchText);
         SpeedRunGridTabViewModel GetWorldRecordGridTabs(int gameID);
-        SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID);
-        SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID);
+        SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID, int? speedRunID = null);
+        SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID, int? speedRunID = null);
         //IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID);
     }
 }

@@ -18,11 +18,11 @@ namespace SpeedRunApp.MVC.Controllers
             _speedRunsService = speedRunsService;
         }
 
-        public ViewResult GameDetails(string ID)
+        public ViewResult GameDetails(string ID, int? speedRunID)
         {
-            var gameVM = _gameService.GetGame(ID);
+            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);
 
-            return View(gameVM);
+            return View(gameDetailsVM);
         }
 
         //public ViewResult GameDetails(int gameID)
@@ -49,17 +49,17 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabsForUser(int userID)
+        public JsonResult GetSpeedRunGridTabsForUser(int userID, int? speedRunID)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID);
+            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID, speedRunID);
 
             return Json(gridVM);
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int gameID)
+        public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabs(gameID);
+            var gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
 
             return Json(gridVM);
         }

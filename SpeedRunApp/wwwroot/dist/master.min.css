@@ -1,5 +1,5 @@
 
-.dropdown-menu[data-v-56d48be8] {
+.dropdown-menu[data-v-08649203] {
         overflow-y: auto;
         max-height: 300px;
 }
@@ -18,56 +18,59 @@
 }
 
 
-.image-container[data-v-ca3a921e] {
+.image-container[data-v-6544d718] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-ca3a921e]{
+.image-container img[data-v-6544d718]{
         width: 90px;
 }
-.image-container .play-icon[data-v-ca3a921e]{
+.image-container .play-icon[data-v-6544d718]{
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-ca3a921e] {
+.nowrap-elipsis[data-v-6544d718] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-ca3a921e] {
+.gold[data-v-6544d718] {
         color: gold;
 }
-.silver[data-v-ca3a921e] {
+.silver[data-v-6544d718] {
         color: silver;
 }
-.bronze[data-v-ca3a921e] {
+.bronze[data-v-6544d718] {
         color: #b08d57;
 }
+.badge[data-v-6544d718] {
+        font-size: 85% !important;
+}
 @media (max-width: 768px) {
-.btn[data-v-ca3a921e] {
+.btn[data-v-6544d718] {
             font-size:11px;
             padding:4px 6px;
 }
-.game-title[data-v-ca3a921e] {
+.game-title[data-v-6544d718] {
             font-size: 14px;
             padding-left: 8px !important;
 }
-.show-md[data-v-ca3a921e] {
+.show-md[data-v-6544d718] {
             display: none;
 }
-.show-sm[data-v-ca3a921e] {
+.show-sm[data-v-6544d718] {
             display: block;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-ca3a921e] {
+.show-md[data-v-6544d718] {
             display: block;
 }
-.show-sm[data-v-ca3a921e] {
+.show-sm[data-v-6544d718] {
             display: none;
 }
 }    
@@ -80,46 +83,46 @@
 }    
 
 
-[data-v-6b22c8d4] .tab-list .nav {
+[data-v-a3588452] .tab-list .nav {
         /*overflow-y: hidden;*/
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
 }
-[data-v-6b22c8d4] .tab-list .nav-link {
+[data-v-a3588452] .tab-list .nav-link {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
 }
-[data-v-6b22c8d4] .btn {
+[data-v-a3588452] .btn {
         font-size: 13px;
         font-weight: bold;
 }
-[data-v-6b22c8d4] .tab-list .nav-link.active {
+[data-v-a3588452] .tab-list .nav-link.active {
         background-color: var(--primary) !important;
 }
-[data-v-6b22c8d4] .tab-list .dropdown .btn.dropdown-toggle {
+[data-v-a3588452] .tab-list .dropdown .btn.dropdown-toggle {
         background-color: #313131;
         font-size: 13px;
         font-weight: bold;
         border: none !important;
         padding: 0.5rem !important;
 }
-[data-v-6b22c8d4] .tab-list .dropdown .btn.dropdown-toggle.active {
+[data-v-a3588452] .tab-list .dropdown .btn.dropdown-toggle.active {
         background-color: var(--primary) !important;
 }
-[data-v-6b22c8d4] .tab-row-name {
+[data-v-a3588452] .tab-row-name {
         font-size: 14px !important;
         line-height: 18px;
         font-weight: bold;
 }
 @media (max-width: 575px) {
-[data-v-6b22c8d4] .tab-list .dropdown .dropdown-menu {
+[data-v-a3588452] .tab-list .dropdown .dropdown-menu {
             max-width: 200px;
 }
 }
 
 
-[data-v-45d7ba8c] .tabulator-header .tabulator-headers .tabulator-col {
+[data-v-50a223e1] .tabulator-header .tabulator-headers .tabulator-col {
         height: 71px !important;
 }
 

@@ -26,7 +26,10 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_User tu WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+                var results = IsMySQL ? db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_User WHERE Name LIKE '%' + @0 + '%' LIMIT 10;", searchText).ToList() :
+                                        db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_User tu WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+
+                return results;
             }
         }
 
@@ -42,7 +45,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<IDNameAbbrPair>("SELECT ID, [Name], [Abbr] FROM dbo.tbl_User WITH (NOLOCK)").ToList();
+                return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_User;").ToList();
             }
         }
     }

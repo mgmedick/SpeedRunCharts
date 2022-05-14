@@ -4,6 +4,8 @@ using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon.Extensions;
 using System.Collections.Generic;
+using System;
+using Serilog;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -11,8 +13,9 @@ namespace SpeedRunApp.MVC.Controllers
     {
         private readonly IGameService _gameService = null;
         private readonly ISpeedRunService _speedRunsService = null;
+        private readonly ILogger _logger = null;
 
-        public GameController(IGameService gameService, ISpeedRunService speedRunsService)
+        public GameController(IGameService gameService, ISpeedRunService speedRunsService, ILogger logger)
         {
             _gameService = gameService;
             _speedRunsService = speedRunsService;
@@ -51,7 +54,15 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetSpeedRunGridTabsForUser(int userID, int? speedRunID)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID, speedRunID);
+            SpeedRunGridTabViewModel gridVM = null;
+            try
+            {
+                gridVM = _gameService.GetSpeedRunGridTabsForUser(userID, speedRunID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetSpeedRunGridTabsForUser UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+            }
 
             return Json(gridVM);
         }

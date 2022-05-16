@@ -66,7 +66,9 @@
                 
                 clearTimeout(this.throttleTimer);
                 this.throttleTimer = setTimeout(function () {
-                    if (Math.floor(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight) {  
+                    var scollTop = document.documentElement.scrollTop + window.innerHeight;
+                    var offsetHeight = document.documentElement.offsetHeight;
+                    if(Math.floor(scollTop) === offsetHeight || Math.ceil(scollTop) === offsetHeight) {
                         that.reLoadData();
                     }
                 }, this.throttleDelay);

@@ -214,47 +214,29 @@ namespace SpeedRunApp.Model.ViewModels
 
             var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue).Reverse().ToList();
             var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
-            foreach (var allLevelVariable in allLevelVariables)
-            {
-                if(!allLevelVariable.CategoryID.HasValue){
-                    foreach (var category in levelCategories)
-                    {
+            if (Levels != null && Levels.Any()) {
+                foreach (var allLevelVariable in allLevelVariables)
+                {
+                    if(!allLevelVariable.CategoryID.HasValue){
+                        foreach (var category in levelCategories)
+                        {
+                            foreach (var level in Levels)
+                            {
+                                var variable = (Variable)allLevelVariable.Clone();
+                                variable.CategoryID = category.ID;
+                                variable.LevelID = level.ID;
+                                variables.Insert(0, variable);
+                            }
+                        } 
+                    } else {
                         foreach (var level in Levels)
                         {
                             var variable = (Variable)allLevelVariable.Clone();
-                            variable.CategoryID = category.ID;
                             variable.LevelID = level.ID;
                             variables.Insert(0, variable);
                         }
-                    } 
-                } else {
-                    foreach (var level in Levels)
-                    {
-                        var variable = (Variable)allLevelVariable.Clone();
-                        variable.LevelID = level.ID;
-                        variables.Insert(0, variable);
                     }
-                }         
-                // if (levelCategories.Any()){
-                //     foreach (var category in levelCategories)
-                //     {
-                //         foreach (var level in Levels)
-                //         {
-                //             var variable = (Variable)allLevelVariable.Clone();
-                //             variable.CategoryID = category.ID;
-                //             variable.LevelID = level.ID;
-                //             variables.Insert(0, variable);
-                //         }
-                //     }
-                // } else {
-                //     foreach (var level in Levels)
-                //     {
-                //         var variable = (Variable)allLevelVariable.Clone();
-                //         //variable.CategoryID = category.ID;
-                //         variable.LevelID = level.ID;
-                //         variables.Insert(0, variable);
-                //     }              
-                // }
+                }
             }
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue);

@@ -70,7 +70,15 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
+            SpeedRunGridTabViewModel gridVM = null;
+            try
+            {
+                gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetSpeedRunGridTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+            }
 
             return Json(gridVM);
         }

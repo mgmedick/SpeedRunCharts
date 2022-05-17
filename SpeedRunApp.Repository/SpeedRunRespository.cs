@@ -106,5 +106,13 @@ namespace SpeedRunApp.Repository
                 return db.Query<SpeedRunSummaryView>().Where(predicate).ToList();
             }
         }
+
+        public int? GetSpeedRunID(string speedRunComID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<int?>("SELECT SpeedRunID FROM tbl_SpeedRun_SpeedRunComID WHERE SpeedRunComID = @0;", speedRunComID).FirstOrDefault();
+            }
+        }        
     }
 }

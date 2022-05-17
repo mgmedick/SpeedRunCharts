@@ -7,7 +7,7 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IUserService
     {
-        UserDetailsViewModel GetUserDetails(string userAbbr, int? speedRunID);        
+        UserDetailsViewModel GetUserDetails(string userAbbr, string speedRunComID);        
         UserViewModel GetUser(string userAbbr);
         UserViewModel GetUser(int userID);
         IEnumerable<SearchResult> SearchUsers(string searchText);

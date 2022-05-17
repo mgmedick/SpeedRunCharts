@@ -21,8 +21,9 @@ namespace SpeedRunApp.Service
             _speedRunRepo = speedRunRepo;
             _cacheService = cacheService;
         }
-        public GameDetailsViewModel GetGameDetails(string gameAbbr, int? speedRunID) {
+        public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID) {
             var gameVM = GetGame(gameAbbr);
+            var speedRunID = _speedRunRepo.GetSpeedRunID(speedRunComID);
             var gameDetailsVM = new GameDetailsViewModel(gameVM, speedRunID);
 
             return gameDetailsVM;
@@ -89,7 +90,7 @@ namespace SpeedRunApp.Service
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();            
             var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
-            var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(g => g.GameID == i.ID).ToList())).ToList();
+            var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(g => g.GameID == i.ID).ToList())).OrderBy(i => i.Name).ToList();
             FilterTabsByHasData(tabItems, true); 
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            

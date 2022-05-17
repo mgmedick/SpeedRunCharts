@@ -22,7 +22,7 @@ namespace SpeedRunApp.MVC.Controllers
             _logger = logger;
         }
         
-        public ViewResult GameDetails(string ID, int? speedRunID)
+        public ViewResult GameDetails(string ID, string speedRunID)
         {
             var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);
 

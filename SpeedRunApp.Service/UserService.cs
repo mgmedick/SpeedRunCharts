@@ -24,9 +24,10 @@ namespace SpeedRunApp.Service
             _cacheService = cacheService;
         }
 
-        public UserDetailsViewModel GetUserDetails(string userAbbr, int? speedRunID)
+        public UserDetailsViewModel GetUserDetails(string userAbbr, string speedRunComID)
         {
             var userVM = GetUser(userAbbr);
+            var speedRunID = _speedRunRepo.GetSpeedRunID(speedRunComID);
             var userDetailsVM = new UserDetailsViewModel(userVM, speedRunID);
 
             return userDetailsVM;

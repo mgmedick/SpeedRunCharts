@@ -15,7 +15,7 @@ namespace SpeedRunApp.MVC.Controllers
             _userService = userService;
         }
 
-        public ViewResult UserDetails(string ID, int? speedRunID)
+        public ViewResult UserDetails(string ID, string speedRunID)
         {
             var userDetailsVM = _userService.GetUserDetails(ID, speedRunID);
             

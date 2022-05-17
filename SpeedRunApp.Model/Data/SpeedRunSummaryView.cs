@@ -7,6 +7,7 @@ namespace SpeedRunApp.Model.Data
     public class SpeedRunSummaryView
     {
         public int ID { get; set; }
+        public string SpeedRunComID { get; set; }
         public int GameID { get; set; }
         public string GameName { get; set; }
         public string GameAbbr { get; set; }

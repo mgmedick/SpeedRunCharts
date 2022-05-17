@@ -8,7 +8,7 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IGameService
     {
-        GameDetailsViewModel GetGameDetails(string gameAbbr, int? speedRunID);
+        GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID);
         GameViewModel GetGame(string gameAbbr);
         GameViewModel GetGame(int gameID);
         IEnumerable<SearchResult> SearchGames(string searchText);

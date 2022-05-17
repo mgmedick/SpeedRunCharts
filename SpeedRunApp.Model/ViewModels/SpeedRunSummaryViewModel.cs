@@ -12,6 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunSummaryViewModel(SpeedRunSummaryView run)
         {
             ID = run.ID;
+            SpeedRunComID = run.SpeedRunComID;
             Game = new IDNameAbbrPair { ID = run.GameID, Name = run.GameName, Abbr = run.GameAbbr };
             GameCoverImageLink = run.GameCoverImageUrl;
             CategoryType = new IDNamePair { ID = run.CategoryTypeID, Name = run.CategoryTypeName };
@@ -75,6 +76,7 @@ namespace SpeedRunApp.Model.ViewModels
         }
 
         public int ID { get; set; }
+        public string SpeedRunComID { get; set; }
         public IDNameAbbrPair Game { get; set; }
         public string GameCoverImageLink { get; set; }
         public IDNamePair CategoryType { get; set; }

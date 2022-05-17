@@ -19,6 +19,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryID, int? levelID, int userID);
         IEnumerable<SpeedRunView> GetSpeedRunViews(Expression<Func<SpeedRunView, bool>> predicate);
         IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryViews(Expression<Func<SpeedRunSummaryView, bool>> predicate);
+        int? GetSpeedRunID(string speedRunComID);
     }
 }
 

@@ -70,8 +70,8 @@ namespace SpeedRunApp.Service
                     }
                 }
 
-                if (runVM != null) {
-                    var gameVM = tabItems.FirstOrDefault(i => i.ID == runVM.GameID);
+                var gameVM = tabItems.FirstOrDefault(i => i.ID == runVM.GameID);
+                if (runVM != null && gameVM != null) {
                     var categoryTypeID = gameVM.Categories.Where(i=>i.ID == runVM.CategoryID).Select(i=>i.CategoryTypeID).FirstOrDefault();
                     var subCategoryVariableValueNames = GetSubCategoryVariableValueNames(runVM.VariableValues, gameVM.SubCategoryVariables);
                     var showAllData = !runVM.Rank.HasValue;
@@ -105,9 +105,9 @@ namespace SpeedRunApp.Service
                         runVM = new SpeedRunGridViewModel(runvw);
                     }
                 }
-
-                if (runVM != null) {
-                    var gameVM = tabItems.FirstOrDefault(i => i.ID == runVM.GameID);
+                                
+                var gameVM = tabItems.FirstOrDefault(i => i.ID == runVM.GameID);
+                if (runVM != null && gameVM != null) {
                     var categoryTypeID = gameVM.Categories.Where(i=>i.ID == runVM.CategoryID).Select(i=>i.CategoryTypeID).FirstOrDefault();
                     var subCategoryVariableValueNames = GetSubCategoryVariableValueNames(runVM.VariableValues, gameVM.SubCategoryVariables);
                     var showAllData = true;

@@ -341,3 +341,5 @@ healthchecksdb
 /SpeedrunComSharp.Common
 
 /SpeedRunApp/logs
+SpeedRunApp.UI/src/styles/bootstrap-dark-theme.css
+SpeedRunApp.UI/src/styles/style2.css

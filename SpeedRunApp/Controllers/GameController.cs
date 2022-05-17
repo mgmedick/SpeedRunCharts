@@ -19,8 +19,9 @@ namespace SpeedRunApp.MVC.Controllers
         {
             _gameService = gameService;
             _speedRunsService = speedRunsService;
+            _logger = logger;
         }
-
+        
         public ViewResult GameDetails(string ID, int? speedRunID)
         {
             var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);

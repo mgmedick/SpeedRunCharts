@@ -191,7 +191,7 @@
         props: {
             isgame: Boolean,
             id: String,
-            speedrunid: String
+            speedrunid: String      
         },
         data() {
             return {

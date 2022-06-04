@@ -39,7 +39,7 @@
             variablevalues: String,
             speedrunid: String,
             userid: String,
-            showcharts: Boolean,
+            showcharts: Boolean,          
             showalldata: Boolean,
             variables: Array,
             title: String

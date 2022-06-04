@@ -26,7 +26,7 @@
         props: {
             isgame: Boolean,
             id: String,
-            speedrunid: String
+            speedrunid: String           
         },
         data() {
             return {
@@ -42,8 +42,7 @@
     };
 </script>
 <style scoped>
-    :deep(.tab-list .nav) {
-        /*overflow-y: hidden;*/
+    /* :deep(.tab-list .nav) {
         flex-wrap: nowrap !important;
         white-space: nowrap !important;
     }
@@ -54,6 +53,7 @@
         font-weight: bold;
     }
     
+
     :deep(.btn) {
         font-size: 13px;
         font-weight: bold;
@@ -85,7 +85,7 @@
         :deep(.tab-list .dropdown .dropdown-menu) {
             max-width: 200px;
         }
-    }
+    } */
 </style>
 
 

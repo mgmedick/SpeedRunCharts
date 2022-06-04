@@ -80,7 +80,7 @@
             prevdata: String,
             variableindex: Number,
             hideempty: Boolean,
-            showalldata: Boolean,
+            showalldata: Boolean,          
             showcharts: Boolean,
             variables: Array,
             exporttypes: Array,

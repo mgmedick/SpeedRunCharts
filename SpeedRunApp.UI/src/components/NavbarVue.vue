@@ -41,6 +41,12 @@
                             </span>
                         </template>
                         <template v-slot:options>
+                            <div class="dropdown-item">
+                                <div class="custom-control custom-switch">
+                                    <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
+                                    <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
+                                </div>
+                            </div>
                             <a href="/UserAccount/UserAccountDetails" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
                             <a href="/SpeedRun/Logout" class="dropdown-item text-secondary"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
@@ -101,6 +107,19 @@
         },
         computed: {
         },
+        watch: {
+            isdarktheme: function (val, oldVal) {
+                var el = document.body;
+
+                if (val){
+                    el.classList.remove("theme-light");
+                    el.classList.add("theme-dark");
+                } else {
+                    el.classList.remove("theme-dark");
+                    el.classList.add("theme-light");
+                }                                
+            }
+        },        
         created: function () {
         },
         methods: {

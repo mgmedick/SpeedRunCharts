@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="speedRunSummaryContainer container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
-        <div class="speedRunSummary bg-dark">
+        <div class="speedRunSummary">
             <div class="container pt-2 px-2 pb-0 d-flex">
                 <div class="p-0 col-1">
                     <div style="max-width:37px;">

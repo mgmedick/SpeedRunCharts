@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="card">
+    <div class="card" style="border: none; border-radius: 0px;">
         <div class="card-header" id="headingOne">
             <h5 class="mb-0">
                 <div v-if="showcharts">
@@ -67,18 +67,36 @@
         data() {
             return {
                 tabledata: [],
-                loading: true
+                loading: true,
+                gameWorldRecordChart: {},
+                gameSpeedRunsPercentileChart: {},
+                gameTopSpeedRunChart: {}
             }
         },        
         computed: {
             isMediaMedium: function () {
                 return window.innerWidth > 768;
-            }
-        },        
+            },
+            // isDarkTheme: function() {
+            //     return document.body.classList.contains('theme-dark');
+            // },            
+            bgColor: function () {
+                return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
+            },
+            fontColor: function () {
+                return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
+            }                           
+        },              
         mounted: function () {
             this.loadData();
         },
         methods: {
+            // bgColor() {
+            //     return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
+            // },  
+            // fontColor() {
+            //     return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
+            // },                         
             loadData() {
                 var that = this;
                 this.loading = true;
@@ -94,14 +112,31 @@
             loadCharts() {
                 var that = this;
                 FusionCharts.ready(function () {
-                    var gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1', that.isgame));
-                    var gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
-                    var gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
+                    that.gameWorldRecordChart = new FusionCharts(that.getWorldRecordPerDayChart('divChart1', that.isgame));
+                    that.gameSpeedRunsPercentileChart = new FusionCharts(that.getSpeedRunsPercentileChart('divChart2'));
+                    that.gameTopSpeedRunChart = new FusionCharts(that.getTopSpeedRunChart('divChart3', that.isgame));
 
-                    gameWorldRecordChart.render();
-                    gameSpeedRunsPercentileChart.render();
-                    gameTopSpeedRunChart.render();                        
+                    that.gameWorldRecordChart.render();
+                    that.gameSpeedRunsPercentileChart.render();
+                    that.gameTopSpeedRunChart.render();                        
                 });
+            },
+            changeTheme() {
+                this.gameWorldRecordChart.bgColor = this.bgColor;                
+                this.gameWorldRecordChart.baseFontColor = this.fontColor;
+                this.gameWorldRecordChart.baseFontColor = this.fontColor;      
+                
+                this.gameSpeedRunsPercentileChart.bgColor = this.bgColor;                
+                this.gameSpeedRunsPercentileChart.baseFontColor = this.fontColor;
+                this.gameSpeedRunsPercentileChart.baseFontColor = this.fontColor;       
+      
+                this.gameTopSpeedRunChart.bgColor = this.bgColor;               
+                this.gameTopSpeedRunChart.baseFontColor = this.fontColor;
+                this.gameTopSpeedRunChart.baseFontColor = this.fontColor;    
+                
+                // this.gameWorldRecordChart.render();
+                // this.gameSpeedRunsPercentileChart.render();
+                // this.gameTopSpeedRunChart.render();               
             },
             getWorldRecordPerDayChart(container, isGame) {
                 var that = this;
@@ -194,7 +229,7 @@
                             showToolTip: 1,
                             lineThickness: 2,
                             anchorRadius: 5,
-                            anchorBgColor: "#303030",
+                            anchorBgColor: that.bgColor,
                             anchorBorderThickness: 1,                                                   
                             exportEnabled: 1,
                             showValues: 0,
@@ -210,9 +245,9 @@
                             plotBinSize: 8,
                             setAdaptiveYMin: 1,
                             theme: "candy",
-                            bgColor: "#303030",
-                            baseFontColor: "#fff",
-                            outCnvBaseFontColor: "#fff"
+                            bgColor: that.bgColor,
+                            baseFontColor: that.fontColor,
+                            outCnvBaseFontColor: that.fontColor
                         },
                         data: dataset
                     }
@@ -298,9 +333,9 @@
                             showLegend: 1,
                             showLabels: 0,
                             theme: "candy",
-                            bgColor: "#303030",
-                            baseFontColor: "#fff",
-                            outCnvBaseFontColor: "#fff"
+                            bgColor: that.bgColor,
+                            baseFontColor: that.fontColor,
+                            outCnvBaseFontColor: that.fontColor
                         },
                         data: dataset
                     }
@@ -431,9 +466,9 @@
                             maxscalerecursion: "-1",
                             scaleseparator: "",
                             theme: "candy",
-                            bgColor: "#303030",
-                            baseFontColor: "#fff",
-                            outCnvBaseFontColor: "#fff"
+                            bgColor: that.bgColor,
+                            baseFontColor: that.fontColor,
+                            outCnvBaseFontColor: that.fontColor
                         },
                         categories: categories,
                         dataset: dataset
@@ -446,7 +481,7 @@
     }
 </script>
 <style scoped>
-   :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
+   /* :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
         display:none !important;
     }
    :deep(.fusioncharts-container>svg>g>g:last-of-type>g>g>rect) {
@@ -467,7 +502,7 @@
     }     
    :deep(.fusioncharts-container > svg + div div span:hover) {
         background-color: rgba(255,255,255,.15) !important;
-    }        
+    }         */
 </style>
 
 

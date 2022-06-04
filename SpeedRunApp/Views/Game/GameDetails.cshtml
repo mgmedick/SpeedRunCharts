@@ -1,4 +1,7 @@
 ﻿@using SpeedRunCommon.Extensions;
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration;
+
 @model SpeedRunApp.Model.ViewModels.GameDetailsViewModel
 
 @section Scripts {
@@ -41,7 +44,7 @@
                         <div class="col-auto pr-2">
                             <label for="spnPlatforms" class="col-form-label pt-0 pb-1 font-weight-bold">Platforms</label>
                             <div>
-                                <span id="spnPlatforms" class="form-control" style="max-width: 300px; width: auto; height: auto; font-size:14px;">@Model.GameVM.PlatformsString</span>
+                                <span id="spnPlatforms" class="form-control" style="max-width: 300px; width: auto; height: auto; font-size:14px; border:none; background:none;">@Model.GameVM.PlatformsString</span>
                             </div>
                         </div>
                     </div>
@@ -52,7 +55,7 @@
                         <div class="col-auto">
                             <label for="spnModerators" class="col-form-label pt-0 pb-1 font-weight-bold">Moderators</label>
                             <div>
-                                <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px;">
+                                <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px; border:none; background:none;">
                                     @Html.CommaSeparated(Model.GameVM.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { ID = i.Abbr }, new { @class = "text-primary" }).ToHtmlString()))
                                 </span>
                             </div>
@@ -60,7 +63,7 @@
                     </div>
                 }
             </div>  
-            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'"></grid-tab-container>
+            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></grid-tab-container>
         </div>
     }
 </div>

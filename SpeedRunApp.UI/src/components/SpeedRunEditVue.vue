@@ -50,7 +50,7 @@
                 <label class="col-sm-2 col-form-label">Players</label>
                 <div class="col-sm-10">
                     <div style="width:300px;">
-                        <vue-next-select v-model="playerids" :options="item.players" label-by="name" value-by="id" :disabled="readonly" multiple taggable></vue-next-select>
+                        <vue-next-select v-model="playerids" :options="item.players" label-by="name" :disabled="readonly" value-by="id" multiple taggable></vue-next-select>
                     </div>
                 </div>
             </div>

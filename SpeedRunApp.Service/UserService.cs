@@ -27,7 +27,7 @@ namespace SpeedRunApp.Service
         public UserDetailsViewModel GetUserDetails(string userAbbr, string speedRunComID)
         {
             var userVM = GetUser(userAbbr);
-            var speedRunID = _speedRunRepo.GetSpeedRunID(speedRunComID);
+            var speedRunID = string.IsNullOrWhiteSpace(speedRunComID) ? (int?)null : _speedRunRepo.GetSpeedRunID(speedRunComID);
             var userDetailsVM = new UserDetailsViewModel(userVM, speedRunID);
 
             return userDetailsVM;

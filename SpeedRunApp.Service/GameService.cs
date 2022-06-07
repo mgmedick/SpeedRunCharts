@@ -23,7 +23,7 @@ namespace SpeedRunApp.Service
         }
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID) {
             var gameVM = GetGame(gameAbbr);
-            var speedRunID = _speedRunRepo.GetSpeedRunID(speedRunComID);
+            var speedRunID = string.IsNullOrWhiteSpace(speedRunComID) ? (int?)null : _speedRunRepo.GetSpeedRunID(speedRunComID);
             var gameDetailsVM = new GameDetailsViewModel(gameVM, speedRunID);
 
             return gameDetailsVM;

@@ -15,7 +15,8 @@
     --bs-text-color2: #fff;  
     --bs-text-color3: #262626; 
     --bs-text-color5: #999;    
-    --bs-text-color6: #999;                 
+    --bs-text-color6: #999;     
+    --bs-text-color7: #ccc;                 
     --bs-background-color1:#444; 
     --bs-background-color5: #E0E0E0;   
     --bs-background-color7: #303030;    
@@ -44,7 +45,8 @@
     --bs-text-color2: #212529;
     --bs-text-color3: #fff;
     --bs-text-color5: #fff;       
-    --bs-text-color6: #000;                             
+    --bs-text-color6: #000;
+    --bs-text-color7: #888;                                    
     --bs-background-color1:#fff;       
     --bs-background-color5: #3459e6; 
     --bs-background-color7: #fff;    
@@ -137,7 +139,7 @@ input.date {
 }
 
 .text-secondary {
-    color: var(--bs-grey) !important;
+    color: var(--bs-text-color7) !important;
 }
 
 a.text-primary:focus, a.text-primary:hover {

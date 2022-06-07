@@ -480,30 +480,8 @@
         }
     }
 </script>
-<style scoped>
-   /* :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
-        display:none !important;
-    }
-   :deep(.fusioncharts-container>svg>g>g:last-of-type>g>g>rect) {
-        fill:#444 !important;
-        stroke: #222 !important;
-    }    
-   :deep(.fusioncharts-container > svg + div) {
-        background:#444 !important;
-        box-shadow: none !important;
-        border-color: #222 !important;
-    }      
-   :deep(.fusioncharts-container > svg + div div) {
-        background:#444 !important;
-    }             
-   :deep(.fusioncharts-container > svg + div div span) {
-        color: #fff !important;        
-        background:#444 !important;
-    }     
-   :deep(.fusioncharts-container > svg + div div span:hover) {
-        background-color: rgba(255,255,255,.15) !important;
-    }         */
-</style>
+
+
 
 
 

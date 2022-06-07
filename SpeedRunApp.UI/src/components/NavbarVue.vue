@@ -47,8 +47,8 @@
                                     <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                 </div>
                             </div>
-                            <a href="/UserAccount/UserAccountDetails" class="dropdown-item text-secondary"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
-                            <a href="/SpeedRun/Logout" class="dropdown-item text-secondary"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
+                            <a href="/UserAccount/UserAccountDetails" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="/SpeedRun/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
                 </div>
@@ -59,6 +59,25 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" @click="showSignUpModal = true">Sign Up</a>
                     </li>
+                    <li class="nav-item">
+                        <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
+                            <template v-slot:text>
+                                <span>
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </template>
+                            <template v-slot:options>
+                                <div class="dropdown-item">
+                                    <div class="custom-control custom-switch">
+                                        <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
+                                        <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
+                                    </div>
+                                </div>
+                                <a class="dropdown-item" href="#" @click="showLoginModal = true"><i class="fa fa-user"></i><span class="pl-2">Log In</span></a>
+                                <a class="dropdown-item" href="#" @click="showSignUpModal = true"><i class="fa fa-clipboard"></i><span class="pl-2">Sign Up</span></a>
+                            </template>
+                        </button-dropdown> 
+                    </li>                   
                 </ul>
             </div>
         </nav>
@@ -84,6 +103,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import { setCookie } from '../js/common.js';
 
     export default {
         name: "NavbarVue",
@@ -114,10 +134,12 @@
                 if (val){
                     el.classList.remove("theme-light");
                     el.classList.add("theme-dark");
+                    setCookie("theme", "theme-dark");                    
                 } else {
                     el.classList.remove("theme-dark");
                     el.classList.add("theme-light");
-                }                                
+                    setCookie("theme", "theme-light");                     
+                }                
             }
         },        
         created: function () {

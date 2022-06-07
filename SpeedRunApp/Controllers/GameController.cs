@@ -90,7 +90,7 @@ namespace SpeedRunApp.MVC.Controllers
             var results = _gameService.SearchGames(term);
 
             return Json(results);
-        }
+        }                     
     }
 }
 

@@ -11,21 +11,21 @@ const stylePath = path.resolve(srcPath, './styles');
 const bldPath = path.resolve('../SpeedRunApp/wwwroot/dist');
 
 module.exports = {
-    devtool: 'source-map',
-    //devtool: false,
+    //devtool: 'source-map',
+    devtool: false,
     entry: {
         master: path.resolve(srcPath, 'index.js'),
-        style: `${stylePath}/style2.css`
+        style: `${stylePath}/style.css`
     },
     resolve: {  
         alias: {
             'vue': 'vue/dist/vue.esm-bundler.js'
         }
     },     
-    mode: 'development',
-    //mode: 'production',
-    watch: true,
-    //watch: false,
+    //mode: 'development',
+    mode: 'production',
+    //watch: true,
+    watch: false,
     module: {
         rules: [                     
             {
@@ -104,8 +104,8 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin(),
         new webpack.DefinePlugin({
-            PRODUCTION: JSON.stringify(false),
-            //PRODUCTION: JSON.stringify(true),
+            //PRODUCTION: JSON.stringify(false),
+            PRODUCTION: JSON.stringify(true),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false
         }),

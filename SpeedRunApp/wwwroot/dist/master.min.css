@@ -1,16 +1,16 @@
 
-.dropdown-menu[data-v-7db708ba] {
+.dropdown-menu[data-v-08649203] {
         overflow-y: auto;
         max-height: 300px;
 }
 
 
 @media (min-width: 992px) {
-[data-v-63495856] .vue-select {
+[data-v-00d89509] .vue-select {
             min-width: 400px !important;
             margin-right: 8px;
 }
-[data-v-63495856] .vue-dropdown {
+[data-v-00d89509] .vue-dropdown {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;
@@ -18,144 +18,67 @@
 }
 
 
-.image-container[data-v-411d7014] {
+.image-container[data-v-26f54f4e] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-411d7014]{
+.image-container img[data-v-26f54f4e]{
         width: 90px;
 }
-.image-container .play-icon[data-v-411d7014]{
+.image-container .play-icon[data-v-26f54f4e] {
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-411d7014] {
+.nowrap-elipsis[data-v-26f54f4e] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-411d7014] {
+.gold[data-v-26f54f4e] {
         color: gold;
 }
-.silver[data-v-411d7014] {
+.silver[data-v-26f54f4e] {
         color: silver;
 }
-.bronze[data-v-411d7014] {
+.bronze[data-v-26f54f4e] {
         color: #b08d57;
 }
-.badge[data-v-411d7014] {
+.badge[data-v-26f54f4e] {
         font-size: 85% !important;
 }
 @media (max-width: 768px) {
-.btn[data-v-411d7014] {
+.btn[data-v-26f54f4e] {
             font-size:11px;
             padding:4px 6px;
 }
-.game-title[data-v-411d7014] {
+.game-title[data-v-26f54f4e] {
             font-size: 14px;
             padding-left: 8px !important;
 }
-.show-md[data-v-411d7014] {
+.show-md[data-v-26f54f4e] {
             display: none;
 }
-.show-sm[data-v-411d7014] {
+.show-sm[data-v-26f54f4e] {
             display: block;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-411d7014] {
+.show-md[data-v-26f54f4e] {
             display: block;
 }
-.show-sm[data-v-411d7014] {
+.show-sm[data-v-26f54f4e] {
             display: none;
 }
 }    
 
 
 @media (max-width: 575px) {
-.category[data-v-5f0b31c6] {
+.category[data-v-69300053] {
             font-size: 11px !important;
 }
 }    
 
-
-    /* :deep(.tab-list .nav) {
-        flex-wrap: nowrap !important;
-        white-space: nowrap !important;
-    }
-
-    :deep(.tab-list .nav-link) {
-        background-color: #313131;
-        font-size: 13px;
-        font-weight: bold;
-    }
-    
-
-    :deep(.btn) {
-        font-size: 13px;
-        font-weight: bold;
-    }    
-
-    :deep(.tab-list .nav-link.active) {
-        background-color: var(--primary) !important;
-    }
-
-    :deep(.tab-list .dropdown .btn.dropdown-toggle) {
-        background-color: #313131;
-        font-size: 13px;
-        font-weight: bold;
-        border: none !important;
-        padding: 0.5rem !important;
-    }
-
-    :deep(.tab-list .dropdown .btn.dropdown-toggle.active) {
-        background-color: var(--primary) !important;
-    }
-
-    :deep(.tab-row-name) {
-        font-size: 14px !important;
-        line-height: 18px;
-        font-weight: bold;
-    }
-
-    @media (max-width: 575px) {
-        :deep(.tab-list .dropdown .dropdown-menu) {
-            max-width: 200px;
-        }
-    } */
-
-
-[data-v-0d00e208] .tabulator-header .tabulator-headers .tabulator-col {
-        height: 71px !important;
-}
-
-
-   /* :deep(.fusioncharts-container>svg>g:nth-of-type(2)) {
-        display:none !important;
-    }
-   :deep(.fusioncharts-container>svg>g>g:last-of-type>g>g>rect) {
-        fill:#444 !important;
-        stroke: #222 !important;
-    }    
-   :deep(.fusioncharts-container > svg + div) {
-        background:#444 !important;
-        box-shadow: none !important;
-        border-color: #222 !important;
-    }      
-   :deep(.fusioncharts-container > svg + div div) {
-        background:#444 !important;
-    }             
-   :deep(.fusioncharts-container > svg + div div span) {
-        color: #fff !important;        
-        background:#444 !important;
-    }     
-   :deep(.fusioncharts-container > svg + div div span:hover) {
-        background-color: rgba(255,255,255,.15) !important;
-    }         */
-
-
-/*# sourceMappingURL=master.min.css.map*/

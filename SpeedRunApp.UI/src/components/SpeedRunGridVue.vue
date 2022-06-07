@@ -166,8 +166,7 @@
                                 content: escapeHtml(value),
                                 allowHTML: true,
                                 arrow:false,
-                                placement:'bottom'//,
-                                //maxWidth:"200px"
+                                placement:'bottom'
                             })
                         });
                     }
@@ -276,9 +275,7 @@
 
                 var editor = document.createElement("input");
                 editor.setAttribute("type", "date");
-                editor.style.width = "90%";
-                editor.style.boxSizing = "border-box";
-                editor.style.fontSize = "12px";
+                editor.classList.add("date-filter");                
 
                 editor.addEventListener("change", successFunc);
                 editor.addEventListener("blur", successFunc);
@@ -287,11 +284,8 @@
                 var button = document.createElement("button");
                 button.innerHTML = "x";
                 button.classList.add("px-1");
-                button.style.width = "10%;";
-                button.style.border = "none";
-                button.style.backgroundColor = "#303030";
-                button.style.color = "#fff";
-                                
+                button.classList.add("btn-delete-filter");
+
                 button.addEventListener("click", onClearClick);
 
                 editorDiv.appendChild(editor);
@@ -356,11 +350,8 @@
         }             
     };
 </script>
-<style scoped>
-    :deep(.tabulator-header .tabulator-headers .tabulator-col) {
-        height: 71px !important;
-    }
-</style>
+
+
 
 
 

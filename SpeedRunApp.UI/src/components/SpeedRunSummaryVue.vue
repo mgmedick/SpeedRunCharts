@@ -123,7 +123,7 @@
         width: 90px;
     }
 
-    .image-container .play-icon{
+    .image-container .play-icon {
         cursor: pointer;
         position: absolute;
         top : 50%;

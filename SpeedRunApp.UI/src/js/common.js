@@ -99,7 +99,24 @@ const formatFileName = (value) => {
     return value.replaceAll("[\\\\/:*?\"<>|]", "");           
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml, formatFileName }
+const setCookie = (key, value, days) => {
+    var expires = new Date();
+    var cookieString = key + '=' + value;
+    if (days) {
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        cookieString += ';expires=' + expires.toUTCString();
+    }
+    cookieString += ';path=/';
+    
+    document.cookie = cookieString;
+}
+
+const getCookie = (key) => {
+    var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+    return keyValue ? keyValue[2] : null;
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml, formatFileName, setCookie, getCookie }
 
 
 

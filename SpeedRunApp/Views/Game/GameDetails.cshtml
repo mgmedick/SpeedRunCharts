@@ -63,7 +63,7 @@
                     </div>
                 }
             </div>  
-            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></grid-tab-container>
+            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'"></grid-tab-container>
         </div>
     }
 </div>

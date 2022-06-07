@@ -4,8 +4,8 @@
     --bs-white: #fff;    
     --bs-grey: #888;     
     --bs-body-bg: #222; 
-    --bs-anchor-color: #158cba;
-    --bs-anchor-hover: #0d5875;
+    --bs-anchor-color: #1278a1;    
+    --bs-anchor-hover: #158cba;
     --bs-border-color1:#222;
     --bs-border-color2: #739ac2;
     --bs-border-color4: #28415b;  
@@ -33,8 +33,8 @@
     --bs-white: #fff;   
     --bs-grey: #888;         
     --bs-body-bg: #fff;
-    --bs-anchor-color: #3459e6;
-    --bs-anchor-hover: #2a47b8;
+    --bs-anchor-color: #2a47b8;    
+    --bs-anchor-hover: #3459e6;
     --bs-border-color1:#ced4da;
     --bs-border-color2: #9aacf3;    
     --bs-border-color4: #2a47b8;    
@@ -141,11 +141,11 @@ input.date {
 }
 
 a.text-primary:focus, a.text-primary:hover {
-    color: var(--bs-primary) !important;
+    color: var(--bs-anchor-hover) !important;
 }
 
 a.text-secondary:focus, a.text-secondary:hover {
-    color: var(--bs-primary) !important;
+    color: var(--bs-anchor-hover) !important;
 }
 
 .form-control {
@@ -279,19 +279,6 @@ select.form-control:focus::-ms-value {
     color: var(--bs-text-color2) !important;
     box-shadow: 0 0 0 0.2rem var(--bs-box-shadow-color2);
 }
-
-.btn-link {
-    color: var(--bs-anchor-color);
-}
-
-.btn-link:hover {
-    color: var(--bs-anchor-hover);
-}
-
-/* .btn-link:disabled, .btn-link.disabled {
-    color: var(--bs-border-color3);
-    opacity: 0.65;
-} */
 
 .btn-lg, .btn-group-lg > .btn {
     font-size: 1.171875rem;

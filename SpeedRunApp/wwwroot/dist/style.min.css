@@ -11,7 +11,7 @@
     --bs-border-color4: #28415b;  
     --bs-border-color6: #2b2a2a;    
     --bs-border-color10: #444;                  
-    --bs-text-color1: #fff; 
+    --bs-text-color1: #f2f2f2; 
     --bs-text-color2: #fff;  
     --bs-text-color3: #262626; 
     --bs-text-color5: #999;    
@@ -41,12 +41,12 @@
     --bs-border-color4: #2a47b8;    
     --bs-border-color6: #dfe0e1;         
     --bs-border-color10: #dee2e6;     
-    --bs-text-color1: #495057;
-    --bs-text-color2: #212529;
+    --bs-text-color1: #262626;
+    --bs-text-color2: #000;
     --bs-text-color3: #fff;
     --bs-text-color5: #fff;       
     --bs-text-color6: #000;
-    --bs-text-color7: #888;                                    
+    --bs-text-color7: #444;                                    
     --bs-background-color1:#fff;       
     --bs-background-color5: #3459e6; 
     --bs-background-color7: #fff;    
@@ -515,7 +515,7 @@ a.badge-primary:focus, a.badge-primary.focus {
 .badge-secondary {
     color: var(--bs-text-color2);
     background-color: var(--bs-secondary);
-    border: 1px solid var(--bs-background-color16);
+    /* border: 1px solid var(--bs-background-color16); */
 }
 
 a.badge-secondary:hover, a.badge-secondary:focus {
@@ -601,6 +601,10 @@ button.bg-dark:focus {
     font-size: 20px;
     display: block;
     line-height: 32px;
+}
+
+.play-icon:before {
+    color: #fff;
 }
 
 /** vue-final-modal **/
@@ -720,9 +724,10 @@ div[data-disabled="true"] .vue-select-header .vue-input input {
 }
 
 div[data-disabled="true"] .vue-tag.selected {
-    /* color: var(--bs-grey);
+    /* 
     background-color: var(--bs-background-color14);
     border-color: var(--bs-background-color16); */
+    color: var(--bs-grey);    
     opacity: 0.65;
 }
 
@@ -785,7 +790,7 @@ div[data-disabled="true"] .vue-tag.selected {
 }
 
 .vue-tags {
-    height: 32px;
+    min-height: 32px;
 }
 
 /** fusioncharts **/
@@ -940,11 +945,11 @@ div[data-disabled="true"] .vue-tag.selected {
 }
 
 .tabulator-row.tabulator-selectable:hover{
-    background-color: rgba(255,255,255,.15) !important;
+    background-color: var(--bs-border-color10) !important;
 }
 
 .tabulator-row.tabulator-selected{
-    background-color: rgba(255,255,255,.15) !important;
+    background-color: var(--bs-border-color10) !important;
 }
 
 .tabulator .tabulator-tableHolder .tabulator-table .tabulator-row.active {
@@ -985,7 +990,7 @@ div[data-disabled="true"] .vue-tag.selected {
 
 .tab-list .nav-link.active {
     background-color: var(--bs-primary) !important;
-    border: none; 
+    border: 1px solid var(--bs-primary) !important;
 }
 
 .tab-list .dropdown .btn.dropdown-toggle {

@@ -55,9 +55,9 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null, bool isReadOnly = false)
+        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
         {
-            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID, isReadOnly);
+            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID);
 
             return Json(results);
         }
@@ -79,8 +79,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel loginVM)
+        public JsonResult Login(LoginViewModel loginVM)
         {
+            var success = false;
+            List<string> errorMessages = null;
+
             try
             {
                 if (ModelState.IsValid)
@@ -99,17 +102,23 @@ namespace SpeedRunApp.WebUI.Controllers
                     {
                         var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
                         LoginUserAccount(userAcct);
-                        return Json(new { success = true });
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                     }
                 }
             }
             catch(Exception ex)
             {
                 _logger.Error(ex, "Login");
-                return Json(new { success = false, message = "Error logging user in." });
+                success = false;
+                errorMessages = new List<string>() { "Error logging user in." };
             }
 
-            return PartialView("_Login", loginVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]
@@ -129,8 +138,11 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult SignUp(SignUpViewModel signUpVM)
+        public JsonResult SignUp(SignUpViewModel signUpVM)
         {
+            var success = false;
+            List<string> errorMessages = null;
+
             try
             {
                 if (ModelState.IsValid)
@@ -143,7 +155,12 @@ namespace SpeedRunApp.WebUI.Controllers
                     if (ModelState.IsValid)
                     {
                         _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        return Json(new { success = true });
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                     }
                 }              
             }
@@ -153,7 +170,7 @@ namespace SpeedRunApp.WebUI.Controllers
                 return Json(new { success = false, message = "Error signing up user." });
             }
 
-            return PartialView("_SignUp", signUpVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]
@@ -198,8 +215,11 @@ namespace SpeedRunApp.WebUI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult ResetPassword(ResetPasswordViewModel resetPassVM)
+        public JsonResult ResetPassword(ResetPasswordViewModel resetPassVM)
         {
+            var success = false;
+            List<string> errorMessages = null;
+
             try
             {
                 if (ModelState.IsValid)
@@ -212,17 +232,23 @@ namespace SpeedRunApp.WebUI.Controllers
                     if (ModelState.IsValid)
                     {
                         _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        return Json(new { success = true });
+                        success = true;
+                    }
+                    else
+                    {
+                        success = false;
+                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                     }
                 }                
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "ResetPassword");
-                return Json(new { success = false, message = "Error resetting password." });
+                success = false;
+                errorMessages = new List<string>() { "Error resetting password" };
             }
 
-            return PartialView("_ResetPassword", resetPassVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]

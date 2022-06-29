@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.Configuration
 @using System.Security.Claims;
+@using SpeedRunCommon.Extensions;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
 @inject IConfiguration Configuration
 
 <!DOCTYPE html>
@@ -15,6 +17,8 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.css" />
+        <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker-bs4.css" />
+        <link rel="stylesheet" href="~/lib/vue-next-select/dist/index.css" />
 
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/bootstrap-theme.css" />
@@ -24,33 +28,69 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.min.css" />
         <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+        <link rel="stylesheet" href="~/lib/vanillajs-datepicker/dist/css/datepicker-bs4.min.css" />
+        <link rel="stylesheet" href="~/lib/vue-next-select/dist/index.min.css" />
 
         <link rel="stylesheet" href="~/css/site.css?v=01/20/2021" />
         <link rel="stylesheet" href="~/css/bootstrap-theme.css?v=06/10/2021" />
     </environment>
     @RenderSection("Styles", required: false)
-    <environment include="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
-        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.js")"></script>
+<environment include="Development">
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")"></script>
+    <script src="@Url.Content("~/lib/jqueryui/jquery-ui.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.js")"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.js")"></script>
+    <script src="@Url.Content("~/lib/underscore.js/underscore.js")"></script>
+    <script src="@Url.Content("~/lib/vue/vue.global.js")"></script>
+    <script src="@Url.Content("~/lib/axios/axios.js")"></script>
+    <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.js")"></script>
+    <script src="@Url.Content("~/lib/vue-final-modal/dist/VueFinalModal.umd.js")"></script>
+    <script src="@Url.Content("~/lib/vue-next-select/dist/vue-next-select.iife.js")"></script>
+    <script src="@Url.Content("~/lib/vuelidatecore/dist/index.min.js")"></script>
+    <script src="@Url.Content("~/lib/vuelidate/dist/validators.min.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js")"></script>
-        <script src="@Url.Content("~/js/layout.js")"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-        <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
-        <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
-        <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
-        <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
-        <script src="@Url.Content("~/lib/bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/components/navbar-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+    <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
+    <script src="@Url.Content("~/components/custom-modal-vue.js")"></script>
+    <script src="@Url.Content("~/components/login-vue.js")"></script>
+    <script src="@Url.Content("~/components/reset-password-vue.js")"></script>
+    <script src="@Url.Content("~/components/button-dropdown-vue.js")"></script>
 
-        <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
-        <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
-    </environment>
+    <script src="@Url.Content("~/js/common.js?v=07/09/2021")"></script>
+    <script src="@Url.Content("~/js/layout.js")"></script>
+</environment>
+<environment exclude="Development">
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/jqueryui/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/lib/jquery-ui-multiselect-widget/jquery.multiselect.min.js")"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
+    <script src="@Url.Content("~/lib/underscore.js/underscore-min.js")"></script>
+    <script src="@Url.Content("~/lib/vue/vue.global.prod.min.js")"></script>
+    <script src="@Url.Content("~/lib/axios/axios.min.js")"></script>
+    <script src="@Url.Content("~/lib/vanillajs-datepicker/dist/js/datepicker-full.min.js")"></script>
+    <script src="@Url.Content("~/lib/vue-final-modal/dist/vue-final-modal.umd.min.js")"></script>
+    <script src="@Url.Content("~/lib/vue-next-select/dist/vue-next-select.iife.prod.js")"></script>
+    <script src="@Url.Content("~/lib/vuelidatecore/dist/index.min.js")"></script>
+    <script src="@Url.Content("~/lib/vuelidate/dist/validators.min.js")"></script>
+
+    <script src="@Url.Content("~/components/navbar-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-category-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-list-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-summary-vue.js")"></script>
+    <script src="@Url.Content("~/components/speedrun-edit-vue.js")"></script>
+    <script src="@Url.Content("~/components/datepicker-vue.js")"></script>
+    <script src="@Url.Content("~/components/custom-modal-vue.js")"></script>
+    <script src="@Url.Content("~/components/login-vue.js")"></script>
+    <script src="@Url.Content("~/components/reset-password-vue.js")"></script>
+    <script src="@Url.Content("~/components/button-dropdown-vue.js")"></script>
+
+    <script src="@Url.Content("~/js/common.js?v=12/23/2020")"></script>
+    <script src="@Url.Content("~/js/layout.js?v=06/18/2021")"></script>
+</environment>
     <script type="text/javascript">
         $().ready(function () {
 
@@ -65,66 +105,69 @@
     @RenderSection("Scripts", required: false)
 </head>
 <body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">
-            <img src="@Url.Content("~/images/pie-chart.svg")" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
-            SpeedRunCharts
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    @Html.ActionLink("About", "About", "Menu", null, new { @class = "nav-link" })
-                </li>
-                <li class="nav-item active p-2">
-                    <a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedrun.com API</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <span class="icon-wrapper">
-                    <input id="txtMenuSearch" class="form-control mr-sm-2" type="text" placeholder="Search Games, Users, etc." aria-label="Search" style="width:300px;">
-                </span>
-            </form>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span>
-                            <i class="fa fa-user"></i><span class="pl-2">@User.FindFirst(ClaimTypes.Name).Value</span>
-                        </span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        <div class="dropdown-item custom-control custom-switch">
-                            <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" @((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark" ? "checked" : string.Empty)>
-                            <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
-                        </div>
-                        <div class="dropdown-item">
-                            <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <ul class="navbar-nav">
+    @*<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" asp-area="" asp-controller="SpeedRun" asp-action="SpeedRunList">
+                <img src="@Url.Content("~/images/pie-chart.svg")" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
+                SpeedRunCharts
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:showLogin();">Log In</a>
+                        @Html.ActionLink("About", "About", "Menu", null, new { @class = "nav-link" })
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:showSignUp();">Sign Up</a>
+                    <li class="nav-item active p-2">
+                        <a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedrun.com API</a>
                     </li>
                 </ul>
-            }
+                <form class="form-inline my-2 my-lg-0">
+                    <span class="icon-wrapper">
+                        <input id="txtMenuSearch" class="form-control mr-sm-2" type="text" placeholder="Search Games, Users, etc." aria-label="Search" style="width:300px;">
+                    </span>
+                </form>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span>
+                                <i class="fa fa-user"></i><span class="pl-2">@User.FindFirst(ClaimTypes.Name).Value</span>
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-item custom-control custom-switch">
+                                <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" @((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark" ? "checked" : string.Empty)>
+                                <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="/SpeedRun/Logout" class="text-secondary pl-4"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:showLogin();">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:showSignUp();">Sign Up</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </nav>*@
+    <div id="vue-app">
+        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></navbar>
+        <div class="container-fluid body-content">
+            @RenderBody()
+            <hr />
+            <footer class="footer">
+                <p>&copy; 2021 - SpeedRunCharts</p>
+            </footer>
         </div>
-    </nav>
-    <div class="container-fluid body-content">
-        @RenderBody()
-        <hr />
-        <footer class="footer">
-            <p>&copy; 2021 - SpeedRunCharts</p>
-        </footer>
     </div>
     <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -140,5 +183,14 @@
             </div>
         </div>
     </div>
+    @(("wwwroot/components/NavbarVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunListCategoryVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunListVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunSummaryVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/SpeedRunEditVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/CustomModalVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/LoginVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/ButtonDropdownVue.html").IncludeFile(hostingEnv))
+    @(("wwwroot/components/ResetPasswordVue.html").IncludeFile(hostingEnv))
 </body>
 </html>

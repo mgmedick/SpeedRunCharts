@@ -18,6 +18,30 @@ function initializeGlobalConstants(maxElementsPerPage, requestLimit, timeLimitMS
         sra["apiSettings"] = new apiSettings(maxElementsPerPage, requestLimit, timeLimitMS);
     }
 
+    if (!sra.app) {
+        sra["app"] = Vue.createApp({
+            components: {
+                'speedrun-list-category': speedRunListCategoryVue
+            }
+        }).use(VueFinalModal(), {
+            componentName: 'VueFinalModal',
+            key: '$vfm',
+            dynamicContainerName: 'ModalsContainer'
+        }).use(vuelidate.default);
+
+        sra.app.component("button-dropdown", buttonDropdownVue);
+        sra.app.component("navbar", navbarVue);
+        sra.app.component("datepicker", datepickerVue);
+        sra.app.component('vue-next-select', VueNextSelect);
+        sra.app.component('custom-modal', customModalVue);
+        sra.app.component("reset-password", resetPasswordVue);
+        sra.app.component("login", loginVue);
+        sra.app.component("speedrun-edit", speedRunEditVue);
+        sra.app.component("speedrun-list", speedRunListVue);
+        sra.app.component("speedrun-summary", speedRunSummaryVue);
+        sra.app.mount('#vue-app');
+    }
+
     if (!getCookie('theme')) {
         setCookie('theme', defaultTheme);
     }
@@ -48,63 +72,63 @@ function initializeGlobalEvents() {
         }
     });
 
-    $('#txtMenuSearch').autocomplete({
-        minlength: 3,
-        source: '../Menu/Search',
-        search: function (event, ui) {
-            $(this).parent().addClass("loading-icon");
-        },
-        response: function (event, ui) {
-            $(this).parent().removeClass("loading-icon");
-        },
-        focus: function (event, ui) {
-            event.preventDefault();
-            this.value = ui.item.label;
-        },
-        select: function (event, ui) {
-            var item = ui.item;
-            if (item) {
-                $(this).val(item.label);
-                var controller;
-                var action;
-                var params;
+    //$('#txtMenuSearch').autocomplete({
+    //    minlength: 3,
+    //    source: '../Menu/Search',
+    //    search: function (event, ui) {
+    //        $(this).parent().addClass("loading-icon");
+    //    },
+    //    response: function (event, ui) {
+    //        $(this).parent().removeClass("loading-icon");
+    //    },
+    //    focus: function (event, ui) {
+    //        event.preventDefault();
+    //        this.value = ui.item.label;
+    //    },
+    //    select: function (event, ui) {
+    //        var item = ui.item;
+    //        if (item) {
+    //            $(this).val(item.label);
+    //            var controller;
+    //            var action;
+    //            var params;
 
-                switch (item.category) {
-                    case "Games":
-                        controller = "Game";
-                        action = "GameDetails"
-                        params = "gameID=" + item.value;
-                        break;
-                    case "Users":
-                        controller = "User";
-                        action = "UserDetails"
-                        params = "userID=" + item.value;
-                        break;
-                }
+    //            switch (item.category) {
+    //                case "Games":
+    //                    controller = "Game";
+    //                    action = "GameDetails"
+    //                    params = "gameID=" + item.value;
+    //                    break;
+    //                case "Users":
+    //                    controller = "User";
+    //                    action = "UserDetails"
+    //                    params = "userID=" + item.value;
+    //                    break;
+    //            }
 
-                location.href = encodeURI('../' + controller + "/" + action + "?" + params);
-            }
+    //            location.href = encodeURI('../' + controller + "/" + action + "?" + params);
+    //        }
 
-            return false;
-        }
-    }).data('ui-autocomplete')._renderMenu = function (ul, items) {
-        var that = this;
-        if ($(items).filter(function () { return this.subItems && this.subItems.length > 0 }).length == 0) {
-            ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>No results found</div>");
-        } else {
-            $(items).each(function () {
-                if (this.subItems.length > 0) {
-                    var category = this.label;
-                    ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + category + "</div>");
+    //        return false;
+    //    }
+    //}).data('ui-autocomplete')._renderMenu = function (ul, items) {
+    //    var that = this;
+    //    if ($(items).filter(function () { return this.subItems && this.subItems.length > 0 }).length == 0) {
+    //        ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>No results found</div>");
+    //    } else {
+    //        $(items).each(function () {
+    //            if (this.subItems.length > 0) {
+    //                var category = this.label;
+    //                ul.append("<div class='dropdown-divider'></div><div class='ui-autocomplete-category'>" + category + "</div>");
 
-                    $(this.subItems).each(function () {
-                        this.category = category;
-                        var li = that._renderItemData(ul, this);
-                    });
-                }
-            });
-        }
-    };
+    //                $(this.subItems).each(function () {
+    //                    this.category = category;
+    //                    var li = that._renderItemData(ul, this);
+    //                });
+    //            }
+    //        });
+    //    }
+    //};
 }
 
 function showLogin() {

@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Templates\" />
     <Folder Include="Models\" />
     <Folder Include="Templates\" />
   </ItemGroup>
@@ -60,6 +61,18 @@
     <Content Remove="wwwroot\lib\jquery-validation\.bower.json" />
     <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
     <Content Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Components\speedrun-edit.js" />
+    <None Remove="Components\Templates\SpeedRunEditVue.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\speedrun-edit.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

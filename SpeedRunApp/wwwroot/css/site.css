@@ -185,6 +185,164 @@ div.chart-placeholder + div.chart-placeholder {
     border: none !important;
 }
 
+/** modal **/
+/*
+.modal-mask {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter {
+    opacity: 0;
+}
+
+.modal-leave-active {
+    opacity: 0;
+}
+
+    .modal-enter .modal-container,
+    .modal-leave-active .modal-container {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+    }
+*/
+
+/** choices **/
+.choices__inner {
+    padding: 3px;
+    min-height: 28px;
+}
+
+.choices__inner .choices__list--multiple .choices__item--selectable {
+    border-radius: 5px;
+}
+
+.choices__list--multiple .choices__item {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+/** vue-select **/
+.vue-select {
+    width: auto;
+    border: none;
+}
+
+.vue-dropdown-item {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 15px;
+    padding: 4px 24px 4px 24px;
+}
+
+.vue-dropdown-item.group {
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.vue-dropdown-item.highlighted:not(.group) {
+    text-decoration: none;
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+    border: none !important;
+}
+
+.vue-select-header {
+    padding: 3px;
+    /*min-height: 32px;*/
+}
+
+.vue-input {
+    padding:0px;
+}
+
+.vue-input input {
+    font-size: 0.9375rem;
+    padding: 6px 12px 6px 12px;
+}
+
+.vue-dropdown {
+    border: none;
+}
+
+.vue-tag.selected {
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 2px;
+    margin-bottom: 1px;
+}
+
+.vue-tag.selected .icon.delete {
+    content: "\f00d";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color:#fff;
+}
+
+/** vue-final-modal **/
+::v-deep .modal-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::v-deep .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 90%;
+    margin: 0 1rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    background: #fff;
+}
+
+.modal__title {
+    margin: 0 2rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal__content {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.modal__action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 1rem 0 0;
+}
+
+.modal__close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

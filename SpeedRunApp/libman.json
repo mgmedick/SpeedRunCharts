@@ -6,10 +6,6 @@
       "library": "twitter-bootstrap@4.5.2",
       "destination": "wwwroot/lib/bootstrap",
       "files": [
-        "js/bootstrap.js",
-        "js/bootstrap.min.js",
-        "js/bootstrap.bundle.js",
-        "js/bootstrap.bundle.min.js",
         "css/bootstrap.css",
         "css/bootstrap.min.css"
       ]
@@ -46,7 +42,7 @@
       "destination": "wwwroot/lib/underscore.js/",
       "files": [
         "underscore-min.js",
-        "underscore.js" 
+        "underscore.js"
       ]
     },
     {
@@ -113,6 +109,68 @@
       "destination": "wwwroot/lib/jquery.mousewheel/",
       "files": [
         "jquery.mousewheel.js"
+      ]
+    },
+    {
+      "library": "axios@0.21.1",
+      "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "vanillajs-datepicker@1.1.4",
+      "destination": "wwwroot/lib/vanillajs-datepicker/",
+      "files": [
+        "dist/css/datepicker-bs4.css",
+        "dist/css/datepicker.css",
+        "dist/js/datepicker-full.js",
+        "dist/js/datepicker-full.min.js",
+        "dist/css/datepicker-bs4.min.css"
+      ]
+    },
+    {
+      "library": "vue@3.1.5",
+      "destination": "wwwroot/lib/vue/",
+      "files": [
+        "vue.global.js",
+        "vue.global.min.js",
+        "vue.global.prod.js",
+        "vue.global.prod.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vue-final-modal@3.3.1",
+      "destination": "wwwroot/lib/vue-final-modal/",
+      "files": [
+        "dist/VueFinalModal.umd.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vue-next-select@2.8.0",
+      "destination": "wwwroot/lib/vue-next-select/",
+      "files": [
+        "dist/index.css",
+        "dist/index.min.css",
+        "dist/vue-next-select.iife.js",
+        "dist/vue-next-select.iife.prod.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "vuelidate@0.7.4",
+      "destination": "wwwroot/lib/vuelidate/",
+      "files": [
+        "dist/validators.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@vuelidate/core@2.0.0-alpha.22",
+      "destination": "wwwroot/lib/vuelidatecore/",
+      "files": [
+        "dist/index.js",
+        "dist/index.min.js"
       ]
     }
   ]

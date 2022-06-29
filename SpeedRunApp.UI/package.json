@@ -1,0 +1,52 @@
+{
+  "name": "speed-run-app.ui",
+  "version": "0.0.0",
+  "description": "SpeedRunApp.UI",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "webpack --color --progress",
+    "watch": "webpack --color --progress --watch",
+    "clean": "webpack --clean"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@vue/compiler-sfc": "^3.1.5",
+    "autoprefixer": "^10.3.1",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-loader": "^2.1.1",
+    "expose-loader": "^3.0.0",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^6.0.1",
+    "postcss": "^8.3.6",
+    "postcss-loader": "^6.1.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^16.4.1",
+    "webpack": "^5.48.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@vuelidate/core": "^2.0.0-alpha.33",
+    "@vuelidate/validators": "^2.0.0-alpha.26",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.5.2",
+    "core-js": "^3.16.0",
+    "dayjs": "^1.10.8",
+    "fusioncharts": "^3.18.0",
+    "popper.js": "^1.16.1",
+    "source-map-loader": "^3.0.0",
+    "tabulator-tables": "^4.9.3",
+    "tippy.js": "^6.3.1",
+    "vue": "^3.1.5",
+    "vue-final-modal": "^3.4.0",
+    "vue-next-select": "^2.8.0",
+    "vue-tippy": "^6.0.0-alpha.33"
+  }
+}

@@ -10,13 +10,19 @@ namespace SpeedRunApp.Repository
     {
         public DataMappings()
         {
-            For<SpeedRunView>().TableName("dbo.vw_SpeedRun");
-            For<SpeedRunGridView>().TableName("dbo.vw_SpeedRunGrid");
-            For<SpeedRunSummaryView>().TableName("dbo.vw_SpeedRunSummary");
-            For<GameView>().TableName("dbo.vw_Game");
-            For<UserView>().TableName("dbo.vw_User");
-            For<User>().PrimaryKey("ID").TableName("dbo.tbl_User");
-            For<UserAccount>().PrimaryKey("ID").TableName("dbo.tbl_UserAccount");
+            For<SpeedRunView>().TableName("vw_SpeedRun");
+            For<SpeedRunGridView>().TableName("vw_SpeedRunGrid");
+            For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
+            For<SpeedRunGridTabUserView>().TableName("vw_SpeedRunGridTabUser");
+            For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
+            For<GameView>().TableName("vw_Game");
+            For<UserView>().TableName("vw_User");
+            For<User>().PrimaryKey("ID").TableName("tbl_User");
+            For<UserAccount>().PrimaryKey("ID").TableName("tbl_UserAccount");
+            For<UserAccountSetting>().PrimaryKey("UserAccountID", false).TableName("tbl_UserAccount_Setting");
+            For<UserAccountView>().TableName("vw_UserAccount");
+            For<UserAccountSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_UserAccount_SpeedRunListCategory");
+            For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
         }
     }
 }

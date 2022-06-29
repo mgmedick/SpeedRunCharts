@@ -4,31 +4,82 @@ using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.ViewModels;
 using SpeedRunCommon.Extensions;
 using System.Collections.Generic;
+using System;
+using Serilog;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class GameController : Controller
     {
         private readonly IGameService _gameService = null;
         private readonly ISpeedRunService _speedRunsService = null;
+        private readonly ILogger _logger = null;
 
-        public GameController(IGameService gameService, ISpeedRunService speedRunsService)
+        public GameController(IGameService gameService, ISpeedRunService speedRunsService, ILogger logger)
         {
             _gameService = gameService;
             _speedRunsService = speedRunsService;
+            _logger = logger;
+        }
+        
+        public ViewResult GameDetails(string ID, string speedRunID)
+        {
+            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);
+
+            return View(gameDetailsVM);
         }
 
-        public ViewResult GameDetails(int gameID)
-        {
-            var gameVM = _gameService.GetGame(gameID);
+        //public ViewResult GameDetails(int gameID)
+        //{
+        //    var gameVM = _gameService.GetGame(gameID);
 
-            return View(gameVM);
+        //    return View(gameVM);
+        //}
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridTabsForUser(int userID)
+        {
+            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID);
+
+            return Json(gridVM);
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGrid(int ID)
+        public JsonResult GetWorldRecordGridTabs(int gameID)
         {
-            var gridVM = _gameService.GetSpeedRunGrid(ID);
+            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
+
+           return Json(gridVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetSpeedRunGridTabsForUser(int userID, int? speedRunID)
+        {
+            SpeedRunGridTabViewModel gridVM = null;
+            try
+            {
+                gridVM = _gameService.GetSpeedRunGridTabsForUser(userID, speedRunID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetSpeedRunGridTabsForUser UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+            }
+
+            return Json(gridVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
+        {
+            SpeedRunGridTabViewModel gridVM = null;
+            try
+            {
+                gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetSpeedRunGridTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+            }
 
             return Json(gridVM);
         }
@@ -39,7 +90,7 @@ namespace SpeedRunApp.WebUI.Controllers
             var results = _gameService.SearchGames(term);
 
             return Json(results);
-        }
+        }                     
     }
 }
 

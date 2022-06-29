@@ -11,17 +11,19 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = game.ID;
             Name = game.Name;
+            Abbr = game.Abbr;
             YearOfRelease = game.YearOfRelease;
             CoverImageUri = game.CoverImageUrl;
             SpeedRunComLink = game.SpeedRunComUrl;
 
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
-                CategoryTypes = new List<IDNamePair>();
+                CategoryTypes = new List<TabItem>();
                 foreach (var categoryType in game.CategoryTypes.Split("^^"))
                 {
                     var values = categoryType.Split("|", 2);
-                    CategoryTypes.Add(new IDNamePair { ID = Convert.ToInt32(values[0]), Name = values[1] });
+                    var categoryTypeTab = new TabItem() { ID = Convert.ToInt32(values[0]), Name = values[1] };
+                    CategoryTypes.Add(categoryTypeTab);
                 }
             }
 
@@ -37,11 +39,34 @@ namespace SpeedRunApp.Model.ViewModels
                         CategoryTypeID = Convert.ToInt32((string)values[1]),
                         Name = values[2]
                     };
-                    category.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == category.ID);
+                    category.HasData = runVMs == null || runVMs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
                 }
+
+                foreach (var category in Categories)
+                {
+                    if (!category.HasData)
+                    {
+                        category.Name += " (empty)";
+                    }
+                }             
             }
 
+            if (CategoryTypes != null) {
+                var categoryTypeIDsToRemove = new List<int>();
+                foreach (var categoryType in CategoryTypes)
+                {
+                    categoryType.HasData = Categories.Any(i => i.CategoryTypeID == categoryType.ID && i.HasData);
+                    
+                    if (!categoryType.HasData)
+                    {
+                        categoryTypeIDsToRemove.Add(categoryType.ID);
+                    }
+                }
+
+                CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
+            }
+                                                
             if (!string.IsNullOrWhiteSpace(game.Levels))
             {
                 Levels = new List<IDNamePair>();
@@ -66,9 +91,15 @@ namespace SpeedRunApp.Model.ViewModels
                             ID = level.ID,
                             Name = level.Name,
                             CategoryID = levelCategory.ID,
-                            HasData = runVMs != null && runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
+                            HasData = runVMs == null || runVMs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == level.ID)
                         };
                         LevelTabs.Add(levelTab);
+                    }
+                }
+
+                foreach(var levelTab in LevelTabs){
+                    if (!levelTab.HasData) {
+                        levelTab.Name += " (empty)";
                     }
                 }
             }
@@ -97,13 +128,24 @@ namespace SpeedRunApp.Model.ViewModels
                                                       Name = i.Split("|", 3)[2]
                                                   }).ToList();
 
+                    if (variable.VariableValues != null)
+                    {
+                        foreach (var variableValue in variable.VariableValues)
+                        {
+                            variableValue.HasData = runVMs == null || runVMs.Any(i => i.VariableValues != null && i.VariableValues.Any(g => g.Value == variableValue.ID));
+                        }
+                    }
+
                     Variables.Add(variable);
                 }
 
+                Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
+
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetAdjustedVariables(subVariables, runVMs);
+                SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
-                SetVariablesHasValue(SubCategoryVariablesTabs, runVMs);
+                SetVariablesHasValue(SubCategoryVariablesTabs, runVMs);          
+                SetParentVariablesHasValue(SubCategoryVariablesTabs);
             }
 
             if (!string.IsNullOrWhiteSpace(game.Platforms))
@@ -118,16 +160,16 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.Moderators))
             {
-                Moderators = new List<IDNamePair>();
+                Moderators = new List<IDNameAbbrPair>();
                 foreach (var moderator in game.Moderators.Split("^^"))
                 {
-                    var values = moderator.Split("|", 2);
-                    Moderators.Add(new IDNamePair { ID = Convert.ToInt32(values[0]), Name = values[1] });
+                    var values = moderator.Split("¦", 3);
+                    Moderators.Add(new IDNameAbbrPair { ID = Convert.ToInt32(values[0]), Name = values[1], Abbr = values[2] });
                 }
             }
         }
 
-        public List<Variable> GetAdjustedVariables(List<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs)
+        public List<Variable> GetAdjustedVariables(List<Variable> variables)
         {
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();
             var categories = Categories.Reverse<Category>();
@@ -135,7 +177,7 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 foreach (var category in categories)
                 {
-                    if (category.CategoryTypeID == (int)CategoryType.PerLevel)
+                    if (category.CategoryTypeID == (int)CategoryType.PerLevel && Levels != null)
                     {
                         foreach (var level in Levels)
                         {
@@ -172,18 +214,29 @@ namespace SpeedRunApp.Model.ViewModels
 
             var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue).Reverse().ToList();
             var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
-            foreach (var allLevelVariable in allLevelVariables)
-            {
-                //foreach (var category in levelCategories)
-                //{
-                foreach (var level in Levels)
+            if (Levels != null && Levels.Any()) {
+                foreach (var allLevelVariable in allLevelVariables)
                 {
-                    var variable = (Variable)allLevelVariable.Clone();
-                    //variable.CategoryID = category.ID;
-                    variable.LevelID = level.ID;
-                    variables.Insert(0, variable);
+                    if(!allLevelVariable.CategoryID.HasValue){
+                        foreach (var category in levelCategories)
+                        {
+                            foreach (var level in Levels)
+                            {
+                                var variable = (Variable)allLevelVariable.Clone();
+                                variable.CategoryID = category.ID;
+                                variable.LevelID = level.ID;
+                                variables.Insert(0, variable);
+                            }
+                        } 
+                    } else {
+                        foreach (var level in Levels)
+                        {
+                            var variable = (Variable)allLevelVariable.Clone();
+                            variable.LevelID = level.ID;
+                            variables.Insert(0, variable);
+                        }
+                    }
                 }
-                //}
             }
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue);
@@ -229,37 +282,64 @@ namespace SpeedRunApp.Model.ViewModels
 
         public void SetVariablesHasValue(IEnumerable<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs, List<Tuple<int,int>> parentVariableValues = null)
         {
-            foreach (var variable in variables)
-            {
+           foreach (var variable in variables)
+           {
+                if (parentVariableValues == null)
+                {
+                    parentVariableValues = new List<Tuple<int, int>>();
+                }
+
                 foreach (var variableValue in variable.VariableValues)
                 {
-                    if (parentVariableValues == null)
-                    {
-                        parentVariableValues = new List<Tuple<int, int>>();
+                    variableValue.HasData = runVMs == null || (runVMs.Any(i => i.CategoryID == variable.CategoryID
+                                        && i.LevelID == variable.LevelID
+                                        && i.VariableValues != null
+                                        && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Key.ToString() == g.Item1.ToString() && h.Value.ToString() == g.Item2.ToString())) == parentVariableValues.Count()
+                                        && i.VariableValues.Any(g => g.Key.ToString() == variable.ID.ToString() && g.Value.ToString() == variableValue.ID.ToString())));
+                    
+                    if (!variableValue.HasData) {
+                        variableValue.Name += " (empty)";
                     }
-
-                    variableValue.HasData = runVMs != null && runVMs.Any(i => i.CategoryID == variable.CategoryID
-                                      && i.LevelID == variable.LevelID
-                                      && i.VariableValues != null                                  
-                                      && parentVariableValues.Count(g => i.VariableValues.Any(h => h.Item1 == g.Item1.ToString() && h.Item2 == g.Item2.ToString())) == parentVariableValues.Count()
-                                      && i.VariableValues.Any(g => g.Item1 == variable.ID.ToString() && g.Item2 == variableValue.ID.ToString())); ;
 
                     if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
                     {
-                        parentVariableValues.Add(new Tuple<int, int>(variable.ID, variableValue.ID));
-                        SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues);
-                        parentVariableValues = null;
+                        var parentVariableValues1 = new List<Tuple<int, int>>();
+                        parentVariableValues1.AddRange(parentVariableValues);
+                        parentVariableValues1.Add(new Tuple<int, int>(variable.ID, variableValue.ID));
+                        SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues1);
                     }
+                }
+
+                parentVariableValues = null;
+           }
+        }
+
+        public void SetParentVariablesHasValue(List<Variable> variables) {
+            foreach(var variable in variables) {
+                foreach (var variableValue in variable.VariableValues) {
+                    if (variableValue.SubVariables.Any() && variableValue.SubVariables.SelectMany(i => i.VariableValues).Count(i => !i.HasData) == variableValue.SubVariables.SelectMany(i => i.VariableValues).Count()) {
+                        variableValue.HasData = false;
+                        
+                        if (!variableValue.HasData && !variableValue.Name.EndsWith(" (empty)")) {
+                            variableValue.Name += " (empty)";
+                        }
+                    }
+                    
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        SetParentVariablesHasValue(variableValue.SubVariables.ToList());
+                    }                      
                 }
             }
         }
 
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Abbr { get; set; }
         public string CoverImageUri { get; set; }
         public string SpeedRunComLink { get; set; }
         public int? YearOfRelease { get; set; }
-        public List<IDNamePair> CategoryTypes { get; set; }
+        public List<TabItem> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
         public List<IDNamePair> Levels { get; set; }
         public List<LevelTab> LevelTabs { get; set; }
@@ -267,7 +347,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Variable> SubCategoryVariables { get; set; }
         public List<Variable> SubCategoryVariablesTabs { get; set; }
         public List<IDNamePair> Platforms { get; set; }
-        public List<IDNamePair> Moderators { get; set; }
+        public List<IDNameAbbrPair> Moderators { get; set; }
         public string PlatformsString
         {
             get

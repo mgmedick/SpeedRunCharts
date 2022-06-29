@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SpeedRunApp.WebUI": {
+    "SpeedRunApp.MVC": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

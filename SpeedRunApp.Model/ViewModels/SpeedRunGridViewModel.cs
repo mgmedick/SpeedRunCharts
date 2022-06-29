@@ -8,15 +8,32 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunGridViewModel
     {
+        public SpeedRunGridViewModel(SpeedRunGridTabView run)
+        {
+            ID = run.ID;
+            GameID = run.GameID;
+            CategoryID = run.CategoryID;
+            LevelID = run.LevelID;
+            Rank = run.Rank;
+                        
+            if (!string.IsNullOrWhiteSpace(run.VariableValues))
+            {
+                VariableValues = new Dictionary<int, int>();
+                foreach (var variableValue in run.VariableValues.Split(","))
+                {
+                    var values = variableValue.Split("|", 2);
+                    VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
+                }
+            }            
+        }
+        
         public SpeedRunGridViewModel(SpeedRunGridView run)
         {
             ID = run.ID;
             GameID = run.GameID;
-            CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
-            //SpeedRunComLink = run.SpeedRunComUrl;
-            //SplitsLink = run.SplitsUrl;
+            SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
@@ -25,30 +42,31 @@ namespace SpeedRunApp.Model.ViewModels
             if (run.PlatformID.HasValue)
             {
                 Platform = new IDNamePair { ID = run.PlatformID.Value, Name = run.PlatformName };
+                PlatformName = run.PlatformName;
             }
 
             if (!string.IsNullOrWhiteSpace(run.VariableValues))
             {
-                VariableValues = new List<Tuple<string, string>>();
-                foreach (var value in run.VariableValues.Split(","))
+                VariableValues = new Dictionary<int, int>();
+                foreach (var variableValue in run.VariableValues.Split(","))
                 {
-                    var variableValue = value.Split("|", 2);
-                    VariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
+                    var values = variableValue.Split("|", 2);
+                    VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(run.Players) || !string.IsNullOrWhiteSpace(run.Guests))
             {
-                Players = new List<IDNamePair>();
+                Players = new List<IDNameAbbrPair>();
 
                 if (!string.IsNullOrWhiteSpace(run.Players))
                 {
                     foreach (var player in run.Players.Split("^^"))
                     {
-                        var playerValue = player.Split("|", 2);
+                        var playerValue = player.Split("¦", 3);
                         int playerID;
                         int.TryParse(playerValue[0], out playerID);
-                        Players.Add(new IDNamePair { ID = playerID, Name = playerValue[1] });
+                        Players.Add(new IDNameAbbrPair { ID = playerID, Name = playerValue[1], Abbr = playerValue[2] });
                     }
                 }
 
@@ -56,10 +74,10 @@ namespace SpeedRunApp.Model.ViewModels
                 {
                     foreach (var guest in run.Guests.Split("^^"))
                     {
-                        var guestValue = guest.Split("|", 2);
+                        var guestValue = guest.Split("¦", 3);
                         int guestID;
                         int.TryParse(guestValue[0], out guestID);
-                        Players.Add(new IDNamePair { ID = 0, Name = guestValue[1] });
+                        Players.Add(new IDNameAbbrPair { ID = 0, Name = guestValue[1], Abbr = guestValue[2] });
                     }
                 }
 
@@ -73,14 +91,14 @@ namespace SpeedRunApp.Model.ViewModels
 
         public int ID { get; set; }
         public int GameID { get; set; }
-        public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public IDNamePair Platform { get; set; }
-        public List<Tuple<string, string>> VariableValues { get; set; }
-        public List<IDNamePair> Players { get; set; }
+        public string PlatformName { get; set; }
+        public string SubCategoryVariableValueIDs { get; set; }
+        public Dictionary<int, int> VariableValues { get; set; }
+        public List<IDNameAbbrPair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
-        public bool IsEmulated { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public string Comment { get; set; }
@@ -110,14 +128,6 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return VerifyDate?.ToRealtiveDateString();
-            }
-        }
-
-        public string IsEmulatedString
-        {
-            get
-            {
-                return IsEmulated.ToString();
             }
         }
 

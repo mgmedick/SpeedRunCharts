@@ -10,6 +10,7 @@ namespace SpeedRunApp.Repository
     public abstract class BaseRepository
     {
         public static DatabaseFactory DBFactory { get; set; }
+        public static bool IsMySQL { get; set; }
     }
 }
 

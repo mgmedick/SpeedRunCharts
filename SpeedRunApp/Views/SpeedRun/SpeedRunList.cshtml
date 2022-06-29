@@ -4,19 +4,6 @@
 
 @{ ViewBag.Title = "SpeedRunList"; }
 
-@section Scripts {
-    <script src="@Url.Content("~/js/speedrun-edit.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/speedrun-list.js?v=06/10/2021")" type="text/javascript"></script>
-
-    <script>
-        $(document).ready(function () {
-            var _elementsPerPage = @Json.Serialize(Model.ElementsPerPage);
-
-            initializeClient(_elementsPerPage);
-        })
-    </script>
-}
-
 <div>
     <speedrun-list-category></speedrun-list-category>
 </div>

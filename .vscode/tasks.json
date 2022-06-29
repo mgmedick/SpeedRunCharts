@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cleanweb",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "clean",
+                "${workspaceFolder}/SpeedRunApp/SpeedRunApp.MVC.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "buildweb",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/SpeedRunApp/SpeedRunApp.MVC.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "dependsOn":["cleanweb"]
+		}
+    ]
+}

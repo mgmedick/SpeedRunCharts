@@ -22,19 +22,22 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<GameView> GetGamesByUserID(int userID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<GameView>("EXEC dbo.GetGamesByUserID @0", userID).ToList();
-            }
-        }
-
         public IEnumerable<SearchResult> SearchGames(string searchText)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<SearchResult>("SELECT TOP 10 ID AS [Value], [Name] AS Label FROM dbo.tbl_Game WITH (NOLOCK) WHERE [Name] LIKE @0 + '%'", searchText).ToList();
+                var results = IsMySQL ? db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_Game WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList() :
+                                        db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_Game WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
+                
+                return results;
+            }
+        }
+
+        public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_Game;").ToList();
             }
         }
     }

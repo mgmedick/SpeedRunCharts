@@ -21,6 +21,7 @@ namespace SpeedRunApp.Model.Data
         public string PlatformName { get; set; }
         public string VariableValues { get; set; }
         public string Players { get; set; }
+        public string Guests { get; set; } 
         public string VideoLinks { get; set; }
         public string EmbeddedVideoLinks { get; set; }
         public bool IsEmulated { get; set; }

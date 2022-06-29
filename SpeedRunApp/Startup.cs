@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 //using SpeedRunApp.Interfaces.Helpers;
 using SpeedRunApp.Repository.Configuration;
+using System;
 
 namespace SpeedRunApp
 {
@@ -58,7 +59,8 @@ namespace SpeedRunApp
             });
 
             var connString = _config.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;
-            NPocoBootstrapper.Configure(connString);
+            var isMySQL = Convert.ToBoolean(_config.GetSection("SiteSettings").GetSection("IsMySQL").Value);
+            NPocoBootstrapper.Configure(connString, isMySQL);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +86,7 @@ namespace SpeedRunApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}");
+                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}/{id?}");
             });
         }
     }

@@ -14,8 +14,10 @@ using System.Threading.Tasks;
 using System.Linq;
 using Serilog;
 using Microsoft.AspNetCore.Authorization;
+using System.Xml;
+using Microsoft.AspNetCore.Http.Features;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class SpeedRunController : Controller
     {
@@ -47,7 +49,16 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(SpeedRunListCategory category, int topAmount, int? orderValueOffset)
+        public JsonResult GetSpeedRunListCategories()
+        {
+            var currUserAccountID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var runListCategories = _speedRunService.GetSpeedRunListCategories(currUserAccountID);
+
+            return Json(runListCategories);
+        }
+
+        [HttpGet]
+        public JsonResult GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
         {
             var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
 
@@ -71,6 +82,22 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetWorldRecordGridData(int gameID, int categoryID, int? levelID, int? userID)
+        {
+            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryID, levelID, userID);
+
+            return Json(results);
+        }
+
+        [HttpGet]
+        public JsonResult GetSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID, bool showAllData)
+        {
+            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID, showAllData);
+
+            return Json(results);
+        }
+
+        [HttpGet]
         public ActionResult Login()
         {
             var loginVM = new LoginViewModel();
@@ -86,29 +113,26 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
-                if (ModelState.IsValid)
+                if (!_userAcctService.UsernameExists(loginVM.Username, true))
                 {
-                    if (!_userAcctService.UsernameExists(loginVM.Username, true))
-                    {
-                        ModelState.AddModelError("Login", "Invalid username");
-                    }
+                    ModelState.AddModelError("Login", "Invalid username");
+                }
 
-                    if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
-                    {
-                        ModelState.AddModelError("Login", "Invalid password");
-                    }
+                if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
+                {
+                    ModelState.AddModelError("Login", "Invalid password");
+                }
 
-                    if(ModelState.IsValid)
-                    {
-                        var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
-                        LoginUserAccount(userAcct);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
+                if(ModelState.IsValid)
+                {
+                    var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
+                    LoginUserAccount(userAcct);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
             catch(Exception ex)
@@ -145,24 +169,21 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
+                if (_userAcctService.EmailExists(signUpVM.Email))
+                {
+                    ModelState.AddModelError("SignUp", "Email already exists for another user");
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (_userAcctService.EmailExists(signUpVM.Email))
-                    {
-                        ModelState.AddModelError("SignUp", "Email already exists for another user");
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
-                }              
+                    _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -183,9 +204,12 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Activate(ActivateViewModel activateUserAcctVM)
+        public JsonResult Activate(ActivateViewModel activateUserAcctVM)
         {
-            if (ModelState.IsValid)
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
             {
                 if (_userAcctService.UsernameExists(activateUserAcctVM.Username, false))
                 {
@@ -197,12 +221,23 @@ namespace SpeedRunApp.WebUI.Controllers
                     _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
                     var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
                     LoginUserAccount(userAcct);
-
-                    return Redirect("SpeedRunList");
+                    _ = _userAcctService.SendConfirmRegistrationEmail(userAcct.Email, userAcct.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "ResetPassword");
+                success = false;
+                errorMessages = new List<string>() { "Error resetting password" };
+            }
 
-            return View(activateUserAcctVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]
@@ -222,24 +257,21 @@ namespace SpeedRunApp.WebUI.Controllers
 
             try
             {
+                if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
+                {
+                    ModelState.AddModelError("ResetPassword", "Username not found");
+                }
+
                 if (ModelState.IsValid)
                 {
-                    if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
-                    {
-                        ModelState.AddModelError("Activate", "Username not found");
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
-                        success = true;
-                    }
-                    else
-                    {
-                        success = false;
-                        errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                    }
-                }                
+                    _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -261,9 +293,12 @@ namespace SpeedRunApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordViewModel changePassVM)
+        public JsonResult ChangePassword(ChangePasswordViewModel changePassVM)
         {
-            if (ModelState.IsValid)
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
             {
                 var username = HttpContext.Session.Get<string>("Username");
                 if (_userAcctService.PasswordMatches(changePassVM.Password, username))
@@ -274,12 +309,22 @@ namespace SpeedRunApp.WebUI.Controllers
                 if (ModelState.IsValid)
                 {
                     _userAcctService.ChangeUserAcctPassword(username, changePassVM.Password);
-
-                    return Redirect("SpeedRunList");
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "ChangePassword");
+                success = false;
+                errorMessages = new List<string>() { "Error changing password" };
+            }
 
-            return View(changePassVM);
+            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         private async void LoginUserAccount(UserAccount userAcct)
@@ -297,6 +342,36 @@ namespace SpeedRunApp.WebUI.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
         }
+
+        // [Route("/sitemap.xml")]
+        // public void SitemapXml()
+        // {
+        //     string host = Request.Scheme + "://" + Request.Host;
+
+        //     Response.ContentType = "application/xml";
+
+        //     var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+        //     if (syncIOFeature != null)
+        //     {
+        //         syncIOFeature.AllowSynchronousIO = true;
+        //     }
+
+        //     using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
+        //     {
+        //         xml.WriteStartDocument();
+        //         xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+        //         xml.WriteStartElement("url");
+        //         xml.WriteElementString("loc", host);
+        //         xml.WriteEndElement();
+
+        //         xml.WriteStartElement("url");
+        //         xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
+        //         xml.WriteEndElement();
+
+        //         xml.WriteEndElement();
+        //     }
+        // }
 
         //jqvalidate
         [AllowAnonymous]

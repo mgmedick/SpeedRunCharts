@@ -20,5 +20,8 @@ namespace SpeedRunApp.Interfaces.Services
         bool EmailExists(string email);
         bool PasswordMatches(string password, string username);
         bool UsernameExists(string username, bool activeFilter);
+        UserAccountViewModel GetUserAccount(int userID);
+        void SaveUserAccount(UserAccountViewModel userAcctVM, int currUserAcctID);
+        Task SendConfirmRegistrationEmail(string email, string username);
     }
 }

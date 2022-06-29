@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Abbr { get; set; }
         public DateTime? SignUpDate { get; set; }
         public string Location { get; set; }
         public string SpeedRunComUrl { get; set; }
@@ -17,5 +18,8 @@ namespace SpeedRunApp.Model.Data
         public string YoutubeProfileUrl { get; set; }
         public string TwitterProfileUrl { get; set; }
         public string SpeedRunsLiveProfileUrl { get; set; }
+        public int TotalSpeedRuns { get; set; }
+        public int TotalWorldRecords { get; set; }
+        public int TotalPersonalBests { get; set; }
     }
 } 

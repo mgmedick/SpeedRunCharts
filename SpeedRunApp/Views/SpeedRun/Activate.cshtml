@@ -2,56 +2,12 @@
 
 @{ ViewBag.Title = "Create Account"; }
 
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-}
-
 <div>
     <div class="col-sm-auto p-2 align-self-end">
         <h4 class="m-0">Create Account</h4>
     </div>
-    <div id="divActivate" class="container mx-auto p-0" style="max-width:500px;">
-        @if (Model.IsValid)
-        {
-            @using (Html.BeginForm("Activate", "SpeedRun"))
-            {
-                @Html.ValidationSummary()
-                <div class="form-group row no-gutters">
-                    <label class="col-sm-4 col-form-label">Username</label>
-                    <div class="col-sm-auto">
-                        @Html.TextBoxFor(i => i.Username, new { @autocomplete = "off", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group row no-gutters">
-                    <label class="col-sm-4 col-form-label">Password</label>
-                    <div class="col-sm-auto">
-                        @Html.PasswordFor(i => i.Password, new { @autocomplete = "off", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="form-group row no-gutters">
-                    <label class="col-sm-4 col-form-label">Confirm Password</label>
-                    <div class="col-sm-auto">
-                        @Html.PasswordFor(i => i.ConfirmPassword, new { @autocomplete = "off", @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row no-gutters pt-1">
-                    <div class="form-group mx-auto">
-                        <input id="btnActivate" type="submit" class="btn btn-primary" value="Submit" />
-                    </div>
-                </div>
-                @Html.HiddenFor(i => i.IsValid);
-            }
-        }
-        else
-        {
-            <div style="text-align:center;">
-                <i class="fa fa-hourglass-end"></i>
-                <div>
-                    Activation link has expired, please <a href="javascript:showSignUp();">Sign Up</a> to try again.
-                </div>
-            </div>
-        }
+    <div class="container mx-auto p-0" style="max-width:500px;">
+       <activate :isLinkValid="@Json.Serialize(Model.IsValid)"></activate>
     </div>
 </div>
 

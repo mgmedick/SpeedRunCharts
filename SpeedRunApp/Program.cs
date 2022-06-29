@@ -24,6 +24,7 @@ namespace SpeedRunApp
                         {
                             services.AddControllers();
                         });
+                        //webBuilder.UseUrls("http://*:5050");
                     })
                     .UseSerilog((hostingContext, loggerConfiguration) =>
                     {

@@ -14,18 +14,37 @@ namespace SpeedRunApp.Service
         private readonly IUserRepository _userRepo = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IGameRepository _gameRepo = null;
+        private readonly ICacheService _cacheService = null;
 
-        public UserService(IUserRepository userRepo, ISpeedRunRepository speedRunRepo, IGameRepository gameRepo)
+        public UserService(IUserRepository userRepo, ISpeedRunRepository speedRunRepo, IGameRepository gameRepo, ICacheService cacheService)
         {
             _userRepo = userRepo;
             _speedRunRepo = speedRunRepo;
             _gameRepo = gameRepo;
+            _cacheService = cacheService;
+        }
+
+        public UserDetailsViewModel GetUserDetails(string userAbbr, string speedRunComID)
+        {
+            var userVM = GetUser(userAbbr);
+            var speedRunID = string.IsNullOrWhiteSpace(speedRunComID) ? (int?)null : _speedRunRepo.GetSpeedRunID(speedRunComID);
+            var userDetailsVM = new UserDetailsViewModel(userVM, speedRunID);
+
+            return userDetailsVM;
+        }
+
+        public UserViewModel GetUser(string userAbbr)
+        {
+            var user = _userRepo.GetUserViews(i => i.Abbr == userAbbr).FirstOrDefault();
+            var userVM = user != null ? new UserViewModel(user) : null;
+
+            return userVM;
         }
 
         public UserViewModel GetUser(int userID)
         {
             var user = _userRepo.GetUserViews(i => i.ID == userID).FirstOrDefault();
-            var userVM = new UserViewModel(user);
+            var userVM = user != null ? new UserViewModel(user) : null;
 
             return userVM;
         }
@@ -33,17 +52,6 @@ namespace SpeedRunApp.Service
         public IEnumerable<SearchResult> SearchUsers(string searchText)
         {
             return _userRepo.SearchUsers(searchText);
-        }
-
-        public SpeedRunGridContainerViewModel GetSpeedRunGrid(int userID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunGridViewsByUserID(userID);
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
-            var games = _gameRepo.GetGamesByUserID(userID);
-            var tabItems = games.Select(i => new GameViewModel(i, runVMs.Where(i=>i.GameID == i.GameID).ToList()));
-            var gridVM = new SpeedRunGridContainerViewModel(new SpeedRunGridTabViewModel("User", tabItems), runVMs);
-
-            return gridVM;
         }
     }
 }

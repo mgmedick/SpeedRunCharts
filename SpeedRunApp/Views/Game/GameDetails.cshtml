@@ -1,135 +1,71 @@
 ﻿@using SpeedRunCommon.Extensions;
-@model SpeedRunApp.Model.ViewModels.GameViewModel
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration;
 
-@section Styles {
-    <link rel="stylesheet" href="~/lib/free-jqgrid/css/ui.jqgrid.css" />
-    <link rel="stylesheet" href="~/css/free-jqgrid-custom.css" />
-    <link rel="stylesheet" href="~/css/scroller-tab.css" />
-    <style>
-        .options a:not(:first-child) {
-            padding-left: 5px;
-        }
-        /*
-        .grid-container {
-            width:100%;
-        }*/
-    </style>
-}
+@model SpeedRunApp.Model.ViewModels.GameDetailsViewModel
 
 @section Scripts {
-    <script src="@Url.Content("~/lib/free-jqgrid/jquery.jqgrid.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/jquery.mousewheel/jquery.mousewheel.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/scroller-tab.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.charts.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.widgets.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/fusioncharts.excelexport.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/themes/fusioncharts.theme.fusion.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/fusioncharts/themes/fusioncharts.theme.candy.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/lib/jquery-fusioncharts/dist/fusioncharts.jqueryplugin.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/chart-definitions/fusion-multi-series-chart.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/chart-definitions/fusion-pie-chart.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/chart-definitions/fusion-stacked-bar-chart.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/chart-definitions/fusion-multi-series-line-chart.js")" type="text/javascript"></script>
-
-    <script src="@Url.Content("~/js/helpers/date-helper.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/helpers/math-helper.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/common.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/game-details-charts/game-top-speed-runs-chart.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-by-month-chart.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/charts/game-details-charts/game-speed-runs-percentile-chart.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/speedrun-edit.js?v=12/22/2020")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/speedrun-grid.js?v=06/20/2021")" type="text/javascript"></script>
-    <script src="@Url.Content("~/js/game-details.js?v=12/22/2020")" type="text/javascript"></script>
-
     <script type="text/javascript">
-        $().ready(function () {
-            var _gameID = @Html.Raw(Json.Serialize(Model.ID));
-
-            initializeClient(_gameID);
-        });
     </script>
 }
 
-<div class="container-fluid p-0">
-    <div class="container ml-0 p-2 d-flex">
-        <div class="col-sm-2 p-2 align-self-end">
-            <div class="img-round">
-                <img src="@Model.CoverImageUri" class="img-fluid" alt="Responsive image">
+<div class="container p-0">
+    @if (Model.GameVM == null)
+    {
+        <div class="container mx-auto p-0" style="max-width:500px;">
+            <div style="text-align:center;">
+                <i class="fa fa-search fa-lg"></i>
+                <div><span>Game not found, please search for the game by name and try again</span></div>
             </div>
         </div>
-        <div class="col-sm-auto p-2 align-self-end">
-            <h3 class="m-0">@Model.Name</h3>
-        </div>
-    </div>
-    <div class="container ml-0 p-2 pt-3">
-        <h4>Details</h4>
-        <div class="pl-3">
-            <div class="form-group row no-gutters">
-                <label for="spnYearOfRelease" class="col-sm-2 col-form-label">Release Year</label>
-                <div class="col-sm-10 col-form-label">
-                    <span id="spnYearOfRelease">@Model.YearOfRelease</span>
-                </div>
-            </div>
-            <div class="form-group row no-gutters">
-                <label for="spnPlatforms" class="col-sm-2 col-form-label">Platforms</label>
-                <div class="col-sm-10 col-form-label">
-                    <span id="spnPlatforms">@Model.PlatformsString</span>
-                </div>
-            </div>
-            <div class="form-group row no-gutters">
-                <label for="spnModerators" class="col-sm-2 col-form-label">Moderators</label>
-                <div class="col-sm-10 col-form-label">
-                    <span id="spnModerators">
-                        @Html.CommaSeparated(Model.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { userID = i.ID }).ToHtmlString()))
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid p-2 pt-3">
-        <h4>Leaderboards</h4>
-        <div id="divSearchSpeedRunGridContainer" class="container ml-0 pt-2">
-        </div>
-        <div id="divSpeedRunGridContainer" class="pl-3 pt-2">
-        </div>
-        <div id="divSpeedRunGridLoading" class="pl-3 pt-2">
-            <div class="container d-flex ml-0" style="height:465px;">
-                <div class="mx-auto align-self-center">
-                    <div class="mx-auto" style="width:30px;">
-                        <i class="fa fa-spinner fa-spin fa-lg"></i>
-                    </div>
-                    <div class="mx-auto pt-1">
-                        <span id="spnLoadingMessage"></span>
+    }
+    else
+    {
+        <div class="container ml-0 p-0 d-flex">
+            <div class="col-sm-2 p-0 align-self-end img-width" style="max-width:84px;">
+                <div class="img-width" style="max-width:84px;">
+                    <div class="img-round">
+                        <img src="@Model.GameVM.CoverImageUri" class="img-fluid" alt="Responsive image">
                     </div>
                 </div>
             </div>
+            <div class="col-sm px-1 align-self-end">
+                <h5 class="m-0 font-weight-bold text-primary">
+                    @Model.GameVM.Name&nbsp;&nbsp;@(Model.GameVM.YearOfRelease.HasValue ? "(" + Model.GameVM.YearOfRelease.ToString() + ")" : string.Empty)
+                </h5>
+            </div>
         </div>
-    </div>
-</div>
-<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header p-0">            
-                <div class="modal-title" style="width:100%"></div>
-                <div class="ml-auto float-right">
-                    <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>        
-            </div>
-            <div class="modal-body p-0 mt-3" style="display:none;">
-            </div>
-            <div class="modal-loading">
-                <div class="container d-flex" style="height:465px;">
-                    <div class="mx-auto align-self-center">
-                        <i class="fa fa-spinner fa-spin fa-lg"></i>
+        <div>
+            <div class="container ml-0 p-0 mt-4">
+                <h5 class="font-weight-bold mb-2">Details</h5>
+                @if (!string.IsNullOrWhiteSpace(Model.GameVM.PlatformsString))
+                {
+                    <div class="row no-gutters">
+                        <div class="col-auto pr-2">
+                            <label for="spnPlatforms" class="col-form-label pt-0 pb-1 font-weight-bold">Platforms</label>
+                            <div>
+                                <span id="spnPlatforms" class="form-control" style="max-width: 300px; width: auto; height: auto; font-size:14px; border:none; background:none;">@Model.GameVM.PlatformsString</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                }
+                @if (Model.GameVM.Moderators != null && Model.GameVM.Moderators.Any())
+                {
+                    <div class="row no-gutters pt-1">
+                        <div class="col-auto">
+                            <label for="spnModerators" class="col-form-label pt-0 pb-1 font-weight-bold">Moderators</label>
+                            <div>
+                                <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px; border:none; background:none;">
+                                    @Html.CommaSeparated(Model.GameVM.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { ID = i.Abbr }, new { @class = "text-primary" }).ToHtmlString()))
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>  
+            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'"></grid-tab-container>
         </div>
-    </div>
+    }
 </div>
 
 

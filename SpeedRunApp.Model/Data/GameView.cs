@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Abbr { get; set; }
         public string CoverImageUrl { get; set; }
         public int? YearOfRelease { get; set; }
         public string CategoryTypes { get; set; }

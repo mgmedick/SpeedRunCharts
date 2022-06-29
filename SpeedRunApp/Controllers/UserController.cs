@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
 using System.Linq;
+using SpeedRunApp.Model.ViewModels;
 
-namespace SpeedRunApp.WebUI.Controllers
+namespace SpeedRunApp.MVC.Controllers
 {
     public class UserController : Controller
     {
@@ -14,20 +15,19 @@ namespace SpeedRunApp.WebUI.Controllers
             _userService = userService;
         }
 
-        public ViewResult UserDetails(int userID)
+        public ViewResult UserDetails(string ID, string speedRunID)
         {
-            var userVM = _userService.GetUser(userID);
-
-            return View(userVM);
+            var userDetailsVM = _userService.GetUserDetails(ID, speedRunID);
+            
+            return View(userDetailsVM);
         }
 
-        [HttpGet]
-        public JsonResult GetSpeedRunGrid(int ID)
-        {
-            var gridVM = _userService.GetSpeedRunGrid(ID);
+        //public ViewResult UserDetails(int userID)
+        //{
+        //    var userVM = _userService.GetUser(userID);
 
-            return Json(gridVM);
-        }
+        //    return View(userVM);
+        //}
 
         [HttpGet]
         public JsonResult SearchUsers(string term)

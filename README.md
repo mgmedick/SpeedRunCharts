@@ -30,12 +30,17 @@ The general focus of site is data analysis and presenting the data in different 
 - Don’t implement features that post to speedrun.com.
   - I don’t want to mess up their data and potentially get banned from the API.
 
+## Import Process
+
+Currently I don't have the import code open to the public, but I plan to open source the .net core API wrapper I'm using in the near future. The site reads entirely from it's own database, so the import populates all the data the site needs. So all API calls (speedrun api, twitch, youtube, etc.) are made from the import.
+
 ## Best Practices:
 
 - Avoid calling an API from the site.
-  - There's a separate Import process that populates t Any data from an API can be added to the import process and populate the db.
-Don’t use bloated vue libraries.
-There’s lots of bloated vue wrapper libraries out there. It’s often lighter weight to make your own component for your exact need (ex. your own multi-select wrapper using select 2 instead of vue-select library).
+  - API Calls should be made from the import. I'm happy to take on any import enhancements you need to impliment a feature. Exceptions can be made for API's that make more sense to call on the fly from the site.
+- Don’t use bloated libraries when the solution can be relatively easily self implimented.
+  - There’s lots of bloated vue wrapper libraries out there. It's lighter weight to make your own component that does what you want (wrapper for chosen, select2, etc).
+- 
 
 
 Stack:

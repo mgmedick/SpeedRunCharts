@@ -32,15 +32,17 @@ The general focus of site is data analysis and presenting the data in different 
 
 ## Import Process
 
-Currently I don't have the import code open to the public, but I plan to open source the .net core API wrapper I'm using in the near future. The site reads entirely from it's own database, so the import populates all the data the site needs. So all API calls (speedrun api, twitch, youtube, etc.) are made from the import.
+Currently the import code isn't open source, but I plan to share the API wrapper I'm using in the near future. The import runs every 15 mins and populates all the data the sites uses. So all API calls (speedrun api, twitch, youtube, etc.) are made from the import. Additionally the import only pulls verified runs, so the site only has verified data.
 
 ## Best Practices:
 
 - Avoid calling an API from the site.
-  - API Calls should be made from the import. I'm happy to take on any import enhancements you need to impliment a feature. Exceptions can be made for API's that make more sense to call on the fly from the site.
-- Don’t use bloated libraries when the solution can be relatively easily self implimented.
-  - There’s lots of bloated vue wrapper libraries out there. It's lighter weight to make your own component that does what you want (wrapper for chosen, select2, etc).
-- 
+  - Generally API Calls should be made from the import. I'm happy to take on any import enhancements you need for a feature. Exceptions can be made for API's that make more sense to call from the site.
+- Don’t use bloated libraries.
+  - There’s lots of bloated vue libraries that are just wrappers of popular js libraries out there. It's lighter weight to make your own component that does what you want (ex. your own vue mulitselect component using select2).
+- Use vanilla javascript.
+  - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox).
+  - No need for backwards compaitibility with old browsers, as long as it works accross mainstream browsers (chromium, firefox).
 
 
 Stack:

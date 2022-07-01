@@ -42,7 +42,7 @@ Currently the import code isn't open source, but I plan to share the API wrapper
   - There’s lots of bloated vue libraries that are just wrappers of popular js libraries out there. It's lighter weight to make your own component that does what you want (ex. your own vue mulitselect component using select2).
 - Use vanilla javascript.
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox).
-  - No need for backwards compaitibility with old browsers, as long as it works accross mainstream browsers (chromium, firefox).
+  - No need for backwards compaitibility with old browsers (athough it's good to keep in mind), this is a enthusiast site not a professional application.
 
 
 Stack:

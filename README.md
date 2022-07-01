@@ -43,6 +43,7 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Use vanilla javascript.
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox, safari).
   - No need for backwards compaitibility with old browsers (especially IE 11 and below).
+- Stick to the stack.
 
 
 Stack:

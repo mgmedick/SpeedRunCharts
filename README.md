@@ -1,3 +1,7 @@
+## About
+
+Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for using an up to date copy of the speedrun.com data. If you have any feature requests I’d love to hear them, feel free to open an issue here on Github (check out feature requests guidelines first).
+
 ## Getting stated:
 
 1. Clone the repo using your prefered method.
@@ -24,7 +28,7 @@ Happy debugging, feel free message me if you have any questions.
 The general focus of site is data analysis and presenting the data in different ways than on speedrun.com. With that in mind I’d like to stick to the guidelines below when requesting new features.
 
 - Don’t implement features that modify the speedrun data.
-  - Think of Speedrun.com as the data publisher. All moderation, run validation, game mgmt, etc happens there. 
+  - Think of Speedrun.com as the data publisher. All moderation, run validation, game mgmt, etc happens there. This site just shows that data in different ways (ex. world records, speedrun videos with endless scroll, etc). 
 - Don’t implement features that require moderators. 
   - I’d like this site to be entirely automated.
 - Don’t implement features that post to speedrun.com.

@@ -15,7 +15,7 @@
    - group_concat_max_len = 1000000
 8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) to import the MySQL dump file.
    - Be sure to name the database "speedrunapp".
-9. Edit the connection string in the appsettings.json file with your MySQL credentials.
+9. Edit the connection string in the appsettings.json file with your MySQL credentials, user (usually "root") and password.
 
 Happy debugging, feel free message me if you have any questions. 
 
@@ -43,8 +43,9 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Use vanilla javascript.
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox, safari).
   - No need for backwards compaitibility with old browsers (especially IE 11 and below).
-- Put all clientside logic in Vue.js.
-  - I'd like to eventually switch to Vue Router and have the server just be ajax endpoints (no cshtml pages).
+- Put clientside logic in Vue.js.
+  - I'd like to eventually switch to Vue Router and have the server just be ajax endpoints (no cshtml pages, all vue pages).
+  - For now cshtml pages should mainly be a shell containing vue compoenents (just need the pages for MVC routing).
 
 ## Stack:
 

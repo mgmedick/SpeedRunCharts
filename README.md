@@ -32,7 +32,7 @@ The general focus of site is data analysis and presenting the data in different 
 
 ## Import Process
 
-Currently the import code isn't open source, but I plan to share the API wrapper I'm using in the near future. The import runs every 15 mins and populates all the data the sites uses. So all API calls (speedrun api, twitch, youtube, etc.) are made from the import. Additionally the import only pulls verified runs, so the site only has verified data.
+Currently the import code isn't open source, but I plan to share the API wrapper in the near future. The import runs every 15 mins and populates all the data the sites uses. So all API calls (speedrun.com api, twitch, youtube, etc.) are made from the import. Additionally the import only pulls verified runs, so the site only has verified data.
 
 ## Best Practices:
 
@@ -43,13 +43,14 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Use vanilla javascript.
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox, safari).
   - No need for backwards compaitibility with old browsers (especially IE 11 and below).
-- Stick to the stack.
+- Put all clientside logic in Vue.js.
+  - I'd like to eventaully switch to Vue Router and have the MVC just be data endpoints (no cshtml pages).
 
+## Stack:
 
-Stack:
-
-Vue.js
-C#
-MySQL
-Vanilla JavaScript
+- Vue.js
+- .Net Core MVC 3.1
+- C#
+- MySQL
+- Vanilla JavaScript
 

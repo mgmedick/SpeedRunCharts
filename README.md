@@ -44,7 +44,7 @@ Currently the import code isn't open source, but I plan to share the API wrapper
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox, safari).
   - No need for backwards compaitibility with old browsers (especially IE 11 and below).
 - Put all clientside logic in Vue.js.
-  - I'd like to eventaully switch to Vue Router and have the MVC just be data endpoints (no cshtml pages).
+  - I'd like to eventually switch to Vue Router have the server just be ajax endpoints (no cshtml pages).
 
 ## Stack:
 

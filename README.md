@@ -15,7 +15,7 @@
    - group_concat_max_len = 1000000
 8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) to import the MySQL dump file.
    - Be sure to name the database "speedrunapp".
-9. Fill in the "user" (normally "root") and "password" fields in the connection string in the appsettings.json file with your MySQL configured user and password.
+9. Edit the connection string in the appsettings.json file with your MySQL credentials.
 
 Happy debugging, feel free message me if you have any questions. 
 

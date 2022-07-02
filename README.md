@@ -6,7 +6,7 @@
 3. Make sure you have MySQL v8.0.29 or later version installed, instructions below.
    - [how to install mysql linux](https://www.digitalocean.com/community/tutorial_collections/how-to-install-mysql) (choose your distro).
    - [how to install mysql windows](https://www.lifewire.com/how-to-install-mysql-windows-10-4584021)
-5. Find your mysqld.cnf (linux) or default.ini (windows) file. If you run into any issues finding it just google where to find it.
+5. Find your mysqld.cnf (linux) or default.ini (windows) file.
    - linux: mysqld.cnf is normally located "/etc/mysql/mysql.conf.d/".
    - windows: default.ini is normally located "C:\ProgramData\MySQL\MySQL Server 8.0\" (hidden folder).
 7. Add the following lines to the end of your mysqld.cnf (or default.ini if windows).

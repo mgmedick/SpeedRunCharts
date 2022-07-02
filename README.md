@@ -13,7 +13,7 @@
    - lower_case_table_names = 1
    - optimizer_switch=block_nested_loop=off
    - group_concat_max_len = 1000000
-8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) to import the MySQL dump file.
+8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) and import the "speedrunapp-dump.sql" MySQL dump file.
    - Be sure to name the database "speedrunapp".
 9. Edit the connection string in the appsettings.json file with your MySQL credentials, user (usually "root") and password.
 

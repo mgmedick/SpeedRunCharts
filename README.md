@@ -66,4 +66,4 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 
 ## Contact Info:
 
-Happy coding! If you have any questions you can message me on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).
+If you have any questions you can message me on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).

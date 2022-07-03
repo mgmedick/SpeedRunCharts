@@ -36,7 +36,11 @@ The general focus of site is data analysis and presenting the data in different 
 
 ## Import Process
 
-Currently the import code isn't open source, but I plan to share the API wrapper in the near future. The import runs every 15 mins and populates all the data the sites uses. So all API calls (speedrun.com api, twitch, youtube, etc.) are made from the import. Additionally the import only pulls verified runs, so the site only has verified data.
+Currently the import code isn't open source, but I plan to share the API wrapper in the near future. Below is some info on how the import process works.
+
+- Every 15 mins import newly verified runs (based on verified date).
+- Every night update all Games that changed (categories, levels, variables, etc.) and re-import all verified runs for those games.
+- Every quarter re-import of all data. Unfortunately this is needed because the data can go stagnant (ex. run is deleted and no changes are made to the game, so the nightly process doesn't pick it up).
 
 ## Best Practices:
 
@@ -62,4 +66,4 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 
 ## Contact Info:
 
-Happy coding! If you have any questions you can message me here on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).
+Happy coding! If you have any questions you can message me on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).

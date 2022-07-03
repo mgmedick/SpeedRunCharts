@@ -1,6 +1,6 @@
 ## About
 
-Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for using up to date speedrun.com data. If you have any feature requests I’d love to hear them, feel free to open an issue here on Github (check out feature requests guidelines first).
+Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (verified runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for that aren't avaiable on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a set of complimentary features.
 
 ## Getting stated:
 
@@ -17,8 +17,8 @@ Speedruncharts.com is an open source site that imports and displays the data fro
    - lower_case_table_names = 1
    - optimizer_switch=block_nested_loop=off
    - group_concat_max_len = 1000000
-8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) and import the "speedrunapp-dump.sql" MySQL dump file.
-   - Be sure to name the database "speedrunapp".
+8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) and import the "speedrunapp_tes_dump.sql" MySQL dump file.
+   - Be sure to name the database "speedrunapp_test".
 9. Edit the connection string in the "appsettings.json" file with your MySQL credentials, user (usually "root") and password.
 
 Happy debugging, feel free message me if you have any questions. 
@@ -36,7 +36,11 @@ The general focus of site is data analysis and presenting the data in different 
 
 ## Import Process
 
-Currently the import code isn't open source, but I plan to share the API wrapper in the near future. The import runs every 15 mins and populates all the data the sites uses. So all API calls (speedrun.com api, twitch, youtube, etc.) are made from the import. Additionally the import only pulls verified runs, so the site only has verified data.
+Currently the import code isn't open source, but I plan to share the API wrapper in the near future. Below is some info on how the import process works.
+
+- Every 15 mins import newly verified runs (based on verified date).
+- Every night update all Games that changed (categories, levels, variables, etc.) and re-import all verified runs for those games.
+- Every quarter re-import of all data. Unfortunately this is needed because the data can go stagnant (ex. run is deleted and no changes are made to the game, so the nightly process doesn't pick it up).
 
 ## Best Practices:
 
@@ -60,3 +64,6 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Vanilla JavaScript
 - Bootstrap 4
 
+## Contact Info:
+
+If you have any questions you can message me on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).

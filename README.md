@@ -60,3 +60,6 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Vanilla JavaScript
 - Bootstrap 4
 
+## Contact Info:
+
+Happy coding! If you have any questions you can message me here on GitHub or you can contact me at [speedruncharts@outlook.com](mailto:speedruncharts@outlook.com).

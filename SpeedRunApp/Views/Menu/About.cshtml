@@ -2,43 +2,30 @@
     <div class="container ml-0">
         <h4>What is it?</h4>
         <div class="pl-3">
-            This site focuses on trends and analysis of the data from <a href="https://www.speedrun.com/">speedrun.com</a>. It’s designed to have a discoverable front end (like reddit) with more analysis features as the user drills in. The idea is to be more browsable for casual fans of speed running and offer more analysis features.
+            <a href="https://www.speedruncharts.com/">SpeedRunCharts.com</a> is an open source site that imports and displays the data from <a href="https://www.speedrun.com/">speedrun.com</a>. The site focuses on different ways of viewing and analyzing the speedrun.com data (runs, games, users, moderators, etc). The idea is to implement features the speedrun community wants that aren't available on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a set of complimentary features.
         </div>
     </div>
     <div class="container pt-3">
         <h4>What data are you importing from speedrun.com?</h4>
         <div class="pl-3">
-            We import all Game data that we can from the API. We only import verified Runs and Users with verified runs.
+            The site imports all Game data from the API. The site only imports verified Runs and Users with verified runs.
         </div>
     </div>
     <div class="container pt-3">
         <h4>How frequently is the data updated?</h4>
         <div class="pl-3">
-            We use 3 steps to keep the site up to date:
+            The site uses the steps below to keep up to date:
             <ul>
                 <li>Every 15 mins import newly verified runs (based on verified date)</li>
                 <li>Every night update all Games that changed (categories, levels, variables, etc.) and re-import all verified runs for those games</li>
-                <li>Every quarter re-import of all data. Unfortunately this is needed because our data can go stagnant (ex. run is deleted and no changes are made to the game, so our nightly process doesn't pick it up)</li>
-            </ul>
-        </div>
-    </div>
-    <div class="container pt-3">
-        <h4>Any future plans?</h4>
-        <div class="pl-3">
-            Time permitting looking to implement some of the following:
-            <ul>
-                <li>Add more category feeds to front page</li>
-                <li>Add more analysis features, chart modal with drill in ability, etc.</li>
-                <li>Add ability to link speedruncharts.com user to speedrun.com user</li>
-                <li>Add ability to import to speedrun.com API, potentially support bulk import from spreadsheet</li>
-                <li>Add css light mode</li>
+                <li>Every quarter re-import of all data. Unfortunately this is needed because the data can go stagnant (ex. run is deleted and no changes are made to the game, so the nightly process doesn't pick it up)</li>
             </ul>
         </div>
     </div>
     <div class="container pt-3">
         <h4>Help / Contact</h4>
         <div class="pl-3">
-            If you run into any issues or have some suggestions for the site please let us know. We’re open to features that user's want and would like to make this site something speedrunners and fans use regularly. You can contact us at <a href="mailto:speedruncharts@outlook.com">speedruncharts</a>. Thanks for visiting the site and happy speedrunning!
+            If you have any feature requests or bug reports I’d like to hear about them, you can open an issue at <a href="https://github.com/mgmedick/SpeedRunApp/issues">github speedruncharts issues</a>. If you're a developer and interested in contributing go to <a href="https://github.com/mgmedick/SpeedRunApp">github speedruncharts</a>. You can contact me on GitHub or <a href="mailto:speedruncharts@outlook.com">speedruncharts@outlook.com</a>.
         </div>
     </div>
 </div>

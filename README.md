@@ -4,7 +4,7 @@ Speedruncharts.com is an open source site that imports and displays the data fro
 
 ## Getting stated:
 
-1. Clone the repo using your prefered method.
+1. Clone the repo using your preferred method.
    - Visual Studio Code and Visual Studio should work out of the box.
 2. There is no hosted test database so you’ll have to set one up locally (steps 3-5).
 3. Make sure you have MySQL v8.0.29 or later version installed, instructions below.

@@ -1,6 +1,6 @@
 ## About
 
-Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (verified runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for that aren't avaiable on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a complimentary feature set to their data. If you have any feature requests I’d love to hear them, feel free to open an issue here on Github (check out feature requests guidelines first).
+Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (verified runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for that aren't avaiable on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a set of complimentary features. If you have any feature requests I’d love to hear them, feel free to open an issue here on Github (check out feature requests guidelines first).
 
 ## Getting stated:
 

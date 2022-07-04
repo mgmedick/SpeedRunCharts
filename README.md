@@ -17,7 +17,7 @@ Speedruncharts.com is an open source site that imports and displays the data fro
    - lower_case_table_names = 1
    - optimizer_switch=block_nested_loop=off
    - group_concat_max_len = 1000000
-8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) and import the [speedrunapp_test_dump.sql](https://github.com/mgmedick/SpeedRunCharts/blob/release/DatabaseScripts/MySQL/speedrunapp_test_dump.sql) MySQL dump file.
+8. Follow step 2 of these instructions [how to import/export databases in mysql](https://www.digitalocean.com/community/tutorials/how-to-import-and-export-databases-in-mysql-or-mariadb) and import the [speedrunapp_test_dump.sql](https://github.com/mgmedick/SpeedRunChartsDatabaseScripts/blob/master/MySQL/speedrunapp_test_dump.sql) MySQL dump file.
    - Be sure to name the database "speedrunapp_test".
 9. Edit the connection string in the "appsettings.json" file with your MySQL credentials, user (usually "root") and password.
 10. Start debugging, message me if you have any questions.

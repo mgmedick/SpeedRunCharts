@@ -1260,7 +1260,7 @@ BEGIN
                -- NULL AS GameCoverImageUrl,
                rn.CategoryTypeID, rn.CategoryTypeName, rn.CategoryID, rn.CategoryName, rn.LevelID, rn.LevelName,
 			   rn.SubCategoryVariableValues, rn.Players, rn.EmbeddedVideoLinks, rn.`Rank`, rn.PrimaryTime, rn.DateSubmitted, rn.VerifyDate, rn.ImportedDate              
-          FROM vw_SpeedRunSummary rn,        
+		  FROM vw_SpeedRunSummary rn,        
 		  LATERAL (SELECT MAX(rn1.`Rank`) AS Value
 					FROM vw_SpeedRunSummaryLite rn1
 					WHERE rn1.GameID = rn.GameID
@@ -1269,10 +1269,12 @@ BEGIN
 					AND COALESCE(rn1.SubCategoryVariableValueIDs,'') = COALESCE(rn.SubCategoryVariableValueIDs,'')
 					AND rn1.`Rank` IS NOT NULL
 				) AS MaxRank
-          WHERE ((OrderValueOffset IS NULL) OR (rn.ID < OrderValueOffset))
-          AND rn.EmbeddedVideoLinks IS NOT NULL
-          AND ((rn.`Rank` / (MaxRank.Value)) * 100.00) <= 5.00
-          ORDER BY rn.ID DESC
+		  WHERE ((OrderValueOffset IS NULL) OR (rn.ID < OrderValueOffset))
+		  AND rn.EmbeddedVideoLinks IS NOT NULL
+		  AND rn.`Rank` IS NOT NULL
+		  AND MaxRank.Value > 1
+		  AND rn.`Rank` <= CASE WHEN FLOOR((5 / 100 * (MaxRank.Value + 1))) < 1 THEN 1 ELSE FLOOR((5 / 100 * (MaxRank.Value + 1))) END
+		  ORDER BY rn.ID DESC
           LIMIT TopAmount;                  
 	 -- first
      ELSEIF SpeedRunListCategoryID = 2 THEN

@@ -1,10 +1,10 @@
 ## About
 
-Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (verified runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for that aren't avaiable on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a set of complimentary features.
+Speedruncharts.com is an open source site that imports and displays the data from Speedrun.com. The site focuses on different ways of viewing and analyzing the speedrun.com data (verified runs, games, users, moderators, etc). The idea is to implement features the speedrun community is looking for that aren't available on speedrun.com. This site isn't meant as a replacement for speedrun.com, more a set of complimentary features.
 
 ## Getting stated:
 
-1. Clone the repo using your prefered method.
+1. Clone the repo using your preferred method.
    - Visual Studio Code and Visual Studio should work out of the box.
 2. There is no hosted test database so you’ll have to set one up locally (steps 3-5).
 3. Make sure you have MySQL v8.0.29 or later version installed, instructions below.
@@ -47,7 +47,7 @@ Currently the import code isn't open source, but I plan to share the API wrapper
 - Avoid calling an API from the site.
   - Generally API Calls should be made from the import. I'm happy to take on any import enhancements you need for a feature. Exceptions can be made for API's that make more sense to call from the site.
 - Don’t use bloated libraries.
-  - There’s lots of bloated vue libraries that are just wrappers of popular js libraries. It's lighter weight to make your own component (ex. your own vue mulitselect component using select2).
+  - There’s lots of bloated vue libraries that are just wrappers of popular js libraries. It's lighter weight to make your own component (ex. your own vue multiselect component using select2).
 - Use vanilla javascript.
   - Be sure your js is cross browser compatible with latest mainstream browsers (chromium, firefox, safari).
   - No need for backwards compaitibility with old browsers (especially IE 11 and below).

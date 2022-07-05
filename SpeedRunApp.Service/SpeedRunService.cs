@@ -106,7 +106,7 @@ namespace SpeedRunApp.Service
             }
             else
             {
-                runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.Rank == 1).OrderBy(i => i.PrimaryTime).ToList();
+                runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.Rank == 1).OrderBy(i => i.SubCategoryVariableValueIDs).ToList();
             }
 
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();

@@ -104,7 +104,7 @@
                 distinctVariables?.forEach(variable => {                             
                     var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.name + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.name, formatter: that.toolTipFormatter, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
+                    columns.push({ title: variable.name, field: variable.name, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
                     columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
                 });
 
@@ -113,7 +113,7 @@
 
                 var sortList = [];
                 distinctVariables?.slice().reverse().forEach(variable => {
-                    sortList.push({ column: variable.id + 'sort', dir: "asc" })
+                    sortList.push({ column: variable.name + 'sort', dir: "asc" })
                 });
 
                 this.table = new Tabulator("#tblWorldRecordGrid", {
@@ -138,8 +138,7 @@
                                 content: escapeHtml(value),
                                 allowHTML: true,
                                 arrow:false,
-                                placement: 'bottom',
-                                width: "250px"
+                                placement: 'bottom'
                             })
                         });
                     },
@@ -172,7 +171,8 @@
             playerFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
                 var valueString = value?.map(el => el.name).join();
-                var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                //var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                var html = '<span>'
 
                 value?.forEach(el => {
                     if (el.id > 0) {

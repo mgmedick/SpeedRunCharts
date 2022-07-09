@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <div id="tblWorldRecordGrid" class="mb-0"></div>
+            <div id="tblWorldRecordGrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
             <template v-slot:title>

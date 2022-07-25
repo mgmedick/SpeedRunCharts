@@ -7,6 +7,9 @@ using SpeedRunApp.Model.ViewModels;
 using System.Collections.Generic;
 using Serilog;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SpeedRunCommon.Extensions;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -44,6 +47,11 @@ namespace SpeedRunApp.MVC.Controllers
             {
                 var currUserAccountID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 _userAccountService.SaveUserAccount(userAcctVM, currUserAccountID);
+
+                if (userAcctVM.UserAccountID == currUserAccountID) {
+                    UpdateUserIdentity(currUserAccountID);
+                }
+
                 success = true;
             }
             catch (Exception ex)
@@ -53,6 +61,41 @@ namespace SpeedRunApp.MVC.Controllers
             }
 
             return Json(new { success = success });
+        }
+        
+        [HttpPost]
+        public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
+        {
+            var success = false;
+
+            try
+            {
+                var currUserAccountID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                _userAccountService.UpdateIsDarkTheme(currUserAccountID, isDarkTheme);
+
+                UpdateUserIdentity(currUserAccountID);
+
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "UpdateIsDarkTheme");
+                success = false;
+            }
+
+            return Json(new { success = success });
+        }
+
+        private async void UpdateUserIdentity(int currUserAccountID) {
+            var userAcctVW = _userAccountService.GetUserAccountViews(i => i.UserAccountID == currUserAccountID).FirstOrDefault();
+            var identity = (ClaimsIdentity)HttpContext.User.Identity;
+            
+            if (identity != null) {
+                HttpContext.User.AddUpdateClaim("theme", userAcctVW.IsDarkTheme ? "theme-dark" : "theme-light");                                       
+
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using System.Security.Claims;
 
 namespace SpeedRunApp.Service
 {
@@ -109,8 +110,16 @@ namespace SpeedRunApp.Service
             return _userAcctRepo.GetUserAccounts(predicate);
         }
 
-        public void CreateUserAccount(string username, string email, string pass)
+        public IEnumerable<UserAccountView> GetUserAccountViews(Expression<Func<UserAccountView, bool>> predicate)
         {
+            return _userAcctRepo.GetUserAccountViews(predicate);
+        }
+
+        public void CreateUserAccount(string username, string pass)
+        {
+            var email = _context.HttpContext.Session.Get<string>("Email");
+            var isdarktheme = (_context.HttpContext.Request.Cookies["theme"] ?? _config.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark";
+
             var userAcct = new UserAccount()
             {
                 Username = username,
@@ -122,6 +131,13 @@ namespace SpeedRunApp.Service
             };
 
             _userAcctRepo.SaveUserAccount(userAcct);
+
+            var userAcctSetting = new UserAccountSetting() {
+                UserAccountID = userAcct.ID,
+                IsDarkTheme = isdarktheme
+            };
+
+            _userAcctRepo.SaveUserAccountSetting(userAcctSetting);
         }
 
         public void ChangeUserAcctPassword(string username, string pass)
@@ -173,6 +189,22 @@ namespace SpeedRunApp.Service
             if (userAcctSpeedRunListCategories != null && userAcctSpeedRunListCategories.Any())
             {
                 _userAcctRepo.SaveUserAccountSpeedRunListCategories(userAcctSpeedRunListCategories);
+            }
+        }
+
+        public void UpdateIsDarkTheme(int currUserAccountID, bool isDarkTheme)
+        {
+            var userAcct = _userAcctRepo.GetUserAccounts(i => i.ID == currUserAccountID).FirstOrDefault();
+
+            if (userAcct != null)
+            {
+                var userAcctSetting = new UserAccountSetting()
+                {
+                    UserAccountID = userAcct.ID,
+                    IsDarkTheme = isDarkTheme
+                };
+
+                _userAcctRepo.SaveUserAccountSetting(userAcctSetting);
             }
         }
 

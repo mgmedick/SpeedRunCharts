@@ -12,8 +12,9 @@ namespace SpeedRunApp.Interfaces.Services
     {
         Task SendActivationEmail(string email);
         ActivateViewModel GetActivateUserAccount(string email, long expirationTime, string token);
-        void CreateUserAccount(string username, string email, string pass);
+        void CreateUserAccount(string username, string pass);
         IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate);
+        IEnumerable<UserAccountView> GetUserAccountViews(Expression<Func<UserAccountView, bool>> predicate);        
         Task SendResetPasswordEmail(string username);
         ChangePasswordViewModel GetChangePassword(string username, string email, long expirationTime, string token);
         void ChangeUserAcctPassword(string username, string pass);
@@ -22,6 +23,7 @@ namespace SpeedRunApp.Interfaces.Services
         bool UsernameExists(string username, bool activeFilter);
         UserAccountViewModel GetUserAccount(int userID);
         void SaveUserAccount(UserAccountViewModel userAcctVM, int currUserAcctID);
+        void UpdateIsDarkTheme(int currUserAccountID, bool isDarkTheme);
         Task SendConfirmRegistrationEmail(string email, string username);
     }
 }

@@ -125,8 +125,8 @@ namespace SpeedRunApp.MVC.Controllers
 
                 if(ModelState.IsValid)
                 {
-                    var userAcct = _userAcctService.GetUserAccounts(i => i.Username == loginVM.Username).FirstOrDefault();
-                    LoginUserAccount(userAcct);
+                    var userAcctVW = _userAcctService.GetUserAccountViews(i => i.Username == loginVM.Username).FirstOrDefault();
+                    LoginUserAccount(userAcctVW);
                     success = true;
                 }
                 else
@@ -218,10 +218,10 @@ namespace SpeedRunApp.MVC.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    _userAcctService.CreateUserAccount(activateUserAcctVM.Username, HttpContext.Session.Get<string>("Email"), activateUserAcctVM.Password);
-                    var userAcct = _userAcctService.GetUserAccounts(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
-                    LoginUserAccount(userAcct);
-                    _ = _userAcctService.SendConfirmRegistrationEmail(userAcct.Email, userAcct.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    _userAcctService.CreateUserAccount(activateUserAcctVM.Username, activateUserAcctVM.Password);
+                    var userAcctVW = _userAcctService.GetUserAccountViews(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
+                    LoginUserAccount(userAcctVW);
+                    _ = _userAcctService.SendConfirmRegistrationEmail(userAcctVW.Email, userAcctVW.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
                 }
                 else
@@ -327,13 +327,14 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(new { success = success, errorMessages = errorMessages });
         }
 
-        private async void LoginUserAccount(UserAccount userAcct)
+        private async void LoginUserAccount(UserAccountView userAcctVW)
         {
             var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, userAcct.ID.ToString()),
-                            new Claim(ClaimTypes.Email, userAcct.Email),
-                            new Claim(ClaimTypes.Name, userAcct.Username)
+                            new Claim(ClaimTypes.NameIdentifier, userAcctVW.UserAccountID.ToString()),
+                            new Claim(ClaimTypes.Email, userAcctVW.Email),
+                            new Claim(ClaimTypes.Name, userAcctVW.Username),
+                            new Claim("theme", userAcctVW.IsDarkTheme ? "theme-dark" : "theme-light")
                         };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -343,37 +344,6 @@ namespace SpeedRunApp.MVC.Controllers
                 new ClaimsPrincipal(identity));
         }
 
-        // [Route("/sitemap.xml")]
-        // public void SitemapXml()
-        // {
-        //     string host = Request.Scheme + "://" + Request.Host;
-
-        //     Response.ContentType = "application/xml";
-
-        //     var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
-        //     if (syncIOFeature != null)
-        //     {
-        //         syncIOFeature.AllowSynchronousIO = true;
-        //     }
-
-        //     using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
-        //     {
-        //         xml.WriteStartDocument();
-        //         xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
-
-        //         xml.WriteStartElement("url");
-        //         xml.WriteElementString("loc", host);
-        //         xml.WriteEndElement();
-
-        //         xml.WriteStartElement("url");
-        //         xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
-        //         xml.WriteEndElement();
-
-        //         xml.WriteEndElement();
-        //     }
-        // }
-
-        //jqvalidate
         [AllowAnonymous]
         [HttpGet]
         public IActionResult UsernameExists(string username)

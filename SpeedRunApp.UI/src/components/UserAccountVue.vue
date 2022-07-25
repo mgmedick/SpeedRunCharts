@@ -18,18 +18,18 @@
                     <label class="col-sm-1 col-form-label">Night Mode</label>
                     <div class="col-sm-auto">
                         <div class="custom-control custom-switch pt-2">
-                            <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="item.isDarkTheme">
-                            <label class="custom-control-label pl-1" for="chkNightMode"></label>
-                        </div>
+                            <input id="chkNightMode1" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="item.isDarkTheme">
+                            <label class="custom-control-label pl-1" for="chkNightMode1"><span class="pl-2"></span></label>
+                        </div>                   
                     </div>
                 </div>
                 <div class="form-group row no-gutters mb-2">
                     <label class="col-sm-1 col-form-label">Feeds</label>
                     <div class="col-sm-auto">
                         <div style="width:300px;">
-                            <vue-next-select v-model="item.speedRunListCategoryIDs" :options="item.speedRunListCategories" label-by="name" value-by="id" multiple taggable>
+                            <vue-next-select v-model="item.speedRunListCategoryIDs" :options="item.speedRunListCategories" label-by="displayName" value-by="id" multiple taggable>
                                 <template #tag="{ option, remove }">
-                                    <span v-tippy="option.description">{{ option.name }}</span>
+                                    <span v-tippy="option.description">{{ option.displayName }}</span>
                                     <img @click.stop="remove" src="data:image/svg+xml;base64,PHN2ZyBpZD0iZGVsZXRlIiBkYXRhLW5hbWU9ImRlbGV0ZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHRpdGxlPmRlbGV0ZTwvdGl0bGU+PHBhdGggZD0iTTI1NiwyNEMzODMuOSwyNCw0ODgsMTI4LjEsNDg4LDI1NlMzODMuOSw0ODgsMjU2LDQ4OCwyNC4wNiwzODMuOSwyNC4wNiwyNTYsMTI4LjEsMjQsMjU2LDI0Wk0wLDI1NkMwLDM5Ny4xNiwxMTQuODQsNTEyLDI1Niw1MTJTNTEyLDM5Ny4xNiw1MTIsMjU2LDM5Ny4xNiwwLDI1NiwwLDAsMTE0Ljg0LDAsMjU2WiIgZmlsbD0iIzViNWI1ZiIvPjxwb2x5Z29uIHBvaW50cz0iMzgyIDE3Mi43MiAzMzkuMjkgMTMwLjAxIDI1NiAyMTMuMjkgMTcyLjcyIDEzMC4wMSAxMzAuMDEgMTcyLjcyIDIxMy4yOSAyNTYgMTMwLjAxIDMzOS4yOCAxNzIuNzIgMzgyIDI1NiAyOTguNzEgMzM5LjI5IDM4MS45OSAzODIgMzM5LjI4IDI5OC43MSAyNTYgMzgyIDE3Mi43MiIgZmlsbD0iIzViNWI1ZiIvPjwvc3ZnPg==" alt="delete tag" class="icon delete">
                                 </template>
                             </vue-next-select>
@@ -46,8 +46,8 @@
     </div>
 </template>
 <script>
-    import { getFormData } from '../js/common.js';
     import axios from 'axios';
+    import { getFormData } from '../js/common.js';
 
     export default {
         name: "UserAccountVue",
@@ -59,14 +59,14 @@
                 item: {
                     userAccountID: 0,
                     username: '',
-                    isDarkTheme: false,
                     speedRunListCategoryIDs: [],
-                    speedRunListCategories: []
+                    speedRunListCategories: [],
+                    isDarkTheme: false
                 },
                 loading: false,
                 errorMessages: []
             }
-        },
+        },        
         created: function () {
             this.loadData();
         },
@@ -94,8 +94,11 @@
 
                 axios.post('/UserAccount/SaveUserAccount', formData)
                     .then((res) => {
-                        that.errorMessages = res.data.errorMessages;
-                        that.loading = false;
+                        if (res.data.success) {
+                            location.reload();
+                        } else {
+                            that.errorMessages = res.data.errorMessages;
+                        }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             }

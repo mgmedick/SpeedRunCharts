@@ -129,17 +129,19 @@
         },
         watch: {
             isdarktheme: function (val, oldVal) {
-                var el = document.body;
+                var that = this;
 
-                if (val){
-                    el.classList.remove("theme-light");
-                    el.classList.add("theme-dark");
-                    setCookie("theme", "theme-dark");                    
+                if (this.isauth) {
+                    axios.post('/UserAccount/UpdateIsDarkTheme', null,{ params: { isDarkTheme: val } })
+                        .then((res) => {
+                            if (res.data.success) {
+                                that.updateTheme(val);
+                            }                                                                                   
+                        })
+                        .catch(err => { console.error(err); return Promise.reject(err); });        
                 } else {
-                    el.classList.remove("theme-dark");
-                    el.classList.add("theme-light");
-                    setCookie("theme", "theme-light");                     
-                }                
+                    this.updateTheme(val);
+                }
             }
         },        
         created: function () {
@@ -182,6 +184,19 @@
                 } 
 
                 location.href = encodeURI('/' + controller + "/" + action + "/" + option.value);
+            },
+            updateTheme: function(val){
+                var el = document.body;
+
+                if (val){
+                    el.classList.remove("theme-light");
+                    el.classList.add("theme-dark");
+                    setCookie("theme", "theme-dark");                    
+                } else {
+                    el.classList.remove("theme-dark");
+                    el.classList.add("theme-light");
+                    setCookie("theme", "theme-light");                     
+                }
             }
         }
     };

@@ -24,9 +24,9 @@
     </environment>
     @RenderSection("Styles", required: false)
 </head>
-<body class="@(Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
+<body class="@(User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <div id="vue-app">
-        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value'" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize(((Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark"))"></navbar>
+        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value'" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark")"></navbar>
         <div class="container-fluid body-content">
             @RenderBody()
             <hr />

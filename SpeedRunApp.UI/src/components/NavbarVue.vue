@@ -141,6 +141,8 @@
                         .catch(err => { console.error(err); return Promise.reject(err); });        
                 } else {
                     this.updateTheme(val);
+                    var theme = val ? "theme-dark" : "theme-light";
+                    setCookie("theme", theme);                    
                 }
             }
         },        
@@ -191,11 +193,9 @@
                 if (val){
                     el.classList.remove("theme-light");
                     el.classList.add("theme-dark");
-                    setCookie("theme", "theme-dark");                    
                 } else {
                     el.classList.remove("theme-dark");
                     el.classList.add("theme-light");
-                    setCookie("theme", "theme-light");                     
                 }
             }
         }

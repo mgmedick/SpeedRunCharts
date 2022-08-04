@@ -66,7 +66,13 @@
                         break;
                     case 7:
                         iconClass = 'fa fa-gamepad';
-                        break;                                                  
+                        break;       
+                    case 8:
+                        iconClass = 'fa fa-lightbulb';
+                        break;    
+                    case 9:
+                        iconClass = 'fa fa-chart-line';
+                        break;                                                                                               
                 }
 
                 iconClass += " fa-sm";

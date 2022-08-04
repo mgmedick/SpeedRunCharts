@@ -54,9 +54,11 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 EmbeddedVideoLinks = new List<string>();
                 VideoThumbnailLinks = new List<string>();
+                ViewCountStrings = new List<string>();
+
                 foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
                 {
-                    var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 2);
+                    var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 3);
                     if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[0]))
                     {
                         EmbeddedVideoLinks.Add(embeddedVideoLinkValue[0]);
@@ -65,6 +67,12 @@ namespace SpeedRunApp.Model.ViewModels
                         {
                             VideoThumbnailLinks.Add(embeddedVideoLinkValue[1]);
                         }
+
+                        int viewCount;
+                        if (int.TryParse(embeddedVideoLinkValue[2], out viewCount) && viewCount > 0)
+                        {                     
+                            ViewCountStrings.Add(viewCount.ToShortString());
+                        }                        
                     }                    
                 }
             }
@@ -87,7 +95,8 @@ namespace SpeedRunApp.Model.ViewModels
         public List<IDNameAbbrPair> Players { get; set; }
         //public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
-        public List<string> VideoThumbnailLinks { get; set; }        
+        public List<string> VideoThumbnailLinks { get; set; }    
+        public List<string> ViewCountStrings { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
@@ -128,7 +137,15 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return VideoThumbnailLinks?.FirstOrDefault();
             }
-        }        
+        }  
+
+        public string ViewCountString
+        {
+            get
+            {
+                return ViewCountStrings?.FirstOrDefault();
+            }
+        }                 
 
         public string RankString
         {

@@ -2,19 +2,20 @@
     <div class="speedRunSummaryContainer container mx-auto p-0" style="max-width:598px; margin-bottom:20px;">
         <div class="speedRunSummary">
             <div class="container pt-2 px-2 pb-0 d-flex">
-                <div class="p-0 col-1">
+                <div class="p-0 col-1 align-self-center">
                     <div style="max-width:37px;">
                         <div class="img-round">
                             <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
                         </div>
                     </div>
                 </div>
-                <div class="col-auto nowrap-elipsis p-0 align-self-end game-title" style="max-width:60%;">
-                    <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
-                </div>
-                <div class="col-auto pl-1 align-self-end">
-                    &middot;
-                    <small class="text-secondary pl-1">{{ item.relativeImportedDateStringShort }}</small>
+                <div class="col-auto pl-2 pr-0 align-self-end" style="max-width: 60%;">
+                    <div class="nowrap-elipsis align-self-start" style="font-size: 14px;">
+                        <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
+                    </div>
+                    <div class="align-self-end" style="line-height: 12px;">
+                        <span v-if="item.viewCountString"><small class="text-secondary">{{ item.viewCountString + " views" }}</small>&nbsp;&middot;&nbsp;</span><small class="text-secondary">{{ item.relativeImportedDateStringShort }}</small>
+                    </div>                    
                 </div>
                 <div class="col-auto ml-auto p-0 align-self-start">
                     <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>
@@ -158,12 +159,7 @@
             font-size:11px;
             padding:4px 6px;
         }
-
-        .game-title {
-            font-size: 14px;
-            padding-left: 8px !important;
-        }
-
+                
         .show-md {
             display: none;
         }

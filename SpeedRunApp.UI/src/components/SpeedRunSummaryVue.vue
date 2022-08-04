@@ -9,7 +9,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-auto pl-2 pr-0 align-self-end" style="max-width: 60%;">
+                <div class="col-auto pl-2 pr-0 align-self-end" style="max-width: 70%;">
                     <div class="nowrap-elipsis align-self-start" style="font-size: 14px;">
                         <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
                     </div>
@@ -159,7 +159,7 @@
             font-size:11px;
             padding:4px 6px;
         }
-                
+
         .show-md {
             display: none;
         }

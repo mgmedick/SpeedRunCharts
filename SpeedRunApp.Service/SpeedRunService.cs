@@ -19,8 +19,9 @@ namespace SpeedRunApp.Service
         private readonly ICacheService _cacheService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IUserAccountRepository _userAcctRepo = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserAccountRepository userAcctRepo)
+        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserAccountRepository userAcctRepo, ISettingRepository settingRepo)
         {
             _config = config;
             _gamesService = gamesService;
@@ -28,6 +29,7 @@ namespace SpeedRunApp.Service
             _cacheService = cacheService;
             _speedRunRepo = speedRunRepo;
             _userAcctRepo = userAcctRepo;
+            _settingRepo = settingRepo;
         }
 
         public SpeedRunListViewModel GetSpeedRunList()
@@ -135,5 +137,18 @@ namespace SpeedRunApp.Service
 
             return runVMs;
         }
+
+        public ImportStatusViewModel GetImportStatus()
+        {
+            var importSettings = new List<string>() { "ImportLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
+            var results = _settingRepo.GetSettings(i => importSettings.Contains(i.Name)).ToList();
+            var ImportLastRunDate = results.FirstOrDefault(i => i.Name == "ImportLastRunDate")?.Dte;
+            var ImportLastUpdateSpeedRunsDate = results.FirstOrDefault(i => i.Name == "ImportLastUpdateSpeedRunsDate")?.Dte;
+            var ImportLastBulkReloadDate = results.FirstOrDefault(i => i.Name == "ImportLastBulkReloadDate")?.Dte;
+
+            var importStatusVM = new ImportStatusViewModel(ImportLastRunDate, ImportLastUpdateSpeedRunsDate, ImportLastBulkReloadDate);
+
+            return importStatusVM;
+        }        
     }
 }

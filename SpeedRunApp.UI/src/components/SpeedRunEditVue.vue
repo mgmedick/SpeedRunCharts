@@ -43,7 +43,7 @@
             <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.statusType.id != 0">
                 <label class="col-sm-2 col-form-label">Verified Date</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" value="item.speedRunVM.verifyDateString" style="width:170px;">
+                    <input type="text" class="form-control" :value="getDateString(item.speedRunVM.verifyDate)" style="width:170px;">
                 </div>
             </div>
             <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.players">
@@ -175,6 +175,7 @@
     </div>   
 </template>
 <script>
+    const dayjs = require('dayjs');
     import axios from 'axios'
 
     export default {
@@ -222,6 +223,9 @@
                     Array.from(this.$el.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=date], input[type=checkbox], select')).forEach((el) => el.disabled = true);
                 }
             },
+            getDateString: function(value) {
+                return  value ? dayjs(value).format("M/DD/YYYY h:mm A") : "";
+            },            
             save: function () { }
         }
     };

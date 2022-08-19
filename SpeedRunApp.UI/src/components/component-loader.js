@@ -24,6 +24,7 @@ import speedRunGridChartVue from './SpeedRunGridChartVue.vue';
 import worldRecordGridVue from './WorldRecordGridVue.vue';
 import worldRecordGridTabVue from './WorldRecordGridTabVue.vue';
 import userAccountVue from './UserAccountVue.vue';
+import importStatusVue from './ImportStatusVue.vue';
 
 export default {
     loadComponents() {
@@ -56,6 +57,7 @@ export default {
         app.component("worldrecord-grid", worldRecordGridVue);
         app.component("personalbest-grid-tab", worldRecordGridTabVue);
         app.component("useraccount", userAccountVue);
+        app.component("import-status", importStatusVue);
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

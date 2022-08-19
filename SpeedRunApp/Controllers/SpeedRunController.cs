@@ -98,6 +98,13 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetImportStatus()
+        {
+            var result = _speedRunService.GetImportStatus();
+            return Json(result);
+        }
+
+        [HttpGet]
         public ActionResult Login()
         {
             var loginVM = new LoginViewModel();

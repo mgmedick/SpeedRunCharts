@@ -73,6 +73,7 @@
                                         <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                     </div>
                                 </div>
+                                <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="pl-2">Import Status</span></a>
                                 <a class="dropdown-item" href="#" @click="showLoginModal = true"><i class="fa fa-user"></i><span class="pl-2">Log In</span></a>
                                 <a class="dropdown-item" href="#" @click="showSignUpModal = true"><i class="fa fa-clipboard"></i><span class="pl-2">Sign Up</span></a>
                             </template>
@@ -81,6 +82,12 @@
                 </ul>
             </div>
         </nav>
+        <custom-modal v-model="showImportStatusModal" v-if="showImportStatusModal" contentclass="modal-md">
+            <template v-slot:title>
+                Import Status
+            </template>
+            <import-status />
+        </custom-modal>          
         <custom-modal v-model="showLoginModal" v-if="showLoginModal" contentclass="modal-md">
             <template v-slot:title>
                 Log In
@@ -98,7 +105,7 @@
                 Sign Up
             </template>
             <signup />
-        </custom-modal>
+        </custom-modal>      
     </div>   
 </template>
 <script>
@@ -118,6 +125,7 @@
                 searchSelected: null,
                 searchOptions: [],
                 searchLoading: false,
+                showImportStatusModal: false,
                 showLoginModal: false,
                 showResetModal: false,
                 showSignUpModal: false,

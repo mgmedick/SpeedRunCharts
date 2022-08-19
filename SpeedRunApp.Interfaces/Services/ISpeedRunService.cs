@@ -14,6 +14,7 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryID, int? levelID, int? userID);
         IEnumerable<SpeedRunGridViewModel> GetSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID, bool showAllData);
         IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(int currUserAccountID);
+        ImportStatusViewModel GetImportStatus();
     }
 }
 

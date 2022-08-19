@@ -23,6 +23,7 @@ namespace SpeedRunApp.Repository
             For<UserAccountView>().TableName("vw_UserAccount");
             For<UserAccountSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_UserAccount_SpeedRunListCategory");
             For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
+            For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }
     }
 }

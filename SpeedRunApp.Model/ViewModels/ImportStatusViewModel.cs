@@ -17,6 +17,27 @@ namespace SpeedRunApp.Model.ViewModels
         public DateTime? ImportLastRunDate { get; set; }
         public DateTime? ImportLastUpdateSpeedRunsDate { get; set; }
         public DateTime? ImportLastBulkReloadDate { get; set; }
+        public string ImportLastRunDateString
+        {
+            get
+            {
+                return ImportLastRunDate?.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+            }
+        }     
+        public string ImportLastUpdateSpeedRunsDateString
+        {
+            get
+            {
+                return ImportLastUpdateSpeedRunsDate?.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+            }
+        }       
+        public string ImportLastBulkReloadDateString
+        {
+            get
+            {
+                return ImportLastBulkReloadDate?.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
+            }
+        }                 
     }
 }
 

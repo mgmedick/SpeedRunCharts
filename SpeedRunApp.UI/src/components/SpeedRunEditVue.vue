@@ -40,10 +40,10 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.statusType.id != 0">
+            <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Verified Date</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" :value="getDateString(item.speedRunVM.verifyDate)" style="width:170px;">
+                    <input type="datetime-local" class="form-control" :value="item.speedRunVM.verifyDateString" style="width: 240px;">
                 </div>
             </div>
             <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.players">
@@ -220,12 +220,9 @@
             },
             init: function () {
                 if (this.readonly) {
-                    Array.from(this.$el.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=date], input[type=checkbox], select')).forEach((el) => el.disabled = true);
+                    Array.from(this.$el.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=datetime-local], input[type=checkbox], select')).forEach((el) => el.disabled = true);
                 }
-            },
-            getDateString: function(value) {
-                return  value ? dayjs(value).format("M/DD/YYYY h:mm A") : "";
-            },            
+            },          
             save: function () { }
         }
     };

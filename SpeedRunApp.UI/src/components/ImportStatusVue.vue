@@ -11,28 +11,27 @@
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Import</label>
                 <div class="col-sm-8">
-                    <span class="form-control" style="width:170px;">{{ getDateString(item.importLastRunDate) }}</span>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastRunDateString"/>
                 </div>
             </div>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Nightly Update</label>
                 <div class="col-sm-8">
-                    <span class="form-control" style="width:170px;">{{ getDateString(item.importLastUpdateSpeedRunsDate) }}</span>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastUpdateSpeedRunsDateString"/>
                 </div>
             </div>         
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Full Import</label>
                 <div class="col-sm-8">
-                    <span class="form-control" style="width:170px;">{{ getDateString(item.importLastBulkReloadDate) }}</span>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastBulkReloadDateString"/>
                 </div>
             </div>                 
         </div> 
     </div>   
 </template>
 <script>
-    const dayjs = require('dayjs');
     import axios from 'axios'
-    
+
     export default {
         name: 'ImportStatusVue',
         data: function () {
@@ -59,9 +58,6 @@
                     .catch(err => { console.error(err); return Promise.reject(err); });
 
                 return prms;
-            },
-            getDateString: function(value) {
-                return  value ? dayjs(value).format("M/DD/YYYY h:mm A") : "";
             }
         }
     };

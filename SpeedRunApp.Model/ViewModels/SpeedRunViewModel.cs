@@ -152,7 +152,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return VerifyDate?.ToString("MM/dd/yyyy");
+                return VerifyDate?.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
             }
         }
 

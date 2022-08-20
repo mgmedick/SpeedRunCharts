@@ -43,7 +43,7 @@
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-2 col-form-label">Verified Date</label>
                 <div class="col-sm-10">
-                    <input type="datetime-local" class="form-control" :value="item.speedRunVM.verifyDateString" style="width: 240px;">
+                    <input type="datetime-local" class="form-control" :value="getFormattedDateString(item.speedRunVM.verifyDate)" style="width: 240px;">
                 </div>
             </div>
             <div class="form-group row no-gutters mb-2" v-if="item.speedRunVM.players">
@@ -175,8 +175,8 @@
     </div>   
 </template>
 <script>
-    const dayjs = require('dayjs');
     import axios from 'axios'
+    import { getDateTimeLocalString } from '../js/common.js';
 
     export default {
         name: 'SpeedRunEditVue',
@@ -222,7 +222,10 @@
                 if (this.readonly) {
                     Array.from(this.$el.querySelectorAll('#divSpeedRunEdit input[type=text], input[type=datetime-local], input[type=checkbox], select')).forEach((el) => el.disabled = true);
                 }
-            },          
+            },
+            getFormattedDateString: function (value) {
+                return getDateTimeLocalString(value);
+            },                      
             save: function () { }
         }
     };

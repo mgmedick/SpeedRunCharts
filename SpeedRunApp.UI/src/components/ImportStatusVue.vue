@@ -11,19 +11,19 @@
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Import</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastRunDateString"/>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastRunDate)"/>
                 </div>
             </div>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Nightly Update</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastUpdateSpeedRunsDateString"/>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastUpdateSpeedRunsDate)"/>
                 </div>
             </div>         
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Full Import</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="item.importLastBulkReloadDateString"/>
+                    <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastBulkReloadDate)"/>
                 </div>
             </div>                 
         </div> 
@@ -31,6 +31,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import { getDateTimeLocalString } from '../js/common.js';
 
     export default {
         name: 'ImportStatusVue',
@@ -58,8 +59,11 @@
                     .catch(err => { console.error(err); return Promise.reject(err); });
 
                 return prms;
+            },
+            getFormattedDateString: function (value) {
+                return getDateTimeLocalString(value);
             }
-        }
+        }        
     };
 </script>
 

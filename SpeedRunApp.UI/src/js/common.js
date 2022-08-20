@@ -84,6 +84,12 @@ const formatTime = (timepart, value) => {
     return result;
 }
 
+const getDateTimeLocalString = (value) => {
+    var result = dayjs(value).format("YYYY-MM-DDTHH:mm:ss");
+    
+    return result;
+}
+
 const escapeHtml = (value) => {
     return value.replace("&", "&amp;")
                 .replace("<", "&lt;")
@@ -116,7 +122,7 @@ const getCookie = (key) => {
     return keyValue ? keyValue[2] : null;
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, escapeHtml, formatFileName, setCookie, getCookie }
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, escapeHtml, formatFileName, setCookie, getCookie }
 
 
 

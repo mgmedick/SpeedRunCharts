@@ -273,7 +273,7 @@ namespace SpeedRunApp.Model.ViewModels
                     ID = h.ID,
                     Name = h.Name,
                     HasData = h.HasData,
-                    SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID), count + 1)
+                    SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID).ToList(), count + 1)
                 }).ToList()
             });
 

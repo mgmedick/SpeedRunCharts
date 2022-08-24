@@ -18,55 +18,55 @@
 }
 
 
-.image-container[data-v-7e0b2e2a] {
+.image-container[data-v-24ac6e0b] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-7e0b2e2a]{
+.image-container img[data-v-24ac6e0b]{
         width: 90px;
 }
-.image-container .play-icon[data-v-7e0b2e2a] {
+.image-container .play-icon[data-v-24ac6e0b] {
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-7e0b2e2a] {
+.nowrap-elipsis[data-v-24ac6e0b] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-7e0b2e2a] {
+.gold[data-v-24ac6e0b] {
         color: gold;
 }
-.silver[data-v-7e0b2e2a] {
+.silver[data-v-24ac6e0b] {
         color: silver;
 }
-.bronze[data-v-7e0b2e2a] {
+.bronze[data-v-24ac6e0b] {
         color: #b08d57;
 }
-.badge[data-v-7e0b2e2a] {
+.badge[data-v-24ac6e0b] {
         font-size: 85% !important;
 }
 @media (max-width: 768px) {
-.btn[data-v-7e0b2e2a] {
+.btn[data-v-24ac6e0b] {
             font-size:11px;
             padding:4px 6px;
 }
-.show-md[data-v-7e0b2e2a] {
+.show-md[data-v-24ac6e0b] {
             display: none;
 }
-.show-sm[data-v-7e0b2e2a] {
+.show-sm[data-v-24ac6e0b] {
             display: block;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-7e0b2e2a] {
+.show-md[data-v-24ac6e0b] {
             display: block;
 }
-.show-sm[data-v-7e0b2e2a] {
+.show-sm[data-v-24ac6e0b] {
             display: none;
 }
 }    

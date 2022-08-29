@@ -14,7 +14,7 @@
                         <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
                     </div>
                     <div class="align-self-end" style="line-height: 12px;">
-                        <span v-if="item.viewCountString"><small class="text-secondary">{{ item.viewCountString + " views" }}</small>&nbsp;&middot;&nbsp;</span><small class="text-secondary">{{ item.relativeImportedDateStringShort }}</small>
+                        <span v-if="item.viewCountString"><small class="text-secondary">{{ item.viewCountString + " views" }}</small>&nbsp;&middot;&nbsp;</span><small class="text-secondary">{{ item.relativeVerifyDateStringShort }}</small>
                     </div>                    
                 </div>
                 <div class="col-auto ml-auto p-0 align-self-start">

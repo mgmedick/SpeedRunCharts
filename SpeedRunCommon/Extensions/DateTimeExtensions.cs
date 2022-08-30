@@ -85,11 +85,11 @@ namespace SpeedRunCommon.Extensions
             {
                 result = Ts.ToString("d'd 'h'h 'm'm 's's'");
             }
-            else if (Ts.TotalHours > 1d)
+            else if (Ts.TotalHours > 1d || Ts.TotalMinutes == 60)
             {
                 result = Ts.ToString("h'h 'm'm 's's'");
             }
-            else if (Ts.TotalMinutes > 1d)
+            else if (Ts.TotalMinutes > 1d || Ts.TotalSeconds == 60)
             {
                 result = Ts.ToString("m'm 's's'");
             }

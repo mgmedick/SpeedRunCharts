@@ -7,8 +7,7 @@ namespace SpeedRunCommon.Extensions
     {
         #region DateTime
         public static string ToRealtiveDateString(this DateTime DateSubmitted, bool shortFormat = false)
-        {
-
+        {           
             string submittedTimeAgo = null;
 
             const int second = 1;
@@ -23,57 +22,62 @@ namespace SpeedRunCommon.Extensions
             if (delta < 1 * minute)
             {
                 if(ts.Seconds == 1) {
-                    submittedTimeAgo = shortFormat ? "1s" : "1 second ago";
+                    submittedTimeAgo = shortFormat ? "1s" : "1 second";
                 } else {
-                    submittedTimeAgo = shortFormat ? ts.Seconds + "s" : ts.Seconds + " seconds ago";
+                    submittedTimeAgo = shortFormat ? ts.Seconds + "s" : ts.Seconds + " seconds";
                 }
             }
             else if (delta < 2 * minute)
             {
-                return shortFormat ? "1m" : "1 minute ago";
+                return shortFormat ? "1m" : "1 minute";
             }
             else if (delta < 45 * minute)
             {
-                submittedTimeAgo = shortFormat ? ts.Minutes + "m" : ts.Minutes + " minutes ago";
+                submittedTimeAgo = shortFormat ? ts.Minutes + "m" : ts.Minutes + " minutes";
             }
             else if (delta < 90 * minute)
             {
-                submittedTimeAgo = shortFormat ? "1h" : "1 hour ago";
+                submittedTimeAgo = shortFormat ? "1h" : "1 hour";
             }
             else if (delta < 24 * hour)
             {
-                submittedTimeAgo = shortFormat ? ts.Hours + "h" : ts.Hours + " hours ago";
+                submittedTimeAgo = shortFormat ? ts.Hours + "h" : ts.Hours + " hours";
             }
             else if (delta < 48 * hour)
             {
-                submittedTimeAgo = shortFormat ? "1d" : "1 day ago";
+                submittedTimeAgo = shortFormat ? "1d" : "1 day";
             }
             else if (delta < 30 * day)
             {
-                submittedTimeAgo = shortFormat ? ts.Days + "d" : ts.Days + " days ago";
+                submittedTimeAgo = shortFormat ? ts.Days + "d" : ts.Days + " days";
 
             }
             else if (delta < 12 * month)
             {
                 int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
                 if (months <= 1) {
-                   submittedTimeAgo = shortFormat ? "1M" : "1 month ago";
+                   submittedTimeAgo = shortFormat ? "1M" : "1 month";
                 } else {
-                    submittedTimeAgo = shortFormat ? months + "M" : months + " months ago";
+                    submittedTimeAgo = shortFormat ? months + "M" : months + " months";
                 }
             }
             else
             {
                 int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
                 if (years <= 1) {
-                    submittedTimeAgo = shortFormat ? "1y" : "1 year ago";
+                    submittedTimeAgo = shortFormat ? "1y" : "1 year";
                 } else {
-                    submittedTimeAgo = shortFormat ? years + "y" : years + " years ago";
+                    submittedTimeAgo = shortFormat ? years + "y" : years + " years";
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(submittedTimeAgo))
+            {
+                submittedTimeAgo += " ago";
+            }
+
             return submittedTimeAgo;
-        }
+        } 
         #endregion
 
         #region TimeSpan

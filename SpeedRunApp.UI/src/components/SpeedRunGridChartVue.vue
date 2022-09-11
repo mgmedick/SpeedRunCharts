@@ -242,7 +242,7 @@
                             maxscalerecursion: "-1",
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 8,
+                            plotBinSize: 1.5,
                             setAdaptiveYMin: 1,
                             theme: "candy",
                             bgColor: that.bgColor,

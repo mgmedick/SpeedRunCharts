@@ -145,7 +145,7 @@ namespace SpeedRunApp.Model.ViewModels
                 SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
                 SetVariablesHasValue(SubCategoryVariablesTabs, runVMs);          
-                SetParentVariablesHasValue(SubCategoryVariablesTabs);
+                //SetParentVariablesHasValue(SubCategoryVariablesTabs);
             }
 
             if (!string.IsNullOrWhiteSpace(game.Platforms))
@@ -258,7 +258,70 @@ namespace SpeedRunApp.Model.ViewModels
             return variables;
         }
 
-        public List<Variable> GetNestedVariables(IEnumerable<Variable> variables, int count = 0)
+/*
+        public Variable[] GetNestedVariables(Variable[] variables, int count = 0)
+        {
+            var results = variables.Skip(count).Take(variables.Count() - count).Select((g, i) => new Variable
+            {
+                ID = g.ID,
+                Name = g.Name,
+                IsSubCategory = g.IsSubCategory,
+                ScopeTypeID = g.ScopeTypeID,
+                CategoryID = g.CategoryID,
+                LevelID = g.LevelID,
+                VariableValues = g.VariableValues.Select(h => new VariableValue
+                {
+                    ID = h.ID,
+                    Name = h.Name,
+                    HasData = h.HasData,
+                    SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID).ToArray(), count + 1)
+                }).ToArray()
+            }).ToArray();
+
+            return results;
+        }
+*/
+        public List<Variable> GetNestedVariables(List<Variable> variables, int count = 0)
+        {
+            var results = new List<Variable>();
+            var variablesBatch = variables.Skip(count).Take(variables.Count() - count).ToList();
+            foreach(var variable in variablesBatch)
+            {
+                var variableCopy = new Variable
+                {   
+                    ID = variable.ID,
+                    Name = variable.Name,
+                    IsSubCategory = variable.IsSubCategory,
+                    ScopeTypeID = variable.ScopeTypeID,
+                    CategoryID = variable.CategoryID,
+                    LevelID = variable.LevelID,
+                    VariableValues = variable.VariableValues
+                                             .Select(h => new VariableValue
+                                                {
+                                                    ID = h.ID,
+                                                    Name = h.Name,
+                                                    HasData = h.HasData,
+                                                    SubVariables = new List<Variable>()
+                                                }).ToList()
+                };
+
+                var subVariables = variables.Where(n => n.CategoryID == variable.CategoryID && n.LevelID == variable.LevelID).ToList();
+                if (subVariables.Any())
+                {
+                    foreach(var variableValue in variableCopy.VariableValues)
+                    {
+                        variableValue.SubVariables = GetNestedVariables(subVariables, count + 1);
+                    }
+                }
+
+                results.Add(variableCopy);
+            }
+
+            return results.GroupBy(i => new { i.CategoryID, i.LevelID }).Select(i => i.FirstOrDefault()).ToList();
+        }
+
+        /*
+        public List<Variable> GetNestedVariables(List<Variable> variables, int count = 0)
         {
             var results = variables.Skip(count).Take(variables.Count() - count).Select((g, i) => new Variable
             {
@@ -275,11 +338,39 @@ namespace SpeedRunApp.Model.ViewModels
                     HasData = h.HasData,
                     SubVariables = GetNestedVariables(variables.Where(n => n.CategoryID == g.CategoryID && n.LevelID == g.LevelID).ToList(), count + 1)
                 }).ToList()
-            });
+            }).ToList();
 
             return results.GroupBy(i => new { i.CategoryID, i.LevelID }).Select(i => i.FirstOrDefault()).ToList();
+        } 
+        */
+
+        public void SetVariablesHasValue(IEnumerable<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs, string parentVariableValues = null)
+        {
+           foreach (var variable in variables)
+           {
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    var variableValues = string.IsNullOrWhiteSpace(parentVariableValues) ? variableValue.ID.ToString() : parentVariableValues + "," + variableValue.ID.ToString();                                                            
+                    variableValue.HasData = runVMs == null || (runVMs.Any(i => i.CategoryID == variable.CategoryID
+                                        && i.LevelID == variable.LevelID
+                                        && !string.IsNullOrWhiteSpace(i.SubCategoryVariableValueIDs)
+                                        && i.SubCategoryVariableValueIDs.StartsWith(variableValues)));
+
+                    if (!variableValue.HasData) {
+                        variableValue.Name += " (empty)";
+                    }
+
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        parentVariableValues = string.IsNullOrWhiteSpace(parentVariableValues) ? variableValue.ID.ToString() : parentVariableValues + "," + variableValue.ID.ToString();
+                        SetVariablesHasValue(variableValue.SubVariables, runVMs, parentVariableValues);
+                        parentVariableValues = null;
+                    }
+                }
+           }
         }
 
+        /*
         public void SetVariablesHasValue(IEnumerable<Variable> variables, IEnumerable<SpeedRunGridViewModel> runVMs, List<Tuple<int,int>> parentVariableValues = null)
         {
            foreach (var variable in variables)
@@ -313,6 +404,7 @@ namespace SpeedRunApp.Model.ViewModels
                 parentVariableValues = null;
            }
         }
+        */
 
         public void SetParentVariablesHasValue(List<Variable> variables) {
             foreach(var variable in variables) {

@@ -1,16 +1,16 @@
 
-.dropdown-menu[data-v-08649203] {
+.dropdown-menu[data-v-7db708ba] {
         overflow-y: auto;
         max-height: 300px;
 }
 
 
 @media (min-width: 992px) {
-[data-v-526d2acb] .vue-select {
+[data-v-63495856] .vue-select {
             min-width: 400px !important;
             margin-right: 8px;
 }
-[data-v-526d2acb] .vue-dropdown {
+[data-v-63495856] .vue-dropdown {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;
@@ -18,63 +18,65 @@
 }
 
 
-.image-container[data-v-be624904] {
+.image-container[data-v-411d7014] {
         position: relative;
         width: 90px;
         margin-left:auto;
 }
-.image-container img[data-v-be624904]{
+.image-container img[data-v-411d7014]{
         width: 90px;
 }
-.image-container .play-icon[data-v-be624904] {
+.image-container .play-icon[data-v-411d7014] {
         cursor: pointer;
         position: absolute;
         top : 50%;
         left : 50%;
         transform: translate(-50%, -50%);
 }
-.nowrap-elipsis[data-v-be624904] {
+.nowrap-elipsis[data-v-411d7014] {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
 }
-.gold[data-v-be624904] {
+.gold[data-v-411d7014] {
         color: gold;
 }
-.silver[data-v-be624904] {
+.silver[data-v-411d7014] {
         color: silver;
 }
-.bronze[data-v-be624904] {
+.bronze[data-v-411d7014] {
         color: #b08d57;
 }
-.badge[data-v-be624904] {
+.badge[data-v-411d7014] {
         font-size: 85% !important;
 }
 @media (max-width: 768px) {
-.btn[data-v-be624904] {
+.btn[data-v-411d7014] {
             font-size:11px;
             padding:4px 6px;
 }
-.show-md[data-v-be624904] {
+.show-md[data-v-411d7014] {
             display: none;
 }
-.show-sm[data-v-be624904] {
+.show-sm[data-v-411d7014] {
             display: block;
 }
 }
 @media (min-width: 768px) {
-.show-md[data-v-be624904] {
+.show-md[data-v-411d7014] {
             display: block;
 }
-.show-sm[data-v-be624904] {
+.show-sm[data-v-411d7014] {
             display: none;
 }
 }    
 
 
 @media (max-width: 575px) {
-.category[data-v-2b81bf31] {
+.category[data-v-5f0b31c6] {
             font-size: 11px !important;
 }
 }    
 
+
+/*# sourceMappingURL=master.min.css.map*/

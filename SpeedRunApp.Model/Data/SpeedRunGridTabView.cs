@@ -11,6 +11,7 @@ namespace SpeedRunApp.Model.Data
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public string VariableValues { get; set; }
+        public string SubCategoryVariableValueIDs { get; set; }
         public int? Rank { get; set; }
     }
 } 

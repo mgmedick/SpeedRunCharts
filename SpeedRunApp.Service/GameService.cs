@@ -101,7 +101,7 @@ namespace SpeedRunApp.Service
                 var game = tabItems.FirstOrDefault(i => i.ID == run.GameID);
                 if (run != null && game != null) {
                     var categoryTypeID = game.Categories.Where(i=>i.ID == run.CategoryID).Select(i=>i.CategoryTypeID).FirstOrDefault();
-                    var subCategoryVariableValueIDs = run.SubCategoryVariableValueIDs.Split(',').Select(i => Convert.ToInt32(i)).ToList();
+                    var subCategoryVariableValueIDs = run.SubCategoryVariableValueIDs?.Split(',').Select(i => Convert.ToInt32(i)).ToList();
                     var subCategoryVariableValueNames = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, game.SubCategoryVariables);
                     var showAllData = true;
 
@@ -154,15 +154,17 @@ namespace SpeedRunApp.Service
             var SubCategoryVariableValueNames = new Dictionary<string, string>();
 
             var variableCount = 0;
-            foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
-                var variable = gameSubCategoryVariables.FirstOrDefault(i => i.VariableValues.Any(g => g.ID == runSubCategoryVariableValueID));
-                var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID);
-                
-                if (variable != null && variableValue != null) {
-                    SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
-                }
+            if (runSubCategoryVariableValueIDs != null) {
+                foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
+                    var variable = gameSubCategoryVariables.FirstOrDefault(i => i.VariableValues.Any(g => g.ID == runSubCategoryVariableValueID));
+                    var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID);
+                    
+                    if (variable != null && variableValue != null) {
+                        SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
+                    }
 
-                variableCount++;
+                    variableCount++;
+                }
             }
 
             return SubCategoryVariableValueNames;

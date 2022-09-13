@@ -115,7 +115,7 @@
                                     <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
                                         <div class="col tab-list">
                                             <ul class="nav nav-pills">
-                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
                                                 <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
@@ -123,7 +123,7 @@
                                                         <span>More...</span>
                                                     </template>
                                                     <template v-slot:options>
-                                                        <template v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                        <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
                                                             <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
                                                         </template>
                                                     </template>
@@ -131,7 +131,7 @@
                                             </ul>
                                         </div>                                      
                                     </div>
-                                    <div v-for="(level, levelIndex) in game.levelTabs.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                    <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
                                                 <speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedrunid" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :variables="game.variables" :exporttypes="exportTypes" :title="title" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></speedrun-grid-tab-variable>
@@ -220,7 +220,7 @@
                 var gameName = game.name;
                 var categoryTypeName = game.categoryTypes.filter(i => i.id == this.categoryTypeID)[0]?.name;
                 var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
-                var levelName = game.levelTabs?.filter(i=>i.id == this.levelID)[0]?.name;
+                var levelName = game.levels?.filter(i=>i.id == this.levelID)[0]?.name;
                 var variableValueNames = Object.keys(this.subCategoryVariableValueIDs).map(i => this.subCategoryVariableValueIDs[i]).join(' - ');              
                 
                 result = [gameName, categoryTypeName, categoryName, levelName, variableValueNames].join(' - ');
@@ -277,7 +277,7 @@
                 this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID && (!that.hideEmpty || category.hasData))?.id;
 
                 if (this.categoryTypeID == 1) {
-                    this.levelID = this.levelID || (game.levelTabs ? game.levelTabs.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id : '');
+                    this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id : '');
                 } else {
                     this.levelID = '';
                 }
@@ -338,8 +338,8 @@
                 }
 
                 if (this.categoryTypeID == 1) {
-                    if(game.levelTabs?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideEmpty || i.hasData)).length == 0) {
-                        this.levelID = game.levelTabs?.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id;
+                    if(game.levels?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideEmpty || i.hasData)).length == 0) {
+                        this.levelID = game.levels?.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideEmpty || lvl.hasData))[0]?.id;
                     }
                 } else {
                     this.levelID = '';

@@ -84,12 +84,27 @@
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
                 ];
 
+                // tableData.forEach(item => {
+                //     if (item.variableValues) {
+                //         Object.keys(item.variableValues).forEach(variableID => {
+                //             var variable = that.variables?.filter(x => x.id == variableID)[0];
+                //             if (variable && variable.isSubCategory) {
+                //                 var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
+                //                 if (variableValue) {
+                //                     item[variable.name] = variableValue.name;
+                //                     item[variable.name + 'sort'] = variableValue.id;
+                //                 }
+                //             }
+                //         })
+                //     }
+                // });
+
                 tableData.forEach(item => {
-                    if (item.variableValues) {
-                        Object.keys(item.variableValues).forEach(variableID => {
-                            var variable = that.variables?.filter(x => x.id == variableID)[0];
+                    if (item.subCategoryVariableValueIDs) {
+                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                            var variable = that.variables?.filter(x => x.variableValues.filter(i => i.id == variableValueID).length > 0)[0];
                             if (variable && variable.isSubCategory) {
-                                var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
+                                var variableValue = variable.variableValues.filter(i => i.id == variableValueID)[0]
                                 if (variableValue) {
                                     item[variable.name] = variableValue.name;
                                     item[variable.name + 'sort'] = variableValue.id;
@@ -97,7 +112,7 @@
                             }
                         })
                     }
-                });
+                });                
 
                 var variables = that.variables?.filter(i => tableData.filter(el => el[i.name]).length > 0);
                 var distinctVariables = [...new Set(variables?.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });

@@ -1,6 +1,6 @@
 ﻿namespace SpeedRunApp.Model.Data
 {
-    public class LevelTab : TabItem
+    public class Level : TabItem
     {
         public int CategoryID { get; set; }
     }

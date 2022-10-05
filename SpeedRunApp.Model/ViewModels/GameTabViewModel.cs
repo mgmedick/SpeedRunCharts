@@ -165,13 +165,15 @@ namespace SpeedRunApp.Model.ViewModels
 
             var levelCategoryIDs = Categories.Where(i=>i.CategoryTypeID == (int)CategoryType.PerLevel).Select(i=>i.ID).ToList();
             var globalLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && i.CategoryID.HasValue && levelCategoryIDs.Contains(i.CategoryID.Value) && !i.LevelID.HasValue).Reverse().ToList();
-            foreach (var globalLevelVariable in globalLevelVariables)
-            {
-                foreach (var gameLevel in GameLevels)
+            if (GameLevels != null && GameLevels.Any()) {
+                foreach (var globalLevelVariable in globalLevelVariables)
                 {
-                    var variable = (Variable)globalLevelVariable.Clone();
-                    variable.LevelID = gameLevel.ID;
-                    variables.Insert(0, variable);
+                    foreach (var gameLevel in GameLevels)
+                    {
+                        var variable = (Variable)globalLevelVariable.Clone();
+                        variable.LevelID = gameLevel.ID;
+                        variables.Insert(0, variable);
+                    }
                 }
             }
 

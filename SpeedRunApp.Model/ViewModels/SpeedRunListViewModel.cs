@@ -7,11 +7,8 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel(int elementsPerPage)
+        public SpeedRunListViewModel()
         {
-            ElementsPerPage = elementsPerPage;
         }
-
-        public int ElementsPerPage { get; set; }
     }
 }

@@ -24,7 +24,6 @@
                 loading: true,
                 throttleTimer: null,
                 throttleDelay: 500,
-                topamt: 20,
                 offset: null
             }
         },
@@ -51,7 +50,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
+                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, orderValueOffset: this.offset } })
                     .then(res => {
                         that.items = that.items.concat(res.data);
                         that.loading = false;

@@ -50,10 +50,12 @@
             </div>
             <div v-if="isMediaMedium" class="body p-0 embed-responsive embed-responsive-16by9 show-md">
                 <iframe :src="item.videoLink"
-                        loading="lazy"
+                        loading="lazy"           
                         frameborder="0"
                         autoplay="0"
                         scrolling="no"
+                        width="100%"
+                        height="auto"
                         allowfullscreen="true"></iframe>
             </div>            
             <div v-else-if="showVideoSm" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
@@ -62,6 +64,8 @@
                         frameborder="0"
                         autoplay="0"
                         scrolling="no"
+                        width="100%"
+                        height="auto"                        
                         allowfullscreen="true"></iframe>
             </div>
             <input type="hidden" class="orderValue" :value="item.id" />

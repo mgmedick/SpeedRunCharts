@@ -34,7 +34,8 @@ namespace SpeedRunApp.Service
 
         public SpeedRunListViewModel GetSpeedRunList()
         {
-            var runListVM = new SpeedRunListViewModel();
+            var defaultTopAmount = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("DefaultTopAmount").Value);
+            var runListVM = new SpeedRunListViewModel(defaultTopAmount);
 
             return runListVM;
         }

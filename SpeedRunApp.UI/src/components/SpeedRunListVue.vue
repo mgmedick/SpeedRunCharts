@@ -16,7 +16,8 @@
     export default {
         name: 'SpeedRunListVue',
         props: {
-            categoryid: String
+            categoryid: String,
+            defaulttopamt: Number
         },
         data() {
             return {
@@ -24,14 +25,14 @@
                 loading: true,
                 throttleTimer: null,
                 throttleDelay: 500,
-                topamt: localStorage.getItem("topamt") ?? 5,
-                offset: localStorage.getItem("offset") ?? null
+                topamt: sessionStorage.getItem("topamt") ?? this.defaulttopamt,
+                offset: sessionStorage.getItem("offset") ?? null
             }
         },
         created() {
             this.loadData().then(function() {
-                if (localStorage.scrolltop) {
-                    document.documentElement.scrollTop = localStorage.getItem("scrolltop");
+                if (sessionStorage.scrolltop) {
+                    document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
                 }
             });
             window.addEventListener('scroll', this.onWindowScroll);
@@ -69,10 +70,10 @@
             resetParams: function() {
                 this.items = [];
                 this.offset = null;
-                this.topamt = 5;
-                localStorage.removeItem("topamt");
-                localStorage.removeItem("offset");
-                localStorage.removeItem("scrolltop");
+                this.topamt = this.defaulttopamt;
+                sessionStorage.removeItem("topamt");
+                sessionStorage.removeItem("offset");
+                sessionStorage.removeItem("scrolltop");
             },
             onWindowScroll: function () {
                 var that = this;
@@ -87,13 +88,13 @@
                 }, this.throttleDelay);
             },
             onBeforeUnload: function() {
-                localStorage.setItem("scrolltop", document.documentElement.scrollTop);
+                sessionStorage.setItem("scrolltop", document.documentElement.scrollTop);
 
                 var orderValue = Array.from(document.querySelectorAll('.orderValue')).map(i => i.value)[0];
-                localStorage.setItem("offset", parseInt(orderValue) + 1);
+                sessionStorage.setItem("offset", parseInt(orderValue) + 1);
 
                 if (this.items.length > this.topamt) {
-                    localStorage.setItem("topamt", this.items.length);
+                    sessionStorage.setItem("topamt", this.items.length);
                 }
             }
         }

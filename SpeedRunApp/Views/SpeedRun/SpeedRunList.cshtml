@@ -2,7 +2,7 @@
 @{ ViewBag.Title = "SpeedRunList"; }
 
 <div>
-    <speedrun-list-category></speedrun-list-category>
+    <speedrun-list-category :defaulttopamt="@Json.Serialize(Model.DefaultTopAmount)"></speedrun-list-category>
 </div>
 
 

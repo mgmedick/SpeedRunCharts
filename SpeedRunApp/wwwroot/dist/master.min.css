@@ -6,11 +6,11 @@
 
 
 @media (min-width: 992px) {
-[data-v-3474b46b] .vue-select {
+[data-v-22ef2b3a] .vue-select {
             min-width: 400px !important;
             margin-right: 8px;
 }
-[data-v-3474b46b] .vue-dropdown {
+[data-v-22ef2b3a] .vue-dropdown {
             min-width: 400px !important;
             max-width: 500px;
             width: auto !important;
@@ -73,7 +73,7 @@
 
 
 @media (max-width: 575px) {
-.category[data-v-cebc8958] {
+.category[data-v-8066bae8] {
             font-size: 11px !important;
 }
 }    

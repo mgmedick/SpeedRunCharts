@@ -7,8 +7,11 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunListViewModel
     {
-        public SpeedRunListViewModel()
+        public SpeedRunListViewModel(int defaultTopAmount)
         {
+            DefaultTopAmount = defaultTopAmount;
         }
+
+        public int DefaultTopAmount { get; set; }
     }
 }

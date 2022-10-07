@@ -10,7 +10,7 @@
             </div>
         </div>
         <div>
-            <speedrun-list :categoryid="categoryid.toString()"></speedrun-list>
+            <speedrun-list :categoryid="categoryid.toString()" :defaulttopamt="defaulttopamt"></speedrun-list>
         </div>
     </div>
 </template>
@@ -19,10 +19,13 @@
 
     export default {
         name: 'SpeedRunListCategoryVue',
+        props: {
+            defaulttopamt: Number
+        },
         data: function () {
             return {
                 items: [],
-                categoryid: localStorage.getItem("speedrunlistcategoryid") ?? 0
+                categoryid: sessionStorage.getItem("speedrunlistcategoryid") ?? 0
             }
         },
         created() {
@@ -81,7 +84,7 @@
             onCategoryChange: function (event) {
                 Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");
-                localStorage.setItem("speedrunlistcategoryid", this.categoryid); 
+                sessionStorage.setItem("speedrunlistcategoryid", this.categoryid); 
             }
         }
     };

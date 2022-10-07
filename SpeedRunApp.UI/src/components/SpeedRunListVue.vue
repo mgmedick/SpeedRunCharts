@@ -16,7 +16,8 @@
     export default {
         name: 'SpeedRunListVue',
         props: {
-            categoryid: String
+            categoryid: String,
+            defaulttopamt: Number
         },
         data() {
             return {
@@ -24,22 +25,28 @@
                 loading: true,
                 throttleTimer: null,
                 throttleDelay: 500,
-                offset: null
+                topamt: sessionStorage.getItem("topamt") ?? this.defaulttopamt,
+                offset: sessionStorage.getItem("offset") ?? null
             }
         },
         created() {
-            this.loadData();
+            this.loadData().then(function() {
+                if (sessionStorage.scrolltop) {
+                    document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
+                }
+            });
             window.addEventListener('scroll', this.onWindowScroll);
-        },
+            window.addEventListener('beforeunload', this.onBeforeUnload);          
+        },             
         watch: {
             categoryid: function (val, oldVal) {
-                this.items = [];
-                this.offset = null;
+                this.resetParams();        
                 this.loadData();
             }
         },
         methods: {
             reLoadData: function () {
+                var that = this;
                 var orderValues = Array.from(document.querySelectorAll('.orderValue')).map(i => i.value);
                 var offset = orderValues.length > 0 ? Math.min.apply(null, orderValues) : null;
 
@@ -50,15 +57,23 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, orderValueOffset: this.offset } })
+                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
                     .then(res => {
-                        that.items = that.items.concat(res.data);
+                        that.items = that.items.concat(res.data);    
                         that.loading = false;
                         return res;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
 
                 return prms;
+            },
+            resetParams: function() {
+                this.items = [];
+                this.offset = null;
+                this.topamt = this.defaulttopamt;
+                sessionStorage.removeItem("topamt");
+                sessionStorage.removeItem("offset");
+                sessionStorage.removeItem("scrolltop");
             },
             onWindowScroll: function () {
                 var that = this;
@@ -71,7 +86,17 @@
                         that.reLoadData();
                     }
                 }, this.throttleDelay);
-            }   
+            },
+            onBeforeUnload: function() {
+                sessionStorage.setItem("scrolltop", document.documentElement.scrollTop);
+
+                var orderValue = Array.from(document.querySelectorAll('.orderValue')).map(i => i.value)[0];
+                sessionStorage.setItem("offset", parseInt(orderValue) + 1);
+
+                if (this.items.length > this.topamt) {
+                    sessionStorage.setItem("topamt", this.items.length);
+                }
+            }
         }
     };
 </script>

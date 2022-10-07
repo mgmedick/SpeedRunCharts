@@ -110,7 +110,6 @@
 </template>
 <script>
     import axios from 'axios'
-    import { setCookie } from '../js/common.js';
 
     export default {
         name: "NavbarVue",
@@ -150,7 +149,7 @@
                 } else {
                     this.updateTheme(val);
                     var theme = val ? "theme-dark" : "theme-light";
-                    setCookie("theme", theme);                    
+                    localStorage.setItem("theme", theme);                  
                 }
             }
         },        

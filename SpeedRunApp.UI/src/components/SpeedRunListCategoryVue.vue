@@ -16,14 +16,13 @@
 </template>
 <script>
     import axios from 'axios';
-    import { setCookie, getCookie } from '../js/common.js';
 
     export default {
         name: 'SpeedRunListCategoryVue',
         data: function () {
             return {
                 items: [],
-                categoryid: 0
+                categoryid: localStorage.getItem("speedrunlistcategoryid") ?? 0
             }
         },
         created() {
@@ -37,14 +36,6 @@
                 axios.get('/SpeedRun/GetSpeedRunListCategories')
                     .then(res => {
                         that.items = res.data;
-
-                        var categoryid = getCookie("speedrunlistcategoryid");
-                        if (!categoryid) {
-                            categoryid = res.data[0].id;
-                            setCookie("speedrunlistcategoryid", categoryid)
-                        }
-
-                        that.categoryid = categoryid;
                         that.loading = false;
                         return res;
                     })
@@ -90,7 +81,7 @@
             onCategoryChange: function (event) {
                 Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");
-                setCookie("speedrunlistcategoryid", this.categoryid); 
+                localStorage.setItem("speedrunlistcategoryid", this.categoryid); 
             }
         }
     };

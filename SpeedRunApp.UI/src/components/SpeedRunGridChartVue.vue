@@ -46,9 +46,10 @@
     //import Bar2D from 'fusioncharts/viz/bar2d';
     import StackedBar2D from 'fusioncharts/viz/stackedbar2d';
     import Pie2D from 'fusioncharts/viz/pie2d';
-    import Line from 'fusioncharts/viz/line';    
+    import MSLine from 'fusioncharts/viz/msline';    
+    import InverseMSLine from 'fusioncharts/viz/inversemsline';    
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";
-    FusionCharts.addDep(StackedBar2D, Pie2D, Line, CandyTheme);
+    FusionCharts.addDep(StackedBar2D, Pie2D, MSLine, InverseMSLine, CandyTheme);
     
     export default {
         name: "SpeedRunGridChartsVue",
@@ -62,7 +63,8 @@
             userid: String,            
             isgame: Boolean,
             showcharts: Boolean,
-            title: String
+            title: String,
+            istimerasc: Boolean
         },
         data() {
             return {
@@ -140,21 +142,33 @@
             },
             getWorldRecordPerDayChart(container, isGame) {
                 var that = this;
+                var categories = [];
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
                     var _data = JSON.parse(JSON.stringify(this.tabledata)); 
-                    _data = _data.sort((a, b) => { 
-                        return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds
-                    });                    
-
+                    if (this.istimerasc) {
+                        _data = _data.sort((a, b) => { 
+                            return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds
+                        });
+                    } else {
+                        _data = _data.sort((a, b) => { 
+                            return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds
+                        });
+                    }
+                                        
                     var filteredData = [];
                     while (_data.length > 0) {
                         var item = _data[0];
                         filteredData.push(item);
 
-                        _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
-                                     .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
+                        if (this.istimerasc) {
+                            _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
+                                        .sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds });
+                        } else {
+                            _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
+                                        .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
+                        }                       
                     }
 
                     if (isGame) {
@@ -171,6 +185,7 @@
 
                     var groupedObj = {};
                     var chartDataObj = {};
+                    var categoryObj = {};
 
                     filteredData.forEach(item => {
                         var monthDayYear = dayjs(item.dateSubmitted).format("MM/DD/YYYY")
@@ -184,7 +199,13 @@
                         for (var key in groupedObj) {
                             chartDataObj[key] = chartDataObj[key] || [];
 
-                            var minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
+                            var minItem = {};
+                            if (this.istimerasc) {
+                                minItem = groupedObj[key].sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds })[0];
+                            } else {
+                                minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
+                            }
+
                             chartDataObj[key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
                         }
 
@@ -195,20 +216,29 @@
                         });
                     }
 
-                    dataset = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
+                    categoryObj["category"] = _timePeriods.map(item => {
+                            var labelObj = {};
+                            labelObj["label"] = item;
+                            return labelObj;
+                        });
+                    categories.push(categoryObj);                    
+                        
+                    var chartData = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
                     
-                    if (dataset.length > 0) {
-                        dataset = dataset.sort((a, b) => {
+                    if (chartData.length > 0) {
+                        chartData = chartData.sort((a, b) => {
                             var monthdayyeara = a.label.split("/");
                             var monthdayyearb = b.label.split("/");
 
                             return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
                         });
                     }
+
+                    dataset.push({ seriesname: '', data: chartData });
                 }
 
                 const chartConfig = {
-                    type: "line",
+                    type: this.istimerasc ? "inversemsline" : "msline",
                     renderAt: container,
                     width: "100%",
                     dataFormat: "json",
@@ -227,6 +257,7 @@
                             rotateLabels: 1,
                             slantLabels: 1,
                             showToolTip: 1,
+                            showLegend: 0,
                             lineThickness: 2,
                             anchorRadius: 5,
                             anchorBgColor: that.bgColor,
@@ -249,7 +280,8 @@
                             baseFontColor: that.fontColor,
                             outCnvBaseFontColor: that.fontColor
                         },
-                        data: dataset
+                        categories: categories,
+                        dataset: dataset
                     }
                 };
 
@@ -261,7 +293,12 @@
 
                 if (this.tabledata?.length > 0) {
                     var _data = JSON.parse(JSON.stringify(this.tabledata)); 
-                    var allSpeedRunTimes = _data.sort((a, b) => { return a?.PrimaryTimeMilliseconds - b?.PrimaryTimeMilliseconds; });
+                    var allSpeedRunTimes = [];
+                    if (this.istimerasc) {
+                        allSpeedRunTimes = _data.sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds; });
+                    } else {
+                        allSpeedRunTimes = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
+                    }
 
                     var chartDataObj = {};
                     var percIncrement = 5;
@@ -287,13 +324,13 @@
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
                             values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = '> ' + formatTime("millisecond", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                            key = (this.istimerasc ? '<= ' : '>= ') + formatTime("millisecond", prevTime) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
                             chartDataObj[key] = values;
                             break;
                         } else {
                             time = allSpeedRunTimes[index].primaryTimeMilliseconds;
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = '<= ' + formatTime("millisecond", time) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
+                            key = (this.istimerasc ? '> ' : '< ') + formatTime("millisecond", time) + " (" + percent + "% - " + values.length + "/" + allSpeedRunTimes.length + ")";
 
                             if (index != prevIndex) {
                                 chartDataObj[key] = values;
@@ -411,7 +448,13 @@
                         _data = _data.filter(x => x.rank);
                     }
 
-                    var sortedData = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
+                    var sortedData = [];
+                    if (this.istimerasc){
+                        sortedData = _data.sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds; });
+                    } else {
+                        sortedData = _data.sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds; });
+                    }
+
                     var data = sortedData.slice(0, 10);
 
                     var chartDataObj = {};

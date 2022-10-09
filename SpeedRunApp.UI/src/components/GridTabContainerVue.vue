@@ -13,7 +13,7 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <speedrun-grid-tab :isgame="isgame" :id="id" :speedrunid="speedrunid"></speedrun-grid-tab>
+            <speedrun-grid-tab :isgame="isgame" :id="id" :speedrunid="speedrunid" :istimerasc="istimerasc"></speedrun-grid-tab>
         </div>
         <div v-else>
             <worldrecord-grid-tab :isgame="isgame" :id="id"></worldrecord-grid-tab>   

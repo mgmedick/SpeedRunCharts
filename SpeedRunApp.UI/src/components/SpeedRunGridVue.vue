@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
+            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
@@ -42,7 +42,8 @@
             showcharts: Boolean,          
             showalldata: Boolean,
             variables: Array,
-            title: String
+            title: String,
+            istimerasc: Boolean            
         },
         data() {
             return {
@@ -154,7 +155,7 @@
                     resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: false,
                     initialSort: [             //set the initial sort order of the data
-                        { column: "primaryTime.ticks", dir: "asc" },
+                        { column: "primaryTime.ticks", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {

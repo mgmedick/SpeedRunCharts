@@ -30,7 +30,14 @@
             }
         },
         created() {
-            this.loadData().then(function() {
+            var isPageReloaded = ((window.performance.navigation && window.performance.navigation.type === 1) ||
+                        window.performance.getEntriesByType('navigation').map((nav) => nav.type).includes('reload'));
+
+            if (isPageReloaded) {
+                this.resetParams();                   
+            }
+            
+            this.loadData().then(function() {                               
                 if (sessionStorage.scrolltop) {
                     document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
                 }

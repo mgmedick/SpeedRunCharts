@@ -56,7 +56,7 @@ namespace SpeedRunApp.Model.ViewModels
                 VideoThumbnailLinks = new List<string>();
                 ViewCountStrings = new List<string>();
 
-                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split(","))
+                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split("^^"))
                 {
                     var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 3);
                     if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[0]))

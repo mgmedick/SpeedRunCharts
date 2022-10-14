@@ -18,7 +18,7 @@
                     </li>
                 </ul>
                 <form class="form-inline">
-                    <vue-next-select v-model="searchSelected"
+                    <!-- <vue-next-select v-model="searchSelected"
                                     :options="searchOptions"
                                     :loading="searchLoading"
                                     searchable
@@ -31,7 +31,8 @@
                                     close-on-select
                                     openDirection="bottom"
                                     placeholder="Search games, users"
-                                    :style="{ width:100 + '%' }" />
+                                    :style="{ width:100 + '%' }" /> -->
+                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :items="searchResults" labelby="label" valueby="label" :loading="searchLoading" :minlength="3" :placeholder="'Search games, users'"/>                
                 </form>
                 <div v-if="isauth">
                     <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -122,8 +123,8 @@
         },
         data: function () {
             return {
-                searchSelected: null,
-                searchOptions: [],
+                searchText: null,
+                searchResults: [],
                 searchLoading: false,
                 showImportStatusModal: false,
                 showLoginModal: false,
@@ -157,43 +158,53 @@
         created: function () {
         },
         methods: {
-            onSearchGames: function (e) {
-                if (e.target.value) {
-                    var that = this;
-                    this.searchLoading = true;
-
-                    axios.get('/Menu/Search', { params: { term: e.target.value } })
+            onInput: function(e){
+                this.searchText = e;
+            },
+            onChange: function() {
+                var a = this.searchText;
+            },
+            onSearch: function() {
+                var that = this;
+                this.searchLoading = true;
+                               
+                axios.get('/Menu/Search', { params: { term: this.searchText } })
                         .then(res => {
-                            that.searchOptions = res.data.reduce((flat, constructor) => {
+                            that.searchResults = res.data.reduce((flat, groupheader) => {
                                 return flat
                                     .concat({
-                                        label: constructor.label,
-                                        value: constructor.subItems.map(method => method.value),
-                                        isConstructor: true
+                                        label: groupheader.label,
+                                        value: groupheader.subItems.map(method => method.value),
+                                        isGroupHeader: true,
+                                        disabled: true
                                     })
-                                    .concat(constructor.subItems.map(method => ({ label: method.label, value: method.value, category: constructor.label })))
+                                    .concat(groupheader.subItems.map(method => ({ label: method.label, value: method.value, category: groupheader.label })))
                             }, []);
-                            that.searchLoading = false;
 
+                            if(that.searchResults.length == 0)
+                            {
+                                var noResult = { value: "", label: "No results found", category: null, disabled: true };
+                                that.searchResults.push(noResult);
+                            }
+
+                            that.searchLoading = false;
                             return res;
                         })
                         .catch(err => { console.error(err); return Promise.reject(err); });
-                }
-            },
-            onSearchSelected: function (option) {
+            },              
+            onSearchSelected: function (result) {
                 var controller;
                 var action;
-                var params;
 
-                if (option.category == 'Games') {
+                if (result.category == 'Games') {
                     controller = "Game";
                     action = "GameDetails"
                 } else {
                     controller = "User";
                     action = "UserDetails"
-                } 
+                }
 
-                location.href = encodeURI('/' + controller + "/" + action + "/" + option.value);
+                location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
             },
             updateTheme: function(val){
                 var el = document.body;

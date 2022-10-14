@@ -6,6 +6,8 @@ import VueTippy from "vue-tippy";
 
 import buttonDropdownVue from './ButtonDropdownVue.vue';
 import navbarVue from './NavbarVue.vue';
+import autocompleteVue from './AutocompleteVue.vue';
+import multiselectVue from './MultiselectVue.vue';
 import customModalVue from './CustomModalVue.vue';
 import resetPasswordVue from './ResetPasswordVue.vue';
 import changePasswordVue from './ChangePasswordVue.vue';
@@ -38,6 +40,8 @@ export default {
         
         app.component("button-dropdown", buttonDropdownVue);
         app.component("navbar", navbarVue);
+        app.component('autocomplete', autocompleteVue);
+        app.component('multiselect', multiselectVue);
         app.component('vue-next-select', vueNextSelect);
         app.component('custom-modal', customModalVue);
         app.component("reset-password", resetPasswordVue);

@@ -50,7 +50,8 @@
                 <label class="col-sm-2 col-form-label">Players</label>
                 <div class="col-sm-10">
                     <div style="width:300px;">
-                        <vue-next-select v-model="playerids" :options="item.players" label-by="name" :disabled="readonly" value-by="id" multiple taggable></vue-next-select>
+                        <!-- <vue-next-select v-model="playerids" :options="item.players" label-by="name" :disabled="readonly" value-by="id" multiple taggable></vue-next-select> -->
+                        <multiselect v-model="playerids" :options="item.players" valueby="id" labelby="name" :disabled="readonly" multiple taggable></multiselect>
                     </div>
                 </div>
             </div>
@@ -182,13 +183,14 @@
         name: 'SpeedRunEditVue',
         props: {
             gameid: String,
-            speedrunid: String,
-            readonly: Boolean
+            speedrunid: String
+            //readonly: Boolean
         },
         data: function () {
             return {
                 item: {},
-                loading: false
+                loading: false,
+                readonly: false
             }
         },
         computed: {

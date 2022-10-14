@@ -362,6 +362,7 @@ select.form-control:focus::-ms-value {
 
 .custom-control {
     min-height: 1.40625rem;
+    z-index: auto !important;
 }
 
 .custom-control-input {
@@ -731,21 +732,29 @@ div[data-disabled="true"] .vue-tag.selected {
     opacity: 0.65;
 }
 
+.vue-dropdown {
+    display: block;
+}
+
+
 .vue-dropdown-item.selected {
     color: #262626 !important;
     background-color: #E0E0E0 !important;
 }
 
-.vue-dropdown-item.selected.highlighted {
+.vue-dropdown-item.selected.highlighted,
+.vue-dropdown-item.selected:hover {
     color: #262626 !important;
     background-color: #E0E0E0 !important;
 }
 
-.vue-dropdown-item.highlighted {
+.vue-dropdown-item.highlighted,
+.vue-dropdown-item:hover {
     background-color: var(--bs-box-shadow-color5);
 }
 
-.vue-dropdown-item.highlighted:not(.group) {
+.vue-dropdown-item.highlighted:not(.group),
+.vue-dropdown-item:hover:not(.group) {
     text-decoration: none;
     cursor: pointer;
     border: none !important;    

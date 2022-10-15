@@ -2,7 +2,7 @@
     <div class="vue-select direction-bottom">
         <div class="vue-select-header">
             <div class="vue-input">
-                <input type="text" :value="model" @input="model = $event.target.value" @focus="onFocus" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter($event)" :placeholder="placeholder"/>
+                <input type="text" :value="model" @input="model = $event.target.value" @click="onClick" @focus="onFocus" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter($event)" :placeholder="placeholder"/>
                 <span v-if="loading" class="icon loading"><div></div></span>
                 <span v-else class="icon arrow-downward" :class="{ 'active' : isFocus }"></span>
             </div>
@@ -19,9 +19,10 @@
         name: "AutocompleteVue",
         props: {
             modelValue: String,
-            minlength: Number,
-            loading: Boolean,
-            placeholder: String,
+            options: {
+                type: Array,
+                default: () => []
+            }, 
             labelby: {
                 type: String,
                 required: true
@@ -29,8 +30,11 @@
             valueby: {
                 type: String,
                 required: true
-            },             
-            items: Array
+            },       
+            isasync: Boolean,               
+            minlength: Number,
+            loading: Boolean,
+            placeholder: String
         },
         data() {
             return {
@@ -42,27 +46,41 @@
             }
         },       
         watch: {
-            items: function (val, oldVal) {
+            options: function (val, oldVal) {
                 this.results = val;
+                //this.$emit('update:options', val); 
                 this.isOpen = true;
-            },
+            },       
             model: function (val, oldVal) {
+                var that = this;
                 this.$emit('update:modelValue', val); 
 
                 this.$nextTick(function() {
-                    if (val != oldVal && (!this.minlength || val.length >= this.minlength)) {
-                        this.$emit('search'); 
+                    if (val != oldVal) {
+                        if (that.isasync && (!that.minlength || val.length >= that.minlength)) {
+                            that.$emit('search'); 
+                        } else {
+                            that.filterResults();                            
+                        }
                     }
                 });
             }     
         },                    
         mounted() {
+            if (!this.isasync) {
+                this.results = this.options;
+            }            
             document.addEventListener('click', this.handleClickOutside)
         },
         destroyed() {
             document.removeEventListener('click', this.handleClickOutside)
         },               
         methods: {    
+            onClick() {
+                if (!this.isasync) {
+                    this.isOpen = true;
+                }
+            },             
             onFocus() {
                 this.isFocus = !this.isFocus;
             },                  
@@ -92,7 +110,14 @@
                     this.model = result[this.valueby];                   
                     this.$emit('selected', result);
                 }
-            },                         
+            },
+            filterResults() {
+                var that = this;
+
+                this.results = this.options.filter((option) => {
+                    return option[that.labelby].toLowerCase().indexOf(that.model.toLowerCase()) > -1;
+                });
+            },                                    
             handleClickOutside(event) {
                 if (!(this.$el == event.target || this.$el.contains(event.target))) {
                     this.isOpen = false;

@@ -188,8 +188,7 @@
         data: function () {
             return {
                 item: {},
-                loading: false,
-                //readonly: false
+                loading: false
             }
         },
         computed: {

@@ -69,18 +69,12 @@
                         allowfullscreen="true"></iframe>
             </div>
             <input type="hidden" class="orderValue" :value="item.id" />
-            <modal2 v-if="showModal" contentclass="modal-lg" @close="showModal = false">
+            <modal v-if="showModal" contentclass="cmv-modal-lg" @close="showModal = false">
                 <template v-slot:title>
                     Details
                 </template>
                 <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />             
-            </modal2>            
-            <!-- <custom-modal v-model="showModal" v-if="showModal" contentclass="modal-lg">
-                <template v-slot:title>
-                    Details
-                </template>
-                <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />
-            </custom-modal> -->
+            </modal>
         </div>
     </div>
 </template>
@@ -123,72 +117,8 @@
         }       
     };
 </script>
-<style scoped>
-    .image-container {
-        position: relative;
-        width: 90px;
-        margin-left:auto;
-    }
 
-    .image-container img{
-        width: 90px;
-    }
 
-    .image-container .play-icon {
-        cursor: pointer;
-        position: absolute;
-        top : 50%;
-        left : 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .nowrap-elipsis {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .gold {
-        color: gold;
-    }
-
-    .silver {
-        color: silver;
-    }
-
-    .bronze {
-        color: #b08d57;
-    }
-
-    .badge {
-        font-size: 85% !important;
-    }
-
-    @media (max-width: 768px) {
-        .btn {
-            font-size:11px;
-            padding:4px 6px;
-        }
-
-        .show-md {
-            display: none;
-        }
-
-        .show-sm {
-            display: block;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .show-md {
-            display: block;
-        }
-
-        .show-sm {
-            display: none;
-        }
-    }    
-</style>
 
 
 

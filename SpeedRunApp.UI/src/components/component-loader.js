@@ -1,7 +1,5 @@
 //import { createApp } from "vue/dist/vue.esm-bundler";
 import { createApp } from "vue";
-import { vfmPlugin } from 'vue-final-modal';
-import vueNextSelect from 'vue-next-select'
 import VueTippy from "vue-tippy";
 
 import buttonDropdownVue from './ButtonDropdownVue.vue';
@@ -9,8 +7,6 @@ import navbarVue from './NavbarVue.vue';
 import autocompleteVue from './AutocompleteVue.vue';
 import multiselectVue from './MultiselectVue.vue';
 import modalVue from './ModalVue.vue';
-import modalVue2 from './ModalVue2.vue';
-import customModalVue from './CustomModalVue.vue';
 import resetPasswordVue from './ResetPasswordVue.vue';
 import changePasswordVue from './ChangePasswordVue.vue';
 import loginVue from './LoginVue.vue';
@@ -37,17 +33,13 @@ export default {
                 'speedrun-list-category': speedRunListCategoryVue
             }
         })
-        .use(vfmPlugin)
         .use(VueTippy, { defaultProps: { allowHTML: true } });
         
         app.component("button-dropdown", buttonDropdownVue);
         app.component("navbar", navbarVue);
         app.component('autocomplete', autocompleteVue);
         app.component('multiselect', multiselectVue);
-        app.component('modal', modalVue);
-        app.component('modal2', modalVue2);       
-        app.component('vue-next-select', vueNextSelect);
-        app.component('custom-modal', customModalVue);
+        app.component('modal', modalVue);      
         app.component("reset-password", resetPasswordVue);
         app.component("change-password", changePasswordVue);
         app.component("login", loginVue);

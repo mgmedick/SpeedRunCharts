@@ -89,13 +89,7 @@
         }
     };
 </script>
-<style scoped>
-    @media (max-width: 575px) {
-        .category {
-            font-size: 11px !important;
-        }
-    }    
-</style>
+
 
 
 

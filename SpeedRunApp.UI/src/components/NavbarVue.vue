@@ -18,20 +18,6 @@
                     </li>
                 </ul>
                 <form class="form-inline">
-                    <!-- <vue-next-select v-model="searchSelected"
-                                    :options="searchOptions"
-                                    :loading="searchLoading"
-                                    searchable
-                                    @search:input="onSearchGames"
-                                    @selected="onSearchSelected"
-                                    group-by="isConstructor"
-                                    label-by="label"
-                                    value-by="value"
-                                    clear-on-select
-                                    close-on-select
-                                    openDirection="bottom"
-                                    placeholder="Search games, users"
-                                    :style="{ width:100 + '%' }" /> -->
                     <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'"/>                
                 </form>
                 <div v-if="isauth">
@@ -83,30 +69,30 @@
                 </ul>
             </div>
         </nav>
-        <custom-modal v-model="showImportStatusModal" v-if="showImportStatusModal" contentclass="modal-md">
+        <modal v-if="showImportStatusModal" contentclass="cmv-modal-md" @close="showImportStatusModal = false">
             <template v-slot:title>
                 Import Status
             </template>
             <import-status />
-        </custom-modal>          
-        <custom-modal v-model="showLoginModal" v-if="showLoginModal" contentclass="modal-md">
+        </modal>          
+        <modal v-if="showLoginModal" contentclass="cmv-modal-md" @close="showLoginModal = false">
             <template v-slot:title>
                 Log In
             </template>
             <login @forgotpass="showResetModal = !(showLoginModal = false)" />
-        </custom-modal>
-        <custom-modal v-model="showResetModal" v-if="showResetModal" contentclass="modal-md">
+        </modal>
+        <modal v-if="showResetModal" contentclass="cmv-modal-md" @close="showResetModal = false">
             <template v-slot:title>
                 Reset Password
             </template>
             <reset-password />
-        </custom-modal>
-        <custom-modal v-model="showSignUpModal" v-if="showSignUpModal" contentclass="modal-md">
+        </modal>
+        <modal v-if="showSignUpModal" contentclass="cmv-modal-md" @close="showSignUpModal = false">
             <template v-slot:title>
                 Sign Up
             </template>
             <signup />
-        </custom-modal>      
+        </modal>      
     </div>   
 </template>
 <script>
@@ -221,20 +207,7 @@
         }
     };
 </script>
-<style scoped>
-    @media (min-width: 992px) {
-        :deep(.vue-select) {
-            min-width: 400px !important;
-            margin-right: 8px;
-        }
 
-        :deep(.vue-dropdown) {
-            min-width: 400px !important;
-            max-width: 500px;
-            width: auto !important;
-        }
-    }
-</style>
 
 
 

@@ -57,8 +57,8 @@
     --bs-box-shadow-color2: rgba(0, 0, 0, 0.051);
     --bs-box-shadow-color5: rgba(217, 217, 217, 0.502);
   }
-/* @import './bootstrap-dark-theme.css'; */
 
+/************ Generic Layout ************/  
 body {
     font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     color: var(--bs-text-color1);
@@ -133,7 +133,8 @@ input.date {
     width: 170px !important;
 }
 
-/** bootstrap **/
+/************ Libraries ************/
+/** Bootstrap Overrides **/
 .text-primary {
     color: var(--bs-text-color2) !important;
 }
@@ -558,246 +559,190 @@ button.bg-dark:focus {
     color: #fff;
 }
 
-/** additional classes **/
-.img-round {
-    position: relative;
-    height: 0;
-    padding-bottom: 100%;
-    overflow: hidden;
-    border-radius: 50%;
-}
-
-.img-round > img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.icon-wrapper {
-    position: relative;
-    font-size: 20px;
-    display: block;
-    line-height: 32px;
-}
-
-.play-icon:before {
-    color: #fff;
-}
-
-/** vue-final-modal **/
-:deep(.modal-container) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-container {
-    overflow-x: hidden;
+/** Bootstrap reliant components **/
+.btn-dropdown .dropdown-menu {
     overflow-y: auto;
+    max-height: 300px;
 }
 
-:deep(.modal-content) {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    max-height: 90%;
-    margin: 0 1rem;
-    padding: 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.25rem;
-    background: #fff;
+/** Fusioncharts Overrides **/
+.fusioncharts-container>svg>g:nth-of-type(2) {
+    display:none !important;
 }
 
-.modal__title {
-    margin: 0 2rem 0 0;
-    font-size: 1.5rem;
-    font-weight: 700;
+.fusioncharts-container>svg>g:first-of-type>g:nth-of-type(1)>rect {
+    fill: var(--bs-background-color12) !important;
+}     
+
+.fusioncharts-container>svg>g:first-of-type>g:nth-of-type(3)>g>g>text {
+    fill: var(--bs-text-color1) !important;
+}     
+
+.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(2)>g>g>text {
+    fill: var(--bs-text-color1) !important;
 }
 
-.modal__content {
-    flex-grow: 1;
-    overflow-y: auto;
+.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:first-of-type {
+    fill: var(--bs-text-color1) !important;
 }
 
-.modal__action {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    padding: 1rem 0 0;
+.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:first-of-type {
+    fill: var(--bs-text-color1) !important;
 }
 
-.modal__close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-} 
-
-.close {
-    font-size: 1.40625rem;
-    color: var(--bs-text-color2);
-    text-shadow: none;
+.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:nth-of-type(2) {
+    fill: var(--bs-grey) !important;
 }
 
-.close:hover {
-    color: var(--bs-text-color2);
+.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:nth-of-type(2) {
+    fill: var(--bs-grey) !important;
 }
 
-.modal-content {   
-    background-color: var(--bs-background-color7);     
-    border-color: var(--bs-border-color10);
+.fusioncharts-container>svg>g>g:last-of-type>g>g>rect {
+    fill: var(--bs-border-color10) !important;
+    stroke: var(--bs-border-color1) !important;
+}    
+
+.fusioncharts-container > svg + div {
+    background:#444 !important;
+    box-shadow: none !important;
+    border-color: #222 !important;
+}      
+.fusioncharts-container > svg + div div {
+    background:#444 !important;
+}             
+
+.fusioncharts-container > svg + div div span {
+    color: #fff !important;        
+    background:#444 !important;
+}     
+
+.fusioncharts-container > svg + div div span:hover {
+    background-color: rgba(255,255,255,.15) !important;
+}    
+
+/** Tabulator Overrides **/
+.grid-container {
+    background-color: var(--bs-background-color12);
 }
 
-.modal-header {
+.tabulator {
+    background-color: var(--bs-background-color12);
+}
+
+.tabulator-row {
+    background-color: var(--bs-background-color12);
     border-bottom-color: var(--bs-border-color10);
 }
 
-.modal-footer {
-    border-top-color:  var(--bs-border-color10);
+.tabulator .tabulator-header {
+    /* background-color: #303030; */
+    border-bottom-color: var(--bs-border-color10);
 }
 
-@media (min-width: 768px) {
-    .img-width {
-        max-width: 126px !important;
-    }
+.tabulator .tabulator-header .tabulator-col {
+    background-color: var(--bs-background-color12);
 }
 
-.brand-logo {
-    width: 25px;
+.tabulator-header .tabulator-headers .tabulator-col {
+    height: 71px !important;
 }
 
-/** containers **/
-.chart-placeholder {
-    background-color: var(--background-color52);
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+    /* background-color: rgba(255,255,255,.15) !important; */
+    background-color: var(--bs-border-color6) !important;
 }
 
-.speedRunSummary {
-    background: var(--bs-background-color12);
-}
-
-.fusioncharts-container {
-    background-color: var(--background-color52);
-}
-
-/** vue-select **/
-/*
-.vue-dropdown {
-    max-height: none !important;
-    overflow-y: auto;    
-    background-color: var(--bs-background-color1);
-    border: 1px solid var(--bs-background-color16);
-}
-
-.vue-select-header {
-    background-color: var(--bs-background-color1);
-    border: 1px solid var(--bs-border-color1);
-    padding: 3px;
-}
-
-div[data-disabled="true"] .vue-select-header {
-    background-color: var(--bs-border-color10);
-}
-
-.vue-select-header .vue-input input {
-    font-size: 0.9375rem;
-    padding: 6px 12px 6px 12px;
-    height: 32px;    
-    background-color: var(--bs-background-color1);
-    color: var(--bs-text-color2);
-}
-
-div[data-disabled="true"] .vue-select-header .vue-input input {
-    background-color: var(--bs-border-color10); 
-    color: var(--bs-text-color2);
-}
-
-.vue-tag.selected {
-    padding: 2px 5px;
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-header-filter .date-filter {
+    width: 90%;
+    box-sizing: border-box;
     font-size: 12px;
-    font-weight: 500;
-    margin-right: 2px;
-    margin-bottom: 1px;    
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-header-filter .btn-delete-filter {
     color: var(--bs-text-color2);
     background-color: var(--bs-background-color12);
-    border: 1px solid var(--bs-border-color1);
+    width: 10%;
+    border: none;    
 }
 
-div[data-disabled="true"] .vue-tag.selected {
-    color: var(--bs-grey);    
-    opacity: 0.65;
-}
-
-.vue-dropdown {
-    display: block;
-}
-
-.vue-dropdown-item.selected {
-    color: #262626 !important;
-    background-color: #E0E0E0 !important;
-}
-
-.vue-dropdown-item.selected.highlighted,
-.vue-dropdown-item.selected:hover {
-    color: #262626 !important;
-    background-color: #E0E0E0 !important;
-}
-
-.vue-dropdown-item.highlighted,
-.vue-dropdown-item:hover {
-    background-color: var(--bs-box-shadow-color5);
-}
-
-.vue-dropdown-item.highlighted:not(.group),
-.vue-dropdown-item:hover:not(.group) {
-    text-decoration: none;
-    cursor: pointer;
-    border: none !important;    
-    background-color: var(--bs-box-shadow-color5);  
-}
-
-.vue-tag.selected .icon.delete {
-    content: "\f00d";
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    color: #fff;
-}
-
-.vue-dropdown-item.disabled{
-    color: var(--bs-grey);
+.tabulator .tabulator-tableHolder .tabulator-table {
     background-color: var(--bs-background-color12);
 }
 
-.vue-select {
-    width: auto;
-    border: none;
+.tabulator .tabulator-footer {
+    border-top-color: var(--bs-border-color10);
+    background-color: var(--bs-background-color12);
 }
 
-.vue-dropdown-item {
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 15px;
-    padding: 4px 24px 4px 24px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.tabulator .tabulator-footer .tabulator-page {
+    color: var(--bs-text-color2) !important;
+    border-color: var(--bs-border-color10);
+    background-color: var(--bs-background-color1);
 }
 
-.vue-dropdown-item.group {
-    font-weight: bold;
-    padding-left:15px;
-    pointer-events: none;
+.tabulator .tabulator-footer .tabulator-page.active {
+    background-color: var(--bs-border-color6) !important;
+    border-color: var(--bs-border-color1);  
 }
 
-.vue-input {
-    padding: 0px;
+.tabulator-edit-select-list {
+    background-color: var(--bs-background-color1);
+    border-color: var(--bs-border-color1);
 }
 
-.vue-tags {
-    min-height: 32px;
+.tabulator-edit-select-list .tabulator-edit-select-list-item:hover{
+    background-color: rgba(255,255,255,.15) !important; 
 }
-*/
 
-/** vue-select **/
+.tabulator-edit-select-list .tabulator-edit-select-list-item.active {
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+}
+
+.tabulator-header-filter input{
+    background-color: var(--bs-background-color1);
+    color: var(--bs-text-color2);
+    border: 1px solid var(--bs-border-color1) !important;    
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input::-ms-clear {
+    color: #fff;   
+    background-color: #fff;
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter svg {
+    color: #fff;
+    background-color: #fff;
+}
+
+.tabulator-row.tabulator-selectable:hover{
+    background-color: var(--bs-border-color10) !important;
+}
+
+.tabulator-row.tabulator-selected{
+    background-color: var(--bs-border-color10) !important;
+}
+
+.tabulator .tabulator-tableHolder .tabulator-table .tabulator-row.active {
+    color: #262626 !important;
+    background-color: #E0E0E0 !important;
+}
+
+.tabulator .tabulator-tableHolder .tabulator-table .tabulator-row.active a.text-primary {
+    color: #262626;
+}
+
+/** Tippy Overrides **/
+.tippy-box {
+    color: var(--bs-text-color1) !important;
+    background-color: var(--bs-secondary);
+    border: 1px solid var(--bs-background-color16) !important;
+    overflow-wrap: break-word;
+}
+
+/********** Custom Components (No Style Dependancy)**********/
+/** AutocompleteVue and MultiiselectVue (vue-select) **/
 .icon.delete {
     display: flex;
     justify-content: center;
@@ -1141,187 +1086,182 @@ input[readonly] {
     border-bottom-right-radius: 3px;
 }
 
-/** fusioncharts **/
-.fusioncharts-container>svg>g:nth-of-type(2) {
-    display:none !important;
+@media (min-width: 992px) {
+    .navbar .vue-select {
+        min-width: 400px !important;
+        margin-right: 8px;
+    }
+
+    .navbar .vue-dropdown {
+        min-width: 400px !important;
+        max-width: 500px;
+        width: auto !important;
+    }
 }
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-of-type(1)>rect {
-    fill: var(--bs-background-color12) !important;
+/** ModalVue **/
+.cmv-modal-fade-enter,
+.cmv-modal-fade-leave-to {
+    opacity: 0;
+}
+
+.cmv-modal-fade-enter-active,
+.cmv-modal-fade-leave-active {
+    transition: opacity .5s ease;
 }     
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-of-type(3)>g>g>text {
-    fill: var(--bs-text-color1) !important;
-}     
-
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(2)>g>g>text {
-    fill: var(--bs-text-color1) !important;
+.cmv-modal {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;
 }
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:first-of-type {
-    fill: var(--bs-text-color1) !important;
+.cmv-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; 
 }
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:first-of-type {
-    fill: var(--bs-text-color1) !important;
+.cmv-modal-container {
+    position: absolute; 
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;  
+    outline: none;          
+    overflow-x: hidden;
+    overflow-y: auto;                                  
 }
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:nth-of-type(2) {
-    fill: var(--bs-grey) !important;
+.cmv-modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
 }
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:nth-of-type(2) {
-    fill: var(--bs-grey) !important;
+.cmv-modal-dialog-centered {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    min-height: calc(100% - 1rem);
 }
 
-.fusioncharts-container>svg>g>g:last-of-type>g>g>rect {
-    fill: var(--bs-border-color10) !important;
-    stroke: var(--bs-border-color1) !important;
-}    
-
-.fusioncharts-container > svg + div {
-    background:#444 !important;
-    box-shadow: none !important;
-    border-color: #222 !important;
-}      
-.fusioncharts-container > svg + div div {
-    background:#444 !important;
-}             
-
-.fusioncharts-container > svg + div div span {
-    color: #fff !important;        
-    background:#444 !important;
-}     
-
-.fusioncharts-container > svg + div div span:hover {
-    background-color: rgba(255,255,255,.15) !important;
-}    
-
-/** tabulator **/
-.grid-container {
-    background-color: var(--bs-background-color12);
+.cmv-modal-dialog-centered::before {
+    display: block;
+    height: calc(100vh - 1rem);
+    height: -webkit-min-content;
+    height: -moz-min-content;
+    height: min-content;
+    content: "";
 }
 
-.tabulator {
-    background-color: var(--bs-background-color12);
-}
-
-.tabulator-row {
-    background-color: var(--bs-background-color12);
-    border-bottom-color: var(--bs-border-color10);
-}
-
-.tabulator .tabulator-header {
-    /* background-color: #303030; */
-    border-bottom-color: var(--bs-border-color10);
-}
-
-.tabulator .tabulator-header .tabulator-col {
-    background-color: var(--bs-background-color12);
-}
-
-.tabulator-header .tabulator-headers .tabulator-col {
-    height: 71px !important;
-}
-
-.tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
-    /* background-color: rgba(255,255,255,.15) !important; */
-    background-color: var(--bs-border-color6) !important;
-}
-
-.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-header-filter .date-filter {
-    width: 90%;
-    box-sizing: border-box;
-    font-size: 12px;
-}
-
-.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-header-filter .btn-delete-filter {
-    color: var(--bs-text-color2);
-    background-color: var(--bs-background-color12);
-    width: 10%;
-    border: none;    
-}
-
-.tabulator .tabulator-tableHolder .tabulator-table {
-    background-color: var(--bs-background-color12);
-}
-
-.tabulator .tabulator-footer {
-    border-top-color: var(--bs-border-color10);
-    background-color: var(--bs-background-color12);
-}
-
-.tabulator .tabulator-footer .tabulator-page {
-    color: var(--bs-text-color2) !important;
-    border-color: var(--bs-border-color10);
-    background-color: var(--bs-background-color1);
-}
-
-.tabulator .tabulator-footer .tabulator-page.active {
-    background-color: var(--bs-border-color6) !important;
-    border-color: var(--bs-border-color1);  
-}
-
-.tabulator-edit-select-list {
-    background-color: var(--bs-background-color1);
-    border-color: var(--bs-border-color1);
-}
-
-.tabulator-edit-select-list .tabulator-edit-select-list-item:hover{
-    background-color: rgba(255,255,255,.15) !important; 
-}
-
-.tabulator-edit-select-list .tabulator-edit-select-list-item.active {
-    color: #262626 !important;
-    background-color: #E0E0E0 !important;
-}
-
-.tabulator-header-filter input{
-    background-color: var(--bs-background-color1);
-    color: var(--bs-text-color2);
-    border: 1px solid var(--bs-border-color1) !important;    
-}
-
-.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input::-ms-clear {
-    color: #fff;   
+.cmv-modal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
     background-color: #fff;
+    background-clip: padding-box;
+    background-color: var(--bs-background-color7);        
+    border: 1px solid;
+    border-radius: 0.3rem;
+    border-color: var(--bs-border-color10);        
+    outline: 0;
 }
 
-.tabulator .tabulator-header .tabulator-col .tabulator-header-filter svg {
-    color: #fff;
-    background-color: #fff;
+.cmv-modal-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid;
+    border-bottom-color: var(--bs-border-color10);        
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
 }
 
-.tabulator-row.tabulator-selectable:hover{
-    background-color: var(--bs-border-color10) !important;
+.cmv-modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
 }
 
-.tabulator-row.tabulator-selected{
-    background-color: var(--bs-border-color10) !important;
+.cmv-modal-header .cmv-close {
+    padding: 1rem 1rem;
+    margin: -1rem -1rem -1rem auto;
+}   
+
+.cmv-close {
+    float: right;
+    font-size: 1.40625rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--bs-text-color2);
+    text-shadow: none;
+    opacity: .5;
 }
 
-.tabulator .tabulator-tableHolder .tabulator-table .tabulator-row.active {
-    color: #262626 !important;
-    background-color: #E0E0E0 !important;
+.cmv-close:hover {
+    color: var(--bs-text-color2);
+    text-decoration: none;
 }
 
-.tabulator .tabulator-tableHolder .tabulator-table .tabulator-row.active a.text-primary {
-    color: #262626;
+.cmv-close:not(:disabled):not(.disabled):hover, .cmv-close:not(:disabled):not(.disabled):focus {
+    opacity: .75;
 }
 
-/** tippy **/
-.tippy-box {
-    color: var(--bs-text-color1) !important;
-    background-color: var(--bs-secondary);
-    border: 1px solid var(--bs-background-color16) !important;
-    overflow-wrap: break-word;
+button.cmv-close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
 }
 
-/* .tippy-arrow {
-    color: #000 !important;
-} */
+.cmv-modal-body {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
 
-/** tab-list **/
+@media (min-width: 576px) {
+    .cmv-modal-dialog {
+        max-width: 500px;
+        margin: 1.75rem auto;
+    }
+    .cmv-modal-dialog-centered {
+        min-height: calc(100% - 3.5rem);
+    }
+    .cmv-modal-dialog-centered::before {
+        height: calc(100vh - 3.5rem);
+        height: -webkit-min-content;
+        height: -moz-min-content;
+        height: min-content;
+    }
+    .cmv-modal-sm {
+        max-width: 300px;
+    }
+}
+
+@media (min-width: 992px) {
+    .cmv-modal-lg,
+    .cmv-modal-xl {
+        max-width: 800px;
+    }
+}   
+
+/** SpeedRunGridTab, SpeedRunGridTabVariable, WorldRecordGridTab (tab-list) **/
 .tab-list .nav {
     /*overflow-y: hidden;*/
     flex-wrap: nowrap !important;
@@ -1365,7 +1305,138 @@ input[readonly] {
     .tab-list .dropdown .dropdown-menu {
         max-width: 200px;
     }
+
+    .category {
+        font-size: 11px !important;
+    }    
 }
+
+/** GameDetails **/
+@media (min-width: 768px) {
+    .img-width {
+        max-width: 126px !important;
+    }
+}
+
+/** SpeedRunSummaryVue, GameDetails **/
+.img-round {
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.img-round > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/** SpeedRunSummaryVue **/
+.speedRunSummary {
+    background: var(--bs-background-color12);
+}
+
+.image-container {
+    position: relative;
+    width: 90px;
+    margin-left:auto;
+}
+
+.image-container img{
+    width: 90px;
+}
+
+.image-container .play-icon {
+    cursor: pointer;
+    position: absolute;
+    top : 50%;
+    left : 50%;
+    transform: translate(-50%, -50%);
+}
+
+.play-icon:before {
+    color: #fff;
+}
+
+.nowrap-elipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gold {
+    color: gold;
+}
+
+.silver {
+    color: silver;
+}
+
+.bronze {
+    color: #b08d57;
+}
+
+.badge {
+    font-size: 85% !important;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        font-size:11px;
+        padding:4px 6px;
+    }
+
+    .show-md {
+        display: none;
+    }
+
+    .show-sm {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+    .show-md {
+        display: block;
+    }
+
+    .show-sm {
+        display: none;
+    }
+}  
+
+/** SpeedRunEditVue **/
+.icon-wrapper {
+    position: relative;
+    font-size: 20px;
+    display: block;
+    line-height: 32px;
+}
+
+@media (min-width: 768px) {
+    .img-width {
+        max-width: 126px !important;
+    }
+}
+
+/** SpeedRunGridChartVue **/
+.brand-logo {
+    width: 25px;
+}
+
+/** containers **/
+/* .chart-placeholder {
+    background-color: var(--background-color52);
+}
+
+.fusioncharts-container {
+    background-color: var(--background-color52);
+} */
+
+
 
 
 

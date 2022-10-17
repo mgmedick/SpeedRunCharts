@@ -11,12 +11,12 @@
             <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
-        <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
+        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
                 Details
             </template>
             <speedrun-edit :gameid="gameid" :speedrunid="speedRunID" :readonly="true" />
-        </custom-modal>    
+        </modal>    
     </div>   
 </template>
 <script>

@@ -39,12 +39,12 @@
                 Activation link has expired, please <a href="#" @click="showSignUpModal = true">Sign Up</a> to try again.
             </div>
         </div>
-        <custom-modal v-model="showSignUpModal" v-if="showSignUpModal" contentclass="modal-md">
+        <modal v-if="showSignUpModal" contentclass="cmv-modal-md" @close="showSignUpModal = false">
             <template v-slot:title>
                 Sign Up
             </template>
             <signup />
-        </custom-modal>
+        </modal>        
     </div>
 </template>
 <script>

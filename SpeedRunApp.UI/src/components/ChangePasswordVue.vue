@@ -37,12 +37,12 @@
                 Reset Password link has expired, please <a href="#" @click="showResetModal = true">Reset Password</a> to try again.
             </div>
         </div>
-        <custom-modal v-model="showResetModal" v-if="showResetModal" contentclass="modal-md">
+        <modal v-if="showResetModal" contentclass="cmv-modal-md" @close="showResetModal = false">
             <template v-slot:title>
                 Reset Password
             </template>
             <reset-password />
-        </custom-modal>
+        </modal>
     </div>
 </template>
 <script>

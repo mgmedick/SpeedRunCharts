@@ -10,12 +10,12 @@
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <div id="tblWorldRecordGrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
-        <custom-modal v-model="showDetailModal" v-if="showDetailModal" contentclass="modal-lg">
+        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
                 Details
             </template>
             <speedrun-edit :gameid="gameid" :speedrunid="speedRunID" :readonly="true" />
-        </custom-modal>    
+        </modal>    
     </div>   
 </template>
 <script>

@@ -28,12 +28,16 @@ namespace SpeedRunApp.Service
             {
                 searchText = searchText.Trim();
                 var games = _gamesService.SearchGames(searchText).ToList();
-                var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
+                if (games.Any()) {
+                    var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
+                    results.Add(gamesGroup);
+                }
+                
                 var users = _userService.SearchUsers(searchText);
-                var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
-
-                results.Add(gamesGroup);
-                results.Add(usersGroup);
+                if (users.Any()){
+                    var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
+                    results.Add(usersGroup);
+                }
             }
 
             return results;

@@ -18,20 +18,7 @@
                     </li>
                 </ul>
                 <form class="form-inline">
-                    <vue-next-select v-model="searchSelected"
-                                    :options="searchOptions"
-                                    :loading="searchLoading"
-                                    searchable
-                                    @search:input="onSearchGames"
-                                    @selected="onSearchSelected"
-                                    group-by="isConstructor"
-                                    label-by="label"
-                                    value-by="value"
-                                    clear-on-select
-                                    close-on-select
-                                    openDirection="bottom"
-                                    placeholder="Search games, users"
-                                    :style="{ width:100 + '%' }" />
+                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'"/>                
                 </form>
                 <div v-if="isauth">
                     <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -82,30 +69,30 @@
                 </ul>
             </div>
         </nav>
-        <custom-modal v-model="showImportStatusModal" v-if="showImportStatusModal" contentclass="modal-md">
+        <modal v-if="showImportStatusModal" contentclass="cmv-modal-md" @close="showImportStatusModal = false">
             <template v-slot:title>
                 Import Status
             </template>
             <import-status />
-        </custom-modal>          
-        <custom-modal v-model="showLoginModal" v-if="showLoginModal" contentclass="modal-md">
+        </modal>          
+        <modal v-if="showLoginModal" contentclass="cmv-modal-md" @close="showLoginModal = false">
             <template v-slot:title>
                 Log In
             </template>
             <login @forgotpass="showResetModal = !(showLoginModal = false)" />
-        </custom-modal>
-        <custom-modal v-model="showResetModal" v-if="showResetModal" contentclass="modal-md">
+        </modal>
+        <modal v-if="showResetModal" contentclass="cmv-modal-md" @close="showResetModal = false">
             <template v-slot:title>
                 Reset Password
             </template>
             <reset-password />
-        </custom-modal>
-        <custom-modal v-model="showSignUpModal" v-if="showSignUpModal" contentclass="modal-md">
+        </modal>
+        <modal v-if="showSignUpModal" contentclass="cmv-modal-md" @close="showSignUpModal = false">
             <template v-slot:title>
                 Sign Up
             </template>
             <signup />
-        </custom-modal>      
+        </modal>      
     </div>   
 </template>
 <script>
@@ -122,8 +109,9 @@
         },
         data: function () {
             return {
-                searchSelected: null,
-                searchOptions: [],
+                searchText: null,
+                //searchResults: [{value:1, label:"Some Test"},{value:2, label:"Blah"},{value:3, label:"Blah again"},{value:4, label:"Test again"},{value:5, label:"Test12345"}],
+                searchResults: [],
                 searchLoading: false,
                 showImportStatusModal: false,
                 showLoginModal: false,
@@ -157,43 +145,53 @@
         created: function () {
         },
         methods: {
-            onSearchGames: function (e) {
-                if (e.target.value) {
-                    var that = this;
-                    this.searchLoading = true;
-
-                    axios.get('/Menu/Search', { params: { term: e.target.value } })
+            onInput: function(e){
+                this.searchText = e;
+            },
+            onChange: function() {
+                var a = this.searchText;
+            },
+            onSearch: function() {
+                var that = this;
+                this.searchLoading = true;
+                               
+                axios.get('/Menu/Search', { params: { term: this.searchText } })
                         .then(res => {
-                            that.searchOptions = res.data.reduce((flat, constructor) => {
+                            that.searchResults = res.data.reduce((flat, groupheader) => {
                                 return flat
                                     .concat({
-                                        label: constructor.label,
-                                        value: constructor.subItems.map(method => method.value),
-                                        isConstructor: true
+                                        label: groupheader.label,
+                                        value: groupheader.subItems.map(method => method.value),
+                                        isGroupHeader: true,
+                                        disabled: true
                                     })
-                                    .concat(constructor.subItems.map(method => ({ label: method.label, value: method.value, category: constructor.label })))
+                                    .concat(groupheader.subItems.map(method => ({ label: method.label, value: method.value, category: groupheader.label })))
                             }, []);
-                            that.searchLoading = false;
 
+                            if(that.searchResults.length == 0)
+                            {
+                                var noResult = { value: "", label: "No results found", category: null, disabled: true };
+                                that.searchResults.push(noResult);
+                            }
+
+                            that.searchLoading = false;
                             return res;
                         })
                         .catch(err => { console.error(err); return Promise.reject(err); });
-                }
-            },
-            onSearchSelected: function (option) {
+            },              
+            onSearchSelected: function (result) {
                 var controller;
                 var action;
-                var params;
 
-                if (option.category == 'Games') {
+                if (result.category == 'Games') {
                     controller = "Game";
                     action = "GameDetails"
                 } else {
                     controller = "User";
                     action = "UserDetails"
-                } 
+                }
 
-                location.href = encodeURI('/' + controller + "/" + action + "/" + option.value);
+                location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
             },
             updateTheme: function(val){
                 var el = document.body;
@@ -209,20 +207,7 @@
         }
     };
 </script>
-<style scoped>
-    @media (min-width: 992px) {
-        :deep(.vue-select) {
-            min-width: 400px !important;
-            margin-right: 8px;
-        }
 
-        :deep(.vue-dropdown) {
-            min-width: 400px !important;
-            max-width: 500px;
-            width: auto !important;
-        }
-    }
-</style>
 
 
 

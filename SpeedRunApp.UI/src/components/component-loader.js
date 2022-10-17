@@ -8,6 +8,8 @@ import buttonDropdownVue from './ButtonDropdownVue.vue';
 import navbarVue from './NavbarVue.vue';
 import autocompleteVue from './AutocompleteVue.vue';
 import multiselectVue from './MultiselectVue.vue';
+import modalVue from './ModalVue.vue';
+import modalVue2 from './ModalVue2.vue';
 import customModalVue from './CustomModalVue.vue';
 import resetPasswordVue from './ResetPasswordVue.vue';
 import changePasswordVue from './ChangePasswordVue.vue';
@@ -42,6 +44,8 @@ export default {
         app.component("navbar", navbarVue);
         app.component('autocomplete', autocompleteVue);
         app.component('multiselect', multiselectVue);
+        app.component('modal', modalVue);
+        app.component('modal2', modalVue2);       
         app.component('vue-next-select', vueNextSelect);
         app.component('custom-modal', customModalVue);
         app.component("reset-password", resetPasswordVue);

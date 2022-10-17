@@ -69,12 +69,18 @@
                         allowfullscreen="true"></iframe>
             </div>
             <input type="hidden" class="orderValue" :value="item.id" />
-            <custom-modal v-model="showModal" v-if="showModal" contentclass="modal-lg">
+            <modal2 v-if="showModal" contentclass="modal-lg" @close="showModal = false">
+                <template v-slot:title>
+                    Details
+                </template>
+                <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />             
+            </modal2>            
+            <!-- <custom-modal v-model="showModal" v-if="showModal" contentclass="modal-lg">
                 <template v-slot:title>
                     Details
                 </template>
                 <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />
-            </custom-modal>
+            </custom-modal> -->
         </div>
     </div>
 </template>

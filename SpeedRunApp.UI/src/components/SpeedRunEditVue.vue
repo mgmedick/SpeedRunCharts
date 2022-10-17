@@ -185,13 +185,13 @@
         props: {
             gameid: String,
             speedrunid: String,
-            //readonly: Boolean
+            readonly: Boolean
         },
         data: function () {
             return {
                 item: {},
                 loading: false,
-                readonly: false
+                //readonly: false
             }
         },
         computed: {

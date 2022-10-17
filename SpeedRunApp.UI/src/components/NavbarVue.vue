@@ -32,7 +32,7 @@
                                     openDirection="bottom"
                                     placeholder="Search games, users"
                                     :style="{ width:100 + '%' }" /> -->
-                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="false" :loading="searchLoading" :minlength="3" :placeholder="'Search games, users'"/>                
+                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'"/>                
                 </form>
                 <div v-if="isauth">
                     <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -124,8 +124,8 @@
         data: function () {
             return {
                 searchText: null,
-                searchResults: [{value:1, label:"Some Test"},{value:2, label:"Blah"},{value:3, label:"Blah again"},{value:4, label:"Test again"},{value:5, label:"Test12345"}],
-                //searchResults: [],
+                //searchResults: [{value:1, label:"Some Test"},{value:2, label:"Blah"},{value:3, label:"Blah again"},{value:4, label:"Test again"},{value:5, label:"Test12345"}],
+                searchResults: [],
                 searchLoading: false,
                 showImportStatusModal: false,
                 showLoginModal: false,

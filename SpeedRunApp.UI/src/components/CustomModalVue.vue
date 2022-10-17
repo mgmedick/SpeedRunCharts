@@ -22,7 +22,7 @@
         name: "CustomModalVue",
         props: {
             contentclass: String
-        }
+        }        
     };
 </script>
 

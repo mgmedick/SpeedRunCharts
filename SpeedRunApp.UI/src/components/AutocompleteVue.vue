@@ -31,8 +31,11 @@
                 type: String,
                 required: true
             },       
+            minlength: {
+                type: Number,
+                default: 0
+            }, 
             isasync: Boolean,               
-            minlength: Number,
             loading: Boolean,
             placeholder: String
         },
@@ -48,7 +51,6 @@
         watch: {
             options: function (val, oldVal) {
                 this.results = val;
-                //this.$emit('update:options', val); 
                 this.isOpen = true;
             },       
             model: function (val, oldVal) {
@@ -57,10 +59,12 @@
 
                 this.$nextTick(function() {
                     if (val != oldVal) {
-                        if (that.isasync && (!that.minlength || val.length >= that.minlength)) {
-                            that.$emit('search'); 
-                        } else {
-                            that.filterResults();                            
+                        if (val.length >= that.minlength) {
+                            if (that.isasync) {
+                                that.$emit('search'); 
+                            } else {
+                                that.filterResults();                            
+                            }
                         }
                     }
                 });
@@ -117,6 +121,11 @@
                 this.results = this.options.filter((option) => {
                     return option[that.labelby].toLowerCase().indexOf(that.model.toLowerCase()) > -1;
                 });
+
+                if (this.results.length == 0) {
+                    var noResult = { value: "", label: "No results found", category: null, disabled: true };
+                    this.results.push(noResult);
+                }                
             },                                    
             handleClickOutside(event) {
                 if (!(this.$el == event.target || this.$el.contains(event.target))) {

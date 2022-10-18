@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -47,7 +48,7 @@ module.exports = {
                         }
                     }
                 ]
-            },
+            },            
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
@@ -73,6 +74,7 @@ module.exports = {
         ]
     },
     optimization: {
+        minimizer: [ '...', new CssMinimizerPlugin() ],        
         splitChunks: {
             cacheGroups: {
                 vendors: {

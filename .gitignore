@@ -345,3 +345,4 @@ SpeedRunApp.UI/src/styles/bootstrap_darkly.css
 SpeedRunApp.UI/src/styles/bootstrap_zephyr.css
 SpeedRunApp/appsettings.dev.json
 .DS_Store
+SpeedRunApp/wwwroot/dist/

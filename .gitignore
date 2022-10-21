@@ -341,7 +341,7 @@ healthchecksdb
 /SpeedrunComSharp.Common
 
 /SpeedRunApp/logs
-/SpeedRunApp/wwwroot/dist
+SpeedRunApp/wwwroot/dist
 SpeedRunApp.UI/src/styles/bootstrap_darkly.css
 SpeedRunApp.UI/src/styles/bootstrap_zephyr.css
 SpeedRunApp/appsettings.dev.json

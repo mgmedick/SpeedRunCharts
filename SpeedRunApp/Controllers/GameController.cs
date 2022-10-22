@@ -28,14 +28,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return View(gameDetailsVM);
         }
-
-        //public ViewResult GameDetails(int gameID)
-        //{
-        //    var gameVM = _gameService.GetGame(gameID);
-
-        //    return View(gameVM);
-        //}
-
+        
         [HttpGet]
         public JsonResult GetWorldRecordGridTabsForUser(int userID)
         {

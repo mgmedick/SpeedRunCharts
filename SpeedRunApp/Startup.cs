@@ -72,7 +72,7 @@ namespace SpeedRunApp
             }
             else
             {
-                app.UseExceptionHandler("/SpeedRun/Error");
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -86,7 +86,7 @@ namespace SpeedRunApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

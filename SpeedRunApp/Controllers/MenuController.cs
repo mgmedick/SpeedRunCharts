@@ -8,11 +8,13 @@ namespace SpeedRunApp.MVC.Controllers
 {
     public class MenuController : Controller
     {
+        private readonly ISpeedRunService _speedRunService = null;
         private readonly IMenuService _menuService = null;
 
-        public MenuController(IMenuService menuService)
+        public MenuController(IMenuService menuService, ISpeedRunService speedRunService)
         {
             _menuService = menuService;
+            _speedRunService = speedRunService;
         }
 
         public ViewResult About()
@@ -27,5 +29,12 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(results);
         }
+        
+        [HttpGet]
+        public JsonResult GetImportStatus()
+        {
+            var result = _speedRunService.GetImportStatus();
+            return Json(result);
+        }        
     }
 }

@@ -45,7 +45,7 @@ namespace SpeedRunApp.Service
             var activateUserAcct = new
             {
                 Email = email,
-                ActivateLink = string.Format("{0}/SpeedRun/Activate?{1}&token={2}", baseUrl, queryParams, token)
+                ActivateLink = string.Format("{0}/Home/Activate?{1}&token={2}", baseUrl, queryParams, token)
             };
 
             await _emailService.SendEmailTemplate(email, "Create your speedruncharts.com account", Template.ActivateEmail.ToString(), activateUserAcct);
@@ -86,7 +86,7 @@ namespace SpeedRunApp.Service
             var passwordReset = new
             {
                 Username = userAcct.Username,
-                ResetPassLink = string.Format("{0}/SpeedRun/ChangePassword?{1}&token={2}", baseUrl, queryParams, token)
+                ResetPassLink = string.Format("{0}/Home/ChangePassword?{1}&token={2}", baseUrl, queryParams, token)
             };
 
             await _emailService.SendEmailTemplate(userAcct.Email, "Reset your speedruncharts.com password", Template.ResetPasswordEmail.ToString(), passwordReset);

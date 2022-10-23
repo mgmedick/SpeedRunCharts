@@ -77,6 +77,10 @@
                 axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
+                        if (that.istimerasc) {
+                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
+                        }
+                                                                        
                         that.initGrid(res.data);                        
                         that.loading = false;
                         if (that.speedrunid) {

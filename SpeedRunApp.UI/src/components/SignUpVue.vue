@@ -55,7 +55,7 @@
     const asyncEmailNotExists = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('/SpeedRun/EmailNotExists', { params: { email: value } })
+        return await axios.get('/Home/EmailNotExists', { params: { email: value } })
             .then(res => {
                 return res.data;
             })
@@ -90,7 +90,7 @@
                 var formData = getFormData(this.form);
                 this.loading = true;
 
-                axios.post('/SpeedRun/SignUp', formData)
+                axios.post('/Home/SignUp', formData)
                     .then((res) => {
                         that.showSuccess = res.data.success;
                         that.errorMessages = res.data.errorMessages;

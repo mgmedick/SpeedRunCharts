@@ -57,7 +57,7 @@
     const asyncPasswordNotMatches = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('/SpeedRun/PasswordNotMatches', { params: { password: value } })
+        return await axios.get('/Home/PasswordNotMatches', { params: { password: value } })
             .then(res => {
                 return res.data;
             })
@@ -95,7 +95,7 @@
                 var that = this;
                 var formData = getFormData(this.form);
 
-                axios.post('/SpeedRun/ChangePassword', formData)
+                axios.post('/Home/ChangePassword', formData)
                     .then((res) => {
                         if (res.data.success) {
                             this.showSuccess = true;

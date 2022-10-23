@@ -49,7 +49,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetImportStatus')
+                var prms = axios.get('/Menu/GetImportStatus')
                     .then(res => {
                         that.item = res.data;
                         that.loading = false;

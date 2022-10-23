@@ -44,7 +44,7 @@ namespace SpeedRunApp
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o => o.LoginPath = new PathString("/SpeedRun/Login"));
+                .AddCookie(o => o.LoginPath = new PathString("/Home/Login"));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -72,7 +72,7 @@ namespace SpeedRunApp
             }
             else
             {
-                app.UseExceptionHandler("/SpeedRun/Error");
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
 
@@ -86,7 +86,7 @@ namespace SpeedRunApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=SpeedRun}/{action=SpeedRunList}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

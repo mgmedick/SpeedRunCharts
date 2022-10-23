@@ -1263,7 +1263,6 @@ button.cmv-close {
 
 /** SpeedRunGridTab, SpeedRunGridTabVariable, WorldRecordGridTab (tab-list) **/
 .tab-list .nav {
-    /*overflow-y: hidden;*/
     flex-wrap: nowrap !important;
     white-space: nowrap !important;
 }
@@ -1286,7 +1285,8 @@ button.cmv-close {
     border: 1px solid var(--bs-background-color16);
     font-size: 13px;
     font-weight: bold;
-    padding: 0.5rem !important;    
+    padding: 0.5rem !important;   
+    max-width: 300px; 
 }
 
 .tab-list .dropdown .btn.dropdown-toggle.active {
@@ -1294,6 +1294,26 @@ button.cmv-close {
     background-color: var(--bs-primary) !important;
     border: none;
 }
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-toggle::before {
+    float: right;
+    margin-left: 0.255em;
+    margin-top: 0.58em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+  }
+  
+  .dropdown-toggle:empty::before {
+    margin-left: 0;
+  }
 
 .tab-row-name {
     font-size: 14px !important;
@@ -1303,7 +1323,7 @@ button.cmv-close {
 
 @media (max-width: 575px) {
     .tab-list .dropdown .dropdown-menu {
-        max-width: 200px;
+        max-width: 215px;
     }
 
     .category {

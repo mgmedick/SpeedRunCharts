@@ -18,7 +18,7 @@
                     </li>
                 </ul>
                 <form class="form-inline">
-                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'"/>                
+                    <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'" style="width:100%"/>                
                 </form>
                 <div v-if="isauth">
                     <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
                             <a href="/UserAccount/UserAccountDetails" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
-                            <a href="/SpeedRun/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
+                            <a href="/Home/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
                 </div>

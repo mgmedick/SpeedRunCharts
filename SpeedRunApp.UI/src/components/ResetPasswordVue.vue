@@ -55,7 +55,7 @@
     const asyncActiveUsernameExists = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('/SpeedRun/ActiveUsernameExists', { params: { username: value } })
+        return await axios.get('/Home/ActiveUsernameExists', { params: { username: value } })
             .then(res => {
                 return res.data;
             })
@@ -90,7 +90,7 @@
                 var formData = getFormData(this.form);
                 this.loading = true;
 
-                axios.post('/SpeedRun/ResetPassword', formData)
+                axios.post('/Home/ResetPassword', formData)
                     .then((res) => {
                         that.showSuccess = res.data.success;
                         that.errorMessages = res.data.errorMessages;

@@ -1323,7 +1323,7 @@ button.cmv-close {
 
 @media (max-width: 575px) {
     .tab-list .dropdown .dropdown-menu {
-        max-width: 300px;
+        max-width: 215px;
     }
 
     .category {
@@ -1385,7 +1385,6 @@ button.cmv-close {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
 }
 
 .gold {

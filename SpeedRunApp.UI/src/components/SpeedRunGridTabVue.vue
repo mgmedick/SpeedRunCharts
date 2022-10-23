@@ -6,7 +6,7 @@
             </div>
         </div>
     </div> 
-    <div v-else id="divSpeedRunGridTabContainer" style="overflow-x:hidden;">
+    <div v-else id="divSpeedRunGridTabContainer">
         <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
@@ -472,13 +472,13 @@
                     if (items.length > 0) {
                         var item = items.find(i=>i.classList.contains('active'));
                         if (item) {
+                            morebtn.innerHTML = item.innerHTML;
                             morebtn.classList.add('active');
                         } else {
-                            item = items[0];
+                            morebtn.innerHTML = 'More...';
                             morebtn.classList.remove('active');
                         }
-
-                        morebtn.innerHTML = item.innerHTML;
+                        
                         morediv.style.display = 'block';
                     } else {
                         morediv.style.display = 'none';                       

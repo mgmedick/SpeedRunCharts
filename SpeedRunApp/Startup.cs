@@ -44,7 +44,7 @@ namespace SpeedRunApp
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o => o.LoginPath = new PathString("/SpeedRun/Login"));
+                .AddCookie(o => o.LoginPath = new PathString("/Home/Login"));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

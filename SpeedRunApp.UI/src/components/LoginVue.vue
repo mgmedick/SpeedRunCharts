@@ -39,7 +39,7 @@
     const asyncActiveUsernameExists = async (value) => {
         if (value === '') return true;
 
-        return await axios.get('/SpeedRun/ActiveUsernameExists', { params: { username: value } })
+        return await axios.get('/Home/ActiveUsernameExists', { params: { username: value } })
             .then(res => {
                 return res.data;
             })
@@ -68,7 +68,7 @@
                 var that = this;
                 var formData = getFormData(this.form);
 
-                axios.post('/SpeedRun/Login', formData)
+                axios.post('/Home/Login', formData)
                     .then((res) => {
                         if (res.data.success) {
                             location.reload();

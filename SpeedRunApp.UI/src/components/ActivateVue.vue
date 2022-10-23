@@ -60,7 +60,7 @@
     const asyncUsernameNotExists = async (value) => {  
         if(value === '') { return true; };            
 
-        return await axios.get('/SpeedRun/UsernameNotExists', { params: { username: value } })
+        return await axios.get('/Home/UsernameNotExists', { params: { username: value } })
             .then(res => {
                 return Promise.resolve(res.data);
             })
@@ -99,7 +99,7 @@
                 var formData = getFormData(this.form);
                 this.loading = true;
 
-                axios.post('/SpeedRun/Activate', formData)
+                axios.post('/Home/Activate', formData)
                     .then((res) => {
                         if (res.data.success) {
                             location.href = '/';

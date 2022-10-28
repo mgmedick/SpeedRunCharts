@@ -15,7 +15,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="cmv-modal-body">
+                    <div :class="'cmv-modal-body ' + bodyclass">
                         <slot v-bind:params="params"></slot>
                     </div>
                 </div>
@@ -28,7 +28,8 @@
     export default {
         name: "ModalVue",
         props: {
-            contentclass: String
+            contentclass: String,
+            bodyclass: String
         },           
         mounted() {
             document.body.style.overflow = "hidden";

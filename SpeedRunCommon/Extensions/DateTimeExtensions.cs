@@ -81,7 +81,7 @@ namespace SpeedRunCommon.Extensions
         #endregion
 
         #region TimeSpan
-        public static string ToShortString(this TimeSpan Ts)
+        public static string ToShortString(this TimeSpan Ts, bool excludeMilliseconds = false)
         {
             var result = string.Empty;
 
@@ -102,7 +102,7 @@ namespace SpeedRunCommon.Extensions
                 result = Ts.ToString("s's'");
             }
 
-            if (Ts.Milliseconds > 0d)
+            if (Ts.Milliseconds > 0d && !excludeMilliseconds)
             {
                 result = (string.Format("{0} {1}ms", result, Ts.Milliseconds).Trim());
             }

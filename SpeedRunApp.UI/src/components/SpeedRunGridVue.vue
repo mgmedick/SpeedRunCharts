@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
+            <speedrun-grid-chart v-if="!loading" :isgame="!userid" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
@@ -41,9 +41,10 @@
             userid: String,
             showcharts: Boolean,          
             showalldata: Boolean,
+            showmilliseconds: Boolean,
             variables: Array,
             title: String,
-            istimerasc: Boolean            
+            istimerasc: Boolean          
         },
         data() {
             return {
@@ -121,7 +122,8 @@
                     { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
                     { title: "Verified Date", field: "verifyDate", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
-                    { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
+                    { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
+                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false }                    
                 ];
 
                 tableData.forEach(item => {
@@ -224,24 +226,15 @@
             },                        
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
-                var value = cell.getRow().getCell("primaryTimeString").getValue();
+                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
+                var value = cell.getRow().getCell(primaryTimeColumn).getValue();
 
                 if (value) {
                     html += value
                 }
-
+                
                 return html;
-            },
-            primaryTimeDownloadAccessor(value, data, type, params, column) {
-                var html = '';
-                var value = cell.getRow().getCell("primaryTimeString").getValue();
-
-                if (value) {
-                    html += value
-                }
-
-                return html;
-            },            
+            },         
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
                 var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'

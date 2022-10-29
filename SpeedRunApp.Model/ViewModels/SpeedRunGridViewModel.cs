@@ -148,6 +148,14 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        public double PrimaryTimeSeconds
+        {
+            get
+            {
+                return PrimaryTime.TotalSeconds;
+            }
+        }
+
         public string PrimaryTimeString
         {
             get
@@ -155,6 +163,14 @@ namespace SpeedRunApp.Model.ViewModels
                 return PrimaryTime.ToShortString();
             }
         }
+
+        public string PrimaryTimeSecondsString
+        {
+            get
+            {
+                return PrimaryTime.ToShortString(true);
+            }
+        }        
 
         public string DateSubmittedString
         {

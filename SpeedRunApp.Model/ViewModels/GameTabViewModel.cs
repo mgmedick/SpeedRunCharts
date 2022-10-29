@@ -11,6 +11,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = game.ID;
             Name = game.Name;
+            ShowMilliseconds = game.ShowMilliseconds;
 
             if (!string.IsNullOrWhiteSpace(game.CategoryTypes))
             {
@@ -294,6 +295,7 @@ namespace SpeedRunApp.Model.ViewModels
 
         public int ID { get; set; }
         public string Name { get; set; }
+        public bool ShowMilliseconds { get; set; }
         public List<IDNamePair> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
         public List<IDNamePair> GameLevels { get; set; }

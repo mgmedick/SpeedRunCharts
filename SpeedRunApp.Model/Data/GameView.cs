@@ -11,6 +11,7 @@ namespace SpeedRunApp.Model.Data
         public string Abbr { get; set; }
         public string CoverImageUrl { get; set; }
         public int? YearOfRelease { get; set; }
+        public bool ShowMilliseconds { get; set; }
         public string CategoryTypes { get; set; }
         public string Categories { get; set; }
         public string Levels { get; set; }

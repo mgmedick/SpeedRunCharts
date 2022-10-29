@@ -77,9 +77,11 @@ const formatTime = (timepart, value) => {
         result = date.format("mm[m] ss[s]")
     } else if (date.second() > 0) {
         result = date.format("ss[s]")
-    } else {
-        result = date.format("SSS[ms]")
     }
+
+    if (date.millisecond() > 0) {
+        result = result + " " + date.millisecond() + "ms";
+    }    
 
     return result;
 }

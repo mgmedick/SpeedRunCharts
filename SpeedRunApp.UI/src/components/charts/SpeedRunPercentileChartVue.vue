@@ -21,7 +21,8 @@
             tabledata: Array,
             isgame: Boolean,
             title: String,
-            istimerasc: Boolean,            
+            istimerasc: Boolean,
+            showmilliseconds: Boolean,
             ismodal: Boolean,
             chartconainerid: String
         },
@@ -83,6 +84,7 @@
                     var prevPercNum = null;
                     var prevIndex = null;
                     var prevTime = null;
+                    var timeFormat = this.showmilliseconds ? "milliseconds" : "seconds";
 
                     var prevTotal = 0;
                     for (var i = 0; i < maxNumCategories; i++) {
@@ -98,13 +100,13 @@
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
                             values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
                             percent = Math.ceil((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = (this.istimerasc ? '<= ' : '>= ') + formatTime("millisecond", prevTime) + " (" + percent + "%)";
+                            key = (this.istimerasc ? '<= ' : '>= ') + formatTime(timeFormat, prevTime) + " (" + percent + "%)";
                             chartDataObj[key] = values;
                             break;
                         } else {
-                            time = allSpeedRunTimes[index].primaryTimeMilliseconds;
+                            time = this.showmilliseconds ? allSpeedRunTimes[index].primaryTimeMilliseconds : allSpeedRunTimes[index].primaryTimeSeconds;
                             percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = (this.istimerasc ? '> ' : '< ') + formatTime("millisecond", time) + " (" + percent + "%)";
+                            key = (this.istimerasc ? '> ' : '< ') + formatTime(timeFormat, time) + " (" + percent + "%)";
 
                             if (index != prevIndex) {
                                 chartDataObj[key] = values;

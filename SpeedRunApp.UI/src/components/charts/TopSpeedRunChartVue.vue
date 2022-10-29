@@ -20,7 +20,8 @@
             tabledata: Array,
             isgame: Boolean,
             title: String,
-            istimerasc: Boolean,            
+            istimerasc: Boolean,
+            showmilliseconds: Boolean,            
             ismodal: Boolean,
             chartconainerid: String
         },
@@ -91,7 +92,7 @@
                     data.forEach(item => {
                         var playerNames = item.players?.map(user => user.name).join("{br}");
 
-                        chartDataObj[playerNames] = item.primaryTimeMilliseconds;
+                        chartDataObj[playerNames] = this.showmilliseconds ? item.primaryTimeMilliseconds : item.primaryTimeSeconds;
                     });
 
                     categoryObj["category"] = data.map(item => {
@@ -104,12 +105,16 @@
                     categories.push(categoryObj);
 
                     var dataValues = data.map(item => {
-                        return { value: item.primaryTimeMilliseconds };
+                        return { value: this.showmilliseconds ? item.primaryTimeMilliseconds : item.primaryTimeSeconds };
                     });
 
                     if (dataValues && dataValues.length > 0) {
-                        ymax = dataValues[dataValues.length - 1].value + 60000;
-                        ymin = dataValues[0].value - 60000;
+                        ymax = dataValues[dataValues.length - 1].value;
+                        ymin = this.showmilliseconds ? dataValues[0].value - 1000 : dataValues[0].value - 60;
+                        
+                        if (ymin < 0) {
+                            ymin = 0;
+                        }
                     }
 
                     dataset.push({ seriesname: '', data: dataValues });
@@ -139,9 +144,9 @@
                             formatNumberScale: 1,
                             numberOfDecimals: 0,
                             useRoundEdges: 0,
-                            numberscalevalue: "1000,60,60",
-                            numberscaleunit: "s,m,h",
-                            defaultnumberscale: "ms",
+                            numberscalevalue: this.showmilliseconds ? "1000,60,60" : "60,60",                           
+                            numberscaleunit: this.showmilliseconds ? "s,m,h" : "m,h",
+                            defaultnumberscale: this.showmilliseconds ? "ms" : "s",
                             scalerecursively: "1",
                             maxscalerecursion: "-1",
                             scaleseparator: " ",                           

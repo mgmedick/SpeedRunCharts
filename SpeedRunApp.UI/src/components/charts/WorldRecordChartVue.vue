@@ -23,7 +23,8 @@
             tabledata: Array,
             isgame: Boolean,
             title: String,
-            istimerasc: Boolean,            
+            istimerasc: Boolean,
+            showmilliseconds: Boolean,
             ismodal: Boolean,
             chartconainerid: String
         },
@@ -124,7 +125,11 @@
                         var playerNames = item.players?.map(user => user.name).join("{br}");
 
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
-                        groupedObj[monthDayYear].push({ primaryTimeMilliseconds: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
+                        if(that.showmilliseconds){
+                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
+                        } else {
+                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeSeconds, primaryTimeString: item.primaryTimeSecondsString, playerNames: playerNames });                        
+                        }
                     });
 
                     if (Object.keys(groupedObj).length > 0) {
@@ -133,12 +138,12 @@
 
                             var minItem = {};
                             if (this.istimerasc) {
-                                minItem = groupedObj[key].sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds })[0];
+                                minItem = groupedObj[key].sort((a, b) => { return b?.primaryTime - a?.primaryTime })[0];
                             } else {
-                                minItem = groupedObj[key].sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds })[0];
+                                minItem = groupedObj[key].sort((a, b) => { return a?.primaryTime - b?.primaryTime })[0];
                             }
 
-                            chartDataObj[key] = { value: minItem.primaryTimeMilliseconds, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
+                            chartDataObj[key] = { value: minItem.primaryTime, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
                         }
 
                         _timePeriods.forEach(timePeriod => {
@@ -209,11 +214,11 @@
                             showValues: 0,
                             formatNumberScale: 1,
                             numberOfDecimals: 0,
-                            numberscalevalue: "1000,60,60",
-                            numberscaleunit: "s,m,h",
-                            defaultnumberscale: "ms",
+                            numberscalevalue: this.showmilliseconds ? "1000,60,60" : "60,60",                           
+                            numberscaleunit: this.showmilliseconds ? "s,m,h" : "m,h",
+                            defaultnumberscale: this.showmilliseconds ? "ms" : "s",
                             scalerecursively: "1",
-                            maxscalerecursion: "-1",
+                            maxscalerecursion: "-1",                            
                             scaleseparator: " ",
                             connectNullData: 1,
                             plotBinSize: 1.5,

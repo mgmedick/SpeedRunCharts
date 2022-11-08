@@ -1,18 +1,27 @@
 ﻿<template>
     <div>
-        <div>
-            <div class="mx-auto" style="max-width:598px; margin-bottom:20px;">
-                <div class="btn-group btn-group-toggle pr-2">
-                    <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:13px;" v-tippy="item.description">
-                        <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @change="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName.replace(/ /g, '\u00a0') }}
-                    </label>
+        <div v-if="loading">
+            <div class="d-flex">
+                <div class="mx-auto">
+                    <i class="fas fa-spinner fa-spin fa-lg"></i>
                 </div>
             </div>
+        </div>    
+        <div v-else>
+            <div>
+                <div class="mx-auto" style="max-width:598px; margin-bottom:20px;">
+                    <div class="btn-group btn-group-toggle pr-2">
+                        <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:13px;" v-tippy="item.description">
+                            <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @change="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName.replace(/ /g, '\u00a0') }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <speedrun-list :categoryid="categoryid" :defaulttopamt="defaulttopamt"></speedrun-list>
+            </div>
         </div>
-        <div>
-            <speedrun-list :categoryid="categoryid.toString()" :defaulttopamt="defaulttopamt"></speedrun-list>
-        </div>
-    </div>
+    </div>    
 </template>
 <script>
     import axios from 'axios';
@@ -25,10 +34,18 @@
         data: function () {
             return {
                 items: [],
-                categoryid: sessionStorage.getItem("speedrunlistcategoryid") ?? 0
+                categoryid: sessionStorage.getItem("speedrunlistcategoryid") ?? null,
+                loading: true
             }
         },
         created() {
+            var isPageReloaded = ((window.performance.navigation && window.performance.navigation.type === 1) ||
+                        window.performance.getEntriesByType('navigation').map((nav) => nav.type).includes('reload'));
+
+            if (isPageReloaded) {
+                this.resetParams();                   
+            }
+
             this.loadData();
         },
         methods: {
@@ -39,11 +56,19 @@
                 axios.get('/SpeedRun/GetSpeedRunListCategories')
                     .then(res => {
                         that.items = res.data;
+                        if (!that.categoryid) {
+                            that.categoryid = res.data[0]?.id;
+                            sessionStorage.setItem("speedrunlistcategoryid", that.categoryid);                            
+                        }
                         that.loading = false;
                         return res;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },
+            resetParams: function() {
+                this.categoryid = null;
+                sessionStorage.removeItem("speedrunlistcategoryid");
+            },            
             getIconClass: function (id) {
                 var iconClass = '';
 

@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="#/" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
                 SpeedRunCharts
             </a>
@@ -192,6 +192,17 @@
                 }
 
                 location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
+            },
+            onHomeClick: function() {
+                if (window.location.pathname == '/') {
+                    window.location.reload(true);
+                } else {
+                    sessionStorage.removeItem("speedrunlistcategoryid");
+                    sessionStorage.removeItem("topamt");
+                    sessionStorage.removeItem("offset");
+                    sessionStorage.removeItem("scrolltop");
+                    window.location.href = "/";
+                }               
             },
             updateTheme: function(val){
                 var el = document.body;

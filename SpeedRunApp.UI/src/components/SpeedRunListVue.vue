@@ -16,7 +16,7 @@
     export default {
         name: 'SpeedRunListVue',
         props: {
-            categoryid: String,
+            categoryid: Number,
             defaulttopamt: Number
         },
         data() {
@@ -84,15 +84,11 @@
             },
             onWindowScroll: function () {
                 var that = this;
-                
-                clearTimeout(this.throttleTimer);
-                this.throttleTimer = setTimeout(function () {
-                    var scollTop = document.documentElement.scrollTop + window.innerHeight;
-                    var offsetHeight = document.documentElement.offsetHeight;
-                    if(Math.floor(scollTop) >= offsetHeight || Math.ceil(scollTop) >= offsetHeight) {
-                        that.reLoadData();
-                    }
-                }, this.throttleDelay);
+                var scollTop = document.documentElement.scrollTop + window.innerHeight;
+                var offsetHeight = document.documentElement.offsetHeight;
+                if (Math.ceil(scollTop) >= offsetHeight && !that.loading) {
+                    that.reLoadData();
+                }                
             },
             onBeforeUnload: function() {
                 sessionStorage.setItem("scrolltop", document.documentElement.scrollTop);

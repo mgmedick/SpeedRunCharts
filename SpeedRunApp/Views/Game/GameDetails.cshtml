@@ -1,5 +1,6 @@
 ﻿@using SpeedRunCommon.Extensions;
 @using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
 @inject IConfiguration Configuration;
 
 @model SpeedRunApp.Model.ViewModels.GameDetailsViewModel
@@ -21,50 +22,7 @@
     }
     else
     {
-        <div class="container ml-0 p-0 d-flex">
-            <div class="col-sm-2 p-0 align-self-end img-width" style="max-width:84px;">
-                <div class="img-width" style="max-width:84px;">
-                    <div class="img-round">
-                        <img src="@Model.GameVM.CoverImageUri" class="img-fluid" alt="Responsive image">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm px-1 align-self-end">
-                <h5 class="m-0 font-weight-bold text-primary">
-                    @Model.GameVM.Name&nbsp;&nbsp;@(Model.GameVM.YearOfRelease.HasValue ? "(" + Model.GameVM.YearOfRelease.ToString() + ")" : string.Empty)
-                </h5>
-            </div>
-        </div>
-        <div>
-            <div class="container ml-0 p-0 mt-4">
-                <h5 class="font-weight-bold mb-2">Details</h5>
-                @if (!string.IsNullOrWhiteSpace(Model.GameVM.PlatformsString))
-                {
-                    <div class="row no-gutters">
-                        <div class="col-auto pr-2">
-                            <label for="spnPlatforms" class="col-form-label pt-0 pb-1 font-weight-bold">Platforms</label>
-                            <div>
-                                <span id="spnPlatforms" class="form-control" style="max-width: 300px; width: auto; height: auto; font-size:14px; border:none; background:none;">@Model.GameVM.PlatformsString</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-                @if (Model.GameVM.Moderators != null && Model.GameVM.Moderators.Any())
-                {
-                    <div class="row no-gutters pt-1">
-                        <div class="col-auto">
-                            <label for="spnModerators" class="col-form-label pt-0 pb-1 font-weight-bold">Moderators</label>
-                            <div>
-                                <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px; border:none; background:none;">
-                                    @Html.CommaSeparated(Model.GameVM.Moderators.Select(i => Html.ActionLink(i.Name, "UserDetails", "User", new { ID = i.Abbr }, new { @class = "text-primary" }).ToHtmlString()))
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>  
-            <grid-tab-container :isgame="true" :id="'@Model.GameVM.ID'" :speedrunid="'@Model.SpeedRunID'"></grid-tab-container>
-        </div>
+        <gamedetails :gamevm="@JsonSerializer.Serialize(Model.GameVM, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})" :speedrunid="'@Model.SpeedRunID'"></gamedetails>
     }
 </div>
 

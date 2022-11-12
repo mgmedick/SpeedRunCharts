@@ -168,32 +168,16 @@ namespace SpeedRunApp.Service
             }
 
             return SubCategoryVariableValueNames;
-        }  
+        }
 
-        /*
-        private Dictionary<string, string> GetSubCategoryVariableValueNames(Dictionary<int, int> runVariableValueIDs, List<Variable> gameSubCategoryVariables)
-        {                
-                var SubCategoryVariableValueNames = new Dictionary<string, string>();
-
-                if (runVariableValueIDs != null && gameSubCategoryVariables != null) {
-                    var runSubCategoryVariableValueIDs = runVariableValueIDs.Where(i => gameSubCategoryVariables.Any(g => g.ID == i.Key)).ToDictionary(i => i.Key, i => i.Value);
-                
-                    var variableCount = 0;
-                    foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
-                        var variable = gameSubCategoryVariables.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID.Key);
-                        var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID.Value);
-                        
-                        if (variable != null && variableValue != null) {
-                            SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
-                        }
-
-                        variableCount++;
-                    }
-                }
-
-                return SubCategoryVariableValueNames;
-        }    
-        */            
+        public void SetGameIsChanged(int gameID)
+        {
+            var game = _gameRepo.GetGames(i => i.ID == gameID).FirstOrDefault();
+            if (game != null && (!game.IsChanged.HasValue || !game.IsChanged.Value)) {
+                game.IsChanged = true;
+                //_gameRepo.UpdateGameIsChanged(game);
+            }
+        }       
     }
 }
 

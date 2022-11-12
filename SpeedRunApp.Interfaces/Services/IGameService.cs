@@ -15,6 +15,6 @@ namespace SpeedRunApp.Interfaces.Services
         SpeedRunGridTabViewModel GetWorldRecordGridTabs(int gameID);
         SpeedRunGridTabViewModel GetSpeedRunGridTabs(int gameID, int? speedRunID = null);
         SpeedRunGridTabViewModel GetSpeedRunGridTabsForUser(int userID, int? speedRunID = null);
-        //IEnumerable<IDNamePair> GetPersonalBestGridTabs(int userID);
+        void SetGameIsChanged(int gameID);
     }
 }

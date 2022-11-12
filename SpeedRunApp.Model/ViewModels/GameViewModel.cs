@@ -13,6 +13,7 @@ namespace SpeedRunApp.Model.ViewModels
             Name = game.Name;
             Abbr = game.Abbr;
             YearOfRelease = game.YearOfRelease;
+            IsChanged = game.IsChanged;
             CoverImageUri = game.CoverImageUrl;
             SpeedRunComLink = game.SpeedRunComUrl;
 
@@ -116,6 +117,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string CoverImageUri { get; set; }
         public string SpeedRunComLink { get; set; }
         public int? YearOfRelease { get; set; }
+        public bool IsChanged { get; set; }        
         public List<IDNamePair> CategoryTypes { get; set; }
         public List<Category> Categories { get; set; }
         public List<IDNamePair> Levels { get; set; }

@@ -77,6 +77,25 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(gridVM);
         }
 
+       [HttpPost]
+        public JsonResult SetGameIsChanged(int gameID)
+        {
+            var success = false;
+
+            try
+            {
+                _gameService.SetGameIsChanged(gameID);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "SetGameIsChanged");
+                success = false;
+            }
+
+            return Json(new { success = success });
+        }        
+
         [HttpGet]
         public JsonResult SearchGames(string term)
         {

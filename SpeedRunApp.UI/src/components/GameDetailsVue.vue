@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="col-auto ml-auto">
-                            <div class="btn btn-primary" @click="showUpdateGameModal = gamevm.isChanged ? false : true" :class="{ 'disabled' : gamevm.isChanged }">
+                            <div class="btn btn-primary" @click="showUpdateGameModal = gamevm.isChanged ? false : true" :class="{ 'disabled' : gamevm.isChanged }" v-tippy="gamevm.isChanged ? 'Game Details and Runs are currently updating' : ''">
                                 <div style="display:inline-block;">{{ gamevm.isChanged ? 'Updating' : 'Update' }}</div>
                                 <div v-if="gamevm.isChanged" class="icon-elipsis-container"><span class="icon-elipsis"></span></div>  
                             </div>
@@ -53,10 +53,15 @@
                 Update Game
             </template>
             <div class="container">
+                <div>
+                    <ul>
+                        <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                    </ul>
+                </div>                
                 <div class="form-group row no-gutters">
                     <span>Are you sure you want to update this Game and it's Runs?</span>
                     <div class="pt-3">
-                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Only continue if the Runs or Game Details (Categories, Variables, etc.) are out of date. It can take up 10 minutes for the import process to complete the request.</span> 
+                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Please update only if the Game Details (Categories, Variables, etc.) or Runs are out of date. It can take up 10 minutes for the import to complete the request.</span> 
                     </div>
                 </div>
                 <div class="row no-gutters pt-1">
@@ -80,6 +85,7 @@
         },  
         data: function () {
             return {
+                errorMessages: [],                
                 showUpdateGameModal: false
             }
         },            

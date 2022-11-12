@@ -14,12 +14,14 @@ namespace SpeedRunApp.Service
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IGameRepository _gameRepo = null;
         private readonly ICacheService _cacheService = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService, ISettingRepository settingRepo)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
             _cacheService = cacheService;
+            _settingRepo = settingRepo;
         }
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID) {
             var gameVM = GetGame(gameAbbr);
@@ -170,13 +172,29 @@ namespace SpeedRunApp.Service
             return SubCategoryVariableValueNames;
         }
 
-        public void SetGameIsChanged(int gameID)
+        public List<string> SetGameIsChanged(int gameID)
         {
-            var game = _gameRepo.GetGames(i => i.ID == gameID).FirstOrDefault();
-            if (game != null && (!game.IsChanged.HasValue || !game.IsChanged.Value)) {
-                game.IsChanged = true;
-                //_gameRepo.UpdateGameIsChanged(game);
+            var errorMessages = new List<string>();
+            var isBulkReloadRunning = _settingRepo.GetSetting("IsBulkReloadRunning")?.Num == 1;
+            
+            if (isBulkReloadRunning)
+            {
+                errorMessages.Add("Import is running Bulk Reload, Games cannot be updated until complete");
             }
+            else
+            {
+                var game = _gameRepo.GetGames(i => i.ID == gameID).FirstOrDefault();
+                if (game != null) {
+                    if (game.IsChanged.HasValue && game.IsChanged.Value){
+                        errorMessages.Add("Game is alreay updating");
+                    } else {
+                        game.IsChanged = true;
+                        _gameRepo.UpdateGameIsChanged(game);
+                    }
+                }
+            }
+
+            return errorMessages;
         }       
     }
 }

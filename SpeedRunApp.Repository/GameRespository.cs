@@ -22,6 +22,15 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        public IEnumerable<Game> GetGames(Expression<Func<Game, bool>> predicate = null)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                db.OneTimeCommandTimeout = 32767;
+                return db.Query<Game>().Where(predicate ?? (x => true)).ToList();
+            }
+        }
+
         public IEnumerable<SearchResult> SearchGames(string searchText)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -40,6 +49,14 @@ namespace SpeedRunApp.Repository
                 return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_Game;").ToList();
             }
         }
+
+        public void UpdateGameIsChanged(Game game)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                db.Update<Game>(game, i => new { i.IsChanged });
+            }
+        }        
     }
 }
 

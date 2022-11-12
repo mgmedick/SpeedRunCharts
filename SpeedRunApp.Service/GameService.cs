@@ -14,12 +14,14 @@ namespace SpeedRunApp.Service
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IGameRepository _gameRepo = null;
         private readonly ICacheService _cacheService = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService, ISettingRepository settingRepo)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
             _cacheService = cacheService;
+            _settingRepo = settingRepo;
         }
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID) {
             var gameVM = GetGame(gameAbbr);
@@ -168,32 +170,32 @@ namespace SpeedRunApp.Service
             }
 
             return SubCategoryVariableValueNames;
-        }  
+        }
 
-        /*
-        private Dictionary<string, string> GetSubCategoryVariableValueNames(Dictionary<int, int> runVariableValueIDs, List<Variable> gameSubCategoryVariables)
-        {                
-                var SubCategoryVariableValueNames = new Dictionary<string, string>();
-
-                if (runVariableValueIDs != null && gameSubCategoryVariables != null) {
-                    var runSubCategoryVariableValueIDs = runVariableValueIDs.Where(i => gameSubCategoryVariables.Any(g => g.ID == i.Key)).ToDictionary(i => i.Key, i => i.Value);
-                
-                    var variableCount = 0;
-                    foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
-                        var variable = gameSubCategoryVariables.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID.Key);
-                        var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID.Value);
-                        
-                        if (variable != null && variableValue != null) {
-                            SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
-                        }
-
-                        variableCount++;
+        public List<string> SetGameIsChanged(int gameID)
+        {
+            var errorMessages = new List<string>();
+            var isBulkReloadRunning = _settingRepo.GetSetting("IsBulkReloadRunning")?.Num == 1;
+            
+            if (isBulkReloadRunning)
+            {
+                errorMessages.Add("Import is running Bulk Reload, Games cannot be updated until complete");
+            }
+            else
+            {
+                var game = _gameRepo.GetGames(i => i.ID == gameID).FirstOrDefault();
+                if (game != null) {
+                    if (game.IsChanged.HasValue && game.IsChanged.Value){
+                        errorMessages.Add("Game is alreay updating");
+                    } else {
+                        game.IsChanged = true;
+                        _gameRepo.UpdateGameIsChanged(game);
                     }
                 }
+            }
 
-                return SubCategoryVariableValueNames;
-        }    
-        */            
+            return errorMessages;
+        }       
     }
 }
 

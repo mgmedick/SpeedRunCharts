@@ -10,6 +10,7 @@ namespace SpeedRunApp.Model.Data
         public string Name { get; set; }
         public string Abbr { get; set; }
         public DateTime? SignUpDate { get; set; }
+        public bool IsChanged { get; set; }
         public string Location { get; set; }
         public string SpeedRunComUrl { get; set; }
         public string ProfileImageUrl { get; set; }

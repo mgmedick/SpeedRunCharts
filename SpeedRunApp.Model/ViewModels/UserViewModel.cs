@@ -13,6 +13,7 @@ namespace SpeedRunApp.Model.ViewModels
             Name = user.Name;
             Abbr = user.Abbr;
             SignUpDate = user.SignUpDate;
+            IsChanged = user.IsChanged;
             Location = user.Location;
             SpeedRunComLink = user.SpeedRunComUrl;
             TwitchProfile = user.TwitchProfileUrl;
@@ -30,6 +31,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string Name { get; set; }
         public string Abbr { get; set; }
         public DateTime? SignUpDate { get; set; }
+        public bool IsChanged { get; set; }
         public string Location { get; set; }
         public string SpeedRunComLink { get; set; }
         public string ProfileImage { get; set; }

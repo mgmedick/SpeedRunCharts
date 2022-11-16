@@ -48,6 +48,14 @@ namespace SpeedRunApp.Repository
                 return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_User;").ToList();
             }
         }
+
+        public void UpdateUserIsChanged(User user)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                db.Update<User>(user, i => new { i.IsChanged });
+            }
+        }          
     }
 }
 

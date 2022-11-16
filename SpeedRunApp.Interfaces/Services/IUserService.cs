@@ -11,5 +11,6 @@ namespace SpeedRunApp.Interfaces.Services
         UserViewModel GetUser(string userAbbr);
         UserViewModel GetUser(int userID);
         IEnumerable<SearchResult> SearchUsers(string searchText);
+        List<string> SetUserIsChanged(int userID);
     }
 }

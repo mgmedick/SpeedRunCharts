@@ -61,7 +61,7 @@
                 <div class="form-group row no-gutters">
                     <span>Are you sure you want to update this Game and it's Runs?</span>
                     <div class="pt-3">
-                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Please update only if the Game Details (Categories, Variables, etc.) or Runs are out of date. It can take up 10 minutes for the import to complete the request.</span> 
+                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Please only update if the Game Details (Categories, Variables, etc.) or Runs are out of date. It can take up 10 minutes for the import to complete the request.</span> 
                     </div>
                 </div>
                 <div class="row no-gutters pt-1">
@@ -104,7 +104,7 @@
             onUpdateClick() {
                 var that = this;
 
-                axios.post('/Game/SetGameIsChanged', null,{ params: { gameID: that.gameID } })
+                axios.post('/Game/SetGameIsChanged', null,{ params: { gameID: that.gamevm.id } })
                     .then((res) => {
                         if (res.data.success) {
                             that.gamevm.isChanged = true;

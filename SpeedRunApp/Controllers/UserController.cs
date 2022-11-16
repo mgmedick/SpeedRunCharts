@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using SpeedRunApp.Interfaces.Services;
-using System.Linq;
-using SpeedRunApp.Model.ViewModels;
+using System.Collections.Generic;
+using System;
+using Serilog;
 
 namespace SpeedRunApp.MVC.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService = null;
+        private readonly ILogger _logger = null;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogger logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         public ViewResult UserDetails(string ID, string speedRunID)
@@ -28,6 +30,26 @@ namespace SpeedRunApp.MVC.Controllers
 
         //    return View(userVM);
         //}
+
+       [HttpPost]
+        public JsonResult SetUserIsChanged(int userID)
+        {
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
+            {
+                errorMessages = _userService.SetUserIsChanged(userID);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "SetUserIsChanged UserID: {@UserID}", userID);
+                success = false;
+            }
+
+            return Json(new { success = success, errorMessages = errorMessages });
+        }
 
         [HttpGet]
         public JsonResult SearchUsers(string term)

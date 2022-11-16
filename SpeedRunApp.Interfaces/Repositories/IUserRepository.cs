@@ -13,6 +13,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<SearchResult> SearchUsers(string searchText);
         IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null);
         IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs();
+        void UpdateUserIsChanged(User user);
     }
 }
 

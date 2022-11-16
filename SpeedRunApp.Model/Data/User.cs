@@ -12,5 +12,6 @@ namespace SpeedRunApp.Model.Data
         public DateTime? SignUpDate { get; set; }
         public DateTime ImportedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public bool? IsChanged { get; set; }
     }
 } 

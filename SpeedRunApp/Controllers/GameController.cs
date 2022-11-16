@@ -90,7 +90,7 @@ namespace SpeedRunApp.MVC.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "SetGameIsChanged");
+                _logger.Error(ex, "SetGameIsChanged GameID: {@GameID}", gameID);
                 success = false;
             }
 

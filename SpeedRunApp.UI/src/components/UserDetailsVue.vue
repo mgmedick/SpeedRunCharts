@@ -14,7 +14,7 @@
             <div class="container ml-0 p-0 mt-4">
                 <h5 class="font-weight-bold mb-1">Details</h5>
                 <div class="row no-gutters">
-                    <div class="col-sm-auto pl-0">
+                    <div class="col-9 pl-0">
                         <table class="table-responsive">
                             <thead>
                                 <tr>
@@ -38,22 +38,74 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-auto ml-auto">
+                        <div class="btn btn-primary" @click="showUpdateUserModal = uservm.isChanged ? false : true" :class="{ 'disabled' : uservm.isChanged }" v-tippy="uservm.isChanged ? 'User Details and Runs are currently updating' : ''">
+                            <div style="display:inline-block;">{{ uservm.isChanged ? 'Updating' : 'Update' }}</div>
+                            <div v-if="uservm.isChanged" class="icon-elipsis-container"><span class="icon-elipsis"></span></div>  
+                        </div>
+                    </div>                     
                 </div>
             </div>
             <grid-tab-container :isgame="false" :id="uservm.id.toString()" :speedrunid="speedrunid"></grid-tab-container>
         </div>
+        <modal v-if="showUpdateUserModal" contentclass="cmv-modal-md" @close="showUpdateUserModal = false" ref="updateModal">
+            <template v-slot:title>
+                Update User
+            </template>
+            <div class="container">
+                <div>
+                    <ul>
+                        <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                    </ul>
+                </div>                
+                <div class="form-group row no-gutters">
+                    <span>Are you sure you want to update this User and their Runs?</span>
+                    <div class="pt-3">
+                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Please only update if the User Details (Name, Links, etc.) or Runs are out of date. It can take up 10 minutes for the import to complete the request.</span> 
+                    </div>
+                </div>
+                <div class="row no-gutters pt-1">
+                    <div class="form-group mx-auto">
+                        <button type="button" class="btn btn-primary" @click="onUpdateClick">Update</button>
+                        <button type="button" class="btn btn-secondary ml-2" @click="$refs.updateModal.close()">Cancel</button>
+                    </div>
+                </div>
+            </div>         
+        </modal>         
     </div>
 </template>
 <script>
+    import axios from 'axios';
+
     export default {
         name: "UserDetailstVue",
         props: {
             uservm: Object,
             speedrunid: String            
-        },           
+        },
+        data: function () {
+            return {
+                errorMessages: [],                
+                showUpdateUserModal: false
+            }
+        },                            
         created: function () {
         },
         methods: {
+            onUpdateClick() {
+                var that = this;
+
+                axios.post('/User/SetUserIsChanged', null,{ params: { userID: that.uservm.id } })
+                    .then((res) => {
+                        if (res.data.success) {
+                            that.uservm.isChanged = true;
+                            that.$refs.updateModal.close();                            
+                        } else {
+                            that.errorMessages = res.data.errorMessages;
+                        }
+                    })
+                    .catch(err => { console.error(err); return Promise.reject(err); });
+            }            
         }
     };
 </script>

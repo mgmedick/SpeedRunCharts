@@ -15,13 +15,15 @@ namespace SpeedRunApp.Service
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IGameRepository _gameRepo = null;
         private readonly ICacheService _cacheService = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public UserService(IUserRepository userRepo, ISpeedRunRepository speedRunRepo, IGameRepository gameRepo, ICacheService cacheService)
+        public UserService(IUserRepository userRepo, ISpeedRunRepository speedRunRepo, IGameRepository gameRepo, ICacheService cacheService, ISettingRepository settingRepo)
         {
             _userRepo = userRepo;
             _speedRunRepo = speedRunRepo;
             _gameRepo = gameRepo;
             _cacheService = cacheService;
+            _settingRepo = settingRepo;
         }
 
         public UserDetailsViewModel GetUserDetails(string userAbbr, string speedRunComID)
@@ -53,5 +55,30 @@ namespace SpeedRunApp.Service
         {
             return _userRepo.SearchUsers(searchText);
         }
+
+         public List<string> SetUserIsChanged(int userID)
+        {
+            var errorMessages = new List<string>();
+            var isBulkReloadRunning = _settingRepo.GetSetting("IsBulkReloadRunning")?.Num == 1;
+            
+            if (isBulkReloadRunning)
+            {
+                errorMessages.Add("Import is running Bulk Reload, Games cannot be updated until complete");
+            }
+            else
+            {
+                var user = _userRepo.GetUsers(i => i.ID == userID).FirstOrDefault();
+                if (user != null) {
+                    if (user.IsChanged.HasValue && user.IsChanged.Value){
+                        errorMessages.Add("User is alreay updating");
+                    } else {
+                        user.IsChanged = true;
+                        _userRepo.UpdateUserIsChanged(user);
+                    }
+                }
+            }
+
+            return errorMessages;
+        }        
     }
 }

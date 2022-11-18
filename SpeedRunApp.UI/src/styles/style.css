@@ -727,12 +727,12 @@ button.bg-dark:focus {
 }
 
 .tabulator-edit-select-list .tabulator-edit-select-list-item.active {
-    color: #262626 !important;
-    background-color: #ccc !important;
+    color: var(--bs-text-color3) !important;
+    background-color: var(--bs-background-color5) !important;
 }
 
 .tabulator-edit-select-list .tabulator-edit-select-list-item.focused {
-    background-color: var(--bs-box-shadow-color5);
+    background-color: var(--bs-box-shadow-color5);    
     color: var(--bs-text-color2);
     outline: none;
 }

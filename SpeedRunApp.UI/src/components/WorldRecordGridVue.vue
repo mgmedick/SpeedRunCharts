@@ -266,7 +266,7 @@
                 editor.style.padding = "4px";
                 editor.style.boxSizing = "border-box";
                 editor.style.cursor= "default";
-                
+
                 editor.addEventListener("change", successFunc);
                 editor.addEventListener("blur", successFunc);
                 editor.addEventListener("keydown", onKeydown);
@@ -321,9 +321,9 @@
                 var el = event.target;
                 var key = event.key;
                 if (el.value && (key === "Backspace" || key === "Delete")) {
-                    el.value = '';
                     var columnEl = el.closest('.tabulator-col');
-                    this.table.getColumn(columnEl).setHeaderFilterValue("");
+                    this.table.setHeaderFilterValue(columnEl, "");
+                    document.querySelector('.tabulator-edit-select-list')?.remove();
                 }
             },                                              
             showSpeedRunDetails(id) {

@@ -31,7 +31,7 @@
                         </div>
                         <div class="col align-self-center">
                             <div class="custom-control custom-switch">
-                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideempty" @click="$emit('onhideemptyclick', $event)">
+                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="$emit('onhideemptyclick', $event)">
                                 <label class="custom-control-label" for="chkHideEmpty"></label>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="col align-self-center">
                             <div class="custom-control custom-switch">
-                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showalldata" @click="$emit('onshowalldataclick', $event)">
+                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="$emit('onshowalldataclick', $event)">
                                 <label class="custom-control-label" for="chkShowAllData"></label>
                             </div>
                         </div>
@@ -87,7 +87,13 @@
             exporttypes: Array,
             title: String,
             istimerasc: Boolean
-        }
+        },
+        data: function () {
+            return {
+                hideEmpty: this.hideempty,
+                showAllData: this.showalldata
+            }
+        },        
     };
 </script>
 

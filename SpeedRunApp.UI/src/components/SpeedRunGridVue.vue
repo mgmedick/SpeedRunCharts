@@ -15,7 +15,7 @@
             <template v-slot:title>
                 Details
             </template>
-            <speedrun-edit :gameid="gameid" :speedrunid="speedRunID" :readonly="true" />
+            <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
         </modal>    
     </div>   
 </template>
@@ -51,7 +51,8 @@
                 table: {},
                 tableData: [],
                 loading: true,
-                speedRunID: '',
+                speedRunID: this.speedrunid,
+                selectedSpeedRunID: '',
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -65,7 +66,7 @@
             showalldata: function (val, oldVal) {
                 this.loadData();
             }
-        },            
+        },                 
         mounted: function() {
             this.loadData();
             window.speedRunGridVue = this;
@@ -84,10 +85,10 @@
                                                                         
                         that.initGrid(res.data);                        
                         that.loading = false;
-                        if (that.speedrunid) {
-                            var index = that.tableData.findIndex(i => i.id == that.speedrunid);
+                        if (that.speedRunID) {
+                            var index = that.tableData.findIndex(i => i.id == that.speedRunID);
                             if (index > -1) {
-                                that.table.selectRow(that.speedrunid);
+                                that.table.selectRow(that.speedRunID);
                                 var page = Math.ceil(index / that.pageSize);
                                 if(page > 1) {
                                     that.table.setPage(page);
@@ -114,8 +115,8 @@
                 
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
-                    { title: "Rank", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 75 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, accessorDownload: that.playerDownloadAccessor, headerFilter:"select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
+                    { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
+                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, accessorDownload: that.playerDownloadAccessor, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
@@ -176,6 +177,8 @@
                                 placement:'bottom'
                             })
                         });
+
+                        that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
                     }
                 });
             },
@@ -199,7 +202,7 @@
                 var value = cell.getValue();
 
                 var num = parseInt(value);
-                var html = (num) ? getIntOrdinalString(num) : '-';
+                var html = (num) ? num : '-';
 
                 return html;
             },
@@ -273,21 +276,16 @@
 
                 var editor = document.createElement("input");
                 editor.setAttribute("type", "date");
-                editor.classList.add("date-filter");                
+                editor.style.width = "100%";
+                editor.style.padding = "4px";
+                editor.style.boxSizing = "border-box";
+                editor.style.cursor= "default";
 
                 editor.addEventListener("change", successFunc);
                 editor.addEventListener("blur", successFunc);
                 editor.addEventListener("keydown", onKeydown);
 
-                var button = document.createElement("button");
-                button.innerHTML = "x";
-                button.classList.add("px-1");
-                button.classList.add("btn-delete-filter");
-
-                button.addEventListener("click", onClearClick);
-
                 editorDiv.appendChild(editor);
-                editorDiv.appendChild(button);
 
                 function successFunc(el){
                     var dateString = '';
@@ -301,21 +299,13 @@
                 function onKeydown (event) {
                     const key = event.key;
                     if (key === "Backspace" || key === "Delete") {
-                        clearFunc(event.target);
+                        el.value='';
+                        el.dispatchEvent(new Event('change'));
                     }
                 }
 
-                function onClearClick(event){
-                    clearFunc(event.target.previousSibling);
-                }
-
-                function clearFunc(el){
-                    el.value='';
-                    el.dispatchEvent(new Event('change'));
-                }
-
                 return editorDiv;
-            },            
+            },                   
             rankHeaderFilter(headerValue, rowValue, rowData, filterParams){
                 if(headerValue.length == 0){
                     return true;
@@ -340,9 +330,18 @@
                 var value = dayjs(rowValue).format("MM/DD/YYYY"); 
 
                 return headerValue == value; 
-            },                                 
+            },      
+            onSearchKeyDown(event) {
+                var el = event.target;
+                var key = event.key;
+                if (el.value && (key === "Backspace" || key === "Delete")) {
+                    el.value = '';
+                    var columnEl = el.closest('.tabulator-col');
+                    this.table.getColumn(columnEl).setHeaderFilterValue("");
+                }
+            },                         
             showSpeedRunDetails(id) {
-                this.speedRunID = id;
+                this.selectedSpeedRunID = id;
                 this.showDetailModal = true;
             }                              
         }             

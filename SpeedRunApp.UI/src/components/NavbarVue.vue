@@ -30,7 +30,7 @@
                         <template v-slot:options>
                             <div class="dropdown-item">
                                 <div class="custom-control custom-switch">
-                                    <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
+                                    <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isDarkTheme">
                                     <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                             <template v-slot:options>
                                 <div class="dropdown-item">
                                     <div class="custom-control custom-switch">
-                                        <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isdarktheme">
+                                        <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isDarkTheme">
                                         <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                     </div>
                                 </div>
@@ -110,7 +110,6 @@
         data: function () {
             return {
                 searchText: null,
-                //searchResults: [{value:1, label:"Some Test"},{value:2, label:"Blah"},{value:3, label:"Blah again"},{value:4, label:"Test again"},{value:5, label:"Test12345"}],
                 searchResults: [],
                 searchLoading: false,
                 showImportStatusModal: false,
@@ -118,13 +117,14 @@
                 showResetModal: false,
                 showSignUpModal: false,
                 showDropdown: false,
-                toggleNavbar: false
+                toggleNavbar: false,
+                isDarkTheme: this.isdarktheme
             }
         },
         computed: {
         },
         watch: {
-            isdarktheme: function (val, oldVal) {
+            isDarkTheme: function (val, oldVal) {
                 var that = this;
 
                 if (this.isauth) {
@@ -141,9 +141,9 @@
                     setCookie("theme", theme);                  
                 }
             }
-        },        
-        created: function () {
         },
+        created: function () {
+        },        
         methods: {
             onInput: function(e){
                 this.searchText = e;

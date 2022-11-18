@@ -219,7 +219,7 @@
             },
             resizeWRTabs: function () {
                 var rows = document.querySelectorAll('#divWorldRecorGridTabContainer .tab-list');
-                
+
                 for (var g = 0; g < rows.length; g++) {
                     var totalWidth = 0;
                     var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
@@ -232,7 +232,7 @@
                         tabitems[i].style.left = "-10000px";
                         tabitems[i].classList.remove('d-none');
                         totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > (rows[g].offsetWidth - 100)) {
+                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
                             tabitems[i].classList.add('d-none');
                             moreItems[i].classList.remove('d-none');
                         } else {
@@ -241,12 +241,20 @@
                         }
                     }
 
-                    morediv.style.display = morediv.querySelectorAll('a:not(.d-none)').length > 0 ? 'block' : 'none';
-                    
-                    if (morediv.querySelectorAll('a:not(.d-none).active').length > 0) {
-                        morebtn.classList.add('active');
+                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
+                    if (items.length > 0) {
+                        var item = items.find(i=>i.classList.contains('active'));
+                        if (item) {
+                            morebtn.innerHTML = item.innerHTML;
+                            morebtn.classList.add('active');
+                        } else {
+                            morebtn.innerHTML = 'More...';
+                            morebtn.classList.remove('active');
+                        }
+                        
+                        morediv.style.display = 'block';
                     } else {
-                        morebtn.classList.remove('active');
+                        morediv.style.display = 'none';                       
                     }
 
                     var ww = document.documentElement.clientWidth;
@@ -259,7 +267,7 @@
                         moredrp.classList.add('dropdown-menu-left');
                     }
                }
-            },
+            },            
             getPosition: function (element) {
                 var xPosition = 0;
                 var yPosition = 0;

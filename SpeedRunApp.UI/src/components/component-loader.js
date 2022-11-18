@@ -1,4 +1,3 @@
-//import { createApp } from "vue/dist/vue.esm-bundler";
 import { createApp } from "vue";
 import VueTippy from "vue-tippy";
 

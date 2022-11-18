@@ -106,7 +106,7 @@
             <div class="form-group row no-gutters mb-2" v-for="(variable, variableIndex) in item.subCategoryVariables?.filter(i => i.categoryID == item.speedRunVM.category.id && i.levelID == item.speedRunVM.level?.id)">
                 <label class="col-sm-2 col-form-label">{{ variable.name }}</label>
                 <div class="col-sm-10">
-                    <select :id="drpVariable + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
+                    <select :id="'drpVariable' + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
                         <option v-for="variableValue in variable.variableValues" :value="variableValue.id">{{ variableValue.name }}</option>
                     </select>
                 </div>
@@ -114,7 +114,7 @@
             <div class="form-group row no-gutters mb-2" v-for="(variable, variableIndex) in item.variables?.filter(i => !i.isSubCategory && i.categoryID == item.speedRunVM.category.id && i.levelID == item.speedRunVM.level?.id)">
                 <label class="col-sm-2 col-form-label">{{ variable.name }}</label>
                 <div class="col-sm-10">
-                    <select :id="drpVariable + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
+                    <select :id="'drpVariable' + variableIndex" class="custom-select form-control" style="width:220px;" v-model="item.speedRunVM.variableValues[variable.id]">
                         <option v-for="variableValue in variable.variableValues" :value="variableValue.id">{{ variableValue.name }}</option>
                     </select>
                 </div>

@@ -61,9 +61,9 @@ namespace SpeedRunApp.Service
             return speedRunListCategories;
         }
 
-        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
+        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
-            var runs = _speedRunRepo.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
+            var runs = _speedRunRepo.GetLatestSpeedRuns(category, topAmount, orderValueOffset, categoryTypeID);
             IEnumerable<SpeedRunSummaryViewModel> runVMs = runs.Select(i => new SpeedRunSummaryViewModel(i));
 
             return runVMs;

@@ -14,24 +14,24 @@
             <div class="container ml-0 p-0 mt-4">
                 <h5 class="font-weight-bold mb-1">Details</h5>
                 <div class="row no-gutters">
-                    <div class="col-9 pl-0">
-                        <table class="table-responsive">
+                    <div class="col-9">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th class="font-weight-normal pr-2" style="font-size:14px;">Total Runs</th>
-                                    <th class="font-weight-normal px-2" style="font-size:14px;">World Records</th>
-                                    <th class="font-weight-normal px-2" style="font-size:14px;">Personal Bests</th>
+                                    <th class="font-weight-normal" style="font-size:14px;">Total Runs</th>
+                                    <th class="font-weight-normal" style="font-size:14px;">WRs</th>
+                                    <th class="font-weight-normal" style="font-size:14px;">PBs</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="pr-2">
+                                    <td>
                                         <span id="spnTotalSpeedRuns" class="form-control" style="width:100px; border:none; background:none;">{{ uservm.totalSpeedRuns }}</span>
                                     </td>
-                                    <td class="px-2">
+                                    <td>
                                         <span id="spnTotalWorldRecords" class="form-control" style="width:100px;  border:none; background:none;">{{ uservm.totalWorldRecords }}</span>
                                     </td>
-                                    <td class="px-2">
+                                    <td>
                                         <span id="spnTotalPersonalBests" class="form-control" style="width:100px; border:none; background:none;">{{ uservm.totalPersonalBests }}</span>
                                     </td>
                                 </tr>

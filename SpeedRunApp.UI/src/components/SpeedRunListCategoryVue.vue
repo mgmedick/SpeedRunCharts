@@ -9,6 +9,19 @@
         </div>    
         <div v-else>
             <div>
+                <div class="mx-auto" style="max-width:598px; margin-bottom:10px;">
+                    <div class="btn-group btn-group-toggle pr-2">
+                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : !categorytypeid }" style="font-size:13px;">
+                            <input type="radio" autocomplete="off" value="" v-model="categorytypeid" @change="onCategoryTypeChange">All
+                        </label>
+                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 0 }" style="font-size:13px;">
+                            <input type="radio" autocomplete="off" value="0" v-model="categorytypeid" @change="onCategoryTypeChange">PerGame
+                        </label>
+                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 1 }" style="font-size:13px;">
+                            <input type="radio" autocomplete="off" value="1" v-model="categorytypeid" @change="onCategoryTypeChange">PerLevel
+                        </label>                                                
+                    </div>
+                </div>                
                 <div class="mx-auto" style="max-width:598px; margin-bottom:20px;">
                     <div class="btn-group btn-group-toggle pr-2">
                         <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:13px;" v-tippy="item.description">
@@ -18,7 +31,7 @@
                 </div>
             </div>
             <div>
-                <speedrun-list :categoryid="categoryid" :defaulttopamt="defaulttopamt"></speedrun-list>
+                <speedrun-list :categoryid="categoryid" :defaulttopamt="defaulttopamt" :categorytypeid="categorytypeid"></speedrun-list>
             </div>
         </div>
     </div>    
@@ -35,6 +48,7 @@
             return {
                 items: [],
                 categoryid: sessionStorage.getItem("speedrunlistcategoryid") ?? null,
+                categorytypeid: sessionStorage.getItem("speedrunlistcategorytypeid") ?? null,
                 loading: true
             }
         },
@@ -55,7 +69,7 @@
 
                 axios.get('/SpeedRun/GetSpeedRunListCategories')
                     .then(res => {
-                        that.items = res.data;
+                        that.items = res.data;                   
                         if (!that.categoryid) {
                             that.categoryid = res.data[0]?.id;
                             sessionStorage.setItem("speedrunlistcategoryid", that.categoryid);                            
@@ -68,6 +82,8 @@
             resetParams: function() {
                 this.categoryid = null;
                 sessionStorage.removeItem("speedrunlistcategoryid");
+                this.categorytypeid = null;
+                sessionStorage.removeItem("speedrunlistcategorytypeid");                
             },            
             getIconClass: function (id) {
                 var iconClass = '';
@@ -105,12 +121,17 @@
                 iconClass += " fa-sm";
 
                 return iconClass;
-            },
+            },                    
             onCategoryChange: function (event) {
                 Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");
                 sessionStorage.setItem("speedrunlistcategoryid", this.categoryid); 
-            }
+            },                            
+            onCategoryTypeChange: function (event) {
+                Array.from(document.querySelectorAll('.categorytype.active')).forEach((el) => el.classList.remove('active'));
+                event.target.parentElement.classList.add("active");
+                sessionStorage.setItem("speedrunlistcategorytypeid", this.categorytypeid); 
+            }                          
         }
     };
 </script>

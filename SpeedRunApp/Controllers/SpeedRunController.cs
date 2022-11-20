@@ -46,9 +46,9 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset)
+        public JsonResult GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
-            var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset);
+            var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset, categoryTypeID);
 
             return Json(results);
         }

@@ -17,7 +17,8 @@
         name: 'SpeedRunListVue',
         props: {
             categoryid: Number,
-            defaulttopamt: Number
+            defaulttopamt: Number,            
+            categorytypeid: Number            
         },
         data() {
             return {
@@ -45,11 +46,15 @@
             window.addEventListener('scroll', this.onWindowScroll);
             window.addEventListener('beforeunload', this.onBeforeUnload);          
         },             
-        watch: {
+        watch: {                   
             categoryid: function (val, oldVal) {
                 this.resetParams();        
                 this.loadData();
-            }
+            },
+            categorytypeid: function (val, oldVal) {
+                this.resetParams();        
+                this.loadData();
+            }                 
         },
         methods: {
             reLoadData: function () {
@@ -64,7 +69,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset } })
+                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.items = that.items.concat(res.data);    
                         that.loading = false;

@@ -1446,12 +1446,7 @@ button.cmv-close {
 
 .image-container {
     position: relative;
-    width: 90px;
     margin-left:auto;
-}
-
-.image-container img{
-    width: 90px;
 }
 
 .image-container .play-icon {

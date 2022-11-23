@@ -18,7 +18,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = IsMySQL ? db.Query<SpeedRunSummaryView>("CALL GetLatestSpeedRuns2 (@0, @1, @2, @3);", category, topAmount, orderValueOffset, categoryTypeID).ToList() :
+                var results = IsMySQL ? db.Query<SpeedRunSummaryView>("CALL GetLatestSpeedRuns (@0, @1, @2, @3);", category, topAmount, orderValueOffset, categoryTypeID).ToList() :
                                         db.Query<SpeedRunSummaryView>("EXEC dbo.GetLatestSpeedRuns @0, @1, @2, @3", category, topAmount, orderValueOffset, categoryTypeID).ToList();
 
                 return results;

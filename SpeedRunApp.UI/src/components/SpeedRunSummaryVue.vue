@@ -9,7 +9,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-auto pl-2 pr-0 align-self-end" style="max-width: 70%;">
+                <div class="col-9 pl-2 pr-0 align-self-end">
                     <div class="nowrap-elipsis align-self-start" style="font-size: 14px;">
                         <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
                     </div>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="container px-2 pb-2 pt-1 d-flex">
-                <div class="col-sm-9 p-0 align-self-center" style="overflow:hidden;">
+                <div class="col-8 p-0 align-self-center" style="overflow:hidden;">
                      <div>   
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
                             <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
@@ -43,30 +43,34 @@
                         </template>
                     </div>                      
                 </div>
-                <div class="col-sm-3 ml-auto align-self-center p-0 show-sm image-container" @click="showVideoSm = !showVideoSm">
-                    <img :src="item.videoThumbnailLink" />
-                    <i class="play-icon fa fa-play"></i>
+                <div class="col-auto ml-auto align-self-center p-0 show-sm image-container" @click="showVideo = !showVideo">
+                    <img :src="item.videoThumbnailLink" style="width: 110px; height: 62px;"/>
+                    <i class="play-icon fa fa-play fa-lg"></i>
                 </div>                    
             </div>
-            <div v-if="isMediaMedium" class="body p-0 embed-responsive embed-responsive-16by9 show-md">
-                <iframe :src="item.videoLink"
-                        loading="lazy"           
+            <div class="body p-0 show-md image-container">
+                <div v-if="!showVideo" @click="showVideo = !showVideo">
+                    <img :src="item.videoThumbnailLink" style="width: 598px; height: 337px;"/>
+                    <i class="play-icon fa fa-play fa-5x"></i>   
+                </div>
+                <div v-else class="embed-responsive embed-responsive-16by9">
+                    <iframe :src="item.videoLink?.replace('autoplay=false','autoplay=true').replace('autoplay=0','autoplay=1')"
                         frameborder="0"
-                        autoplay="0"
+                        autoplay="1"
                         scrolling="no"
                         width="100%"
-                        height="auto"
-                        allowfullscreen="true"></iframe>
+                        height="auto"                        
+                        allowfullscreen="true"></iframe> 
+                </div>                
             </div>            
-            <div v-else-if="showVideoSm" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
-                <iframe :src="item.videoLink"
-                        loading="lazy"
+            <div v-if="showVideo" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
+                <iframe :src="item.videoLink?.replace('autoplay=false','autoplay=true').replace('autoplay=0','autoplay=1')"
                         frameborder="0"
                         autoplay="0"
                         scrolling="no"
                         width="100%"
                         height="auto"                        
-                        allowfullscreen="true"></iframe>
+                        allowfullscreen="true"></iframe> 
             </div>
             <input type="hidden" class="orderValue" :value="item.id" />
             <modal v-if="showModal" contentclass="cmv-modal-lg" @close="showModal = false">
@@ -88,7 +92,7 @@
         data() {
             return {
                 showModal: false,
-                showVideoSm: false
+                showVideo: false
             }
         },
         computed: {

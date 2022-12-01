@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="container px-2 pb-2 pt-1 d-flex">
-                <div class="col-8 p-0 align-self-center" style="overflow:hidden;">
+                <div class="col-7 p-0 align-self-center" style="overflow:hidden;">
                      <div>   
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
                             <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
@@ -43,30 +43,40 @@
                         </template>
                     </div>                      
                 </div>
-                <div class="col-auto ml-auto align-self-center p-0 show-sm image-container" @click="showVideo = !showVideo">
-                    <img :src="item.videoThumbnailLink" style="width: 110px; height: 62px;"/>
-                    <i class="play-icon fa fa-play fa-lg"></i>
+                <div class="col-5 ml-auto align-self-end p-0 show-sm" @click="showVideo = !showVideo">
+                    <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
+                        <div>
+                            <div class="image-container">
+                                <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
+                                <i class="play-icon fa fa-play fa-lg"></i> 
+                            </div>
+                        </div>
+                    </div>                    
                 </div>                    
             </div>
-            <div class="body p-0 show-md image-container">
-                <div v-if="!showVideo" @click="showVideo = !showVideo">
-                    <img :src="item.videoThumbnailLink" style="width: 598px; height: 337px;"/>
-                    <i class="play-icon fa fa-play fa-5x"></i>   
+            <div class="body p-0 show-md">
+                <div v-if="!showVideo" @click="showVideo = !showVideo;">
+                    <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
+                        <div>
+                            <div class="image-container">
+                                <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
+                                <i class="play-icon fa fa-play fa-5x"></i> 
+                            </div>
+                        </div>
+                    </div>                  
                 </div>
-                <div v-else class="embed-responsive embed-responsive-16by9">
-                    <iframe :src="item.videoLink?.replace('autoplay=false','autoplay=true').replace('autoplay=0','autoplay=1')"
+                <div v-else class="embed-responsive embed-responsive-16by9">                    
+                    <iframe :src="item.videoLinkAutoplay"
                         frameborder="0"
-                        autoplay="1"
                         scrolling="no"
                         width="100%"
-                        height="auto"                        
-                        allowfullscreen="true"></iframe> 
+                        height="auto"                  
+                        allowfullscreen="true"></iframe>                 
                 </div>                
             </div>            
             <div v-if="showVideo" class="body p-0 embed-responsive embed-responsive-16by9 show-sm">
-                <iframe :src="item.videoLink?.replace('autoplay=false','autoplay=true').replace('autoplay=0','autoplay=1')"
+                <iframe :src="item.videoLink"
                         frameborder="0"
-                        autoplay="0"
                         scrolling="no"
                         width="100%"
                         height="auto"                        
@@ -117,7 +127,7 @@
                 }
 
                 return iconClass;
-            }, 
+            }
         }       
     };
 </script>

@@ -133,13 +133,29 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        public string VideoLinkAutoplay
+        {
+            get
+            {
+                return EmbeddedVideoLinks?.FirstOrDefault()?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
+            }
+        }
+
         public string VideoThumbnailLink
         {
             get
             {
                 return VideoThumbnailLinks?.FirstOrDefault();
             }
-        }  
+        }
+
+        public bool IsVideoThumbnailLowRes
+        {
+            get
+            {
+                return (VideoThumbnailLinks.FirstOrDefault() ?? string.Empty).EndsWith("hqdefault.jpg");
+            }
+        }          
 
         public string ViewCountString
         {

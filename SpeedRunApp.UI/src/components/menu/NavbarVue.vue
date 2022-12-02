@@ -97,7 +97,7 @@
 </template>
 <script>
     import axios from 'axios'
-    import { setCookie } from '../js/common';
+    import { setCookie } from '../../js/common';
 
     export default {
         name: "NavbarVue",

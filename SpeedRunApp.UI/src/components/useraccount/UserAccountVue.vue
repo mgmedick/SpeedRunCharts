@@ -47,7 +47,7 @@
 </template>
 <script>
     import axios from 'axios';
-    import { getFormData } from '../js/common.js';
+    import { getFormData } from '../../js/common.js';
 
     export default {
         name: "UserAccountVue",

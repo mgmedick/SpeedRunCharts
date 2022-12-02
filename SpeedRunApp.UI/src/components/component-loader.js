@@ -1,34 +1,40 @@
 import { createApp } from "vue";
 import VueTippy from "vue-tippy";
 
-import buttonDropdownVue from './ButtonDropdownVue.vue';
-import navbarVue from './NavbarVue.vue';
-import autocompleteVue from './AutocompleteVue.vue';
-import multiselectVue from './MultiselectVue.vue';
-import modalVue from './ModalVue.vue';
-import gameDetailsVue from './GameDetailsVue.vue';
-import userDetailsVue from './UserDetailsVue.vue';
-import resetPasswordVue from './ResetPasswordVue.vue';
-import changePasswordVue from './ChangePasswordVue.vue';
-import loginVue from './LoginVue.vue';
-import signUpVue from './SignUpVue.vue';
-import activateVue from './ActivateVue.vue';
-import speedRunEditVue from './SpeedRunEditVue.vue';
-import speedRunListVue from './SpeedRunListVue.vue';
-import speedRunSummaryVue from './SpeedRunSummaryVue.vue';
-import speedRunListCategoryVue from './SpeedRunListCategoryVue.vue';
-import gridTabContainerVue from './GridTabContainerVue.vue';
-import speedRunGridTabVue from './SpeedRunGridTabVue.vue';
-import speedRunGridTabVariableVue from './SpeedRunGridTabVariableVue.vue';
-import speedRunGridVue from './SpeedRunGridVue.vue';
-import speedRunGridChartVue from './SpeedRunGridChartVue.vue';
+import buttonDropdownVue from './shared/ButtonDropdownVue.vue';
+import autocompleteVue from './shared/AutocompleteVue.vue';
+import multiselectVue from './shared/MultiselectVue.vue';
+import modalVue from './shared/ModalVue.vue';
+
+import navbarVue from './menu/NavbarVue.vue';
+import importStatusVue from './menu/ImportStatusVue.vue';
+
+import userAccountVue from './useraccount/UserAccountVue.vue';
+import signUpVue from './useraccount/SignUpVue.vue';
+import activateVue from './useraccount/ActivateVue.vue';
+import loginVue from './useraccount/LoginVue.vue';
+import resetPasswordVue from './useraccount/ResetPasswordVue.vue';
+import changePasswordVue from './useraccount/ChangePasswordVue.vue';
+
+import speedRunEditVue from './speedrun/SpeedRunEditVue.vue';
+import speedRunListVue from './speedrun/SpeedRunListVue.vue';
+import speedRunSummaryVue from './speedrun/SpeedRunSummaryVue.vue';
+import speedRunListCategoryVue from './speedrun/SpeedRunListCategoryVue.vue';
+import speedRunGridVue from './speedrun/SpeedRunGridVue.vue';
+import speedRunGridChartVue from './speedrun/SpeedRunGridChartVue.vue';
+import worldRecordGridVue from './speedrun/WorldRecordGridVue.vue';
+
+import gameDetailsVue from './game/GameDetailsVue.vue';
+import gridTabContainerVue from './game/GridTabContainerVue.vue';
+import speedRunGridTabVue from './game/SpeedRunGridTabVue.vue';
+import speedRunGridTabVariableVue from './game/SpeedRunGridTabVariableVue.vue';
+import worldRecordGridTabVue from './game/WorldRecordGridTabVue.vue';
+
+import userDetailsVue from './user/UserDetailsVue.vue';
+
 import worldRecordChartVue from './charts/WorldRecordChartVue.vue';
 import speedRunPercentileChartVue from './charts/SpeedRunPercentileChartVue.vue';
 import topSpeedRunChartVue from './charts/TopSpeedRunChartVue.vue';
-import worldRecordGridVue from './WorldRecordGridVue.vue';
-import worldRecordGridTabVue from './WorldRecordGridTabVue.vue';
-import userAccountVue from './UserAccountVue.vue';
-import importStatusVue from './ImportStatusVue.vue';
 
 export default {
     loadComponents() {

@@ -31,7 +31,7 @@
 </template>
 <script>
     import axios from 'axios'
-    import { getDateTimeLocalString } from '../js/common.js';
+    import { getDateTimeLocalString } from '../../js/common.js';
 
     export default {
         name: 'ImportStatusVue',

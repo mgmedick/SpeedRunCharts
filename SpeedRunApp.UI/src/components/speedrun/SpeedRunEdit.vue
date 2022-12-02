@@ -178,7 +178,7 @@
     import { getDateTimeLocalString } from '../../js/common.js';
 
     export default {
-        name: 'SpeedRunEditVue',
+        name: 'SpeedRunEdit',
         props: {
             gameid: String,
             speedrunid: String,

@@ -65,7 +65,7 @@
     }
 
     export default {
-        name: "ChangePasswordVue",
+        name: "ChangePassword",
         setup() {
             return { v$: useVuelidate() }
         },

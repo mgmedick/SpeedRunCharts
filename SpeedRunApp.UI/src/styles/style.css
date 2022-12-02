@@ -1410,6 +1410,10 @@ button.cmv-close {
     .tab-list .dropdown .dropdown-menu {
         max-width: 215px;
     }
+    
+    .categorytype {
+        font-size: 11px !important;
+    }
 
     .category {
         font-size: 11px !important;

@@ -29,7 +29,7 @@
   </template>  
 <script>
     export default {
-        name: "ModalVue",
+        name: "Modal",
         props: {
             contentclass: String,
             headerclass: String,            

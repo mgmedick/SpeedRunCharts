@@ -40,7 +40,7 @@
     import axios from 'axios';
 
     export default {
-        name: 'SpeedRunListCategoryVue',
+        name: 'SpeedRunListTab',
         props: {
             defaulttopamt: Number
         },

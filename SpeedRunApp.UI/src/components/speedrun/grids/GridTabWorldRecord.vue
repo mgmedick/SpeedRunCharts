@@ -111,7 +111,7 @@
     import axios from 'axios';
 
     export default {
-        name: "WorldRecordGridTabVue",
+        name: "GridTabWorldRecord",
         props: {
             isgame: Boolean,
             id: String

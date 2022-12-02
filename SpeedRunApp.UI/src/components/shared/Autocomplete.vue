@@ -16,7 +16,7 @@
 </template>
 <script>
     export default {
-        name: "AutocompleteVue",
+        name: "Autocomplete",
         props: {
             modelValue: String,
             options: {

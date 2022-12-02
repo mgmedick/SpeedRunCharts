@@ -100,7 +100,7 @@
     import { setCookie } from '../../js/common';
 
     export default {
-        name: "NavbarVue",
+        name: "Navbar",
         props: {
             isauth: Boolean,
             isdarktheme: Boolean,

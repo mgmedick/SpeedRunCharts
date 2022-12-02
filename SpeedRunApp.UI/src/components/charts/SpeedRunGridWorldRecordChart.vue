@@ -18,7 +18,7 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "WorldRecordPerDayChartVue",
+        name: "SpeedRunGridWorldRecordChart",
         props: {  
             tabledata: Array,
             isgame: Boolean,

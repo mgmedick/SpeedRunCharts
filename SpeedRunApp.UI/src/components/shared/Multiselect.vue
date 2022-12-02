@@ -21,7 +21,7 @@
 </template>
 <script>
     export default {
-        name: "MultiselectVue",
+        name: "Multiselect",
         props: {
             modelValue: {
                 type: Array,

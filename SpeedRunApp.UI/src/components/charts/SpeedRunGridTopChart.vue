@@ -15,7 +15,7 @@
     FusionCharts.addDep(StackedBar2D, CandyTheme);  
 
     export default {
-        name: "TopSpeedRunChartVue",
+        name: "SpeedRunGridTopChart",
         props: {  
             tabledata: Array,
             isgame: Boolean,

@@ -94,7 +94,7 @@
 </template>
 <script>
     export default {
-        name: "SpeedRunSummaryVue",
+        name: "SpeedRunSummary",
         props: {
             item: Object,
             index: Number

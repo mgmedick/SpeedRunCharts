@@ -10,7 +10,7 @@
 </template>
 <script>
     export default {
-        name: "ButtonDropdownVue",
+        name: "ButtonDropdown",
         props: {
             btnclasses: String,
             listclasses: String

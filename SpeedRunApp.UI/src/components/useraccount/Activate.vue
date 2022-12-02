@@ -68,7 +68,7 @@
     }
 
     export default {
-        name: "ActivateVue",
+        name: "Activate",
         props: {
             islinkvalid: Boolean
         },

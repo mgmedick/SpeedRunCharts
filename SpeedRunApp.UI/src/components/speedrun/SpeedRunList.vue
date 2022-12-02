@@ -14,7 +14,7 @@
     import axios from 'axios'
 
     export default {
-        name: 'SpeedRunListVue',
+        name: 'SpeedRunList',
         props: {
             categoryid: Number,
             defaulttopamt: Number,            

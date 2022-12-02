@@ -63,7 +63,7 @@
     }
 
     export default {
-        name: "SignUpVue",
+        name: "SignUp",
         setup() {
             return { v$: useVuelidate() }
         },

@@ -13,16 +13,16 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <speedrun-grid-tab :isgame="isgame" :id="id" :speedrunid="speedrunid"></speedrun-grid-tab>
+            <grid-tab-speedrun :isgame="isgame" :id="id" :speedrunid="speedrunid"></grid-tab-speedrun>
         </div>
         <div v-else>
-            <worldrecord-grid-tab :isgame="isgame" :id="id"></worldrecord-grid-tab>   
+            <grid-tab-worldrecord :isgame="isgame" :id="id"></grid-tab-worldrecord>   
         </div>
     </div>
 </template>
 <script>
     export default {
-        name: "GridTabContainerVue",
+        name: "GridTabContainer",
         props: {
             isgame: Boolean,
             id: String,

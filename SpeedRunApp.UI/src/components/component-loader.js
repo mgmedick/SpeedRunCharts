@@ -1,78 +1,77 @@
 import { createApp } from "vue";
 import VueTippy from "vue-tippy";
 
-import buttonDropdownVue from './shared/ButtonDropdownVue.vue';
-import autocompleteVue from './shared/AutocompleteVue.vue';
-import multiselectVue from './shared/MultiselectVue.vue';
-import modalVue from './shared/ModalVue.vue';
+import buttonDropdown from './shared/ButtonDropdown.vue';
+import autocomplete from './shared/Autocomplete.vue';
+import multiselect from './shared/Multiselect.vue';
+import modal from './shared/Modal.vue';
 
-import navbarVue from './menu/NavbarVue.vue';
-import importStatusVue from './menu/ImportStatusVue.vue';
+import navbar from './menu/Navbar.vue';
+import importStatus from './menu/ImportStatus.vue';
 
-import userAccountVue from './useraccount/UserAccountVue.vue';
-import signUpVue from './useraccount/SignUpVue.vue';
-import activateVue from './useraccount/ActivateVue.vue';
-import loginVue from './useraccount/LoginVue.vue';
-import resetPasswordVue from './useraccount/ResetPasswordVue.vue';
-import changePasswordVue from './useraccount/ChangePasswordVue.vue';
+import userAccount from './useraccount/UserAccount.vue';
+import signUp from './useraccount/SignUp.vue';
+import activate from './useraccount/Activate.vue';
+import login from './useraccount/Login.vue';
+import resetPassword from './useraccount/ResetPassword.vue';
+import changePassword from './useraccount/ChangePassword.vue';
 
-import speedRunEditVue from './speedrun/SpeedRunEditVue.vue';
-import speedRunListVue from './speedrun/SpeedRunListVue.vue';
-import speedRunSummaryVue from './speedrun/SpeedRunSummaryVue.vue';
-import speedRunListCategoryVue from './speedrun/SpeedRunListCategoryVue.vue';
-import speedRunGridVue from './speedrun/SpeedRunGridVue.vue';
-import speedRunGridChartVue from './speedrun/SpeedRunGridChartVue.vue';
-import worldRecordGridVue from './speedrun/WorldRecordGridVue.vue';
+import speedRunListTab from './speedrun/SpeedRunListTab.vue';
+import speedRunList from './speedrun/SpeedRunList.vue';
+import speedRunSummary from './speedrun/SpeedRunSummary.vue';
+import speedRunEdit from './speedrun/SpeedRunEdit.vue';
 
-import gameDetailsVue from './game/GameDetailsVue.vue';
-import gridTabContainerVue from './game/GridTabContainerVue.vue';
-import speedRunGridTabVue from './game/SpeedRunGridTabVue.vue';
-import speedRunGridTabVariableVue from './game/SpeedRunGridTabVariableVue.vue';
-import worldRecordGridTabVue from './game/WorldRecordGridTabVue.vue';
+import gridTabContainer from './speedrun/grids/GridTabContainer.vue';
+import gridTabSpeedRun from './speedrun/grids/GridTabSpeedRun.vue';
+import gridTabSpeedRunVariable from './speedrun/grids/GridTabSpeedRunVariable.vue';
+import gridTabWorldRecord from './speedrun/grids/GridTabWorldRecord.vue';
+import speedRunGrid from './speedrun/grids/SpeedRunGrid.vue';
+import worldRecordGrid from './speedrun/grids/WorldRecordGrid.vue';
 
-import userDetailsVue from './user/UserDetailsVue.vue';
+import gameDetails from './game/GameDetails.vue';
+import userDetails from './user/UserDetails.vue';
 
-import worldRecordChartVue from './charts/WorldRecordChartVue.vue';
-import speedRunPercentileChartVue from './charts/SpeedRunPercentileChartVue.vue';
-import topSpeedRunChartVue from './charts/TopSpeedRunChartVue.vue';
+import speedRunGridChartContainer from './charts/SpeedRunGridChartContainer.vue';
+import speedRunGridPercentileChart from './charts/SpeedRunGridPercentileChart.vue';
+import speedRunGridTopChart from './charts/SpeedRunGridTopChart.vue';
+import speedRunGridWorldRecordChart from './charts/SpeedRunGridWorldRecordChart.vue';
 
 export default {
     loadComponents() {
         const app = createApp({
             components: {
-                'speedrun-list-category': speedRunListCategoryVue
+                'speedrun-list-tab': speedRunListTab
             }
         })
         .use(VueTippy, { defaultProps: { allowHTML: true } });
         
-        app.component("button-dropdown", buttonDropdownVue);
-        app.component("navbar", navbarVue);
-        app.component('autocomplete', autocompleteVue);
-        app.component('multiselect', multiselectVue);
-        app.component('modal', modalVue);  
-        app.component('gamedetails', gameDetailsVue);   
-        app.component('userdetails', userDetailsVue);        
-        app.component("reset-password", resetPasswordVue);
-        app.component("change-password", changePasswordVue);
-        app.component("login", loginVue);
-        app.component("signup", signUpVue);
-        app.component("activate", activateVue);
-        app.component("speedrun-edit", speedRunEditVue);
-        app.component("speedrun-list", speedRunListVue);
-        app.component("speedrun-summary", speedRunSummaryVue);
-        app.component("grid-tab-container", gridTabContainerVue);
-        app.component("speedrun-grid-tab", speedRunGridTabVue);
-        app.component("speedrun-grid-tab-variable", speedRunGridTabVariableVue);
-        app.component("speedrun-grid", speedRunGridVue);
-        app.component("speedrun-grid-chart", speedRunGridChartVue);
-        app.component("worldrecord-chart", worldRecordChartVue);
-        app.component("speedrun-percentile-chart", speedRunPercentileChartVue);
-        app.component("top-speedrun-chart", topSpeedRunChartVue);
-        app.component("worldrecord-grid-tab", worldRecordGridTabVue);
-        app.component("worldrecord-grid", worldRecordGridVue);
-        app.component("personalbest-grid-tab", worldRecordGridTabVue);
-        app.component("useraccount", userAccountVue);
-        app.component("import-status", importStatusVue);
+        app.component("button-dropdown", buttonDropdown);
+        app.component("navbar", navbar);
+        app.component('autocomplete', autocomplete);
+        app.component('multiselect', multiselect);
+        app.component('modal', modal);  
+        app.component('gamedetails', gameDetails);   
+        app.component('userdetails', userDetails);        
+        app.component("reset-password", resetPassword);
+        app.component("change-password", changePassword);
+        app.component("login", login);
+        app.component("signup", signUp);
+        app.component("activate", activate);
+        app.component("speedrun-edit", speedRunEdit);
+        app.component("speedrun-list", speedRunList);
+        app.component("speedrun-summary", speedRunSummary);
+        app.component("grid-tab-container", gridTabContainer);
+        app.component("grid-tab-speedrun", gridTabSpeedRun);
+        app.component("grid-tab-speedrun-variable", gridTabSpeedRunVariable);
+        app.component("speedrun-grid", speedRunGrid);
+        app.component("speedrun-grid-chart-container", speedRunGridChartContainer);
+        app.component("speedrun-grid-worldrecord-chart", speedRunGridWorldRecordChart);
+        app.component("speedrun-grid-percentile-chart", speedRunGridPercentileChart);
+        app.component("speedrun-grid-top-chart", speedRunGridTopChart);
+        app.component("grid-tab-worldrecord", gridTabWorldRecord);
+        app.component("worldrecord-grid", worldRecordGrid);
+        app.component("useraccount", userAccount);
+        app.component("import-status", importStatus);
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

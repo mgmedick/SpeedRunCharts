@@ -50,7 +50,7 @@
     import { getFormData } from '../../js/common.js';
 
     export default {
-        name: "UserAccountVue",
+        name: "UserAccount",
         props: {
             useraccountid: String
         },

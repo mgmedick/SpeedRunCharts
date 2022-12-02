@@ -78,7 +78,7 @@
     import axios from 'axios';
 
     export default {
-        name: "UserDetailstVue",
+        name: "UserDetails",
         props: {
             uservm: Object,
             speedrunid: String            

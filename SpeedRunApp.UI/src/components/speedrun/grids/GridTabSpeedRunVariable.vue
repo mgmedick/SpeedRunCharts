@@ -66,7 +66,7 @@
 </template>
 <script>
     export default {
-        name: "speed-run-grid-tab-variable",
+        name: "GridTabSpeedRunVariable",
         emits: ["ontabclick", "onhideemptyclick", "onshowalldataclick", "onshowchartsclick2", "onexporttypechange", "onexportclick"],
         props: {
             items: Array,

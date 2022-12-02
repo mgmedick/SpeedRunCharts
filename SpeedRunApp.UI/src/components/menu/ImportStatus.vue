@@ -34,7 +34,7 @@
     import { getDateTimeLocalString } from '../../js/common.js';
 
     export default {
-        name: 'ImportStatusVue',
+        name: 'ImportStatus',
         data: function () {
             return {
                 item: {},

@@ -1,29 +1,45 @@
 ﻿<template>
-    <div id="divLogin" class="container">
+    <div id="divResetPass" class="container">
         <form @submit.prevent="submitForm">
             <div>
                 <ul>
-                    <li v-for="errorMessage in errorMessages" class="text-danger small font-weight-bold">{{ errorMessage }}</li>
+                    <li v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                    <li v-for="error of v$.$errors">{{ error.$message }}</li>
                 </ul>
             </div>
             <div class="form-group row no-gutters">
                 <label class="col-sm-3 col-form-label">Username</label>
                 <div class="col-sm-auto">
-                    <input type="text" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
-                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
-                </div>
-            </div>
-            <div class="form-group row no-gutters">
-                <label class="col-sm-3 col-form-label">Password</label>
-                <div class="col-sm-auto">
-                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
-                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
+                    <input type="text" name="Username" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
                 </div>
             </div>
             <div class="row no-gutters pt-1">
                 <div class="form-group mx-auto">
-                    <button type="submit" class="btn btn-primary">Log In</button>
-                    <button type="button" class="btn btn-secondary ml-2" @click="$emit('forgotpass', close)">Forgot Password</button>
+                    <button type="submit" class="btn btn-primary">Reset Password</button>
+                </div>
+            </div>
+            <div>
+                <div v-if="loading">
+                    <div class="container d-flex p-3">
+                        <div class="mx-auto align-self-center">
+                            <i class="fa fa-spinner fa-spin fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <div v-else-if="showSuccess">
+                    <div class="container p-3" style="max-width: 400px;">
+                        <div class="mx-auto">
+                            <span>To Reset your password click the reset password link in the email we just sent you.</span>
+                            <br />
+                            <br />
+                            <span>If your email has not arrived try these steps:</span>
+                            <ul class="pl-4">
+                                <li>Wait 30 mins</li>
+                                <li>Check your spam folder</li>
+                                <li>Try Reset Password again</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -47,18 +63,23 @@
     }
 
     export default {
-        name: "LoginVue",
+        name: "ResetPassword",
         setup() {
             return { v$: useVuelidate() }
         },
         data() {
             return {
                 form: {
-                    Username: '',
-                    Password: ''
+                    Username: ''
                 },
+                loading: false,
+                showSuccess: false,
                 errorMessages: []
             }
+        },
+        computed: {
+        },
+        created: function () {
         },
         methods: {
             async submitForm() {
@@ -67,14 +88,13 @@
 
                 var that = this;
                 var formData = getFormData(this.form);
+                this.loading = true;
 
-                axios.post('/Home/Login', formData)
+                axios.post('/Home/ResetPassword', formData)
                     .then((res) => {
-                        if (res.data.success) {
-                            location.reload();
-                        } else {
-                            that.errorMessages = res.data.errorMessages;
-                        }
+                        that.showSuccess = res.data.success;
+                        that.errorMessages = res.data.errorMessages;
+                        that.loading = false;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             }
@@ -85,9 +105,6 @@
                     Username: {
                         required: helpers.withMessage('Username is required', required),
                         activeUsernameExists: helpers.withMessage('Invalid Username', withAsync(asyncActiveUsernameExists))
-                    },
-                    Password: {
-                        required: helpers.withMessage('Password is required', required)
                     }
                 }
             }

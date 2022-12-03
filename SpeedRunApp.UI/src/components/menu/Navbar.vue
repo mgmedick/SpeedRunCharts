@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg bg-dark">
             <a class="navbar-brand" href="#/" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
                 SpeedRunCharts
@@ -13,8 +13,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>
-                    <li class="nav-item active p-2">
-                        <a href="https://github.com/speedruncomorg/api" class="badge badge-primary nav-link">Powered by speedrun.com API</a>
+                    <li class="nav-item active pt-1 pb-1">
+                        <a href="https://github.com/speedruncomorg/api" class="badge badge-primary p-2">Powered by speedrun.com API</a>
                     </li>
                 </ul>
                 <form class="form-inline">

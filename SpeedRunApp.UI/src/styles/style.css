@@ -14,7 +14,6 @@
     --bs-text-color1: #f2f2f2; 
     --bs-text-color2: #fff;  
     --bs-text-color3: #262626; 
-    --bs-text-color5: #999;    
     --bs-text-color6: #999;     
     --bs-text-color7: #ccc;                 
     --bs-background-color1:#444; 
@@ -22,11 +21,14 @@
     --bs-background-color7: #303030;    
     --bs-background-color9: #303030;
     --bs-background-color12: #303030;             
-    --bs-background-color16: transparent;       
+    --bs-background-color16: transparent;  
+    --bs-background-color17: transparent;          
     --bs-box-shadow-color1: rgba(55, 90, 127, 0.251);
     --bs-box-shadow-color2: rgba(55, 90, 127, 0.251);
     --bs-box-shadow-color5: rgba(255, 255, 255, 0.149);
+    --bs-box-shadow-color7: rgba(255, 255, 255, 0.1);
     --bs-filter1: brightness(0) invert(1);
+    --bs-url1: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 .theme-light {
@@ -44,20 +46,22 @@
     --bs-border-color10: #dee2e6;     
     --bs-text-color1: #262626;
     --bs-text-color2: #000;
-    --bs-text-color3: #fff;
-    --bs-text-color5: #fff;       
+    --bs-text-color3: #fff;     
     --bs-text-color6: #000;
     --bs-text-color7: #444;                                    
     --bs-background-color1:#fff;       
     --bs-background-color5: #3459e6; 
     --bs-background-color7: #fff;    
-    --bs-background-color9: #212529;      
+    --bs-background-color9: #dee2e6;      
     --bs-background-color12: #f8f9fa;        
-    --bs-background-color16: #ccc;              
+    --bs-background-color16: #ccc;   
+    --bs-background-color17: #dfe0e1;                
     --bs-box-shadow-color1: rgba(52, 89, 230, 0.251);
     --bs-box-shadow-color2: rgba(0, 0, 0, 0.051);
     --bs-box-shadow-color5: rgba(217, 217, 217, 0.502);
+    --bs-box-shadow-color7: rgba(0, 0, 0, 0.1);    
     --bs-filter1: brightness(0);
+    --bs-url1: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   }
 
 /************ Generic Layout ************/  
@@ -489,29 +493,31 @@ select.form-control:focus::-ms-value {
     padding-top: 0.32421875rem;
     padding-bottom: 0.32421875rem;
     font-size: 1.171875rem;
+    color: var(--bs-text-color2);
 }
 
-.navbar-toggler {
+.navbar .navbar-toggler {
     font-size: 1.171875rem;
+    border-color: var(--bs-box-shadow-color7);
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: var(--bs-text-color5);
-}
-
-.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-    color: var(--bs-white);
-}
-
-.navbar-dark .navbar-toggler {
+.navbar .navbar-nav .nav-link {
     color: var(--bs-text-color6);
 }
 
-.navbar-dark .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+.navbar .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+    color: var(--bs-white);
 }
 
-.navbar-dark .navbar-text {
+.navbar .navbar-toggler {
+    color: var(--bs-text-color6);
+}
+
+.navbar .navbar-toggler-icon {
+    background-image: var(--bs-url1);
+}
+
+.navbar .navbar-text {
     color: var(---bs-text-color6);
 }
 
@@ -549,7 +555,7 @@ a.badge-primary:focus, a.badge-primary.focus {
 .badge-secondary {
     color: var(--bs-text-color2);
     background-color: var(--bs-secondary);
-    /* border: 1px solid var(--bs-background-color16); */
+    border: 1px solid var(--bs-background-color17);
 }
 
 a.badge-secondary:hover, a.badge-secondary:focus {
@@ -1410,9 +1416,9 @@ button.cmv-close {
     .tab-list .dropdown .dropdown-menu {
         max-width: 215px;
     }
-    
+
     .categorytype {
-        font-size: 11px !important;
+        font-size: 12px !important;
     }
 
     .category {

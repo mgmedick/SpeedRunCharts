@@ -112,19 +112,23 @@ namespace SpeedRunApp.Service
         //    return runVMs;
         //}
 
-        public IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryID, int? levelID, int? userID)
+        public IEnumerable<WorldRecordGridViewModel> GetWorldRecordGridData(int gameID, int categoryID, int? levelID, int? userID)
         {
-            var runs = new List<SpeedRunGridView>();
+            var runs = new List<WorldRecordGridView>();
             if (userID.HasValue)
             {
                 runs = _speedRunRepo.GetPersonalBestsByUserID(gameID, categoryID, levelID, userID.Value).ToList();
             }
             else
             {
-                runs = _speedRunRepo.GetSpeedRunGridViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.Rank == 1).OrderBy(i => i.SubCategoryVariableValueIDs).ToList();
+                runs = _speedRunRepo.GetWorldRecordGridViews(i => i.GameID == gameID && i.CategoryID == categoryID && (!levelID.HasValue || i.LevelID == levelID) && i.Rank == 1)
+                                    .OrderBy(i => i.CategoryID)
+                                    .ThenBy(i => i.LevelID)
+                                    .ThenBy(i => i.SubCategoryVariableValueIDs)
+                                    .ToList();
             }
 
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+            var runVMs = runs.Select(i => new WorldRecordGridViewModel(i)).ToList();
             runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID && g.LevelID == i.LevelID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
 
             return runVMs;

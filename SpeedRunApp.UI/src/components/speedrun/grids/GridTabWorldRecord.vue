@@ -49,57 +49,17 @@
                 </div>
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
-                        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                            <div class="col tab-list">
-                                <ul class="nav nav-pills">
-                                    <li class="nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                        <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
-                                    </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                        <template v-slot:text>
-                                            <span>More...</span>
-                                        </template>
-                                        <template v-slot:options>
-                                            <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                                <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
-                                            </template>
-                                        </template>
-                                    </button-dropdown>                                     
-                                </ul>
-                            </div>
-                        </div>                        
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                            <div v-if="categoryID == category.id">
-                                <div v-if="categoryTypeID == 0">
-                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="userID" :variables="game.variables"></worldrecord-grid>
+                            <div>
+                                <div v-if="game.levels?.filter(lvl => lvl.categoryID == category.id && [...new Set(game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == lvl.id && variable.scopeTypeID != '1').map(x => x.name))].length > 1).length > 0">
+                                    <div v-for="(level, levelIndex) in game.levels?.filter(lvl => lvl.categoryID == category.id && game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == lvl.id && variable.scopeTypeID != '1').length > 0)" :key="level.id">
+                                        <grid-tab-worldrecord-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && variable.scopeTypeID != '1')" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="userID" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></grid-tab-worldrecord-variable>
+                                    </div>                                    
                                 </div>
                                 <div v-else>
-                                    <div class="levelrow row no-gutters pr-1 pt-1 pb-0 pr-0">
-                                        <div class="col tab-list">
-                                            <ul class="nav nav-pills">
-                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                    <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
-                                                </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                                    <template v-slot:text>
-                                                        <span>More...</span>
-                                                    </template>
-                                                    <template v-slot:options>
-                                                        <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                            <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
-                                                        </template>
-                                                    </template>
-                                                </button-dropdown>   
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                        <div v-if="levelID == level.id">                                            
-                                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="userID" :variables="game.variables"></worldrecord-grid>
-                                        </div>
-                                    </div>                                                                        
-                                </div>                            
-                            </div>
+                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="userID" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></worldrecord-grid>
+                                </div>
+                            </div>                                          
                         </div>
                     </div>
                 </div>
@@ -123,6 +83,7 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
+                variableIndex: 0,                
                 loading: true
             }
         },
@@ -147,11 +108,6 @@
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
-                                    //that.gameID = res.data.gameID;
-                                    //that.categoryTypeID = res.data.categoryTypeID;
-                                    //that.categoryID = res.data.categoryID;
-                                    //that.levelID = res.data.levelID;
-                                    //that.subCategoryVariableValueIDs = res.data.subCategoryVariableValueIDs;
                                     that.initSelected();
                                     that.loading = false;
                                     return res;
@@ -166,15 +122,7 @@
 
                 var game = this.items.find(game => game.id == that.gameID);
 
-                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
-
-                this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID)?.id;
-
-                if (this.categoryTypeID == 1) {
-                    this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id : '');
-                } else {
-                    this.levelID = '';
-                }                
+                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;            
             },
             resetSelected: function () {
                 var that = this;
@@ -186,15 +134,7 @@
 
                 if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID).length == 0) {
                     this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID)[0]?.id;
-                }
-
-                if (this.categoryTypeID == 1) {
-                    if(game.levels.filter(i => i.categoryID == that.categoryID && i.id == that.levelID).length == 0) {
-                        this.levelID = game.levels.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id;
-                    }
-                } else {
-                    this.levelID = '';
-                }                
+                }          
             },
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
@@ -206,13 +146,7 @@
                         break;
                     case 'categoryType':
                         this.categoryTypeID = value;
-                        break;
-                    case 'category':
-                        this.categoryID = value;
-                        break;
-                    case 'level':
-                        this.levelID = value;
-                        break;                                                                                                                          
+                        break;                                                                                                                      
                 }
 
                 this.resetSelected();                

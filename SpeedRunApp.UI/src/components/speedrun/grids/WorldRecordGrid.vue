@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <div id="tblWorldRecordGrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
+            <div :id="'tblWorldRecordGrid_' + gameid + '_' + categoryid + '_' + levelid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -34,8 +34,8 @@
             categorytypeid: String,
             categoryid: String,
             levelid: String,
-            variablevalues: String,
-            userid: String,
+            variablevalues: String,            
+            userid: String,       
             variables: Array
         },
         data() {
@@ -77,27 +77,15 @@
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
+                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 100, widthGrow: 1 }, //minWidth:125                    
+                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 100, widthGrow: 1, visible: that.categorytypeid == 1 }, //minWidth:125                    
                     { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135, widthGrow: 1 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
-                    { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false }
+                    { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
+                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false }                    
                 ];
-
-                // tableData.forEach(item => {
-                //     if (item.variableValues) {
-                //         Object.keys(item.variableValues).forEach(variableID => {
-                //             var variable = that.variables?.filter(x => x.id == variableID)[0];
-                //             if (variable && variable.isSubCategory) {
-                //                 var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
-                //                 if (variableValue) {
-                //                     item[variable.name] = variableValue.name;
-                //                     item[variable.name + 'sort'] = variableValue.id;
-                //                 }
-                //             }
-                //         })
-                //     }
-                // });
 
                 tableData.forEach(item => {
                     if (item.subCategoryVariableValueIDs) {
@@ -131,7 +119,7 @@
                     sortList.push({ column: variable.name + 'sort', dir: "asc" })
                 });
 
-                this.table = new Tabulator("#tblWorldRecordGrid", {
+                this.table = new Tabulator("#tblWorldRecordGrid_" + that.gameid + "_" + that.categoryid + "_" + that.levelid, {
                     data: tableData,
                     layout: "fitColumns",
                     //responsiveLayout: false,
@@ -205,7 +193,8 @@
             },
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
-                var value = cell.getRow().getCell("primaryTimeString").getValue();
+                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
+                var value = cell.getRow().getCell(primaryTimeColumn).getValue();
 
                 if (value) {
                     html += value

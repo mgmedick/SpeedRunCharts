@@ -51,6 +51,15 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        public IEnumerable<WorldRecordGridView> GetWorldRecordGridViews(Expression<Func<WorldRecordGridView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<WorldRecordGridView>().Where(predicate).ToList();
+                return results;
+            }
+        }        
+
         public IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -80,12 +89,12 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetPersonalBestsByUserID(int gameID, int categoryID, int? levelID, int userID)
+        public IEnumerable<WorldRecordGridView> GetPersonalBestsByUserID(int gameID, int categoryID, int? levelID, int userID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = IsMySQL ? db.Query<SpeedRunGridView>("CALL GetPersonalBestsByUserID (@0, @1, @2, @3);", gameID, categoryID, levelID, userID).ToList() :
-                                        db.Query<SpeedRunGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3", gameID, categoryID, levelID, userID).ToList();
+                var results = IsMySQL ? db.Query<WorldRecordGridView>("CALL GetPersonalBestsByUserID2 (@0, @1, @2, @3);", gameID, categoryID, levelID, userID).ToList() :
+                                        db.Query<WorldRecordGridView>("EXEC dbo.GetPersonalBestsByUserID @0, @1, @2, @3", gameID, categoryID, levelID, userID).ToList();
 
                 return results;
             }

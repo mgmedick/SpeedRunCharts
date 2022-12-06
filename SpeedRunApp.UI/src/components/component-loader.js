@@ -25,6 +25,7 @@ import gridTabContainer from './speedrun/grids/GridTabContainer.vue';
 import gridTabSpeedRun from './speedrun/grids/GridTabSpeedRun.vue';
 import gridTabSpeedRunVariable from './speedrun/grids/GridTabSpeedRunVariable.vue';
 import gridTabWorldRecord from './speedrun/grids/GridTabWorldRecord.vue';
+import gridTabWorldRecordVariable from './speedrun/grids/GridTabWorldRecordVariable.vue';
 import speedRunGrid from './speedrun/grids/SpeedRunGrid.vue';
 import worldRecordGrid from './speedrun/grids/WorldRecordGrid.vue';
 
@@ -63,6 +64,7 @@ export default {
         app.component("grid-tab-container", gridTabContainer);
         app.component("grid-tab-speedrun", gridTabSpeedRun);
         app.component("grid-tab-speedrun-variable", gridTabSpeedRunVariable);
+        app.component("grid-tab-worldrecord-variable", gridTabWorldRecordVariable);        
         app.component("speedrun-grid", speedRunGrid);
         app.component("speedrun-grid-chart-container", speedRunGridChartContainer);
         app.component("speedrun-grid-worldrecord-chart", speedRunGridWorldRecordChart);

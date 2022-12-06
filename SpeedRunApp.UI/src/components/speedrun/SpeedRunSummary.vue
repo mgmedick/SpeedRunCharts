@@ -34,12 +34,12 @@
                             </template>
                         </div>
                     </div>                            
-                    <div class="py-1">
-                        <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1 text-secondary">{{ item.categoryType?.name }}</span>
-                        <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1 text-secondary">{{ item.category?.name }}</span>
-                        <span v-if="item.level?.name" class="badge badge-secondary font-weight-normal mr-1 text-secondary">{{ item.level?.name }}</span>
+                    <div>
+                        <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.categoryType?.name }}</span>
+                        <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.category?.name }}</span>
+                        <span v-if="item.level?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.level?.name }}</span>
                         <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">
-                            <span class="badge badge-secondary font-weight-normal mr-1 text-secondary">{{ subCategoryVariableValueName }}</span>
+                            <span class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ subCategoryVariableValueName }}</span>
                         </template>
                     </div>                      
                 </div>

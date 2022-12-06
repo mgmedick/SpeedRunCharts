@@ -12,6 +12,7 @@ namespace SpeedRunApp.Repository
         {
             For<SpeedRunView>().TableName("vw_SpeedRun");
             For<SpeedRunGridView>().TableName("vw_SpeedRunGrid");
+            For<WorldRecordGridView>().TableName("vw_WorldRecordGrid");           
             For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
             For<SpeedRunGridTabUserView>().TableName("vw_SpeedRunGridTabUser");
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");

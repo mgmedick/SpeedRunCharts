@@ -46,7 +46,7 @@
                     </div>                     
                 </div>
             </div>
-            <grid-tab-container :isgame="false" :id="uservm.id.toString()" :speedrunid="speedrunid"></grid-tab-container>
+            <user-grid-tab :id="uservm.id.toString()" :speedrunid="speedrunid"></user-grid-tab>
         </div>
         <modal v-if="showUpdateUserModal" contentclass="cmv-modal-md" @close="showUpdateUserModal = false" ref="updateModal">
             <template v-slot:title>

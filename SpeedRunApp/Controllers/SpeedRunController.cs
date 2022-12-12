@@ -69,18 +69,42 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(results);
         }
 
+        // [HttpGet]
+        // public JsonResult GetGameWorldRecordGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
+        // {
+        //     var results = _speedRunService.GetGameWorldRecordGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs);
+
+        //     return Json(results);
+        // }
+
         [HttpGet]
-        public JsonResult GetWorldRecordGridData(int gameID, int categoryID, int? levelID, int? userID)
+        public JsonResult GetGameWorldRecordGridData(int gameID, string categoryIDs, string levelIDs, string subCategoryVariableValueIDs)
         {
-            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryID, levelID, userID);
+            var results = _speedRunService.GetGameWorldRecordGridData(gameID, categoryIDs, levelIDs, subCategoryVariableValueIDs);
+
+            return Json(results);
+        }
+        
+        [HttpGet]
+        public JsonResult GetUserPersonalBestGridData(int gameID, int categoryID, int? levelID, int userID)
+        {
+            var results = _speedRunService.GetUserPersonalBestGridData(gameID, categoryID, levelID, userID);
+
+            return Json(results);
+        }        
+
+        [HttpGet]
+        public JsonResult GetGameSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData)
+        {
+            var results = _speedRunService.GetGameSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, showAllData);
 
             return Json(results);
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int? userID, bool showAllData)
+        public JsonResult GetUserSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
-            var results = _speedRunService.GetSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID, showAllData);
+            var results = _speedRunService.GetUserSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID);
 
             return Json(results);
         }

@@ -677,6 +677,10 @@ button.bg-dark:focus {
     border-bottom-color: var(--bs-border-color10);
 }
 
+.tabulator-row .tabulator-cell {
+    font-size: 0.813rem;
+}
+
 .tabulator .tabulator-header {
     background-color: var(--bs-background-color12);
     border-bottom-color: var(--bs-border-color10);
@@ -687,7 +691,7 @@ button.bg-dark:focus {
 }
 
 .tabulator-header .tabulator-headers .tabulator-col {
-    height: 71px !important;
+    height: auto !important;
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
@@ -700,6 +704,10 @@ button.bg-dark:focus {
     background-color: var(--bs-background-color12);
     width: 10%;
     border: none;    
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
+    white-space: normal;
 }
 
 .tabulator .tabulator-tableHolder .tabulator-table {

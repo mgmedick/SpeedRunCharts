@@ -7,25 +7,6 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div v-if="!isgame" class="row no-gutters pr-1 pt-1 pb-0">
-            <div class="col tab-list">
-                <ul class="nav nav-pills">
-                    <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
-                        <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
-                    </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
-                            <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(game, gameIndex) in items" :key="game.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" @click="onTabClick">{{ game.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>    
-                </ul>
-            </div>          
-        </div>
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
                 <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -72,10 +53,10 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <grid-tab-speedrun-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></grid-tab-speedrun-variable>
+                                        <game-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-variable-grid-tab>
                                     </div>
                                     <div v-else>
-                                        <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                        <div class="row no-gutters pr-1 pt-1">
                                             <div class="col-auto">
                                                 <label class="tab-row-name pr-2">Hide Empty:</label>
                                             </div>
@@ -86,7 +67,7 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                        <div v-if="isgame" class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
+                                        <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
                                             <div class="col-auto pr-2">
                                                 <label class="tab-row-name">Show All Runs:</label>
                                             </div>
@@ -108,7 +89,7 @@
                                             </div>                                                                                          
                                         </div>
                                         <div class="clearfix"></div>
-                                        <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                        <game-speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></game-speedrun-grid>
                                     </div>
                                 </div>
                                 <div v-else>
@@ -134,10 +115,10 @@
                                     <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <grid-tab-speedrun-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :userid="userID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></grid-tab-speedrun-variable>
+                                                <game-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-variable-grid-tab>
                                             </div>
                                             <div v-else>
-                                                <div v-if="isgame" class="row no-gutters pr-1 pt-1">
+                                                <div class="row no-gutters pr-1 pt-1">
                                                     <div class="col-auto">
                                                         <label class="tab-row-name pr-2">Hide Empty:</label>
                                                     </div>
@@ -148,7 +129,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div v-if="isgame" class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
+                                                <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
                                                     <div class="col-auto pr-2">
                                                         <label class="tab-row-name">Show All Runs:</label>
                                                     </div>
@@ -170,7 +151,7 @@
                                                     </div>                                                                                          
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                <speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :userid="userID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></speedrun-grid>
+                                                <game-speedrun-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></game-speedrun-grid>
                                             </div>
                                         </div>
                                     </div>
@@ -187,9 +168,8 @@
     import axios from 'axios';
 
     export default {
-        name: "GridTabSpeedRun",
+        name: "GameSpeedRunGridTab",
         props: {
-            isgame: Boolean,
             id: String,
             speedrunid: String
         },
@@ -212,9 +192,6 @@
             }
         },
         computed: {
-            userID: function () {
-                return this.isgame ? '' : this.id;
-            },
             title: function () {
                 var result = '';
                 var game = this.items.filter(i=>i.id == this.gameID)[0];
@@ -248,7 +225,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = this.isgame ? '/Game/GetSpeedRunGridTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid : '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Game/GetSpeedRunGridTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

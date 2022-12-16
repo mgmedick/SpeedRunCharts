@@ -33,6 +33,7 @@ import gameSpeedRunGrid from './game/GameSpeedRunGrid.vue';
 import gameSpeedRunGridChartContainer from './game/GameSpeedRunGridChartContainer.vue';
 import gameWorldRecordGridTab from './game/GameWorldRecordGridTab.vue';
 import gameWorldRecordVariableGridTab from './game/GameWorldRecordVariableGridTab.vue';
+import gameWorldRecordVariableGrid from './game/GameWorldRecordVariableGrid.vue';
 import gameWorldRecordGrid from './game/GameWorldRecordGrid.vue';
 
 import userDetails from './user/UserDetails.vue';
@@ -80,6 +81,7 @@ export default {
         app.component("game-speedrun-grid-chart-container", gameSpeedRunGridChartContainer);
         app.component("game-worldrecord-grid-tab", gameWorldRecordGridTab);
         app.component("game-worldrecord-variable-grid-tab", gameWorldRecordVariableGridTab);
+        app.component("game-worldrecord-variable-grid", gameWorldRecordVariableGrid);
         app.component("game-worldrecord-grid", gameWorldRecordGrid);
 
         app.component('userdetails', userDetails); 

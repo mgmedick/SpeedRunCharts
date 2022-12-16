@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>        
-        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
+        <div v-if="hasData" class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <div ref="worldrecordgrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
@@ -44,6 +44,7 @@
                 table: {},
                 tableData: [],
                 loading: true,
+                hasData: true,
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -65,8 +66,13 @@
                 axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryIDs: this.categoryids, levelIDs: this.levelids, subCategoryVariableValueIDs: this.variablevalues } })
                 //axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues?.indexOf(",") > -1 ? this.variablevalues.substring(0, this.variablevalues.lastIndexOf(",") - 1) : this.variablevalues } })                    
                     .then(res => {
-                        that.tableData = res.data;
-                        that.initGrid(res.data);
+                        if (res.data && res.data.length > 0) {
+                            that.tableData = res.data;
+                            that.initGrid(res.data);
+                        } else {
+                            that.hasData = false;
+                        }
+                                                
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });

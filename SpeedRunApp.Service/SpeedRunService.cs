@@ -129,7 +129,7 @@ namespace SpeedRunApp.Service
         {
             var categories = !string.IsNullOrWhiteSpace(categoryIDs) ? categoryIDs.Split(",").Select(i=>Convert.ToInt32(i)).ToList() : new List<int>();                                               
             var levels = !string.IsNullOrWhiteSpace(levelIDs) ? levelIDs.Split(",").Select(i=>Convert.ToInt32(i)).ToList() : new List<int>();                                               
-            var runs = _speedRunRepo.GetWorldRecordGridViews(i => i.GameID == gameID && (!categories.Any() || categories.Contains(i.CategoryID)) && (!levels.Any() || i.LevelID.HasValue && levels.Contains(i.LevelID.Value)) && (string.IsNullOrWhiteSpace(subCategoryVariableValueIDs) || i.SubCategoryVariableValueIDs.StartsWith(subCategoryVariableValueIDs)) && i.Rank == 1)
+            var runs = _speedRunRepo.GetWorldRecordGridViews(i => i.GameID == gameID && (!categories.Any() || categories.Contains(i.CategoryID)) && (!levels.Any() && !i.LevelID.HasValue || levels.Any() && i.LevelID.HasValue && levels.Contains(i.LevelID.Value)) && (string.IsNullOrWhiteSpace(subCategoryVariableValueIDs) || i.SubCategoryVariableValueIDs.Contains(subCategoryVariableValueIDs)) && i.Rank == 1)
                                     .OrderBy(i => i.CategoryID)
                                     .ThenBy(i => i.LevelID)
                                     .ThenBy(i => i.SubCategoryVariableValueIDs)

@@ -315,6 +315,17 @@ namespace SpeedRunApp.Model.ViewModels
                         variableValue.Name += " (empty)";
                     }
 
+                    var subvars = SubCategoryVariables.Where(i => i.CategoryID == variable.CategoryID && i.LevelID == variable.LevelID).ToList();
+                    foreach(var subvar in subvars)
+                    {
+                        foreach(var va in subvar.VariableValues){
+                            if (va.ID == variableValue.ID)
+                            {
+                                va.HasData = variableValue.HasData;
+                            }
+                        }
+                    }
+
                     if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
                     {
                         SetVariablesHasValue(variableValue.SubVariables.ToList(), runs, variableValues);

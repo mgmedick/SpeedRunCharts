@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>        
-        <div v-if="hasData" class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
+        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <div ref="worldrecordgrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
@@ -32,8 +32,8 @@
         props: {
             gameid: String,
             categorytypeid: String,
-            categoryids: String,
-            levelids: String,
+            categoryid: String,
+            levelid: String,
             variablevalues: String,
             showmilliseconds: Boolean,
             variables: Array
@@ -44,7 +44,6 @@
                 table: {},
                 tableData: [],
                 loading: true,
-                hasData: true,
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -63,16 +62,10 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryIDs: this.categoryids, levelIDs: this.levelids, subCategoryVariableValueIDs: this.variablevalues } })
-                //axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues?.indexOf(",") > -1 ? this.variablevalues.substring(0, this.variablevalues.lastIndexOf(",") - 1) : this.variablevalues } })                    
+                axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues } })
                     .then(res => {
-                        if (res.data && res.data.length > 0) {
-                            that.tableData = res.data;
-                            that.initGrid(res.data);
-                        } else {
-                            that.hasData = false;
-                        }
-                                                
+                        that.tableData = res.data;
+                        that.initGrid(res.data);                                              
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });

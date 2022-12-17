@@ -10,6 +10,7 @@ namespace SpeedRunApp.Model.Data
         public int GameID { get; set; }
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public int CategoryTypeID { get; set; }
         public int? LevelID { get; set; }
         public string LevelName { get; set; }        
         public int? PlatformID { get; set; }

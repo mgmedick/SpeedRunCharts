@@ -125,15 +125,14 @@ namespace SpeedRunApp.Service
         //     return runVMs;
         // }
 
-        public IEnumerable<WorldRecordGridViewModel> GetGameWorldRecordGridData(int gameID, string categoryIDs, string levelIDs, string subCategoryVariableValueIDs)
-        {
-            var categories = !string.IsNullOrWhiteSpace(categoryIDs) ? categoryIDs.Split(",").Select(i=>Convert.ToInt32(i)).ToList() : new List<int>();                                               
-            var levels = !string.IsNullOrWhiteSpace(levelIDs) ? levelIDs.Split(",").Select(i=>Convert.ToInt32(i)).ToList() : new List<int>();                                               
-            var runs = _speedRunRepo.GetWorldRecordGridViews(i => i.GameID == gameID && (!categories.Any() || categories.Contains(i.CategoryID)) && (!levels.Any() && !i.LevelID.HasValue || levels.Any() && i.LevelID.HasValue && levels.Contains(i.LevelID.Value)) && (string.IsNullOrWhiteSpace(subCategoryVariableValueIDs) || i.SubCategoryVariableValueIDs.Contains(subCategoryVariableValueIDs)) && i.Rank == 1)
+        public IEnumerable<WorldRecordGridViewModel> GetGameWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID, string subCategoryVariableValueIDs)
+        {                                     
+            var runs = _speedRunRepo.GetWorldRecordGridViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && (!categoryID.HasValue || i.CategoryID == categoryID) && (!levelID.HasValue || i.LevelID == levelID) && (string.IsNullOrWhiteSpace(subCategoryVariableValueIDs) || i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs) && i.Rank == 1)
                                     .OrderBy(i => i.CategoryID)
                                     .ThenBy(i => i.LevelID)
                                     .ThenBy(i => i.SubCategoryVariableValueIDs)
                                     .ToList();
+                                                                                                            
             var runVMs = runs.Select(i => new WorldRecordGridViewModel(i)).ToList();
             runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID && g.LevelID == i.LevelID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
 

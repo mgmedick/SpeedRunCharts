@@ -138,23 +138,27 @@ namespace SpeedRunApp.Model.ViewModels
         }
     
         private List<Variable> GetAdjustedVariables(List<Variable> variables)
-        {
-            var gameGlobalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
-            foreach (var gameGlobalVariable in gameGlobalVariables)
+        {       
+            var categoryVariables = variables.Where(i => i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
+            foreach (var categoryVariable in categoryVariables)
             {
-                var category = Categories.FirstOrDefault(i => i.ID == gameGlobalVariable.CategoryID);
+                var category = Categories.FirstOrDefault(i => i.ID == categoryVariable.CategoryID);
                 if (category != null && category.CategoryTypeID == (int)CategoryType.PerGame)
                 {
-                    gameGlobalVariable.ScopeTypeID = (int)VariableScopeType.FullGame;
+                    categoryVariable.IsSingleCategory = true;
                 }
             }
-            
-            var levelGlobalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && i.LevelID.HasValue).ToList();
-            foreach (var levelGlobalVariable in levelGlobalVariables)
-            {
-                    levelGlobalVariable.ScopeTypeID = (int)VariableScopeType.SingleLevel;
-            }
 
+            var levelVariables = variables.Where(i => i.LevelID.HasValue).ToList();
+            foreach (var levelVariable in levelVariables)
+            {
+                var category = Categories.FirstOrDefault(i => i.ID == levelVariable.CategoryID);
+                if (category != null && category.CategoryTypeID == (int)CategoryType.PerLevel)
+                {
+                    levelVariable.IsSingleLevel = true;
+                }
+            }            
+                        
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();            
             var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)
@@ -166,19 +170,15 @@ namespace SpeedRunApp.Model.ViewModels
                         foreach (var gameLevel in GameLevels)
                         {
                             var variable = (Variable)globalVariable.Clone();
-                            // variable.ID = new Random().Next();
                             variable.CategoryID = category.ID;
                             variable.LevelID = gameLevel.ID;
-                            variable.IsCopy = true;
                             variables.Insert(0, variable);
                         }
                     }
                     else
                     {
                         var variable = (Variable)globalVariable.Clone();
-                        // variable.ID = new Random().Next();
                         variable.CategoryID = category.ID;
-                        variable.IsCopy = true;
                         variables.Insert(0, variable);
                     }
                 }
@@ -194,9 +194,7 @@ namespace SpeedRunApp.Model.ViewModels
                     foreach (var gameLevel in GameLevels)
                     {
                         var variable = (Variable)globalLevelVariable.Clone();
-                        // variable.ID = new Random().Next();
                         variable.LevelID = gameLevel.ID;
-                        variable.IsCopy = true;                        
                         variables.Insert(0, variable);
                     }
                 }
@@ -211,9 +209,7 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var category in gameCategories)
                 {
                     var variable = (Variable)gameVariable.Clone();
-                    // variable.ID = new Random().Next();
                     variable.CategoryID = category.ID;
-                    variable.IsCopy = true;                        
                     variables.Insert(0, variable);
                 }
             }
@@ -231,10 +227,8 @@ namespace SpeedRunApp.Model.ViewModels
                             foreach (var gameLevel in GameLevels)
                             {
                                 var variable = (Variable)allLevelVariable.Clone();
-                                // variable.ID = new Random().Next();                                
                                 variable.CategoryID = category.ID;
                                 variable.LevelID = gameLevel.ID;
-                                variable.IsCopy = true;                       
                                 variables.Insert(0, variable);
                             }
                         } 
@@ -242,9 +236,7 @@ namespace SpeedRunApp.Model.ViewModels
                         foreach (var gameLevel in GameLevels)
                         {
                             var variable = (Variable)allLevelVariable.Clone();                          
-                            // variable.ID = new Random().Next();                           
                             variable.LevelID = gameLevel.ID;
-                            variable.IsCopy = true;                       
                             variables.Insert(0, variable);
                         }
                     }
@@ -259,9 +251,7 @@ namespace SpeedRunApp.Model.ViewModels
                 foreach (var category in levelCategories)
                 {
                     var variable = (Variable)singleLevelVariable.Clone();
-                    // variable.ID = new Random().Next();                                               
                     variable.CategoryID = category.ID;
-                    variable.IsCopy = true;                       
                     variables.Insert(0, variable);
                 }
             }
@@ -281,7 +271,6 @@ namespace SpeedRunApp.Model.ViewModels
                 if (!results.Any(i=>i.CategoryID == variable.CategoryID && i.LevelID == variable.LevelID))
                 {
                     var variableCopy = (Variable)variable.Clone();
-                    variableCopy.IsCopy = true;
                     var subVariables = variables.Where(n => n.CategoryID == variableCopy.CategoryID && n.LevelID == variableCopy.LevelID && n.ID > variableCopy.ID).ToList();
 
                     if (subVariables.Any())
@@ -335,26 +324,7 @@ namespace SpeedRunApp.Model.ViewModels
                 parentVariableValues = null;    
            }
         }
-
-        private void SetCopiedVariableIDs(List<Variable> variables)
-        {
-           foreach (var variable in variables)
-           {
-                if (variable.IsCopy)
-                {
-                    variable.ID = new Random().Next();
-                }
-
-                foreach (var variableValue in variable.VariableValues)
-                {
-                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
-                    {
-                        SetCopiedVariableIDs(variableValue.SubVariables.ToList());
-                    }
-                }
-           }
-        }       
-
+        
         public int ID { get; set; }
         public string Name { get; set; }
         public bool ShowMilliseconds { get; set; }

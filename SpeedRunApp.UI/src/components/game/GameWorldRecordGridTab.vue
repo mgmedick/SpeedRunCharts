@@ -31,7 +31,7 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div v-if="categoryTypeID == 0 && (!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID && variable.isSingleCategory).length == 0)">
-                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>                              
+                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="true" :showlevels="false"></game-worldrecord-grid>                              
                         </div>                    
                         <div v-else>
                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -56,7 +56,7 @@
                             <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                 <div v-if="categoryID == category.id">
                                     <div v-if="categoryTypeID == 0">
-                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>
+                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="false"></game-worldrecord-grid>
                                         <!-- <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
                                             <game-worldrecord-variable-grid-tab :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables" @ontabclick="onTabClick"></game-worldrecord-variable-grid-tab>                                                                        
                                         </div>
@@ -65,8 +65,8 @@
                                         </div> -->
                                     </div>
                                     <div v-else>
-                                        <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && (variable.scopeTypeID == '3' || variable.isSingleLevel)).length == 0">
-                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>                              
+                                        <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
+                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="true"></game-worldrecord-grid>                              
                                         </div>
                                         <div v-else>
                                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -90,7 +90,7 @@
                                             </div>
                                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                 <div v-if="levelID == level.id">
-                                                    <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>                              
+                                                    <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="false"></game-worldrecord-grid>                              
                                                     <!-- <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
                                                         <game-worldrecord-variable-grid-tab :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables" @ontabclick="onTabClick"></game-worldrecord-variable-grid-tab>                                                                                                                            
                                                     </div>

@@ -677,6 +677,13 @@ button.bg-dark:focus {
     border-bottom-color: var(--bs-border-color10);
 }
 
+.tabulator-row.tabulator-group {
+    background-color: var(--bs-border-color6);
+    border-bottom-color: var(--bs-border-color10);
+    border-top: none;
+    border-right: none;
+}
+
 .tabulator-row .tabulator-cell {
     font-size: 0.813rem;
 }

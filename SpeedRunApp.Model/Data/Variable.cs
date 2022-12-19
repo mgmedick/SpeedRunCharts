@@ -13,7 +13,6 @@ namespace SpeedRunApp.Model.Data
         public int? LevelID { get; set; }
         public IEnumerable<VariableValue> VariableValues { get; set; }        
         public bool IsSingleCategory { get; set; }
-        public bool IsSingleLevel { get; set; }
         public object Clone()
         {
             Variable variable = (Variable)this.MemberwiseClone();

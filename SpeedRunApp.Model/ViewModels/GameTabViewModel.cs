@@ -132,14 +132,13 @@ namespace SpeedRunApp.Model.ViewModels
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
                 SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
-                SetVariablesHasValue(SubCategoryVariablesTabs, runs);  
-                //SetCopiedVariableIDs(SubCategoryVariablesTabs); 
+                SetVariablesHasValue(SubCategoryVariablesTabs, runs);
             }
         }
     
         private List<Variable> GetAdjustedVariables(List<Variable> variables)
         {       
-            var categoryVariables = variables.Where(i => i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
+            var categoryVariables = variables.Where(i => (i.ScopeTypeID == (int)VariableScopeType.Global || i.ScopeTypeID == (int)VariableScopeType.FullGame) && i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
             foreach (var categoryVariable in categoryVariables)
             {
                 var category = Categories.FirstOrDefault(i => i.ID == categoryVariable.CategoryID);
@@ -149,16 +148,6 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
-            var levelVariables = variables.Where(i => i.LevelID.HasValue).ToList();
-            foreach (var levelVariable in levelVariables)
-            {
-                var category = Categories.FirstOrDefault(i => i.ID == levelVariable.CategoryID);
-                if (category != null && category.CategoryTypeID == (int)CategoryType.PerLevel)
-                {
-                    levelVariable.IsSingleLevel = true;
-                }
-            }            
-                        
             var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();            
             var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)

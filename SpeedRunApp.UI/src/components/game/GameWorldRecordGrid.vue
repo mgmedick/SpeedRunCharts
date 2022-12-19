@@ -36,6 +36,8 @@
             levelid: String,
             variablevalues: String,
             showmilliseconds: Boolean,
+            showcategories: Boolean,
+            showlevels: Boolean,
             variables: Array
             // tableindex: Number
         },
@@ -77,8 +79,8 @@
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20 }, //, width: 50, widthShrink: 2
                     { title: "#", field: "rank", formatter: that.rankFormatter, headerSort: false, width: 20 }, //minWidth:40, maxWidth:75                    
-                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1 }, //, minWidth: 100, widthGrow: 1                    
-                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, visible: that.categorytypeid == 1, minWidth: 150, widthGrow: 3 }, //, minWidth: 100, widthGrow: 1                   
+                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
+                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
                     { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135 }, //, minWidth: 135, widthGrow: 1
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", minWidth: 100 }, //, width: 125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
@@ -114,9 +116,24 @@
                 columns.push({ title: "Submitted", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50 });
 
+                var groupByList = [];
+                if(distinctVariables.length > 1) {
+                    if (this.showcategories) {
+                        groupByList.push("categoryName");
+                    } else if (this.showlevels){
+                        groupByList.push("levelName");
+                    }
+
+                    distinctVariables?.slice().forEach((variable, variableindex) => {
+                        if (variableindex < 1) {
+                            groupByList.push(variable.id.toString());
+                        }
+                    });                    
+                }
+                
                 var sortList = [];
-                distinctVariables?.slice().reverse().forEach(variable => {
-                    sortList.push({ column: variable.id + 'sort', dir: "asc" })
+                distinctVariables?.slice().reverse().forEach((variable, variableindex) => {
+                    sortList.push({ column: variable.id + 'sort', dir: "asc" });
                 });
 
                 var el = this.$refs.worldrecordgrid;          
@@ -131,8 +148,13 @@
                     movableColumns: that.isMediaMedium,
                     resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: true,
+                    groupBy: groupByList,
                     initialSort: sortList,
                     columns: columns,
+                    groupHeader: function(value, count, data, group){
+                        var html = that.getGroupText(group._group, columns, count);
+                        return html;
+                    },
                     renderComplete:function() {
                         Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
                             var value = el.getAttribute('data-content');
@@ -153,7 +175,33 @@
             formatColumnField(fieldName) {
                 var field = fieldName.replace(/./g,'_');
                 return field;
-            },                        
+            }, 
+            getGroupText(group, columns, count, html, index) {
+                if (!html) {
+                    html = '';
+                }
+
+                if (!index){
+                    index = 0;
+                }
+
+                if (group.parent) {
+                    html = this.getGroupText(group.parent, columns, count, html, index + 1) + " - " + html;
+                }
+
+                if (group.field == "categoryName") {
+                    html += group.key;
+                } else {
+                    html += columns.find(column => column.field == group.field)?.title;
+                    html += ": <i>" + group.key + "</i>";
+                }
+
+                if (index == 0) {
+                    html += "<span>(" + count + " item)</span>";
+                }
+
+                return html;
+            },                                       
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 

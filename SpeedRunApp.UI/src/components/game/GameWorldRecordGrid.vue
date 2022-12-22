@@ -38,8 +38,8 @@
             showmilliseconds: Boolean,
             showcategories: Boolean,
             showlevels: Boolean,
-            variables: Array
-            // tableindex: Number
+            variables: Array,
+            subcategoryvariablevaluetabs: Array
         },
         data() {
             return {
@@ -64,7 +64,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues } })
+                axios.get('/SpeedRun/GetGameWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data);                                              
@@ -80,7 +80,7 @@
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20 }, //, width: 50, widthShrink: 2
                     { title: "#", field: "rank", formatter: that.rankFormatter, headerSort: false, width: 20 }, //minWidth:40, maxWidth:75                    
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
-                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
+                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
                     { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135 }, //, minWidth: 135, widthGrow: 1
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", minWidth: 100 }, //, width: 125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
@@ -109,7 +109,7 @@
                 distinctVariables?.forEach(variable => {                             
                     var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.id + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150 },)
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150, widthGrow: 1 },)
                     columns.push({ title: variable.name + 'sort', field: variable.id + 'sort', visible: false },)
                 });
 
@@ -122,13 +122,11 @@
                         groupByList.push("categoryName");
                     } else if (this.showlevels){
                         groupByList.push("levelName");
-                    }
+                    }                 
+                }
 
-                    distinctVariables?.slice().forEach((variable, variableindex) => {
-                        if (variableindex < 1) {
-                            groupByList.push(variable.id.toString());
-                        }
-                    });                    
+                if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
+                    that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData, groupByList);
                 }
                 
                 var sortList = [];
@@ -151,8 +149,9 @@
                     groupBy: groupByList,
                     initialSort: sortList,
                     columns: columns,
-                    groupHeader: function(value, count, data, group){
-                        var html = that.getGroupText(group._group, columns, count);
+                    groupHeader: function(value, count, data, group) {
+                        //var html = that.getGroupText(group._group, count);
+                        var html = that.getGroupText(group._group, count);
                         return html;
                     },
                     renderComplete:function() {
@@ -175,33 +174,99 @@
             formatColumnField(fieldName) {
                 var field = fieldName.replace(/./g,'_');
                 return field;
-            }, 
-            getGroupText(group, columns, count, html, index) {
-                if (!html) {
-                    html = '';
+            },
+            getVariableGroupByList(subCategoryVariableValues, tableData, groupByList, variableValueIDs, index) {
+                var that = this;
+                if (!variableValueIDs) {
+                    variableValueIDs = '';
                 }
 
-                if (!index){
+                if(!index){
                     index = 0;
                 }
 
-                if (group.parent) {
-                    html = this.getGroupText(group.parent, columns, count, html, index + 1) + " - " + html;
-                }
+                subCategoryVariableValues?.forEach(variable => {
+                    variable.variableValues.forEach(variableValue => {
+                        var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
+                        var data = tableData.filter(i => (!variable.isSingleCategory ||variable.categoryID == i.categoryID) && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs));
+                        var uniqueData =[...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
 
-                if (group.field == "categoryName") {
-                    html += group.key;
-                } else {
-                    html += columns.find(column => column.field == group.field)?.title;
-                    html += ": <i>" + group.key + "</i>";
-                }
+                        if ((index > 0 && uniqueData.length > 1) || (index == 0 && data.length > 1)) {
+                            if(groupByList.indexOf(variable.id.toString()) == -1) {
+                                groupByList.push(variable.id.toString());
+                            }
+                        }
 
-                if (index == 0) {
-                    html += "<span>(" + count + " item)</span>";
-                }
+                        if (variableValue.subVariables && variableValue.subVariables.length > 0){
+                            that.getVariableGroupByList(variableValue.subVariables, tableData, groupByList, currVariableValueIDs, index + 1);
+                        }
+                    });
+                });
+            },
+            // getGroupText(group, count, html, index) {
+            //     if (!html) {
+            //         html = '';
+            //     }
+
+            //     if (!index){
+            //         index = 0;
+            //     }
+
+            //     if (group.parent) {
+            //         html = this.getGroupText(group.parent, count, html, index + 1) + " - " + html;
+            //     }
+
+            //     html += group.key;
+
+            //     if (index == 0) {
+            //         html += "<span>(" + count + " item)</span>";
+            //     } else {
+            //         //group.element.classList.add('d-none');
+            //     }
+
+            //     return html;
+            // },                
+            getGroupText(group, count) {
+                var html = '';
+
+                // if (group.parent && !group.hasSubGroups) {
+                //     html += "<i style='font-weight:normal;'>" + group.key + "</i>";
+                // } else {
+                //     html += group.key;
+                // }
+                html += group.key;
+
+                html += "<span>(" + count + " item)</span>";
+
 
                 return html;
-            },                                       
+            },                         
+            // getGroupText(group, columns, count, html, index) {
+            //     if (!html) {
+            //         html = '';
+            //     }
+
+            //     if (!index){
+            //         index = 0;
+            //     }
+
+            //     if (group.parent) {
+            //         html = this.getGroupText(group.parent, columns, count, html, index + 1) + " - " + html;
+            //     }
+
+            //     if (group.field == "categoryName" && this.showcategories) {
+            //         html += group.key;
+            //     } else {
+            //         html += columns.find(column => column.field == group.field)?.title;
+            //         html += ": <i>" + group.key + "</i>";
+            //     }
+
+            //     if (index == 0) {
+            //         html += "<span>(" + count + " item)</span>";
+            //     }
+
+            //     return html;
+            // },                                       
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 

@@ -22,7 +22,7 @@
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                 <div v-if="variableValue.subVariables && variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
-                    <user-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @ontabclick="$emit('ontabclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></user-speedrun-variable-grid-tab>
+                    <user-speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :userid="userid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @ontabclick="$emit('ontabclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></user-speedrun-grid-tab-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
                     <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
@@ -44,7 +44,7 @@
 </template>
 <script>
     export default {
-        name: "UserSpeedRunVariableGridTab",
+        name: "UserSpeedRunGridTabVariable",
         emits: ["ontabclick", "onshowchartsclick2", "onexporttypechange", "onexportclick"],
         props: {
             items: Array,

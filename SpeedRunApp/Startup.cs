@@ -59,8 +59,7 @@ namespace SpeedRunApp
             });
 
             var connString = _config.GetSection("ConnectionStrings").GetSection("DBConnectionString").Value;
-            var isMySQL = Convert.ToBoolean(_config.GetSection("SiteSettings").GetSection("IsMySQL").Value);
-            NPocoBootstrapper.Configure(connString, isMySQL);
+            NPocoBootstrapper.Configure(connString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

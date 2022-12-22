@@ -31,7 +31,7 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div v-if="categoryTypeID == 0 && (!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID && variable.isSingleCategory).length == 0)">
-                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="true" :showlevels="false"></game-worldrecord-grid>                              
+                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showcategories="true" :showlevels="false"></game-worldrecord-grid>                              
                         </div>                    
                         <div v-else>
                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -56,17 +56,11 @@
                             <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                 <div v-if="categoryID == category.id">
                                     <div v-if="categoryTypeID == 0">
-                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="false"></game-worldrecord-grid>
-                                        <!-- <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                            <game-worldrecord-variable-grid-tab :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables" @ontabclick="onTabClick"></game-worldrecord-variable-grid-tab>                                                                        
-                                        </div>
-                                        <div v-else>
-                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>
-                                        </div> -->
+                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showcategories="false" :showlevels="false"></game-worldrecord-grid>
                                     </div>
                                     <div v-else>
                                         <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
-                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="true"></game-worldrecord-grid>                              
+                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showcategories="false" :showlevels="true"></game-worldrecord-grid>                              
                                         </div>
                                         <div v-else>
                                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -90,13 +84,7 @@
                                             </div>
                                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                 <div v-if="levelID == level.id">
-                                                    <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showcategories="false" :showlevels="false"></game-worldrecord-grid>                              
-                                                    <!-- <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                        <game-worldrecord-variable-grid-tab :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables" @ontabclick="onTabClick"></game-worldrecord-variable-grid-tab>                                                                                                                            
-                                                    </div>
-                                                    <div v-else>
-                                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></game-worldrecord-grid>                              
-                                                    </div> -->
+                                                    <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showcategories="false" :showlevels="false"></game-worldrecord-grid>                              
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -125,7 +113,6 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
-                subCategoryVariableValueIDs: {},
                 variableIndex: 0,    
                 loading: true
             }
@@ -170,35 +157,8 @@
                     this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id : '');
                 } else {
                     this.levelID = '';
-                }
-
-                if (!this.subCategoryVariableValueIDs || Object.keys(this.subCategoryVariableValueIDs).length == 0) {
-                    var eligibleVariables = [];
-                    if (this.categoryTypeID == 0) {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'));
-                    } else {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'));
-                    }
-
-                    this.subCategoryVariableValueIDs = {};
-                    this.setSubCategoryVariableValueIDs(eligibleVariables, 0);
-                }                             
-            },
-            setSubCategoryVariableValueIDs: function(variables, count) {
-                var that = this;
-                variables?.forEach(variable => {
-                    if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
-                        if(variable.variableValues && variable.variableValues.length > 0) {
-                            var va = variable.variableValues[0];
-                            that.subCategoryVariableValueIDs[variable.name + count] = va.name;
-                        
-                            if (va.subVariables && va.subVariables.length > 0) {
-                                that.setSubCategoryVariableValueIDs(va.subVariables, count + 1);
-                            }
-                        }
-                    } 
-                });
-            },              
+                }                        
+            },                      
             resetSelected: function () {
                 var that = this;
                 var game = this.items.find(game => game.id == that.gameID);
@@ -225,31 +185,11 @@
                     eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'));
                 } else {
                     eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'));
-                }
-
-                var newSubCategoryVariableValueIDs = {};
-                this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs, 0);
-                this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;              
-            },       
-            resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs, count) {
-                var that = this;                                                                               
-                variables?.forEach(variable => {
-                    if (!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
-                        if(variable.variableValues && variable.variableValues.length > 0){
-                            var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0)[0] ?? variable.variableValues[0];
-                            newSubCategoryVariableValueIDs[variable.name + count] = va.name;
-
-                            if (va.subVariables && va.subVariables.length > 0) {
-                                that.resetSubCategoryVariableValueIDs(va.subVariables, newSubCategoryVariableValueIDs, count + 1);
-                            }
-                        }
-                    }
-                });
+                }          
             },           
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');
-                var variableName = event.target.getAttribute('data-variable');
 
                 switch(type) {
                     case 'game':
@@ -261,15 +201,9 @@
                     case 'category':
                         this.categoryID = value;
                         break;
-                    case 'variableValue':
-                        this.subCategoryVariableValueIDs[variableName] = value;
-                        break;
                     case 'level':
                         this.levelID = value;
-                        break;
-                    case 'variableValue':
-                        this.subCategoryVariableValueIDs[variableName] = value;
-                        break;                                                                                                                                                                                                    
+                        break;                                                                                                                                                                                                
                 }
 
                 this.resetSelected();                

@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <div :id="'tblPersonalBestGrid_' + gameid + '_' + categoryid + '_' + levelid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
+            <div ref="personalbestgrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -28,22 +28,24 @@
     import 'tippy.js/dist/tippy.css'
 
     export default {
-        name: "UserPersonalBestGrid",
+        name: "GameWorldRecordGrid",
         props: {
             gameid: String,
             categorytypeid: String,
             categoryid: String,
             levelid: String,
-            variablevalues: String,            
-            userid: String,       
-            variables: Array
+            userid: String,            
+            showmilliseconds: Boolean,
+            showcategories: Boolean,
+            showlevels: Boolean,
+            variables: Array,
+            subcategoryvariablevaluetabs: Array
         },
         data() {
             return {
                 table: {},
                 tableData: [],
                 loading: true,
-                selectedSpeedRunID: '',
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -55,17 +57,17 @@
         },
         mounted: function() {
             this.loadData();
-            window.personalBestGridVue = this;
+            window.gameWorldRecordGridVue = this;
         },
         methods: {
             loadData() {
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetUserPersonalBestGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })
+                axios.get('/SpeedRun/GetUserPersonalBestGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })                   
                     .then(res => {
                         that.tableData = res.data;
-                        that.initGrid(res.data);
+                        that.initGrid(res.data);                                              
                         that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
@@ -75,12 +77,12 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 }, //, minWidth:30, maxWidth:50
+                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20 }, //, width: 50, widthShrink: 2
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
-                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 100, widthGrow: 1 }, //minWidth:125                    
-                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 100, widthGrow: 1, visible: that.categorytypeid == 1 }, //minWidth:125                    
-                    { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135, widthGrow: 1 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125 }, //minWidth:100, maxWidth:125
+                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
+                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
+                    { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135 }, //, minWidth: 135, widthGrow: 1
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", minWidth: 100 }, //, width: 125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
@@ -94,32 +96,46 @@
                             if (variable && variable.isSubCategory) {
                                 var variableValue = variable.variableValues.filter(i => i.id == variableValueID)[0]
                                 if (variableValue) {
-                                    item[variable.name] = variableValue.name;
-                                    item[variable.name + 'sort'] = variableValue.id;
+                                    item[variable.id.toString()] = variableValue.name;
+                                    item[variable.id + 'sort'] = variableValue.id;
                                 }
                             }
                         })
                     }
                 });                
 
-                var variables = that.variables?.filter(i => tableData.filter(el => el[i.name]).length > 0);
-                var distinctVariables = [...new Set(variables?.map(obj => obj.name))].map(name => { return variables.find(obj => obj.name === name) });
+                var variables = that.variables?.filter(i => tableData.filter(el => el[i.id.toString()]).length > 0);
+                var distinctVariables = [...new Set(variables?.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) });
                 distinctVariables?.forEach(variable => {                             
-                    var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.name + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
+                    var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.id + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
                     var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
-                    columns.push({ title: variable.name, field: variable.name, headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 140, widthGrow: 1 },)
-                    columns.push({ title: variable.name + 'sort', field: variable.name + 'sort', visible: false },)
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150 },)
+                    columns.push({ title: variable.name + 'sort', field: variable.id + 'sort', visible: false },)
                 });
 
-                columns.push({ title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 150 });
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, widthShrink: 2 });
+                columns.push({ title: "Submitted", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
+                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50 });
+
+                var groupByList = [];
+                if(distinctVariables.length > 1) {
+                    if (this.showcategories) {
+                        groupByList.push("categoryName");
+                    } else if (this.showlevels){
+                        groupByList.push("levelName");
+                    }                
+                }
+
+                if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
+                    that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData, groupByList);
+                }
 
                 var sortList = [];
-                distinctVariables?.slice().reverse().forEach(variable => {
-                    sortList.push({ column: variable.name + 'sort', dir: "asc" })
+                distinctVariables?.slice().reverse().forEach((variable, variableindex) => {
+                    sortList.push({ column: variable.id + 'sort', dir: "asc" });
                 });
 
-                this.table = new Tabulator("#tblPersonalBestGrid_" + that.gameid + "_" + that.categoryid + "_" + that.levelid, {
+                var el = this.$refs.personalbestgrid;          
+                this.table = new Tabulator(el, {
                     data: tableData,
                     layout: "fitColumns",
                     //responsiveLayout: false,
@@ -130,8 +146,13 @@
                     movableColumns: that.isMediaMedium,
                     resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: true,
+                    groupBy: groupByList,
                     initialSort: sortList,
                     columns: columns,
+                    groupHeader: function(value, count, data, group){
+                        var html = that.getGroupText(group._group, count);
+                        return html;
+                    },                                        
                     renderComplete:function() {
                         Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
                             var value = el.getAttribute('data-content');
@@ -149,6 +170,52 @@
                     },
                 });                
             },
+            formatColumnField(fieldName) {
+                var field = fieldName.replace(/./g,'_');
+                return field;
+            }, 
+            getVariableGroupByList(subCategoryVariableValues, tableData, groupByList, variableValueIDs, index) {
+                var that = this;
+                if (!variableValueIDs) {
+                    variableValueIDs = '';
+                }
+
+                if(!index){
+                    index = 0;
+                }
+
+                subCategoryVariableValues?.forEach(variable => {
+                    variable.variableValues.forEach(variableValue => {
+                        var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
+                        var data = tableData.filter(i => (!variable.isSingleCategory ||variable.categoryID == i.categoryID) && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs));
+                        var uniqueData =[...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
+
+                        if ((index > 0 && uniqueData.length > 1) || (index == 0 && data.length > 1)) {
+                            if(groupByList.indexOf(variable.id.toString()) == -1) {
+                                groupByList.push(variable.id.toString());
+                            }
+                        }
+
+                        if (variableValue.subVariables && variableValue.subVariables.length > 0){
+                            that.getVariableGroupByList(variableValue.subVariables, tableData, groupByList, currVariableValueIDs, index + 1);
+                        }
+                    });
+                });
+            },            
+            getGroupText(group, count) {
+                var html = '';
+
+                if (group.parent && !group.hasSubGroups) {
+                    html += "<i style='font-weight:normal;'>" + group.key + "</i>";
+                } else {
+                    html += group.key;
+                }
+
+                html += "<span>(" + count + " item)</span>";
+
+
+                return html;
+            },                                       
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 
@@ -156,7 +223,7 @@
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:window.personalBestGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
+                html += "<a href=\"javascript:window.gameWorldRecordGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";

@@ -64,7 +64,7 @@
     import axios from 'axios';
     
     export default {
-        name: "GameSpeedRunGridChartContainer",
+        name: "GameSpeedRunGridCharts",
         emits: ["onshowchartsclick"],
         props: {
             gameid: String,

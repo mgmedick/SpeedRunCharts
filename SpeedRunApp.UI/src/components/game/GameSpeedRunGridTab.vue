@@ -53,7 +53,7 @@
                             <div v-if="categoryID == category.id">                                
                                 <div v-if="categoryTypeID == 0">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <game-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-variable-grid-tab>
+                                        <game-speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-grid-tab-variable>
                                     </div>
                                     <div v-else>
                                         <div class="row no-gutters pr-1 pt-1">
@@ -115,7 +115,7 @@
                                     <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                         <div v-if="levelID == level.id">
                                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <game-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-variable-grid-tab>
+                                                <game-speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></game-speedrun-grid-tab-variable>
                                             </div>
                                             <div v-else>
                                                 <div class="row no-gutters pr-1 pt-1">
@@ -270,19 +270,6 @@
 
                     this.subCategoryVariableValueIDs = {};
                     this.setSubCategoryVariableValueIDs(eligibleVariables, 0);
-                    // this.subCategoryVariableValueIDs = {};
-                    // eligibleVariables.forEach(variable => {    
-                    //     that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name            
-                    // });
-
-                    // if (this.categoryTypeID == 0) {
-                    //     game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))
-                    //         .forEach(variable => { that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name })
-
-                    // } else if (this.categoryTypeID == 1) {
-                    //     game.subCategoryVariables?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))
-                    //         .forEach(variable => { that.subCategoryVariableValueIDs[variable.name] = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name })
-                    // }
                 }
             },
             setSubCategoryVariableValueIDs: function(variables, count) {
@@ -291,18 +278,13 @@
                     if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
                         if(variable.variableValues && variable.variableValues.length > 0) {
                             var va = variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-                            that.subCategoryVariableValueIDs[variable.name + count] = va.name;//variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0]?.name
+                            that.subCategoryVariableValueIDs[variable.name + count] = va.name;
                         
                             if (va.subVariables && va.subVariables.length > 0) {
                                 that.setSubCategoryVariableValueIDs(va.subVariables, count + 1);
                             }
                         }
-                    }
-                    // variable.variableValues.forEach(variableValue => {
-                    //     if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                    //         that.setSubCategoryVariableValueIDs(variableValue.subVariables);
-                    //     }
-                    // });    
+                    } 
                 });
             },                                    
             resetSelected: function () {
@@ -334,11 +316,6 @@
 
                 var newSubCategoryVariableValueIDs = {};
                 this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs, 0);
-                // eligibleVariables.forEach(variable => {    
-                //     var variableValue = variable.variableValues.filter(variableValue => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == variableValue.name).length > 0 && (!that.hideEmpty || variableValue.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-                //     newSubCategoryVariableValueIDs[variable.name] = variableValue?.name;              
-                // });
-
                 this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
                 this.speedRunID = '';
             },
@@ -357,21 +334,6 @@
                     }
                 });
             },
-            //resetSubCategoryVariableValueIDs: function(variables, newSubCategoryVariableValueIDs) {
-            //    var that = this;
-            //    variables?.forEach(variable => {
-            //        if(!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name)) {
-            //            var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideEmpty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideEmpty || va.hasData))[0];
-            //            newSubCategoryVariableValueIDs[variable.name] = va.name;
-            //        }
-
-            //        variable.variableValues.forEach(variableValue => {
-            //            if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-            //                that.resetSubCategoryVariableValueIDs(variableValue.subVariables, newSubCategoryVariableValueIDs);
-            //            }
-            //        });    
-            //    });
-            //},
             onTabClick: function (event) {                
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');

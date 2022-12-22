@@ -4,25 +4,25 @@
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" @click="onTabClick">{{ "Leaderboards" }}</a>
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" @click="onTabClick">{{ "Runs" }}</a>
                     </li>
                     <li class="nav-item py-1 pr-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" @click="onTabClick">{{ "World Records" }}</a>            
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" @click="onTabClick">{{ "Personal Bests" }}</a>            
                     </li>
                 </ul>
             </div>
         </div>
         <div v-if="gridID == 0">
-            <game-speedrun-grid-tab :id="id" :speedrunid="speedrunid"></game-speedrun-grid-tab>
+            <user-speedrun-grid-tab :id="id" :speedrunid="speedrunid"></user-speedrun-grid-tab>
         </div>
         <div v-else>
-            <game-worldrecord-grid-tab :id="id"></game-worldrecord-grid-tab>   
+            <user-personalbest-grid-tab :id="id"></user-personalbest-grid-tab>   
         </div>
     </div>
 </template>
 <script>
     export default {
-        name: "GameGridTab",
+        name: "UserDetailsTab",
         props: {
             id: String,
             speedrunid: String           

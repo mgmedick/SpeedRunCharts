@@ -22,7 +22,7 @@
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                 <div v-if="variableValue.subVariables && variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
-                    <game-speedrun-variable-grid-tab ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" @onshowalldataclick="$emit('onshowalldataclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></game-speedrun-variable-grid-tab>
+                    <game-speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" @onshowalldataclick="$emit('onshowalldataclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></game-speedrun-grid-tab-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
                     <div class="row no-gutters pr-1 pt-1">
@@ -66,7 +66,7 @@
 </template>
 <script>
     export default {
-        name: "GameSpeedRunVariableGridTab",
+        name: "GameSpeedRunGridTabVariable",
         emits: ["ontabclick", "onhideemptyclick", "onshowalldataclick", "onshowchartsclick2", "onexporttypechange", "onexportclick"],
         props: {
             items: Array,

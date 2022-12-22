@@ -46,7 +46,7 @@
                     </div>                     
                 </div>
             </div>
-            <user-grid-tab :id="uservm.id.toString()" :speedrunid="speedrunid"></user-grid-tab>
+            <userdetails-tab :id="uservm.id.toString()" :speedrunid="speedrunid"></userdetails-tab>
         </div>
         <modal v-if="showUpdateUserModal" contentclass="cmv-modal-md" @close="showUpdateUserModal = false" ref="updateModal">
             <template v-slot:title>

@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <user-speedrun-grid-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></user-speedrun-grid-chart-container>
+            <user-speedrun-grid-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></user-speedrun-grid-charts>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">

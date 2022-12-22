@@ -49,23 +49,73 @@
                 </div>
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
-                        <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                            <div>
-                                <div v-if="game.levels?.filter(lvl => lvl.categoryID == category.id && [...new Set(game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == lvl.id && variable.scopeTypeID != '1').map(x => x.name))].length > 1).length > 0">
-                                    <div v-for="(level, levelIndex) in game.levels?.filter(lvl => lvl.categoryID == category.id && game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == lvl.id && variable.scopeTypeID != '1').length > 0)" :key="level.id">
-                                        <user-personalbest-variable-grid-tab :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && variable.scopeTypeID != '1')" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :userid="id" :prevdata="''" :variableindex="variableIndex" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></user-personalbest-variable-grid-tab>
-                                    </div>                                    
+                        <div v-if="categoryTypeID == 0 && (!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID && variable.isSingleCategory).length == 0)">
+                            <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="true" :showlevels="false"></user-personalbest-grid>                                                                                          
+                        </div>                    
+                        <div v-else>
+                            <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                <div class="col tab-list">
+                                    <ul class="nav nav-pills">
+                                        <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                            <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
+                                        </li>
+                                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                                            <template v-slot:text>
+                                                <span>More...</span>
+                                            </template>
+                                            <template v-slot:options>
+                                                <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                                    <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
+                                                </template>
+                                            </template>
+                                        </button-dropdown>    
+                                    </ul>
+                                </div>                           
+                            </div>
+                            <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                <div v-if="categoryID == category.id">
+                                    <div v-if="categoryTypeID == 0">
+                                        <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></user-personalbest-grid>                                                                  
+                                    </div>
+                                    <div v-else>
+                                        <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
+                                            <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="true"></user-personalbest-grid>                              
+                                        </div>
+                                        <div v-else>
+                                            <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                                <div class="col tab-list">
+                                                    <ul class="nav nav-pills">
+                                                        <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                        </li>
+                                                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                                                            <template v-slot:text>
+                                                                <span>More...</span>
+                                                            </template>
+                                                            <template v-slot:options>
+                                                                <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                                                    <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                                </template>
+                                                            </template>
+                                                        </button-dropdown>   
+                                                    </ul>
+                                                </div>                                      
+                                            </div>
+                                            <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                                <div v-if="levelID == level.id">
+                                                    <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></user-personalbest-grid>                              
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </div>
                                 </div>
-                                <div v-else>
-                                    <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :userid="id" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></user-personalbest-grid>
-                                </div>
-                            </div>                                          
+                            </div>
                         </div>
-                    </div>
+                    </div>                      
                 </div>
             </div>
         </div>
-    </div>
+    </div>   
 </template>
 <script>
     import axios from 'axios';
@@ -73,7 +123,6 @@
     export default {
         name: "UserPersonalBestGridTab",
         props: {
-            isgame: Boolean,
             id: String
         },
         data() {
@@ -83,7 +132,7 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
-                variableIndex: 0,                
+                variableIndex: 0,    
                 loading: true
             }
         },
@@ -91,17 +140,17 @@
         },
         mounted: function () {
             this.loadData();            
-            window.addEventListener('resize', this.resizeWRTabs);
+            window.addEventListener('resize', this.resizePBTabs);
         },
         updated: function () {
-            this.resizeWRTabs();
+            this.resizePBTabs();
         },        
         methods: {
             loadData() {
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetWorldRecordGridTabsForUser?userID=' + this.id;
+                var url = '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;
@@ -119,8 +168,16 @@
 
                 var game = this.items.find(game => game.id == that.gameID);
 
-                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;            
-            },
+                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
+                
+                this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID)?.id;
+
+                if (this.categoryTypeID == 1) {
+                    this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id : '');
+                } else {
+                    this.levelID = '';
+                }                           
+            },            
             resetSelected: function () {
                 var that = this;
                 var game = this.items.find(game => game.id == that.gameID);
@@ -131,8 +188,17 @@
 
                 if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID).length == 0) {
                     this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID)[0]?.id;
-                }          
-            },
+                }    
+
+
+                if (this.categoryTypeID == 1) {
+                    if(game.levels?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID).length == 0) {
+                        this.levelID = game.levels?.filter(lvl => lvl.categoryID == that.categoryID)[0]?.id;
+                    }
+                } else {
+                    this.levelID = '';
+                }               
+            },       
             onTabClick: function (event) {
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');
@@ -143,12 +209,18 @@
                         break;
                     case 'categoryType':
                         this.categoryTypeID = value;
-                        break;                                                                                                                      
+                        break;
+                    case 'category':
+                        this.categoryID = value;
+                        break;
+                    case 'level':
+                        this.levelID = value;
+                        break;                                                                                                                                                                                                                 
                 }
 
                 this.resetSelected();                
             },
-            resizeWRTabs: function () {
+            resizePBTabs: function () {
                 var rows = document.querySelectorAll('#divWorldRecorGridTabContainer .tab-list');
 
                 for (var g = 0; g < rows.length; g++) {

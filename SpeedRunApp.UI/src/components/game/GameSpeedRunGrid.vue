@@ -8,7 +8,7 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <game-speedrun-grid-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></game-speedrun-grid-chart-container>
+            <game-speedrun-grid-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></game-speedrun-grid-charts>
             <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
@@ -117,7 +117,7 @@
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, accessorDownload: that.playerDownloadAccessor, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
                     { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
@@ -161,7 +161,7 @@
                     movableColumns: that.isMediaMedium,
                     resizableColumns: that.isMediaMedium ? "header" : false,
                     //resizableRows: false,
-                    initialSort: [             //set the initial sort order of the data
+                    initialSort: [
                         { column: "primaryTime.ticks", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,

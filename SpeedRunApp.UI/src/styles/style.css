@@ -939,6 +939,44 @@ div[data-disabled="true"] .vue-select-header {
     cursor: not-allowed;
 }
 
+.grid-group ul {
+    display: flex;
+    min-height: 32px;
+    list-style: none;
+    padding: 5px;
+    border: 2px dashed var(--bs-border-color10);
+}
+
+.grid-group .group-placeholder {
+    height: 32px;
+    width:100%;
+    color:#6c757d;
+    text-align: center; 
+    font-style: italic; 
+    font-weight: bold;
+}
+
+.grid-group .group-label {
+    font-weight:bold;
+    font-style: italic;
+    font-size: 0.813rem;;
+    padding: 8px;
+}
+
+.grid-group .group-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 2px;
+    margin-bottom: 1px;    
+    color: var(--bs-text-color2);
+    background-color: var(--bs-secondary);
+    border: 1px solid var(--bs-border-color1);
+}
+
 div[data-disabled="true"] .vue-tag.selected {
     color: var(--bs-grey);    
     opacity: 0.65;

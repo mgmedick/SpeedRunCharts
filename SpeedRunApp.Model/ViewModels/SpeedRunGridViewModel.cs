@@ -97,7 +97,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public Dictionary<int, int> VariableValues { get; set; }
+        public Dictionary<int, int> VariableValues { get; set; }        
         public List<IDNameAbbrPair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }
@@ -115,6 +115,14 @@ namespace SpeedRunApp.Model.ViewModels
                 return Players?.FirstOrDefault();
             }
         }
+
+        public string PlayerNames
+        {
+            get
+            {
+                return string.Join(",", Players.Select(i=>i.Name));
+            }
+        }        
 
         public string VerifyDateString
         {

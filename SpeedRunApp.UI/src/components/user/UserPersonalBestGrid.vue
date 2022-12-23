@@ -8,7 +8,17 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <div ref="personalbestgrid" class="mb-0" :style="[ loading ? { display:'none' } : null ]"></div>
+            <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
+                <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
+                    <li v-if="groups.length == 0" class="group-placeholder">Drag a column to this area to group by it</li>
+                    <li v-if="groups.length > 0" class="group-label">Group By:</li>
+                    <li v-for="(group, i) in groups" :key="i" class="group-tag">
+                        <span>{{ group.title }}</span>&nbsp;
+                        <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
+                    </li>                    
+                </ul>
+            </div>
+            <div class="grid" style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -45,6 +55,7 @@
             return {
                 table: {},
                 tableData: [],
+                groups: [],                
                 loading: true,
                 showDetailModal: false,
                 pageSize: 100
@@ -81,12 +92,13 @@
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
                     { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
-                    { title: "Players", field: "players", sorter: that.playerSorter, formatter: that.playerFormatter, headerFilter: "select", headerFilterParams: { values: players, multiselect: true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 135 }, //, minWidth: 135, widthGrow: 1
+                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", minWidth: 100 }, //, width: 125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
-                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false }                    
+                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
+                    { title: "playersObj", field: "players", visible: false }
                 ];
 
                 tableData.forEach(item => {
@@ -113,20 +125,19 @@
                     columns.push({ title: variable.name + 'sort', field: variable.id + 'sort', visible: false },)
                 });
 
-                columns.push({ title: "Submitted", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
+                columns.push({ title: "Submitted", field: "dateSubmittedString", sorter: "date", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50 });
 
-                var groupByList = [];
                 if(distinctVariables.length > 1) {
                     if (this.showcategories) {
-                        groupByList.push("categoryName");
+                        this.groups.push({ field: "categoryName", title: "Category" });
                     } else if (this.showlevels){
-                        groupByList.push("levelName");
-                    }                
+                        this.groups.push({ field: "levelName", title: "Level" });
+                    }                 
                 }
 
                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
-                    that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData, groupByList);
+                    that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData);
                 }
 
                 var sortList = [];
@@ -134,7 +145,7 @@
                     sortList.push({ column: variable.id + 'sort', dir: "asc" });
                 });
 
-                var el = this.$refs.personalbestgrid;          
+                var el = this.$el.querySelector('.grid');         
                 this.table = new Tabulator(el, {
                     data: tableData,
                     layout: "fitColumns",
@@ -143,10 +154,10 @@
                     tooltipsHeader:false,
                     pagination: "local",
                     paginationSize: that.pageSize,
-                    movableColumns: that.isMediaMedium,
-                    resizableColumns: that.isMediaMedium ? "header" : false,
+                    movableColumns: false,
+                    resizableColumns: "header",
                     //resizableRows: true,
-                    groupBy: groupByList,
+                    groupBy: that.groups.map(i => i.field),
                     initialSort: sortList,
                     columns: columns,
                     groupHeader: function(value, count, data, group){
@@ -154,6 +165,14 @@
                         return html;
                     },                                        
                     renderComplete:function() {
+                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                            el.setAttribute('draggable', true);
+                            el.addEventListener("dragstart", function(event) {
+                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                            });
+                        });
+
                         Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
                             var value = el.getAttribute('data-content');
                             var cellElement = el.closest('.tabulator-cell');
@@ -170,11 +189,28 @@
                     },
                 });                
             },
+            onGroupAdd(event) {
+                event.preventDefault();
+                var field = event.dataTransfer.getData("field");  
+                var title = event.dataTransfer.getData("title");                
+                if (field) {
+                    if (this.groups.filter(i => i.field == field).length == 0) {
+                        this.groups.push({ field: field, title: title });
+                        this.table.setGroupBy(this.groups.map(i => i.field));
+                    }                    
+                }                        
+            },
+            onGroupRemove(field) {
+                if (this.groups.filter(i => i.field == field).length > 0) {
+                    this.groups = this.groups.filter(i => i.field != field);
+                    this.table.setGroupBy(this.groups.map(i => i.field));
+                }
+            },                        
             formatColumnField(fieldName) {
                 var field = fieldName.replace(/./g,'_');
                 return field;
             }, 
-            getVariableGroupByList(subCategoryVariableValues, tableData, groupByList, variableValueIDs, index) {
+            getVariableGroupByList(subCategoryVariableValues, tableData, variableValueIDs, index) {
                 var that = this;
                 if (!variableValueIDs) {
                     variableValueIDs = '';
@@ -191,17 +227,17 @@
                         var uniqueData =[...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
 
                         if ((index > 0 && uniqueData.length > 1) || (index == 0 && data.length > 1)) {
-                            if(groupByList.indexOf(variable.id.toString()) == -1) {
-                                groupByList.push(variable.id.toString());
+                            if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
+                                that.groups.push({ field: variable.id.toString(), title: variable.name });
                             }
                         }
 
                         if (variableValue.subVariables && variableValue.subVariables.length > 0){
-                            that.getVariableGroupByList(variableValue.subVariables, tableData, groupByList, currVariableValueIDs, index + 1);
+                            that.getVariableGroupByList(variableValue.subVariables, tableData, currVariableValueIDs, index + 1);
                         }
                     });
                 });
-            },            
+            },                                 
             getGroupText(group, count) {
                 var html = '';
 
@@ -241,9 +277,8 @@
                 return html;
             },
             playerFormatter(cell, formatterParams, onRendered) {
-                var value = cell.getValue();
-                var valueString = value?.map(el => el.name).join();
-                //var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                var value = cell.getRow().getCell("players").getValue();
+
                 var html = '<span>'
 
                 value?.forEach(el => {
@@ -257,7 +292,7 @@
                 html += '</span>'
 
                 return html;
-            },
+            },            
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
@@ -360,10 +395,12 @@
                     return true;
                 }
 
-                return rowValue?.filter(el => { 
+                var value = rowData.players;
+
+                return value?.filter(el => { 
                     return headerValue.indexOf(el.name) > -1 
                     }).length > 0;
-            },        
+            },                               
             dateHeaderFilter(headerValue, rowValue, rowData, filterParams){
                 if(!headerValue){
                     return true;

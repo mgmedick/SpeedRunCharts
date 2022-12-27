@@ -99,6 +99,14 @@ namespace SpeedRunApp.Model.ViewModels
                 return Players?.FirstOrDefault();
             }
         }
+        
+        public string PlayerNames
+        {
+            get
+            {
+                return string.Join(",", Players.Select(i => i.Name));
+            }
+        }
 
         public string VerifyDateString
         {

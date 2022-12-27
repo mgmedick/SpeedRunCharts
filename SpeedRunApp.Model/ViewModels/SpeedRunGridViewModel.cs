@@ -120,7 +120,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return string.Join(",", Players.Select(i=>i.Name));
+                return string.Join(",", Players.Select(i => i.Name));
             }
         }        
 

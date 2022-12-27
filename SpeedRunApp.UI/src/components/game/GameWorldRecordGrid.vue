@@ -239,8 +239,8 @@
                 });
             },              
             getGroupText(group, count) {
-                var html = '';
-                if (Date.parse(group.key)) {
+                var html = '';                
+                if (isNaN(group.key) && Date.parse(group.key)) {
                     html += dayjs(group.key).format("MM/DD/YYYY");            
                 } else {
                     html += group.key;

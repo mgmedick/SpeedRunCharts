@@ -91,7 +91,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<WorldRecordGridView>("CALL GetPersonalBestsByUserID2 (@0, @1, @2, @3, @4);", gameID, categoryTypeID, categoryID, levelID, userID).ToList();
+                var results = db.Query<WorldRecordGridView>("CALL GetPersonalBestsByUserID (@0, @1, @2, @3, @4);", gameID, categoryTypeID, categoryID, levelID, userID).ToList();
 
                 return results;
             }

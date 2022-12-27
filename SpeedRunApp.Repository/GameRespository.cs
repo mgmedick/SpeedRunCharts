@@ -35,8 +35,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = IsMySQL ? db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_Game WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList() :
-                                        db.Query<SearchResult>("SELECT TOP 10 Abbr AS [Value], [Name] AS Label FROM dbo.tbl_Game WHERE [Name] LIKE '%' + @0 + '%'", searchText).ToList();
+                var results = db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_Game WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList();
                 
                 return results;
             }

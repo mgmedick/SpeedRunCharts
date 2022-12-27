@@ -8,8 +8,18 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <speedrun-grid-chart-container v-if="!loading" :isgame="!userid" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></speedrun-grid-chart-container>
-            <div id="tblGrid" :style="[ loading ? { display:'none' } : null ]"></div>
+            <game-speedrun-grid-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></game-speedrun-grid-charts>
+            <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
+                <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
+                    <li v-if="groups.length == 0" class="group-placeholder">Drag a column to this area to group by it</li>
+                    <li v-if="groups.length > 0" class="group-label">Group By:</li>
+                    <li v-for="(group, i) in groups" :key="i" class="group-tag">
+                        <span>{{ group.title }}</span>&nbsp;
+                        <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
+                    </li>                    
+                </ul>
+            </div>
+            <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -22,14 +32,14 @@
 <script>
     const dayjs = require('dayjs');
     import axios from 'axios';    
-    import { escapeHtml, formatFileName } from '../../../js/common.js';
+    import { escapeHtml, formatFileName } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
     import tippy from 'tippy.js'
     import 'tippy.js/dist/tippy.css'
 
     export default {
-        name: "SpeedRunGrid",
+        name: "GameSpeedRunGrid",
         emits: ["onshowchartsclick1"],
         props: {
             gameid: String,
@@ -50,6 +60,7 @@
             return {
                 table: {},
                 tableData: [],
+                groups: [],
                 loading: true,
                 speedRunID: this.speedrunid,
                 selectedSpeedRunID: '',
@@ -76,14 +87,14 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: this.showalldata } })
+                axios.get('/SpeedRun/GetGameSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
                         if (that.istimerasc) {
                             that.tableData = that.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
                         }
                                                                         
-                        that.initGrid(res.data);                        
+                        that.initGrid(res.data); 
                         that.loading = false;
                         if (that.speedRunID) {
                             var index = that.tableData.findIndex(i => i.id == that.speedRunID);
@@ -116,15 +127,16 @@
                 var columns = [
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "players", sorter:that.playerSorter, formatter: that.playerFormatter, accessorDownload: that.playerDownloadAccessor, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
+                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
-                    { title: "Submitted Date", field: "dateSubmitted", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
-                    { title: "Verified Date", field: "verifyDate", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "Submitted Date", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "Verified Date", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
-                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false }                    
+                    { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
+                    { title: "playersObj", field: "players", visible: false }
                 ];
 
                 tableData.forEach(item => {
@@ -148,7 +160,8 @@
 
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, accessorDownload: that.commentDownloadAccessor, hozAlign: "center", headerSort: false, width: 50, widthShrink:2, titleDownload:"Comment" });
 
-                this.table = new Tabulator("#tblGrid", {
+                var el = this.$el.querySelector('.grid');          
+                this.table = new Tabulator(el, {
                     data: tableData,
                     layout: "fitColumns",
                     reactiveData:true,
@@ -158,14 +171,27 @@
                     tooltipsHeader:false,
                     pagination: "local",
                     paginationSize: that.pageSize,
-                    movableColumns: that.isMediaMedium,
-                    resizableColumns: that.isMediaMedium ? "header" : false,
+                    movableColumns: false,
+                    resizableColumns: "header",
                     //resizableRows: false,
-                    initialSort: [             //set the initial sort order of the data
+                    groupBy: that.groups.map(i => i.field),
+                    groupHeader: function(value, count, data, group) {
+                        var html = that.getGroupText(group._group, count);
+                        return html;
+                    },                    
+                    initialSort: [
                         { column: "primaryTime.ticks", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {
+                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                            el.setAttribute('draggable', true);
+                            el.addEventListener("dragstart", function(event) {
+                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                            });
+                        });
+
                         Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
                             var value = el.getAttribute('data-content');
                             var cellElement = el.closest('.tabulator-cell');
@@ -182,6 +208,35 @@
                     }
                 });
             },
+            onGroupAdd(event) {
+                event.preventDefault();
+                var field = event.dataTransfer.getData("field");  
+                var title = event.dataTransfer.getData("title");                
+                if (field) {
+                    if (this.groups.filter(i => i.field == field).length == 0) {
+                        this.groups.push({ field: field, title: title });
+                        this.table.setGroupBy(this.groups.map(i => i.field));
+                    }                    
+                }                        
+            },
+            onGroupRemove(field) {
+                if (this.groups.filter(i => i.field == field).length > 0) {
+                    this.groups = this.groups.filter(i => i.field != field);
+                    this.table.setGroupBy(this.groups.map(i => i.field));
+                }
+            },
+            getGroupText(group, count) {
+                var html = '';
+                if (Date.parse(group.key)) {
+                    html += dayjs(group.key).format("MM/DD/YYYY");            
+                } else {
+                    html += group.key;
+                }
+                                
+                html += "<span>(" + count + " item)</span>";
+
+                return html;
+            },            
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 
@@ -207,9 +262,8 @@
                 return html;
             },
             playerFormatter(cell, formatterParams, onRendered) {
-                var value = cell.getValue();
-                var valueString = value?.map(el => el.name).join();
-                //var html = valueString ? '<span class="tippy-tooltip" data-content="' + escapeHtml(valueString) + '">' : '<span>'
+                var value = cell.getRow().getCell("players").getValue();
+
                 var html = '<span>'
 
                 value?.forEach(el => {
@@ -244,7 +298,7 @@
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
-                if(value){
+                if(value) {
                     html += dayjs(value).format(formatString);
                 }
 
@@ -318,7 +372,9 @@
                     return true;
                 }
 
-                return rowValue?.filter(el => { 
+                var value = rowData.players;
+
+                return value?.filter(el => { 
                     return headerValue.indexOf(el.name) > -1 
                     }).length > 0;
             },        

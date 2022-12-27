@@ -132,13 +132,23 @@ namespace SpeedRunApp.Model.ViewModels
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
                 SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
-                SetVariablesHasValue(SubCategoryVariablesTabs, runs);    
+                SetVariablesHasValue(SubCategoryVariablesTabs, runs);
             }
         }
     
         private List<Variable> GetAdjustedVariables(List<Variable> variables)
-        {
-            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();
+        {       
+            var categoryVariables = variables.Where(i => (i.ScopeTypeID == (int)VariableScopeType.Global || i.ScopeTypeID == (int)VariableScopeType.FullGame) && i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
+            foreach (var categoryVariable in categoryVariables)
+            {
+                var category = Categories.FirstOrDefault(i => i.ID == categoryVariable.CategoryID);
+                if (category != null && category.CategoryTypeID == (int)CategoryType.PerGame)
+                {
+                    categoryVariable.IsSingleCategory = true;
+                }
+            }
+
+            var globalVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue).Reverse().ToList();            
             var categories = Categories.Reverse<Category>();
             foreach (var globalVariable in globalVariables)
             {
@@ -215,7 +225,7 @@ namespace SpeedRunApp.Model.ViewModels
                         foreach (var gameLevel in GameLevels)
                         {
                             var variable = (Variable)allLevelVariable.Clone();                          
-                            variable.LevelID = gameLevel.ID;                            
+                            variable.LevelID = gameLevel.ID;
                             variables.Insert(0, variable);
                         }
                     }
@@ -283,6 +293,17 @@ namespace SpeedRunApp.Model.ViewModels
                         variableValue.Name += " (empty)";
                     }
 
+                    var subvars = SubCategoryVariables.Where(i => i.CategoryID == variable.CategoryID && i.LevelID == variable.LevelID).ToList();
+                    foreach(var subvar in subvars)
+                    {
+                        foreach(var va in subvar.VariableValues){
+                            if (va.ID == variableValue.ID)
+                            {
+                                va.HasData = variableValue.HasData;
+                            }
+                        }
+                    }
+
                     if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
                     {
                         SetVariablesHasValue(variableValue.SubVariables.ToList(), runs, variableValues);
@@ -292,7 +313,7 @@ namespace SpeedRunApp.Model.ViewModels
                 parentVariableValues = null;    
            }
         }
-
+        
         public int ID { get; set; }
         public string Name { get; set; }
         public bool ShowMilliseconds { get; set; }

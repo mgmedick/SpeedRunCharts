@@ -677,6 +677,17 @@ button.bg-dark:focus {
     border-bottom-color: var(--bs-border-color10);
 }
 
+.tabulator-row.tabulator-group {
+    background-color: var(--bs-border-color6);
+    border-bottom-color: var(--bs-border-color10);
+    border-top: none;
+    border-right: none;
+}
+
+.tabulator-row .tabulator-cell {
+    font-size: 0.813rem;
+}
+
 .tabulator .tabulator-header {
     background-color: var(--bs-background-color12);
     border-bottom-color: var(--bs-border-color10);
@@ -687,7 +698,7 @@ button.bg-dark:focus {
 }
 
 .tabulator-header .tabulator-headers .tabulator-col {
-    height: 71px !important;
+    height: auto !important;
 }
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
@@ -700,6 +711,10 @@ button.bg-dark:focus {
     background-color: var(--bs-background-color12);
     width: 10%;
     border: none;    
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
+    white-space: normal;
 }
 
 .tabulator .tabulator-tableHolder .tabulator-table {
@@ -922,6 +937,44 @@ div[data-disabled="true"] .vue-select-header {
 
 .vue-tags[data-removable='false'] .vue-tag.selected img:hover {
     cursor: not-allowed;
+}
+
+.grid-group ul {
+    display: flex;
+    min-height: 32px;
+    list-style: none;
+    padding: 5px;
+    border: 2px dashed var(--bs-border-color10);
+}
+
+.grid-group .group-placeholder {
+    height: 32px;
+    width:100%;
+    color:#6c757d;
+    text-align: center; 
+    font-style: italic; 
+    font-weight: bold;
+}
+
+.grid-group .group-label {
+    font-weight:bold;
+    font-style: italic;
+    font-size: 0.813rem;;
+    padding: 8px;
+}
+
+.grid-group .group-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 2px;
+    margin-bottom: 1px;    
+    color: var(--bs-text-color2);
+    background-color: var(--bs-secondary);
+    border: 1px solid var(--bs-border-color1);
 }
 
 div[data-disabled="true"] .vue-tag.selected {

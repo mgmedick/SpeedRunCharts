@@ -18,10 +18,9 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "SpeedRunGridWorldRecordChart",
+        name: "UserSpeedRunGridPersonalBestChart",
         props: {  
             tabledata: Array,
-            isgame: Boolean,
             title: String,
             istimerasc: Boolean,
             showmilliseconds: Boolean,
@@ -36,7 +35,7 @@
         },        
         computed: { 
             caption: function () {
-                return this.isgame ? 'World Records (Last 20)' : 'Personal Bests';
+                return 'Personal Bests';
             },            
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
@@ -102,10 +101,6 @@
                             _data = _data.filter(x => x.dateSubmitted < item.dateSubmitted)
                                         .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                         }                       
-                    }
-
-                    if (this.isgame) {
-                        filteredData = filteredData.slice(0, 20);
                     }
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });

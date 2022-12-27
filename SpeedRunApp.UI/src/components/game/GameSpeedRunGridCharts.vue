@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
-                        <speedrun-grid-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></speedrun-grid-worldrecord-chart>                
+                        <game-speedrun-grid-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></game-speedrun-grid-worldrecord-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">
-                        <speedrun-grid-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></speedrun-grid-percentile-chart>                
+                        <game-speedrun-grid-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></game-speedrun-grid-percentile-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 3)" class="expandable" style="height:100%;">
-                        <speedrun-grid-top-chart chartconainerid="divChart3" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></speedrun-grid-top-chart>                
+                        <game-speedrun-grid-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></game-speedrun-grid-top-chart>                
                     </div>
                 </div>
             </div>            
@@ -49,13 +49,13 @@
                 {{ chartModalTitle }}
             </template>
             <div v-if="selectedChartID == 1">            
-                <speedrun-grid-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></speedrun-grid-worldrecord-chart>                
+                <game-speedrun-grid-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></game-speedrun-grid-worldrecord-chart>                
             </div>
             <div v-else-if="selectedChartID == 2">
-                <speedrun-grid-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></speedrun-grid-percentile-chart>                
+                <game-speedrun-grid-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></game-speedrun-grid-percentile-chart>                
             </div>
             <div v-else-if="selectedChartID == 3">
-                <speedrun-grid-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :isgame="isgame" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></speedrun-grid-top-chart>                
+                <game-speedrun-grid-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></game-speedrun-grid-top-chart>                
             </div>            
         </modal>              
     </div>
@@ -64,7 +64,7 @@
     import axios from 'axios';
     
     export default {
-        name: "SpeedRunGridChartContainer",
+        name: "GameSpeedRunGridCharts",
         emits: ["onshowchartsclick"],
         props: {
             gameid: String,
@@ -72,8 +72,6 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,            
-            userid: String,            
-            isgame: Boolean,
             showcharts: Boolean,
             title: String,
             istimerasc: Boolean,
@@ -93,7 +91,7 @@
 
                 switch(this.selectedChartID){
                     case 1:
-                        title = this.isgame ? 'World Records Chart' : 'Personal Bests Chart';
+                        title = 'World Records Chart';
                         break;
                     case 2:
                         title = 'Time Percentiles Chart';
@@ -114,7 +112,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid, showAllData: true } })
+                axios.get('/SpeedRun/GetGameSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: true } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

@@ -11,8 +11,8 @@ namespace SpeedRunApp.Model.Data
         public int ScopeTypeID { get; set; }
         public int? CategoryID { get; set; }
         public int? LevelID { get; set; }
-        public IEnumerable<VariableValue> VariableValues { get; set; }
-
+        public IEnumerable<VariableValue> VariableValues { get; set; }        
+        public bool IsSingleCategory { get; set; }
         public object Clone()
         {
             Variable variable = (Variable)this.MemberwiseClone();

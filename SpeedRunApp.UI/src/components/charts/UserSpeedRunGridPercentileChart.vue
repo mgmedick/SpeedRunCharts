@@ -16,10 +16,9 @@
     FusionCharts.addDep(Pie2D, CandyTheme);  
 
     export default {
-        name: "SpeedRunGridPercentileChart",
+        name: "UserSpeedRunGridPercentileChart",
         props: {  
             tabledata: Array,
-            isgame: Boolean,
             title: String,
             istimerasc: Boolean,
             showmilliseconds: Boolean,

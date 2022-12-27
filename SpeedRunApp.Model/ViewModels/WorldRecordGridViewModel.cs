@@ -6,34 +6,16 @@ using SpeedRunCommon.Extensions;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunGridViewModel
+    public class WorldRecordGridViewModel
     {
-        public SpeedRunGridViewModel(SpeedRunGridTabView run)
+        public WorldRecordGridViewModel(WorldRecordGridView run)
         {
             ID = run.ID;
             GameID = run.GameID;
             CategoryID = run.CategoryID;
+            CategoryName = run.CategoryName;
             LevelID = run.LevelID;
-            SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;            
-            Rank = run.Rank;
-                                  
-            // if (!string.IsNullOrWhiteSpace(run.VariableValues))
-            // {
-            //     VariableValues = new Dictionary<int, int>();
-            //     foreach (var variableValue in run.VariableValues.Split(","))
-            //     {
-            //         var values = variableValue.Split("|", 2);
-            //         VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
-            //     }
-            // }            
-        }
-        
-        public SpeedRunGridViewModel(SpeedRunGridView run)
-        {
-            ID = run.ID;
-            GameID = run.GameID;
-            CategoryID = run.CategoryID;
-            LevelID = run.LevelID;
+            LevelName = run.LevelName;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
@@ -93,11 +75,13 @@ namespace SpeedRunApp.Model.ViewModels
         public int ID { get; set; }
         public int GameID { get; set; }
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
         public int? LevelID { get; set; }
+        public string LevelName { get; set; }
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public Dictionary<int, int> VariableValues { get; set; }        
+        public Dictionary<int, int> VariableValues { get; set; }
         public List<IDNameAbbrPair> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }
@@ -115,14 +99,6 @@ namespace SpeedRunApp.Model.ViewModels
                 return Players?.FirstOrDefault();
             }
         }
-
-        public string PlayerNames
-        {
-            get
-            {
-                return string.Join(",", Players.Select(i=>i.Name));
-            }
-        }        
 
         public string VerifyDateString
         {

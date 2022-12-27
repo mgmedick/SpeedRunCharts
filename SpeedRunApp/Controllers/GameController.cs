@@ -30,19 +30,19 @@ namespace SpeedRunApp.MVC.Controllers
         }
         
         [HttpGet]
-        public JsonResult GetWorldRecordGridTabsForUser(int userID)
+        public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
         {
-            var gridVM = _gameService.GetSpeedRunGridTabsForUser(userID);
+            SpeedRunGridTabViewModel gridVM = null;
+            try
+            {
+                gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetSpeedRunGridTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+            }
 
             return Json(gridVM);
-        }
-
-        [HttpGet]
-        public JsonResult GetWorldRecordGridTabs(int gameID)
-        {
-            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
-
-           return Json(gridVM);
         }
 
         [HttpGet]
@@ -62,19 +62,11 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
+        public JsonResult GetWorldRecordGridTabs(int gameID)
         {
-            SpeedRunGridTabViewModel gridVM = null;
-            try
-            {
-                gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "GetSpeedRunGridTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
-            }
+            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
 
-            return Json(gridVM);
+           return Json(gridVM);
         }
         
        [HttpPost]

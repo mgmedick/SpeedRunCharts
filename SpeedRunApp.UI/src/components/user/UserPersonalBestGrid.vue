@@ -240,15 +240,13 @@
             },                                 
             getGroupText(group, count) {
                 var html = '';
-
-                if (group.parent && !group.hasSubGroups) {
-                    html += "<i style='font-weight:normal;'>" + group.key + "</i>";
+                if (Date.parse(group.key)) {
+                    html += dayjs(group.key).format("MM/DD/YYYY");            
                 } else {
                     html += group.key;
                 }
-
+                                
                 html += "<span>(" + count + " item)</span>";
-
 
                 return html;
             },                                       

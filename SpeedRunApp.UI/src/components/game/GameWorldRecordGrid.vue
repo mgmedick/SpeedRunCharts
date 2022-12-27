@@ -240,11 +240,16 @@
             },              
             getGroupText(group, count) {
                 var html = '';
-                html += group.key;
+                if (Date.parse(group.key)) {
+                    html += dayjs(group.key).format("MM/DD/YYYY");            
+                } else {
+                    html += group.key;
+                }
+                                
                 html += "<span>(" + count + " item)</span>";
 
                 return html;
-            },                         
+            },                       
             // getGroupText(group, columns, count, html, index) {
             //     if (!html) {
             //         html = '';

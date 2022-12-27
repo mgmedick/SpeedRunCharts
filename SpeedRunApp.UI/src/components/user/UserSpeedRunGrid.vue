@@ -125,8 +125,8 @@
                     { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 125, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
-                    { title: "Submitted Date", field: "dateSubmittedString", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
-                    { title: "Verified Date", field: "verifyDateString", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "Submitted Date", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
+                    { title: "Verified Date", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 }, //minWidth:140, maxWidth:170
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
                     { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
@@ -221,11 +221,16 @@
             },
             getGroupText(group, count) {
                 var html = '';
-                html += group.key;
+                if (Date.parse(group.key)) {
+                    html += dayjs(group.key).format("MM/DD/YYYY");            
+                } else {
+                    html += group.key;
+                }
+                                
                 html += "<span>(" + count + " item)</span>";
 
                 return html;
-            },                                    
+            },                                   
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 

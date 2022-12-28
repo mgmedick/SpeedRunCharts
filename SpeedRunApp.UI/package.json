@@ -41,6 +41,7 @@
     "core-js": "^3.26.1",
     "dayjs": "^1.11.6",
     "fusioncharts": "^3.19.0",
+    "mobile-drag-drop": "^3.0.0-rc.0",
     "popper.js": "^1.16.1",
     "source-map-loader": "^3.0.2",
     "tabulator-tables": "^4.9.3",

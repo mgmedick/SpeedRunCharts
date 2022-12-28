@@ -949,6 +949,7 @@ div[data-disabled="true"] .vue-select-header {
 
 .grid-group .group-placeholder {
     height: 32px;
+    line-height: 32px;
     width:100%;
     color:#6c757d;
     text-align: center; 

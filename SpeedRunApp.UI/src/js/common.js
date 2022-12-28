@@ -92,6 +92,10 @@ const getDateTimeLocalString = (value) => {
     return result;
 }
 
+const isValidDate = (date, format) => {
+    return dayjs(date, format).format(format) === date;
+}
+
 const escapeHtml = (value) => {
     return value.replace("&", "&amp;")
                 .replace("<", "&lt;")
@@ -124,7 +128,7 @@ const getCookie = (key) => {
     return keyValue ? keyValue[2] : null;
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, escapeHtml, formatFileName, setCookie, getCookie }
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie }
 
 
 

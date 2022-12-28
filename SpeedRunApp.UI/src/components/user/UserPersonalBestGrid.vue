@@ -10,7 +10,7 @@
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                    <li v-if="groups.length == 0" class="group-placeholder">Drag a column to this area to group by it</li>
+                    <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
                     <li v-if="groups.length > 0" class="group-label">Group By:</li>
                     <li v-for="(group, i) in groups" :key="i" class="group-tag">
                         <span>{{ group.title }}</span>&nbsp;
@@ -31,11 +31,13 @@
 <script>
     const dayjs = require('dayjs');
     import axios from 'axios';    
-    import { escapeHtml } from '../../js/common.js';
+    import { escapeHtml, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
     import tippy from 'tippy.js'
     import 'tippy.js/dist/tippy.css'
+    import { polyfill } from "mobile-drag-drop";
+    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
     export default {
         name: "GameWorldRecordGrid",
@@ -67,8 +69,12 @@
             }
         },
         mounted: function() {
+            polyfill({
+                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            });            
             this.loadData();
             window.gameWorldRecordGridVue = this;
+            window.addEventListener( 'touchmove', function() {}, {passive: false});
         },
         methods: {
             loadData() {
@@ -240,12 +246,14 @@
             },                                 
             getGroupText(group, count) {
                 var html = '';
-                if (isNaN(group.key) && Date.parse(group.key)) {
-                    html += dayjs(group.key).format("MM/DD/YYYY");            
-                } else {
-                    html += group.key;
+                if (group.key) {                
+                    if (isValidDate(group.key, "MM/DD/YYYY")) {
+                        html += dayjs(group.key).format("MM/DD/YYYY");            
+                    } else {
+                        html += group.key;
+                    }
                 }
-                                
+
                 html += "<span>(" + count + " item)</span>";
 
                 return html;

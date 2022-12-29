@@ -8,7 +8,7 @@
             </div>
         </div>
         <ul v-show="isOpen" class="vue-dropdown">
-            <li v-for="(result, i) in results" :key="i" class="vue-dropdown-item" :class="{ 'group' : result.isGroupHeader, 'highlighted': i === arrowCounter }" @click="onSearchSelected(result)">
+            <li v-for="(result, i) in results" :key="i" class="vue-dropdown-item" :class="{ 'group' : result.isGroupHeader, 'highlighted': i === arrowCounter }" @click="onSearchSelected(result)" @mouseover="arrowCounter = i">
                 <span>{{ result[labelby] }}</span>
             </li>
         </ul>
@@ -46,6 +46,8 @@
                 isOpen: false,
                 isFocus: false,
                 arrowCounter: -1,
+                throttleTimer: null,
+                throttleDelay: 300                
             }
         },       
         watch: {
@@ -61,7 +63,10 @@
                     if (val != oldVal) {
                         if (val.length >= that.minlength) {
                             if (that.isasync) {
-                                that.$emit('search'); 
+                                clearTimeout(that.throttleTimer);
+                                that.throttleTimer = setTimeout(function () {
+                                    that.$emit('search'); 
+                                }, that.throttleDelay);
                             } else {
                                 that.filterResults();                            
                             }
@@ -114,7 +119,7 @@
                     this.model = result[this.valueby];                   
                     this.$emit('selected', result);
                 }
-            },
+            },          
             filterResults() {
                 var that = this;
 

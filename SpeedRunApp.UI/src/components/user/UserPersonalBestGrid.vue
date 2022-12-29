@@ -99,7 +99,7 @@
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
                     { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
                     { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", minWidth: 100 }, //, width: 125
+                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135 }, //, width: 125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },

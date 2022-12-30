@@ -224,15 +224,15 @@
                 if(!index){
                     index = 0;
                 }
-                               
+
                 if (index <= 1) {
                     subCategoryVariableValues?.forEach(variable => {
                         variable.variableValues.forEach(variableValue => {
                             var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
-                            var data = tableData.filter(i => (!variable.isSingleCategory ||variable.categoryID == i.categoryID) && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs));
+                            var data = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && (index == 0 || i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs)));
                             var uniqueData =[...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
 
-                            if ((index > 0 && uniqueData.length > 1) || (index == 0 && data.length > 1)) {
+                            if (uniqueData.length > 1) {
                                 if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
                                     that.groups.push({ field: variable.id.toString(), title: variable.name });
                                 }

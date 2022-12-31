@@ -74,7 +74,7 @@
             });            
             this.loadData();
             window.gameWorldRecordGridVue = this;
-            window.addEventListener( 'touchmove', function() {}, {passive: false});
+            window.addEventListener( 'touchmove', function() {}, { passive: false });
         },
         methods: {
             loadData() {
@@ -132,14 +132,6 @@
                 columns.push({ title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135 });
                 columns.push({ title: "Submitted", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
                 columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50 });
-
-                if(distinctVariables.length > 1) {
-                    if (this.showcategories) {
-                        this.groups.push({ field: "categoryName", title: "Category" });
-                    } else if (this.showlevels){
-                        this.groups.push({ field: "levelName", title: "Level" });
-                    }                 
-                }
 
                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
                     that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData);
@@ -217,34 +209,41 @@
             },
             getVariableGroupByList(subCategoryVariableValues, tableData, variableValueIDs, index) {
                 var that = this;
+
                 if (!variableValueIDs) {
                     variableValueIDs = '';
                 }
-
-                if(!index){
+                
+                if (!index){
                     index = 0;
                 }
 
-                if (index <= 1) {
+                if (index < 3) {
                     subCategoryVariableValues?.forEach(variable => {
                         variable.variableValues.forEach(variableValue => {
                             var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
-                            var data = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && (index == 0 || i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs)));
-                            var uniqueData =[...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
-
-                            if (uniqueData.length > 1) {
+                            var data = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs));
+                            var uniqueData = [...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
+    
+                            if (that.showlevels) {
+                                if (variable.levelID && variable.variableValues.length > 1){
+                                    if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
+                                        that.groups.push({ field: variable.id.toString(), title: variable.name });
+                                    }
+                                }
+                            } else if (uniqueData.length > 1) {
                                 if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
                                     that.groups.push({ field: variable.id.toString(), title: variable.name });
                                 }
                             }
 
-                            if (variableValue.subVariables && variableValue.subVariables.length > 0){
+                            if (variableValue.subVariables && variableValue.subVariables.length > 0) {
                                 that.getVariableGroupByList(variableValue.subVariables, tableData, currVariableValueIDs, index + 1);
                             }
                         });
                     });
                 }
-            },              
+            },            
             getGroupText(group, count) {
                 var html = '';
                 if (group.key) {                

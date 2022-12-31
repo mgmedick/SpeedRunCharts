@@ -11,7 +11,7 @@
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1" v-for="(game, gameIndex) in items" :key="game.id">
-                        <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" @click="onTabClick">{{ game.name }}</a>
+                        <a class="nav-link p-2" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ game.name }}</a>
                     </li>
                     <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
@@ -19,7 +19,7 @@
                         </template>
                         <template v-slot:options>
                             <template v-for="(game, gameIndex) in items" :key="game.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" @click="onTabClick">{{ game.name }}</a>
+                                <a class="dropdown-item d-none" :class="{ 'active' : gameID == game.id }" href="#/" data-type="game" :data-value="game.id" draggable="false" @click="onTabClick">{{ game.name }}</a>
                             </template>
                         </template>
                     </button-dropdown>                       
@@ -32,7 +32,7 @@
                     <div class="col tab-list">
                         <ul class="nav nav-pills">
                             <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
+                                <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
                             <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                 <template v-slot:text>
@@ -40,7 +40,7 @@
                                 </template>
                                 <template v-slot:options>
                                     <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" @click="onTabClick">{{ categoryType.name }}</a>
+                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                                     </template>
                                 </template>
                             </button-dropdown>                                
@@ -57,7 +57,7 @@
                                 <div class="col tab-list">
                                     <ul class="nav nav-pills">
                                         <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                            <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
+                                            <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                         </li>
                                         <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                             <template v-slot:text>
@@ -65,7 +65,7 @@
                                             </template>
                                             <template v-slot:options>
                                                 <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                                    <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" @click="onTabClick">{{ category.name }}</a>
+                                                    <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                                 </template>
                                             </template>
                                         </button-dropdown>    
@@ -86,7 +86,7 @@
                                                 <div class="col tab-list">
                                                     <ul class="nav nav-pills">
                                                         <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                                         </li>
                                                         <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                                             <template v-slot:text>
@@ -94,7 +94,7 @@
                                                             </template>
                                                             <template v-slot:options>
                                                                 <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                                    <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" @click="onTabClick">{{ level.name }}</a>
+                                                                    <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                                                 </template>
                                                             </template>
                                                         </button-dropdown>   

@@ -104,7 +104,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return string.Join(",", Players.Select(i => i.Name));
+                return Players != null ? string.Join(",", Players.Select(i => i.Name)) : string.Empty;
             }
         }
 

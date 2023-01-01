@@ -5,9 +5,9 @@
                 <h5 class="m-0 font-weight-bold text-primary">{{ uservm.name }}</h5>
             </div>
             <div class="col-sm-2 pl-1 align-self-end">
-                <a v-if="uservm.twitterProfile" :href="uservm.twitterProfile" class="pl-1"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
-                <a v-if="uservm.twitchProfile" :href="uservm.twitchProfile" class="pl-1"><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
-                <a v-if="uservm.youtubeProfile" :href="uservm.youtubeProfile" class="pl-1"><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
+                <a v-if="uservm.twitterProfile" :href="uservm.twitterProfile" class="pl-1" draggable="false"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
+                <a v-if="uservm.twitchProfile" :href="uservm.twitchProfile" class="pl-1" draggable="false"><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
+                <a v-if="uservm.youtubeProfile" :href="uservm.youtubeProfile" class="pl-1" draggable="false"><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
             </div>
         </div>
         <div>

@@ -4,10 +4,10 @@
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" @click="onTabClick">{{ "Leaderboards" }}</a>
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>
                     </li>
                     <li class="nav-item py-1 pr-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" @click="onTabClick">{{ "World Records" }}</a>            
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Records" }}</a>            
                     </li>
                 </ul>
             </div>

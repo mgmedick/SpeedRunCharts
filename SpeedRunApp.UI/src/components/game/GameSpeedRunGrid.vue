@@ -252,7 +252,7 @@
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\"><i class='fas fa-play-circle fa-lg'></i></a>";
+                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
@@ -276,7 +276,7 @@
 
                 value?.forEach(el => {
                     if (el.id > 0) {
-                        html += "<a href='/User/UserDetails/" + el.abbr + "' class='text-primary'>" + el.name + "</a><br/>";
+                        html += "<a href='/User/UserDetails/" + el.abbr + "' class='text-primary' draggable='false'>" + el.name + "</a><br/>";
                     } else {
                         html += el.name;
                     }          

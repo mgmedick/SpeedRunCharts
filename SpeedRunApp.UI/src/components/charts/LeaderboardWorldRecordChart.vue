@@ -18,7 +18,7 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "UserSpeedRunGridPersonalBestChart",
+        name: "LeaderboardWorldRecordChart",
         props: {  
             tabledata: Array,
             title: String,
@@ -35,7 +35,7 @@
         },        
         computed: { 
             caption: function () {
-                return 'Personal Bests';
+                return 'World Records (Last 20)';
             },            
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
@@ -102,6 +102,8 @@
                                         .sort((a, b) => { return a?.primaryTimeMilliseconds - b?.primaryTimeMilliseconds });
                         }                       
                     }
+
+                    filteredData = filteredData.slice(0, 20);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
                     var maxDate = dayjs(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();

@@ -1573,6 +1573,10 @@ div.stretchy-wrapper > div {
     .show-sm {
         display: block;
     }
+
+    .image-container img {
+        min-height: 76px;
+    }    
 }
 
 @media (min-width: 768px) {
@@ -1582,6 +1586,10 @@ div.stretchy-wrapper > div {
 
     .show-sm {
         display: none;
+    }
+
+    .image-container img {
+        min-height: 336px;
     }
 }  
 

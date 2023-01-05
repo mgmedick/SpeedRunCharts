@@ -42,22 +42,22 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(int currUserAccountID)
         {
-            var userSpeedRunListCategories = _userAcctRepo.GetUserAccountSpeedRunListCategories(i => i.UserAccountID == currUserAccountID);
-            var speedRunListCategories = _speedRunRepo.SpeedRunListCategories();
-            
-            if(userSpeedRunListCategories.Any())
-            {
-                speedRunListCategories = (from c in speedRunListCategories
-                            join uc in userSpeedRunListCategories
-                            on c.ID equals uc.SpeedRunListCategoryID
-                            orderby uc.ID
-                            select c).ToList();
-            }
-            else
-            {
-                speedRunListCategories = speedRunListCategories.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
-            }
+            var allSpeedRunListCategories = _speedRunRepo.SpeedRunListCategories().ToList();
+            var speedRunListCategories = allSpeedRunListCategories.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
 
+            if(currUserAccountID > 0)
+            {
+                var userSpeedRunListCategories = _userAcctRepo.GetUserAccountSpeedRunListCategories(i => i.UserAccountID == currUserAccountID);
+                if(userSpeedRunListCategories.Any())
+                {
+                    speedRunListCategories = (from c in speedRunListCategories
+                                join uc in userSpeedRunListCategories
+                                on c.ID equals uc.SpeedRunListCategoryID
+                                orderby uc.ID
+                                select c).ToList();
+                }
+            }
+            
             return speedRunListCategories;
         }
 

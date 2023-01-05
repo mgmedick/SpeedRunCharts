@@ -39,12 +39,12 @@ import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
 import personalBestGrid from './user/PersonalBestGrid.vue';
 import personalBestTabs from './user/PersonalBestTabs.vue';
 
-import leaderboardGridPercentileChart from './charts/LeaderboardGridPercentileChart.vue';
-import leaderboardGridTopChart from './charts/LeaderboardGridTopChart.vue';
-import leaderboardGridWorldRecordChart from './charts/LeaderboardGridWorldRecordChart.vue';
-import userSpeedRunGridPercentileChart from './charts/UserSpeedRunGridPercentileChart.vue';
-import userSpeedRunGridTopChart from './charts/UserSpeedRunGridTopChart.vue';
-import userSpeedRunGridPersonalBestChart from './charts/UserSpeedRunGridPersonalBestChart.vue';
+import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue';
+import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
+import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
+import userSpeedRunPercentileChart from './charts/UserSpeedRunPercentileChart.vue';
+import userSpeedRunTopChart from './charts/UserSpeedRunTopChart.vue';
+import userSpeedRunPersonalBestChart from './charts/UserSpeedRunPersonalBestChart.vue';
 
 export default {
     loadComponents() {
@@ -79,13 +79,13 @@ export default {
         app.component("personalbest-grid", personalBestGrid);        
         app.component("personalbest-tabs", personalBestTabs);
 
-        app.component("leaderboard-grid-worldrecord-chart", leaderboardGridWorldRecordChart);
-        app.component("leaderboard-grid-percentile-chart", leaderboardGridPercentileChart);
-        app.component("leaderboard-grid-top-chart", leaderboardGridTopChart);
+        app.component("leaderboard-worldrecord-chart", leaderboardWorldRecordChart);
+        app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
+        app.component("leaderboard-top-chart", leaderboardTopChart);
 
-        app.component("user-speedrun-grid-personalbest-chart", userSpeedRunGridPersonalBestChart);
-        app.component("user-speedrun-grid-percentile-chart", userSpeedRunGridPercentileChart);
-        app.component("user-speedrun-grid-top-chart", userSpeedRunGridTopChart);
+        app.component("user-speedrun-personalbest-chart", userSpeedRunPersonalBestChart);
+        app.component("user-speedrun-percentile-chart", userSpeedRunPercentileChart);
+        app.component("user-speedrun-top-chart", userSpeedRunTopChart);
 
         app.component("reset-password", resetPassword);
         app.component("change-password", changePassword);

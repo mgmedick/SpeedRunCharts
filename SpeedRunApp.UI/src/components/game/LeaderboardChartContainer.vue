@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
-                        <leaderboard-grid-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-worldrecord-chart>                
+                        <leaderboard-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-worldrecord-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">
-                        <leaderboard-grid-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-percentile-chart>                
+                        <leaderboard-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-percentile-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 3)" class="expandable" style="height:100%;">
-                        <leaderboard-grid-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-top-chart>                
+                        <leaderboard-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-top-chart>                
                     </div>
                 </div>
             </div>            
@@ -52,7 +52,7 @@
                 <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
             </div>
             <div v-else-if="selectedChartID == 2">
-                <leaderboard-grid-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-grid-percentile-chart>                
+                <leaderboard-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-percentile-chart>                
             </div>
             <div v-else-if="selectedChartID == 3">
                 <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                

@@ -15,7 +15,7 @@
     FusionCharts.addDep(StackedBar2D, CandyTheme);  
 
     export default {
-        name: "UserSpeedRunGridTopChart",
+        name: "UserSpeedRunTopChart",
         props: {  
             tabledata: Array,
             title: String,

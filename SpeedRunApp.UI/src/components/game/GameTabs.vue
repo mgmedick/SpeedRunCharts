@@ -13,16 +13,16 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <game-speedrun-grid-tab :id="id" :speedrunid="speedrunid"></game-speedrun-grid-tab>
+            <leaderboard-tabs :id="id" :speedrunid="speedrunid"></leaderboard-tabs>
         </div>
         <div v-else>
-            <game-worldrecord-grid-tab :id="id"></game-worldrecord-grid-tab>   
+            <worldrecord-tabs :id="id"></worldrecord-tabs>   
         </div>
     </div>
 </template>
 <script>
     export default {
-        name: "GameDetailsTab",
+        name: "GameTabs",
         props: {
             id: String,
             speedrunid: String           

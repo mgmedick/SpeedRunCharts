@@ -50,7 +50,7 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div v-if="categoryTypeID == 0 && (!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID && variable.isSingleCategory).length == 0)">
-                            <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="true" :showlevels="false"></user-personalbest-grid>                                                                                          
+                            <personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="true" :showlevels="false"></personalbest-grid>                                                                                          
                         </div>                    
                         <div v-else>
                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -75,11 +75,11 @@
                             <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                 <div v-if="categoryID == category.id">
                                     <div v-if="categoryTypeID == 0">
-                                        <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></user-personalbest-grid>                                                                  
+                                        <personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></personalbest-grid>                                                                  
                                     </div>
                                     <div v-else>
                                         <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
-                                            <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="true"></user-personalbest-grid>                              
+                                            <personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="true"></personalbest-grid>                              
                                         </div>
                                         <div v-else>
                                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -103,7 +103,7 @@
                                             </div>
                                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                 <div v-if="levelID == level.id">
-                                                    <user-personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></user-personalbest-grid>                              
+                                                    <personalbest-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :userid="id.toString()" :showcategories="false" :showlevels="false"></personalbest-grid>                              
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -121,7 +121,7 @@
     import axios from 'axios';
 
     export default {
-        name: "UserPersonalBestGridTab",
+        name: "PersonalBestTabs",
         props: {
             id: String
         },
@@ -150,7 +150,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetSpeedRunGridTabsForUser?userID=' + this.id;
+                var url = '/Game/GetUserSpeedRunTabs?userID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

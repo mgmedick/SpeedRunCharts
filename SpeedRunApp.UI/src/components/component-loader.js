@@ -22,29 +22,29 @@ import speedRunSummary from './speedrun/SpeedRunSummary.vue';
 import speedRunEdit from './speedrun/SpeedRunEdit.vue';
 
 import gameDetails from './game/GameDetails.vue';
-import gameDetailsTab from './game/GameDetailsTab.vue';
-import gameSpeedRunGridTab from './game/GameSpeedRunGridTab.vue';
-import gameSpeedRunGridTabVariable from './game/GameSpeedRunGridTabVariable.vue';
-import gameSpeedRunGrid from './game/GameSpeedRunGrid.vue';
-import gameSpeedRunGridCharts from './game/GameSpeedRunGridCharts.vue';
-import gameWorldRecordGridTab from './game/GameWorldRecordGridTab.vue';
-import gameWorldRecordGrid from './game/GameWorldRecordGrid.vue';
+import gameTabs from './game/GameTabs.vue';
+import leaderboardGrid from './game/LeaderboardGrid.vue';
+import leaderboardTabs from './game/LeaderboardTabs.vue';
+import leaderboardTabsVariable from './game/LeaderboardTabsVariable.vue';
+import leaderboardChartContainer from './game/LeaderboardChartContainer.vue';
+import worldRecordTabs from './game/WorldRecordTabs.vue';
+import worldRecordGrid from './game/WorldRecordGrid.vue';
 
 import userDetails from './user/UserDetails.vue';
-import userDetailsTab from './user/UserDetailsTab.vue';
-import userSpeedRunGridTab from './user/UserSpeedRunGridTab.vue';
-import userSpeedRunGridTabVariable from './user/UserSpeedRunGridTabVariable.vue';
+import userTabs from './user/UserTabs.vue';
+import userSpeedRunTabs from './user/UserSpeedRunTabs.vue';
+import userSpeedRunTabsVariable from './user/UserSpeedRunTabsVariable.vue';
 import userSpeedRunGrid from './user/UserSpeedRunGrid.vue';
-import userSpeedRunGridCharts from './user/UserSpeedRunGridCharts.vue';
-import userPersonalBestGridTab from './user/UserPersonalBestGridTab.vue';
-import userPersonalBestGrid from './user/UserPersonalBestGrid.vue';
+import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
+import personalBestGrid from './user/PersonalBestGrid.vue';
+import personalBestTabs from './user/PersonalBestTabs.vue';
 
-import gameSpeedRunGridPercentileChart from './charts/GameSpeedRunGridPercentileChart.vue';
-import gameSpeedRunGridTopChart from './charts/GameSpeedRunGridTopChart.vue';
-import gameSpeedRunGridWorldRecordChart from './charts/GameSpeedRunGridWorldRecordChart.vue';
-import userSpeedRunGridPercentileChart from './charts/UserSpeedRunGridPercentileChart.vue';
-import userSpeedRunGridTopChart from './charts/UserSpeedRunGridTopChart.vue';
-import userSpeedRunGridPersonalBestChart from './charts/UserSpeedRunGridPersonalBestChart.vue';
+import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue';
+import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
+import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
+import userSpeedRunPercentileChart from './charts/UserSpeedRunPercentileChart.vue';
+import userSpeedRunTopChart from './charts/UserSpeedRunTopChart.vue';
+import userSpeedRunPersonalBestChart from './charts/UserSpeedRunPersonalBestChart.vue';
 
 export default {
     loadComponents() {
@@ -62,31 +62,30 @@ export default {
         app.component('modal', modal);  
 
         app.component('gamedetails', gameDetails);  
-        app.component("gamedetails-tab", gameDetailsTab);
-        app.component("game-speedrun-grid-tab", gameSpeedRunGridTab);
-        app.component("game-speedrun-grid-tab-variable", gameSpeedRunGridTabVariable);
-        app.component("game-speedrun-grid", gameSpeedRunGrid);
-        app.component("game-speedrun-grid-charts", gameSpeedRunGridCharts);
-        app.component("game-worldrecord-grid-tab", gameWorldRecordGridTab);
-        app.component("game-worldrecord-grid", gameWorldRecordGrid);
+        app.component("game-tabs", gameTabs);
+        app.component("leaderboard-tabs", leaderboardTabs);
+        app.component("leaderboard-tabs-variable", leaderboardTabsVariable);
+        app.component("leaderboard-grid", leaderboardGrid);
+        app.component("leaderboard-chart-container", leaderboardChartContainer);
+        app.component("worldrecord-tabs", worldRecordTabs);
+        app.component("worldrecord-grid", worldRecordGrid);
 
         app.component('userdetails', userDetails); 
-        app.component("userdetails-tab", userDetailsTab);
-        app.component("user-speedrun-grid-tab", userSpeedRunGridTab);
-        app.component("user-speedrun-grid-tab-variable", userSpeedRunGridTabVariable);
+        app.component("user-tabs", userTabs);
         app.component("user-speedrun-grid", userSpeedRunGrid);
+        app.component("user-speedrun-tabs", userSpeedRunTabs);
+        app.component("user-speedrun-tabs-variable", userSpeedRunTabsVariable);
+        app.component("user-speedrun-chart-container", userSpeedRunChartContainer);
+        app.component("personalbest-grid", personalBestGrid);        
+        app.component("personalbest-tabs", personalBestTabs);
 
-        app.component("user-speedrun-grid-charts", userSpeedRunGridCharts);
-        app.component("user-personalbest-grid-tab", userPersonalBestGridTab);
-        app.component("user-personalbest-grid", userPersonalBestGrid);
+        app.component("leaderboard-worldrecord-chart", leaderboardWorldRecordChart);
+        app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
+        app.component("leaderboard-top-chart", leaderboardTopChart);
 
-        app.component("game-speedrun-grid-worldrecord-chart", gameSpeedRunGridWorldRecordChart);
-        app.component("game-speedrun-grid-percentile-chart", gameSpeedRunGridPercentileChart);
-        app.component("game-speedrun-grid-top-chart", gameSpeedRunGridTopChart);
-
-        app.component("user-speedrun-grid-personalbest-chart", userSpeedRunGridPersonalBestChart);
-        app.component("user-speedrun-grid-percentile-chart", userSpeedRunGridPercentileChart);
-        app.component("user-speedrun-grid-top-chart", userSpeedRunGridTopChart);
+        app.component("user-speedrun-personalbest-chart", userSpeedRunPersonalBestChart);
+        app.component("user-speedrun-percentile-chart", userSpeedRunPercentileChart);
+        app.component("user-speedrun-top-chart", userSpeedRunTopChart);
 
         app.component("reset-password", resetPassword);
         app.component("change-password", changePassword);

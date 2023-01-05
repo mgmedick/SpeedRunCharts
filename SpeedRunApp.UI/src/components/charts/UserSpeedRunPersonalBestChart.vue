@@ -18,7 +18,7 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "UserSpeedRunGridPersonalBestChart",
+        name: "UserSpeedRunPersonalBestChart",
         props: {  
             tabledata: Array,
             title: String,

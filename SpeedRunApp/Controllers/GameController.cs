@@ -30,43 +30,43 @@ namespace SpeedRunApp.MVC.Controllers
         }
         
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabs(int gameID, int? speedRunID)
+        public JsonResult GetLeaderboardTabs(int gameID, int? speedRunID)
         {
-            SpeedRunGridTabViewModel gridVM = null;
+            GameTabViewModelContainer gridTabVM = null;
             try
             {
-                gridVM = _gameService.GetSpeedRunGridTabs(gameID, speedRunID);
+                gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunID);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetSpeedRunGridTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+                _logger.Error(ex, "GetLeaderboardTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
             }
 
-            return Json(gridVM);
+            return Json(gridTabVM);
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunGridTabsForUser(int userID, int? speedRunID)
+        public JsonResult GetWorldRecordTabs(int gameID)
         {
-            SpeedRunGridTabViewModel gridVM = null;
+            var tabVM = _gameService.GetWorldRecordTabs(gameID);
+
+           return Json(tabVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetUserSpeedRunTabs(int userID, int? speedRunID)
+        {
+            GameTabViewModelContainer tabVM = null;
             try
             {
-                gridVM = _gameService.GetSpeedRunGridTabsForUser(userID, speedRunID);
+                tabVM = _gameService.GetUserSpeedRunTabs(userID, speedRunID);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetSpeedRunGridTabsForUser UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+                _logger.Error(ex, "GetUserSpeedRunTabs UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
             }
 
-            return Json(gridVM);
-        }
-
-        [HttpGet]
-        public JsonResult GetWorldRecordGridTabs(int gameID)
-        {
-            var gridVM = _gameService.GetWorldRecordGridTabs(gameID);
-
-           return Json(gridVM);
+            return Json(tabVM);
         }
         
        [HttpPost]

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunGridTabViewModel
+    public class GameTabViewModelContainer
     {
-        public SpeedRunGridTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes)
+        public GameTabViewModelContainer(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes)
         {
             TabItems = tabItems;
             ExportTypes = exportTypes;
         }
 
-        public SpeedRunGridTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<string, string> subCategoryVariableValueIDs, bool showAllData)
+        public GameTabViewModelContainer(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<string, string> subCategoryVariableValueIDs, bool showAllData)
         {
             TabItems = tabItems;
             ExportTypes = exportTypes;

@@ -15,7 +15,7 @@
     FusionCharts.addDep(StackedBar2D, CandyTheme);  
 
     export default {
-        name: "GameSpeedRunGridTopChart",
+        name: "UserSpeedRunTopChart",
         props: {  
             tabledata: Array,
             title: String,
@@ -72,8 +72,6 @@
 
                 if (this.tabledata?.length > 0) {
                     var _data = JSON.parse(JSON.stringify(this.tabledata)); 
-
-                    _data = _data.filter(x => x.rank);
 
                     var sortedData = [];
                     if (this.istimerasc){

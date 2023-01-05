@@ -31,7 +31,7 @@
                 <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                     <div v-if="categoryTypeID == categoryType.id">
                         <div v-if="categoryTypeID == 0 && (!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID && variable.isSingleCategory).length == 0)">
-                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID && !variable.levelID)" :showcategories="true" :showlevels="false"></game-worldrecord-grid>                              
+                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID && !variable.levelID)" :showcategories="true" :showlevels="false"></worldrecord-grid>                              
                         </div>                    
                         <div v-else>
                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -56,11 +56,11 @@
                             <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                                 <div v-if="categoryID == category.id">
                                     <div v-if="categoryTypeID == 0">
-                                        <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs.filter(variable => variable.categoryID == category.id && !variable.levelID)" :showcategories="false" :showlevels="false"></game-worldrecord-grid>
+                                        <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs.filter(variable => variable.categoryID == category.id && !variable.levelID)" :showcategories="false" :showlevels="false"></worldrecord-grid>
                                     </div>
                                     <div v-else>
                                         <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
-                                            <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID)" :showcategories="false" :showlevels="true"></game-worldrecord-grid>                              
+                                            <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID)" :showcategories="false" :showlevels="true"></worldrecord-grid>                              
                                         </div>
                                         <div v-else>
                                             <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
@@ -84,7 +84,7 @@
                                             </div>
                                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                 <div v-if="levelID == level.id">
-                                                    <game-worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs.filter(variable => variable.categoryID == category.id && variable.levelID == level.id)" :showcategories="false" :showlevels="false"></game-worldrecord-grid>                              
+                                                    <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs.filter(variable => variable.categoryID == category.id && variable.levelID == level.id)" :showcategories="false" :showlevels="false"></worldrecord-grid>                              
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -102,7 +102,7 @@
     import axios from 'axios';
 
     export default {
-        name: "GameWorldRecordGridTab",
+        name: "WorldRecordTabs",
         props: {
             id: String
         },
@@ -131,7 +131,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetWorldRecordGridTabs?gameID=' + this.id;
+                var url = '/Game/GetWorldRecordTabs?gameID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

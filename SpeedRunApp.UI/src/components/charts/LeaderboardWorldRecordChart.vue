@@ -18,7 +18,7 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "GameSpeedRunGridWorldRecordChart",
+        name: "LeaderboardWorldRecordChart",
         props: {  
             tabledata: Array,
             title: String,

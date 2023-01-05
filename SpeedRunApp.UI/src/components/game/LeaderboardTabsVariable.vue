@@ -22,7 +22,7 @@
             </div>
             <div v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">
                 <div v-if="variableValue.subVariables && variableValue.subVariables.length > 0 && subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
-                    <game-speedrun-grid-tab-variable ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" draggable="false" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" @onshowalldataclick="$emit('onshowalldataclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></game-speedrun-grid-tab-variable>
+                    <leaderboard-tabs-variable ref="speedrungridtabvariable" :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalueids="subcategoryvariablevalueids" :speedrunid="speedrunid" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" draggable="false" @ontabclick="$emit('ontabclick', $event)" @onhideemptyclick="$emit('onhideemptyclick', $event)" @onshowalldataclick="$emit('onshowalldataclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @onexporttypechange="$emit('onexporttypechange', $event)" @onexportclick="$emit('onexportclick', $event)"></leaderboard-tabs-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalueids[variable.name + variableindex] == variableValue.name">
                     <div class="row no-gutters pr-1 pt-1">
@@ -58,7 +58,7 @@
                         </div>                                                                                               
                     </div>   
                     <div class="clearfix"></div>
-                    <game-speedrun-grid ref="speedrungrid" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedrunid="speedrunid" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @onshowchartsclick1="$emit('onshowchartsclick2', $event)" @onexportclick="$emit('onexportclick', $event)"></game-speedrun-grid>
+                    <leaderboard-grid ref="speedrungrid" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedrunid="speedrunid" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @onshowchartsclick1="$emit('onshowchartsclick2', $event)" @onexportclick="$emit('onexportclick', $event)"></leaderboard-grid>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@
 </template>
 <script>
     export default {
-        name: "GameSpeedRunGridTabVariable",
+        name: "LeaderboardTabsVariable",
         emits: ["ontabclick", "onhideemptyclick", "onshowalldataclick", "onshowchartsclick2", "onexporttypechange", "onexportclick"],
         props: {
             items: Array,

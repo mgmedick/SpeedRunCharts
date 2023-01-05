@@ -17,6 +17,7 @@
 <script>
     export default {
         name: "Autocomplete",
+        emits: ["update:modelValue", "search", "selected"],
         props: {
             modelValue: String,
             options: {

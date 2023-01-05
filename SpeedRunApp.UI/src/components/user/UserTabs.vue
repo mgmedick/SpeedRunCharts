@@ -13,16 +13,16 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <user-speedrun-grid-tab :id="id" :speedrunid="speedrunid"></user-speedrun-grid-tab>
+            <user-speedrun-tabs :id="id" :speedrunid="speedrunid"></user-speedrun-tabs>
         </div>
         <div v-else>
-            <user-personalbest-grid-tab :id="id"></user-personalbest-grid-tab>   
+            <personalbest-tabs :id="id"></personalbest-tabs>   
         </div>
     </div>
 </template>
 <script>
     export default {
-        name: "UserDetailsTab",
+        name: "UserTabs",
         props: {
             id: String,
             speedrunid: String           

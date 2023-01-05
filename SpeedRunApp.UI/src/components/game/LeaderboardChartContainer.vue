@@ -3,10 +3,10 @@
         <div class="card-header" id="headingOne">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Charts</a>
+                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Charts</a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Show Charts</a>
+                    <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" @click="showCharts = !showCharts"><i class="fa fa-chevron-right align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Show Charts</a>
                 </div>
             </h5>
         </div>
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
-                        <user-speedrun-grid-personalbest-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></user-speedrun-grid-personalbest-chart>                
+                        <leaderboard-grid-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-worldrecord-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">
-                        <user-speedrun-grid-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></user-speedrun-grid-percentile-chart>                
+                        <leaderboard-grid-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-percentile-chart>                
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 3)" class="expandable" style="height:100%;">
-                        <user-speedrun-grid-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></user-speedrun-grid-top-chart>                
+                        <leaderboard-grid-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-grid-top-chart>                
                     </div>
                 </div>
             </div>            
@@ -49,13 +49,13 @@
                 {{ chartModalTitle }}
             </template>
             <div v-if="selectedChartID == 1">            
-                <user-speedrun-grid-personalbest-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></user-speedrun-grid-personalbest-chart>                
+                <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
             </div>
             <div v-else-if="selectedChartID == 2">
-                <user-speedrun-grid-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></user-speedrun-grid-percentile-chart>                
+                <leaderboard-grid-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-grid-percentile-chart>                
             </div>
             <div v-else-if="selectedChartID == 3">
-                <user-speedrun-grid-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></user-speedrun-grid-top-chart>                
+                <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
             </div>            
         </modal>              
     </div>
@@ -64,7 +64,7 @@
     import axios from 'axios';
     
     export default {
-        name: "UserSpeedRunGridChartContainer",
+        name: "LeaderboardChartContainer",
         emits: ["onshowchartsclick"],
         props: {
             gameid: String,
@@ -72,7 +72,6 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,            
-            userid: String,            
             showcharts: Boolean,
             title: String,
             istimerasc: Boolean,
@@ -92,7 +91,7 @@
 
                 switch(this.selectedChartID){
                     case 1:
-                        title = 'Personal Bests Chart';
+                        title = 'World Records Chart';
                         break;
                     case 2:
                         title = 'Time Percentiles Chart';
@@ -113,7 +112,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetUserSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('/SpeedRun/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: true } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

@@ -46,7 +46,7 @@
                     </div>
                 </div>            
             </div>  
-            <gamedetails-tab :isgame="true" :id="gamevm.id.toString()" :speedrunid="speedrunid"></gamedetails-tab>
+            <game-tabs :isgame="true" :id="gamevm.id.toString()" :speedrunid="speedrunid"></game-tabs>
         </div>
         <modal v-if="showUpdateGameModal" contentclass="cmv-modal-md" @close="showUpdateGameModal = false" ref="updateModal">
             <template v-slot:title>
@@ -81,7 +81,8 @@
         name: "GameDetailst",
         props: {
             gamevm: Object,
-            speedrunid: String            
+            speedrunid: String,
+            showcharts: Boolean      
         },  
         data: function () {
             return {

@@ -30,6 +30,7 @@
 <script>
     export default {
         name: "Modal",
+        emits: ["close"],
         props: {
             contentclass: String,
             headerclass: String,            

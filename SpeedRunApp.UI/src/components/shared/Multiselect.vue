@@ -22,6 +22,7 @@
 <script>
     export default {
         name: "Multiselect",
+        emits: ["update:modelValue"],
         props: {
             modelValue: {
                 type: Array,

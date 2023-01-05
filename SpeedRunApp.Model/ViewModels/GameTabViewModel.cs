@@ -8,7 +8,7 @@ namespace SpeedRunApp.Model.ViewModels
     public class GameTabViewModel
     {
         public GameTabViewModel(GameView game, List<SpeedRunGridTabView> runs)
-        {
+        {            
             ID = game.ID;
             Name = game.Name;
             ShowMilliseconds = game.ShowMilliseconds;

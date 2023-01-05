@@ -48,6 +48,7 @@
 
     export default {
         name: "Login",
+        emits: ["forgotpass"],
         setup() {
             return { v$: useVuelidate() }
         },

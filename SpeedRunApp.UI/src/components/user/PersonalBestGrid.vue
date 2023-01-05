@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>   
+    <div>        
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
@@ -8,7 +8,6 @@
             </div>
         </div>        
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
-            <game-speedrun-grid-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></game-speedrun-grid-charts>
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
                     <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
@@ -19,7 +18,7 @@
                     </li>                    
                 </ul>
             </div>
-            <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
+            <div class="grid" style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -32,7 +31,7 @@
 <script>
     const dayjs = require('dayjs');
     import axios from 'axios';    
-    import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
+    import { escapeHtml, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
     import tippy from 'tippy.js'
@@ -41,31 +40,25 @@
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
     export default {
-        name: "GameSpeedRunGrid",
-        emits: ["onshowchartsclick1"],
+        name: "PersonalBestGrid",
         props: {
             gameid: String,
             categorytypeid: String,
             categoryid: String,
             levelid: String,
-            variablevalues: String,
-            speedrunid: String,
-            userid: String,
-            showcharts: Boolean,          
-            showalldata: Boolean,
+            userid: String,            
             showmilliseconds: Boolean,
+            showcategories: Boolean,
+            showlevels: Boolean,
             variables: Array,
-            title: String,
-            istimerasc: Boolean          
+            subcategoryvariablevaluetabs: Array
         },
         data() {
             return {
                 table: {},
                 tableData: [],
-                groups: [],
+                groups: [],                
                 loading: true,
-                speedRunID: this.speedrunid,
-                selectedSpeedRunID: '',
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -75,120 +68,99 @@
                 return window.innerWidth > 768;
             }
         },
-        watch: {
-            showalldata: function (val, oldVal) {
-                this.loadData();
-            }
-        },                 
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });
+            });            
             this.loadData();
-            window.speedRunGridVue = this;
-            window.addEventListener( 'touchmove', function() {}, { passive: false });
+            window.gameWorldRecordGridVue = this;
+            window.addEventListener( 'touchmove', function() {}, {passive: false});
         },
         methods: {
             loadData() {
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetGameSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
+                axios.get('/SpeedRun/GetPersonalBestGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, userID: this.userid } })                   
                     .then(res => {
                         that.tableData = res.data;
-                        if (that.istimerasc) {
-                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
-                        }
-                                                                        
-                        that.initGrid(res.data); 
-                        that.loading = false;
-                        if (that.speedRunID) {
-                            var index = that.tableData.findIndex(i => i.id == that.speedRunID);
-                            if (index > -1) {
-                                that.table.selectRow(that.speedRunID);
-                                var page = Math.ceil(index / that.pageSize);
-                                if(page > 1) {
-                                    that.table.setPage(page);
-                                }
-                            }
-                        }
+                        that.initGrid(res.data);                                              
+                        that.loading = false;                      
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            },  
-            export(exportTypeID) {
-                var title = formatFileName(this.title);
-                switch(exportTypeID){
-                    case "0":
-                        this.table.download('csv', title + ".csv");
-                        break;
-                    case "1":
-                        this.table.download('json', title + ".json");
-                        break;              
-                }                
-            },                                                                                        
+            },                                                                 
             initGrid(tableData) {
                 var that = this;
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
-                
+
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
+                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20 }, //, width: 50, widthShrink: 2
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
-                    { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
-                    { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
+                    { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 1, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
+                    { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 3, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
+                    { title: "primaryTimeString", field: "primaryTimeString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
-                    { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
                     { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
                     { title: "playersObj", field: "players", visible: false }
                 ];
 
                 tableData.forEach(item => {
-                    if (item.variableValues) {
-                        Object.keys(item.variableValues).forEach(variableID => {
-                            var variable = that.variables?.filter(x => x.id == variableID)[0];
-                            if (variable && !variable.isSubCategory) {
-                                var variableValue = variable.variableValues?.filter(i => i.id == item.variableValues[variableID])[0]
+                    if (item.subCategoryVariableValueIDs) {
+                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                            var variable = that.variables?.filter(x => x.variableValues.filter(i => i.id == variableValueID).length > 0)[0];
+                            if (variable && variable.isSubCategory) {
+                                var variableValue = variable.variableValues.filter(i => i.id == variableValueID)[0]
                                 if (variableValue) {
-                                    item[variableID] = variableValue.name;
+                                    item[variable.id.toString()] = variableValue.name;
+                                    item[variable.id + 'sort'] = variableValue.id;
                                 }
                             }
                         })
                     }
-                });
-                                
-                var variables = that.variables?.filter(i => tableData.filter(el => el[i.id]).length > 0);
-                variables?.forEach(variable => { 
-                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
+                });                
+
+                var variables = that.variables?.filter(i => tableData.filter(el => el[i.id.toString()]).length > 0);
+                var distinctVariables = [...new Set(variables?.map(obj => obj.id))].map(id => { return variables.find(obj => obj.id === id) });
+                distinctVariables?.forEach(variable => {                             
+                    var variableValuesSorted = variable.variableValues.filter(i => tableData.filter(el => el[variable.id + 'sort'] == i.id).length > 0).sort((a, b) => { return a?.id - b?.id });                                                                
+                    var variableValueNames = [...new Set(variableValuesSorted.map(x => x.name))];
+                    columns.push({ title: variable.name, field: variable.id.toString(), headerFilter: "select", headerFilterParams: { values: variableValueNames, multiselect: true }, headerFilterFunc: "in", minWidth: 150 },)
+                    columns.push({ title: variable.name + 'sort', field: variable.id + 'sort', visible: false },)
                 });
 
-                columns.push({ title: "Submitted Date", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
-                columns.push({ title: "Verified Date", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, accessorDownload: that.commentDownloadAccessor, hozAlign: "center", headerSort: false, width: 50, widthShrink:2, titleDownload:"Comment" });
+                columns.push({ title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 });
+                columns.push({ title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135 });                
+                columns.push({ title: "Submitted", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
+                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50 });
 
-                var el = this.$el.querySelector('.grid');          
+                if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
+                    that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData);
+                }
+                
+                var sortList = [];
+                distinctVariables?.slice().reverse().forEach((variable, variableindex) => {
+                    sortList.push({ column: variable.id + 'sort', dir: "asc" });
+                });
+
+                var el = this.$el.querySelector('.grid');         
                 this.table = new Tabulator(el, {
                     data: tableData,
                     layout: "fitColumns",
-                    reactiveData:true,
                     //responsiveLayout: false,
-                    selectable: false,
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
                     paginationSize: that.pageSize,
                     movableColumns: false,
                     resizableColumns: "header",
-                    //resizableRows: false,
+                    //resizableRows: true,
                     groupBy: that.groups.map(i => i.field),
-                    groupHeader: function(value, count, data, group) {
+                    initialSort: sortList,
+                    columns: columns,
+                    groupHeader: function(value, count, data, group){
                         var html = that.getGroupText(group._group, count);
                         return html;
-                    },                    
-                    initialSort: [
-                        { column: "primaryTime.ticks", dir: that.istimerasc ? "desc" : "asc" },
-                    ],
-                    columns: columns,
+                    },                                        
                     renderComplete:function() {
                         that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
                             el.setAttribute('draggable', true);
@@ -206,13 +178,13 @@
                                 content: escapeHtml(value),
                                 allowHTML: true,
                                 arrow:false,
-                                placement:'bottom'
+                                placement: 'bottom'
                             })
                         });
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    }
-                });
+                    },
+                });                
             },
             onGroupAdd(event) {
                 event.preventDefault();
@@ -230,7 +202,48 @@
                     this.groups = this.groups.filter(i => i.field != field);
                     this.table.setGroupBy(this.groups.map(i => i.field));
                 }
-            },
+            },                        
+            formatColumnField(fieldName) {
+                var field = fieldName.replace(/./g,'_');
+                return field;
+            }, 
+            getVariableGroupByList(subCategoryVariableValues, tableData, variableValueIDs, index) {
+                var that = this;
+
+                if (!variableValueIDs) {
+                    variableValueIDs = '';
+                }
+                
+                if (!index){
+                    index = 0;
+                }
+
+                if (index < 3) {
+                    subCategoryVariableValues?.forEach(variable => {
+                        variable.variableValues.forEach(variableValue => {
+                            var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
+                            var data = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs));
+                            var uniqueData = [...new Set(data?.map(obj => obj.subCategoryVariableValueIDs))];
+    
+                            if (that.showlevels) {
+                                if (variable.levelID && variable.variableValues.length > 1){
+                                    if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
+                                        that.groups.push({ field: variable.id.toString(), title: variable.name });
+                                    }
+                                }
+                            } else if (uniqueData.length > 1) {
+                                if (that.groups.filter(i => i.field == variable.id.toString()).length == 0) {
+                                    that.groups.push({ field: variable.id.toString(), title: variable.name });
+                                }
+                            }
+
+                            if (variableValue.subVariables && variableValue.subVariables.length > 0) {
+                                that.getVariableGroupByList(variableValue.subVariables, tableData, currVariableValueIDs, index + 1);
+                            }
+                        });
+                    });
+                }
+            },                                            
             getGroupText(group, count) {
                 var html = '';
                 if (group.key) {                
@@ -244,7 +257,7 @@
                 html += "<span>(" + count + " item)</span>";
 
                 return html;
-            },            
+            },                                       
             optionsFormatter(cell, formatterParams, onRendered) {
                 var value = cell.getValue();
 
@@ -252,7 +265,7 @@
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
                 html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
-                html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
+                html += "<a href=\"javascript:window.gameWorldRecordGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
@@ -285,10 +298,7 @@
                 html += '</span>'
 
                 return html;
-            },   
-            playerDownloadAccessor(value, data, type, params, column) {
-                return value?.map(el => el.name).join('\r\n');
-            },                        
+            },            
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
                 var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
@@ -297,16 +307,27 @@
                 if (value) {
                     html += value
                 }
-                
+
                 return html;
-            },         
+            },
+            toolTipFormatter(cell, formatterParams, onRendered) {
+                var value = cell.getValue();
+                var html = '';
+                if (value) {
+                    html += '<span class="tippy-tooltip" data-content="' + escapeHtml(value) + '">';
+                    html += value;
+                    html += '</span>';
+                }
+
+                return html;
+            },
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
                 var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
-                if(value) {
+                if(value){
                     html += dayjs(value).format(formatString);
                 }
 
@@ -321,12 +342,12 @@
                 if (value != null) {
                     html = '<i class="fas fa-comment tippy-tooltip" data-content="' + value + '"></i>'
                 }
-
+                
                 return html;
             },
-            commentDownloadAccessor(value, data, type, params, column) {
-                return value ?? '';
-            },                                   
+            subCategoryVisible() {
+                return this.tableData.filter(x => x.subCategoryVariableValues).length > 0;
+            },
             dateSorter(a, b, aRow, bRow, column, dir, sorterParams){
                 return new Date(a) - new Date(b);
             },            
@@ -367,7 +388,7 @@
                 }
 
                 return editorDiv;
-            },                   
+            },            
             rankHeaderFilter(headerValue, rowValue, rowData, filterParams){
                 if(headerValue.length == 0){
                     return true;
@@ -385,16 +406,16 @@
                 return value?.filter(el => { 
                     return headerValue.indexOf(el.name) > -1 
                     }).length > 0;
-            },        
+            },                               
             dateHeaderFilter(headerValue, rowValue, rowData, filterParams){
                 if(!headerValue){
                     return true;
                 }
-                
-                var value = dayjs(rowValue).format("MM/DD/YYYY"); 
+
+                var value = dayjs(rowValue).format("MM/DD/YYYY");
 
                 return headerValue == value; 
-            },      
+            },
             onSearchKeyDown(event) {
                 var el = event.target;
                 var key = event.key;
@@ -403,12 +424,12 @@
                     this.table.setHeaderFilterValue(columnEl, "");
                     document.querySelector('.tabulator-edit-select-list')?.remove();
                 }
-            },                         
+            },                                              
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
                 this.showDetailModal = true;
-            }                              
-        }             
+            }
+        }
     };
 </script>
 

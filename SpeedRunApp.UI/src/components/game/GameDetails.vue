@@ -78,7 +78,7 @@
     import axios from 'axios';
 
     export default {
-        name: "GameDetailst",
+        name: "GameDetails",
         props: {
             gamevm: Object,
             speedrunid: String,

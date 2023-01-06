@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <nav class="navbar navbar-expand-lg bg-dark">
-            <a class="navbar-brand" href="#/" @click="onHomeClick">
+            <a class="navbar-brand" href="#/" draggable="false" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
                 SpeedRunCharts
             </a>

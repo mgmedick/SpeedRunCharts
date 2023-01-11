@@ -22,6 +22,8 @@ import speedRunSummary from './speedrun/SpeedRunSummary.vue';
 import speedRunEdit from './speedrun/SpeedRunEdit.vue';
 
 import gameDetails from './game/GameDetails.vue';
+import gameChartTabs from './game/GameChartTabs.vue';
+import gameChartContainer from './game/GameChartContainer.vue';
 import gameTabs from './game/GameTabs.vue';
 import leaderboardGrid from './game/LeaderboardGrid.vue';
 import leaderboardTabs from './game/LeaderboardTabs.vue';
@@ -39,6 +41,7 @@ import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
 import personalBestGrid from './user/PersonalBestGrid.vue';
 import personalBestTabs from './user/PersonalBestTabs.vue';
 
+import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue';
 import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue';
 import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
 import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
@@ -62,6 +65,8 @@ export default {
         app.component('modal', modal);  
 
         app.component('gamedetails', gameDetails);  
+        app.component("game-chart-tabs", gameChartTabs);
+        app.component("game-chart-container", gameChartContainer);
         app.component("game-tabs", gameTabs);
         app.component("leaderboard-tabs", leaderboardTabs);
         app.component("leaderboard-tabs-variable", leaderboardTabsVariable);
@@ -79,6 +84,7 @@ export default {
         app.component("personalbest-grid", personalBestGrid);        
         app.component("personalbest-tabs", personalBestTabs);
 
+        app.component("game-speedrun-count-line-chart", gameSpeedRunCountLineChart);
         app.component("leaderboard-worldrecord-chart", leaderboardWorldRecordChart);
         app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
         app.component("leaderboard-top-chart", leaderboardTopChart);

@@ -49,7 +49,7 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }
-
+        
         public IEnumerable<WorldRecordGridView> GetWorldRecordGridViews(Expression<Func<WorldRecordGridView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())

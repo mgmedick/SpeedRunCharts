@@ -55,8 +55,8 @@ const getDateDiffList = (datePart, startDate, endDate) => {
             }
             break;
         case "month":
-            var startMonthYear = dayjs([startDate.getFullYear(), startDate.getMonth(), 1]).toDate();
-            var endMonthYear = dayjs([endDate.getFullYear(), endDate.getMonth(), 1]).toDate();
+            var startMonthYear = dayjs([startDate.getFullYear(), startDate.getMonth() + 1, 1]).toDate();
+            var endMonthYear = dayjs([endDate.getFullYear(), endDate.getMonth() + 1, 1]).toDate();
             while (startMonthYear <= endMonthYear) {
                 dates.push(startMonthYear);
                 startMonthYear = dayjs(startMonthYear).add(1, 'month').toDate();

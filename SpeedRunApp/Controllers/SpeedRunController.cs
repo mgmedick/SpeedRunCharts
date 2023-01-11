@@ -99,6 +99,22 @@ namespace SpeedRunApp.MVC.Controllers
             var results = _speedRunService.GetPersonalBestGridData(gameID, categoryTypeID, categoryID, levelID, userID);
 
             return Json(results);
-        }         
+        }
+
+        [HttpGet]
+        public JsonResult GetGameChartData(int gameID, int categoryTypeID)
+        {
+            var results = _speedRunService.GetGameChartData(gameID, categoryTypeID);
+
+            return Json(results);
+        }    
+
+        [HttpGet]
+        public JsonResult GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
+        {
+            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, true);
+
+            return Json(results);
+        }                 
     }
 }

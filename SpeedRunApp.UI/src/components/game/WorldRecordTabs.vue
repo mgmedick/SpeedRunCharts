@@ -9,7 +9,7 @@
     <div v-else id="divWorldRecorGridTabContainer">
         <div v-for="(game, gameIndex) in items" :key="game.id">
             <div v-if="gameID == game.id">
-                <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+                <div class="row no-gutters pr-1 pt-1 pb-0">
                     <div class="col tab-list">
                         <ul class="nav nav-pills">
                             <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
@@ -34,7 +34,7 @@
                             <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID && !variable.levelID)" :showcategories="true" :showlevels="false"></worldrecord-grid>                              
                         </div>                    
                         <div v-else>
-                            <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+                            <div class="row no-gutters pr-1 pt-1 pb-0">
                                 <div class="col tab-list">
                                     <ul class="nav nav-pills">
                                         <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
@@ -63,7 +63,7 @@
                                             <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID)" :showcategories="false" :showlevels="true"></worldrecord-grid>                              
                                         </div>
                                         <div v-else>
-                                            <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+                                            <div class="row no-gutters pr-1 pt-1 pb-0">
                                                 <div class="col tab-list">
                                                     <ul class="nav nav-pills">
                                                         <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">

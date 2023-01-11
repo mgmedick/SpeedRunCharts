@@ -15,17 +15,7 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;            
-            Rank = run.Rank;
-                                  
-            // if (!string.IsNullOrWhiteSpace(run.VariableValues))
-            // {
-            //     VariableValues = new Dictionary<int, int>();
-            //     foreach (var variableValue in run.VariableValues.Split(","))
-            //     {
-            //         var values = variableValue.Split("|", 2);
-            //         VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
-            //     }
-            // }            
+            Rank = run.Rank;        
         }
         
         public SpeedRunGridViewModel(SpeedRunGridView run)

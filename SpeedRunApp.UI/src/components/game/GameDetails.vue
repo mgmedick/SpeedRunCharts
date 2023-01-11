@@ -14,7 +14,7 @@
                 </h5>
             </div>
         </div>
-        <div>
+        <div>          
             <div class="container ml-0 p-0 mt-4">
                 <h5 class="font-weight-bold mb-2">Details</h5>
                 <div>
@@ -45,8 +45,8 @@
                         </div>
                     </div>
                 </div>            
-            </div>  
-            <game-tabs :isgame="true" :id="gamevm.id.toString()" :speedrunid="speedrunid"></game-tabs>
+            </div>
+            <game-tabs :id="gamevm.id.toString()" :speedrunid="speedrunid"></game-tabs>
         </div>
         <modal v-if="showUpdateGameModal" contentclass="cmv-modal-md" @close="showUpdateGameModal = false" ref="updateModal">
             <template v-slot:title>
@@ -81,13 +81,13 @@
         name: "GameDetails",
         props: {
             gamevm: Object,
-            speedrunid: String,
-            showcharts: Boolean      
+            speedrunid: String
         },  
         data: function () {
             return {
                 errorMessages: [],                
-                showUpdateGameModal: false
+                showUpdateGameModal: false,
+                showGameCharts: true               
             }
         },            
         computed: {
@@ -115,7 +115,10 @@
                         }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
-            }            
+            },
+            onShowGameChartsClick: function (event) {
+                this.showGameCharts = !this.showGameCharts;
+            }      
         }
     };
 </script>

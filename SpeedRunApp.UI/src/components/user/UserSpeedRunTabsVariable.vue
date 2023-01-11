@@ -1,7 +1,7 @@
 ﻿<template>
     <div v-for="variable in items" :key="variable.id">
         <div v-if="subcategoryvariablevalueids[variable.name + variableindex]">
-            <div class="variablerow row no-gutters pr-1 pt-1 pb-0 pr-0">
+            <div class="variablerow row no-gutters pr-1 pt-1 pb-0">
                 <div class="col tab-list">
                     <ul class="nav nav-pills">
                         <li class="variableValue nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues" :key="variableValue.id">

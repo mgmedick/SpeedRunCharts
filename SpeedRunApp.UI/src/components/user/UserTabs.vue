@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="container p-0 mt-4">
-        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+        <div class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1">

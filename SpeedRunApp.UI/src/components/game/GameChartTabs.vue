@@ -29,13 +29,13 @@
         <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-if="categoryTypeID == 0">
-                    <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :categories="game.categories" :levels="game.levels" :showmilliseconds="game.showMilliseconds"></game-chart-container>
+                    <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :categories="game.categories" :levels="game.levels" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-chart-container>
                 </div>
                 <div v-else>
                     <div class="row no-gutters pr-1 pt-1 pb-0">
                         <div class="col tab-list">
                             <ul class="nav nav-pills">
-                                <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
                                     <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                 </li>
                                 <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
@@ -43,7 +43,7 @@
                                         <span>More...</span>
                                     </template>
                                     <template v-slot:options>
-                                        <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                                        <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
                                             <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                         </template>
                                     </template>
@@ -51,9 +51,9 @@
                             </ul>
                         </div>
                     </div>                           
-                    <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                    <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
                         <div v-if="categoryID == category.id">                                
-                            <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :categories="game.categories" :levels="game.levels" :showmilliseconds="game.showMilliseconds"></game-chart-container>                        
+                            <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :categories="game.categories" :levels="game.levels.filter(lvl => lvl.categoryID == category.id)" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-chart-container>                        
                         </div>
                     </div>
                 </div>
@@ -78,6 +78,20 @@
                 loading: true
             }
         },
+        computed: {
+            subCaption: function () {
+                var result = '';
+                var game = this.game;
+                var gameName = game.name;                
+                var categoryTypeName = game.categoryTypes.filter(i => i.id == this.categoryTypeID)[0]?.name;
+                var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
+
+                result = [gameName, categoryTypeName, categoryName].join(' - ');
+                result = result.replace(/^[ -]+|[ -]+$/g, '');
+                
+                return result;
+            }
+        },          
         mounted: function () {
             this.loadData();
             window.addEventListener('resize', this.resizeGCTabs);
@@ -90,7 +104,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetWorldRecordTabs?gameID=' + this.id;
+                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.game = res.data.tabItems[0];

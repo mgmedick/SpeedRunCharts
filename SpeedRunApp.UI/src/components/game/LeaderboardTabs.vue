@@ -7,6 +7,25 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
+        <div class="row no-gutters pr-1 pt-1 pb-0">
+            <div class="col tab-list">
+                <ul class="nav nav-pills">
+                    <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                        <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                    </li>
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                        <template v-slot:text>
+                            <span>More...</span>
+                        </template>
+                        <template v-slot:options>
+                            <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </template>
+                        </template>
+                    </button-dropdown>                       
+                </ul>
+            </div>                    
+        </div>
         <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div class="row no-gutters pr-1 pt-1 pb-0">

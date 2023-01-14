@@ -5,7 +5,7 @@
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid"></div>
+        <div :id="chartconainerid" @mouseover="onHover"></div>
     </div>
 </template>
 <script>
@@ -22,9 +22,12 @@
         props: {  
             tabledata: Array,
             categories: Array,
+            levels: Array,
+            variables: Array,
             categorytypeid: String,
             categoryid: String,           
             showmilliseconds: Boolean,
+            subcaption: String,
             ismodal: Boolean,
             chartconainerid: String
         },
@@ -39,12 +42,12 @@
                 var that = this;
                 var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
                 return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
-            },                     
+            },   
+            caption: function () {
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts (Last 12 months)';
+            },                               
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
-            },
-            subCaption: function () {
-                return this.categorytypeid == 0 ? 'PerGame Categories' : 'PerLevel Categories'
             },              
             subCaptionFontSize: function () {
                 return this.ismodal ? 13 : 11;
@@ -56,8 +59,11 @@
                 return this.ismodal ? 13 : 11;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 12 : 10;
-            },                                                      
+                return this.ismodal ? 11 : 11;
+            },          
+            legendIconScale: function () {
+                return this.ismodal ? .8 : .5;
+            },                                                                   
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
@@ -68,18 +74,7 @@
         mounted: function () {
             this.loadChart();
         },
-        methods: {   
-            // loadData() {
-            //     var that = this;
-            //     this.loading = true;
-
-            //     axios.get('/SpeedRun/GetGameSpeedRunCountLineChartData', { params: { gameID: this.gameid } })
-            //         .then(res => {
-            //             that.tabledata = res.data; 
-            //             that.loadChart();                                          
-            //         })
-            //         .catch(err => { console.error(err); return Promise.reject(err); });
-            // },                     
+        methods: {                      
             loadChart() {
                 var that = this;
                 this.loading = true;
@@ -108,24 +103,60 @@
                     });
                     categories.push(categoryObj);
 
-                    var _data = JSON.parse(JSON.stringify(this.tabledata));
+                    var _alldata = JSON.parse(JSON.stringify(this.tabledata));
 
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {                                   
-                            _data = _data.filter(i => i.categoryID == category.id).sort((a, b) => { 
+                            var _data = _alldata.filter(i => i.categoryID == category.id).sort((a, b) => { 
                                 return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
                             });   
 
-                            var chartDataObj = {};
+                            var chartObj = {};
                             _data.forEach(item => {
-                                var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY")
-                                var total = (chartDataObj[monthYear]?.value ?? 0) + 1;
-                                chartDataObj[monthYear] = { value: total, tooltext: monthYear + " - " + total + " runs" }
+                                var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
+
+                                var variableValueNames = '';
+                                if (item.subCategoryVariableValueIDs) {
+                                    chartObj[monthYear] = chartObj[monthYear] || {};
+                                    item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                                        var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                                        if (variable && variable.isSubCategory) {
+                                            var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                                            if (variableValue) {
+                                                variableValueNames += ',' + variableValue.name;
+                                            }
+                                        }
+                                    });
+                                    variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                                    chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                } else {
+                                    chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                }
                             });
+
+                            var chartDataObj = {};
+                            Object.keys(chartObj).forEach(monthyear => {
+                                if (Object.keys(chartObj[monthyear]).length > 0) {
+                                    var total = 0;
+                                    var tooltiptext = '';
+
+                                    Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
+                                        var count = chartObj[monthyear][variableValueNames];
+                                        total += count;
+                                        // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
+                                        tooltiptext += count + ' (' + variableValueNames + ') + ';
+                                    });
+                                    tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
+                                    chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
+                                } else {
+                                    var total = chartObj[monthyear];
+                                    chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') };
+                                }
+                            });   
 
                             timePeriods.forEach(timePeriod => {
                                 if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                    chartDataObj[timePeriod] = { value: 0, tooltext: timePeriod + ' - 0 runs' };
+                                    chartDataObj[timePeriod] = { value: 0, tooltext: category.name + ': 0 runs' };
                                 }
                             });
 
@@ -144,20 +175,56 @@
                         });
                     } else {
                         this.levels.forEach(level => {                                   
-                            _data = _data.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).sort((a, b) => { 
+                            var _data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).sort((a, b) => { 
                                 return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
                             });   
 
-                            var chartDataObj = {};
+                            var chartObj = {};
                             _data.forEach(item => {
                                 var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY")
-                                var total = (chartDataObj[monthYear]?.value ?? 0) + 1;
-                                chartDataObj[monthYear] = { value: total, tooltext: monthYear + " - " + total + " runs" }
+
+                                var variableValueNames = '';
+                                if (item.subCategoryVariableValueIDs) {
+                                    chartObj[monthYear] = chartObj[monthYear] || {};
+                                    item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                                        var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                                        if (variable && variable.isSubCategory) {
+                                            var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                                            if (variableValue) {
+                                                variableValueNames += ',' + variableValue.name;
+                                            }
+                                        }
+                                    });
+                                    variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                                    chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                } else {
+                                    chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                }
                             });
+
+                            var chartDataObj = {};
+                            Object.keys(chartObj).forEach(monthyear => {
+                                if (Object.keys(chartObj[monthyear]).length > 0) {
+                                    var total = 0;
+                                    var tooltiptext = '';
+
+                                    Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
+                                        var count = chartObj[monthyear][variableValueNames];
+                                        total += count;
+                                        // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
+                                        tooltiptext += count + ' (' + variableValueNames + ') + ';
+                                    });
+                                    tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
+                                    chartDataObj[monthyear] = { value: total, tooltext: level.name + ': ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
+                                } else {
+                                    var total = chartObj[monthyear];
+                                    chartDataObj[monthyear] = { value: total, tooltext: level.name + ': ' + total + (total == 1 ? ' run' : ' runs') };
+                                }
+                            });   
 
                             timePeriods.forEach(timePeriod => {
                                 if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                    chartDataObj[timePeriod] = { value: 0, tooltext: timePeriod + ' - 0 runs' };
+                                    chartDataObj[timePeriod] = { value: 0, tooltext: level.name + ': 0 runs' };
                                 }
                             });
 
@@ -185,9 +252,9 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Number of Runs (Last 12 months)',
+                            caption: this.caption,
                             captionFontSize: this.captionFontSize,                           
-                            subCaption: this.subCaption,
+                            subCaption: this.subcaption,
                             subCaptionFontSize: this.subCaptionFontSize,
                             captionAlignment:"center",
                             xAxis: 'Date',
@@ -201,18 +268,26 @@
                             rotateLabels: 1,
                             slantLabels: 1,
                             showToolTip: 1,
-                            seriesNameInToolTip: 0,
+                            tooltipPosition: "top",
                             hoverOnEmpty: 0,
                             showLegend: 1,
+                            interactiveLegend: 1,
+                            plotHighlightEffect: 'fadeout|anchorBgColor=7f7f7f, alpha=5',
                             legendItemFontSize: this.legendItemFontSize,
+                            legendIconScale: this.legendIconScale,
+                            // legendNumRows: 3,
+                            // legendNumColumns: 3,
+                            // legendWidth: 400,
                             lineThickness: 2,
                             anchorRadius: 5,
                             anchorBgColor: this.bgColor,
                             anchorBorderThickness: 1,                                                   
                             exportEnabled: 1,
                             showValues: 0,
-                            formatNumberScale: 1,
-                            numberOfDecimals: 0,
+                            formatNumber: 0,
+                            // enableChartMouseMoveEvent: 1,
+                            // formatNumberScale: 1,
+                            // numberOfDecimals: 0,
                             // numberscalevalue: this.showmilliseconds ? "1000,60,60" : "60,60",                           
                             // numberscaleunit: this.showmilliseconds ? "s,m,h" : "m,h",
                             // defaultnumberscale: this.showmilliseconds ? "ms" : "s",
@@ -220,21 +295,35 @@
                             // maxscalerecursion: "-1",                            
                             scaleseparator: " ",
                             connectNullData: 1,
-                            plotBinSize: 1.5,
+                            //plotBinSize: 1.5,
                             //setAdaptiveYMin: 1,
                             yAxisValueFontSize: this.yAxisValueFontSize,                        
                             theme: "candy",
+                            palettecolors: "36b5d8,f0dc46,f066ac,6ec85a,6e80ca,e09653,e1d7ad,61c8c8,ebe4f4,e64141,f2003e,00abfe,00e886,c7f600,9500f2,ff9a04,e200aa,a4cdfe,01b596,ecd86f",
                             bgColor: this.bgColor,
                             baseFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor
                         },
+                        // tooltip: {
+                        //     enabled: 1,
+                        //     style: {
+                        //         text: {
+                        //             fontsize: 8
+                        //         }
+                        //     },
+                        // },
                         categories: categories,
                         dataset: dataset
+                    },
+                    events: {
+                        legendItemClicked: function (eventObj, dataObj) {
+                            console.log('clicked')
+                        }
                     }
                 };
 
                 return chartConfig;
-            }           
+            }
         }
     }
 </script>

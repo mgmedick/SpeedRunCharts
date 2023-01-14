@@ -663,6 +663,12 @@ button.bg-dark:focus {
     background-color: rgba(255,255,255,.15) !important;
 }    
 
+.fusioncharts-container > .fc__tooltip.fusioncharts-div {
+    font-size: 11px !important;
+    max-width: 300px !important;
+    white-space: normal !important;
+}
+
 /** Tabulator Overrides **/
 .grid-container {
     background-color: var(--bs-background-color12);

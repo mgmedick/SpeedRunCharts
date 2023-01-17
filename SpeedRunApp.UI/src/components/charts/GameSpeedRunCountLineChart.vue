@@ -44,11 +44,14 @@
                 return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
             },   
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts (Last 12 months)';
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Trends (Last 12 months)';
             },                               
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
-            },              
+            },  
+            subCaption: function () {
+                return this.subcaption + '{br}(empties excluded)'
+            },                         
             subCaptionFontSize: function () {
                 return this.ismodal ? 13 : 11;
             },  
@@ -107,139 +110,145 @@
 
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {                                   
+                            var categoryName = category.name.replace(/( \(empty\)$)/g, '');                            
                             var _data = _alldata.filter(i => i.categoryID == category.id).sort((a, b) => { 
                                 return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
                             });   
 
-                            var chartObj = {};
-                            _data.forEach(item => {
-                                var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
+                            if (_data.length > 0) {
+                                var chartObj = {};
+                                _data.forEach(item => {
+                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
 
-                                var variableValueNames = '';
-                                if (item.subCategoryVariableValueIDs) {
-                                    chartObj[monthYear] = chartObj[monthYear] || {};
-                                    item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
-                                        var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
-                                        if (variable && variable.isSubCategory) {
-                                            var variableValue = variable.variableValues.find(i => i.id == variableValueID);
-                                            if (variableValue) {
-                                                variableValueNames += ',' + variableValue.name;
+                                    var variableValueNames = '';
+                                    if (item.subCategoryVariableValueIDs) {
+                                        chartObj[monthYear] = chartObj[monthYear] || {};
+                                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                                            if (variable && variable.isSubCategory) {
+                                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                                                if (variableValue) {
+                                                    variableValueNames += ',' + variableValue.name;
+                                                }
                                             }
-                                        }
-                                    });
-                                    variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                    chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
-                                } else {
-                                    chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                        });
+                                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                                        chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                    } else {
+                                        chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                    }
+                                });
+
+                                var chartDataObj = {};
+                                Object.keys(chartObj).forEach(monthyear => {
+                                    if (Object.keys(chartObj[monthyear]).length > 0) {
+                                        var total = 0;
+                                        var tooltiptext = '';
+
+                                        Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
+                                            var count = chartObj[monthyear][variableValueNames];
+                                            total += count;
+                                            // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
+                                            tooltiptext += count + ' (' + variableValueNames + ') + ';
+                                        });
+                                        tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
+                                        chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
+                                    } else {
+                                        var total = chartObj[monthyear];
+                                        chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
+                                    }
+                                });   
+
+                                timePeriods.forEach(timePeriod => {
+                                    if (!chartDataObj.hasOwnProperty(timePeriod)) {
+                                        chartDataObj[timePeriod] = { value: 0, tooltext: categoryName + ', ' + timePeriod + ', 0 runs' };
+                                    }
+                                });
+
+                                var chartData = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
+                                            
+                                if (chartData.length > 0) {
+                                    chartData = chartData.sort((a, b) => {
+                                        var monthyeara = a.label.split("/");
+                                        var monthyearb = b.label.split("/");
+
+                                        return new Date(monthyeara[1], 1, monthyeara[0]) - new Date(monthyearb[1], 1, monthyearb[0])
+                                    });                                       
                                 }
-                            });
 
-                            var chartDataObj = {};
-                            Object.keys(chartObj).forEach(monthyear => {
-                                if (Object.keys(chartObj[monthyear]).length > 0) {
-                                    var total = 0;
-                                    var tooltiptext = '';
-
-                                    Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
-                                        var count = chartObj[monthyear][variableValueNames];
-                                        total += count;
-                                        // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
-                                        tooltiptext += count + ' (' + variableValueNames + ') + ';
-                                    });
-                                    tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                                    chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
-                                } else {
-                                    var total = chartObj[monthyear];
-                                    chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') };
-                                }
-                            });   
-
-                            timePeriods.forEach(timePeriod => {
-                                if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                    chartDataObj[timePeriod] = { value: 0, tooltext: category.name + ': 0 runs' };
-                                }
-                            });
-
-                            var chartData = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
-                                        
-                            if (chartData.length > 0) {
-                                chartData = chartData.sort((a, b) => {
-                                    var monthyeara = a.label.split("/");
-                                    var monthyearb = b.label.split("/");
-
-                                    return new Date(monthyeara[1], 1, monthyeara[0]) - new Date(monthyearb[1], 1, monthyearb[0])
-                                });                                       
+                                dataset.push({ seriesname: categoryName, data: chartData });
                             }
-
-                            dataset.push({ seriesname: category.name, data: chartData });
                         });
                     } else {
-                        this.levels.forEach(level => {                                   
+                        this.levels.forEach(level => {    
+                            var levelName = level.name.replace(/( \(empty\)$)/g, '');                            
                             var _data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).sort((a, b) => { 
                                 return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
                             });   
 
-                            var chartObj = {};
-                            _data.forEach(item => {
-                                var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY")
+                            if (_data.length > 0) {
+                                var chartObj = {};
+                                _data.forEach(item => {
+                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY")
 
-                                var variableValueNames = '';
-                                if (item.subCategoryVariableValueIDs) {
-                                    chartObj[monthYear] = chartObj[monthYear] || {};
-                                    item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
-                                        var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
-                                        if (variable && variable.isSubCategory) {
-                                            var variableValue = variable.variableValues.find(i => i.id == variableValueID);
-                                            if (variableValue) {
-                                                variableValueNames += ',' + variableValue.name;
+                                    var variableValueNames = '';
+                                    if (item.subCategoryVariableValueIDs) {
+                                        chartObj[monthYear] = chartObj[monthYear] || {};
+                                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                                            if (variable && variable.isSubCategory) {
+                                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                                                if (variableValue) {
+                                                    variableValueNames += ',' + variableValue.name;
+                                                }
                                             }
-                                        }
-                                    });
-                                    variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                    chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
-                                } else {
-                                    chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                        });
+                                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                                        chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                    } else {
+                                        chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                    }
+                                });
+
+                                var chartDataObj = {};
+                                Object.keys(chartObj).forEach(monthyear => {
+                                    if (Object.keys(chartObj[monthyear]).length > 0) {
+                                        var total = 0;
+                                        var tooltiptext = '';
+
+                                        Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
+                                            var count = chartObj[monthyear][variableValueNames];
+                                            total += count;
+                                            // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
+                                            tooltiptext += count + ' (' + variableValueNames + ') + ';
+                                        });
+                                        tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
+                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }  
+                                    } else {
+                                        var total = chartObj[monthyear];
+                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
+                                    }
+                                });   
+
+                                timePeriods.forEach(timePeriod => {
+                                    if (!chartDataObj.hasOwnProperty(timePeriod)) {
+                                        chartDataObj[timePeriod] = { value: 0, tooltext: levelName + ', ' + timePeriod + ', 0 runs' };
+                                    }
+                                });
+
+                                var chartData = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
+                                            
+                                if (chartData.length > 0) {
+                                    chartData = chartData.sort((a, b) => {
+                                        var monthyeara = a.label.split("/");
+                                        var monthyearb = b.label.split("/");
+
+                                        return new Date(monthyeara[1], 1, monthyeara[0]) - new Date(monthyearb[1], 1, monthyearb[0])
+                                    });                                       
                                 }
-                            });
 
-                            var chartDataObj = {};
-                            Object.keys(chartObj).forEach(monthyear => {
-                                if (Object.keys(chartObj[monthyear]).length > 0) {
-                                    var total = 0;
-                                    var tooltiptext = '';
-
-                                    Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
-                                        var count = chartObj[monthyear][variableValueNames];
-                                        total += count;
-                                        // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
-                                        tooltiptext += count + ' (' + variableValueNames + ') + ';
-                                    });
-                                    tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                                    chartDataObj[monthyear] = { value: total, tooltext: level.name + ': ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
-                                } else {
-                                    var total = chartObj[monthyear];
-                                    chartDataObj[monthyear] = { value: total, tooltext: level.name + ': ' + total + (total == 1 ? ' run' : ' runs') };
-                                }
-                            });   
-
-                            timePeriods.forEach(timePeriod => {
-                                if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                    chartDataObj[timePeriod] = { value: 0, tooltext: level.name + ': 0 runs' };
-                                }
-                            });
-
-                            var chartData = Object.entries(chartDataObj)?.map(x => ({ label: x[0], value: x[1]?.value, tooltext: x[1]?.tooltext }));                        
-                                        
-                            if (chartData.length > 0) {
-                                chartData = chartData.sort((a, b) => {
-                                    var monthyeara = a.label.split("/");
-                                    var monthyearb = b.label.split("/");
-
-                                    return new Date(monthyeara[1], 1, monthyeara[0]) - new Date(monthyearb[1], 1, monthyearb[0])
-                                });                                       
+                                dataset.push({ seriesname: levelName, data: chartData });
                             }
-
-                            dataset.push({ seriesname: level.name, data: chartData });
                         });
                     }
                 }
@@ -254,7 +263,7 @@
                         chart: {
                             caption: this.caption,
                             captionFontSize: this.captionFontSize,                           
-                            subCaption: this.subcaption,
+                            subCaption: this.subCaption,
                             subCaptionFontSize: this.subCaptionFontSize,
                             captionAlignment:"center",
                             xAxis: 'Date',

@@ -4,10 +4,10 @@ namespace SpeedRunApp.Model
 {
     public enum CategoryType
     {
-        [EnumMember(Value = "PerGame")]
-        PerGame,
-        [EnumMember(Value = "PerLevel")]
-        PerLevel
+        [EnumMember(Value = "FullGame")]
+        FullGame,
+        [EnumMember(Value = "Level")]
+        Level
     }
 
     public enum RunStatusType

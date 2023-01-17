@@ -41,10 +41,16 @@
                 var that = this;
                 var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
                 return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
-            },                     
+            },     
+            caption: function () {
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
+            },                            
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
-            },              
+            },
+            subCaption: function () {
+                return this.subcaption + '{br}(empties excluded)'
+            },                          
             subCaptionFontSize: function () {
                 return this.ismodal ? 13 : 11;
             },  
@@ -64,7 +70,7 @@
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
-                return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
+                return document.body.classList.contains('theme-dark') ? "#212529" : "#212529";
             }                                   
         },              
         mounted: function () {
@@ -89,43 +95,33 @@
                     var _alldata = JSON.parse(JSON.stringify(this.tabledata));
 
                     if (this.categorytypeid == 0) {
-                        this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => { 
+                        this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {
+                            var categoryName = category.name.replace(/( \(empty\)$)/g, '');
                             var data = _alldata.filter(i => i.categoryID == category.id);
-                            chartObj[category.name] = { count: data.length };
+                            chartObj[categoryName] = { count: data.length };
 
                             if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id).length > 0) {
-                                that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[category.name]);                                 
+                                that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[categoryName]);                                 
                             }                            
                         });
+                    } else {
+                        this.levels.filter(i => i.categoryID == that.categoryid).forEach(level => { 
+                            var levelName = level.name.replace(/( \(empty\)$)/g, '');
+                            var data = _alldata.filter(i => i.levelID == level.id);
+                            chartObj[levelName] = { count: data.length };
+
+                            if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).length > 0) {
+                                that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id), data, chartObj[levelName]);                                 
+                            }                            
+                        });                        
                     }
 
-                    var chartDataObj = { label: 'All', value: _alldata.length };
+                    var chartDataObj = { label: 'All', value: _alldata.length, color: "#4d4d4d" };
                     this.setChartData(chartObj, chartDataObj);
-                    // Object.keys(chartObj).forEach(monthyear => {
-                    //     if (Object.keys(chartObj[monthyear]).length > 0) {
-                    //         var total = 0;
-                    //         var tooltiptext = '';
 
-                    //         Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
-                    //             var count = chartObj[monthyear][variableValueNames];
-                    //             total += count;
-                    //             // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
-                    //             tooltiptext += count + ' (' + variableValueNames + ') + ';
-                    //         });
-                    //         tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                    //         chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
-                    //     } else {
-                    //         var total = chartObj[monthyear];
-                    //         chartDataObj[monthyear] = { value: total, tooltext: category.name + ': ' + total + (total == 1 ? ' run' : ' runs') };
-                    //     }
-                    // });   
-
-                    // Object.keys(chartDataObj).sort((a, b) => { return chartDataObj[b] - chartDataObj[a] }).forEach(key => {
-                    //     dataset.push(chartDataObj);
-                    // });
                     dataset.push(chartDataObj);
                 }
-
+                
                 var chartConfig = {
                     type: "multilevelpie",
                     renderAt: this.chartconainerid,
@@ -134,25 +130,37 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Total Runs',
+                            caption: this.caption,
                             captionFontSize: this.captionFontSize,                            
-                            subCaption: this.subcaption,
+                            subCaption: this.subCaption,
                             subCaptionFontSize: this.subCaptionFontSize,
-                            showValues: 1,
+                            showValues: 0,
                             formatNumberScale: 0,
                             numberOfDecimals: 0,
+                            showValuesInTooltip: 0,
                             showPercentValues: 0,
                             showPercentInTooltip: 0,
+                            plotTooltext: "$label, $value runs, $percentValue",
                             exportEnabled: 1,
                             showLegend: 1,
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
-                            showLabels: 0,
+                            showLabels: 1,
+                            enableSmartLabels: 1,
+                            skipOverlapLabels: 1,
+                            useEllipsesWhenOverflow: 1,
+                            autoRotateLabels: 1,
+                            valueFontSize: 10,
+                            valueFontBold: 1,
+                            labelFontBold: 1,
+                            startingAngle: 90,
+                            // pieBorderColor: "#fff",
                             theme: "candy",
                             palettecolors: "36b5d8,f0dc46,f066ac,6ec85a,6e80ca,e09653,e1d7ad,61c8c8,ebe4f4,e64141,f2003e,00abfe,00e886,c7f600,9500f2,ff9a04,e200aa,a4cdfe,01b596,ecd86f",
                             bgColor: this.bgColor,
-                            baseFontColor: this.fontColor,
-                            outCnvBaseFontColor: this.fontColor,
+                            baseFontColor: "#212529",
+                            outCnvBaseFontColor: "#212529",
+                            valueFontColor: "#000"
                         },
                         category: dataset
                     }
@@ -185,7 +193,9 @@
                 Object.keys(chartObj).filter(i => i != "count").forEach(key => {
                     chartDataObj["category"] = chartDataObj["category"] || [];
                     var chartDataItem = { label: key, value: chartObj[key].count };
-                    chartDataObj["category"].push(chartDataItem);
+                    if (chartDataItem.value > 0){
+                        chartDataObj["category"].push(chartDataItem);
+                    }
                     
                     if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
                         that.setChartData(chartObj[key], chartDataItem);
@@ -195,6 +205,8 @@
         }
     }
 </script>
+
+
 
 
 

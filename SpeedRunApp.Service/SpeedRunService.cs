@@ -140,7 +140,7 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID)
         {
-            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID)
+            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1)
                                     .OrderBy(i => i.CategoryID)
                                     .ThenBy(i => i.LevelID)
                                     .ThenBy(i => i.SubCategoryVariableValueIDs)

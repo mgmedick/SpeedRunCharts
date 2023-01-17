@@ -15,10 +15,10 @@
                             <input type="radio" autocomplete="off" value="" v-model="categorytypeid" @change="onCategoryTypeChange">All
                         </label>
                         <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 0 }" style="font-size:13px;">
-                            <input type="radio" autocomplete="off" value="0" v-model="categorytypeid" @change="onCategoryTypeChange">PerGame
+                            <input type="radio" autocomplete="off" value="0" v-model="categorytypeid" @change="onCategoryTypeChange">Full Game
                         </label>
                         <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 1 }" style="font-size:13px;">
-                            <input type="radio" autocomplete="off" value="1" v-model="categorytypeid" @change="onCategoryTypeChange">PerLevel
+                            <input type="radio" autocomplete="off" value="1" v-model="categorytypeid" @change="onCategoryTypeChange">Level
                         </label>                                                
                     </div>
                 </div>                

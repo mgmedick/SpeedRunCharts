@@ -32,10 +32,7 @@
                 </div>
                 <div v-else-if="selectedChartID == 2">
                     <game-speedrun-count-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-doughnut-chart>                
-                </div>
-                <div v-else-if="selectedChartID == 3">
-                    <!-- <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                 -->
-                </div>            
+                </div>          
             </modal>
         </div>
     </div>
@@ -70,13 +67,10 @@
 
                 switch(this.selectedChartID){
                     case 1:
-                        title = 'Number of Runs (Last 12 months)';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Trends (Last 12 months)';
                         break;
                     case 2:
-                        title = 'Time Percentiles Chart';
-                        break;
-                    case 3:
-                        title = 'Top 10 Chart';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
                         break;
                 }
 

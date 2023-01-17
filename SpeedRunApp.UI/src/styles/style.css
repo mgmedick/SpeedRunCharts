@@ -663,6 +663,22 @@ button.bg-dark:focus {
     background-color: rgba(255,255,255,.15) !important;
 }    
 
+.fusioncharts-container > .fc__tooltip.fusioncharts-div {
+    font-size: 11px !important;
+    max-width: 300px !important;
+    white-space: normal !important;
+}
+
+.fusioncharts-container>svg>g>g[class$="legend"]>g[class$="legendGroup"]>g[class$="scrollGroup"]>g[class$="scrollContainer"]>rect {
+    fill: #888!important;
+    stroke: #888 !important;
+}
+
+.fusioncharts-container>svg>g>g[class$="legend"]>g[class$="legendGroup"]>g[class$="scrollGroup"]>g[class$="scrollContainer"]>rect:nth-of-type(2) {
+    fill: #444!important;
+    stroke: #444 !important;
+}
+
 /** Tabulator Overrides **/
 .grid-container {
     background-color: var(--bs-background-color12);

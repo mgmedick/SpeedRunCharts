@@ -78,7 +78,7 @@ namespace SpeedRunApp.Model.ViewModels
                 }
 
                 Levels = new List<Level>();
-                var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).ToList();
+                var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.Level).ToList();
                 foreach (var levelCategory in levelCategories) {
                     foreach (var gameLevel in GameLevels)
                     {
@@ -142,7 +142,7 @@ namespace SpeedRunApp.Model.ViewModels
             foreach (var categoryVariable in categoryVariables)
             {
                 var category = Categories.FirstOrDefault(i => i.ID == categoryVariable.CategoryID);
-                if (category != null && category.CategoryTypeID == (int)CategoryType.PerGame)
+                if (category != null && category.CategoryTypeID == (int)CategoryType.FullGame)
                 {
                     categoryVariable.IsSingleCategory = true;
                 }
@@ -154,7 +154,7 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 foreach (var category in categories)
                 {
-                    if (category.CategoryTypeID == (int)CategoryType.PerLevel && GameLevels != null)
+                    if (category.CategoryTypeID == (int)CategoryType.Level && GameLevels != null)
                     {
                         foreach (var gameLevel in GameLevels)
                         {
@@ -175,7 +175,7 @@ namespace SpeedRunApp.Model.ViewModels
 
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.Global && !i.CategoryID.HasValue);
 
-            var levelCategoryIDs = Categories.Where(i=>i.CategoryTypeID == (int)CategoryType.PerLevel).Select(i=>i.ID).ToList();
+            var levelCategoryIDs = Categories.Where(i=>i.CategoryTypeID == (int)CategoryType.Level).Select(i=>i.ID).ToList();
             var globalLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.Global && i.CategoryID.HasValue && levelCategoryIDs.Contains(i.CategoryID.Value) && !i.LevelID.HasValue).Reverse().ToList();
             if (GameLevels != null && GameLevels.Any()) {
                 foreach (var globalLevelVariable in globalLevelVariables)
@@ -192,7 +192,7 @@ namespace SpeedRunApp.Model.ViewModels
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.Global && i.CategoryID.HasValue && levelCategoryIDs.Contains(i.CategoryID.Value) && !i.LevelID.HasValue);
             
             var gameVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.FullGame && !i.CategoryID.HasValue).Reverse().ToList();
-            var gameCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerGame).Reverse();
+            var gameCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.FullGame).Reverse();
             foreach (var gameVariable in gameVariables)
             {
                 foreach (var category in gameCategories)
@@ -206,7 +206,7 @@ namespace SpeedRunApp.Model.ViewModels
             variables.RemoveAll(i => i.ScopeTypeID == (int)VariableScopeType.FullGame && !i.CategoryID.HasValue);
 
             var allLevelVariables = variables.Where(i => i.ScopeTypeID == (int)VariableScopeType.AllLevels && !i.LevelID.HasValue).Reverse().ToList();
-            var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.PerLevel).Reverse();
+            var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.Level).Reverse();
             if (GameLevels != null && GameLevels.Any()) {
                 foreach (var allLevelVariable in allLevelVariables)
                 {

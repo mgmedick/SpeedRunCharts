@@ -49,7 +49,7 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }
-
+        
         public IEnumerable<WorldRecordGridView> GetWorldRecordGridViews(Expression<Func<WorldRecordGridView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -58,7 +58,7 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }    
-           
+       
         public IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -112,6 +112,15 @@ namespace SpeedRunApp.Repository
                 return db.Query<SpeedRunSummaryView>().Where(predicate).ToList();
             }
         }
+
+        public IEnumerable<SpeedRunChartView> GetSpeedRunChartViews(Expression<Func<SpeedRunChartView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunChartView>().Where(predicate).ToList();
+                return results;
+            }
+        }         
 
         public int? GetSpeedRunID(string speedRunComID)
         {

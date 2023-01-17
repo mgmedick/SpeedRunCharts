@@ -1,6 +1,6 @@
 ﻿<template>
-    <div class="container p-0 mt-4">
-        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+    <div class="container p-0 mt-3">
+        <div class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1">
@@ -9,15 +9,21 @@
                     <li class="nav-item py-1 pr-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Records" }}</a>            
                     </li>
+                    <li class="nav-item py-1 pr-1">
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Charts" }}</a>            
+                    </li>                    
                 </ul>
             </div>
         </div>
         <div v-if="gridID == 0">
             <leaderboard-tabs :id="id" :speedrunid="speedrunid"></leaderboard-tabs>
         </div>
-        <div v-else>
+        <div v-else-if="gridID == 1">
             <worldrecord-tabs :id="id"></worldrecord-tabs>   
         </div>
+        <div v-else>
+            <game-chart-tabs :id="id"></game-chart-tabs>
+        </div>        
     </div>
 </template>
 <script>
@@ -36,7 +42,7 @@
             onTabClick: function (event) {
                 var value = event.target.getAttribute('data-value');
                 this.gridID = value;              
-            },
+            }
         }       
     };
 </script>

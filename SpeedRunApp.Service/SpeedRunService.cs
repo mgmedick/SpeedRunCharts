@@ -138,6 +138,19 @@ namespace SpeedRunApp.Service
            return runVMs;
         }        
 
+        public IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID)
+        {
+            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.Rank == 1)
+                                    .OrderBy(i => i.CategoryID)
+                                    .ThenBy(i => i.LevelID)
+                                    .ThenBy(i => i.SubCategoryVariableValueIDs)
+                                    .ToList();
+
+            var runVMs = runs.Select(i => new SpeedRunChartViewModel(i)).ToList();
+
+            return runVMs;
+        }        
+
         public ImportStatusViewModel GetImportStatus()
         {
             var importSettings = new List<string>() { "ImportLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };

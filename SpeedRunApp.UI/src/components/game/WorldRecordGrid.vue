@@ -74,7 +74,7 @@
             });            
             this.loadData();
             window.gameWorldRecordGridVue = this;
-            window.addEventListener( 'touchmove', function() {}, { passive: false });
+            //window.addEventListener( 'touchmove', function() {}, { passive: false });
         },
         methods: {
             loadData() {

@@ -7,53 +7,113 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div v-for="(game, gameIndex) in items" :key="game.id">
-            <div v-if="gameID == game.id">
-                <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
+        <div class="row no-gutters pr-1 pt-1 pb-0">
+            <div class="col tab-list">
+                <ul class="nav nav-pills">
+                    <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                        <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                    </li>
+                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                        <template v-slot:text>
+                            <span>More...</span>
+                        </template>
+                        <template v-slot:options>
+                            <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </template>
+                        </template>
+                    </button-dropdown>                       
+                </ul>
+            </div>                    
+        </div>
+        <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+            <div v-if="categoryTypeID == categoryType.id">
+                <div class="row no-gutters pr-1 pt-1 pb-0">
                     <div class="col tab-list">
                         <ul class="nav nav-pills">
-                            <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
+                                <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                             </li>
                             <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
                                 <template v-slot:options>
-                                    <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                                    <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
+                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                     </template>
                                 </template>
-                            </button-dropdown>                       
+                            </button-dropdown>    
                         </ul>
-                    </div>                    
+                    </div>                           
                 </div>
-                <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                    <div v-if="categoryTypeID == categoryType.id">
-                        <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                            <div class="col tab-list">
-                                <ul class="nav nav-pills">
-                                    <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
-                                        <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
-                                    </li>
-                                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                        <template v-slot:text>
-                                            <span>More...</span>
-                                        </template>
-                                        <template v-slot:options>
-                                            <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideEmpty || ctg.hasData))" :key="category.id">
-                                                <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
-                                            </template>
-                                        </template>
-                                    </button-dropdown>    
-                                </ul>
-                            </div>                           
+                <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
+                    <div v-if="categoryID == category.id">                                
+                        <div v-if="categoryTypeID == 0">
+                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
+                                <leaderboard-tabs-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></leaderboard-tabs-variable>
+                            </div>
+                            <div v-else>
+                                <div class="row no-gutters pr-1 pt-1">
+                                    <div class="col-auto">
+                                        <label class="tab-row-name pr-2">Hide Empty:</label>
+                                    </div>
+                                    <div class="col align-self-center">
+                                        <div class="custom-control custom-switch">
+                                            <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
+                                            <label class="custom-control-label" for="chkHideEmpty"></label>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
+                                    <div class="col-auto pr-2">
+                                        <label class="tab-row-name">Show All Runs:</label>
+                                    </div>
+                                    <div class="col align-self-center">
+                                        <div class="custom-control custom-switch">
+                                            <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
+                                            <label class="custom-control-label" for="chkShowAllData"></label>
+                                        </div>
+                                    </div>                                                
+                                </div>  
+                                <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
+                                    <div class="col-auto pr-2 ">
+                                        <input id="btnExport" type="button" class="btn btn-primary" value="Export" @click="onExportClick" />
+                                    </div>                                                          
+                                    <div class="col-auto align-self-end">
+                                        <select id="drpExportType" class="custom-select form-control" @change="onExportTypeChange">
+                                            <option v-for="exportType in exportTypes" :value="exportType.id">{{ exportType.name }}</option>
+                                        </select>
+                                    </div>                                                                                          
+                                </div>
+                                <div class="clearfix"></div>
+                                <leaderboard-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></leaderboard-grid>
+                            </div>
                         </div>
-                        <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                            <div v-if="categoryID == category.id">                                
-                                <div v-if="categoryTypeID == 0">
-                                    <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                        <leaderboard-tabs-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></leaderboard-tabs-variable>
+                        <div v-else>
+                            <div class="row no-gutters pr-1 pt-1 pb-0">
+                                <div class="col tab-list">
+                                    <ul class="nav nav-pills">
+                                        <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                            <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                        </li>
+                                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                                            <template v-slot:text>
+                                                <span>More...</span>
+                                            </template>
+                                            <template v-slot:options>
+                                                <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
+                                                    <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                                </template>
+                                            </template>
+                                        </button-dropdown>   
+                                    </ul>
+                                </div>                                      
+                            </div>
+                            <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                <div v-if="levelID == level.id">
+                                    <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
+                                        <leaderboard-tabs-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></leaderboard-tabs-variable>
                                     </div>
                                     <div v-else>
                                         <div class="row no-gutters pr-1 pt-1">
@@ -66,7 +126,7 @@
                                                     <label class="custom-control-label" for="chkHideEmpty"></label>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
                                             <div class="col-auto pr-2">
                                                 <label class="tab-row-name">Show All Runs:</label>
@@ -76,8 +136,8 @@
                                                     <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
                                                     <label class="custom-control-label" for="chkShowAllData"></label>
                                                 </div>
-                                            </div>                                                
-                                        </div>  
+                                            </div>                                                        
+                                        </div>
                                         <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
                                             <div class="col-auto pr-2 ">
                                                 <input id="btnExport" type="button" class="btn btn-primary" value="Export" @click="onExportClick" />
@@ -89,71 +149,7 @@
                                             </div>                                                                                          
                                         </div>
                                         <div class="clearfix"></div>
-                                        <leaderboard-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></leaderboard-grid>
-                                    </div>
-                                </div>
-                                <div v-else>
-                                    <div class="row no-gutters pr-1 pt-1 pb-0 pr-0">
-                                        <div class="col tab-list">
-                                            <ul class="nav nav-pills">
-                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
-                                                    <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
-                                                </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                                    <template v-slot:text>
-                                                        <span>More...</span>
-                                                    </template>
-                                                    <template v-slot:options>
-                                                        <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideEmpty || lvl.hasData))" :key="level.id">
-                                                            <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
-                                                        </template>
-                                                    </template>
-                                                </button-dropdown>   
-                                            </ul>
-                                        </div>                                      
-                                    </div>
-                                    <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                        <div v-if="levelID == level.id">
-                                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                                <leaderboard-tabs-variable ref="speedrungridtabvariable" :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideEmpty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onhideemptyclick="onHideEmptyClick" @onshowalldataclick="onShowAllDataClick" @onshowchartsclick2="onShowChartsClick" @onexporttypechange="onExportTypeChange" @onexportclick="onExportClick"></leaderboard-tabs-variable>
-                                            </div>
-                                            <div v-else>
-                                                <div class="row no-gutters pr-1 pt-1">
-                                                    <div class="col-auto">
-                                                        <label class="tab-row-name pr-2">Hide Empty:</label>
-                                                    </div>
-                                                    <div class="col align-self-center">
-                                                        <div class="custom-control custom-switch">
-                                                            <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty" @click="onHideEmptyClick">
-                                                            <label class="custom-control-label" for="chkHideEmpty"></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
-                                                    <div class="col-auto pr-2">
-                                                        <label class="tab-row-name">Show All Runs:</label>
-                                                    </div>
-                                                    <div class="col align-self-center">
-                                                        <div class="custom-control custom-switch">
-                                                            <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData" @click="onShowAllDataClick">
-                                                            <label class="custom-control-label" for="chkShowAllData"></label>
-                                                        </div>
-                                                    </div>                                                        
-                                                </div>
-                                                <div class="row no-gutters pt-0 float-right justify-content-end pt-1" style="width:50%;">
-                                                    <div class="col-auto pr-2 ">
-                                                        <input id="btnExport" type="button" class="btn btn-primary" value="Export" @click="onExportClick" />
-                                                    </div>                                                          
-                                                    <div class="col-auto align-self-end">
-                                                        <select id="drpExportType" class="custom-select form-control" @change="onExportTypeChange">
-                                                            <option v-for="exportType in exportTypes" :value="exportType.id">{{ exportType.name }}</option>
-                                                        </select>
-                                                    </div>                                                                                          
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <leaderboard-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></leaderboard-grid>
-                                            </div>
-                                        </div>
+                                        <leaderboard-grid ref="speedrungrid" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick1="onShowChartsClick"></leaderboard-grid>
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +171,7 @@
         },
         data() {
             return {
-                items: [],
-                gameID: '',
+                game: {},
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
@@ -194,7 +189,7 @@
         computed: {
             title: function () {
                 var result = '';
-                var game = this.items.filter(i=>i.id == this.gameID)[0];
+                var game = this.game;
                 var gameName = game.name;
                 var categoryTypeName = game.categoryTypes.filter(i => i.id == this.categoryTypeID)[0]?.name;
                 var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
@@ -228,9 +223,8 @@
                 var url = '/Game/GetLeaderboardTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid;
                 var prms = axios.get(url)
                                 .then(res => {
-                                    that.items = res.data.tabItems;
+                                    that.game = res.data.tabItems[0];
                                     that.exportTypes = res.data.exportTypes,
-                                    that.gameID = res.data.gameID;
                                     that.categoryTypeID = res.data.categoryTypeID;
                                     that.categoryID = res.data.categoryID;
                                     that.levelID = res.data.levelID;
@@ -246,9 +240,7 @@
             },
             initSelected: function () {
                 var that = this;
-                this.gameID = this.gameID || this.items[0].id;
-
-                var game = this.items.find(game => game.id == that.gameID);
+                var game = this.game;
 
                 this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
 
@@ -289,7 +281,7 @@
             },                                    
             resetSelected: function () {
                 var that = this;
-                var game = this.items.find(game => game.id == that.gameID);
+                var game = this.game;
 
                 if (game.categoryTypes.filter(i => i.id == that.categoryTypeID).length == 0) {
                     this.categoryTypeID = game.categoryTypes[0]?.id;
@@ -337,14 +329,9 @@
             onTabClick: function (event) {                
                 var type = event.target.getAttribute('data-type');
                 var value = event.target.getAttribute('data-value');
-                var name = event.target.innerHTML;
                 var variableName = event.target.getAttribute('data-variable');
-                var isMore = event.target.classList.contains('dropdown-item');
 
                 switch(type) {
-                    case 'game':
-                        this.gameID = value;
-                        break;
                     case 'categoryType':
                         this.categoryTypeID = value;                        
                         break;

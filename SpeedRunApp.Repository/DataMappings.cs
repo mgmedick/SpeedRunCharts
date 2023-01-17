@@ -16,6 +16,7 @@ namespace SpeedRunApp.Repository
             For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
             For<SpeedRunGridTabUserView>().TableName("vw_SpeedRunGridTabUser");
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
+            For<SpeedRunChartView>().TableName("vw_SpeedRunChart");
             For<GameView>().TableName("vw_Game");
             For<Game>().PrimaryKey("ID").TableName("tbl_Game");
             For<UserView>().TableName("vw_User");

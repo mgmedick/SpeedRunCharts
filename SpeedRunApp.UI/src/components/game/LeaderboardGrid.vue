@@ -86,7 +86,7 @@
             });
             this.loadData();
             window.speedRunGridVue = this;
-            window.addEventListener( 'touchmove', function() {}, { passive: false });
+            //window.addEventListener( 'touchmove', function() {}, { passive: false });
         },
         methods: {
             loadData() {

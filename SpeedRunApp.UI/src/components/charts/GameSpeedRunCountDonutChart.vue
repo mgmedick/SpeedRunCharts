@@ -49,7 +49,7 @@
                 return this.ismodal ? 14 : 12;
             },
             subCaption: function () {
-                return this.subcaption + '{br}(empties excluded)'
+                return this.subcaption + '{br}(Empties Excluded)'
             },                          
             subCaptionFontSize: function () {
                 return this.ismodal ? 13 : 11;
@@ -121,7 +121,7 @@
 
                     dataset.push(chartDataObj);
                 }
-                
+
                 var chartConfig = {
                     type: "multilevelpie",
                     renderAt: this.chartconainerid,

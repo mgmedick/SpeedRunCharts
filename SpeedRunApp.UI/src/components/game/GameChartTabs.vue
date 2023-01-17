@@ -104,7 +104,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id;
+                var url = '/Game/GetWorldRecordTabs?gameID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.game = res.data.tabItems[0];

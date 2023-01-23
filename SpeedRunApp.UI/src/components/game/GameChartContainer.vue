@@ -2,24 +2,24 @@
     <div class="card mt-2" style="border: none; border-radius: 0px;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6" style="min-height:440px;">
+                <div class="col-lg-6" style="min-height:400px;">
                     <div v-if="loading" class="d-flex" style="height:100%;">
                         <div class="m-auto">
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
                     <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
-                        <game-speedrun-count-line-chart chartconainerid="divGameChart1" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-line-chart>                
+                        <game-speedrun-count-doughnut-chart chartconainerid="divGameChart1" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-doughnut-chart>                
                     </div>
                 </div>
-                <div class="col-lg-6" style="min-height:440px;">
+                <div class="col-lg-6" style="min-height:400px;">
                     <div v-if="loading" class="d-flex" style="height:100%;">
                         <div class="m-auto">
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">
-                        <game-speedrun-count-doughnut-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-doughnut-chart>                
+                    <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">    
+                        <game-speedrun-count-line-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-line-chart>                
                     </div>
                 </div>
             </div>            
@@ -27,11 +27,11 @@
                 <template v-slot:title>
                     {{ chartModalTitle }}
                 </template>
-                <div v-if="selectedChartID == 1">            
-                    <game-speedrun-count-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-line-chart>                
+                <div v-if="selectedChartID == 1">         
+                    <game-speedrun-count-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-doughnut-chart>                
                 </div>
                 <div v-else-if="selectedChartID == 2">
-                    <game-speedrun-count-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-doughnut-chart>                
+                    <game-speedrun-count-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-line-chart>                
                 </div>          
             </modal>
         </div>

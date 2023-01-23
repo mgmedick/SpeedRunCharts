@@ -1,5 +1,5 @@
 ﻿<template>
-    <div style="height:100%;">
+    <div style="height:100%">
         <div v-if="loading" class="d-flex" style="height:100%;">
             <div class="m-auto">
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
@@ -9,8 +9,6 @@
     </div>
 </template>
 <script>
-    const dayjs = require('dayjs');
-    import { getDateDiffList } from '../../js/common.js';
     import FusionCharts from 'fusioncharts/core';
     import MultiLevelPie from 'fusioncharts/viz/multilevelpie';    
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";
@@ -62,7 +60,10 @@
             },      
             legendItemFontSize: function () {
                 return this.ismodal ? 13 : 11;
-            },          
+            },
+            valueFontSize: function () {
+                return this.ismodal ? 13 : 11;
+            },                        
             legendIconScale: function () {
                 return this.ismodal ? 1 : .5;
             },                                                                   
@@ -70,7 +71,7 @@
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
-                return document.body.classList.contains('theme-dark') ? "#212529" : "#212529";
+                return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
             }                                   
         },              
         mounted: function () {
@@ -146,21 +147,17 @@
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
                             showLabels: 1,
-                            enableSmartLabels: 1,
+                            enableSmartLabels: 0,
                             skipOverlapLabels: 1,
                             useEllipsesWhenOverflow: 1,
                             autoRotateLabels: 1,
-                            valueFontSize: 10,
-                            valueFontBold: 1,
-                            labelFontBold: 1,
-                            startingAngle: 90,
-                            // pieBorderColor: "#fff",
                             theme: "candy",
                             palettecolors: "36b5d8,f0dc46,f066ac,6ec85a,6e80ca,e09653,e1d7ad,61c8c8,ebe4f4,e64141,f2003e,00abfe,00e886,c7f600,9500f2,ff9a04,e200aa,a4cdfe,01b596,ecd86f",
                             bgColor: this.bgColor,
-                            baseFontColor: "#212529",
-                            outCnvBaseFontColor: "#212529",
-                            valueFontColor: "#000"
+                            baseFontColor: this.fontColor,
+                            outCnvBaseFontColor: this.fontColor,
+                            valueFontColor: "#000",
+                            valueFontSize: this.valueFontSize
                         },
                         category: dataset
                     }

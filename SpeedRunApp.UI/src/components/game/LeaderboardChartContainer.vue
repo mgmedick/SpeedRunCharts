@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="card" style="border: none; border-radius: 0px;">
-        <div class="card-header" id="headingOne">
+        <div class="card-header">
             <h5 class="mb-0">
                 <div v-if="showcharts">
                     <a class="btn btn-link font-weight-bold d-flex align-items-end" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Leaderboard Charts</a>
@@ -10,7 +10,7 @@
                 </div>
             </h5>
         </div>
-        <div class="container" :style="[ showcharts ? null : { display:'none' } ]">
+        <div v-if="showcharts" class="container">
             <div class="row">
                 <div class="col-lg-4" style="min-height:300px;">
                     <div v-if="loading" class="d-flex" style="height:100%;">

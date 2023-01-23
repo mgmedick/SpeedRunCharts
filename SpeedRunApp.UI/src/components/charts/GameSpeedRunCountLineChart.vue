@@ -5,7 +5,7 @@
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid" @mouseover="onHover"></div>
+        <div :id="chartconainerid"></div>
     </div>
 </template>
 <script>
@@ -119,10 +119,10 @@
                                 var chartObj = {};
                                 _data.forEach(item => {
                                     var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
+                                    chartObj[monthYear] = chartObj[monthYear] || {};
 
                                     var variableValueNames = '';
                                     if (item.subCategoryVariableValueIDs) {
-                                        chartObj[monthYear] = chartObj[monthYear] || {};
                                         item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
                                             var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
                                             if (variable && variable.isSubCategory) {
@@ -133,28 +133,27 @@
                                             }
                                         });
                                         variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                        chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                        chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
                                     } else {
-                                        chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                        chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
                                     }
                                 });
 
                                 var chartDataObj = {};
                                 Object.keys(chartObj).forEach(monthyear => {
-                                    if (Object.keys(chartObj[monthyear]).length > 0) {
+                                    if (Object.keys(chartObj[monthyear]).filter(i => i != "count").length > 0) {
                                         var total = 0;
                                         var tooltiptext = '';
 
-                                        Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
-                                            var count = chartObj[monthyear][variableValueNames];
+                                        Object.keys(chartObj[monthyear]).filter(i => i != "count").forEach(variableValueNames => {
+                                            var count = chartObj[monthyear][variableValueNames].count;
                                             total += count;
-                                            // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
                                             tooltiptext += count + ' (' + variableValueNames + ') + ';
                                         });
                                         tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
                                         chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
                                     } else {
-                                        var total = chartObj[monthyear];
+                                        var total = chartObj[monthyear].count;
                                         chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
                                     }
                                 });   
@@ -189,11 +188,11 @@
                             if (_data.length > 0) {
                                 var chartObj = {};
                                 _data.forEach(item => {
-                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY")
+                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
+                                    chartObj[monthYear] = chartObj[monthYear] || {};
 
                                     var variableValueNames = '';
                                     if (item.subCategoryVariableValueIDs) {
-                                        chartObj[monthYear] = chartObj[monthYear] || {};
                                         item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
                                             var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
                                             if (variable && variable.isSubCategory) {
@@ -204,31 +203,30 @@
                                             }
                                         });
                                         variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                        chartObj[monthYear][variableValueNames] = (chartObj[monthYear][variableValueNames] ?? 0) + 1;
+                                        chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
                                     } else {
-                                        chartObj[monthYear] = (chartObj[monthYear] ?? 0) + 1;
+                                        chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
                                     }
                                 });
 
                                 var chartDataObj = {};
                                 Object.keys(chartObj).forEach(monthyear => {
-                                    if (Object.keys(chartObj[monthyear]).length > 0) {
+                                    if (Object.keys(chartObj[monthyear]).filter(i => i != "count").length > 0) {
                                         var total = 0;
                                         var tooltiptext = '';
 
-                                        Object.keys(chartObj[monthyear]).forEach(variableValueNames => {
-                                            var count = chartObj[monthyear][variableValueNames];
+                                        Object.keys(chartObj[monthyear]).filter(i => i != "count").forEach(variableValueNames => {
+                                            var count = chartObj[monthyear][variableValueNames].count;
                                             total += count;
-                                            // tooltiptext += variableValueNames + ' (' + count + (count == 1 ? " run" : " runs") + ') + ';
                                             tooltiptext += count + ' (' + variableValueNames + ') + ';
                                         });
                                         tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }  
+                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
                                     } else {
-                                        var total = chartObj[monthyear];
+                                        var total = chartObj[monthyear].count;
                                         chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
                                     }
-                                });   
+                                });    
 
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {

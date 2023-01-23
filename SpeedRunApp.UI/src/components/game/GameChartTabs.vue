@@ -74,7 +74,6 @@
                 game: {},
                 categoryTypeID: '',
                 categoryID: '',
-                showCharts: true,
                 loading: true
             }
         },

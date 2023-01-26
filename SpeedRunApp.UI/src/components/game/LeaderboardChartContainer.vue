@@ -18,8 +18,10 @@
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
+                    <div v-else style="height:100%;">
                         <leaderboard-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-worldrecord-chart>                
+                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 1)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
+                        <div class="clearfix"></div>                    
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -28,8 +30,10 @@
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">
+                    <div v-else style="height:100%;">
                         <leaderboard-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-percentile-chart>                
+                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 2)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
                 <div class="col-lg-4" style="min-height:300px;">
@@ -38,8 +42,10 @@
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 3)" class="expandable" style="height:100%;">
+                    <div v-else style="height:100%;">
                         <leaderboard-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-top-chart>                
+                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 3)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>            

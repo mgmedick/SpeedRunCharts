@@ -8,8 +8,10 @@
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 1)" class="expandable" style="height:100%;">
+                    <div v-else style="height:100%;">
                         <game-speedrun-count-doughnut-chart chartconainerid="divGameChart1" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-doughnut-chart>                
+                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 1)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
                 <div class="col-lg-6" style="min-height:400px;">
@@ -18,8 +20,10 @@
                             <i class="fas fa-spinner fa-spin fa-lg"></i>
                         </div>
                     </div>
-                    <div v-else @click="onChartClick($event, 2)" class="expandable" style="height:100%;">    
-                        <game-speedrun-count-line-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-line-chart>                
+                    <div v-else style="height:100%;">    
+                        <game-speedrun-count-line-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption"></game-speedrun-count-line-chart> 
+                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 2)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
+                        <div class="clearfix"></div>                                       
                     </div>
                 </div>
             </div>            

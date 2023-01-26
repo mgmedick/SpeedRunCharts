@@ -604,10 +604,6 @@ button.bg-dark:focus {
 }
 
 /** Fusioncharts Overrides **/
-.expandable .fusioncharts-container>svg:first-of-type {
-    cursor: pointer !important;
-}
-
 .fusioncharts-container>svg>g:nth-of-type(2) {
     display:none !important;
 }

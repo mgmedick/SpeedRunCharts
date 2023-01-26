@@ -62,7 +62,7 @@
                 return this.ismodal ? 13 : 11;
             },
             valueFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.ismodal ? 10 : 9;
             },                        
             legendIconScale: function () {
                 return this.ismodal ? 1 : .5;
@@ -143,13 +143,10 @@
                             showPercentInTooltip: 0,
                             plotTooltext: "$label, $value runs, $percentValue",
                             exportEnabled: 1,
-                            showLegend: 1,
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
                             showLabels: 1,
-                            enableSmartLabels: 0,
                             skipOverlapLabels: 1,
-                            useEllipsesWhenOverflow: 1,
                             autoRotateLabels: 1,
                             theme: "candy",
                             palettecolors: "36b5d8,f0dc46,f066ac,6ec85a,6e80ca,e09653,e1d7ad,61c8c8,ebe4f4,e64141,f2003e,00abfe,00e886,c7f600,9500f2,ff9a04,e200aa,a4cdfe,01b596,ecd86f",

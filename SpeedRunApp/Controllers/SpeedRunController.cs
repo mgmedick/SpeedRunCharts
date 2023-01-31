@@ -112,7 +112,7 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
         {
-            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, true);
+            var results = _speedRunService.GetLeaderboardChartData(gameID, categoryID, levelID, subCategoryVariableValueIDs);
 
             return Json(results);
         }                 

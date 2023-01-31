@@ -16,7 +16,8 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<WorldRecordGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID);
         IEnumerable<SpeedRunGridViewModel> GetUserSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID);        
         IEnumerable<WorldRecordGridViewModel> GetPersonalBestGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID);
-        IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID);       
+        IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID);  
+        IEnumerable<SpeedRunChartViewModel> GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs);     
         ImportStatusViewModel GetImportStatus();
     }
 }

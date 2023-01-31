@@ -116,47 +116,8 @@
                             });   
 
                             if (_data.length > 0) {
-                                var chartObj = {};
-                                _data.forEach(item => {
-                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
-                                    chartObj[monthYear] = chartObj[monthYear] || {};
-
-                                    var variableValueNames = '';
-                                    if (item.subCategoryVariableValueIDs) {
-                                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
-                                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
-                                            if (variable && variable.isSubCategory) {
-                                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
-                                                if (variableValue) {
-                                                    variableValueNames += ',' + variableValue.name;
-                                                }
-                                            }
-                                        });
-                                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                        chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
-                                    } else {
-                                        chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
-                                    }
-                                });
-
-                                var chartDataObj = {};
-                                Object.keys(chartObj).forEach(monthyear => {
-                                    if (Object.keys(chartObj[monthyear]).filter(i => i != "count").length > 0) {
-                                        var total = 0;
-                                        var tooltiptext = '';
-
-                                        Object.keys(chartObj[monthyear]).filter(i => i != "count").forEach(variableValueNames => {
-                                            var count = chartObj[monthyear][variableValueNames].count;
-                                            total += count;
-                                            tooltiptext += count + ' (' + variableValueNames + ') + ';
-                                        });
-                                        tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                                        chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
-                                    } else {
-                                        var total = chartObj[monthyear].count;
-                                        chartDataObj[monthyear] = { value: total, tooltext: categoryName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
-                                    }
-                                });   
+                                var chartObj = that.getChartObj(_data);
+                                var chartDataObj = that.getChartData(chartObj, categoryName);
 
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {
@@ -179,55 +140,16 @@
                             }
                         });
                     } else {
-                        this.levels.forEach(level => {    
+                        this.levels.filter(i => i.categoryID == that.categoryid).forEach(level => {    
                             var levelName = level.name.replace(/( \(empty\)$)/g, '');                            
                             var _data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).sort((a, b) => { 
                                 return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
                             });   
 
                             if (_data.length > 0) {
-                                var chartObj = {};
-                                _data.forEach(item => {
-                                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
-                                    chartObj[monthYear] = chartObj[monthYear] || {};
-
-                                    var variableValueNames = '';
-                                    if (item.subCategoryVariableValueIDs) {
-                                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
-                                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
-                                            if (variable && variable.isSubCategory) {
-                                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
-                                                if (variableValue) {
-                                                    variableValueNames += ',' + variableValue.name;
-                                                }
-                                            }
-                                        });
-                                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
-                                        chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
-                                    } else {
-                                        chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
-                                    }
-                                });
-
-                                var chartDataObj = {};
-                                Object.keys(chartObj).forEach(monthyear => {
-                                    if (Object.keys(chartObj[monthyear]).filter(i => i != "count").length > 0) {
-                                        var total = 0;
-                                        var tooltiptext = '';
-
-                                        Object.keys(chartObj[monthyear]).filter(i => i != "count").forEach(variableValueNames => {
-                                            var count = chartObj[monthyear][variableValueNames].count;
-                                            total += count;
-                                            tooltiptext += count + ' (' + variableValueNames + ') + ';
-                                        });
-                                        tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
-                                    } else {
-                                        var total = chartObj[monthyear].count;
-                                        chartDataObj[monthyear] = { value: total, tooltext: levelName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
-                                    }
-                                });    
-
+                                var chartObj = that.getChartObj(_data);
+                                var chartDataObj = that.getChartData(chartObj, categoryName);
+                                
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {
                                         chartDataObj[timePeriod] = { value: 0, tooltext: levelName + ', ' + timePeriod + ', 0 runs' };
@@ -330,7 +252,58 @@
                 };
 
                 return chartConfig;
-            }
+            },
+            getChartObj(data) {
+                var that = this;
+                var chartObj = {};
+
+                data.forEach(item => {
+                    var monthYear = dayjs(item.dateSubmitted).format("MM/YYYY");
+                    chartObj[monthYear] = chartObj[monthYear] || {};
+
+                    var variableValueNames = '';
+                    if (item.subCategoryVariableValueIDs) {
+                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                            if (variable && variable.isSubCategory) {
+                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                                if (variableValue) {
+                                    variableValueNames += ',' + variableValue.name;
+                                }
+                            }
+                        });
+                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                        chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
+                    } else {
+                        chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
+                    }
+                });
+                
+                return chartObj;
+            },
+            getChartData(chartObj, seriesName) {
+                var chartDataObj = {};
+                
+                Object.keys(chartObj).forEach(monthyear => {
+                    if (Object.keys(chartObj[monthyear]).filter(i => i != "count").length > 0) {
+                        var total = 0;
+                        var tooltiptext = '';
+
+                        Object.keys(chartObj[monthyear]).filter(i => i != "count").forEach(variableValueNames => {
+                            var count = chartObj[monthyear][variableValueNames].count;
+                            total += count;
+                            tooltiptext += count + ' (' + variableValueNames + ') + ';
+                        });
+                        tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
+                        chartDataObj[monthyear] = { value: total, tooltext: seriesName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
+                    } else {
+                        var total = chartObj[monthyear].count;
+                        chartDataObj[monthyear] = { value: total, tooltext: seriesName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
+                    }
+                });   
+
+                return chartDataObj;
+            }             
         }
     }
 </script>

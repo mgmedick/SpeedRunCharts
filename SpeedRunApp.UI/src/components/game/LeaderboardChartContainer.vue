@@ -118,7 +118,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: true } })
+                axios.get('/SpeedRun/GetLeaderboardChartData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

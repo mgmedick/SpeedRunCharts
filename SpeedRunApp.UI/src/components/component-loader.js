@@ -43,6 +43,7 @@ import personalBestTabs from './user/PersonalBestTabs.vue';
 
 import gameSpeedRunCountDonutChart from './charts/GameSpeedRunCountDonutChart.vue';
 import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue';
+import gameSpeedRunCountBarChart from './charts/GameSpeedRunCountBarChart.vue';
 import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue';
 import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
 import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
@@ -87,6 +88,7 @@ export default {
 
         app.component("game-speedrun-count-doughnut-chart", gameSpeedRunCountDonutChart);
         app.component("game-speedrun-count-line-chart", gameSpeedRunCountLineChart);
+        app.component("game-speedrun-count-bar-chart", gameSpeedRunCountBarChart);
         app.component("leaderboard-worldrecord-chart", leaderboardWorldRecordChart);
         app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
         app.component("leaderboard-top-chart", leaderboardTopChart);

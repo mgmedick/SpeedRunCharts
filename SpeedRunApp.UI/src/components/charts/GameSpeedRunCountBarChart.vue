@@ -10,12 +10,12 @@
 </template>
 <script>
     import FusionCharts from 'fusioncharts/core';
-    import MultiLevelPie from 'fusioncharts/viz/multilevelpie';    
+    import StackedColumn2D from 'fusioncharts/viz/stackedcolumn2d';
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";
-    FusionCharts.addDep(MultiLevelPie, CandyTheme);
+    FusionCharts.addDep(StackedColumn2D, CandyTheme);
 
     export default {
-        name: "GameSpeedRunCountDonutChart",
+        name: "GameSpeedRunCountBarChart",
         props: {  
             tabledata: Array,
             categories: Array,
@@ -62,7 +62,7 @@
                 return this.ismodal ? 13 : 11;
             },
             valueFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.ismodal ? 10 : 9;
             },                        
             legendIconScale: function () {
                 return this.ismodal ? 1 : .5;
@@ -92,47 +92,77 @@
                 var dataset = [];
                 var chartObj = {};
                 var chartDataObj = {};
+                var categories = [];
+                var allVariableValueNames = [];
+                var ymax;
 
                 if (this.tabledata?.length > 0) {
                     var _alldata = JSON.parse(JSON.stringify(this.tabledata));
 
+                    var counts = [];
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {
                             var categoryName = category.name.replace(/( \(empty\)$)/g, '');
                             var data = _alldata.filter(i => i.categoryID == category.id);
+                            counts.push(data.length);
 
                             if (data.length > 0) {
                                 chartObj[categoryName] = { count: data.length };
 
                                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id).length > 0) {
-                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[categoryName]);                                 
-                                }  
+                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[categoryName], allVariableValueNames);                                 
+                                }
                             }
-                        });
-                    } else {
-                        this.levels.filter(i => i.categoryID == that.categoryid).forEach(level => { 
-                            var levelName = level.name.replace(/( \(empty\)$)/g, '');
-                            var data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id);
-                            
-                            if (data.length > 0) {
-                                chartObj[levelName] = { count: data.length };
+                        });                   
+                    } 
 
-                                if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).length > 0) {
-                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id), data, chartObj[levelName]);                                 
-                                } 
-                            }                           
-                        });                        
-                    }
+                    ymax = Math.max.apply(null, counts);
 
-                    if (Object.keys(chartObj).length > 0) {
-                        var chartDataObj = { label: 'All', value: _alldata.length, color: "#4d4d4d" };
-                        this.setChartData(chartObj, chartDataObj);
-                        dataset.push(chartDataObj);
-                    }
+                    var categoryObj = {};
+                    categoryObj["category"] = Object.keys(chartObj).filter(i => i != "count").map(key => {
+                        var labelObj = {};
+                        labelObj["label"] = key;
+                        labelObj["showLabel"] = chartObj[key].count > 0 ? 1 : 0;
+                        return labelObj;
+                    });                    
+                    categories.push(categoryObj);
+
+                    var chartDataObj = {};
+                    var fullCategoryKeys = [];
+                    Object.keys(chartObj).filter(i => i != "count").forEach(key => {
+                        if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
+                            this.setChartData(chartObj[key], chartDataObj);
+                        } else {
+                            chartDataObj[key] = chartDataObj[key] || [];
+                            var count = chartObj[key].count > 0 ? chartObj[key].count : null;
+                            chartDataObj[key].push({ value: count, tooltext: key + ', ' + count });
+                            fullCategoryKeys.push(key);
+                        }
+
+                        allVariableValueNames.forEach(variableValueName => {
+                            if (!this.containsKey(chartObj[key], variableValueName)) {
+                                chartDataObj[variableValueName] = chartDataObj[variableValueName] || [];
+                                chartDataObj[variableValueName].push({ value: null });
+                            }
+                        });                       
+                    });
+
+                    fullCategoryKeys.forEach(key => {
+                        Object.keys(chartObj).filter(i => i != "count").forEach((key1, index) => {
+                            if (key != key1) {
+                                chartDataObj[key].splice(index, 0, { value: null }); 
+                            }
+                        })
+                    });
+
+                    
+                    Object.keys(chartDataObj).forEach(key => {
+                        dataset.push({seriesname: key, data: chartDataObj[key] })
+                    });                   
                 }
 
                 var chartConfig = {
-                    type: "multilevelpie",
+                    type: "stackedcolumn2d",
                     renderAt: this.chartconainerid,
                     width: "100%",
                     height: this.ismodal ? "500" : "100%",
@@ -143,36 +173,32 @@
                             captionFontSize: this.captionFontSize,                            
                             subCaption: this.subCaption,
                             subCaptionFontSize: this.subCaptionFontSize,
-                            showValues: 0,
-                            formatNumberScale: 0,
-                            numberOfDecimals: 0,
-                            showValuesInTooltip: 0,
-                            showPercentValues: 0,
-                            showPercentInTooltip: 0,
-                            plotTooltext: "$label, $value runs, $percentValue",
+                            xAxis: '',
+                            yAxis: 'Total Runs',  
+                            // yAxisMaxValue: ymax,
+                            yAxisMinValue: 0,                                                       
+                            labelFontSize: this.labelFontSize,
+                            labelVAlign: 'middle',                            
                             exportEnabled: 1,
-                            legendItemFontSize: this.legendItemFontSize,
-                            legendIconScale: this.legendIconScale,
-                            showLabels: 1,
-                            skipOverlapLabels: 1,
-                            //autoRotateLabels: 1,
-                            theme: "candy",
-                            palettecolors: "36b5d8,f0dc46,f066ac,6ec85a,6e80ca,e09653,e1d7ad,61c8c8,ebe4f4,e64141,f2003e,00abfe,00e886,c7f600,9500f2,ff9a04,e200aa,a4cdfe,01b596,ecd86f",
-                            bgColor: this.bgColor,
-                            baseFontColor: this.fontColor,
-                            outCnvBaseFontColor: this.fontColor,
-                            hoverFillColor: "#fff",
-                            valueFontColor: "#000",
+                            showValues: 1,
                             valueFontSize: this.valueFontSize,
-                            valueFontBold: 1
+                            numberOfDecimals: 0,
+                            useRoundEdges: 0,
+                            legendItemFontSize: this.labelFontSize,                        
+                            theme: "candy",
+                            bgColor: this.bgColor,
+                            valueFontColor: "#000",
+                            baseFontColor: this.fontColor,
+                            outCnvBaseFontColor: this.fontColor                            
                         },
-                        category: dataset
+                        categories: categories,
+                        dataset: dataset
                     }
                 };
 
                 return chartConfig;
             },
-            setVariableChartData(variables, tableData, chartObj, variableValueIDs) {
+            setVariableChartData(variables, tableData, chartObj, allVariableValueNames, variableValueIDs) {
                 var that = this;
                 
                 if (!variableValueIDs) {
@@ -185,27 +211,46 @@
                         var count = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs)).length;
                         chartObj[variableValue.name] = { count: count };
 
+                        if (allVariableValueNames.indexOf(variableValue.name) == -1){
+                            allVariableValueNames.push(variableValue.name);
+                        }
+
                         if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                            that.setVariableChartData(variableValue.subVariables, tableData, chartObj[variableValue.name], currVariableValueIDs);
+                            that.setVariableChartData(variableValue.subVariables, tableData, chartObj[variableValue.name], allVariableValueNames, currVariableValueIDs);
                         }
                     });
                 }); 
-            },
+            },  
+            containsKey(chartObj, targetKey) {
+                var that = this;
+                var result = false;
+
+                for (var key in chartObj) {
+                    if (key == targetKey) {
+                        result = true;
+                        break;
+                    }
+
+                    if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
+                        result = that.containsKey(chartObj[key]);
+                    }
+                }
+
+                return result;
+            },                     
             setChartData(chartObj, chartDataObj) {
                 var that = this;
 
                 Object.keys(chartObj).filter(i => i != "count").forEach(key => {
-                    chartDataObj["category"] = chartDataObj["category"] || [];
-                    var chartDataItem = { label: key, value: chartObj[key].count };
-                    if (chartDataItem.value > 0){
-                        chartDataObj["category"].push(chartDataItem);
-                    }
-                    
+                    chartDataObj[key] = chartDataObj[key] || [];
+                    var chartDataItem = { value: chartObj[key].count };
+                    chartDataObj[key].push(chartDataItem);
+
                     if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
-                        that.setChartData(chartObj[key], chartDataItem);
+                        that.setChartData(chartObj[key], chartDataObj);
                     }
                 });
-            }           
+            }
         }
     }
 </script>

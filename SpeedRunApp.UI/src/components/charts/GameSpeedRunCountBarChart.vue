@@ -34,14 +34,9 @@
                 chart: {}
             }
         },        
-        computed: {    
-            chartType: function () {
-                var that = this;
-                var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
-                return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
-            },     
+        computed: {   
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts';
             },                            
             captionFontSize: function () {
                 return this.ismodal ? 14 : 12;
@@ -92,7 +87,7 @@
                 var dataset = [];
                 var chartObj = {};
                 var categories = [];
-                
+
                 if (this.tabledata?.length > 0) {
                     var _alldata = JSON.parse(JSON.stringify(this.tabledata));
 
@@ -116,19 +111,21 @@
                         });                      
                     }
 
-                    var chartDataObj = that.getChartData(chartObj);
+                    if (Object.keys(chartObj).length > 0) {
+                        var chartDataObj = that.getChartData(chartObj);
 
-                    var categoryObj = {};
-                    categoryObj["category"] = Object.keys(chartObj).filter(i =>i != "count").map(key => {
-                        var labelObj = {};
-                        labelObj["label"] = key;
-                        return labelObj;
-                    });                    
-                    categories.push(categoryObj);
+                        var categoryObj = {};
+                        categoryObj["category"] = Object.keys(chartObj).filter(i =>i != "count").map(key => {
+                            var labelObj = {};
+                            labelObj["label"] = key;
+                            return labelObj;
+                        });                    
+                        categories.push(categoryObj);
 
-                    Object.keys(chartDataObj).forEach(key => {
-                        dataset.push({seriesname: key, data: chartDataObj[key] })
-                    });                   
+                        Object.keys(chartDataObj).forEach(key => {
+                            dataset.push({seriesname: key, data: chartDataObj[key] })
+                        });  
+                    }                 
                 }
 
                 var chartConfig = {

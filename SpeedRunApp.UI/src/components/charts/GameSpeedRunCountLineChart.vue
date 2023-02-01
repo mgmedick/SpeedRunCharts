@@ -148,7 +148,7 @@
 
                             if (_data.length > 0) {
                                 var chartObj = that.getChartObj(_data);
-                                var chartDataObj = that.getChartData(chartObj, categoryName);
+                                var chartDataObj = that.getChartData(chartObj, levelName);
                                 
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {

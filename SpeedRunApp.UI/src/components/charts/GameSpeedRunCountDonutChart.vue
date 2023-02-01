@@ -100,12 +100,14 @@
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {
                             var categoryName = category.name.replace(/( \(empty\)$)/g, '');
                             var data = _alldata.filter(i => i.categoryID == category.id);
+                            var count = data.length;
 
-                            if (data.length > 0) {
-                                chartObj[categoryName] = { count: data.length };
+                            if (count > 0) {
+                                var percent = Math.round((count / _alldata.length) * 100);
+                                chartObj[categoryName] = { count: count, tooltext: categoryName + ', ' + count + ' runs (' + percent + '%)' };
 
                                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id).length > 0) {
-                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[categoryName]);                                 
+                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id), data, chartObj[categoryName], categoryName, count);                                 
                                 }  
                             }
                         });
@@ -113,19 +115,21 @@
                         this.levels.filter(i => i.categoryID == that.categoryid).forEach(level => { 
                             var levelName = level.name.replace(/( \(empty\)$)/g, '');
                             var data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id);
+                            var count = data.length;
                             
-                            if (data.length > 0) {
-                                chartObj[levelName] = { count: data.length };
+                            if (count > 0) {
+                                var percent = Math.round((count / _alldata.length) * 100);
+                                chartObj[levelName] = { count: count, tooltext: levelName + ', ' + count + ' runs (' + percent + '%)' };
 
                                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).length > 0) {
-                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id), data, chartObj[levelName]);                                 
+                                    that.setVariableChartData(that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id), data, chartObj[levelName], levelName, count);                                 
                                 } 
                             }                           
                         });                        
                     }
 
                     if (Object.keys(chartObj).length > 0) {
-                        var chartDataObj = { label: 'All', value: _alldata.length, color: "#4d4d4d" };
+                        var chartDataObj = { label: 'All', value: _alldata.length, tooltext: 'All, ' + _alldata.length + ' runs (100%)', color: "#fff" };
                         this.setChartData(chartObj, chartDataObj);
                         dataset.push(chartDataObj);
                     }
@@ -147,9 +151,10 @@
                             formatNumberScale: 0,
                             numberOfDecimals: 0,
                             showValuesInTooltip: 0,
-                            showPercentValues: 0,
+                            showPercentValues: 1,
                             showPercentInTooltip: 0,
-                            plotTooltext: "$label, $value runs, $percentValue",
+                            showToolTip: 1,
+                            //plotTooltext: "$label, $value runs, $percentValue",
                             exportEnabled: 1,
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
@@ -172,7 +177,7 @@
 
                 return chartConfig;
             },
-            setVariableChartData(variables, tableData, chartObj, variableValueIDs) {
+            setVariableChartData(variables, tableData, chartObj, tooltext, prevcount, variableValueIDs) {
                 var that = this;
                 
                 if (!variableValueIDs) {
@@ -183,25 +188,28 @@
                     variable.variableValues.forEach(variableValue => {
                         var currVariableValueIDs = (variableValueIDs + ',' + variableValue.id).replace(/(^,)|(,$)/g, '');
                         var count = tableData.filter(i => variable.categoryID == i.categoryID && variable.levelID == i.levelID && i.subCategoryVariableValueIDs && i.subCategoryVariableValueIDs.startsWith(currVariableValueIDs)).length;
-                        chartObj[variableValue.name] = { count: count };
+                        var percent = prevcount > 0 ? Math.round((count / prevcount) * 100) : 0;
+                        var currtooltext = tooltext + ', ' + variableValue.name + ', ' + count + ' runs (' + percent + '%)';
+                        chartObj[variableValue.name] = { count: count, tooltext: currtooltext };
 
                         if (variableValue.subVariables && variableValue.subVariables.length > 0) {
-                            that.setVariableChartData(variableValue.subVariables, tableData, chartObj[variableValue.name], currVariableValueIDs);
+                            that.setVariableChartData(variableValue.subVariables, tableData, chartObj[variableValue.name], currtooltext, count, currVariableValueIDs);
                         }
                     });
                 }); 
             },
             setChartData(chartObj, chartDataObj) {
                 var that = this;
-
-                Object.keys(chartObj).filter(i => i != "count").forEach(key => {
+                var exclude = ["count", "tooltext"];
+                              
+                Object.keys(chartObj).filter(i => exclude.indexOf(i) == -1).forEach(key => {
                     chartDataObj["category"] = chartDataObj["category"] || [];
-                    var chartDataItem = { label: key, value: chartObj[key].count };
+                    var chartDataItem = { label: key, value: chartObj[key].count, tooltext: chartObj[key].tooltext };
                     if (chartDataItem.value > 0){
                         chartDataObj["category"].push(chartDataItem);
                     }
                     
-                    if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
+                    if (Object.keys(chartObj[key]).filter(i => exclude.indexOf(i) == -1).length > 0) {
                         that.setChartData(chartObj[key], chartDataItem);
                     }
                 });

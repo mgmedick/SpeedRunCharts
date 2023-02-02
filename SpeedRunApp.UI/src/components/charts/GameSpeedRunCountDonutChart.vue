@@ -1,11 +1,14 @@
 ﻿<template>
-    <div style="height:100%">
+    <div style="height:100%;">
         <div v-if="loading" class="d-flex" style="height:100%;">
             <div class="m-auto">
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid"></div>
+        <div :id="chartconainerid" style="height:100%;"></div>
+        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)">
+            <i class="fas fa-expand" style="position:absolute; bottom:20px; right:20px;"></i>
+        </div>        
     </div>
 </template>
 <script>
@@ -16,6 +19,7 @@
 
     export default {
         name: "GameSpeedRunCountDonutChart",
+        emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,
             categories: Array,
@@ -72,7 +76,7 @@
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
-            }                                   
+            }                                                 
         },              
         mounted: function () {
             this.loadChart();
@@ -103,7 +107,6 @@
                             var count = data.length;
 
                             if (count > 0) {
-                                var percent = Math.round((count / _alldata.length) * 100);
                                 chartObj[categoryName] = { count: count };
 
                                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == category.id).length > 0) {
@@ -118,7 +121,6 @@
                             var count = data.length;
                             
                             if (count > 0) {
-                                var percent = Math.round((count / _alldata.length) * 100);
                                 chartObj[levelName] = { count: count };
 
                                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.filter(i => i.categoryID == that.categoryid && i.levelID == level.id).length > 0) {
@@ -130,7 +132,7 @@
 
                     if (Object.keys(chartObj).length > 0) {
                         var chartDataObj = { label: 'All', value: _alldata.length, tooltext: 'All, ' + _alldata.length + ' runs (100%)', color: "#fff" };
-                        this.setChartData(chartObj, chartDataObj);
+                        this.setChartData(chartObj, chartDataObj, _alldata.length);
                         dataset.push(chartDataObj);
                     }
                 }
@@ -139,7 +141,7 @@
                     type: "multilevelpie",
                     renderAt: this.chartconainerid,
                     width: "100%",
-                    height: this.ismodal ? "500" : "100%",
+                    height: "100%",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
@@ -196,7 +198,7 @@
                     });
                 }); 
             },
-            setChartData(chartObj, chartDataObj, tooltext, prevcount) {
+            setChartData(chartObj, chartDataObj, prevcount, tooltext) {
                 var that = this;
 
                 if (!tooltext) {
@@ -207,14 +209,14 @@
                     chartDataObj["category"] = chartDataObj["category"] || [];
                     var count = chartObj[key].count;
                     var percent = prevcount > 0 ? Math.round((count / prevcount) * 100) : 0;
-                    var currtooltext = tooltext + ', ' + key + ', ' + count + ' runs (' + percent + '%)';
+                    var currtooltext = (tooltext + ', ' + key + ', ' + count + ' runs (' + percent + '%)').replace(/(^, )|(, $)/g, '');
                     var chartDataItem = { label: key, value: chartObj[key].count, tooltext: currtooltext };
                     if (chartDataItem.value > 0){
                         chartDataObj["category"].push(chartDataItem);
                     }
                     
                     if (Object.keys(chartObj[key]).filter(i => i != "count").length > 0) {
-                        that.setChartData(chartObj[key], chartDataItem, currtooltext, count);
+                        that.setChartData(chartObj[key], chartDataItem, count, currtooltext);
                     }
                 });
             }           

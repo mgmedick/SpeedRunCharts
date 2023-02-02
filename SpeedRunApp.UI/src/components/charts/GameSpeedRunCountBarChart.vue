@@ -1,11 +1,14 @@
 ﻿<template>
-    <div style="height:100%">
+    <div style="height:100%;">
         <div v-if="loading" class="d-flex" style="height:100%;">
             <div class="m-auto">
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid"></div>
+        <div :id="chartconainerid" style="height:100%;"></div>
+        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)">
+            <i class="fas fa-expand" style="position:absolute; bottom:20px; right:20px;"></i>
+        </div>   
     </div>
 </template>
 <script>
@@ -16,6 +19,7 @@
 
     export default {
         name: "GameSpeedRunCountBarChart",
+        emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,
             categories: Array,
@@ -54,20 +58,20 @@
                 return this.ismodal ? 13 : 11;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.ismodal ? 11 : 11;
             },
             valueFontSize: function () {
                 return this.ismodal ? 10 : 9;
             },                        
             legendIconScale: function () {
-                return this.ismodal ? 1 : .5;
-            },                                                                   
+                return this.ismodal ? .8 : .5;
+            },                                                                                        
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
-            }                                   
+            }                                                                   
         },              
         mounted: function () {
             this.loadChart();
@@ -132,7 +136,7 @@
                     type: "stackedcolumn2d",
                     renderAt: this.chartconainerid,
                     width: "100%",
-                    height: this.ismodal ? "500" : "100%",
+                    height: "100%",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
@@ -152,7 +156,7 @@
                             valueFontSize: this.valueFontSize,
                             numberOfDecimals: 0,
                             useRoundEdges: 0,
-                            legendItemFontSize: this.labelFontSize,                        
+                            legendItemFontSize: this.labelFontSize,
                             theme: "candy",
                             bgColor: this.bgColor,
                             valueFontColor: "#000",

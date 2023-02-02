@@ -10,58 +10,76 @@
                 </div>
             </h5>
         </div>
-        <div v-if="showcharts" class="container">
-            <div class="row">
-                <div class="col-lg-4" style="min-height:300px;">
-                    <div v-if="loading" class="d-flex" style="height:100%;">
-                        <div class="m-auto">
-                            <i class="fas fa-spinner fa-spin fa-lg"></i>
+        <div v-if="showcharts" class="container p-0">
+            <div class="row no-gutters">
+                <div class="col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <div class="embed-responsive-item">
+                            <div v-if="loading" class="d-flex" style="height:100%;">
+                                <div class="m-auto">
+                                    <i class="fas fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div v-else style="height:100%;">
+                                <leaderboard-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 1)"></leaderboard-worldrecord-chart>                                 
+                            </div>
                         </div>
-                    </div>
-                    <div v-else style="height:100%;">
-                        <leaderboard-worldrecord-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-worldrecord-chart>                
-                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 1)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
-                        <div class="clearfix"></div>                    
                     </div>
                 </div>
-                <div class="col-lg-4" style="min-height:300px;">
-                    <div v-if="loading" class="d-flex" style="height:100%;">
-                        <div class="m-auto">
-                            <i class="fas fa-spinner fa-spin fa-lg"></i>
+                <div class="col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <div class="embed-responsive-item">
+                            <div v-if="loading" class="d-flex" style="height:100%;">
+                                <div class="m-auto">
+                                    <i class="fas fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div v-else style="height:100%;">
+                                <leaderboard-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 2)"></leaderboard-percentile-chart>                
+                            </div>
                         </div>
-                    </div>
-                    <div v-else style="height:100%;">
-                        <leaderboard-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-percentile-chart>                
-                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 2)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
-                <div class="col-lg-4" style="min-height:300px;">
-                    <div v-if="loading" class="d-flex" style="height:100%;">
-                        <div class="m-auto">
-                            <i class="fas fa-spinner fa-spin fa-lg"></i>
+                <div class="col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <div class="embed-responsive-item">
+                            <div v-if="loading" class="d-flex" style="height:100%;">
+                                <div class="m-auto">
+                                    <i class="fas fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div v-else style="height:100%;">
+                                <leaderboard-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 3)"></leaderboard-top-chart>                
+                            </div>
                         </div>
-                    </div>
-                    <div v-else style="height:100%;">
-                        <leaderboard-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc"></leaderboard-top-chart>                
-                        <div style="float:right; cursor:pointer !important;" @click="onChartClick($event, 3)"><i class="fas fa-expand" style="position:absolute; bottom:10px; right:20px;"></i></div>
-                        <div class="clearfix"></div>
-                    </div>
+                    </div>                            
                 </div>
             </div>            
         </div>
-        <modal v-if="showChartModal && !loading" contentclass="cmv-modal-lg" bodyclass="p-0" @close="showChartModal = false">
+        <modal v-if="showChartModal && !loading" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
             <template v-slot:title>
                 {{ chartModalTitle }}
             </template>
-            <div v-if="selectedChartID == 1">            
-                <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
+            <div v-if="selectedChartID == 1">    
+                <div class="embed-responsive embed-responsive-4by3">
+                    <div class="embed-responsive-item">        
+                        <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
+                    </div>
+                </div>  
             </div>
             <div v-else-if="selectedChartID == 2">
-                <leaderboard-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-percentile-chart>                
+                <div class="embed-responsive embed-responsive-4by3">
+                    <div class="embed-responsive-item">  
+                        <leaderboard-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-percentile-chart>                
+                    </div>
+                </div> 
             </div>
             <div v-else-if="selectedChartID == 3">
-                <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
+                <div class="embed-responsive embed-responsive-4by3">
+                    <div class="embed-responsive-item">                 
+                        <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
+                    </div>
+                </div>             
             </div>            
         </modal>              
     </div>
@@ -125,12 +143,10 @@
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
-            onChartClick(event, chartID) {
-                if (!event.target.innerHTML || event.target.innerHTML.indexOf("Export") == -1){
-                    this.showChartModal = true;
-                    this.selectedChartID = chartID;
-                }
-            }               
+            onExpandChartClick(event, chartID) {
+                this.selectedChartID = chartID;                 
+                this.showChartModal = true;
+            }                        
         }
     }
 </script>

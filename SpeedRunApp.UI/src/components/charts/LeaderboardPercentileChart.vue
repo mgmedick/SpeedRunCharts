@@ -5,7 +5,10 @@
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid"></div>
+        <div :id="chartconainerid" style="height:100%;"></div>
+        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)">
+            <i class="fas fa-expand" style="position:absolute; bottom:20px; right:20px;"></i>
+        </div>        
     </div>
 </template>
 <script>
@@ -17,6 +20,7 @@
 
     export default {
         name: "LeaderboardPercentileChart",
+        emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,
             title: String,
@@ -46,7 +50,7 @@
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
-            }                                  
+            }                                                        
         },              
         mounted: function () {
             this.loadChart();
@@ -128,7 +132,7 @@
                     type: "pie2d",
                     renderAt: this.chartconainerid,
                     width: "100%",
-                    height: this.ismodal ? "500" : "100%",
+                    height: "100%",
                     dataFormat: "json",
                     dataSource: {
                         chart: {

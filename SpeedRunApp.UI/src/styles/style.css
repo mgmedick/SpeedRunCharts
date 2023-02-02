@@ -1411,12 +1411,26 @@ button.cmv-close {
     }
 }
 
+@media (min-width: 768px) {
+    .cmv-modal-md,
+    .cmv-modal-lg,
+    .cmv-modal-xl {
+      max-width: 700px;
+    }
+}
+
 @media (min-width: 992px) {
     .cmv-modal-lg,
     .cmv-modal-xl {
         max-width: 800px;
     }
-}   
+}
+
+@media (min-width: 1200px) {
+    .cmv-modal-xl {
+        max-width: 1140px;
+    }
+}
 
 /** SpeedRunGridTab, SpeedRunGridTabVariable, WorldRecordGridTab (tab-list) **/
 .tab-list .nav {

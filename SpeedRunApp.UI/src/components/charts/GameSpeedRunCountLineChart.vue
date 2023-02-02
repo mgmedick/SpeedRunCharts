@@ -5,7 +5,10 @@
                 <i class="fas fa-spinner fa-spin fa-lg"></i>
             </div>
         </div>
-        <div :id="chartconainerid"></div>
+        <div :id="chartconainerid" style="height:100%;"></div>
+        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)">
+            <i class="fas fa-expand" style="position:absolute; bottom:20px; right:20px;"></i>
+        </div>        
     </div>
 </template>
 <script>
@@ -19,6 +22,7 @@
 
     export default {
         name: "GameSpeedRunCountLineChart",
+        emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,
             categories: Array,
@@ -72,7 +76,7 @@
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
-            }                                   
+            }                                                
         },              
         mounted: function () {
             this.loadChart();
@@ -106,7 +110,7 @@
                     });
                     categories.push(categoryObj);
 
-                    var _alldata = JSON.parse(JSON.stringify(this.tabledata));
+                    var _alldata = JSON.parse(JSON.stringify(this.tabledata)).filter(i => new Date(i.dateSubmitted)>= minDate);
 
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {                                   
@@ -121,7 +125,7 @@
 
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                        chartDataObj[timePeriod] = { value: 0, tooltext: categoryName + ', ' + timePeriod + ', 0 runs' };
+                                        chartDataObj[timePeriod] = { value: 0, tooltext: timePeriod + ', ' + categoryName + ', ' + ', 0 runs' };
                                     }
                                 });
 
@@ -152,7 +156,7 @@
                                 
                                 timePeriods.forEach(timePeriod => {
                                     if (!chartDataObj.hasOwnProperty(timePeriod)) {
-                                        chartDataObj[timePeriod] = { value: 0, tooltext: levelName + ', ' + timePeriod + ', 0 runs' };
+                                        chartDataObj[timePeriod] = { value: 0, tooltext: timePeriod + ', ' + levelName + ', ' + ', 0 runs' };
                                     }
                                 });
 
@@ -177,7 +181,7 @@
                     type: this.chartType,
                     renderAt: this.chartconainerid,
                     width: "100%",
-                    height: this.ismodal ? "500" : "100%",
+                    height: "100%",
                     dataFormat: "json",
                     dataSource: {
                         chart: {
@@ -268,11 +272,11 @@
                             if (variable && variable.isSubCategory) {
                                 var variableValue = variable.variableValues.find(i => i.id == variableValueID);
                                 if (variableValue) {
-                                    variableValueNames += ',' + variableValue.name;
+                                    variableValueNames += ', ' + variableValue.name;
                                 }
                             }
                         });
-                        variableValueNames = variableValueNames.replace(/(^,)|(,$)/g, '');
+                        variableValueNames = variableValueNames.replace(/(^, )|(, $)/g, '');
                         chartObj[monthYear][variableValueNames] = { count: (chartObj[monthYear][variableValueNames]?.count ?? 0) + 1 };
                     } else {
                         chartObj[monthYear] = { count: (chartObj[monthYear]?.count ?? 0) + 1 };
@@ -295,10 +299,10 @@
                             tooltiptext += count + ' (' + variableValueNames + ') + ';
                         });
                         tooltiptext = tooltiptext.replace(/(^ \+ )|( \+ $)/g, '');
-                        chartDataObj[monthyear] = { value: total, tooltext: seriesName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
+                        chartDataObj[monthyear] = { value: total, tooltext: monthyear + ', ' + seriesName + ', ' + total + (total == 1 ? ' run' : ' runs') + ' = ' + tooltiptext }                            
                     } else {
                         var total = chartObj[monthyear].count;
-                        chartDataObj[monthyear] = { value: total, tooltext: seriesName + ', ' + monthyear + ', ' + total + (total == 1 ? ' run' : ' runs') };
+                        chartDataObj[monthyear] = { value: total, tooltext: monthyear + ', ' + seriesName + ', ' + total + (total == 1 ? ' run' : ' runs') };
                     }
                 });   
 

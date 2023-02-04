@@ -612,7 +612,7 @@ button.bg-dark:focus {
     fill: var(--bs-background-color12) !important;
 }     
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-of-type(3)>g>g>text {
+/* .fusioncharts-container>svg>g:first-of-type>g:nth-of-type(3)>g>g>text {
     fill: var(--bs-text-color1) !important;
 }     
 
@@ -626,11 +626,11 @@ button.bg-dark:focus {
 
 .fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:first-of-type {
     fill: var(--bs-text-color1) !important;
-}
+} */
 
-.fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:nth-of-type(2) {
+/* .fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(8)>text:nth-of-type(2) {
     fill: var(--bs-grey) !important;
-}
+} */
 
 .fusioncharts-container>svg>g:first-of-type>g:nth-last-of-type(7)>text:nth-of-type(2) {
     fill: var(--bs-grey) !important;

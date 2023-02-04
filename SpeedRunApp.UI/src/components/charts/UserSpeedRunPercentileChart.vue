@@ -35,15 +35,18 @@
                 chart: {}
             }
         },        
-        computed: {       
+        computed: {   
+            isMediaLarge: function () {
+                return this.$el.clientWidth > 992;
+            },                  
             captionFontSize: function () {
-                return this.ismodal ? 14 : 12;
+                return this.isMediaLarge ? 14 : 12;
             },     
             subCaptionFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },                                      
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";

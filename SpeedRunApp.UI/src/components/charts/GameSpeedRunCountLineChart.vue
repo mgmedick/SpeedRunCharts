@@ -42,6 +42,9 @@
             }
         },        
         computed: {    
+            isMediaLarge: function () {
+                return this.$el.clientWidth > 992;
+            },              
             chartType: function () {
                 var that = this;
                 var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
@@ -51,25 +54,25 @@
                 return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts (Last 12 months)';
             },                               
             captionFontSize: function () {
-                return this.ismodal ? 14 : 12;
+                return this.isMediaLarge ? 14 : 12;
             },
             subCaption: function () {
                 return this.subcaption;
             },                         
             subCaptionFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },  
             labelFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },                    
             yAxisValueFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },     
             legendIconScale: function () {
-                return this.ismodal ? .8 : .5;
+                return this.isMediaLarge ? .8 : .5;
             },                                                                   
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
@@ -103,8 +106,15 @@
                 var dataset = [];
 
                 if (this.tabledata?.length > 0) {
-                    var maxDate = new Date();
+                    var _alldates = JSON.parse(JSON.stringify(this.tabledata)).sort((a, b) => { 
+                                return new Date(b.dateSubmitted) - new Date(a.dateSubmitted);
+                            }).map(i => new Date(i.dateSubmitted));
+
+                    //var maxDate = dayjs(new Date()).add(-1, "months").toDate();
+                    var maxDate = new Date();                    
+                    var minDataDate = new Date(Math.min.apply(null, _alldates));
                     var minDate = dayjs(maxDate).add(-12, "months").toDate();
+                    minDate = minDataDate > minDate ? minDataDate : minDate;
                     var timePeriods = getDateDiffList("month", minDate, maxDate).map(x => { return dayjs(x).format("MM/YYYY") });
 
                     categoryObj["category"] = timePeriods.map(item => {
@@ -114,7 +124,7 @@
                     });
                     categories.push(categoryObj);
 
-                    var _alldata = JSON.parse(JSON.stringify(this.tabledata)).filter(i => new Date(i.dateSubmitted)>= minDate);
+                    var _alldata = JSON.parse(JSON.stringify(this.tabledata)).filter(i => new Date(i.dateSubmitted)>= minDate)
 
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {                                   

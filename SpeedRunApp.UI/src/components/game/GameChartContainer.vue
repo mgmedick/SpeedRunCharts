@@ -45,7 +45,7 @@
                             </div>
                         </div>                        
                     </div>
-                </div>
+                </div>               
             </div>                       
             <modal v-if="showChartModal && !loading" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
                 <template v-slot:title>

@@ -38,7 +38,10 @@
                 chart: {}
             }
         },        
-        computed: {    
+        computed: {   
+            isMediaLarge: function () {
+                return this.$el.clientWidth > 992;
+            },              
             chartType: function () {
                 var that = this;
                 var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
@@ -48,34 +51,37 @@
                 return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
             },                            
             captionFontSize: function () {
-                return this.ismodal ? 14 : 12;
+                return this.isMediaLarge ? 14 : 12;
             },
             subCaption: function () {
                 return this.subcaption;
             },                          
             subCaptionFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },  
             labelFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },                    
             yAxisValueFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },
             valueFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 10 : 8;
             },                        
             legendIconScale: function () {
-                return this.ismodal ? .8 : .5;
+                return this.isMediaLarge ? .8 : .5;
             },                                                                    
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
+            },
+            autoRotateLabels: function () {
+                return this.isMediaLarge ? 0 : 1;
             },
             paletteColors: function() {
                 var colors = ['36b5d8','f0dc46','f066ac','6ec85a','6e80ca','e09653','e1d7ad','61c8c8','ebe4f4','e60049','0bb4ff','50e991','ffee00','9b19f5','ffa300','dc0ab4','b3d4ff','00bfa0','fd7f6f','7eb0d5','b2e061','bd7ebe','ffb55a','fff6b3','beb9db','fdcce5','8bd3c7','3366cc','dc3912','ff9900','109618','990099','0099c6','dd4477','b9d2d5','efd39e','efa7a7','bbf2d5','7db8b9','ffc197'];
@@ -168,14 +174,15 @@
                             legendIconScale: this.legendIconScale,
                             showLabels: 1,
                             skipOverlapLabels: 1,
-                            //autoRotateLabels: 1,
+                            // useEllipsesWhenOverflow: 1,
+                            autoRotateLabels: this.autoRotateLabels,
                             theme: "candy",                          
                             palettecolors: this.paletteColors.join(','),                            
                             bgColor: this.bgColor,
                             baseFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor,
                             hoverFillColor: "#fff",
-                            valueFontColor: "#000",
+                            valueFontColor: "#212529",
                             valueFontSize: this.valueFontSize,
                             valueFontBold: 1
                         },

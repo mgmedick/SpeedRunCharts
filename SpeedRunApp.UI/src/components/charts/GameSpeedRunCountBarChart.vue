@@ -38,40 +38,43 @@
                 chart: {}
             }
         },        
-        computed: {   
+        computed: { 
+            isMediaLarge: function () {
+                return this.$el.clientWidth > 992;
+            },                
             caption: function () {
                 return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts';
             },                            
             captionFontSize: function () {
-                return this.ismodal ? 14 : 12;
+                return this.isMediaLarge ? 14 : 12;
             },
             subCaption: function () {
                 return this.subcaption;
             },                          
             subCaptionFontSize: function () {
-                return this.ismodal ? 12 : 10;
-            },  
+                return this.isMediaLarge ? 12 : 10;
+            },                     
             labelFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 12 : 10;
             },                    
             outCnvBaseFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.isMediaLarge ? 13 : 11;
             },      
             legendItemFontSize: function () {
-                return this.ismodal ? 12 : 10;
+                return this.isMediaLarge ? 12 : 10;
             },
             valueFontSize: function () {
-                return this.ismodal ? 10 : 9;
+                return this.isMediaLarge ? 12 : 10;
             },                        
             legendIconScale: function () {
-                return this.ismodal ? .8 : .5;
-            },     
+                return this.isMediaLarge ? .8 : .5;
+            },                
             legendNumRows: function () {
-                return this.ismodal ? 5 : 2;
+                return this.isMediaLarge ? 5 : 2;
             },   
             legendNumColumns: function () {
-                return this.ismodal ? 5 : 2;
-            },                                                                                                
+                return this.isMediaLarge ? 5 : 2;
+            },                                                                                                          
             bgColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
@@ -139,7 +142,7 @@
                         Object.keys(chartDataObj).forEach(key => {
                             dataset.push({seriesname: key, data: chartDataObj[key] })
                         });  
-                    }                 
+                    }                    
                 }
 
                 var chartConfig = {
@@ -156,12 +159,16 @@
                             alignCaptionWithCanvas: 0,                                                     
                             subCaption: this.subCaption,
                             subCaptionFontSize: this.subCaptionFontSize,
+                            subCaptionFontColor: "#888",
                             xAxis: '',
                             yAxis: 'Total Runs',  
                             showZeroPlaneValue: 0,
                             yAxisMinValue: 0,                                                       
                             labelFontSize: this.labelFontSize,
-                            labelVAlign: 'middle',                            
+                            labelVAlign: 'middle',
+                            //labelDisplay: 'ROTATE',
+                            rotateLabels: dataset.length > 10 ? 1: 0,
+                            slantLabels: dataset.length > 10 ? 1: 0,                        
                             exportEnabled: 1,
                             showValues: 1,
                             //plotTooltext: "$label, $seriesName, $value runs",
@@ -169,12 +176,14 @@
                             outCnvBaseFontSize: this.outCnvBaseFontSize,                                                      
                             numberOfDecimals: 0,
                             useRoundEdges: 0,
+                            useEllipsesWhenOverflow: 1,
+                            showLegend: 0,
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
                             palettecolors: this.paletteColors.join(','),                                                   
                             theme: "candy",
                             bgColor: this.bgColor,
-                            valueFontColor: "#000",
+                            valueFontColor: "#212529",
                             baseFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor                            
                         },
@@ -190,23 +199,24 @@
 
                 data.forEach(item => {
                     chartObj[seriesName] = chartObj[seriesName] || {};
+                    chartObj[seriesName] = { count: (chartObj[seriesName]?.count ?? 0) + 1 };
 
-                    var variableValueNames = '';
-                    if (item.subCategoryVariableValueIDs) {
-                        item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
-                            var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
-                            if (variable && variable.isSubCategory) {
-                                var variableValue = variable.variableValues.find(i => i.id == variableValueID);
-                                if (variableValue) {
-                                    variableValueNames += ', ' + variableValue.name;
-                                }
-                            }
-                        });
-                        variableValueNames = variableValueNames.replace(/(^, )|(, $)/g, '');
-                        chartObj[seriesName][variableValueNames] = { count: (chartObj[seriesName][variableValueNames]?.count ?? 0) + 1 };
-                    } else {
-                        chartObj[seriesName] = { count: (chartObj[seriesName]?.count ?? 0) + 1 };
-                    }
+                    // var variableValueNames = '';
+                    // if (item.subCategoryVariableValueIDs) {
+                    //     item.subCategoryVariableValueIDs.split(",").forEach(variableValueID => {
+                    //         var variable = that.variables?.find(x => x.variableValues.filter(i => i.id == variableValueID).length > 0);
+                    //         if (variable && variable.isSubCategory) {
+                    //             var variableValue = variable.variableValues.find(i => i.id == variableValueID);
+                    //             if (variableValue) {
+                    //                 variableValueNames += ', ' + variableValue.name;
+                    //             }
+                    //         }
+                    //     });
+                    //     variableValueNames = variableValueNames.replace(/(^, )|(, $)/g, '');
+                    //     chartObj[seriesName][variableValueNames] = { count: (chartObj[seriesName][variableValueNames]?.count ?? 0) + 1 };
+                    // } else {
+                    //     chartObj[seriesName] = { count: (chartObj[seriesName]?.count ?? 0) + 1 };
+                    // }
                 });
                 
                 return chartObj;

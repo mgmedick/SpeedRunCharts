@@ -45,7 +45,7 @@
                 return this.ismodal ? 14 : 12;
             },     
             subCaptionFontSize: function () {
-                return this.ismodal ? 13 : 11;
+                return this.ismodal ? 12 : 10;
             },  
             labelFontSize: function () {
                 return this.ismodal ? 13 : 11;
@@ -58,7 +58,11 @@
             },
             fontColor: function () {
                 return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
-            }                                                        
+            },
+            paletteColors: function() {
+                var colors = ['36b5d8','f0dc46','f066ac','6ec85a','6e80ca','e09653','e1d7ad','61c8c8','ebe4f4','e60049','0bb4ff','50e991','ffee00','9b19f5','ffa300','dc0ab4','b3d4ff','00bfa0','fd7f6f','7eb0d5','b2e061','bd7ebe','ffb55a','fff6b3','beb9db','fdcce5','8bd3c7','3366cc','dc3912','ff9900','109618','990099','0099c6','dd4477','b9d2d5','efd39e','efa7a7','bbf2d5','7db8b9','ffc197'];
+                return colors;
+            }                                                                     
         },              
         mounted: function () {
             this.loadChart();
@@ -189,7 +193,9 @@
                     dataSource: {
                         chart: {
                             caption: this.caption,
-                            captionFontSize: this.captionFontSize,                           
+                            captionFontSize: this.captionFontSize,  
+                            captionAlignment:"center",
+                            alignCaptionWithCanvas: 0,
                             subCaption: this.title,
                             subCaptionFontSize: this.subCaptionFontSize,
                             captionAlignment:"center",
@@ -228,6 +234,7 @@
                             yAxisMinValue: ymin,
                             yAxisValueFontSize: this.yAxisValueFontSize,                        
                             theme: "candy",
+                            palettecolors: this.paletteColors.join(','),                            
                             bgColor: this.bgColor,
                             baseFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor

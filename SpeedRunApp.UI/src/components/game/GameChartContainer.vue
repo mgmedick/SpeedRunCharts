@@ -104,13 +104,16 @@
             chartModalTitle: function () {
                 var title = '';
 
-                switch(this.selectedChartID){
+                switch(this.selectedChartID) {
                     case 1:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Trends (Last 12 months)';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts Chart';
                         break;
                     case 2:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts (Last 12 Months) Chart';
                         break;
+                    case 3:
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution Chart';
+                        break;                        
                 }
 
                 return title;

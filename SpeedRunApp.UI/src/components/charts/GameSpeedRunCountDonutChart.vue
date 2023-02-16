@@ -52,7 +52,7 @@
             },                            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;
-            },
+            },              
             subCaption: function () {
                 return this.subcaption;
             },                          
@@ -61,13 +61,13 @@
             },  
             labelFontSize: function () {
                 return this.isMediaLarge ? 13 : 11;
-            },                    
+            },                                
             yAxisValueFontSize: function () {
                 return this.isMediaLarge ? 13 : 11;
             },      
             legendItemFontSize: function () {
                 return this.isMediaLarge ? 12 : 10;
-            },
+            },              
             valueFontSize: function () {
                 return this.isMediaLarge ? 10 : 8;
             },                        
@@ -78,7 +78,7 @@
                 return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
-                return document.body.classList.contains('theme-dark') ? "#fff" : "#212529";
+                return document.body.classList.contains('theme-dark') ? "#fff" : "#000";
             },
             autoRotateLabels: function () {
                 return this.isMediaLarge ? 0 : 1;
@@ -109,7 +109,8 @@
 
                 if (this.tabledata?.length > 0) {
                     var _alldata = JSON.parse(JSON.stringify(this.tabledata));
-
+                    var allDataLabel = '';
+                
                     if (this.categorytypeid == 0) {
                         this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {
                             var categoryName = category.name.replace(/( \(empty\)$)/g, '');
@@ -141,7 +142,8 @@
                     }
 
                     if (Object.keys(chartObj).length > 0) {
-                        var chartDataObj = { label: 'All', value: _alldata.length, tooltext: 'All, ' + _alldata.length + ' runs (100%)', color: "#fff" };
+                        var allLabel = this.categorytypeid == 0 ? 'All Full Game' : 'All Level';
+                        var chartDataObj = { label: allLabel, value: _alldata.length, tooltext: allLabel + ', ' + _alldata.length + ' runs (100%)', color: "#fff", alpha: 0 };
                         this.setChartData(chartObj, chartDataObj, _alldata.length);
                         dataset.push(chartDataObj);
                     }
@@ -158,9 +160,11 @@
                             caption: this.caption,
                             captionFontSize: this.captionFontSize,                           
                             captionAlignment:"center",
+                            captionFontColor: this.fontColor,
                             alignCaptionWithCanvas: 0,                                                     
                             subCaption: this.subCaption,
                             subCaptionFontSize: this.subCaptionFontSize,
+                            subCaptionFontColor: "#888",
                             showValues: 0,
                             formatNumberScale: 0,
                             numberOfDecimals: 0,
@@ -172,6 +176,7 @@
                             exportEnabled: 1,
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
+                            legendItemFontColor: this.fontColor,
                             showLabels: 1,
                             skipOverlapLabels: 1,
                             // useEllipsesWhenOverflow: 1,
@@ -182,9 +187,10 @@
                             baseFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor,
                             hoverFillColor: "#fff",
-                            valueFontColor: "#212529",
+                            valueFontColor: "#fff",
                             valueFontSize: this.valueFontSize,
-                            valueFontBold: 1
+                            //valueFontBold: 1,
+                            textOutline: 1
                         },
                         category: dataset
                     }
@@ -230,9 +236,10 @@
                     chartDataObj["category"] = chartDataObj["category"] || [];
                     var count = chartObj[key].count;
                     var percent = prevcount > 0 ? Math.round((count / prevcount) * 100) : 0;
-                    var currtooltext = (tooltext + ', ' + key + ', ' + count + ' runs (' + percent + '%)').replace(/(^, )|(, $)/g, '');
+                    var currtooltext = tooltext + ', ' + key;
+                    var currtooltextwithcount = (currtooltext  + ', ' + count + ' runs (' + percent + '%)').replace(/(^, )|(, $)/g, '')
                     var color = that.paletteColors[colorIndex];
-                    var chartDataItem = { label: key, value: chartObj[key].count, tooltext: currtooltext, color: color };
+                    var chartDataItem = { label: key, value: chartObj[key].count, tooltext: currtooltextwithcount, color: color };
                     if (chartDataItem.value > 0){
                         chartDataObj["category"].push(chartDataItem);
                     }

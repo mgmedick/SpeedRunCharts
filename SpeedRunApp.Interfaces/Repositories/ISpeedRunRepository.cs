@@ -22,6 +22,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryViews(Expression<Func<SpeedRunSummaryView, bool>> predicate);
         IEnumerable<SpeedRunChartView> GetSpeedRunChartViews(Expression<Func<SpeedRunChartView, bool>> predicate);
         int? GetSpeedRunID(string speedRunComID);
+        DateTime GetGameSpeedRunLastImportDate(int gameID);
     }
 }
 

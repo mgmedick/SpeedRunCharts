@@ -23,10 +23,12 @@ namespace SpeedRunApp.Service
             _cacheService = cacheService;
             _settingRepo = settingRepo;
         }
+
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID) {
             var gameVM = GetGame(gameAbbr);
-            var speedRunID = string.IsNullOrWhiteSpace(speedRunComID) ? (int?)null : _speedRunRepo.GetSpeedRunID(speedRunComID);
-            var gameDetailsVM = new GameDetailsViewModel(gameVM, speedRunID);
+            var speedRunID = string.IsNullOrWhiteSpace(speedRunComID) ? (int?)null : _speedRunRepo.GetSpeedRunID(speedRunComID);            
+            var gameSpeedRunLastImportDate = _speedRunRepo.GetGameSpeedRunLastImportDate(gameVM.ID);
+            var gameDetailsVM = new GameDetailsViewModel(gameVM, gameSpeedRunLastImportDate, speedRunID);
 
             return gameDetailsVM;
         }

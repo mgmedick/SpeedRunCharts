@@ -59,10 +59,16 @@
                     </ul>
                 </div>                
                 <div class="form-group row no-gutters">
-                    <span>Are you sure you want to update this Game and it's Runs?</span>
-                    <div class="pt-3">
-                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Please only update if the Game Details (Categories, Variables, etc.) or Runs are out of date. It can take up 10 minutes for the import to complete the request.</span> 
-                    </div>
+                    <span>Are you sure you want to update this Game and its Runs?</span>
+                    <div class="form-group row no-gutters pt-2">
+                        <label class="col-sm-5 col-form-label">Run Last Imported</label>
+                        <div class="col-sm-7">
+                            <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(gamespeedrunlastimportdate)"/>
+                        </div>
+                    </div>                     
+                    <div class="pt-2">
+                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Leaderboards are kept up to date automatically. Please only update if the Game Details (Categories, Variables, etc.) or Runs/Ranks are out of date. It can take up 10 minutes for the import to complete the request.</span> 
+                    </div>                     
                 </div>
                 <div class="row no-gutters pt-1">
                     <div class="form-group mx-auto">
@@ -76,12 +82,14 @@
 </template>
 <script>
     import axios from 'axios';
+    import { getDateTimeLocalString } from '../../js/common.js';
 
     export default {
         name: "GameDetails",
         props: {
             gamevm: Object,
-            speedrunid: String
+            speedrunid: String,
+            gamespeedrunlastimportdate: Date
         },  
         data: function () {
             return {
@@ -118,7 +126,10 @@
             },
             onShowGameChartsClick: function (event) {
                 this.showGameCharts = !this.showGameCharts;
-            }      
+            },
+            getFormattedDateString: function (value) {
+                return getDateTimeLocalString(value);
+            }                  
         }
     };
 </script>

@@ -128,6 +128,14 @@ namespace SpeedRunApp.Repository
             {
                 return db.Query<int?>("SELECT SpeedRunID FROM tbl_SpeedRun_SpeedRunComID WHERE SpeedRunComID = @0;", speedRunComID).FirstOrDefault();
             }
-        }        
+        }
+
+        public DateTime GetGameSpeedRunLastImportDate(int gameID)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<DateTime>("SELECT ImportedDate FROM tbl_SpeedRun WHERE GameID = @0 ORDER BY ID DESC LIMIT 1;", gameID).FirstOrDefault();
+            }
+        }                  
     }
 }

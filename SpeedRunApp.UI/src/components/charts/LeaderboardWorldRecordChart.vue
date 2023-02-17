@@ -42,7 +42,7 @@
                 return this.$el.clientWidth > 992;
             },            
             caption: function () {
-                return 'World Records (Last 20)';
+                return 'World Records';
             },            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;
@@ -114,7 +114,7 @@
                         }                       
                     }
 
-                    filteredData = filteredData.slice(0, 20);
+                    //filteredData = filteredData.slice(0, 20);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
                     var maxDate = dayjs(Math.max.apply(null, dates)).startOf('day').toDate();//.add(1, "days").toDate();

@@ -134,7 +134,8 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<DateTime>("SELECT ImportedDate FROM tbl_SpeedRun WHERE GameID = @0 ORDER BY ID DESC LIMIT 1;", gameID).FirstOrDefault();
+                var date = db.Query<DateTime>("SELECT ImportedDate FROM tbl_SpeedRun WHERE GameID = @0 ORDER BY ID DESC LIMIT 1;", gameID).FirstOrDefault();
+                return DateTime.SpecifyKind(date, DateTimeKind.Utc);
             }
         }                  
     }

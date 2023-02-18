@@ -11,7 +11,7 @@
             <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                    <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
+                    <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
                     <li v-if="groups.length > 0" class="group-label">Group By:</li>
                     <li v-for="(group, i) in groups" :key="i" class="group-tag">
                         <span>{{ group.title }}</span>&nbsp;

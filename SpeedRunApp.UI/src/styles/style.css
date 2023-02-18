@@ -960,6 +960,7 @@ div[data-disabled="true"] .vue-select-header {
     list-style: none;
     padding: 5px;
     border: 2px dashed var(--bs-border-color10);
+    margin-bottom: 0px;
 }
 
 .grid-group .group-placeholder {

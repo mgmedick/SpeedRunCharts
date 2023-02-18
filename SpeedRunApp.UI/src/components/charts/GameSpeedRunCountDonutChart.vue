@@ -35,18 +35,15 @@
         data() {
             return {
                 loading: true,
-                chart: {}
+                chart: {},
+                width: 0,
+                height: 0
             }
         },        
         computed: {   
             isMediaLarge: function () {
                 return this.$el.clientWidth > 992;
-            },              
-            chartType: function () {
-                var that = this;
-                var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
-                return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
-            },     
+            },    
             caption: function () {
                 return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
             },                            
@@ -90,6 +87,7 @@
         },              
         mounted: function () {
             this.loadChart();
+            window.addEventListener('resize', this.resizeChart); 
         },
         methods: {                      
             loadChart() {
@@ -97,8 +95,10 @@
                 this.loading = true;
                 FusionCharts.ready(function () {
                     that.chart = new FusionCharts(that.initChart());
-                    that.chart.render(); 
-                    that.loading = false;                                          
+                    that.chart.render();
+                    that.width = that.$el.clientWidth;
+                    that.height = that.$el.clientHeight;
+                    that.loading = false;
                 });
             },
             initChart() {
@@ -179,8 +179,8 @@
                             legendItemFontColor: this.fontColor,
                             showLabels: 1,
                             skipOverlapLabels: 1,
-                            // useEllipsesWhenOverflow: 1,
-                            autoRotateLabels: this.autoRotateLabels,
+                            useEllipsesWhenOverflow: 1,
+                            autoRotateLabels: 0,
                             theme: "candy",                          
                             palettecolors: this.paletteColors.join(','),                            
                             bgColor: this.bgColor,
@@ -252,6 +252,14 @@
                         colorIndex = (colorIndex == (that.paletteColors.length -1)) ? 0 : colorIndex + 1;
                     }                    
                 });
+            },
+            resizeChart() {
+                var that = this;
+                if (that.$el.clientWidth != that.width || that.$el.clientHeight != that.height) {
+                    that.loadChart();
+                    that.width = that.$el.clientWidth;
+                    that.height = that.$el.clientHeight;
+                }                
             }           
         }
     }

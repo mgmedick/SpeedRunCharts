@@ -7,15 +7,13 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameDetailsViewModel
     {
-        public GameDetailsViewModel(GameViewModel gameVM, DateTime gameSpeedRunLastImportDate, int? speedRunID)
+        public GameDetailsViewModel(GameViewModel gameVM, int? speedRunID)
         {
             GameVM = gameVM;
-            GameSpeedRunLastImportDate = gameSpeedRunLastImportDate;
             SpeedRunID = speedRunID;
         }
                 
         public GameViewModel GameVM { get; set; }
-        public DateTime GameSpeedRunLastImportDate { get; set; }
         public int? SpeedRunID { get; set; }
     }
 }

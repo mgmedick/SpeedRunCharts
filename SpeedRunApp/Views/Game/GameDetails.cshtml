@@ -22,7 +22,7 @@
     }
     else
     {
-        <gamedetails :gamevm="@JsonSerializer.Serialize(Model.GameVM, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})" :gamespeedrunlastimportdate="@JsonSerializer.Serialize(Model.GameSpeedRunLastImportDate)" :speedrunid="'@Model.SpeedRunID'"></gamedetails>
+        <gamedetails :gamevm="@JsonSerializer.Serialize(Model.GameVM, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})" :speedrunid="'@Model.SpeedRunID'"></gamedetails>
     }
 </div>
 

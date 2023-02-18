@@ -10,7 +10,7 @@
         <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                    <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
+                    <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
                     <li v-if="groups.length > 0" class="group-label">Group By:</li>
                     <li v-for="(group, i) in groups" :key="i" class="group-tag">
                         <span>{{ group.title }}</span>&nbsp;

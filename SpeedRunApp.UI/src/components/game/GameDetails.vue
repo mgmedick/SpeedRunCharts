@@ -59,15 +59,9 @@
                     </ul>
                 </div>                
                 <div class="form-group row no-gutters">
-                    <span>Are you sure you want to update this Game and its Runs?</span>
-                    <div class="form-group row no-gutters pt-2">
-                        <label class="col-sm-5 col-form-label">Run Last Imported</label>
-                        <div class="col-sm-7">
-                            <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(gamespeedrunlastimportdate)"/>
-                        </div>
-                    </div>                     
-                    <div class="pt-2">
-                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>Leaderboards are kept up to date automatically. Please only update if the Game Details (Categories, Variables, etc.) or Runs/Ranks are out of date. It can take up 10 minutes for the import to complete the request.</span> 
+                    <span>Are you sure you want to update this Game and its Runs?</span>                   
+                    <div class="pt-3">
+                        <i class="fa fa-exclamation-triangle fa-lg pr-1" style="color:#fd7e14;"></i><span>This site is kept up to date automatically. Only update if Leaderboard ranks are out of date or a Category is missing. It can take up 10 minutes for the import to complete the request.</span> 
                     </div>                     
                 </div>
                 <div class="row no-gutters pt-1">
@@ -88,8 +82,7 @@
         name: "GameDetails",
         props: {
             gamevm: Object,
-            speedrunid: String,
-            gamespeedrunlastimportdate: Date
+            speedrunid: String
         },  
         data: function () {
             return {

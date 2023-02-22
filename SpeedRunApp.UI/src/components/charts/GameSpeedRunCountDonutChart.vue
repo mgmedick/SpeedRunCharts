@@ -35,9 +35,8 @@
         data() {
             return {
                 loading: true,
-                chart: {},
-                width: 0,
-                height: 0
+                width: document.documentElement.clientWidth,
+                height: document.documentElement.clientHeight
             }
         },        
         computed: {   
@@ -84,21 +83,20 @@
                 var colors = ['36b5d8','f0dc46','f066ac','6ec85a','6e80ca','e09653','e1d7ad','61c8c8','ebe4f4','e60049','0bb4ff','50e991','ffee00','9b19f5','ffa300','dc0ab4','b3d4ff','00bfa0','fd7f6f','7eb0d5','b2e061','bd7ebe','ffb55a','fff6b3','beb9db','fdcce5','8bd3c7','3366cc','dc3912','ff9900','109618','990099','0099c6','dd4477','b9d2d5','efd39e','efa7a7','bbf2d5','7db8b9','ffc197'];
                 return colors;
             }                                           
-        },              
+        },            
         mounted: function () {
             this.loadChart();
             window.addEventListener('resize', this.resizeChart); 
-        },
+        },        
         methods: {                      
             loadChart() {
                 var that = this;
                 this.loading = true;
                 FusionCharts.ready(function () {
-                    that.chart = new FusionCharts(that.initChart());
-                    that.chart.render();
-                    that.width = that.$el.clientWidth;
-                    that.height = that.$el.clientHeight;
-                    that.loading = false;
+                    new FusionCharts(that.initChart()).render(); 
+                    // that.width = document.documentElement.clientWidth;
+                    // that.height = document.documentElement.clientHeight;                   
+                    that.loading = false;             
                 });
             },
             initChart() {
@@ -255,10 +253,10 @@
             },
             resizeChart() {
                 var that = this;
-                if (that.$el.clientWidth != that.width || that.$el.clientHeight != that.height) {
+                if (that.width != document.documentElement.clientWidth || that.height != document.documentElement.clientHeight) {     
+                    that.width = document.documentElement.clientWidth;
+                    that.height = document.documentElement.clientHeight;             
                     that.loadChart();
-                    that.width = that.$el.clientWidth;
-                    that.height = that.$el.clientHeight;
                 }                
             }           
         }

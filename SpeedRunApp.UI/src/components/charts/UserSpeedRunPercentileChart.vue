@@ -31,8 +31,7 @@
         },
         data() {
             return {
-                loading: true,
-                chart: {}
+                loading: true
             }
         },        
         computed: {   
@@ -67,8 +66,7 @@
                 var that = this;
                 this.loading = true;
                 FusionCharts.ready(function () {
-                    that.chart = new FusionCharts(that.initChart());
-                    that.chart.render(); 
+                    new FusionCharts(that.initChart()).render(); 
                     that.loading = false;                                          
                 });
             },

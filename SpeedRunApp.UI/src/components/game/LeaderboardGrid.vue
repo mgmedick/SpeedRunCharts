@@ -276,7 +276,14 @@
 
                 value?.forEach(el => {
                     if (el.id > 0) {
-                        html += "<a href='/User/UserDetails/" + el.abbr + "' class='text-primary' draggable='false'>" + el.name + "</a><br/>";
+                        if (el.colorLight && el.colorDark) {
+                            html += "<span class='username-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + "); -webkit-text-fill-color: transparent; -webkit-background-clip: text; font-weight: bold;'>"
+                            html += "<span class='username-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + "); -webkit-text-fill-color: transparent; -webkit-background-clip: text; font-weight: bold;'>";
+                            html += "<a href='/User/UserDetails/" + el.abbr + "' draggable='false'>" + el.name + "</a>"
+                            html += "</span></span><br/>";                           
+                        } else {
+                            html += "<a href='/User/UserDetails/" + el.abbr + "' class='text-primary' draggable='false' style='font-weight: bold;'>" + el.name + "</a>"
+                        }
                     } else {
                         html += el.name;
                     }          

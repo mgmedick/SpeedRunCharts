@@ -29,8 +29,12 @@
                         </div>
                         <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
                             <template v-for="(player, index) in item.players">
-                                <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
-                                {{ (item.players.length -1 != index) ? ', ' : '' }}
+                                <span class='username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + '); -webkit-text-fill-color: transparent; -webkit-background-clip: text; font-weight: bold;'">
+                                    <span class='username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + '); -webkit-text-fill-color: transparent; -webkit-background-clip: text; font-weight: bold;'">
+                                        <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
+                                        {{ (item.players.length -1 != index) ? ', ' : '' }}
+                                    </span>
+                                </span>
                             </template>
                         </div>
                     </div>                            

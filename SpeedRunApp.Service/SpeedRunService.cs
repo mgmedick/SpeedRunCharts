@@ -123,7 +123,7 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SpeedRunGridViewModel> GetUserSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
-            var runs = _speedRunRepo.GetSpeedRunGridViewsByUserID(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();      
+            var runs = _speedRunRepo.GetSpeedRunGridUserViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.UserID == userID).OrderByDescending(i => i.ID).ToList();     
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
 
             return runVMs;

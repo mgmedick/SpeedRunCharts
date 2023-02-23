@@ -819,6 +819,14 @@ button.bg-dark:focus {
     overflow-wrap: break-word;
 }
 
+.theme-dark .username-color-light {
+    background: none !important;
+}
+
+.theme-light .username-color-dark {
+    background: none !important; 
+}
+
 /********** Custom Components (No Style Dependancy)**********/
 /** AutocompleteVue and MultiiselectVue (vue-select) **/
 .icon.delete {

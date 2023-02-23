@@ -77,15 +77,24 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        public IEnumerable<SpeedRunGridUserView> GetSpeedRunGridUserViews(Expression<Func<SpeedRunGridUserView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SpeedRunGridView>("CALL GetSpeedRunsByUserID (@0, @1, @2, @3, @4);", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
-
+                var results = db.Query<SpeedRunGridUserView>().Where(predicate).ToList();
                 return results;
             }
         }
+
+        // public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        // {
+        //     using (IDatabase db = DBFactory.GetDatabase())
+        //     {
+        //         var results = db.Query<SpeedRunGridView>("CALL GetSpeedRunsByUserID (@0, @1, @2, @3, @4);", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
+
+        //         return results;
+        //     }
+        // }
 
         public IEnumerable<WorldRecordGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID)
         {

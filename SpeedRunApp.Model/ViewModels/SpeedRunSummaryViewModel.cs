@@ -44,7 +44,7 @@ namespace SpeedRunApp.Model.ViewModels
                 Players = new List<IDNameAbbrPair>();
                 foreach (var player in run.Players.Split("^^"))
                 {
-                    var playerValue = player.Split("¦", 3);
+                    var playerValue = player.Split("¦", 7);
                     int playerID;
                     int.TryParse(playerValue[0], out playerID);
                     Players.Add(new IDNameAbbrPair { ID = playerID, Name = playerValue[1], Abbr = playerValue[2] });

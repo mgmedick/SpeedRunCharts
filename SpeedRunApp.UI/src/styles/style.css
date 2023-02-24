@@ -819,6 +819,29 @@ button.bg-dark:focus {
     overflow-wrap: break-word;
 }
 
+.username-text {
+    font-weight: 600;
+    color: var(--bs-text-color2);
+}
+
+.username-color-light {
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;   
+}
+
+.username-color-dark {
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;   
+}
+
+.theme-dark .username-color-light {
+    background: none !important; 
+}
+
+.theme-light .username-color-dark {
+    background: none !important;
+}
+
 /********** Custom Components (No Style Dependancy)**********/
 /** AutocompleteVue and MultiiselectVue (vue-select) **/
 .icon.delete {

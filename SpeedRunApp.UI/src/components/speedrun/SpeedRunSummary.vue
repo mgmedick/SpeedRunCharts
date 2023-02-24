@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="col-9 pl-2 pr-0 align-self-end">
-                    <div class="nowrap-elipsis align-self-start" style="font-size: 14px;">
+                    <div class="nowrap-elipsis align-self-start" style="font-size: 14px; font-weight: 500;">
                         <a :href="'/Game/GameDetails/' + item.game.abbr" class="text-primary">{{ item.game.name }}</a>
                     </div>
                     <div class="align-self-end" style="line-height: 12px;">
@@ -24,12 +24,19 @@
             <div class="container px-2 pb-2 pt-1 d-flex">
                 <div class="col-7 p-0 align-self-center" style="overflow:hidden;">
                      <div>   
-                        <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
+                        <div class="text-secondary nowrap-elipsis" style="font-size: 14px; font-weight: 500;">
                             <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
                         </div>
-                        <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                            <template v-for="(player, index) in item.players">
-                                <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
+                        <div class="text-secondary" style="font-size: 14px; font-weight: 600;">
+                            <template v-for="(player, index) in item.players">                               
+                                <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
+                                    <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
+                                        <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
+                                    </span>
+                                </span>
+                                <span v-else class="username-text">
+                                    <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID">{{ player.name }}</a>
+                                </span>
                                 {{ (item.players.length -1 != index) ? ', ' : '' }}
                             </template>
                         </div>

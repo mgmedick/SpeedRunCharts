@@ -48,7 +48,7 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.Players) || !string.IsNullOrWhiteSpace(run.Guests))
             {
-                Players = new List<IDNameAbbrPair>();
+                Players = new List<UserNameViewModel>();
 
                 if (!string.IsNullOrWhiteSpace(run.Players))
                 {
@@ -56,8 +56,8 @@ namespace SpeedRunApp.Model.ViewModels
                     {
                         var playerValue = player.Split("¦", 7);
                         int playerID;
-                        int.TryParse(playerValue[0], out playerID);
-                        Players.Add(new IDNameAbbrPair { ID = playerID, Name = playerValue[1], Abbr = playerValue[2] });
+                        int.TryParse(playerValue[0], out playerID);                               
+                        Players.Add(new UserNameViewModel { ID = playerID, Name = playerValue[1], Abbr = playerValue[2], ColorLight = playerValue[3], ColorToLight = playerValue[4], ColorDark = playerValue[5], ColorToDark = playerValue[6] });
                     }
                 }
 
@@ -68,10 +68,9 @@ namespace SpeedRunApp.Model.ViewModels
                         var guestValue = guest.Split("¦", 3);
                         int guestID;
                         int.TryParse(guestValue[0], out guestID);
-                        Players.Add(new IDNameAbbrPair { ID = 0, Name = guestValue[1], Abbr = guestValue[2] });
+                        Players.Add(new UserNameViewModel { ID = 0, Name = guestValue[1], Abbr = guestValue[2] });
                     }
                 }
-
             }
 
             if (run.PrimaryTime.HasValue)
@@ -88,7 +87,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
         public Dictionary<int, int> VariableValues { get; set; }        
-        public List<IDNameAbbrPair> Players { get; set; }
+        public List<UserNameViewModel> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
@@ -98,7 +97,7 @@ namespace SpeedRunApp.Model.ViewModels
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
 
-        public IDNamePair Player
+        public UserNameViewModel Player
         {
             get
             {

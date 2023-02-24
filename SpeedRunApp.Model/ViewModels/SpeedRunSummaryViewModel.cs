@@ -41,13 +41,13 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.Players))
             {
-                Players = new List<IDNameAbbrPair>();
+                Players = new List<UserNameViewModel>();
                 foreach (var player in run.Players.Split("^^"))
                 {
                     var playerValue = player.Split("¦", 7);
                     int playerID;
                     int.TryParse(playerValue[0], out playerID);
-                    Players.Add(new IDNameAbbrPair { ID = playerID, Name = playerValue[1], Abbr = playerValue[2] });
+                    Players.Add(new UserNameViewModel { ID = playerID, Name = playerValue[1], Abbr = playerValue[2], ColorLight = playerValue[3], ColorToLight = playerValue[4], ColorDark = playerValue[5], ColorToDark = playerValue[6] });
                 }
             }
 
@@ -94,7 +94,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Level { get; set; } 
         public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
-        public List<IDNameAbbrPair> Players { get; set; }
+        public List<UserNameViewModel> Players { get; set; }
         //public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public List<string> VideoThumbnailLinks { get; set; }    

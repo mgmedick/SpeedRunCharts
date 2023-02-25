@@ -1,5 +1,5 @@
 ﻿<template>
-    <div id="divUserAccount" class="container p-0">
+    <div>
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">

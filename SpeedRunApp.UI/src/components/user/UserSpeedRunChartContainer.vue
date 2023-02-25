@@ -10,7 +10,7 @@
                 </div>
             </h5>
         </div>
-        <div v-if="showcharts" class="container p-0">
+        <div v-if="showcharts">
             <div class="row no-gutters">
                 <div class="col-lg-4">
                     <div class="embed-responsive embed-responsive-4by3">

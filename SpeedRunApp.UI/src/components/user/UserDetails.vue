@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <div class="container d-flex p-0">
+        <div class="d-flex">
             <div class="col-auto p-0 align-self-end">
                 <h5 class="m-0 font-weight-bold text-primary">{{ uservm.name }}</h5>
             </div>
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div>
-            <div class="container ml-0 p-0 mt-4">
+            <div class="mt-4">
                 <h5 class="font-weight-bold mb-1">Details</h5>
                 <div class="row no-gutters">
                     <div class="col-9">

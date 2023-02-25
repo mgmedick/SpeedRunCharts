@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>        
-        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
+        <div class="mt-2 grid-container" style="min-height:150px;">
             <user-speedrun-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></user-speedrun-chart-container>
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
@@ -25,7 +25,9 @@
             <template v-slot:title>
                 Details
             </template>
-            <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+            <div class="container">
+                <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+            </div>
         </modal>    
     </div>   
 </template>

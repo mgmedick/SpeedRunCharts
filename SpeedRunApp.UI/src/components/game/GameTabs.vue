@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="container p-0 mt-3">
+    <div class="mt-3">
         <div class="row no-gutters pr-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">

@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <div class="container ml-0 p-0 d-flex">
+        <div class="d-flex">
             <div class="col-sm-2 p-0 align-self-end img-width" style="max-width:84px;">
                 <div class="img-width" style="max-width:84px;">
                     <div class="img-round">
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div>          
-            <div class="container ml-0 p-0 mt-4">
+            <div class="mt-4">
                 <h5 class="font-weight-bold mb-2">Details</h5>
                 <div>
                     <div class="row no-gutters">

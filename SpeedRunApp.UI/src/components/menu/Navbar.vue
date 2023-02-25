@@ -73,25 +73,33 @@
             <template v-slot:title>
                 Import Status
             </template>
-            <import-status />
+            <div class="container">
+                <import-status />
+            </div>
         </modal>          
         <modal v-if="showLoginModal" contentclass="cmv-modal-md" @close="showLoginModal = false">
             <template v-slot:title>
                 Log In
             </template>
-            <login @forgotpass="showResetModal = !(showLoginModal = false)" />
+            <div class="container">
+                <login @forgotpass="showResetModal = !(showLoginModal = false)" />
+            </div>
         </modal>
         <modal v-if="showResetModal" contentclass="cmv-modal-md" @close="showResetModal = false">
             <template v-slot:title>
                 Reset Password
             </template>
-            <reset-password />
+            <div class="container">
+                <reset-password />
+            </div>
         </modal>
         <modal v-if="showSignUpModal" contentclass="cmv-modal-md" @close="showSignUpModal = false">
             <template v-slot:title>
                 Sign Up
             </template>
-            <signup />
+            <div class="container">
+                <signup />
+            </div>
         </modal>      
     </div>   
 </template>

@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>        
-        <div class="mt-2 mx-0 grid-container container-lg p-0" style="min-height:150px;">
+        <div class="mt-2 grid-container" style="min-height:150px;">
             <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                 <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
                     <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>

@@ -1,33 +1,31 @@
 ﻿<template>
-    <div id="divLogin" class="container">
-        <form @submit.prevent="submitForm">
-            <div>
-                <ul>
-                    <li v-for="errorMessage in errorMessages" class="text-danger small font-weight-bold">{{ errorMessage }}</li>
-                </ul>
+    <form @submit.prevent="submitForm">
+        <div>
+            <ul>
+                <li v-for="errorMessage in errorMessages" class="text-danger small font-weight-bold">{{ errorMessage }}</li>
+            </ul>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-auto">
+                <input type="text" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
+                <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
             </div>
-            <div class="form-group row no-gutters">
-                <label class="col-sm-3 col-form-label">Username</label>
-                <div class="col-sm-auto">
-                    <input type="text" class="form-control" autocomplete="off" v-model.lazy="form.Username" @blur="v$.form.Username.$touch">
-                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Username.$errors">{{ error.$message }}</span>
-                </div>
+        </div>
+        <div class="form-group row no-gutters">
+            <label class="col-sm-3 col-form-label">Password</label>
+            <div class="col-sm-auto">
+                <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
+                <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
             </div>
-            <div class="form-group row no-gutters">
-                <label class="col-sm-3 col-form-label">Password</label>
-                <div class="col-sm-auto">
-                    <input type="password" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch">
-                    <span class="text-danger small font-weight-bold" v-for="error of v$.form.Password.$errors">{{ error.$message }}</span>
-                </div>
+        </div>
+        <div class="row no-gutters pt-1">
+            <div class="form-group mx-auto">
+                <button type="submit" class="btn btn-primary">Log In</button>
+                <button type="button" class="btn btn-secondary ml-2" @click="$emit('forgotpass', close)">Forgot Password</button>
             </div>
-            <div class="row no-gutters pt-1">
-                <div class="form-group mx-auto">
-                    <button type="submit" class="btn btn-primary">Log In</button>
-                    <button type="button" class="btn btn-secondary ml-2" @click="$emit('forgotpass', close)">Forgot Password</button>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </template>
 <script>
     import { getFormData } from '../../js/common.js';

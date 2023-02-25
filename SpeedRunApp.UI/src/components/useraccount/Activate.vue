@@ -43,7 +43,9 @@
             <template v-slot:title>
                 Sign Up
             </template>
-            <signup />
+            <div class="container">
+                <signup />
+            </div>
         </modal>        
     </div>
 </template>

@@ -41,7 +41,9 @@
             <template v-slot:title>
                 Reset Password
             </template>
-            <reset-password />
+            <div class="container">
+                <reset-password />
+            </div>
         </modal>
     </div>
 </template>

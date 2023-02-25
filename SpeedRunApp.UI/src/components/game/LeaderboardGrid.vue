@@ -25,7 +25,9 @@
             <template v-slot:title>
                 Details
             </template>
-            <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+            <div class="container">
+                <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+            </div>
         </modal>    
     </div>   
 </template>

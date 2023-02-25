@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div v-else id="divImportStatus" class="container p-0">
+        <div v-else>
             <div class="form-group row no-gutters mb-2">
                 <label class="col-sm-4 col-form-label">Last Import</label>
                 <div class="col-sm-8">

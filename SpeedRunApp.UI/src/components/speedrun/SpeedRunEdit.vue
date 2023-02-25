@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div v-else id="divSpeedRunEdit" class="container p-0">
+        <div v-else id="divSpeedRunEdit">
             <div class="form-group row no-gutters mb-2">
                 <div v-if="item.speedRunVM.videoLink" class="col-sm-10 m-auto">
                     <div class="p-0 embed-responsive embed-responsive-16by9">

@@ -19,7 +19,7 @@
         </div>
         <div>
             <div v-if="loading">
-                <div class="container d-flex p-3">
+                <div class="d-flex p-3">
                     <div class="mx-auto align-self-center">
                         <i class="fa fa-spinner fa-spin fa-lg"></i>
                     </div>

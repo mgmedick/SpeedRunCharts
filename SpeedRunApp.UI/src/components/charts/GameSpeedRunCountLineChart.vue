@@ -244,11 +244,6 @@
                         },
                         categories: categories,
                         dataset: dataset
-                    },
-                    events: {
-                        legendItemClicked: function (eventObj, dataObj) {
-                            console.log('clicked')
-                        }
                     }
                 };
 

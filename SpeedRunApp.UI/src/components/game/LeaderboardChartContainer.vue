@@ -12,7 +12,7 @@
         </div>
         <div v-if="showcharts">
             <div class="row no-gutters">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="embed-responsive embed-responsive-4by3">
                         <div class="embed-responsive-item">
                             <div v-if="loading" class="d-flex" style="height:100%;">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="embed-responsive embed-responsive-4by3">
                         <div class="embed-responsive-item">
                             <div v-if="loading" class="d-flex" style="height:100%;">
@@ -40,7 +40,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+            </div>
+            <div class="row no-gutters">
+                <div class="col-lg-6">
                     <div class="embed-responsive embed-responsive-4by3">
                         <div class="embed-responsive-item">
                             <div v-if="loading" class="d-flex" style="height:100%;">
@@ -54,7 +56,21 @@
                         </div>
                     </div>                            
                 </div>
-            </div>            
+                <div class="col-lg-6">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <div class="embed-responsive-item">
+                            <div v-if="loading" class="d-flex" style="height:100%;">
+                                <div class="m-auto">
+                                    <i class="fas fa-spinner fa-spin fa-lg"></i>
+                                </div>
+                            </div>
+                            <div v-else style="height:100%;">
+                                <leaderboard-top-line-chart chartconainerid="divChart4" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 4)"></leaderboard-top-line-chart>                
+                            </div>
+                        </div>
+                    </div>                            
+                </div>                
+            </div>          
         </div>
         <modal v-if="showChartModal && !loading" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
             <template v-slot:title>
@@ -80,7 +96,14 @@
                         <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
                     </div>
                 </div>             
-            </div>            
+            </div>   
+            <div v-else-if="selectedChartID == 4">
+                <div class="embed-responsive embed-responsive-4by3">
+                    <div class="embed-responsive-item">                 
+                        <leaderboard-top-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-line-chart>                
+                    </div>
+                </div>             
+            </div>                        
         </modal>              
     </div>
 </template>
@@ -121,8 +144,11 @@
                         title = 'Time Percentiles Chart';
                         break;
                     case 3:
-                        title = 'Top 10 Chart';
+                        title = 'Top 10 Times Chart';
                         break;
+                    case 4:
+                        title = 'Top 10 Players Time History Chart';
+                        break;                        
                 }
 
                 return title;

@@ -46,6 +46,7 @@ import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue'
 import gameSpeedRunCountBarChart from './charts/GameSpeedRunCountBarChart.vue';
 import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue';
 import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
+import leaderboardTopLineChart from './charts/LeaderboardTopLineChart.vue';
 import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
 import userSpeedRunPercentileChart from './charts/UserSpeedRunPercentileChart.vue';
 import userSpeedRunTopChart from './charts/UserSpeedRunTopChart.vue';
@@ -92,7 +93,8 @@ export default {
         app.component("leaderboard-worldrecord-chart", leaderboardWorldRecordChart);
         app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
         app.component("leaderboard-top-chart", leaderboardTopChart);
-
+        app.component("leaderboard-top-line-chart", leaderboardTopLineChart);
+        
         app.component("user-speedrun-personalbest-chart", userSpeedRunPersonalBestChart);
         app.component("user-speedrun-percentile-chart", userSpeedRunPercentileChart);
         app.component("user-speedrun-top-chart", userSpeedRunTopChart);

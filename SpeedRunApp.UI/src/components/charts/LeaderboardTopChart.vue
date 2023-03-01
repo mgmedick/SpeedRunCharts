@@ -18,7 +18,7 @@
     FusionCharts.addDep(StackedBar2D, CandyTheme);  
 
     export default {
-        name: "LeaderboardGridTopChart",
+        name: "LeaderboardTopChart",
         emits: ["onexpandchartclick"],        
         props: {  
             tabledata: Array,
@@ -137,7 +137,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10',
+                            caption: 'Top 10 Times',
                             captionFontSize: this.captionFontSize,
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,

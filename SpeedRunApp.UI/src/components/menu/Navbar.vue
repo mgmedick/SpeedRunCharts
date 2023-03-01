@@ -10,12 +10,12 @@
             </button>
             <div id="navbarNav" class="navbar-collapse" :style="[ toggleNavbar ? null : { display:'none' } ]">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Menu/About">About</a>
-                    </li>
                     <li class="nav-item active pt-1 pb-1">
                         <a href="https://github.com/speedruncomorg/api" class="badge badge-primary p-2">Powered by speedrun.com API</a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/Menu/About">About</a>
+                    </li>                    
                 </ul>
                 <form class="form-inline">
                     <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'" style="width:100%"/>                

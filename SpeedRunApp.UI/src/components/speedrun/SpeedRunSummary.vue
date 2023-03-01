@@ -53,7 +53,7 @@
                 <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
                     <div class="embed-responsive embed-responsive-16by9">
                         <div class="embed-responsive-item">
-                            <div style="position:relative;">
+                            <div style="position: relative;" :style="[ item.videoThumbnailLink ? null : { height:'100%' } ]">
                                 <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
                                 <i class="play-icon fa fa-play fa-lg"></i>
                             </div>
@@ -67,7 +67,7 @@
                 <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
                     <div class="embed-responsive embed-responsive-16by9">
                         <div class="embed-responsive-item">
-                            <div style="position:relative;">
+                            <div style="position: relative;" :style="[ item.videoThumbnailLink ? null : { height:'100%' } ]">
                                 <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
                                 <i class="play-icon fa fa-play fa-5x"></i> 
                             </div>

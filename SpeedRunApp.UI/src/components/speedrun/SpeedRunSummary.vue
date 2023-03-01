@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="px-2 pb-2 pt-1 d-flex">
-            <div class="col-7 p-0 align-self-center" style="overflow:hidden;">
+            <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px; font-weight: 500;">
                         <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
@@ -36,20 +36,20 @@
                             <span v-else class="username-text">
                                 <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID">{{ player.name }}</a>
                             </span>
-                            {{ (item.players.length -1 != index) ? ', ' : '' }}
+                            <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
                         </template>
                     </div>
                 </div>                            
                 <div>
-                    <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.categoryType?.name }}</span>
-                    <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.category?.name }}</span>
-                    <span v-if="item.level?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ item.level?.name }}</span>
+                    <span v-if="item.categoryType?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.categoryType?.name }}</span>
+                    <span v-if="item.category?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.category?.name }}</span>
+                    <span v-if="item.level?.name" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.level?.name }}</span>
                     <template v-for="(subCategoryVariableValueName, index) in item.subCategoryVariableValueNames">
-                        <span class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary">{{ subCategoryVariableValueName }}</span>
+                        <span class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ subCategoryVariableValueName }}</span>
                     </template>
                 </div>                      
             </div>
-            <div class="col-5 align-self-end p-0 show-sm" @click="showVideo = !showVideo">
+            <div class="col align-self-end p-0 show-sm" @click="showVideo = !showVideo">
                 <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
                     <div class="embed-responsive embed-responsive-16by9">
                         <div class="embed-responsive-item">

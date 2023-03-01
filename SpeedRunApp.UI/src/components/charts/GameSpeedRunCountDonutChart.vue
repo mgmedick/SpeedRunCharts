@@ -140,8 +140,8 @@
                     }
 
                     if (Object.keys(chartObj).length > 0) {
-                        var allLabel = this.categorytypeid == 0 ? 'All Full Game' : 'All Level';
-                        var chartDataObj = { label: allLabel, value: _alldata.length, tooltext: allLabel + ', ' + _alldata.length + ' runs (100%)', color: "#fff", alpha: 0 };
+                        var allLabel = this.categorytypeid == 0 ? 'All full game' : 'All level';
+                        var chartDataObj = { label: 'All', value: _alldata.length, tooltext: allLabel + ' ' + _alldata.length + ' runs (100%)', color: "#fff", alpha: 0 };
                         this.setChartData(chartObj, chartDataObj, _alldata.length);
                         dataset.push(chartDataObj);
                     }

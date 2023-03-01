@@ -38,7 +38,11 @@
                             <div>
                                 <span id="spnModerators" class="form-control" style="max-width: 300px; width:auto; height:auto; font-size:14px; border:none; background:none;">                             
                                     <template v-for="(moderator, index) in gamevm.moderators" :key="index">
-                                        <a :href="'/User/UserDetails/' + moderator.abbr" class="text-primary" draggable="false">{{ moderator.name }}</a>{{ (gamevm.moderators.length -1 == index) ? '' : ', ' }}
+                                        <span v-if="moderator.colorLight && moderator.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + moderator.colorLight + ',' + (moderator.colorToLight || moderator.colorLight) + ');'">
+                                            <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + moderator.colorDark + ',' + (moderator.colorToDark || moderator.colorDark) + ');'">
+                                                <a :href="'/User/UserDetails/' + moderator.abbr" class="text-primary" draggable="false">{{ moderator.name }}</a>
+                                            </span>
+                                        </span>{{ (gamevm.moderators.length -1 == index) ? '' : ', ' }}
                                     </template>                            
                                 </span>
                             </div>

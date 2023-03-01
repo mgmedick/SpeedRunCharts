@@ -102,11 +102,13 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(game.Moderators))
             {
-                Moderators = new List<IDNameAbbrPair>();
+                Moderators = new List<UserNameViewModel>();
                 foreach (var moderator in game.Moderators.Split("^^"))
                 {
-                    var values = moderator.Split("¦", 3);
-                    Moderators.Add(new IDNameAbbrPair { ID = Convert.ToInt32(values[0]), Name = values[1], Abbr = values[2] });
+                    var moderatorValue = moderator.Split("¦", 7);
+                    int moderatorID;
+                    int.TryParse(moderatorValue[0], out moderatorID);                      
+                    Moderators.Add(new UserNameViewModel { ID = moderatorID, Name = moderatorValue[1], Abbr = moderatorValue[2], ColorLight = moderatorValue[3], ColorToLight = moderatorValue[4], ColorDark = moderatorValue[5], ColorToDark = moderatorValue[6] });
                 }
             }
         }
@@ -123,7 +125,7 @@ namespace SpeedRunApp.Model.ViewModels
         public List<IDNamePair> Levels { get; set; }
         public List<Variable> Variables { get; set; }
         public List<IDNamePair> Platforms { get; set; }
-        public List<IDNameAbbrPair> Moderators { get; set; }
+        public List<UserNameViewModel> Moderators { get; set; }
          public List<Variable> SubCategoryVariables
          { 
             get

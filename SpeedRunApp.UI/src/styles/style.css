@@ -504,15 +504,15 @@ select.form-control:focus::-ms-value {
 }
 
 .navbar .navbar-nav .nav-link {
-    color: var(--bs-text-color6);
+    color: var(--bs-text-color7);
 }
 
 .navbar .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-    color: var(--bs-white);
+    color: var(--bs-text-color2);
 }
 
 .navbar .navbar-toggler {
-    color: var(--bs-text-color6);
+    color: var(--bs-text-color7);
 }
 
 .navbar .navbar-toggler-icon {
@@ -520,7 +520,7 @@ select.form-control:focus::-ms-value {
 }
 
 .navbar .navbar-text {
-    color: var(---bs-text-color6);
+    color: var(--bs-text-color7);
 }
 
 @media (min-width: 992px) {
@@ -596,7 +596,7 @@ button.bg-dark:focus {
 .nav-pills .nav-item.open .nav-link,
 .nav-pills .nav-item.open .nav-link:focus,
 .nav-pills .nav-item.open .nav-link:hover {
-    color: #fff;
+    color: var (--bs-text-color2);
 }
 
 /** Bootstrap reliant components **/
@@ -1525,11 +1525,11 @@ button.cmv-close {
     }
 
     .categorytype {
-        font-size: 12px !important;
+        font-size: 11px !important;
     }
 
     .category {
-        font-size: 11px !important;
+        font-size: 10px !important;
     }    
 }
 
@@ -1606,7 +1606,7 @@ div.stretchy-wrapper > div {
 }
 
 .badge {
-    font-size: 85% !important;
+    font-size: 80% !important;
 }
 
 @media (max-width: 767.98px) {
@@ -1616,21 +1616,21 @@ div.stretchy-wrapper > div {
     }
 
     .show-md {
-        display: none;
+        display: none !important;
     }
 
     .show-sm {
-        display: block;
+        display: block !important;
     }
 }
 
 @media (min-width: 768px) {
     .show-md {
-        display: block;
+        display: block !important;
     }
 
     .show-sm {
-        display: none;
+        display: none !important;
     }
 }  
 

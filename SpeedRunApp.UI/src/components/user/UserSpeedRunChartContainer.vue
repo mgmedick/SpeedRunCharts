@@ -122,7 +122,7 @@
                         title = 'Time Percentiles Chart';
                         break;
                     case 3:
-                        title = 'Top 10 Times Chart';
+                        title = 'Top 10 Chart';
                         break;
                 }
 

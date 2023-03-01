@@ -112,15 +112,13 @@
                     var filteredData = _alldata.filter(i => !isNaN(Date.parse(i.dateSubmitted)) && i.players && players.indexOf(i.players.map(user => user.name).join("{br}")) > -1);
 
                     var dates = filteredData.map(item => { return new Date(item.dateSubmitted) });
-                    var maxDate = dayjs(Math.max.apply(null, dates)).startOf('day').toDate();
-                    //var maxDate = new Date();   
-                    //maxDate = dayjs(maxDate).add(1, "days").toDate();         
-                    var minDataDate = dayjs(Math.min.apply(null, dates)).startOf('day').toDate();
-                    var minDate = dayjs(maxDate).add(-12, "months").toDate();
-                    minDate = minDataDate > minDate ? minDataDate : minDate;
+                    var maxDate = dayjs(Math.max.apply(null, dates)).startOf('day').toDate();      
+                    var minDate = dayjs(Math.min.apply(null, dates)).startOf('day').toDate();
+                    // var minDate = dayjs(maxDate).add(-12, "months").toDate();
+                    // minDate = minDataDate > minDate ? minDataDate : minDate;
                     //filteredData = filteredData.filter(x => { return new Date(x.dateSubmitted) >= minDate; });
-                    
-                    var timePeriods = getDateDiffList("day", minDataDate, maxDate).map(x => { return dayjs(x).format("MM/DD/YYYY") });
+
+                    var timePeriods = getDateDiffList("day", minDate, maxDate).map(x => { return dayjs(x).format("MM/DD/YYYY") });
 
                     categoryObj["category"] = timePeriods.map(item => {
                         var labelObj = {};
@@ -183,7 +181,7 @@
                                         var monthdayyearb = b.label.split("/");
 
                                         return new Date(monthdayyeara[2], monthdayyeara[0] - 1, monthdayyeara[1]) - new Date(monthdayyearb[2], monthdayyearb[0] - 1, monthdayyearb[1])
-                                    });                
+                                    });      
                                 }
 
                                 dataset.push({ seriesname: playerNames, data: chartData });
@@ -200,7 +198,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Players Time History',
+                            caption: 'Top 10 Players History',
                             captionFontSize: this.captionFontSize, 
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,                            
@@ -210,10 +208,10 @@
                             subCaptionFontColor: "#888",
                             xAxis: 'Date',
                             yAxis: 'Time',
-                            // canvasTopPadding: 5,
-                            // canvasBottomPadding: 5,
-                            // canvasLeftPadding: 10,
-                            // canvasRightPadding: 10,
+                            canvasTopPadding: 5,
+                            canvasBottomPadding: 5,
+                            canvasLeftPadding: 10,
+                            canvasRightPadding: 10,
                             labelFontSize: this.labelFontSize,
                             showLabels: 1,
                             labelStep: labelStep,
@@ -226,8 +224,8 @@
                             legendItemFontSize: this.legendItemFontSize,
                             legendIconScale: this.legendIconScale,
                             legendItemFontColor: this.fontColor,
-                            legendNumRows: 3,
-                            legendNumColumns: 4,
+                            // legendNumRows: 3,
+                            // legendNumColumns: 4,
                             alignLegendWithCanvas: 1,
                             lineThickness: 2,
                             anchorRadius: 2,

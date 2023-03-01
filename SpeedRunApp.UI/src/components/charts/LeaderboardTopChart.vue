@@ -137,7 +137,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Times',
+                            caption: 'Top 10',
                             captionFontSize: this.captionFontSize,
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,

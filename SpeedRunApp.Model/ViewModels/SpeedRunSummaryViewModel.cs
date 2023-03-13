@@ -29,13 +29,10 @@ namespace SpeedRunApp.Model.ViewModels
 
             if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
             {
-                SubCategoryVariableValues = new List<Tuple<string, string>>();
                 SubCategoryVariableValueNames = new List<string>();
                 foreach (var value in run.SubCategoryVariableValues.Split("^^"))
                 {
-                    var variableValue = value.Split("¦", 3);
-                    SubCategoryVariableValues.Add(new Tuple<string, string>(variableValue[0], variableValue[1]));
-                    SubCategoryVariableValueNames.Add(variableValue[2]);
+                    SubCategoryVariableValueNames.Add(value);
                 }
             }
 
@@ -92,10 +89,8 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair CategoryType { get; set; }
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; } 
-        public List<Tuple<string, string>> SubCategoryVariableValues { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
         public List<UserNameViewModel> Players { get; set; }
-        //public List<string> VideoLinks { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public List<string> VideoThumbnailLinks { get; set; }    
         public List<string> ViewCountStrings { get; set; }
@@ -117,14 +112,7 @@ namespace SpeedRunApp.Model.ViewModels
                 return _subCategoryVariableValuesString;
             }
         }
-
-        // public List<string> EmbeddedVideoLinks { 
-        //     get
-        //     {
-        //         return VideoLinks?.Where(i => !string.IsNullOrWhiteSpace(i)).Select(i=>new Uri(i).ToEmbeddedURIString()).ToList();
-        //     } 
-        // }
-
+        
         public string VideoLink
         {
             get

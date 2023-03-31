@@ -138,7 +138,7 @@
 
                 switch(this.selectedChartID){
                     case 1:
-                        title = 'World Records Chart';
+                        title = 'World Record History Chart';
                         break;
                     case 2:
                         title = 'Time Percentiles Chart';

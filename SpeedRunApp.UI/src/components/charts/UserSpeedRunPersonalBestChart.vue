@@ -41,7 +41,7 @@
                 return this.$el.clientWidth > 992;
             },             
             caption: function () {
-                return 'Personal Bests';
+                return 'Personal Best History';
             },            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;

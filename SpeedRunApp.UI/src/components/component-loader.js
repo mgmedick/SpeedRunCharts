@@ -35,11 +35,8 @@ import worldRecordGrid from './game/WorldRecordGrid.vue';
 import userDetails from './user/UserDetails.vue';
 import userTabs from './user/UserTabs.vue';
 import userSpeedRunTabs from './user/UserSpeedRunTabs.vue';
-import userSpeedRunTabsVariable from './user/UserSpeedRunTabsVariable.vue';
 import userSpeedRunGrid from './user/UserSpeedRunGrid.vue';
 import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
-import personalBestGrid from './user/PersonalBestGrid.vue';
-import personalBestTabs from './user/PersonalBestTabs.vue';
 
 import gameSpeedRunCountDonutChart from './charts/GameSpeedRunCountDonutChart.vue';
 import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue';
@@ -82,11 +79,8 @@ export default {
         app.component("user-tabs", userTabs);
         app.component("user-speedrun-grid", userSpeedRunGrid);
         app.component("user-speedrun-tabs", userSpeedRunTabs);
-        app.component("user-speedrun-tabs-variable", userSpeedRunTabsVariable);
         app.component("user-speedrun-chart-container", userSpeedRunChartContainer);
-        app.component("personalbest-grid", personalBestGrid);        
-        app.component("personalbest-tabs", personalBestTabs);
-
+                
         app.component("game-speedrun-count-doughnut-chart", gameSpeedRunCountDonutChart);
         app.component("game-speedrun-count-line-chart", gameSpeedRunCountLineChart);
         app.component("game-speedrun-count-bar-chart", gameSpeedRunCountBarChart);

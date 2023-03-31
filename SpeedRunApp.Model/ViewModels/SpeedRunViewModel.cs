@@ -242,6 +242,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return DateSubmitted?.ToRealtiveDateString();
             }
-        }
+        }       
     }
 }

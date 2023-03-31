@@ -41,7 +41,7 @@
                 return this.$el.clientWidth > 992;
             },            
             caption: function () {
-                return 'World Records';
+                return 'World Record History';
             },            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;

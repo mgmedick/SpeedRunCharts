@@ -98,21 +98,7 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-        public DateTime ImportedDate { get; set; }
-        string _subCategoryVariableValuesString = null;
-        public string SubCategoryVariableValuesString
-        {
-            get
-            {
-                if (SubCategoryVariableValueNames != null)
-                {
-                    _subCategoryVariableValuesString = string.Join(" - ", SubCategoryVariableValueNames);
-                }
-
-                return _subCategoryVariableValuesString;
-            }
-        }
-        
+        public DateTime ImportedDate { get; set; }        
         public string VideoLink
         {
             get

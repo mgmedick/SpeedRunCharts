@@ -10,7 +10,9 @@
     --bs-border-color2: #739ac2;
     --bs-border-color4: #28415b;  
     --bs-border-color6: #2b2a2a;    
-    --bs-border-color10: #444;                  
+    --bs-border-color10: #444;  
+    --bs-border-color11: #95999c;                
+    --bs-border-color12: #454d55;                
     --bs-text-color1: #f2f2f2; 
     --bs-text-color2: #fff;  
     --bs-text-color3: #262626; 
@@ -23,7 +25,10 @@
     --bs-background-color9: #303030;
     --bs-background-color12: #303030;             
     --bs-background-color16: transparent;  
-    --bs-background-color17: transparent;          
+    --bs-background-color17: transparent;   
+    --bs-background-color18: #c6c8ca; 
+    --bs-background-color19: #b9bbbe;      
+    --bs-background-color20: #343a40;      
     --bs-box-shadow-color1: rgba(55, 90, 127, 0.251);
     --bs-box-shadow-color2: rgba(55, 90, 127, 0.251);
     --bs-box-shadow-color5: rgba(255, 255, 255, 0.149);
@@ -44,7 +49,9 @@
     --bs-border-color2: #9aacf3;    
     --bs-border-color4: #2a47b8;    
     --bs-border-color6: #dfe0e1;         
-    --bs-border-color10: #dee2e6;     
+    --bs-border-color10: #dee2e6;    
+    --bs-border-color11: #fbfcfc; 
+    --bs-border-color12: #fbfcfc;                   
     --bs-text-color1: #262626;
     --bs-text-color2: #000;
     --bs-text-color3: #fff;     
@@ -57,7 +64,10 @@
     --bs-background-color9: #dee2e6;      
     --bs-background-color12: #f8f9fa;        
     --bs-background-color16: #ccc;   
-    --bs-background-color17: #dfe0e1;                
+    --bs-background-color17: #dfe0e1;
+    --bs-background-color18: #fdfdfe;  
+    --bs-background-color19: #ececf6; 
+    --bs-background-color20: #fdfdfe;      
     --bs-box-shadow-color1: rgba(52, 89, 230, 0.251);
     --bs-box-shadow-color2: rgba(0, 0, 0, 0.051);
     --bs-box-shadow-color5: rgba(217, 217, 217, 0.502);
@@ -580,6 +590,58 @@ button.bg-dark:focus {
     background-color: #171616 !important;
 } 
 */
+
+.table {
+    color: var(--bs-text-color1) !important;
+    font-size: .813rem;
+}
+
+.table th,
+.table td {
+    padding: 8px;
+}
+
+.table-dark,
+.table-dark > th,
+.table-dark > td {
+  background-color: var(--bs-background-color18) !important;
+}
+
+.table-dark th,
+.table-dark td,
+.table-dark thead th,
+.table-dark tbody + tbody {
+  border-color: var(--bs-border-color11) !important;
+}
+
+.table-hover .table-dark:hover {
+    background-color: var(--bs-background-color19) !important;
+}
+
+.table-hover .table-dark:hover > td,
+.table-hover .table-dark:hover > th {
+  background-color: var(--bs-background-color19) !important;
+}
+
+.table-dark {
+    color: var(--bs-text-color1) !important;
+    background-color: var(--bs-background-color20) !important;
+}
+
+.table-dark th,
+.table-dark td,
+.table-dark thead th {
+    border-color: var(--bs-border-color12) !important;
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.table-dark.table-hover tbody tr:hover {
+    color: var(--bs-text-color1) !important;
+    background-color: rgba(255, 255, 255, 0.075) !important;
+}
 
 @media print {
     .table td,

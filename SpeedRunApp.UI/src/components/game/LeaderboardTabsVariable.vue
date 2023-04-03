@@ -38,7 +38,7 @@
                     </div>
                     <div class="row no-gutters pr-1 pt-0 float-left" style="width:50%;">
                         <div class="col-auto pr-2">
-                            <label class="tab-row-name">Show All Runs:</label>
+                            <label class="tab-row-name">Show Obsolete:</label>
                         </div>
                         <div class="col align-self-center">
                             <div class="custom-control custom-switch">

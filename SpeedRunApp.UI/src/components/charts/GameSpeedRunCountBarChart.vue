@@ -42,7 +42,7 @@
                 return this.$el.clientWidth > 992;
             },                
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts';
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts';
             },                            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;

@@ -18,21 +18,21 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="font-weight-normal" style="font-size:14px;">Total Runs</th>
-                                    <th class="font-weight-normal" style="font-size:14px;">WRs</th>
-                                    <th class="font-weight-normal" style="font-size:14px;">PBs</th>
+                                    <th class="font-weight-normal" style="font-size:14px; width:100px;">Total Runs</th>
+                                    <th class="font-weight-normal" style="font-size:14px; width:100px;">WRs</th>
+                                    <th class="font-weight-normal" style="font-size:14px; width:100px;">PBs</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <span id="spnTotalSpeedRuns" class="form-control" style="width:100px; border:none; background:none;">{{ uservm.totalSpeedRuns }}</span>
+                                        <span id="spnTotalSpeedRuns" class="form-control p-0" style="border:none; background:none;">{{ uservm.totalSpeedRuns }}</span>
                                     </td>
                                     <td>
-                                        <span id="spnTotalWorldRecords" class="form-control" style="width:100px;  border:none; background:none;">{{ uservm.totalWorldRecords }}</span>
+                                        <span id="spnTotalWorldRecords" class="form-control p-0" style="border:none; background:none;">{{ uservm.totalWorldRecords }}</span>
                                     </td>
                                     <td>
-                                        <span id="spnTotalPersonalBests" class="form-control" style="width:100px; border:none; background:none;">{{ uservm.totalPersonalBests }}</span>
+                                        <span id="spnTotalPersonalBests" class="form-control p-0" style="border:none; background:none;">{{ uservm.totalPersonalBests }}</span>
                                     </td>
                                 </tr>
                             </tbody>

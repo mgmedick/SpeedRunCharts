@@ -135,7 +135,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10',
+                            caption: 'Top 10 Runs',
                             captionFontSize: this.captionFontSize,
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,

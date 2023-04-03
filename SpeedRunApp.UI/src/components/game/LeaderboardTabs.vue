@@ -191,12 +191,11 @@
                 var result = '';
                 var game = this.game;
                 var gameName = game.name;
-                var categoryTypeName = game.categoryTypes.filter(i => i.id == this.categoryTypeID)[0]?.name;
                 var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
                 var levelName = game.levels?.filter(i=>i.id == this.levelID)[0]?.name;
                 var variableValueNames = Object.keys(this.subCategoryVariableValueIDs).map(i => this.subCategoryVariableValueIDs[i]).join(' - ');              
                 
-                result = [gameName, categoryTypeName, categoryName, levelName, variableValueNames].join(' - ');
+                result = [gameName, categoryName, levelName, variableValueNames].join(' - ');
                 result = result.replace(/^[ -]+|[ -]+$/g, '');
                 
                 return result;

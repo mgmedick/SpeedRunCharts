@@ -144,10 +144,10 @@
                         title = 'Time Percentiles Chart';
                         break;
                     case 3:
-                        title = 'Top 10 Chart';
+                        title = 'Top 10 Runs Chart';
                         break;
                     case 4:
-                        title = 'Top 10 Players History Chart';
+                        title = 'Top 10 Runs Players History Chart';
                         break;                        
                 }
 

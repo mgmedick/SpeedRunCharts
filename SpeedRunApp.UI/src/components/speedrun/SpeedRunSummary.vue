@@ -97,7 +97,7 @@
             <template v-slot:title>
                 Details
             </template>
-            <div class="container">
+            <div class="container p-0">
                 <speedrun-edit :gameid="item.game.id.toString()" :speedrunid="item.id.toString()" :readonly="true" />
             </div>
         </modal>

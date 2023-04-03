@@ -44,7 +44,7 @@
                 return this.$el.clientWidth > 992;
             },    
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution';
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Category Runs Distribution';
             },                            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;

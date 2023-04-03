@@ -62,11 +62,11 @@
             <template v-slot:title>
                 Details
             </template>
-            <div class="container">
+            <div class="container p-0">
                 <speedrun-edit :gameid="selectedSpeedRun.gameID.toString()" :speedrunid="selectedSpeedRun.id.toString()" :readonly="true" />
             </div>
         </modal>   
-        <modal v-if="showChartModal" contentclass="cmv-modal-xl" @close="showChartModal = false">
+        <modal v-if="showChartModal" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
             <template v-slot:title>
                 User Charts
             </template>
@@ -87,7 +87,6 @@
         props: {
             userid: String,
             gamename: String,
-            categorytypename: String,
             categoryname: String,
             levelname:String,
             tabledata: Array,
@@ -98,7 +97,7 @@
         },
         data() {
             return {   
-                variableColumns: [],          
+                tableData: [],          
                 loading: true,
                 selectedSpeedRun: {},
                 showDetailModal: false,
@@ -112,7 +111,7 @@
             },
             title: function () {
                 var result = '';
-                result = [this.gamename, this.categorytypename, this.categoryname, this.levelname, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');
+                result = [this.gamename, this.categoryname, this.levelname, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');
                 result = result.replace(/^[ -]+|[ -]+$/g, '');
                 
                 return result;
@@ -130,12 +129,13 @@
             loadData() {
                 var that = this;
                 this.loading = true;
+                this.tableData = that.tabledata;
 
-                if (that.istimerasc) {
-                    that.tabledata = that.tabledata.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
+                if (this.istimerasc) {
+                    this.tableData = this.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
                 }
 
-                that.initGrid(that.tabledata);
+                that.initGrid(this.tableData);
                 that.loading = false;
             },     
             initGrid(tableData) {

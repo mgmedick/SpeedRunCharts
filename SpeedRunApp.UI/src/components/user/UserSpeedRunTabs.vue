@@ -54,14 +54,14 @@
                             </div>
                         </div>
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id" class="mt-2">
-                            <div class="font-weight-bold mb-1" style="font-size:13px;">{{ category.name }}</div>                            
                             <div v-if="categoryTypeID == 0">
-                                <user-speedrun-grid :userid="id" :gamename="game.name" :categorytypename="categoryType.name" :categoryname="category.name" :levelname="''" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && !item.levelID)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
+                                <div class="font-weight-bold mb-1" style="font-size:13px;">{{ category.name }}</div>                            
+                                <user-speedrun-grid :userid="id" :gamename="game.name" :categoryname="category.name" :levelname="''" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && !item.levelID)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
                             </div>
                             <div v-else>
                                 <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id" class="mt-2">
-                                    <div class="font-weight-bold font-italic mb-1" style="font-size:13px;">{{ level.name }}</div>
-                                    <user-speedrun-grid :userid="id" :gamename="game.name" :categorytypename="categoryType.name" :categoryname="category.name" :levelname="level.name" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && item.levelID == level.id)" showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
+                                    <div class="font-weight-bold mb-1" style="font-size:13px;"><span>{{ category.name + " - "}}</span><span class="font-italic">{{ level.name }}</span></div>
+                                    <user-speedrun-grid :userid="id" :gamename="game.name" :categoryname="category.name" :levelname="level.name" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && item.levelID == level.id)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
                                 </div>
                             </div>
                         </div>

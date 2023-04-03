@@ -81,7 +81,7 @@
                         title = 'Time Percentiles Chart';
                         break;
                     case 3:
-                        title = 'Top 10 Chart';
+                        title = 'Top 10 Runs Chart';
                         break;
                 }
 

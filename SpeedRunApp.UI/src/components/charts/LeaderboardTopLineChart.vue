@@ -198,7 +198,7 @@
                     dataFormat: "json",
                     dataSource: {
                         chart: {
-                            caption: 'Top 10 Players History',
+                            caption: 'Top 10 Players Run History',
                             captionFontSize: this.captionFontSize, 
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,                            

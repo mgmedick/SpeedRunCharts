@@ -112,12 +112,12 @@ namespace SpeedRunApp.Service
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
             var tabItems = games.Select(i => new GameTabViewModel(i, runs.Cast<SpeedRunGridTabView>().Where(g => g.GameID == i.ID).ToList())).OrderBy(i => i.Name).ToList();
             FilterTabsByHasData(tabItems, true);
-            var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).ToList();                                  
+            var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
             var tabVM = new UserSpeedRunTabViewModel(tabItems, categoryTypes, runVMs);
                        
             return tabVM;
         }
-        
+
         private void FilterTabsByHasData(List<GameTabViewModel> tabItems, bool hasData) {
             foreach (var tabItem in tabItems) {
                 tabItem.Categories = tabItem.Categories?.Where(i => i.HasData == hasData).ToList();

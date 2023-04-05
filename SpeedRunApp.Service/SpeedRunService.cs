@@ -122,8 +122,7 @@ namespace SpeedRunApp.Service
                             .ThenBy(i=>i.CategoryID)
                             .ThenBy(i=>i.LevelID)
                             .ThenBy(i=>i.SubCategoryVariableValueIDs)
-                            .ThenBy(i=>(i.DateSubmitted ?? i.VerifyDate ?? DateTime.MaxValue).Date)
-                            .ThenBy(i=>(i.Rank ?? Int32.MaxValue))
+                            .ThenByDescending(i=>i.DateSubmitted)
                             .ToList();
 
             return runVMs;

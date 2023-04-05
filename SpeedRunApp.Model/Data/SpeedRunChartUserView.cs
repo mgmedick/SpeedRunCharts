@@ -4,9 +4,8 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class SpeedRunGridTabUserView : SpeedRunGridTabView
-    {
+    public class SpeedRunChartUserView : SpeedRunChartView
+    {    
         public int UserID { get; set; }
-
     }
 } 

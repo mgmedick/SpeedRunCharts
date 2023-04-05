@@ -7,7 +7,7 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameTabViewModel
     {
-        public GameTabViewModel(GameView game, List<SpeedRunGridTabView> runs)
+        public GameTabViewModel(GameView game)
         {            
             ID = game.ID;
             Name = game.Name;
@@ -38,30 +38,8 @@ namespace SpeedRunApp.Model.ViewModels
                         IsTimerAsc = Convert.ToBoolean((string)values[2]),
                         Name = values[3]
                     };
-                    category.HasData = runs.Any(i => i.CategoryID == category.ID);
                     Categories.Add(category);
-                }
-
-                foreach (var category in Categories)
-                {
-                    if (!category.HasData)
-                    {
-                        category.Name += " (empty)";
-                    }
-                }             
-            }
-
-            if (CategoryTypes != null) {
-                var categoryTypeIDsToRemove = new List<int>();
-                foreach (var categoryType in CategoryTypes)
-                {                    
-                    if (!Categories.Any(i => i.CategoryTypeID == categoryType.ID && i.HasData))
-                    {
-                        categoryTypeIDsToRemove.Add(categoryType.ID);
-                    }
-                }
-
-                CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
+                }         
             }
 
             if (!string.IsNullOrWhiteSpace(game.Levels))
@@ -87,16 +65,9 @@ namespace SpeedRunApp.Model.ViewModels
                         {
                             ID = gameLevel.ID,
                             Name = gameLevel.Name,
-                            CategoryID = levelCategory.ID,
-                            HasData = runs.Any(i => i.CategoryID == levelCategory.ID && i.LevelID == gameLevel.ID)
+                            CategoryID = levelCategory.ID
                         };
                         Levels.Add(level);
-                    }
-                }
-
-                foreach(var level in Levels){
-                    if (!level.HasData) {
-                        level.Name += " (empty)";
                     }
                 }
             }
@@ -133,7 +104,6 @@ namespace SpeedRunApp.Model.ViewModels
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
                 SubCategoryVariables = GetAdjustedVariables(subVariables);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
-                SetVariablesHasValue(SubCategoryVariablesTabs, runs);
             }
         }
     
@@ -277,44 +247,7 @@ namespace SpeedRunApp.Model.ViewModels
 
             return results;
         }
-        
-        private void SetVariablesHasValue(List<Variable> variables, List<SpeedRunGridTabView> runs, string parentVariableValues = null)
-        {
-           foreach (var variable in variables)
-           {
-                foreach (var variableValue in variable.VariableValues)
-                {
-                    var variableValues = string.IsNullOrWhiteSpace(parentVariableValues) ? variableValue.ID.ToString() : parentVariableValues + "," + variableValue.ID.ToString();                                                            
-                    variableValue.HasData = runs.Any(i => i.CategoryID == variable.CategoryID
-                                        && i.LevelID == variable.LevelID
-                                        && !string.IsNullOrWhiteSpace(i.SubCategoryVariableValueIDs)
-                                        && i.SubCategoryVariableValueIDs.StartsWith(variableValues));
 
-                    if (!variableValue.HasData) {
-                        variableValue.Name += " (empty)";
-                    }
-
-                    var subvars = SubCategoryVariables.Where(i => i.CategoryID == variable.CategoryID && i.LevelID == variable.LevelID).ToList();
-                    foreach(var subvar in subvars)
-                    {
-                        foreach(var va in subvar.VariableValues){
-                            if (va.ID == variableValue.ID)
-                            {
-                                va.HasData = variableValue.HasData;
-                            }
-                        }
-                    }
-
-                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
-                    {
-                        SetVariablesHasValue(variableValue.SubVariables.ToList(), runs, variableValues);
-                    }
-                }
-
-                parentVariableValues = null;    
-           }
-        }
-        
         public int ID { get; set; }
         public string Name { get; set; }
         public string CoverImageUri { get; set; }

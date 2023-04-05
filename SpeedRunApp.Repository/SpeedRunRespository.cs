@@ -68,15 +68,6 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridTabUserView> GetSpeedRunGridTabUserViews(Expression<Func<SpeedRunGridTabUserView, bool>> predicate)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                var results = db.Query<SpeedRunGridTabUserView>().Where(predicate).ToList();
-                return results;
-            }
-        }
-
         public IEnumerable<SpeedRunGridUserView> GetSpeedRunGridUserViews(Expression<Func<SpeedRunGridUserView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -85,16 +76,6 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }
-
-        // public IEnumerable<SpeedRunGridView> GetSpeedRunGridViewsByUserID(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
-        // {
-        //     using (IDatabase db = DBFactory.GetDatabase())
-        //     {
-        //         var results = db.Query<SpeedRunGridView>("CALL GetSpeedRunsByUserID (@0, @1, @2, @3, @4);", gameID, categoryID, levelID, subCategoryVariableValueIDs, userID).ToList();
-
-        //         return results;
-        //     }
-        // }
 
         public IEnumerable<WorldRecordGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID)
         {
@@ -129,7 +110,16 @@ namespace SpeedRunApp.Repository
                 var results = db.Query<SpeedRunChartView>().Where(predicate).ToList();
                 return results;
             }
-        }         
+        }        
+
+        public IEnumerable<SpeedRunChartUserView> GetSpeedRunChartUserViews(Expression<Func<SpeedRunChartUserView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunChartUserView>().Where(predicate).ToList();
+                return results;
+            }
+        }           
 
         public int? GetSpeedRunID(string speedRunComID)
         {

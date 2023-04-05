@@ -28,7 +28,15 @@ namespace SpeedRunApp.MVC.Controllers
 
             return View(gameDetailsVM);
         }
-        
+
+        [HttpGet]
+        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
+        {
+            var results = _gameService.GetEditSpeedRun(gameID, speedRunID);
+
+            return Json(results);
+        }
+
         [HttpGet]
         public JsonResult GetLeaderboardTabs(int gameID, int? speedRunID)
         {
@@ -54,16 +62,16 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUserSpeedRunTabs(int userID, int? speedRunID)
+        public JsonResult GetUserSpeedRunTabsAndGridData(int userID, int? speedRunID)
         {
             UserSpeedRunTabViewModel tabVM = null;
             try
             {
-                tabVM = _gameService.GetUserSpeedRunTabs(userID, speedRunID);
+                tabVM = _gameService.GetUserSpeedRunTabsAndGridData(userID, speedRunID);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetUserSpeedRunTabs UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+                _logger.Error(ex, "GetUserSpeedRunTabsAndGridData UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
             }
 
             return Json(tabVM);

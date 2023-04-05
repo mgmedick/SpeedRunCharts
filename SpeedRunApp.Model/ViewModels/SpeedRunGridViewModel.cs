@@ -8,21 +8,6 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class SpeedRunGridViewModel
     {
-        public SpeedRunGridViewModel(SpeedRunGridTabView run)
-        {
-            ID = run.ID;
-            GameID = run.GameID;
-            CategoryID = run.CategoryID;
-            LevelID = run.LevelID;
-            SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;            
-            Rank = run.Rank;        
-        }
-        
-        public SpeedRunGridViewModel(SpeedRunGridUserView run) : this((SpeedRunGridView)run)
-        {
-            SubCategoryVariableValues = run.SubCategoryVariableValues;
-        }
-
         public SpeedRunGridViewModel(SpeedRunGridView run)
         {
             ID = run.ID;
@@ -91,7 +76,6 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public string SubCategoryVariableValues { get; set; }
         public Dictionary<int, int> VariableValues { get; set; }        
         public List<UserNameViewModel> Players { get; set; }
         public List<string> VideoLinks { get; set; }
@@ -102,7 +86,6 @@ namespace SpeedRunApp.Model.ViewModels
         public string SplitsLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-
         public UserNameViewModel Player
         {
             get

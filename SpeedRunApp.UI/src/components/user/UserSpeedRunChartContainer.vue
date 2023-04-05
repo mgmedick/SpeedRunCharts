@@ -96,7 +96,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetUserSpeedRunGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('/SpeedRun/GetUserSpeedRunChartData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

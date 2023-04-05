@@ -4,8 +4,14 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class SpeedRunGridView : SpeedRunGridTabView
+    public class SpeedRunGridView
     {
+        public int ID { get; set; }
+        public int GameID { get; set; }
+        public int CategoryID { get; set; }
+        public int? LevelID { get; set; }
+        public string SubCategoryVariableValueIDs { get; set; }
+        public int? Rank { get; set; }        
         public int? PlatformID { get; set; }
         public string PlatformName { get; set; }
         public string VariableValues { get; set; }
@@ -15,6 +21,5 @@ namespace SpeedRunApp.Model.Data
         public string Comment { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-
     }
 } 

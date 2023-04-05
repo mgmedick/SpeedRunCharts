@@ -14,17 +14,15 @@ namespace SpeedRunApp.Service
     public class SpeedRunService : ISpeedRunService
     {
         private readonly IConfiguration _config = null;
-        private readonly IGameService _gamesService = null;
         private readonly IUserService _userService = null;
         private readonly ICacheService _cacheService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IUserAccountRepository _userAcctRepo = null;
         private readonly ISettingRepository _settingRepo = null;
 
-        public SpeedRunService(IConfiguration config, IGameService gamesService, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserAccountRepository userAcctRepo, ISettingRepository settingRepo)
+        public SpeedRunService(IConfiguration config, IUserService userService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserAccountRepository userAcctRepo, ISettingRepository settingRepo)
         {
             _config = config;
-            _gamesService = gamesService;
             _userService = userService;
             _cacheService = cacheService;
             _speedRunRepo = speedRunRepo;
@@ -69,22 +67,6 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID)
-        {
-            var gameVM = _gamesService.GetGame(gameID);
-            var statusTypes = _cacheService.GetRunStatusTypes();
-            SpeedRunViewModel runVM = null;
-            if (speedRunID.HasValue)
-            {
-                var run = _speedRunRepo.GetSpeedRunViews(i => i.ID == speedRunID.Value).FirstOrDefault();
-                runVM = new SpeedRunViewModel(run);
-            }
-
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, gameVM.SubCategoryVariables, runVM);
-
-            return editSpeedRunVM;
-        }
-
         public SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID)
         {
             var run = _speedRunRepo.GetSpeedRunSummaryViews(i => i.ID == speedRunID).FirstOrDefault();
@@ -121,22 +103,31 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunGridViewModel> GetUserSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        public IEnumerable<SpeedRunGridUserViewModel> GetUserSpeedRunGridData(int userID)
         {
-            var runs = _speedRunRepo.GetSpeedRunGridUserViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.UserID == userID).OrderByDescending(i => i.ID).ToList();     
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
+            var runs = _speedRunRepo.GetSpeedRunGridUserViews(i => i.UserID == userID).ToList();            
+            var runVMs = runs.Select(i => new SpeedRunGridUserViewModel(i)).ToList();
+            var personalBests = runVMs.Where(i => i.Rank.HasValue)
+                                      .OrderBy(i => i.Rank)
+                                      .GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID, g.SubCategoryVariableValueIDs })
+                                      .Select(i => i.First())
+                                      .ToList();
+
+            foreach(var personalBest in personalBests)
+            {
+                personalBest.IsPersonalBest = true;
+            }
+
+            runVMs = runVMs.OrderBy(i=>i.GameID)
+                            .ThenBy(i=>i.CategoryID)
+                            .ThenBy(i=>i.LevelID)
+                            .ThenBy(i=>i.SubCategoryVariableValueIDs)
+                            .ThenBy(i=>(i.DateSubmitted ?? i.VerifyDate ?? DateTime.MaxValue).Date)
+                            .ThenBy(i=>(i.Rank ?? Int32.MaxValue))
+                            .ToList();
 
             return runVMs;
         }
-
-        public IEnumerable<WorldRecordGridViewModel> GetPersonalBestGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID)
-        {
-           var runs = _speedRunRepo.GetPersonalBestsByUserID(gameID, categoryTypeID, categoryID, levelID, userID);           
-           var runVMs = runs.Select(i => new WorldRecordGridViewModel(i)).ToList();
-           runVMs = runVMs.Where(i => i.SubCategoryVariableValueIDs?.Split(",").Count() == runVMs.Where(g => g.GameID == i.GameID && g.CategoryID == i.CategoryID).Select(h => h.SubCategoryVariableValueIDs?.Split(",").Count()).Max()).ToList();
-
-           return runVMs;
-        }        
 
         public IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID)
         {
@@ -157,7 +148,15 @@ namespace SpeedRunApp.Service
             var runVMs = runs.Select(i => new SpeedRunChartViewModel(i)).ToList();
 
             return runVMs;
-        }                
+        }  
+
+        public IEnumerable<SpeedRunChartViewModel> GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        {
+            var runs = _speedRunRepo.GetSpeedRunChartUserViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.UserID == userID).OrderByDescending(i => i.ID).ToList();     
+            var runVMs = runs.Select(i => new SpeedRunChartViewModel((SpeedRunChartView)i)).ToList();
+
+            return runVMs;
+        }                      
 
         public ImportStatusViewModel GetImportStatus()
         {

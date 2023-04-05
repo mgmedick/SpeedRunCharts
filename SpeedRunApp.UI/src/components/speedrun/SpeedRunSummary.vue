@@ -1,11 +1,9 @@
 ﻿<template>
-    <div class="speedRunSummary">
-        <div class="pt-2 px-2 d-flex">
-            <div class="col-1 p-0 align-self-center">
-                <div style="max-width:37px;">
-                    <div class="img-round">
-                        <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
-                    </div>
+    <div class="speedRunSummary p-2">
+        <div class="row no-gutters">
+            <div class="col-1 p-0 align-self-center" style="max-width:37px;">
+                <div class="img-round">
+                    <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
                 </div>
             </div>
             <div class="col-8 pl-2 pr-0 align-self-end">
@@ -20,7 +18,7 @@
                 <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>
             </div>
         </div>
-        <div class="px-2 pb-2 pt-1 d-flex">
+        <div class="pt-1 d-flex">
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px; font-weight: 500;">

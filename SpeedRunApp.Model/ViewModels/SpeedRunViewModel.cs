@@ -131,7 +131,6 @@ namespace SpeedRunApp.Model.ViewModels
         public DateTime? RunDate { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-
         public IDNamePair Player
         {
             get

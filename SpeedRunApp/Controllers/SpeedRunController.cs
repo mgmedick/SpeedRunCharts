@@ -52,15 +52,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(results);
         }
-
-        [HttpGet]
-        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
-        {
-            var results = _speedRunService.GetEditSpeedRun(gameID, speedRunID);
-
-            return Json(results);
-        }
-
+        
         [HttpGet]
         public JsonResult GetSpeedRunSummary(int speedRunID)
         {
@@ -84,23 +76,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(results);
         }
-
-        [HttpGet]
-        public JsonResult GetUserSpeedRunGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
-        {
-            var results = _speedRunService.GetUserSpeedRunGridData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID);
-
-            return Json(results);
-        }
-
-        [HttpGet]
-        public JsonResult GetPersonalBestGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID)
-        {
-            var results = _speedRunService.GetPersonalBestGridData(gameID, categoryTypeID, categoryID, levelID, userID);
-
-            return Json(results);
-        }
-
+        
         [HttpGet]
         public JsonResult GetGameChartData(int gameID, int categoryTypeID)
         {
@@ -115,6 +91,14 @@ namespace SpeedRunApp.MVC.Controllers
             var results = _speedRunService.GetLeaderboardChartData(gameID, categoryID, levelID, subCategoryVariableValueIDs);
 
             return Json(results);
-        }                 
+        }
+
+        [HttpGet]
+        public JsonResult GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
+        {
+            var results = _speedRunService.GetUserSpeedRunChartData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID);
+
+            return Json(results);
+        }                         
     }
 }

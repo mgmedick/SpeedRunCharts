@@ -11,10 +11,11 @@ namespace SpeedRunApp.Interfaces.Services
         GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID);
         GameViewModel GetGame(string gameAbbr);
         GameViewModel GetGame(int gameID);
+        EditSpeedRunViewModel GetEditSpeedRun(int gamID, int? speedRunID);
         IEnumerable<SearchResult> SearchGames(string searchText);
         LeaderboardTabViewModel GetLeaderboardTabs(int gameID, int? speedRunID = null);
         WorldRecordTabViewModel GetWorldRecordTabs(int gameID);
-        UserSpeedRunTabViewModel GetUserSpeedRunTabs(int userID, int? speedRunID = null);        
+        UserSpeedRunTabViewModel GetUserSpeedRunTabsAndGridData(int userID, int? speedRunID = null);        
         List<string> SetGameIsChanged(int gameID);
     }
 }

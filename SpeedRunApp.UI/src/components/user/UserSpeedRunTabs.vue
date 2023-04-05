@@ -42,20 +42,18 @@
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
                     <div>
                         <div class="row no-gutters">
-                            <div class="col-auto p-0">
-                                <div style="width:37px;">
-                                    <div class="img-round">
-                                        <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
-                                    </div>
+                            <div class="col-1 p-0" style="max-width:37px;">
+                                <div class="img-round">
+                                    <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
                                 </div>
                             </div>                            
-                            <div class="col-auto pl-2 align-self-end">
-                                <h6 class="font-weight-bold mb-0">{{ game.name }}</h6>
+                            <div class="col-11 pl-2 align-self-end">
+                                <h6 class="font-weight-bold mb-0 nowrap-elipsis">{{ game.name }}</h6>
                             </div>
                         </div>
                         <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id" class="mt-2">
                             <div v-if="categoryTypeID == 0">
-                                <div class="font-weight-bold mb-1" style="font-size:13px;">{{ category.name }}</div>                            
+                                <div class="font-weight-bold mb-1 nowrap-elipsis" style="font-size:13px;">{{ category.name }}</div>                            
                                 <user-speedrun-grid :userid="id" :gamename="game.name" :categoryname="category.name" :levelname="''" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && !item.levelID)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
                             </div>
                             <div v-else>
@@ -103,7 +101,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetUserSpeedRunTabs?userID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Game/GetUserSpeedRunTabsAndGridData?userID=' + this.id + '&speedRunID=' + this.speedrunid;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

@@ -22,14 +22,14 @@
                         </th>
                     </thead>
                     <tbody>
-                        <tr v-for="item in tabledata.filter(i => (showalldata || i.rank))" :key="item.id" style="white-space: nowrap;">
+                        <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest))" :key="item.id" style="white-space: nowrap;">
                             <td>
                                 <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
                                     <div class="d-table-row">
                                         <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
                                             <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                         </div>
-                                        <div v-if="item.rank && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell pl-2" style="border:none; padding:0px; vertical-align: bottom;">
+                                        <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell pl-2" style="border:none; padding:0px; vertical-align: bottom;">
                                             <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
                                         </div>                                        
                                     </div>
@@ -173,7 +173,7 @@
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
                 this.showChartModal = true;
-            },                             
+            }                           
         }             
     };
 </script>

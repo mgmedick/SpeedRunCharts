@@ -9,21 +9,10 @@
         </div>        
         <div>
             <div class="table-responsive">
-                <table class="table table-dark">
-                    <thead>
-                        <th style="width: 60px;"></th>
-                        <th v-if="tabledata.filter(i=> i.subCategoryVariableValues).length > 0">Subcategory</th>
-                        <th style="width: 60px;">#</th>
-                        <th>Time</th>
-                        <th>Platform</th>
-                        <th>Submitted</th>
-                        <th v-for="variable in variables?.filter(i => tabledata.filter(el => el[i.id]).length > 0)" :key="variable.id">
-                            {{ variable.name }}
-                        </th>
-                    </thead>
+                <table class="table table-sm table-dark">
                     <tbody>
-                        <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest))" :key="item.id" style="white-space: nowrap;">
-                            <td>
+                        <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest))" :key="item.id">
+                            <td style="width: 5%; vertical-align: middle;">
                                 <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
                                     <div class="d-table-row">
                                         <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
@@ -34,25 +23,22 @@
                                         </div>                                        
                                     </div>
                                 </div>
+                            </td>                        
+                            <td style="width: 33%; vertical-align: middle;">
+                                <div><span style="font-weight: bold;">{{ item.categoryName }}</span></div>
+                                <div v-if="item.levelName"><span style="font-weight: 600;">{{ item.levelName }}</span></div>
+                                <div v-if="item.subCategoryVariableValues">
+                                    <span>{{ item.subCategoryVariableValues }}</span>
+                                </div>                                
                             </td>
-                            <td v-if="item.subCategoryVariableValues">
-                                <span>{{ item.subCategoryVariableValues }}</span>
+                            <td style="width: 32%; vertical-align: middle;">
+                                <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                                <div><span>{{ showmilliseconds ? item.primaryTimeString : item.primaryTimeSecondsString }}</span></div>               
                             </td>
-                            <td>
-                                <span>{{ item.rank ?? '-' }}</span>
+                            <td style="width: 30%; vertical-align: middle;">
+                                <div><span>{{ item.platform?.name }}</span></div>  
+                                <div><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
                             </td>
-                            <td>
-                                <span>{{ showmilliseconds ? item.primaryTimeString : item.primaryTimeSecondsString }}</span>               
-                            </td>
-                            <td>
-                                <span>{{ item.platform?.name }}</span>               
-                            </td> 
-                            <td>
-                                <span v-tippy="item.relativeDateSubmittedString">{{ dateFormatter(item.dateSubmitted) }}</span>               
-                            </td>                             
-                            <td v-for="variable in variables?.filter(i => tabledata.filter(el => el[i.id]).length > 0)" :key="variable.id">
-                                <div>{{ item[variable.id] }}</div>
-                            </td>                                                                       
                         </tr>
                     </tbody>
                 </table> 
@@ -71,7 +57,7 @@
                 User Charts
             </template>
             <div class="container p-0">
-                <user-speedrun-chart-container :showmilliseconds="showmilliseconds" :gameid="selectedSpeedRun.gameID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :userid="userid" :title="title" :istimerasc="istimerasc"></user-speedrun-chart-container>
+                <user-speedrun-chart-container :gameid="selectedSpeedRun.gameID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :userid="userid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></user-speedrun-chart-container>
             </div>
         </modal>            
     </div>   
@@ -86,13 +72,10 @@
         name: "UserSpeedRunGrid",
         props: {
             userid: String,
-            gamename: String,
-            categoryname: String,
-            levelname:String,
+            gameabbr: String,
             tabledata: Array,
             showmilliseconds: Boolean,
             variables: Array,
-            istimerasc: Boolean,
             showalldata: Boolean          
         },
         data() {
@@ -111,7 +94,7 @@
             },
             title: function () {
                 var result = '';
-                result = [this.gamename, this.categoryname, this.levelname, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');
+                result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');
                 result = result.replace(/^[ -]+|[ -]+$/g, '');
                 
                 return result;
@@ -130,10 +113,6 @@
                 var that = this;
                 this.loading = true;
                 this.tableData = that.tabledata;
-
-                if (this.istimerasc) {
-                    this.tableData = this.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
-                }
 
                 that.initGrid(this.tableData);
                 that.loading = false;
@@ -163,7 +142,24 @@
                 }
 
                 return html;
-            },                        
+            }, 
+            getIconClass: function (rank) {
+                var iconClass = '';
+
+                switch (rank) {
+                    case 1:
+                        iconClass = 'gold';
+                        break;
+                    case 2:
+                        iconClass = 'silver';
+                        break;
+                    case 3:
+                        iconClass = 'bronze';
+                        break;
+                }
+
+                return iconClass;
+            },                                   
             showSpeedRunDetails(event) {
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
@@ -173,7 +169,7 @@
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
                 this.showChartModal = true;
-            }                           
+            }
         }             
     };
 </script>

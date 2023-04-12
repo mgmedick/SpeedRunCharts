@@ -28,7 +28,7 @@
         </div>
         <div class="row no-gutters pr-1 pt-0">
             <div class="col-auto pr-2">
-                <label class="tab-row-name">Show Obsolete:</label>
+                <i class="fas fa-info-circle fa-sm" v-tippy="'Hiding obsolete runs lists the Personal Bests'"></i>&nbsp;<label class="tab-row-name">Show Obsolete:</label>
             </div>
             <div class="col align-self-center">
                 <div class="custom-control custom-switch">
@@ -41,7 +41,7 @@
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
                     <div>
-                        <div class="row no-gutters">
+                        <div class="row no-gutters pb-1">
                             <div class="col-1 p-0" style="max-width:37px;">
                                 <div class="img-round">
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
@@ -51,18 +51,7 @@
                                 <h6 class="font-weight-bold mb-0 nowrap-elipsis">{{ game.name }}</h6>
                             </div>
                         </div>
-                        <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id" class="mt-2">
-                            <div v-if="categoryTypeID == 0">
-                                <div class="font-weight-bold mb-1 nowrap-elipsis" style="font-size:13px;">{{ category.name }}</div>                            
-                                <user-speedrun-grid :userid="id" :gamename="game.name" :categoryname="category.name" :levelname="''" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && !item.levelID)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
-                            </div>
-                            <div v-else>
-                                <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id" class="mt-2">
-                                    <div class="font-weight-bold mb-1" style="font-size:13px;"><span>{{ category.name + " - "}}</span><span class="font-italic">{{ level.name }}</span></div>
-                                    <user-speedrun-grid :userid="id" :gamename="game.name" :categoryname="category.name" :levelname="level.name" :tabledata="tableData.filter(item => item.gameID == game.id && item.categoryID == category.id && item.levelID == level.id)" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :istimerasc="category.isTimerAsc" :showalldata="showAllData"></user-speedrun-grid>
-                                </div>
-                            </div>
-                        </div>
+                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData"></user-speedrun-grid>
                     </div>
                 </div>
             </div>

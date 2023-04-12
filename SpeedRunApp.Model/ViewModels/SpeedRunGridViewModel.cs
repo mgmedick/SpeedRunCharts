@@ -174,7 +174,6 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-
         public string RelativeDateSubmittedString
         {
             get
@@ -182,5 +181,13 @@ namespace SpeedRunApp.Model.ViewModels
                 return DateSubmitted?.ToRealtiveDateString();
             }
         }
+                
+        public string RelativeDateSubmittedStringShort
+        {
+            get
+            {
+                return DateSubmitted?.ToRealtiveDateString(true);
+            }
+        }        
     }
 }

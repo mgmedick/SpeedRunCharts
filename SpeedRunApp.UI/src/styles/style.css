@@ -593,12 +593,7 @@ button.bg-dark:focus {
 
 .table {
     color: var(--bs-text-color1) !important;
-    font-size: .813rem;
-}
-
-.table th,
-.table td {
-    padding: 8px;
+    font-size: 0.813rem;
 }
 
 .table-dark,

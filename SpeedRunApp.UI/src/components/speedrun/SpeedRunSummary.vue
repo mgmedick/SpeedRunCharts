@@ -113,12 +113,7 @@
                 showModal: false,
                 showVideo: false
             }
-        },
-        computed: {
-            isMediaMedium: function () {
-                return window.innerWidth > 768;
-            }
-        },        
+        },       
         methods: {
             getIconClass: function (rank) {
                 var iconClass = '';

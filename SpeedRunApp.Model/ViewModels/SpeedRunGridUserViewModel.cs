@@ -15,6 +15,7 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryName = run.CategoryName;
             LevelName = run.LevelName;
             IsTimerAscending = run.IsTimerAscending;
+            IsMiscellaneous = run.IsMiscellaneous;
         }
         
         public string SpeedRunComID { get; set; }
@@ -22,6 +23,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string CategoryName { get; set; }
         public string LevelName { get; set; }
         public bool IsTimerAscending { get; set; }
+        public bool IsMiscellaneous { get; set; }
         public bool IsPersonalBest { get; set; }
     }
 }

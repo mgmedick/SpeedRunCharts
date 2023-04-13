@@ -7,42 +7,40 @@
                 </div>
             </div>
         </div>        
-        <div>
-            <div class="table-responsive">
-                <table class="table table-sm table-dark">
-                    <tbody>
-                        <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest))" :key="item.id">
-                            <td style="width: 5%; vertical-align: middle;">
-                                <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
-                                    <div class="d-table-row">
-                                        <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
-                                            <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
-                                        </div>
-                                        <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell pl-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                            <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
-                                        </div>                                        
+        <div class="table-responsive mt-2">
+            <table class="table table-sm table-dark">
+                <tbody>
+                    <tr v-for="item in tabledata" :key="item.id">
+                        <td style="width: 5%; vertical-align: middle;">
+                            <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
+                                <div class="d-table-row">
+                                    <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
+                                        <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div>
+                                    <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell pl-2" style="border:none; padding:0px; vertical-align: bottom;">
+                                        <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
+                                    </div>                                        
                                 </div>
-                            </td>                        
-                            <td style="width: 33%; vertical-align: middle;">
-                                <div><span style="font-weight: bold;">{{ item.categoryName }}</span></div>
-                                <div v-if="item.levelName"><span style="font-weight: 600;">{{ item.levelName }}</span></div>
-                                <div v-if="item.subCategoryVariableValues">
-                                    <span>{{ item.subCategoryVariableValues }}</span>
-                                </div>                                
-                            </td>
-                            <td style="width: 32%; vertical-align: middle;">
-                                <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
-                                <div><span>{{ showmilliseconds ? item.primaryTimeString : item.primaryTimeSecondsString }}</span></div>               
-                            </td>
-                            <td style="width: 30%; vertical-align: middle;">
-                                <div><span>{{ item.platform?.name }}</span></div>  
-                                <div><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
-                            </td>
-                        </tr>
-                    </tbody>
-                </table> 
-            </div>
+                            </div>
+                        </td>                        
+                        <td style="width: 50%; vertical-align: middle;">
+                            <div><span style="font-weight: 600;">{{ item.categoryName }}</span></div>
+                            <div v-if="item.levelName"><span style="font-weight: 600;">{{ item.levelName }}</span></div>
+                            <div v-if="item.subCategoryVariableValues">
+                                <span style="font-size: 12px;">{{ item.subCategoryVariableValues }}</span>
+                            </div>                                
+                        </td>
+                        <td style="width: 25%; vertical-align: middle;">
+                            <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div><span style="font-size: 12px;">{{ showmilliseconds ? item.primaryTimeString : item.primaryTimeSecondsString }}</span></div>               
+                        </td>
+                        <td class="show-md" style="width: auto; vertical-align: middle;">
+                            <div><span>{{ item.platform?.name }}</span></div>  
+                            <div><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -75,8 +73,7 @@
             gameabbr: String,
             tabledata: Array,
             showmilliseconds: Boolean,
-            variables: Array,
-            showalldata: Boolean          
+            variables: Array    
         },
         data() {
             return {   
@@ -89,9 +86,6 @@
             }
         },
         computed: {
-            isMediaMedium: function () {
-                return window.innerWidth > 768;
-            },
             title: function () {
                 var result = '';
                 result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');

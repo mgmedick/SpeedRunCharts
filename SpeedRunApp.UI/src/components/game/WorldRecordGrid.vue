@@ -65,11 +65,6 @@
                 pageSize: 100
             }
         },
-        computed: {
-            isMediaMedium: function () {
-                return window.innerWidth > 768;
-            }
-        },
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride

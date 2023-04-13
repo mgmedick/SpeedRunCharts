@@ -28,7 +28,7 @@
         </div>
         <div class="row no-gutters pr-1 pt-0">
             <div class="col-auto pr-2">
-                <i class="fas fa-info-circle fa-sm" v-tippy="'Hiding obsolete runs lists the Personal Bests'"></i>&nbsp;<label class="tab-row-name">Show Obsolete:</label>
+                <i class="fas fa-info-circle fa-sm" v-tippy="'Hide obsolete runs to see Personal Bests'"></i>&nbsp;<label class="tab-row-name">Show Obsolete:</label>
             </div>
             <div class="col align-self-center">
                 <div class="custom-control custom-switch">
@@ -36,12 +36,23 @@
                     <label class="custom-control-label" for="chkShowAllData"></label>
                 </div>
             </div>                                                
-        </div>         
+        </div>  
+        <div class="row no-gutters pr-1 pt-0">
+            <div class="col-auto pr-2">
+                <label class="tab-row-name">Show Misc:</label>
+            </div>
+            <div class="col align-self-center">
+                <div class="custom-control custom-switch">
+                    <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
+                    <label class="custom-control-label" for="chkShowMisc"></label>
+                </div>
+            </div>                                                
+        </div>                
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
-                    <div>
-                        <div class="row no-gutters pb-1">
+                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showAllData || item.isPersonalBest) && (showMisc || !item.isMiscellaneous)).length > 0">
+                        <div class="row no-gutters">
                             <div class="col-1 p-0" style="max-width:37px;">
                                 <div class="img-round">
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
@@ -51,7 +62,7 @@
                                 <h6 class="font-weight-bold mb-0 nowrap-elipsis">{{ game.name }}</h6>
                             </div>
                         </div>
-                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData"></user-speedrun-grid>
+                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showAllData || item.isPersonalBest) && (showMisc || !item.isMiscellaneous))" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></user-speedrun-grid>
                     </div>
                 </div>
             </div>
@@ -74,6 +85,7 @@
                 tableData: [],
                 categoryTypeID: '',
                 showAllData: false,
+                showMisc: true,
                 showDetailModal: false,
                 loading: true
             }

@@ -72,11 +72,6 @@
                 pageSize: 100
             }
         },
-        computed: {
-            isMediaMedium: function () {
-                return window.innerWidth > 768;
-            }
-        },
         watch: {
             showalldata: function (val, oldVal) {
                 this.loadData();

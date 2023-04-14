@@ -51,7 +51,7 @@
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
-                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showAllData || item.isPersonalBest) && (showMisc || !item.isMiscellaneous)).length > 0">
+                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous)).length > 0">
                         <div class="row no-gutters">
                             <div class="col-1 p-0" style="max-width:37px;">
                                 <div class="img-round">
@@ -62,7 +62,7 @@
                                 <h6 class="font-weight-bold mb-0 nowrap-elipsis">{{ game.name }}</h6>
                             </div>
                         </div>
-                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showAllData || item.isPersonalBest) && (showMisc || !item.isMiscellaneous))" :showmilliseconds="game.showMilliseconds" :variables="game.variables"></user-speedrun-grid>
+                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc"></user-speedrun-grid>
                     </div>
                 </div>
             </div>

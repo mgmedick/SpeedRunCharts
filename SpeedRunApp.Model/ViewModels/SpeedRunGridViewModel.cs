@@ -134,6 +134,14 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        public double PrimaryTimeTicks
+        {
+            get
+            {
+                return PrimaryTime.Ticks;
+            }
+        }        
+
         public double PrimaryTimeSeconds
         {
             get

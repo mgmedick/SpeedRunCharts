@@ -1,21 +1,8 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using SpeedRunApp.Interfaces.Services;
-using SpeedRunApp.Model;
-using SpeedRunApp.Model.Data;
-using SpeedRunApp.Model.ViewModels;
-using SpeedRunCommon.Extensions;
 using System.Security.Claims;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
-using System.Linq;
 using Serilog;
-using Microsoft.AspNetCore.Authorization;
-using System.Xml;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace SpeedRunApp.MVC.Controllers
 {

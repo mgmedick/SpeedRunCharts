@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "buildweb",            
-            "program": "${workspaceFolder}/SpeedRunApp/bin/Debug/netcoreapp3.1/SpeedRunApp.MVC.dll",
+            "program": "${workspaceFolder}/SpeedRunApp/bin/Debug/net6.0/SpeedRunApp.MVC.dll",
             "args": [],
             "cwd": "${workspaceFolder}/SpeedRunApp",
             "stopAtEntry": false,

@@ -94,7 +94,7 @@
                     .then(res => {
                         that.tableData = res.data;
                         if (that.istimerasc) {
-                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTime.ticks - a?.primaryTime.ticks });
+                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTimeTicks - a?.primaryTimeTicks });
                         }
                                                                         
                         that.initGrid(res.data); 
@@ -131,7 +131,7 @@
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "Time", field: "primaryTime.ticks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
+                    { title: "Time", field: "primaryTimeTicks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125
                     { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
@@ -183,7 +183,7 @@
                         return html;
                     },                    
                     initialSort: [
-                        { column: "primaryTime.ticks", dir: that.istimerasc ? "desc" : "asc" },
+                        { column: "primaryTimeTicks", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {

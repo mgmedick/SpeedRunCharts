@@ -25,7 +25,7 @@
                         </td>                        
                         <td style="width: 50%; vertical-align: middle;">
                             <div><span style="font-weight: 600;">{{ item.categoryName }}</span></div>
-                            <div v-if="item.levelName"><span style="font-weight: 600;">{{ item.levelName }}</span></div>
+                            <div v-if="item.levelName"><span style="font-weight: 600; font-style: italic;">{{ item.levelName }}</span></div>
                             <div v-if="item.subCategoryVariableValues">
                                 <span style="font-size: 12px;">{{ item.subCategoryVariableValues }}</span>
                             </div>                                

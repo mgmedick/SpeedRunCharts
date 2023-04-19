@@ -11,7 +11,7 @@ namespace SpeedRunApp.Model.ViewModels
             ExportTypes = exportTypes;
         }
 
-        public LeaderboardTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<string, string> subCategoryVariableValueIDs, bool showAllData)
+        public LeaderboardTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes, int gameID, int categoryTypeID, int categoryID, int? levelID, Dictionary<string, string> subCategoryVariableValueIDs, bool showAllData, bool showMisc)
         {
             TabItems = tabItems;
             ExportTypes = exportTypes;
@@ -21,6 +21,7 @@ namespace SpeedRunApp.Model.ViewModels
             LevelID = levelID;
             SubCategoryVariableValueIDs = subCategoryVariableValueIDs;
             ShowAllData = showAllData;
+            ShowMisc = showMisc;
         }        
 
         public IEnumerable<GameTabViewModel> TabItems { get; set; }
@@ -31,5 +32,6 @@ namespace SpeedRunApp.Model.ViewModels
         public int? LevelID { get; set; }
         public Dictionary<string, string> SubCategoryVariableValueIDs { get; set; }
         public bool? ShowAllData { get; set; }
+        public bool? ShowMisc { get; set; }
     }
 }

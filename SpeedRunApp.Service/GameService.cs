@@ -90,12 +90,14 @@ namespace SpeedRunApp.Service
                 if (run != null) {
                     var game = tabItems.FirstOrDefault(i => i.ID == run.GameID);
                     if (game != null) {
-                        var categoryTypeID = game.Categories.Where(i=>i.ID == run.CategoryID).Select(i=>i.CategoryTypeID).FirstOrDefault();
+                        var category = game.Categories.FirstOrDefault(i=>i.ID == run.CategoryID);
+                        var categoryTypeID = category != null ? category.CategoryTypeID : 0;
                         var subCategoryVariableValueIDs = run.SubCategoryVariableValueIDs?.Split(',').Select(i => Convert.ToInt32(i)).ToList();
                         var subCategoryVariableValueNames = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, game.SubCategoryVariables);
                         var showAllData = !run.Rank.HasValue;
+                        var showMisc = category != null ? category.IsMisc : false;
 
-                        gridTabVM = new LeaderboardTabViewModel(tabItems, exportTypes, run.GameID, categoryTypeID, run.CategoryID, run.LevelID, subCategoryVariableValueNames, showAllData);
+                        gridTabVM = new LeaderboardTabViewModel(tabItems, exportTypes, run.GameID, categoryTypeID, run.CategoryID, run.LevelID, subCategoryVariableValueNames, showAllData, showMisc);
                     }
                 }
             }

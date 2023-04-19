@@ -18,13 +18,13 @@
                 <button class="btn btn-secondary btn-sm" @click="showModal = true" style="font-size:12px;">Details</button>
             </div>
         </div>
-        <div class="pt-1 d-flex">
+        <div class="pt-2 d-flex">
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
-                    <div class="text-secondary nowrap-elipsis" style="font-size: 14px; font-weight: 500;">
-                        <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><small>{{ item.primaryTimeString }}</small></a>
+                    <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
+                        <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                     </div>
-                    <div class="text-secondary" style="font-size: 14px; font-weight: 600;">
+                    <div class="text-secondary font-weight-semibold" style="font-size: 14px;">
                         <template v-for="(player, index) in item.players">                               
                             <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                 <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
@@ -60,7 +60,7 @@
                 </div>                  
             </div>                    
         </div>
-        <div class="body p-0 show-md">
+        <div class="body pt-2 show-md">
             <div v-if="!showVideo" @click="showVideo = !showVideo;">
                 <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
                     <div class="embed-responsive embed-responsive-16by9">

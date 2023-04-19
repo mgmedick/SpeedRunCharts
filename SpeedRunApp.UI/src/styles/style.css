@@ -138,6 +138,10 @@ h6, .h6 {
     font-size: 0.9375rem;
 }
 
+.font-weight-semibold {
+    font-weight: 600;
+}
+
 input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     height: 32px;
@@ -552,6 +556,10 @@ select.form-control:focus::-ms-value {
     background-color: var(--bs-background-color12) !important;
 }
 
+.badge {
+    font-size: 83% !important;
+}
+
 .badge-primary {
     background-color: var(--bs-primary);
 }
@@ -877,7 +885,7 @@ button.bg-dark:focus {
 }
 
 .username-text {
-    font-weight: 600;
+    font-weight: 500;
     color: var(--bs-text-color2);
 }
 
@@ -1573,7 +1581,7 @@ button.cmv-close {
 .tab-row-name {
     font-size: 14px !important;
     line-height: 18px;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .btn.categorytype {
@@ -1592,11 +1600,11 @@ button.cmv-close {
     }
 
     .btn.categorytype {
-        font-size: 11px !important;
+        font-size: 12px !important;
     }
 
     .btn.category {
-        font-size: 11px !important;
+        font-size: 12px !important;
     }    
 }
 
@@ -1670,10 +1678,6 @@ div.stretchy-wrapper > div {
 
 .bronze {
     color: #b08d57;
-}
-
-.badge {
-    font-size: 80% !important;
 }
 
 @media (max-width: 767.98px) {

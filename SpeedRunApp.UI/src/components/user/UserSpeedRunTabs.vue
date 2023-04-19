@@ -59,7 +59,7 @@
                                 </div>
                             </div>                            
                             <div class="col-11 pl-2 align-self-end">
-                                <h6 class="font-weight-bold mb-0"><a :href="'/Game/GameDetails/' + game.abbr" class="text-primary">{{ game.name }}</a></h6>
+                                <h6 class="font-weight-semibold mb-0"><a :href="'/Game/GameDetails/' + game.abbr" class="text-primary">{{ game.name }}</a></h6>
                             </div>
                         </div>
                         <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc"></user-speedrun-grid>

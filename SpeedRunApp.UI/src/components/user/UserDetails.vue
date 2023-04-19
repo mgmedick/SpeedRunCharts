@@ -55,7 +55,7 @@
             <div class="container">
                 <div>
                     <ul>
-                        <li class="text-danger small font-weight-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
+                        <li class="text-danger small font-weight-semibold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
                     </ul>
                 </div>                
                 <div class="form-group row no-gutters">

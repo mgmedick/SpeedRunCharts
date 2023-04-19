@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
     {
         public string CategoryName { get; set; }
         public int CategoryTypeID { get; set; }
+        public bool IsMiscellaneous { get; set; }
         public string LevelName { get; set; }
 
     }

@@ -6,20 +6,36 @@
                     <i class="fas fa-spinner fa-spin fa-lg"></i>
                 </div>
             </div>
-        </div>        
-        <div class="mt-2 grid-container" style="min-height:150px;">
-            <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
-            <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
-                <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                    <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
-                    <li v-if="groups.length > 0" class="group-label">Group By:</li>
-                    <li v-for="(group, i) in groups" :key="i" class="group-tag">
-                        <span>{{ group.title }}</span>&nbsp;
-                        <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
-                    </li>                    
-                </ul>
+        </div>
+        <div>
+            <div class="row no-gutters pr-1">
+                <div class="col-auto ml-auto">
+                    <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                        <template v-slot:text>
+                            <span>Export</span>
+                        </template>
+                        <template v-slot:options>
+                            <template v-for="(exporttype, i) in exporttypes" :key="i">
+                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
+                            </template>
+                        </template>
+                    </button-dropdown>
+                </div>                                                                
+            </div>    
+            <div class="mt-2 grid-container" style="min-height:150px;">             
+                <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
+                <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
+                    <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
+                        <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
+                        <li v-if="groups.length > 0" class="group-label">Group By:</li>
+                        <li v-for="(group, i) in groups" :key="i" class="group-tag">
+                            <span>{{ group.title }}</span>&nbsp;
+                            <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
+                        </li>                    
+                    </ul>
+                </div>
+                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
-            <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
             <template v-slot:title>
@@ -58,7 +74,8 @@
             showmilliseconds: Boolean,
             variables: Array,
             title: String,
-            istimerasc: Boolean          
+            istimerasc: Boolean,
+            exporttypes: Array          
         },
         data() {
             return {
@@ -71,12 +88,12 @@
                 showDetailModal: false,
                 pageSize: 100
             }
-        },
+        },  
         watch: {
             showalldata: function (val, oldVal) {
                 this.loadData();
             }
-        },                 
+        },                     
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
@@ -407,7 +424,11 @@
                     this.table.setHeaderFilterValue(columnEl, "");
                     document.querySelector('.tabulator-edit-select-list')?.remove();
                 }
-            },                         
+            },               
+            onExportClick: function (event) {
+                var value = event.target.getAttribute('data-value');
+                this.export(value);
+            },                                    
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
                 this.showDetailModal = true;

@@ -1527,7 +1527,7 @@ button.cmv-close {
     background-color: var(--bs-secondary);
     border: 1px solid var(--bs-background-color16);
     font-size: 13px;
-    font-weight: bold;    
+    font-weight: 600;    
 }
 
 .tab-list .nav-link.active {
@@ -1539,7 +1539,7 @@ button.cmv-close {
     background-color: var(--bs-secondary);
     border: 1px solid var(--bs-background-color16);
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 600;
     padding: 0.5rem !important;   
     max-width: 300px; 
 }
@@ -1576,16 +1576,26 @@ button.cmv-close {
     font-weight: bold;
 }
 
+.btn.categorytype {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.btn.category {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}    
+
 @media (max-width: 575.98px) {
     .tab-list .dropdown .dropdown-menu {
         max-width: 215px;
     }
 
-    .categorytype {
+    .btn.categorytype {
         font-size: 11px !important;
     }
 
-    .category {
+    .btn.category {
         font-size: 11px !important;
     }    
 }
@@ -1667,11 +1677,6 @@ div.stretchy-wrapper > div {
 }
 
 @media (max-width: 767.98px) {
-    .btn {
-        font-size:14px;
-        padding:4px 6px;
-    }
-
     .show-md {
         display: none !important;
     }

@@ -53,7 +53,8 @@
             showcategories: Boolean,
             showlevels: Boolean,
             variables: Array,
-            subcategoryvariablevaluetabs: Array
+            subcategoryvariablevaluetabs: Array,
+            showmisc: Boolean
         },
         data() {
             return {
@@ -88,6 +89,11 @@
             },                                                                 
             initGrid(tableData) {
                 var that = this;
+                
+                if (that.showcategories) {
+                    tableData = tableData.filter(i => (that.showmisc || !i.isMiscellaneous));
+                }
+
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
 
                 var columns = [

@@ -11,20 +11,20 @@
             <div>
                 <div style="margin-bottom:10px;">
                     <div class="btn-group btn-group-toggle">
-                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : !categorytypeid }" style="font-size:13px;">
+                        <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : !categorytypeid }">
                             <input type="radio" autocomplete="off" value="" v-model="categorytypeid" @change="onCategoryTypeChange">All
                         </label>
-                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 0 }" style="font-size:13px;">
+                        <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categorytypeid == 0 }">
                             <input type="radio" autocomplete="off" value="0" v-model="categorytypeid" @change="onCategoryTypeChange">Full Game
                         </label>
-                        <label class="btn btn-primary btn-sm font-weight-bold categorytype" :class="{ 'active' : categorytypeid == 1 }" style="font-size:13px;">
+                        <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categorytypeid == 1 }">
                             <input type="radio" autocomplete="off" value="1" v-model="categorytypeid" @change="onCategoryTypeChange">Level
                         </label>                                                
                     </div>
                 </div>                
                 <div style="margin-bottom:20px;">
                     <div class="btn-group btn-group-toggle" style="display: block">
-                        <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm font-weight-bold category" :class="{ 'active' : categoryid == item.id }" style="font-size:13px;" v-tippy="item.description">
+                        <label v-for="(item, itemIndex) in items" class="btn btn-primary btn-sm category" :class="{ 'active' : categoryid == item.id }" v-tippy="item.description">
                             <input type="radio" autocomplete="off" :value="item.id" v-model="categoryid" @change="onCategoryChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName.replace(/ /g, '\u00a0') }}
                         </label>
                     </div>

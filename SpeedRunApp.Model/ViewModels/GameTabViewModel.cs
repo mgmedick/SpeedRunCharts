@@ -31,13 +31,14 @@ namespace SpeedRunApp.Model.ViewModels
                 Categories = new List<Category>();
                 foreach (var categoryString in game.Categories.Split("^^"))
                 {
-                    var values = categoryString.Split("|", 4);
+                    var values = categoryString.Split("|", 5);
                     var category = new Category
                     {
                         ID = Convert.ToInt32(values[0]),
                         CategoryTypeID = Convert.ToInt32((string)values[1]),
                         IsTimerAsc = Convert.ToBoolean((string)values[2]),
-                        Name = values[3]
+                        IsMisc = Convert.ToBoolean((string)values[3]),
+                        Name = values[4]
                     };
                     Categories.Add(category);
                 }         

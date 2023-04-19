@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="col-auto ml-auto">
-                            <div class="btn btn-primary" @click="showUpdateGameModal = gamevm.isChanged ? false : true" :class="{ 'disabled' : gamevm.isChanged }" v-tippy="gamevm.isChanged ? 'Game Details and Runs are currently updating' : ''">
+                            <div class="btn btn-secondary" @click="showUpdateGameModal = gamevm.isChanged ? false : true" :class="{ 'disabled' : gamevm.isChanged }" v-tippy="gamevm.isChanged ? 'Game Details and Runs are currently updating' : ''">
                                 <div style="display:inline-block;">{{ gamevm.isChanged ? 'Updating' : 'Update' }}</div>
                                 <div v-if="gamevm.isChanged" class="icon-elipsis-container"><span class="icon-elipsis"></span></div>  
                             </div>

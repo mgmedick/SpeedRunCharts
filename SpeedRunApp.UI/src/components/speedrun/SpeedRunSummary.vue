@@ -15,7 +15,7 @@
                 </div>                    
             </div>
             <div class="col-auto ml-auto p-0 align-self-start">
-                <button class="btn btn-secondary detail" @click="showModal = true" style="font-size:12px;">Details</button>
+                <button class="btn btn-secondary btn-sm" @click="showModal = true" style="font-size:12px;">Details</button>
             </div>
         </div>
         <div class="pt-1 d-flex">

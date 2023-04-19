@@ -12,10 +12,13 @@ namespace SpeedRunApp.Model.ViewModels
         {
             CategoryName = run.CategoryName;
             CategoryTypeID = run.CategoryTypeID;
+            IsMiscellaneous = run.IsMiscellaneous;
             LevelName = run.LevelName;
         }
+         
         public string CategoryName { get; set; }
         public int CategoryTypeID { get; set; }
+        public bool IsMiscellaneous { get; set; }
         public string LevelName { get; set; }      
     }      
 }

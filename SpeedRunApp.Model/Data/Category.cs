@@ -4,5 +4,6 @@
     {
         public int CategoryTypeID { get; set; }
         public bool IsTimerAsc { get; set; }
+        public bool IsMisc { get; set; }
     }
 }

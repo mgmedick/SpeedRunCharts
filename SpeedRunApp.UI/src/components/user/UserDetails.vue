@@ -39,7 +39,7 @@
                         </table>
                     </div>
                     <div class="col-auto ml-auto">
-                        <div class="btn btn-primary" @click="showUpdateUserModal = uservm.isChanged ? false : true" :class="{ 'disabled' : uservm.isChanged }" v-tippy="uservm.isChanged ? 'User Details and Runs are currently updating' : ''">
+                        <div class="btn btn-secondary" @click="showUpdateUserModal = uservm.isChanged ? false : true" :class="{ 'disabled' : uservm.isChanged }" v-tippy="uservm.isChanged ? 'User Details and Runs are currently updating' : ''">
                             <div style="display:inline-block;">{{ uservm.isChanged ? 'Updating' : 'Update' }}</div>
                             <div v-if="uservm.isChanged" class="icon-elipsis-container"><span class="icon-elipsis"></span></div>  
                         </div>

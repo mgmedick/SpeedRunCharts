@@ -102,34 +102,37 @@
 
                         var time;
                         var key;
-                        var percent;
                         var values = allSpeedRunTimes.filter((x, i) => { return i <= index });
 
                         if (index >= allSpeedRunTimes.length - 1 || percNum > maxPerc || i == (maxNumCategories - 1)) {
-                            values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > prevTotal });
-                            percent = Math.ceil((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = (this.istimerasc ? '<= ' : '>= ') + formatTime(timeFormat, prevTime) + " (" + percent + "%)";
-                            chartDataObj[key] = values;
+                            values = allSpeedRunTimes.length == 1 ? allSpeedRunTimes : allSpeedRunTimes.filter((x, i) => { return i > (prevTotal - 1) });
+                            key = (this.istimerasc ? '< ' : '> ') + formatTime(timeFormat, prevTime);
+                            chartDataObj[key] = { value: values.length };
                             break;
                         } else {
                             time = this.showmilliseconds ? allSpeedRunTimes[index].primaryTimeMilliseconds : allSpeedRunTimes[index].primaryTimeSeconds;
-                            percent = Math.trunc((values.length / allSpeedRunTimes.length) * 100) || 0;
-                            key = (this.istimerasc ? '> ' : '< ') + formatTime(timeFormat, time) + " (" + percent + "%)";
+                            key = (this.istimerasc ? '>= ' : '<= ') + formatTime(timeFormat, time);
 
                             if (index != prevIndex) {
-                                chartDataObj[key] = values;
+                                chartDataObj[key] = { value: values.length };
                             }
                         }
 
-                        prevTotal = values.length - 1;
+                        prevTotal = values.length;
                         prevPercNum = percNum;
                         prevIndex = index;
                         prevTime = time;
                     }
 
+                    var total = 0;
+                    Object.entries(chartDataObj).forEach(i => {
+                        total += i[1].value;
+                    });
+
                     dataset = Object.entries(chartDataObj)
                         .map(x => {
-                            return { label: x[0], value: x[1].length }
+                            var percent = Math.round((x[1].value / total) * 100) || 0;
+                            return { label: x[0], value: x[1].value, tooltext: x[1].value + (x[1].value == 1 ? ' run' : ' runs') + ', (' + percent + '%)' }
                         });
                 }
 
@@ -149,7 +152,7 @@
                             subCaption: this.title,
                             subCaptionFontSize: this.subCaptionFontSize,
                             subCaptionFontColor: "#888",
-                            showValues: 1,
+                            showValues: 0,
                             legendItemFontSize: this.legendItemFontSize,
                             legendItemFontColor: this.fontColor,
                             formatNumberScale: 0,
@@ -158,7 +161,6 @@
                             showPercentInTooltip: 0,
                             exportEnabled: 1,
                             showLegend: 1,
-                            showLabels: 0,
                             theme: "candy",
                             palettecolors: this.paletteColors.join(','),                            
                             bgColor: this.bgColor,

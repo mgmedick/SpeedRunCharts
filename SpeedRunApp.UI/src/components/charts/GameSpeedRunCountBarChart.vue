@@ -157,7 +157,7 @@
                             slantLabels: 1,                        
                             exportEnabled: 1,
                             showValues: 1,
-                            plotTooltext: "$seriesName, $value runs",
+                            plotTooltext: "$seriesName, $value run(s)",
                             valueFontSize: this.valueFontSize,
                             outCnvBaseFontSize: this.outCnvBaseFontSize,                                                      
                             numberOfDecimals: 0,

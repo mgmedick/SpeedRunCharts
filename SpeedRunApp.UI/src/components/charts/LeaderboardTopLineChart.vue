@@ -228,7 +228,7 @@
                             // legendNumColumns: 4,
                             alignLegendWithCanvas: 1,
                             lineThickness: 2,
-                            anchorRadius: 2,
+                            anchorRadius: 5,
                             anchorBgColor: this.bgColor,
                             //anchorAlpha: 0,
                             anchorBgAlpha: 100,

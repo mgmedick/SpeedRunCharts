@@ -141,7 +141,8 @@
 
                     if (Object.keys(chartObj).length > 0) {
                         var allLabel = this.categorytypeid == 0 ? 'All full game' : 'All level';
-                        var chartDataObj = { label: 'All', value: _alldata.length, tooltext: allLabel + ' ' + _alldata.length + ' runs (100%)', color: "#fff", alpha: 0 };
+                        var total = _alldata.length;
+                        var chartDataObj = { label: 'All', value: _alldata.length, tooltext: allLabel + ' ' + total + (total == 1 ? ' run' : ' runs') + ' (100%)', color: "#fff", alpha: 0 };
                         this.setChartData(chartObj, chartDataObj, _alldata.length);
                         dataset.push(chartDataObj);
                     }
@@ -235,7 +236,7 @@
                     var count = chartObj[key].count;
                     var percent = prevcount > 0 ? Math.round((count / prevcount) * 100) : 0;
                     var currtooltext = tooltext + ', ' + key;
-                    var currtooltextwithcount = (currtooltext  + ', ' + count + ' runs (' + percent + '%)').replace(/(^, )|(, $)/g, '')
+                    var currtooltextwithcount = (currtooltext  + ', ' + count + (count == 1 ? ' run' : ' runs') + ' (' + percent + '%)').replace(/(^, )|(, $)/g, '')
                     var color = that.paletteColors[colorIndex];
                     var chartDataItem = { label: key, value: chartObj[key].count, tooltext: currtooltextwithcount, color: color };
                     if (chartDataItem.value > 0){

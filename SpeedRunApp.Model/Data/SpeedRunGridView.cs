@@ -17,6 +17,7 @@ namespace SpeedRunApp.Model.Data
         public string VariableValues { get; set; }
         public string Players { get; set; }
         public string Guests { get; set; }
+        public string VideoLinks { get; set; }
         public long? PrimaryTime { get; set; }
         public string Comment { get; set; }
         public DateTime? DateSubmitted { get; set; }

@@ -63,6 +63,19 @@ namespace SpeedRunApp.Model.ViewModels
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
+            {
+                VideoLinks = new List<string>();
+
+                foreach (var videoLink in run.VideoLinks.Split("^^"))
+                {
+                    if (!string.IsNullOrWhiteSpace(videoLink))
+                    {
+                        VideoLinks.Add(videoLink);                      
+                    }                    
+                }
+            }
+
             if (run.PrimaryTime.HasValue)
             {
                 PrimaryTime = new TimeSpan(run.PrimaryTime.Value);
@@ -98,10 +111,10 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return Players != null ? string.Join(",", Players.Select(i => i.Name)) : string.Empty;
+                return Players != null ? string.Join(", ", Players.Select(i => i.Name)) : string.Empty;
             }
-        }        
-
+        }
+        
         public string VerifyDateString
         {
             get

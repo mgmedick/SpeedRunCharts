@@ -1,28 +1,31 @@
 ﻿<template>
-    <div class="mt-3">        
+    <div class="mt-3">
         <div v-if="gridID == 0 || gridID == 1" class="row no-gutters pr-1">
-            <div class="col-auto">
-                <label class="tab-row-name pr-2">Show Misc:</label>
+            <div class="col">
+                <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-left'">
+                    <template v-slot:text>
+                        <span>
+                            <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                        </span>
+                    </template>
+                    <template v-slot:options>
+                        <div v-if="gridID == 0 || gridID == 1" class="dropdown-item">
+                            <div class="custom-control custom-switch">
+                                <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
+                                <label class="custom-control-label pl-1" for="chkShowMisc"><span class="pl-2">Show Misc</span></label>
+                            </div>                    
+                        </div>
+                        <div v-if="gridID == 0" class="dropdown-item">
+                            <div class="custom-control custom-switch">
+                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty">
+                                <label class="custom-control-label pl-1" for="chkHideEmpty"><span class="pl-2">Hide Empty</span></label>
+                            </div>                    
+                        </div>                        
+                    </template>
+                </button-dropdown>
             </div>
-            <div class="col align-self-center">
-                <div class="custom-control custom-switch">
-                    <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                    <label class="custom-control-label" for="chkShowMisc"></label>
-                </div>
-            </div>
-        </div> 
-        <div v-if="gridID == 0" class="row no-gutters pr-1">
-            <div class="col-auto">
-                <label class="tab-row-name pr-2">Hide Empty:</label>
-            </div>
-            <div class="col align-self-center">
-                <div class="custom-control custom-switch">
-                    <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty">
-                    <label class="custom-control-label" for="chkHideEmpty"></label>
-                </div>
-            </div>
-        </div>                
-        <div id="divGameTabContainer" class="row no-gutters pr-1">
+        </div>                               
+        <div id="divGameTabContainer" class="row no-gutters pr-1 pt-1">
             <div class="col tab-list">                
                 <ul class="nav nav-pills">
                     <li class="nav-item py-1 pr-1">

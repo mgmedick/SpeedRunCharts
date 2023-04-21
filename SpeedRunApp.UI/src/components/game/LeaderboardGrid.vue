@@ -7,10 +7,27 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="mt-2">
             <div class="row no-gutters pr-1">
-                <div class="col-auto ml-auto">
-                    <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                <div class="col-auto ml-auto pr-1">
+                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
+                        <template v-slot:text>
+                            <span>
+                                <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                            </span>
+                        </template>
+                        <template v-slot:options>
+                            <div class="dropdown-item">
+                                <div class="custom-control custom-switch">
+                                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
+                                    <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
+                                </div>                    
+                            </div>                      
+                        </template>
+                    </button-dropdown>
+                </div>
+                <div class="col-auto">
+                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>Export</span>
                         </template>
@@ -22,7 +39,7 @@
                     </button-dropdown>
                 </div>                                                                
             </div>    
-            <div class="mt-2 grid-container" style="min-height:150px;">             
+            <div class="mt-1 grid-container" style="min-height:150px;">             
                 <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
                 <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                     <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
@@ -85,6 +102,7 @@
                 loading: true,
                 speedRunID: this.speedrunid,
                 selectedSpeedRunID: '',
+                showAllData: this.showalldata,
                 showDetailModal: false,
                 pageSize: 100
             }
@@ -92,7 +110,10 @@
         watch: {
             showalldata: function (val, oldVal) {
                 this.loadData();
-            }
+            },
+            showAllData: function (val, oldVal) {
+                this.$emit('update:showalldata', val); 
+            }              
         },                     
         mounted: function() {
             polyfill({

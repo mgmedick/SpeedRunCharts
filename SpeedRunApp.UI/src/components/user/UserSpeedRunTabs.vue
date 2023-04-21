@@ -7,7 +7,7 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div class="row no-gutters pr-1 pt-1 pb-0">
+        <div class="row no-gutters pr-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
                     <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
@@ -26,32 +26,37 @@
                 </ul>
             </div>                    
         </div>
-        <div class="row no-gutters pr-1 pt-0">
-            <div class="col-auto pr-2">
-                <i class="fas fa-info-circle fa-sm" v-tippy="'Hide obsolete runs to see Personal Bests'"></i>&nbsp;<label class="tab-row-name">Show Obsolete:</label>
+        <div class="row no-gutters">
+            <div class="col-auto ml-auto">
+                <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
+                    <template v-slot:text>
+                        <span>
+                            <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                        </span>
+                    </template>
+                    <template v-slot:options>
+                        <div class="dropdown-item">
+                            <div class="custom-control custom-switch">
+                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
+                                <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input id="chkShowWR" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showWR">
+                                <label class="custom-control-label pl-1" for="chkShowWR"><span class="pl-2">Show WRs Only</span></label>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
+                                <label class="custom-control-label pl-1" for="chkShowMisc"><span class="pl-2">Show Misc</span></label>
+                            </div>                    
+                        </div>
+                    </template>
+                </button-dropdown>
             </div>
-            <div class="col align-self-center">
-                <div class="custom-control custom-switch">
-                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                    <label class="custom-control-label" for="chkShowAllData"></label>
-                </div>
-            </div>                                                
-        </div>  
-        <div class="row no-gutters pr-1 pt-0">
-            <div class="col-auto pr-2">
-                <label class="tab-row-name">Show Misc:</label>
-            </div>
-            <div class="col align-self-center">
-                <div class="custom-control custom-switch">
-                    <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                    <label class="custom-control-label" for="chkShowMisc"></label>
-                </div>
-            </div>                                                
-        </div>                
+        </div>             
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
-                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous)).length > 0">
+                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous) && (!showWR || item.rank == 1)).length > 0">
                         <div class="row no-gutters">
                             <div class="col-1 p-0" style="max-width:37px;">
                                 <div class="img-round">
@@ -62,7 +67,7 @@
                                 <h6 class="font-weight-semibold mb-0"><a :href="'/Game/GameDetails/' + game.abbr" class="text-primary">{{ game.name }}</a></h6>
                             </div>
                         </div>
-                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc"></user-speedrun-grid>
+                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc" :showwr="showWR"></user-speedrun-grid>
                     </div>
                 </div>
             </div>
@@ -86,6 +91,7 @@
                 categoryTypeID: '',
                 showAllData: false,
                 showMisc: true,
+                showWR: false,
                 showDetailModal: false,
                 loading: true
             }

@@ -10,7 +10,7 @@
         <div>  
             <div class="row no-gutters pr-1">
                 <div class="col-auto ml-auto">
-                    <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-right'">
+                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>Export</span>
                         </template>

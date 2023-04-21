@@ -10,7 +10,7 @@
         <div class="table-responsive mt-2">
             <table class="table table-sm table-dark">
                 <tbody>
-                    <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest) && (showmisc || !i.isMiscellaneous))" :key="item.id">
+                    <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest) && (showmisc || !i.isMiscellaneous) && (!showwr || i.rank == 1))" :key="item.id">
                         <td style="width: 5%; vertical-align: middle;">
                             <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
                                 <div class="d-table-row">
@@ -75,6 +75,7 @@
             showmilliseconds: Boolean,
             showalldata: Boolean,
             showmisc: Boolean,
+            showwr: Boolean,
             variables: Array    
         },
         data() {

@@ -59,17 +59,20 @@ namespace SpeedRunApp.Model.ViewModels
                 }
 
                 Levels = new List<Level>();
-                var levelCategories = Categories.Where(i => i.CategoryTypeID == (int)CategoryType.Level).ToList();
-                foreach (var levelCategory in levelCategories) {
-                    foreach (var gameLevel in GameLevels)
-                    {
-                        var level = new Level
+                var levelCategories = Categories?.Where(i => i.CategoryTypeID == (int)CategoryType.Level).ToList();
+                if (levelCategories != null)
+                {
+                    foreach (var levelCategory in levelCategories) {
+                        foreach (var gameLevel in GameLevels)
                         {
-                            ID = gameLevel.ID,
-                            Name = gameLevel.Name,
-                            CategoryID = levelCategory.ID
-                        };
-                        Levels.Add(level);
+                            var level = new Level
+                            {
+                                ID = gameLevel.ID,
+                                Name = gameLevel.Name,
+                                CategoryID = levelCategory.ID
+                            };
+                            Levels.Add(level);
+                        }
                     }
                 }
             }

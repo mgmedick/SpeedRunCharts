@@ -93,8 +93,11 @@ namespace SpeedRunApp.MVC.Controllers
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return Redirect(Request.Headers["Referer"].ToString());
+            var baseUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
+            var refUrl = Request.Headers["Referer"].ToString();
+            var url = !string.IsNullOrWhiteSpace(refUrl) ? refUrl : baseUrl;
+            
+            return Redirect(url);
         }
 
         [HttpGet]

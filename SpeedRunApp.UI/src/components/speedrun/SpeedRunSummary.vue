@@ -1,6 +1,6 @@
 ﻿<template>
-    <div class="speedRunSummary p-2">
-        <div class="row no-gutters">
+    <div class="speedRunSummary">
+        <div class="row no-gutters p-2">
             <div class="col-1 p-0 align-self-center" style="max-width:37px;">
                 <div class="img-round">
                     <img :src="item.gameCoverImageLink" class="img-fluid" alt="Responsive image">
@@ -18,7 +18,7 @@
                 <button class="btn btn-secondary btn-sm" @click="showModal = true" style="font-size:12px;">Details</button>
             </div>
         </div>
-        <div class="pt-2 d-flex">
+        <div class="p-2 d-flex">
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
@@ -60,7 +60,7 @@
                 </div>                  
             </div>                    
         </div>
-        <div class="body pt-2 show-md">
+        <div class="body show-md">
             <div v-if="!showVideo" @click="showVideo = !showVideo;">
                 <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
                     <div class="embed-responsive embed-responsive-16by9">

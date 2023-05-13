@@ -62,20 +62,45 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUserSpeedRunTabsAndGridData(int userID, int? speedRunID)
+        public JsonResult GetGameChartTabs(int gameID)
+        {
+            var tabVM = _gameService.GetGameChartTabs(gameID);
+
+           return Json(tabVM);
+        }
+ 
+
+        [HttpGet]
+        public JsonResult GetUserSpeedRunTabsAndData(int userID, int? speedRunID)
         {
             UserSpeedRunTabViewModel tabVM = null;
             try
             {
-                tabVM = _gameService.GetUserSpeedRunTabsAndGridData(userID, speedRunID);
+                tabVM = _gameService.GetUserSpeedRunTabsAndData(userID, speedRunID);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetUserSpeedRunTabsAndGridData UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+                _logger.Error(ex, "GetUserSpeedRunTabsAndData UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
             }
 
             return Json(tabVM);
         }
+
+        [HttpGet]
+        public JsonResult GetUserChartTabsAndData(int userID)
+        {
+            UserChartTabViewModel tabVM = null;
+            try
+            {
+                tabVM = _gameService.GetUserChartTabsAndData(userID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetUserChartTabsAndData UserID: {@UserID}", userID);
+            }
+
+            return Json(tabVM);
+        }        
         
        [HttpPost]
         public JsonResult SetGameIsChanged(int gameID)

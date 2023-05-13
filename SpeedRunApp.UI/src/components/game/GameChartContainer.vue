@@ -125,7 +125,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetGameChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid } })
+                axios.get('/SpeedRun/GetGameSummaryChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

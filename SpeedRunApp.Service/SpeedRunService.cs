@@ -103,6 +103,27 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
+        public IEnumerable<SpeedRunChartViewModel> GetGameSummaryChartData(int gameID, int categoryTypeID)
+        {
+            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && ((categoryTypeID == 0 && !i.LevelID.HasValue) || (categoryTypeID == 1 && i.LevelID.HasValue)))
+                                    .OrderBy(i => i.CategoryID)
+                                    .ThenBy(i => i.LevelID)
+                                    .ThenBy(i => i.SubCategoryVariableValueIDs)
+                                    .ToList();
+
+            var runVMs = runs.Select(i => new SpeedRunChartViewModel(i)).ToList();
+
+            return runVMs;
+        }
+
+        public IEnumerable<SpeedRunChartViewModel> GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
+        {
+            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs).OrderBy(i => i.PrimaryTime).ToList();
+            var runVMs = runs.Select(i => new SpeedRunChartViewModel(i)).ToList();
+
+            return runVMs;
+        }  
+
         public IEnumerable<SpeedRunGridUserViewModel> GetUserSpeedRunGridData(int userID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridUserViews(i => i.UserID == userID).ToList();            
@@ -128,9 +149,18 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID)
+        public IEnumerable<SpeedRunChartViewModel> GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
         {
-            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID)
+            var runs = _speedRunRepo.GetSpeedRunChartUserViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.UserID == userID).OrderByDescending(i => i.ID).ToList();     
+            var runVMs = runs.Select(i => new SpeedRunChartViewModel((SpeedRunChartView)i)).ToList();
+
+            return runVMs;
+        }
+
+        public IEnumerable<SpeedRunChartViewModel> GetUserSummaryChartData(int userID)
+        {
+            var runs = _speedRunRepo.GetSpeedRunChartUserViews(i => i.UserID == userID)
+                                    .OrderBy(i => i.GameID)
                                     .OrderBy(i => i.CategoryID)
                                     .ThenBy(i => i.LevelID)
                                     .ThenBy(i => i.SubCategoryVariableValueIDs)
@@ -140,22 +170,6 @@ namespace SpeedRunApp.Service
 
             return runVMs;
         }
-
-        public IEnumerable<SpeedRunChartViewModel> GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
-        {
-            var runs = _speedRunRepo.GetSpeedRunChartViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs).OrderBy(i => i.PrimaryTime).ToList();
-            var runVMs = runs.Select(i => new SpeedRunChartViewModel(i)).ToList();
-
-            return runVMs;
-        }  
-
-        public IEnumerable<SpeedRunChartViewModel> GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunChartUserViews(i => i.GameID == gameID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.UserID == userID).OrderByDescending(i => i.ID).ToList();     
-            var runVMs = runs.Select(i => new SpeedRunChartViewModel((SpeedRunChartView)i)).ToList();
-
-            return runVMs;
-        }                      
 
         public ImportStatusViewModel GetImportStatus()
         {

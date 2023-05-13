@@ -6,12 +6,18 @@
                     <li class="nav-item py-1 pr-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Runs" }}</a>
                     </li>
+                    <li class="nav-item py-1 pr-1">
+                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>
+                    </li>                    
                 </ul>
             </div>
         </div>
         <div v-if="gridID == 0">
             <user-speedrun-tabs :id="id" :speedrunid="speedrunid"></user-speedrun-tabs>
         </div>
+        <div v-else>
+            <user-chart-tabs :id="id"></user-chart-tabs>
+        </div>           
     </div>
 </template>
 <script>

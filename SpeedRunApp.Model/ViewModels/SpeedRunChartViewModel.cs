@@ -12,7 +12,6 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             GameID = run.GameID;
-            CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;            
@@ -54,7 +53,6 @@ namespace SpeedRunApp.Model.ViewModels
         
         public int ID { get; set; }
         public int GameID { get; set; }
-        public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }

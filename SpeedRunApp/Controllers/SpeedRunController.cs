@@ -65,9 +65,9 @@ namespace SpeedRunApp.MVC.Controllers
         }
         
         [HttpGet]
-        public JsonResult GetGameChartData(int gameID, int categoryTypeID)
+        public JsonResult GetGameSummaryChartData(int gameID, int categoryTypeID)
         {
-            var results = _speedRunService.GetGameChartData(gameID, categoryTypeID);
+            var results = _speedRunService.GetGameSummaryChartData(gameID, categoryTypeID);
 
             return Json(results);
         }    
@@ -86,6 +86,6 @@ namespace SpeedRunApp.MVC.Controllers
             var results = _speedRunService.GetUserSpeedRunChartData(gameID, categoryID, levelID, subCategoryVariableValueIDs, userID);
 
             return Json(results);
-        }                         
+        }                              
     }
 }

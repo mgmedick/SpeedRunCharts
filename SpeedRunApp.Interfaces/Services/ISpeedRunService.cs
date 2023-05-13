@@ -13,10 +13,11 @@ namespace SpeedRunApp.Interfaces.Services
         SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID);
         IEnumerable<SpeedRunGridViewModel> GetLeaderboardGridData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData);
         IEnumerable<WorldRecordGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID);
-        IEnumerable<SpeedRunGridUserViewModel> GetUserSpeedRunGridData(int userID);      
-        IEnumerable<SpeedRunChartViewModel> GetGameChartData(int gameID, int categoryTypeID);  
+        IEnumerable<SpeedRunChartViewModel> GetGameSummaryChartData(int gameID, int categoryTypeID);  
         IEnumerable<SpeedRunChartViewModel> GetLeaderboardChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs);     
-        IEnumerable<SpeedRunChartViewModel> GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID);        
+        IEnumerable<SpeedRunGridUserViewModel> GetUserSpeedRunGridData(int userID);
+        IEnumerable<SpeedRunChartViewModel> GetUserSpeedRunChartData(int gameID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int userID);  
+        IEnumerable<SpeedRunChartViewModel> GetUserSummaryChartData(int userID);              
         ImportStatusViewModel GetImportStatus();
     }
 }

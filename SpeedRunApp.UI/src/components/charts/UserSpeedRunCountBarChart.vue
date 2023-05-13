@@ -18,17 +18,12 @@
     FusionCharts.addDep(Column2D, CandyTheme);
 
     export default {
-        name: "GameSpeedRunCountBarChart",
+        name: "UserSpeedRunCountBarChart",
         emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,
-            categories: Array,
-            levels: Array,
-            variables: Array,
+            games: Array,
             categorytypeid: String,
-            categoryid: String,           
-            showmilliseconds: Boolean,
-            subcaption: String,
             ismodal: Boolean,
             chartconainerid: String
         },
@@ -42,17 +37,11 @@
                 return this.$el.clientWidth > 992;
             },                
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts';
+                return (this.categorytypeid == 0 ? 'Game' : 'Level') + ' Run Counts';
             },                            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;
-            },          
-            subCaption: function () {
-                return this.subcaption;
-            },                          
-            subCaptionFontSize: function () {
-                return this.isMediaLarge ? 12 : 10;
-            },                     
+            },                             
             labelFontSize: function () {
                 return this.isMediaLarge ? 12 : 10;
             },                    
@@ -89,34 +78,35 @@
                 var that = this;
                 var dataset = [];
                 var chartObj = {};
-                // var categories = [];
 
                 if (this.tabledata?.length > 0) {
                     var _alldata = JSON.parse(JSON.stringify(this.tabledata));
 
                     if (this.categorytypeid == 0) {
-                        this.categories.filter(i => i.categoryTypeID == that.categorytypeid).forEach(category => {
-                            var categoryName = category.name.replace(/( \(empty\)$)/g, '');                            
-                            var _data = _alldata.filter(i => i.categoryID == category.id);   
+                        this.games.filter(i => i.categories.filter(i=>i.categoryTypeID == that.categorytypeid).length > 0).forEach(game =>{
+                            var categories = game.categories.filter(i=>i.categoryTypeID == that.categorytypeid).map(i => { return i.id });
+                            var _data = _alldata.filter(i => i.gameID == game.id && categories.indexOf(i.categoryID) > -1);
 
                             if (_data.length > 0) {
-                                that.setChartObj(_data, chartObj, categoryName);
-                            } 
+                                that.setChartObj(_data, chartObj, game.name);
+                            }
                         });
                     } else {
-                        this.levels.filter(i => i.categoryID == that.categoryid).forEach(level => {    
-                            var levelName = level.name.replace(/( \(empty\)$)/g, ''); 
-                            var _data = _alldata.filter(i => i.categoryID == that.categoryid && i.levelID == level.id);
+                        this.games.filter(i => i.categories.filter(i=>i.categoryTypeID == that.categorytypeid).length > 0).forEach(game =>{
+                            game.levels.forEach(level => {    
+                                var levelName = level.name.replace(/( \(empty\)$)/g, ''); 
+                                var _data = _alldata.filter(i => i.gameID == game.id && i.levelID == level.id);
 
-                            if (_data.length > 0) {
-                                that.setChartObj(_data, chartObj, levelName);
-                            } 
+                                if (_data.length > 0) {
+                                    that.setChartObj(_data, chartObj, game.name + ", " + levelName);
+                                } 
+                            });
                         });                      
                     }
 
                     if (Object.keys(chartObj).length > 0) {
                         dataset = Object.entries(chartObj).map(x => {
-                            return { label: x[0], value: x[1].value }
+                            return { label: x[0], value: x[1].count }
                         });                        
                     }                    
                 }
@@ -134,9 +124,6 @@
                             captionAlignment:"center",
                             captionFontColor: this.fontColor,
                             alignCaptionWithCanvas: 0,                                                     
-                            subCaption: this.subCaption,
-                            subCaptionFontSize: this.subCaptionFontSize,
-                            subCaptionFontColor: "#888",
                             xAxis: '',
                             yAxis: 'Total Runs',  
                             showZeroPlaneValue: 0,
@@ -161,7 +148,7 @@
                             textOutline: 1,
                             baseFontColor: this.fontColor,
                             labelFontColor: this.fontColor,
-                            outCnvBaseFontColor: this.fontColor
+                            outCnvBaseFontColor: this.fontColor                            
                         },
                         data: dataset
                     }
@@ -174,7 +161,7 @@
 
                 data.forEach(item => {
                     chartObj[seriesName] = chartObj[seriesName] || {};
-                    chartObj[seriesName] = { value: (chartObj[seriesName]?.value ?? 0) + 1 };
+                    chartObj[seriesName] = { count: (chartObj[seriesName]?.count ?? 0) + 1 };
                 });
                 
                 return chartObj;

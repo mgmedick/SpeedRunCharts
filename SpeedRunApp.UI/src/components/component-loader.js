@@ -37,6 +37,8 @@ import userTabs from './user/UserTabs.vue';
 import userSpeedRunTabs from './user/UserSpeedRunTabs.vue';
 import userSpeedRunGrid from './user/UserSpeedRunGrid.vue';
 import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
+import userChartTabs from './user/UserChartTabs.vue';
+import userChartContainer from './user/UserChartContainer.vue';
 
 import gameSpeedRunCountDonutChart from './charts/GameSpeedRunCountDonutChart.vue';
 import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue';
@@ -45,6 +47,9 @@ import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue'
 import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
 import leaderboardTopLineChart from './charts/LeaderboardTopLineChart.vue';
 import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
+import userSpeedRunCountDonutChart from './charts/UserSpeedRunCountDonutChart.vue';
+import userSpeedRunCountBarChart from './charts/UserSpeedRunCountBarChart.vue';
+import userSpeedRunCountLineChart from './charts/UserSpeedRunCountLineChart.vue';
 import userSpeedRunPercentileChart from './charts/UserSpeedRunPercentileChart.vue';
 import userSpeedRunTopChart from './charts/UserSpeedRunTopChart.vue';
 import userSpeedRunPersonalBestChart from './charts/UserSpeedRunPersonalBestChart.vue';
@@ -80,7 +85,9 @@ export default {
         app.component("user-speedrun-grid", userSpeedRunGrid);
         app.component("user-speedrun-tabs", userSpeedRunTabs);
         app.component("user-speedrun-chart-container", userSpeedRunChartContainer);
-                
+        app.component("user-chart-tabs", userChartTabs);
+        app.component("user-chart-container", userChartContainer);
+        
         app.component("game-speedrun-count-doughnut-chart", gameSpeedRunCountDonutChart);
         app.component("game-speedrun-count-line-chart", gameSpeedRunCountLineChart);
         app.component("game-speedrun-count-bar-chart", gameSpeedRunCountBarChart);
@@ -88,7 +95,10 @@ export default {
         app.component("leaderboard-percentile-chart", leaderboardPercentileChart);
         app.component("leaderboard-top-chart", leaderboardTopChart);
         app.component("leaderboard-top-line-chart", leaderboardTopLineChart);
-        
+   
+        app.component("user-speedrun-count-donut-chart", userSpeedRunCountDonutChart);         
+        app.component("user-speedrun-count-bar-chart", userSpeedRunCountBarChart);        
+        app.component("user-speedrun-count-line-chart", userSpeedRunCountLineChart);         
         app.component("user-speedrun-personalbest-chart", userSpeedRunPersonalBestChart);
         app.component("user-speedrun-percentile-chart", userSpeedRunPercentileChart);
         app.component("user-speedrun-top-chart", userSpeedRunTopChart);

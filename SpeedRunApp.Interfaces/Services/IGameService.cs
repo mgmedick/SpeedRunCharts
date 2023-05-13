@@ -15,7 +15,9 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SearchResult> SearchGames(string searchText);
         LeaderboardTabViewModel GetLeaderboardTabs(int gameID, int? speedRunID = null);
         WorldRecordTabViewModel GetWorldRecordTabs(int gameID);
-        UserSpeedRunTabViewModel GetUserSpeedRunTabsAndGridData(int userID, int? speedRunID = null);        
+        GameChartTabViewModel GetGameChartTabs(int gameID);
+        UserSpeedRunTabViewModel GetUserSpeedRunTabsAndData(int userID, int? speedRunID = null);   
+        UserChartTabViewModel GetUserChartTabsAndData(int userID);     
         List<string> SetGameIsChanged(int gameID);
     }
 }

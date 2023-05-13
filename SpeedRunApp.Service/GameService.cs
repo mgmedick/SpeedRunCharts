@@ -118,7 +118,18 @@ namespace SpeedRunApp.Service
             return tabVM;
         }
 
-        public UserSpeedRunTabViewModel GetUserSpeedRunTabsAndGridData(int userID, int? speedRunID = null)
+        public GameChartTabViewModel GetGameChartTabs(int gameID)
+        {
+            var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
+            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var tabItems = GetGameTabs(new List<GameView>() { gamevw }, runs).ToList();   
+            FilterGameTabsByHasData(tabItems, true);                                                       
+            var tabVM = new GameChartTabViewModel(tabItems);
+
+            return tabVM;
+        }        
+
+        public UserSpeedRunTabViewModel GetUserSpeedRunTabsAndData(int userID, int? speedRunID = null)
         {
             var runVMs = _speedRunService.GetUserSpeedRunGridData(userID).ToList();            
             var runTabs = runVMs.Select(i=> new SpeedRunGridTabView() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
@@ -129,6 +140,20 @@ namespace SpeedRunApp.Service
             var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
             var tabVM = new UserSpeedRunTabViewModel(tabItems, categoryTypes, runVMs);
                        
+            return tabVM;
+        }
+        
+        public UserChartTabViewModel GetUserChartTabsAndData(int userID)
+        {
+            var runVMs = _speedRunService.GetUserSummaryChartData(userID).ToList();            
+            var runTabs = runVMs.Select(i=> new SpeedRunGridTabView() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
+            var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
+            var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
+            var tabItems = GetGameTabs(games, runTabs).ToList();
+            FilterGameTabsByHasData(tabItems, true);
+            var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
+            var tabVM = new UserChartTabViewModel(tabItems, categoryTypes, runVMs);
+
             return tabVM;
         }
 

@@ -25,51 +25,10 @@
                     </button-dropdown>                       
                 </ul>
             </div>                    
-        </div>
-        <div class="row no-gutters">
-            <div class="col-auto ml-auto">
-                <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                    <template v-slot:text>
-                        <span>
-                            <i class="fa fa-filter"></i><span class="pl-2">...</span>
-                        </span>
-                    </template>
-                    <template v-slot:options>
-                        <div class="dropdown-item">
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowWR" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showWR">
-                                <label class="custom-control-label pl-1" for="chkShowWR"><span class="pl-2">Show WRs Only</span></label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                                <label class="custom-control-label pl-1" for="chkShowMisc"><span class="pl-2">Show Misc</span></label>
-                            </div>                    
-                        </div>
-                    </template>
-                </button-dropdown>
-            </div>
-        </div>             
+        </div>            
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
-                    <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous) && (!showWR || item.rank == 1)).length > 0">
-                        <div class="row no-gutters">
-                            <div class="col-1 p-0" style="max-width:37px;">
-                                <div class="img-round">
-                                    <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
-                                </div>
-                            </div>                            
-                            <div class="col-11 pl-2 align-self-end">
-                                <h6 class="font-weight-semibold mb-0"><a :href="'/Game/GameDetails/' + game.abbr" class="text-primary">{{ game.name }}</a></h6>
-                            </div>
-                        </div>
-                        <user-speedrun-grid :userid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc" :showwr="showWR"></user-speedrun-grid>
-                    </div>
-                </div>
+                <user-chart-container :userid="id" :categorytypeid="categoryType.id.toString()" :items="items" :tabledata="tableData.filter(item => (categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID))"></user-chart-container>
             </div>
         </div>
     </div>
@@ -78,10 +37,9 @@
     import axios from 'axios';
 
     export default {
-        name: "UserSpeedRunTabs",
+        name: "UserChartTabs",
         props: {
-            id: String,
-            speedrunid: String
+            id: String
         },
         data() {
             return {
@@ -89,10 +47,6 @@
                 categoryTypes: [],
                 tableData: [],
                 categoryTypeID: '',
-                showAllData: false,
-                showMisc: true,
-                showWR: false,
-                showDetailModal: false,
                 loading: true
             }
         },   
@@ -108,7 +62,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetUserSpeedRunTabsAndData?userID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Game/GetUserChartTabsAndData?userID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

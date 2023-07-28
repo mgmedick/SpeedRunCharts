@@ -29,7 +29,7 @@ namespace SpeedRunCommon.Extensions
             }
         }
 
-        public static string ToShortString(this int num)
+        public static string ToShortString(this long num)
         {
             if (num > 999999999 || num < -999999999 )
             {
@@ -49,6 +49,6 @@ namespace SpeedRunCommon.Extensions
             {
                 return num.ToString(CultureInfo.InvariantCulture);
             }
-        }
+        }       
     }
 }

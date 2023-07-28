@@ -66,8 +66,8 @@ namespace SpeedRunApp.Model.ViewModels
                             VideoThumbnailLinks.Add(embeddedVideoLinkValue[1]);
                         }
 
-                        int viewCount;
-                        if (int.TryParse(embeddedVideoLinkValue[2], out viewCount) && viewCount > 0)
+                        long viewCount;
+                        if (Int64.TryParse(embeddedVideoLinkValue[2], out viewCount) && viewCount > 0)
                         {                     
                             ViewCountStrings.Add(viewCount.ToShortString());
                         }                        

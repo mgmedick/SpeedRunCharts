@@ -165,6 +165,11 @@ namespace SpeedRunApp.Service
             {
                 var gameTab = new GameTabViewModel(game);
                 SetGameTabHasData(gameTab, runs);
+                if (gameTab.SubCategoryVariablesTabs != null)
+                {
+                    gameTab.SubCategoryVariablesTabs = FilterGameTabSubCategoryVariablesByHasData(gameTab.SubCategoryVariablesTabs, true);
+                }
+
                 gameTabs.Add(gameTab);
             }
 
@@ -263,21 +268,40 @@ namespace SpeedRunApp.Service
 
                 if(tabItem.SubCategoryVariablesTabs != null && tabItem.SubCategoryVariablesTabs.Any())
                 {
-                    FilterGameTabSubCategoryVariablesByHasData(tabItem.SubCategoryVariablesTabs, hasData);
+                    tabItem.SubCategoryVariablesTabs = FilterGameTabSubCategoryVariablesByHasData(tabItem.SubCategoryVariablesTabs, hasData);
+                    FilterGameTabSubCategoryVariableValuesByHasData(tabItem.SubCategoryVariablesTabs, hasData);
                 }
             }   
         }
 
-        private void FilterGameTabSubCategoryVariablesByHasData(List<Variable> variables, bool hasData)
+        private List<Variable> FilterGameTabSubCategoryVariablesByHasData(List<Variable> variables, bool hasData)
         {
-            foreach(var variable in variables){
+            variables = variables.Where(x => x.HasData == hasData).ToList();
+ 
+            foreach (var variable in variables)
+            {
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        variableValue.SubVariables = FilterGameTabSubCategoryVariablesByHasData(variableValue.SubVariables.ToList(), hasData);
+                    }                    
+                }
+            }
+
+            return variables;
+        }
+
+        private void FilterGameTabSubCategoryVariableValuesByHasData(List<Variable> variables, bool hasData)
+        {
+            foreach(var variable in variables) {
                 variable.VariableValues = variable.VariableValues.Where(i => i.HasData == hasData).ToList();
-                
+
                 foreach (var variableValue in variable.VariableValues) {
                     if(variableValue.SubVariables != null && variableValue.SubVariables.Any()) {
-                        FilterGameTabSubCategoryVariablesByHasData(variableValue.SubVariables.ToList(), hasData);
+                        FilterGameTabSubCategoryVariableValuesByHasData(variableValue.SubVariables.ToList(), hasData);
                     }
-                }      
+                }                 
             } 
         }
 

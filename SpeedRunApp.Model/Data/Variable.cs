@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -13,6 +14,12 @@ namespace SpeedRunApp.Model.Data
         public int? LevelID { get; set; }
         public IEnumerable<VariableValue> VariableValues { get; set; }        
         public bool IsSingleCategory { get; set; }
+        public bool HasData {
+            get
+            {
+                return !VariableValues.All(x => !x.HasData);
+            }
+        }
         public object Clone()
         {
             Variable variable = (Variable)this.MemberwiseClone();

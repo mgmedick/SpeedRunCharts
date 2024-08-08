@@ -23,16 +23,8 @@ namespace SpeedRunApp.Repository
                 return results;
             }
         }
-
-        public IEnumerable<IDNamePair> RunStatusTypes()
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<IDNamePair>("SELECT ID, Name FROM tbl_RunStatusType;").ToList();
-            }
-        }
         
-        public IEnumerable<SpeedRunListCategory> SpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
+        public IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
@@ -41,24 +33,6 @@ namespace SpeedRunApp.Repository
             }
         }
         
-        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViews(Expression<Func<SpeedRunGridView, bool>> predicate)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                var results = db.Query<SpeedRunGridView>().Where(predicate).ToList();
-                return results;
-            }
-        }
-        
-        public IEnumerable<WorldRecordGridView> GetWorldRecordGridViews(Expression<Func<WorldRecordGridView, bool>> predicate)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                var results = db.Query<WorldRecordGridView>().Where(predicate).ToList();
-                return results;
-            }
-        }    
-       
         public IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -68,38 +42,12 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SpeedRunGridUserView> GetSpeedRunGridUserViews(Expression<Func<SpeedRunGridUserView, bool>> predicate)
+        public IEnumerable<SpeedRunGridView> GetSpeedRunGridViews(Expression<Func<SpeedRunGridView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SpeedRunGridUserView>().Where(predicate).ToList();
+                var results = db.Query<SpeedRunGridView>().Where(predicate).ToList();
                 return results;
-            }
-        }
-
-        public IEnumerable<WorldRecordGridView> GetPersonalBestsByUserID(int gameID, int categoryTypeID, int? categoryID, int? levelID, int userID)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                var results = db.Query<WorldRecordGridView>("CALL GetPersonalBestsByUserID (@0, @1, @2, @3, @4);", gameID, categoryTypeID, categoryID, levelID, userID).ToList();
-
-                return results;
-            }
-        }
-
-        public IEnumerable<SpeedRunView> GetSpeedRunViews(Expression<Func<SpeedRunView, bool>> predicate)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<SpeedRunView>().Where(predicate).ToList();
-            }
-        }
-
-        public IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryViews(Expression<Func<SpeedRunSummaryView, bool>> predicate)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<SpeedRunSummaryView>().Where(predicate).ToList();
             }
         }
 
@@ -110,7 +58,24 @@ namespace SpeedRunApp.Repository
                 var results = db.Query<SpeedRunChartView>().Where(predicate).ToList();
                 return results;
             }
-        }        
+        }             
+
+        public IEnumerable<SpeedRunGridPlayerView> GetSpeedRunGridPlayerViews(Expression<Func<SpeedRunGridPlayerView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunGridPlayerView>().Where(predicate).ToList();
+                return results;
+            }
+        }
+
+        public IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryViews(Expression<Func<SpeedRunSummaryView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<SpeedRunSummaryView>().Where(predicate).ToList();
+            }
+        }
 
         public IEnumerable<SpeedRunChartUserView> GetSpeedRunChartUserViews(Expression<Func<SpeedRunChartUserView, bool>> predicate)
         {
@@ -125,7 +90,7 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<int?>("SELECT SpeedRunID FROM tbl_SpeedRun_SpeedRunComID WHERE SpeedRunComID = @0;", speedRunComID).FirstOrDefault();
+                return db.Query<int?>("SELECT Id FROM tbl_SpeedRun WHERE Code = @0;", speedRunComID).FirstOrDefault();
             }
         }               
     }

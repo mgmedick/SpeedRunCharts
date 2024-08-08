@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace SpeedRunApp.Interfaces.Services
 {
-    public interface IUserAccountService
+    public interface IUserService
     {
         Task SendActivationEmail(string email);
-        ActivateViewModel GetActivateUserAccount(string email, long expirationTime, string token);
-        void CreateUserAccount(string username, string pass);
-        IEnumerable<UserAccount> GetUserAccounts(Expression<Func<UserAccount, bool>> predicate);
-        IEnumerable<UserAccountView> GetUserAccountViews(Expression<Func<UserAccountView, bool>> predicate);        
+        ActivateViewModel GetActivateUser(string email, long expirationTime, string token);
+        void CreateUser(string username, string pass);
+        IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate);
+        IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);        
         Task SendResetPasswordEmail(string username);
         ChangePasswordViewModel GetChangePassword(string username, string email, long expirationTime, string token);
-        void ChangeUserAcctPassword(string username, string pass);
+        void ChangeUserPassword(string username, string pass);
         bool EmailExists(string email);
         bool PasswordMatches(string password, string username);
         bool UsernameExists(string username, bool activeFilter);
-        UserAccountViewModel GetUserAccount(int userID);
-        void SaveUserAccount(UserAccountViewModel userAcctVM, int currUserAcctID);
-        void UpdateIsDarkTheme(int currUserAccountID, bool isDarkTheme);
+        UserViewModel GetUser(int userID);
+        void SaveUser(UserViewModel userVM, int currUserID);
+        void UpdateIsDarkTheme(int currUserID, bool isDarkTheme);
         Task SendConfirmRegistrationEmail(string email, string username);
     }
 }

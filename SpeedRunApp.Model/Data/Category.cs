@@ -1,9 +1,17 @@
 ﻿namespace SpeedRunApp.Model.Data
 {
-    public class Category : TabItem
+    public class Category
     {
-        public int CategoryTypeID { get; set; }
-        public bool IsTimerAsc { get; set; }
-        public bool IsMisc { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }     
+        public string GameID { get; set; }              
+        public int CategoryTypeID { get; set; }         
+        public bool IsMiscellaneous { get; set; }
+        public bool isTimerAscending { get; set; }
+        public bool Deleted { get; set; }     
+
+        //Transient
+        public bool HasData { get; set; }           
     }
 }

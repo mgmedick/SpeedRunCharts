@@ -1,65 +1,25 @@
-﻿using SpeedRunApp.Model.Data;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.Model.ViewModels
 {
     public class UserViewModel
     {
-        public UserViewModel(UserView user)
+        public UserViewModel(UserView userView)
         {
-            ID = user.ID;
-            Name = user.Name;
-            Abbr = user.Abbr;
-            SignUpDate = user.SignUpDate;
-            IsChanged = user.IsChanged;
-            Location = user.Location;
-            SpeedRunComLink = user.SpeedRunComUrl;
-            TwitchProfile = user.TwitchProfileUrl;
-            HitboxProfile = user.HitboxProfileUrl;
-            YoutubeProfile = user.YoutubeProfileUrl;
-            TwitterProfile = user.TwitterProfileUrl;
-            SpeedRunsLiveProfile = user.SpeedRunsLiveProfileUrl;
-            ProfileImage = Task.Run<string>(async () => await ParseProfileImageLink(user.ProfileImageUrl)).Result;
-            TotalSpeedRuns = user.TotalSpeedRuns;
-            TotalWorldRecords = user.TotalWorldRecords;
-            TotalPersonalBests = user.TotalPersonalBests;
+            UserID = userView.UserID;
+            Username = userView.Username;
+            IsDarkTheme = userView.IsDarkTheme;
+            SpeedRunListCategoryIDs = string.IsNullOrWhiteSpace(userView.SpeedRunListCategoryIDs) ? new List<int>() : userView.SpeedRunListCategoryIDs.Split(",").Select(i => Convert.ToInt32(i)).ToList();
         }
 
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Abbr { get; set; }
-        public DateTime? SignUpDate { get; set; }
-        public bool IsChanged { get; set; }
-        public string Location { get; set; }
-        public string SpeedRunComLink { get; set; }
-        public string ProfileImage { get; set; }
-        public string TwitchProfile { get; set; }
-        public string HitboxProfile { get; set; }
-        public string YoutubeProfile { get; set; }
-        public string TwitterProfile { get; set; }
-        public string SpeedRunsLiveProfile { get; set; }
-        public int TotalSpeedRuns { get; set; }
-        public int TotalWorldRecords { get; set; }
-        public int TotalPersonalBests { get; set; }
-        private async Task<string> ParseProfileImageLink(string profileImageUrl)
-        {
-            string profileImageLink = profileImageUrl;
-
-            using (HttpClient client = new HttpClient())
-            {
-                using (var response = await client.GetAsync(profileImageUrl, HttpCompletionOption.ResponseHeadersRead))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        profileImageLink = null;
-                    }
-                }
-            }
-
-            return profileImageLink;
-        }
+        public int UserID { get; set; }
+        public string Username { get; set; }
+        public bool IsDarkTheme { get; set; }
+        public List<int> SpeedRunListCategoryIDs { get; set; }
+        public List<SpeedRunListCategory> SpeedRunListCategories { get; set; }
     }
 }
 

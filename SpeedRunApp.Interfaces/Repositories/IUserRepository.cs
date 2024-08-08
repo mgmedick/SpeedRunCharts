@@ -9,11 +9,13 @@ namespace SpeedRunApp.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate);
+        void SaveUser(User user);
         IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);
-        IEnumerable<SearchResult> SearchUsers(string searchText);
-        IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null);
-        IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs();
-        void UpdateUserIsChanged(User user);
+        void SaveUserSetting(UserSetting userSetting);
+        IEnumerable<UserSpeedRunListCategory> GetUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate);
+        void SaveUserSpeedRunListCategories(IEnumerable<UserSpeedRunListCategory> userSpeedRunListCategories);
+        void DeleteUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate);
     }
 }
 

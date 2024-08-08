@@ -28,11 +28,11 @@
                         <template v-for="(player, index) in item.players">                               
                             <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                 <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
-                                    <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
+                                    <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
                                 </span>
                             </span>
                             <span v-else class="username-text">
-                                <a :href="'/User/UserDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID">{{ player.name }}</a>
+                                <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID">{{ player.name }}</a>
                             </span>
                             <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
                         </template>

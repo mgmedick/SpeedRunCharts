@@ -22,13 +22,14 @@ namespace SpeedRunApp.MVC.Controllers
             _logger = logger;
         }
         
-        public ViewResult GameDetails(string ID, string speedRunID)
+        public ViewResult GameDetails(string ID, string speedRunCode)
         {
-            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);
+            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunCode);
 
             return View(gameDetailsVM);
         }
 
+        /*
         [HttpGet]
         public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
         {
@@ -36,18 +37,19 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(results);
         }
+        */
 
         [HttpGet]
-        public JsonResult GetLeaderboardTabs(int gameID, int? speedRunID)
+        public JsonResult GetLeaderboardTabs(int gameID, string speedRunCode)
         {
             LeaderboardTabViewModel gridTabVM = null;
             try
             {
-                gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunID);
+                gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunCode);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetLeaderboardTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+                _logger.Error(ex, "GetLeaderboardTabs GameID: {@GameID}, SpeedRunCode: {@SpeedRunCode}", gameID, speedRunCode);
             }
 
             return Json(gridTabVM);
@@ -71,55 +73,19 @@ namespace SpeedRunApp.MVC.Controllers
  
 
         [HttpGet]
-        public JsonResult GetUserSpeedRunTabsAndData(int userID, int? speedRunID)
+        public JsonResult GetPlayerSpeedRunTabsAndData(int playerID)
         {
-            UserSpeedRunTabViewModel tabVM = null;
+            PlayerSpeedRunTabViewModel tabVM = null;
             try
             {
-                tabVM = _gameService.GetUserSpeedRunTabsAndData(userID, speedRunID);
+                tabVM = _gameService.GetPlayerSpeedRunTabsAndData(playerID);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetUserSpeedRunTabsAndData UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
+                _logger.Error(ex, "GetPlayerSpeedRunTabsAndData PlayerID: {@PlayerID}", playerID);
             }
 
             return Json(tabVM);
-        }
-
-        [HttpGet]
-        public JsonResult GetUserChartTabsAndData(int userID)
-        {
-            UserChartTabViewModel tabVM = null;
-            try
-            {
-                tabVM = _gameService.GetUserChartTabsAndData(userID);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "GetUserChartTabsAndData UserID: {@UserID}", userID);
-            }
-
-            return Json(tabVM);
-        }        
-        
-       [HttpPost]
-        public JsonResult SetGameIsChanged(int gameID)
-        {
-            var success = false;
-            List<string> errorMessages = null;
-
-            try
-            {
-                errorMessages = _gameService.SetGameIsChanged(gameID);
-                success = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "SetGameIsChanged GameID: {@GameID}", gameID);
-                success = false;
-            }
-
-            return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]

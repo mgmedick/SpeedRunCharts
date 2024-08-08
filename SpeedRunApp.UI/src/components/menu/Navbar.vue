@@ -34,7 +34,7 @@
                                     <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                 </div>
                             </div>
-                            <a href="/UserAccount/UserAccountDetails" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="/User/UserDetails" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
                             <a href="/Home/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
@@ -136,7 +136,7 @@
                 var that = this;
 
                 if (this.isauth) {
-                    axios.post('/UserAccount/UpdateIsDarkTheme', null,{ params: { isDarkTheme: val } })
+                    axios.post('/User/UpdateIsDarkTheme', null,{ params: { isDarkTheme: val } })
                         .then((res) => {
                             if (res.data.success) {
                                 that.updateTheme(val);
@@ -196,7 +196,7 @@
                     action = "GameDetails"
                 } else {
                     controller = "User";
-                    action = "UserDetails"
+                    action = "PlayerDetails"
                 }
 
                 location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);

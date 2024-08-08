@@ -5,6 +5,11 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class LeaderboardTabViewModel
     {
+        public LeaderboardTabViewModel(IEnumerable<GameTabViewModel> tabItems)
+        {
+            TabItems = tabItems;
+        }
+
         public LeaderboardTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> exportTypes)
         {
             TabItems = tabItems;

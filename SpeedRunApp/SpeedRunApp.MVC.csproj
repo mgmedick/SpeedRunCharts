@@ -39,7 +39,7 @@
     <Content Remove="Templates\ConfirmRegistration.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="Views\SpeedRun\UserDetails.cshtml">
+    <Content Update="Views\SpeedRun\PlayerDetails.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\SpeedRun\SpeedRunDetails.cshtml">

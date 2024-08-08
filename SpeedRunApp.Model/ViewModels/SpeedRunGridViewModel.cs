@@ -11,14 +11,18 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunGridViewModel(SpeedRunGridView run)
         {
             ID = run.ID;
+            Code = run.Code;
             GameID = run.GameID;
+            CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             LevelID = run.LevelID;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
-            Rank = run.Rank;
-            Comment = run.Comment;
+            Rank = run.Rank;  
+            PrimaryTime = new TimeSpan(run.PrimaryTime);      
+            VariableValues = run.VariableValues;
+            VideoLinks = run.Videos;
 
             if (run.PlatformID.HasValue)
             {
@@ -26,64 +30,20 @@ namespace SpeedRunApp.Model.ViewModels
                 PlatformName = run.PlatformName;
             }
 
-            if (!string.IsNullOrWhiteSpace(run.VariableValues))
-            {
-                VariableValues = new Dictionary<int, int>();
-                foreach (var variableValue in run.VariableValues.Split(","))
-                {
-                    var values = variableValue.Split("|", 2);
-                    VariableValues.Add(Convert.ToInt32(values[0]), Convert.ToInt32(values[1]));
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.Players) || !string.IsNullOrWhiteSpace(run.Guests))
-            {
-                Players = new List<UserNameViewModel>();
-
-                if (!string.IsNullOrWhiteSpace(run.Players))
-                {
-                    foreach (var player in run.Players.Split("^^"))
-                    {
-                        var playerValue = player.Split("¦", 7);
-                        int playerID;
-                        int.TryParse(playerValue[0], out playerID);                               
-                        Players.Add(new UserNameViewModel { ID = playerID, Name = playerValue[1], Abbr = playerValue[2], ColorLight = playerValue[3], ColorToLight = playerValue[4], ColorDark = playerValue[5], ColorToDark = playerValue[6] });
-                    }
-                }
-
-                if (!string.IsNullOrWhiteSpace(run.Guests))
-                {
-                    foreach (var guest in run.Guests.Split("^^"))
-                    {
-                        var guestValue = guest.Split("¦", 3);
-                        int guestID;
-                        int.TryParse(guestValue[0], out guestID);
-                        Players.Add(new UserNameViewModel { ID = 0, Name = guestValue[1], Abbr = guestValue[2] });
-                    }
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.VideoLinks))
-            {
-                VideoLinks = new List<string>();
-
-                foreach (var videoLink in run.VideoLinks.Split("^^"))
-                {
-                    if (!string.IsNullOrWhiteSpace(videoLink))
-                    {
-                        VideoLinks.Add(videoLink);                      
-                    }                    
-                }
-            }
-
-            if (run.PrimaryTime.HasValue)
-            {
-                PrimaryTime = new TimeSpan(run.PrimaryTime.Value);
+            if (run.Players != null) {
+                Players = run.Players.Select(i => new UserNameViewModel() {ID = i.ID,
+                                                                            Name = i.Name,
+                                                                            ColorLight = i.ColorLight,
+                                                                            ColorToLight = i.ColorToLight,
+                                                                            ColorDark = i.ColorDark,
+                                                                            ColorToDark = i.ColorToDark}).ToList();
             }
         }
 
         public int ID { get; set; }
+        public string Code { get; set; }
         public int GameID { get; set; }
+        public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }
         public IDNamePair Platform { get; set; }

@@ -9,12 +9,12 @@ import modal from './shared/Modal.vue';
 import navbar from './menu/Navbar.vue';
 import importStatus from './menu/ImportStatus.vue';
 
-import userAccount from './useraccount/UserAccount.vue';
-import signUp from './useraccount/SignUp.vue';
-import activate from './useraccount/Activate.vue';
-import login from './useraccount/Login.vue';
-import resetPassword from './useraccount/ResetPassword.vue';
-import changePassword from './useraccount/ChangePassword.vue';
+import userSettings from './user/UserSettings.vue';
+import signUp from './user/SignUp.vue';
+import activate from './user/Activate.vue';
+import login from './user/Login.vue';
+import resetPassword from './user/ResetPassword.vue';
+import changePassword from './user/ChangePassword.vue';
 
 import speedRunListTab from './speedrun/SpeedRunListTab.vue';
 import speedRunList from './speedrun/SpeedRunList.vue';
@@ -32,13 +32,13 @@ import leaderboardChartContainer from './game/LeaderboardChartContainer.vue';
 import worldRecordTabs from './game/WorldRecordTabs.vue';
 import worldRecordGrid from './game/WorldRecordGrid.vue';
 
-import userDetails from './user/UserDetails.vue';
-import userTabs from './user/UserTabs.vue';
-import userSpeedRunTabs from './user/UserSpeedRunTabs.vue';
-import userSpeedRunGrid from './user/UserSpeedRunGrid.vue';
-import userSpeedRunChartContainer from './user/UserSpeedRunChartContainer.vue';
-import userChartTabs from './user/UserChartTabs.vue';
-import userChartContainer from './user/UserChartContainer.vue';
+import playerDetails from './player/PlayerDetails.vue';
+import playerTabs from './player/PlayerTabs.vue';
+import playerSpeedRunTabs from './player/PlayerSpeedRunTabs.vue';
+import playerSpeedRunGrid from './player/PlayerSpeedRunGrid.vue';
+import playerSpeedRunChartContainer from './player/PlayerSpeedRunChartContainer.vue';
+import playerChartTabs from './player/PlayerChartTabs.vue';
+import playerChartContainer from './player/PlayerChartContainer.vue';
 
 import gameSpeedRunCountDonutChart from './charts/GameSpeedRunCountDonutChart.vue';
 import gameSpeedRunCountLineChart from './charts/GameSpeedRunCountLineChart.vue';
@@ -47,12 +47,12 @@ import leaderboardPercentileChart from './charts/LeaderboardPercentileChart.vue'
 import leaderboardTopChart from './charts/LeaderboardTopChart.vue';
 import leaderboardTopLineChart from './charts/LeaderboardTopLineChart.vue';
 import leaderboardWorldRecordChart from './charts/LeaderboardWorldRecordChart.vue';
-import userSpeedRunCountDonutChart from './charts/UserSpeedRunCountDonutChart.vue';
-import userSpeedRunCountBarChart from './charts/UserSpeedRunCountBarChart.vue';
-import userSpeedRunCountLineChart from './charts/UserSpeedRunCountLineChart.vue';
-import userSpeedRunPercentileChart from './charts/UserSpeedRunPercentileChart.vue';
-import userSpeedRunTopChart from './charts/UserSpeedRunTopChart.vue';
-import userSpeedRunPersonalBestChart from './charts/UserSpeedRunPersonalBestChart.vue';
+import playerSpeedRunCountDonutChart from './charts/PlayerSpeedRunCountDonutChart.vue';
+import playerSpeedRunCountBarChart from './charts/PlayerSpeedRunCountBarChart.vue';
+import playerSpeedRunCountLineChart from './charts/PlayerSpeedRunCountLineChart.vue';
+import playerSpeedRunPercentileChart from './charts/PlayerSpeedRunPercentileChart.vue';
+import playerSpeedRunTopChart from './charts/PlayerSpeedRunTopChart.vue';
+import playerSpeedRunPersonalBestChart from './charts/PlayerSpeedRunPersonalBestChart.vue';
 
 export default {
     loadComponents() {
@@ -80,13 +80,13 @@ export default {
         app.component("worldrecord-tabs", worldRecordTabs);
         app.component("worldrecord-grid", worldRecordGrid);
 
-        app.component('userdetails', userDetails); 
-        app.component("user-tabs", userTabs);
-        app.component("user-speedrun-grid", userSpeedRunGrid);
-        app.component("user-speedrun-tabs", userSpeedRunTabs);
-        app.component("user-speedrun-chart-container", userSpeedRunChartContainer);
-        app.component("user-chart-tabs", userChartTabs);
-        app.component("user-chart-container", userChartContainer);
+        app.component('playerdetails', playerDetails); 
+        app.component("player-tabs", playerTabs);
+        app.component("player-speedrun-grid", playerSpeedRunGrid);
+        app.component("player-speedrun-tabs", playerSpeedRunTabs);
+        app.component("player-speedrun-chart-container", playerSpeedRunChartContainer);
+        app.component("player-chart-tabs", playerChartTabs);
+        app.component("player-chart-container", playerChartContainer);
         
         app.component("game-speedrun-count-doughnut-chart", gameSpeedRunCountDonutChart);
         app.component("game-speedrun-count-line-chart", gameSpeedRunCountLineChart);
@@ -96,12 +96,12 @@ export default {
         app.component("leaderboard-top-chart", leaderboardTopChart);
         app.component("leaderboard-top-line-chart", leaderboardTopLineChart);
    
-        app.component("user-speedrun-count-donut-chart", userSpeedRunCountDonutChart);         
-        app.component("user-speedrun-count-bar-chart", userSpeedRunCountBarChart);        
-        app.component("user-speedrun-count-line-chart", userSpeedRunCountLineChart);         
-        app.component("user-speedrun-personalbest-chart", userSpeedRunPersonalBestChart);
-        app.component("user-speedrun-percentile-chart", userSpeedRunPercentileChart);
-        app.component("user-speedrun-top-chart", userSpeedRunTopChart);
+        app.component("player-speedrun-count-donut-chart", playerSpeedRunCountDonutChart);         
+        app.component("player-speedrun-count-bar-chart", playerSpeedRunCountBarChart);        
+        app.component("player-speedrun-count-line-chart", playerSpeedRunCountLineChart);         
+        app.component("player-speedrun-personalbest-chart", playerSpeedRunPersonalBestChart);
+        app.component("player-speedrun-percentile-chart", playerSpeedRunPercentileChart);
+        app.component("player-speedrun-top-chart", playerSpeedRunTopChart);
 
         app.component("reset-password", resetPassword);
         app.component("change-password", changePassword);
@@ -111,7 +111,7 @@ export default {
         app.component("speedrun-edit", speedRunEdit);
         app.component("speedrun-list", speedRunList);
         app.component("speedrun-summary", speedRunSummary);
-        app.component("useraccount", userAccount);
+        app.component("user-settings", userSettings);
         app.component("import-status", importStatus);
 
         app.mount('#vue-app');

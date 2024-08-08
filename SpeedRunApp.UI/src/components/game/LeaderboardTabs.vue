@@ -51,10 +51,10 @@
                     <div v-if="categoryID == category.id">                                
                         <div v-if="categoryTypeID == 0">
                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                             </div>
                             <div v-else>                              
-                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
                             </div>
                         </div>
                         <div v-else>
@@ -80,10 +80,10 @@
                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                 <div v-if="levelID == level.id">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                                     </div>
                                     <div v-else>
-                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
         name: "LeaderboardTabs",
         props: {
             id: String,
-            speedrunid: String,
+            speedruncode: String,
             hideempty: Boolean,
             showmisc: Boolean
         },
@@ -113,7 +113,7 @@
                 levelID: '',
                 subCategoryVariableValueIDs: {},
                 variableIndex: 0,
-                speedRunID: this.speedrunid,
+                speedRunCode: this.speedruncode,
                 showCharts: true,
                 showMisc: this.showmisc,
                 showAllData: false,               
@@ -165,7 +165,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id + '&speedRunCode=' + this.speedruncode;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.game = res.data.tabItems[0];
@@ -255,7 +255,7 @@
                 var newSubCategoryVariableValueIDs = {};
                 this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs, 0);
                 this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
-                this.speedRunID = '';
+                this.speedRunCode = '';
             },
             resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs, count) {
                 var that = this;                                                                               

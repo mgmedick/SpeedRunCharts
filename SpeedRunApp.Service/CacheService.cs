@@ -17,41 +17,30 @@ namespace SpeedRunApp.Service
     public class CacheService : ICacheService
     {
         public IMemoryCache _cache { get; set; }
-        public IUserRepository _userRepo { get; set; }
+        public IPlayerRepository _playerRepo { get; set; }
         public IGameRepository _gameRepo { get; set; }
         public ISpeedRunRepository _speedRunRepo { get; set; }
-        public CacheService(IMemoryCache cache, IUserRepository userRepo, IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
+        public CacheService(IMemoryCache cache, IPlayerRepository playerRepo, IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
         {
             _cache = cache;
-            _userRepo = userRepo;
+            _playerRepo = playerRepo;
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
         }
 
+        /*
         public IEnumerable<User> GetUsers()
         {
             IEnumerable<User> users = null;
             if (!_cache.TryGetValue<IEnumerable<User>>("users", out users))
             {
-                users = _userRepo.GetUsers();
+                users = _playerRepo.GetUsers();
                 _cache.Set("users", users);
             }
 
             return users;
         }
         
-        public IEnumerable<IDNamePair> GetRunStatusTypes()
-        {
-            IEnumerable<IDNamePair> runStatusTypes = null;
-            if (!_cache.TryGetValue<IEnumerable<IDNamePair>>("runStatusTypes", out runStatusTypes))
-            {
-                runStatusTypes = _speedRunRepo.RunStatusTypes();
-                _cache.Set("runStatusTypes", runStatusTypes);
-            }
-
-            return runStatusTypes;
-        }
-
         public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()
         {
             IEnumerable<IDNameAbbrPair> gameIDNameAbbrs = null;
@@ -69,11 +58,12 @@ namespace SpeedRunApp.Service
             IEnumerable<IDNameAbbrPair> userIDNameAbbrs = null;
             if (!_cache.TryGetValue<IEnumerable<IDNameAbbrPair>>("userIDNameAbbrs", out userIDNameAbbrs))
             {
-                userIDNameAbbrs = _userRepo.GetUserIDNameAbbrs();
+                userIDNameAbbrs = _playerRepo.GetUserIDNameAbbrs();
                 _cache.Set("userIDNameAbbrs", userIDNameAbbrs);
             }
 
             return userIDNameAbbrs;
         }
+        */
     }
 }

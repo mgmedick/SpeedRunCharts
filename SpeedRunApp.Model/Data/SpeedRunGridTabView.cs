@@ -7,6 +7,7 @@ namespace SpeedRunApp.Model.Data
     public class SpeedRunGridTabView
     {
         public int ID { get; set; }
+        public string Code { get; set; }
         public int GameID { get; set; }
         public int CategoryID { get; set; }
         public int? LevelID { get; set; }

@@ -34,7 +34,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="src\components\UserAccountVue.vue" />
+    <Content Include="src\components\UserVue.vue" />
     <Content Include="src\components\SpeedRunGridChartVue.vue" />
     <Content Include="src\components\SpeedRunGridTabVariableVue.vue" />
     <Content Include="src\components\WorldRecordGridTabVue.vue" />

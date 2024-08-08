@@ -51,7 +51,7 @@
             </div>
         </div>
         <div v-if="gridID == 0">
-            <leaderboard-tabs :id="id" :speedrunid="speedrunid" :hideempty="hideEmpty" :showmisc="showMisc" @update:showmisc="showMisc = $event"></leaderboard-tabs>
+            <leaderboard-tabs :id="id" :speedruncode="speedruncode" :hideempty="hideEmpty" :showmisc="showMisc" @update:showmisc="showMisc = $event"></leaderboard-tabs>
         </div>
         <div v-else-if="gridID == 1">
             <worldrecord-tabs :id="id" :showmisc="showMisc"></worldrecord-tabs>   
@@ -66,7 +66,7 @@
         name: "GameTabs",
         props: {
             id: String,
-            speedrunid: String           
+            speedruncode: String           
         },
         data() {
             return {

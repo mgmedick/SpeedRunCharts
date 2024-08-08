@@ -1,4 +1,8 @@
-﻿@using System.Security.Claims
+﻿
+@using System.Text.Json;
+@using System.Security.Claims
+
+@model SpeedRunApp.Model.ViewModels.UserViewModel
 
 <div class="container-lg p-0">
     @if (!User.Identity.IsAuthenticated)
@@ -9,7 +13,7 @@
     {
         <h5 class="m-0 font-weight-bold m-0">@User.FindFirst(ClaimTypes.Name).Value</h5>
         <div>
-            <user-settings :userid="'@User.FindFirst(ClaimTypes.NameIdentifier).Value'"></user-settings>
+            <user-settings :uservm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></user-settings>
         </div>    
     }
 </div>

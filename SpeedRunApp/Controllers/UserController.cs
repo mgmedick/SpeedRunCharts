@@ -25,7 +25,7 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public ViewResult UserDetails()
+        public ViewResult UserSettings()
         {
             return View();
         }
@@ -34,7 +34,7 @@ namespace SpeedRunApp.MVC.Controllers
         public JsonResult GetUser(int userID)
         {
             var userVM = _userService.GetUser(userID);
-
+            
             return Json(userVM);
         }
 

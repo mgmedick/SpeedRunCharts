@@ -6,7 +6,7 @@
                     <i class="fas fa-spinner fa-spin fa-lg"></i>
                 </div>
             </div>
-        </div>
+        </div>    
         <div v-else>
             <form @submit.prevent="submitForm">
                 <div>
@@ -52,40 +52,24 @@
     export default {
         name: "UserSettings",
         props: {
-            userid: String
+            uservm: Object
         },
         data() {
             return {
                 item: {
-                    userID: 0,
-                    username: '',
-                    speedRunListCategoryIDs: [],
-                    speedRunListCategories: [],
-                    isDarkTheme: false
+                    userID: this.uservm.userID,
+                    username: this.uservm.username,
+                    speedRunListCategoryIDs: this.uservm.speedRunListCategoryIDs,
+                    speedRunListCategories: this.uservm.speedRunListCategories,
+                    isDarkTheme: this.uservm.isDarkTheme
                 },
                 loading: false,
                 errorMessages: []
             }
         },        
         created: function () {
-            this.loadData();
         },
         methods: {
-            loadData: function () {
-                var that = this;
-                this.loading = true;
-
-                var prms = axios.get('/User/GetUser', { params: { userID: this.userid } })
-                    .then(res => {
-                        that.item = res.data;
-                        that.loading = false;
-
-                        return res;
-                    })
-                    .catch(err => { console.error(err); return Promise.reject(err); });
-
-                return prms;
-            },
             submitForm: function () {
                 var that = this;
                 this.item.speedRunListCategoryIDs = this.item.speedRunListCategoryIDs.map(i => i);

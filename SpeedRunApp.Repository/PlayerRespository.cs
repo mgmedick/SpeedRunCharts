@@ -34,27 +34,11 @@ namespace SpeedRunApp.Repository
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_Player WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList();
+                var results = db.Query<SearchResult>("SELECT Name AS `Value`, Name AS Label FROM tbl_Player WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList();
 
                 return results;
             }
-        }
-
-        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<User>().Where(predicate ?? (x => true)).ToList();
-            }
-        }
-
-        public IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs()
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_User;").ToList();
-            }
-        }       
+        }      
     }
 }
 

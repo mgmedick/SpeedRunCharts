@@ -12,7 +12,6 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<PlayerView> GetPlayerViews(Expression<Func<PlayerView, bool>> predicate);
         PlayerSpeedRunCountResult GetPlayerSpeedRunCounts(int playerID);
         IEnumerable<SearchResult> SearchPlayers(string searchText);
-        IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs();
     }
 }
 

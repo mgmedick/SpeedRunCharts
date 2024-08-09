@@ -35,6 +35,37 @@ namespace SpeedRunApp.Service
             _speedRunRepo = speedRunRepo;
         }
 
+        public UserSettingsViewModel GetUserSettings(int userID)
+        {
+            var userView = _userRepo.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+            var userSettingsVM = new UserSettingsViewModel(userView, _speedRunRepo.GetSpeedRunListCategories().ToList());
+
+            return userSettingsVM;
+        }
+        
+        public void SaveUserSettings(UserSettingsViewModel userSettingsVM, int currUserID)
+        {
+            var user = _userRepo.GetUsers(i => i.ID == userSettingsVM.UserID).FirstOrDefault();
+
+            if (user != null)
+            {
+                var userSetting = new UserSetting()
+                {
+                    UserID = userSettingsVM.UserID,
+                    IsDarkTheme = userSettingsVM.IsDarkTheme
+                };
+
+                var userSpeedRunListCategories = userSettingsVM.SpeedRunListCategoryIDs?.Select(i => new UserSpeedRunListCategory() { UserID = user.ID, SpeedRunListCategoryID = i });
+
+                _userRepo.SaveUserSetting(userSetting);
+                SaveUserSpeedRunListCategories(user.ID, userSpeedRunListCategories);
+
+                user.ModifiedDate = DateTime.UtcNow;
+                user.ModifiedBy = currUserID;
+                _userRepo.SaveUser(user);
+            }
+        }
+
         public async Task SendActivationEmail(string email)
         {
             var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
@@ -105,11 +136,6 @@ namespace SpeedRunApp.Service
             return changePassVM;
         }
 
-        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate)
-        {
-            return _userRepo.GetUsers(predicate);
-        }
-
         public IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate)
         {
             return _userRepo.GetUserViews(predicate);
@@ -148,38 +174,6 @@ namespace SpeedRunApp.Service
             user.ModifiedDate = DateTime.UtcNow;
 
             _userRepo.SaveUser(user);
-        }
-
-        public UserViewModel GetUser(int userID)
-        {
-            var userView = _userRepo.GetUserViews(i => i.UserID == userID).FirstOrDefault();
-            var userVM = new UserViewModel(userView);
-            userVM.SpeedRunListCategories = _speedRunRepo.GetSpeedRunListCategories().ToList();
-
-            return userVM;
-        }
-
-        public void SaveUser(UserViewModel userVM, int currUserID)
-        {
-            var user = _userRepo.GetUsers(i => i.ID == userVM.UserID).FirstOrDefault();
-
-            if (user != null)
-            {
-                var userSetting = new UserSetting()
-                {
-                    UserID = userVM.UserID,
-                    IsDarkTheme = userVM.IsDarkTheme
-                };
-
-                var userSpeedRunListCategories = userVM.SpeedRunListCategoryIDs?.Select(i => new UserSpeedRunListCategory() { UserID = user.ID, SpeedRunListCategoryID = i });
-
-                _userRepo.SaveUserSetting(userSetting);
-                SaveUserSpeedRunListCategories(user.ID, userSpeedRunListCategories);
-
-                user.ModifiedDate = DateTime.UtcNow;
-                user.ModifiedBy = currUserID;
-                _userRepo.SaveUser(user);
-            }
         }
 
         public void SaveUserSpeedRunListCategories(int userID, IEnumerable<UserSpeedRunListCategory> userSpeedRunListCategories)

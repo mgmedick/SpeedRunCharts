@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SpeedRunCommon.Extensions;
+using SpeedRunApp.Model.Data;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -27,42 +28,37 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public ViewResult UserSettings()
         {
-            return View();
-        }
+            var userID = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userSettingsVM = _userService.GetUserSettings(userID);
 
-        [HttpGet]
-        public JsonResult GetUser(int userID)
-        {
-            var userVM = _userService.GetUser(userID);
-            
-            return Json(userVM);
+            return View(userSettingsVM);   
         }
 
         [HttpPost]
-        public JsonResult SaveUser(UserViewModel userVM)
+        public JsonResult UserSettings(UserSettingsViewModel userSettingsVM)
         {
             var success = false;
 
             try
             {
                 var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                _userService.SaveUser(userVM, currUserID);
+                _userService.SaveUserSettings(userSettingsVM, currUserID);
 
-                if (userVM.UserID == currUserID) {
+                if (userSettingsVM.UserID == currUserID) {
                     UpdateUserIdentity(currUserID);
                 }
 
                 success = true;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.Error(ex, "SaveUser");
+                _logger.Error(ex, "Login");
                 success = false;
             }
 
             return Json(new { success = success });
         }
-        
+                
         [HttpPost]
         public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
         {

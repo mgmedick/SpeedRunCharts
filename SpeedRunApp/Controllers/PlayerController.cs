@@ -17,9 +17,9 @@ namespace SpeedRunApp.MVC.Controllers
             _logger = logger;
         }
 
-        public ViewResult PlayerDetails(string ID, string speedRunID)
+        public ViewResult PlayerDetails(string ID, string speedRunCode)
         {
-            var playerDetailsVM = _playerService.GetPlayerDetails(ID, speedRunID);
+            var playerDetailsVM = _playerService.GetPlayerDetails(ID, speedRunCode);
             
             return View(playerDetailsVM);
         }

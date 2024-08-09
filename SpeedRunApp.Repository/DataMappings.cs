@@ -12,12 +12,25 @@ namespace SpeedRunApp.Repository
         {
             For<SpeedRunView>().TableName("vw_SpeedRun");
             For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
-            For<SpeedRunGridView>().TableName("vw_SpeedRunGrid");
+            For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>
+            {
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
             For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer");  
 
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
             
-            For<GameView>().TableName("vw_Game");
+            For<GameView>().TableName("vw_Game").Columns(i =>
+            {
+                i.Column(g => g.GameCategoryTypes).Ignore();
+                i.Column(g => g.Categories).Ignore();
+                i.Column(g => g.Levels).Ignore();
+                i.Column(g => g.Variables).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.GamePlatforms).Ignore();
+            }); 
             For<Game>().PrimaryKey("ID").TableName("tbl_Game");
             For<GameCategoryType>().PrimaryKey("ID").TableName("tbl_Game_CategoryType");
             For<GamePlatform>().PrimaryKey("ID").TableName("tbl_Game_Platform");
@@ -42,8 +55,11 @@ namespace SpeedRunApp.Repository
             });                  
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");
-            For<UserView>().TableName("vw_User");
             For<UserSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_User_SpeedRunListCategory");
+            For<UserView>().TableName("vw_User").Columns(i =>
+            {
+                i.Column(g => g.SpeedRunListCategoryIDList).Ignore();
+            });     
             For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
             For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }

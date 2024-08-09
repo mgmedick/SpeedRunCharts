@@ -18,7 +18,7 @@
                     <label class="col-sm-1 col-form-label">Night Mode</label>
                     <div class="col-sm-auto">
                         <div class="custom-control custom-switch pt-2">
-                            <input id="chkNightMode1" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="item.isDarkTheme">
+                            <input id="chkNightMode1" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="form.isDarkTheme">
                             <label class="custom-control-label pl-1" for="chkNightMode1"><span class="pl-2"></span></label>
                         </div>                   
                     </div>
@@ -27,7 +27,7 @@
                     <label class="col-sm-1 col-form-label">Feeds</label>
                     <div class="col-sm-auto">
                         <div style="width:300px;">
-                            <multiselect v-model="item.speedRunListCategoryIDs" :options="item.speedRunListCategories" valueby="id" labelby="displayName">
+                            <multiselect v-model="form.speedRunListCategoryIDs" :options="speedRunListCategories" valueby="id" labelby="displayName">
                                 <template #tag="{ index, option, remove }">
                                     <span v-tippy="option.description">{{ option.displayName }}</span>&nbsp;
                                     <span class="fas fa-times fa-sm" @click.stop="remove(index)" style="cursor:pointer;"></span>
@@ -52,17 +52,17 @@
     export default {
         name: "UserSettings",
         props: {
-            uservm: Object
+            usersettingsvm: Object
         },
         data() {
             return {
-                item: {
-                    userID: this.uservm.userID,
-                    username: this.uservm.username,
-                    speedRunListCategoryIDs: this.uservm.speedRunListCategoryIDs,
-                    speedRunListCategories: this.uservm.speedRunListCategories,
-                    isDarkTheme: this.uservm.isDarkTheme
+                form: { 
+                    userID: this.usersettingsvm.userID,
+                    username: this.usersettingsvm.username,
+                    speedRunListCategoryIDs: this.usersettingsvm.speedRunListCategoryIDs,
+                    isDarkTheme: this.usersettingsvm.isDarkTheme
                 },
+                speedRunListCategories: this.usersettingsvm.speedRunListCategories,
                 loading: false,
                 errorMessages: []
             }
@@ -72,13 +72,14 @@
         methods: {
             submitForm: function () {
                 var that = this;
-                this.item.speedRunListCategoryIDs = this.item.speedRunListCategoryIDs.map(i => i);
-                var formData = getFormData(this.item);
+                this.form.speedRunListCategoryIDList = this.form.speedRunListCategoryIDList.map(i => i);
+                var formData = getFormData(this.form);
                 this.loading = true;
 
-                axios.post('/User/SaveUser', formData)
+                axios.post('/User/UserSettings', formData)
                     .then((res) => {
                         if (res.data.success) {
+                            that.loading = false;
                             location.reload();
                         } else {
                             that.errorMessages = res.data.errorMessages;

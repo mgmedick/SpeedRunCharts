@@ -42,7 +42,7 @@ namespace SpeedRunApp.Service
 
             return userSettingsVM;
         }
-        
+
         public void SaveUserSettings(UserSettingsViewModel userSettingsVM, int currUserID)
         {
             var user = _userRepo.GetUsers(i => i.ID == userSettingsVM.UserID).FirstOrDefault();
@@ -141,16 +141,13 @@ namespace SpeedRunApp.Service
             return _userRepo.GetUserViews(predicate);
         }
 
-        public void CreateUser(string username, string pass)
+        public int CreateUser(string email, string username, string pass)
         {
-            var email = _context.HttpContext.Session.Get<string>("Email");
-            var isdarktheme = (_context.HttpContext.Request.Cookies["theme"] ?? _config.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark";
-
             var user = new User()
             {
+                Email = email,
                 Username = username,
                 Password = pass.HashString(),
-                Email = email,
                 Active = true,
                 CreatedBy = 1,
                 CreatedDate = DateTime.UtcNow
@@ -158,12 +155,15 @@ namespace SpeedRunApp.Service
 
             _userRepo.SaveUser(user);
 
+            var isdarktheme = (_context.HttpContext.Request.Cookies["theme"] ?? _config.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark";
             var userSetting = new UserSetting() {
                 UserID = user.ID,
                 IsDarkTheme = isdarktheme
             };
 
-            _userRepo.SaveUserSetting(userSetting);
+            _userRepo.SaveUserSetting(userSetting);      
+   
+            return user.ID;  
         }
 
         public void ChangeUserPassword(string username, string pass)
@@ -203,12 +203,12 @@ namespace SpeedRunApp.Service
         }
 
         //jqvalidate
-        public bool EmailExists(string email)
+        public bool EmailExists(string email, bool activeFilter)
         {
-            var result = _userRepo.GetUsers(i => i.Email == email).Any();
+            var result = _userRepo.GetUsers(i => i.Email == email && (i.Active || i.Active == activeFilter)).Any();
 
             return result;
-        }
+        }   
 
         public bool PasswordMatches(string password, string username)
         {

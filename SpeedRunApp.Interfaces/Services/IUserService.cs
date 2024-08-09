@@ -14,12 +14,12 @@ namespace SpeedRunApp.Interfaces.Services
         void SaveUserSettings(UserSettingsViewModel userSettingsVM, int currUserID);
         Task SendActivationEmail(string email);
         ActivateViewModel GetActivateUser(string email, long expirationTime, string token);
-        void CreateUser(string username, string pass);
+        int CreateUser(string email, string username, string pass);
         IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);        
         Task SendResetPasswordEmail(string username);
         ChangePasswordViewModel GetChangePassword(string username, string email, long expirationTime, string token);
         void ChangeUserPassword(string username, string pass);
-        bool EmailExists(string email);
+        bool EmailExists(string email, bool activeFilter);
         bool PasswordMatches(string password, string username);
         bool UsernameExists(string username, bool activeFilter);
         void UpdateIsDarkTheme(int currUserID, bool isDarkTheme);

@@ -33,4 +33,10 @@ namespace SpeedRunApp.Model
         csv = 0,
         json = 1
     }      
+
+    public enum SocialAccountType
+    {
+        Google = 1,
+        Facebook = 2
+    }        
 }

@@ -9,12 +9,13 @@ import modal from './shared/Modal.vue';
 import navbar from './menu/Navbar.vue';
 import importStatus from './menu/ImportStatus.vue';
 
+import signUp from './home/SignUp.vue';
+import activate from './home/Activate.vue';
+import login from './home/Login.vue';
+import resetPassword from './home/ResetPassword.vue';
+import changePassword from './home/ChangePassword.vue';
+
 import userSettings from './user/UserSettings.vue';
-import signUp from './user/SignUp.vue';
-import activate from './user/Activate.vue';
-import login from './user/Login.vue';
-import resetPassword from './user/ResetPassword.vue';
-import changePassword from './user/ChangePassword.vue';
 
 import speedRunListTab from './speedrun/SpeedRunListTab.vue';
 import speedRunList from './speedrun/SpeedRunList.vue';

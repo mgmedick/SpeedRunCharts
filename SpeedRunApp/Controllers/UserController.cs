@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SpeedRunCommon.Extensions;
 using SpeedRunApp.Model.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SpeedRunApp.MVC.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService = null;
@@ -58,7 +60,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(new { success = success });
         }
-                
+
         [HttpPost]
         public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
         {

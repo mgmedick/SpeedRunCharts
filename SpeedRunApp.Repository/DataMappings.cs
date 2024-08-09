@@ -56,10 +56,7 @@ namespace SpeedRunApp.Repository
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");
             For<UserSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_User_SpeedRunListCategory");
-            For<UserView>().TableName("vw_User").Columns(i =>
-            {
-                i.Column(g => g.SpeedRunListCategoryIDList).Ignore();
-            });     
+            For<UserView>().TableName("vw_User");   
             For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
             For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }

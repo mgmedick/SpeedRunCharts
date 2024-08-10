@@ -40,7 +40,7 @@
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
-                <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
+                <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
                 <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                     <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
                         <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
@@ -85,7 +85,7 @@
             levelid: String,
             variablevalues: String,
             speedrunid: String,
-            userid: String,
+            playerid: String,
             showcharts: Boolean,          
             showalldata: Boolean,
             showmilliseconds: Boolean,

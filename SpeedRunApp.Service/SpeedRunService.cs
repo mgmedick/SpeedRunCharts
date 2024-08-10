@@ -124,18 +124,18 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunGridPlayerViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID)
+        public IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridPlayerViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.PlayerID == playerID).OrderByDescending(i => i.ID).ToList();     
-            var runVMs = runs.Select(i => new SpeedRunGridPlayerViewModel(i)).ToList();
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
 
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunGridPlayerViewModel> GetPlayerSpeedRunGridData(int playerID)
+        public IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunGridData(int playerID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridPlayerViews(i => i.PlayerID == playerID).ToList();            
-            var runVMs = runs.Select(i => new SpeedRunGridPlayerViewModel(i)).ToList();
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
             var personalBests = runVMs.Where(i => i.Rank.HasValue)
                                       .OrderBy(i => i.Rank)
                                       .GroupBy(g => new { g.GameID, g.CategoryID, g.LevelID, g.SubCategoryVariableValueIDs })

@@ -65,9 +65,8 @@
 </template>
 <script>    
     export default {
-        name: "UserChartContainer",
+        name: "PlayerChartContainer",
         props: {
-            userid: String,
             categorytypeid: String,
             items: Array,
             tabledata: Array

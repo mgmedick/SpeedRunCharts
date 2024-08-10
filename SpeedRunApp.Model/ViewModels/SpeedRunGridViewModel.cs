@@ -15,28 +15,23 @@ namespace SpeedRunApp.Model.ViewModels
             GameID = run.GameID;
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
+            CategoryName = run.CategoryName;
             LevelID = run.LevelID;
+            LevelName = run.LevelName;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;  
             PrimaryTime = new TimeSpan(run.PrimaryTime);      
-            VariableValues = run.VariableValues;
+            VariableValues = run.VariableValues?.ToDictionary(i => i.ID, i => i.VariableID);
+            SubCategoryVariableValues = run.VariableValues != null ? string.Join(", ", run.VariableValues.Select(i => i.Name).ToList()) : null;
             VideoLinks = run.Videos;
+            Players = run.Players;
 
             if (run.PlatformID.HasValue)
             {
                 Platform = new IDNamePair { ID = run.PlatformID.Value, Name = run.PlatformName };
                 PlatformName = run.PlatformName;
-            }
-
-            if (run.Players != null) {
-                Players = run.Players.Select(i => new UserNameViewModel() {ID = i.ID,
-                                                                            Name = i.Name,
-                                                                            ColorLight = i.ColorLight,
-                                                                            ColorToLight = i.ColorToLight,
-                                                                            ColorDark = i.ColorDark,
-                                                                            ColorToDark = i.ColorToDark}).ToList();
             }
         }
 
@@ -45,12 +40,17 @@ namespace SpeedRunApp.Model.ViewModels
         public int GameID { get; set; }
         public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
+        public bool IsTimerAscending { get; set; }
+        public bool IsMiscellaneous { get; set; }        
         public int? LevelID { get; set; }
+        public string LevelName { get; set; }
         public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public Dictionary<int, int> VariableValues { get; set; }        
-        public List<UserNameViewModel> Players { get; set; }
+        public string SubCategoryVariableValues { get; set; }
+        public Dictionary<int, int> VariableValues { get; set; }
+        public List<PlayerView> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
@@ -59,7 +59,9 @@ namespace SpeedRunApp.Model.ViewModels
         public string SplitsLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-        public UserNameViewModel Player
+        public bool IsPersonalBest { get; set; }
+
+        public PlayerView Player
         {
             get
             {
@@ -169,6 +171,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return DateSubmitted?.ToRealtiveDateString(true);
             }
-        }        
+        }             
     }
 }

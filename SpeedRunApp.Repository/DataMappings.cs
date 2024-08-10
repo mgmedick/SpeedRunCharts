@@ -10,6 +10,7 @@ namespace SpeedRunApp.Repository
     {
         public DataMappings()
         {
+            For<SpeedRun>().TableName("tbl_SpeedRun");
             For<SpeedRunView>().TableName("vw_SpeedRun");
             For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
             For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>

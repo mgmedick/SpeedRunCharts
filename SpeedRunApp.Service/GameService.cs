@@ -57,76 +57,60 @@ namespace SpeedRunApp.Service
         }        
         */
 
-        public LeaderboardTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null)
+        public GameDetailsTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
             var tabItems = GetGameTabs(new List<GameView>() { gamevw }, runs).ToList();   
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };
 
-            var gridTabVM = new LeaderboardTabViewModel(tabItems, exportTypes);
+            var gridTabVM = new GameDetailsTabViewModel(tabItems, exportTypes);
 
             if (!string.IsNullOrWhiteSpace(speedRunCode)) {
-                var run = runs.FirstOrDefault(i => i.Code == speedRunCode);
-                if (run == null) {
-                    run = _speedRunRepo.GetSpeedRunGridTabViews(i => i.Code == speedRunCode).FirstOrDefault();
-                }
-
-                if (run != null) {
-                    var game = tabItems.FirstOrDefault(i => i.ID == run.GameID);
-                    if (game != null) {
-                        var category = game.Categories.FirstOrDefault(i=>i.ID == run.CategoryID);
-                        var categoryTypeID = category != null ? category.CategoryTypeID : 0;
-                        var subCategoryVariableValueIDs = run.SubCategoryVariableValueIDs?.Split(',').Select(i => Convert.ToInt32(i)).ToList();
-                        var subCategoryVariableValueNames = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, game.SubCategoryVariables);
-                        var showAllData = !run.Rank.HasValue;
-                        var showMisc = category != null ? category.IsMiscellaneous : false;
-
-                        gridTabVM = new LeaderboardTabViewModel(tabItems, exportTypes, run.GameID, categoryTypeID, run.CategoryID, run.LevelID, subCategoryVariableValueNames, showAllData, showMisc);
-                    }
-                }
+                var runVW = _speedRunRepo.GetSpeedRunGridViews(i => i.Code == speedRunCode).FirstOrDefault();
+                gridTabVM.RunVW = runVW;
             }
 
             return gridTabVM;
         }
         
-        public LeaderboardTabViewModel GetWorldRecordTabs(int gameID)
+        public GameDetailsTabViewModel GetWorldRecordTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
             var tabItems = GetGameTabs(new List<GameView>() { gamevw }, runs, true).ToList();   
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            
-            var tabVM = new LeaderboardTabViewModel(tabItems, exportTypes);
+            var tabVM = new GameDetailsTabViewModel(tabItems, exportTypes);
 
             return tabVM;
         }
 
-        public LeaderboardTabViewModel GetGameChartTabs(int gameID)
+        public GameDetailsTabViewModel GetGameChartTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRunGridTabViews(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
             var tabItems = GetGameTabs(new List<GameView>() { gamevw }, runs, true).ToList();   
-            var tabVM = new LeaderboardTabViewModel(tabItems);
+            var tabVM = new GameDetailsTabViewModel(tabItems);
 
             return tabVM;
         }        
 
-        public PlayerSpeedRunTabViewModel GetPlayerSpeedRunTabsAndData(int playerID)
+        public PlayerDetailsTabViewModel GetPlayerSpeedRunTabsAndData(int playerID)
         {
             var runVMs = _speedRunService.GetPlayerSpeedRunGridData(playerID).ToList();            
-            var runTabs = runVMs.Select(i=> new SpeedRunGridTabView() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
             var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
+            var runTabs = runVMs.Select(i=> new SpeedRun() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
             var tabItems = GetGameTabs(games, runTabs, true).ToList();
             var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
-            var tabVM = new PlayerSpeedRunTabViewModel(tabItems, categoryTypes, runVMs);
+            var tabVM = new PlayerDetailsTabViewModel(tabItems, categoryTypes, runVMs);
                        
             return tabVM;
         }
         
-        private IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRunGridTabView> runs = null, bool hasDataOnly = false)
+        private IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false)
         {
             var gameTabs = new List<GameTabViewModel>();
 
@@ -150,7 +134,7 @@ namespace SpeedRunApp.Service
             return gameTabs;
         }
 
-        private void SetGameTabHasData(GameTabViewModel gameTab, IEnumerable<SpeedRunGridTabView> runs)
+        private void SetGameTabHasData(GameTabViewModel gameTab, IEnumerable<SpeedRun> runs)
         {
             if (gameTab.Categories != null)
             {
@@ -196,7 +180,7 @@ namespace SpeedRunApp.Service
             }
         }
 
-        private void SetGameTabVariablesHasValue(List<Variable> allVariables, List<Variable> variables, List<SpeedRunGridTabView> runs, string parentVariableValues = null)
+        private void SetGameTabVariablesHasValue(List<Variable> allVariables, List<Variable> variables, List<SpeedRun> runs, string parentVariableValues = null)
         {
            foreach (var variable in variables)
            {
@@ -275,27 +259,6 @@ namespace SpeedRunApp.Service
                     }
                 }                 
             } 
-        }
-
-        private Dictionary<string, string> GetSubCategoryVariableValueNames(List<int> runSubCategoryVariableValueIDs, List<Variable> gameSubCategoryVariables)
-        {                
-            var SubCategoryVariableValueNames = new Dictionary<string, string>();
-
-            var variableCount = 0;
-            if (runSubCategoryVariableValueIDs != null) {
-                foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
-                    var variable = gameSubCategoryVariables.FirstOrDefault(i => i.VariableValues.Any(g => g.ID == runSubCategoryVariableValueID));
-                    var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID);
-                    
-                    if (variable != null && variableValue != null) {
-                        SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
-                    }
-
-                    variableCount++;
-                }
-            }
-
-            return SubCategoryVariableValueNames;
         }     
     }
 }

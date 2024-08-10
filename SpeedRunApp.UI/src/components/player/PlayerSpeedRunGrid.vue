@@ -55,7 +55,7 @@
                 User Charts
             </template>
             <div class="container p-0">
-                <player-speedrun-chart-container :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :userid="userid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-chart-container>
+                <player-speedrun-chart-container :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-chart-container>
             </div>
         </modal>            
     </div>   
@@ -69,7 +69,7 @@
     export default {
         name: "PlayerSpeedRunGrid",
         props: {
-            userid: String,
+            playerid: String,
             gameabbr: String,
             tabledata: Array,
             showmilliseconds: Boolean,

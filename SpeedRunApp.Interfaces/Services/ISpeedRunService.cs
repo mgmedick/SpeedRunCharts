@@ -12,7 +12,6 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID);
         SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID);
         IEnumerable<SpeedRunGridViewModel> GetLeaderboardGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData);
-        IEnumerable<SpeedRunGridViewModel> GetLeaderboardChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs);             
         IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID);
         IEnumerable<SpeedRunGridViewModel> GetGameSummaryChartData(int gameID, int categoryTypeID);  
         IEnumerable<SpeedRunGridPlayerViewModel> GetPlayerSpeedRunGridData(int playerID);

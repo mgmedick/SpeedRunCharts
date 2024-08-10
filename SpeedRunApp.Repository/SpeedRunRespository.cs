@@ -33,11 +33,11 @@ namespace SpeedRunApp.Repository
             }
         }
         
-        public IEnumerable<SpeedRunGridTabView> GetSpeedRunGridTabViews(Expression<Func<SpeedRunGridTabView, bool>> predicate)
+        public IEnumerable<SpeedRun> GetSpeedRuns(Expression<Func<SpeedRun, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SpeedRunGridTabView>().Where(predicate).ToList();
+                var results = db.Query<SpeedRun>().Where(predicate).ToList();
                 return results;
             }
         }

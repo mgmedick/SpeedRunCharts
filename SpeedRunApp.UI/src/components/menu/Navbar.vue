@@ -34,17 +34,17 @@
                                     <label class="custom-control-label pl-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="pl-2">Night Mode</span></label>
                                 </div>
                             </div>
-                            <a href="/User/UserDetails" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
+                            <a href="/User/UserSettings" class="dropdown-item"><i class="fa fa-cog"></i><span class="pl-2">Settings</span></a>
                             <a href="/Home/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="pl-2">Log out</span></a>
                         </template>
                     </button-dropdown>
                 </div>
                 <ul v-else class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="showLoginModal = true">Log In</a>
+                        <a class="nav-link" href="/Home/Login">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" @click="showSignUpModal = true">Sign Up</a>
+                        <a class="nav-link" href="/Home/Login">Sign Up</a>
                     </li>
                     <li class="nav-item">
                         <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
@@ -61,8 +61,8 @@
                                     </div>
                                 </div>
                                 <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="pl-2">Import Status</span></a>
-                                <a class="dropdown-item" href="#" @click="showLoginModal = true"><i class="fa fa-user"></i><span class="pl-2">Log In</span></a>
-                                <a class="dropdown-item" href="#" @click="showSignUpModal = true"><i class="fa fa-clipboard"></i><span class="pl-2">Sign Up</span></a>
+                                <a class="dropdown-item" href="/Home/Login"><i class="fa fa-user"></i><span class="pl-2">Log In</span></a>
+                                <a class="dropdown-item" href="/Home/SignUp"><i class="fa fa-clipboard"></i><span class="pl-2">Sign Up</span></a>
                             </template>
                         </button-dropdown> 
                     </li>                   
@@ -76,31 +76,7 @@
             <div class="container">
                 <import-status />
             </div>
-        </modal>          
-        <modal v-if="showLoginModal" contentclass="cmv-modal-md" @close="showLoginModal = false">
-            <template v-slot:title>
-                Log In
-            </template>
-            <div class="container">
-                <login @forgotpass="showResetModal = !(showLoginModal = false)" />
-            </div>
-        </modal>
-        <modal v-if="showResetModal" contentclass="cmv-modal-md" @close="showResetModal = false">
-            <template v-slot:title>
-                Reset Password
-            </template>
-            <div class="container">
-                <reset-password />
-            </div>
-        </modal>
-        <modal v-if="showSignUpModal" contentclass="cmv-modal-md" @close="showSignUpModal = false">
-            <template v-slot:title>
-                Sign Up
-            </template>
-            <div class="container">
-                <signup />
-            </div>
-        </modal>      
+        </modal>           
     </div>   
 </template>
 <script>
@@ -111,9 +87,9 @@
         name: "Navbar",
         props: {
             isauth: Boolean,
-            isdarktheme: Boolean,
             username: String,
-            userid: String
+            userid: String,
+            isdarktheme: Boolean
         },
         data: function () {
             return {
@@ -121,9 +97,6 @@
                 searchResults: [],
                 searchLoading: false,
                 showImportStatusModal: false,
-                showLoginModal: false,
-                showResetModal: false,
-                showSignUpModal: false,
                 showDropdown: false,
                 toggleNavbar: false,
                 isDarkTheme: this.isdarktheme

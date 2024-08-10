@@ -169,13 +169,16 @@
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.game = res.data.tabItems[0];
-                                    that.exportTypes = res.data.exportTypes,
-                                    that.categoryTypeID = res.data.categoryTypeID;
-                                    that.categoryID = res.data.categoryID;
-                                    that.levelID = res.data.levelID;
-                                    that.subCategoryVariableValueIDs = res.data.subCategoryVariableValueIDs;
-                                    that.showAllData = res.data.showAllData;   
-                                    that.showMisc = res.data.showMisc;                                                                     
+                                    that.exportTypes = res.data.exportTypes;
+                                    if (res.data.runVW) {
+                                        var run = res.data.runVW;
+                                        that.categoryTypeID = run.categoryTypeID;
+                                        that.categoryID = run.categoryID;
+                                        that.levelID = run.levelID;
+                                        that.subCategoryVariableValueIDs = run.subCategoryVariableValueIDs;
+                                        that.showAllData = !(!!run.rank);   
+                                        that.showMisc = run.isMiscellaneous;    
+                                    }                                                                 
                                     that.initSelected();
                                     that.loading = false;
                                     return res;

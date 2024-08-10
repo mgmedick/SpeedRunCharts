@@ -22,7 +22,7 @@
 </template>
 <script>
     export default {
-        name: "UserTabs",
+        name: "PlayerTabs",
         props: {
             id: String,
             speedrunid: String           

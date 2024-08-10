@@ -57,7 +57,7 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,            
-            userid: String,            
+            playerid: String,            
             title: String,
             istimerasc: Boolean,
             showmilliseconds: Boolean
@@ -97,7 +97,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetPlayerSpeedRunChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, userID: this.userid } })
+                axios.get('/SpeedRun/GetPlayerSpeedRunChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, playerID: this.playerid } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

@@ -28,7 +28,7 @@
         </div>            
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <player-chart-container :userid="id" :categorytypeid="categoryType.id.toString()" :items="items" :tabledata="tableData.filter(item => (categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID))"></player-chart-container>
+                <player-chart-container :playerid="id" :categorytypeid="categoryType.id.toString()" :items="items" :tabledata="tableData.filter(item => (categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID))"></player-chart-container>
             </div>
         </div>
     </div>

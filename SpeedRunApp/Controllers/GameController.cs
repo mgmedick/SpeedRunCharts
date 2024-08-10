@@ -42,7 +42,7 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetLeaderboardTabs(int gameID, string speedRunCode)
         {
-            LeaderboardTabViewModel gridTabVM = null;
+            GameDetailsTabViewModel gridTabVM = null;
             try
             {
                 gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunCode);
@@ -75,7 +75,7 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetPlayerSpeedRunTabsAndData(int playerID)
         {
-            PlayerSpeedRunTabViewModel tabVM = null;
+            PlayerDetailsTabViewModel tabVM = null;
             try
             {
                 tabVM = _gameService.GetPlayerSpeedRunTabsAndData(playerID);

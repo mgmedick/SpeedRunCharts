@@ -24,10 +24,10 @@
                     </div>
                 </div>
                 <div class="form-group row no-gutters mb-2">
-                    <label class="col-sm-1 col-form-label">Feeds</label>
+                    <label class="col-sm-1 col-form-label">Lists</label>
                     <div class="col-sm-auto">
                         <div style="width:300px;">
-                            <multiselect v-model="form.speedRunListCategoryIDs" :options="speedRunListCategories" valueby="id" labelby="displayName">
+                            <multiselect v-model="form.speedRunSummaryListIDs" :options="speedRunSummaryLists" valueby="id" labelby="displayName">
                                 <template #tag="{ index, option, remove }">
                                     <span v-tippy="option.description">{{ option.displayName }}</span>&nbsp;
                                     <span class="fas fa-times fa-sm" @click.stop="remove(index)" style="cursor:pointer;"></span>
@@ -59,10 +59,10 @@
                 form: { 
                     userID: this.usersettingsvm.userID,
                     username: this.usersettingsvm.username,
-                    speedRunListCategoryIDs: this.usersettingsvm.speedRunListCategoryIDs,
+                    speedRunSummaryListIDs: this.usersettingsvm.speedRunSummaryListIDs,
                     isDarkTheme: this.usersettingsvm.isDarkTheme
                 },
-                speedRunListCategories: this.usersettingsvm.speedRunListCategories,
+                speedRunSummaryLists: this.usersettingsvm.speedRunSummaryLists,
                 loading: false,
                 errorMessages: []
             }
@@ -72,7 +72,6 @@
         methods: {
             submitForm: function () {
                 var that = this;
-                this.form.speedRunListCategoryIDList = this.form.speedRunListCategoryIDList.map(i => i);
                 var formData = getFormData(this.form);
                 this.loading = true;
 

@@ -12,7 +12,7 @@ namespace SpeedRunApp.Model.ViewModels
         public SpeedRunSummaryViewModel(SpeedRunSummaryView run)
         {
             ID = run.ID;
-            SpeedRunComID = run.SpeedRunComID;
+            Code = run.Code;
             Game = new IDNameAbbrPair { ID = run.GameID, Name = run.GameName, Abbr = run.GameAbbr };
             GameCoverImageLink = run.GameCoverImageUrl;
             ShowMilliseconds = run.ShowMilliseconds;
@@ -82,7 +82,7 @@ namespace SpeedRunApp.Model.ViewModels
         }
 
         public int ID { get; set; }
-        public string SpeedRunComID { get; set; }
+        public string Code { get; set; }
         public IDNameAbbrPair Game { get; set; }
         public string GameCoverImageLink { get; set; }
         public bool ShowMilliseconds { get; set; }
@@ -90,7 +90,7 @@ namespace SpeedRunApp.Model.ViewModels
         public IDNamePair Category { get; set; }
         public IDNamePair Level { get; set; } 
         public List<string> SubCategoryVariableValueNames { get; set; }
-        public List<UserNameViewModel> Players { get; set; }
+        public List<PlayerView> Players { get; set; }
         public List<string> EmbeddedVideoLinks { get; set; }
         public List<string> VideoThumbnailLinks { get; set; }    
         public List<string> ViewCountStrings { get; set; }
@@ -155,7 +155,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string PrimaryTimeString
+        public string PrimaryTimeMillisecondsString
         {
             get
             {

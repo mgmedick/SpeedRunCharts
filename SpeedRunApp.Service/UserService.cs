@@ -38,7 +38,7 @@ namespace SpeedRunApp.Service
         public UserSettingsViewModel GetUserSettings(int userID)
         {
             var userView = _userRepo.GetUserViews(i => i.UserID == userID).FirstOrDefault();
-            var userSettingsVM = new UserSettingsViewModel(userView, _speedRunRepo.GetSpeedRunListCategories().ToList());
+            var userSettingsVM = new UserSettingsViewModel(userView, _speedRunRepo.GetSpeedRunSummaryLists().ToList());
 
             return userSettingsVM;
         }
@@ -55,10 +55,10 @@ namespace SpeedRunApp.Service
                     IsDarkTheme = userSettingsVM.IsDarkTheme
                 };
 
-                var userSpeedRunListCategories = userSettingsVM.SpeedRunListCategoryIDs?.Select(i => new UserSpeedRunListCategory() { UserID = user.ID, SpeedRunListCategoryID = i });
+                var userSpeedRunSummaryLists = userSettingsVM.SpeedRunSummaryListIDs?.Select(i => new UserSpeedRunSummaryList() { UserID = user.ID, SpeedRunSummaryListID = i });
 
                 _userRepo.SaveUserSetting(userSetting);
-                SaveUserSpeedRunListCategories(user.ID, userSpeedRunListCategories);
+                SaveUserSpeedRunSummaryLists(user.ID, userSpeedRunSummaryLists);
 
                 user.ModifiedDate = DateTime.UtcNow;
                 user.ModifiedBy = currUserID;
@@ -176,13 +176,13 @@ namespace SpeedRunApp.Service
             _userRepo.SaveUser(user);
         }
 
-        public void SaveUserSpeedRunListCategories(int userID, IEnumerable<UserSpeedRunListCategory> userSpeedRunListCategories)
+        public void SaveUserSpeedRunSummaryLists(int userID, IEnumerable<UserSpeedRunSummaryList> userSpeedRunSummaryLists)
         {
-            _userRepo.DeleteUserSpeedRunListCategories(i => i.UserID == userID);
+            _userRepo.DeleteUserSpeedRunSummaryLists(i => i.UserID == userID);
 
-            if (userSpeedRunListCategories != null && userSpeedRunListCategories.Any())
+            if (userSpeedRunSummaryLists != null && userSpeedRunSummaryLists.Any())
             {
-                _userRepo.SaveUserSpeedRunListCategories(userSpeedRunListCategories);
+                _userRepo.SaveUserSpeedRunSummaryLists(userSpeedRunSummaryLists);
             }
         }
 

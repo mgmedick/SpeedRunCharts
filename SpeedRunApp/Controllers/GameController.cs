@@ -12,13 +12,13 @@ namespace SpeedRunApp.MVC.Controllers
     public class GameController : Controller
     {
         private readonly IGameService _gameService = null;
-        private readonly ISpeedRunService _speedRunsService = null;
+        private readonly ISpeedRunService _speedRunService = null;
         private readonly ILogger _logger = null;
 
-        public GameController(IGameService gameService, ISpeedRunService speedRunsService, ILogger logger)
+        public GameController(IGameService gameService, ISpeedRunService speedRunService, ILogger logger)
         {
             _gameService = gameService;
-            _speedRunsService = speedRunsService;
+            _speedRunService = speedRunService;
             _logger = logger;
         }
         
@@ -70,23 +70,31 @@ namespace SpeedRunApp.MVC.Controllers
 
            return Json(tabVM);
         }
- 
 
         [HttpGet]
-        public JsonResult GetPlayerSpeedRunTabsAndData(int playerID)
+        public JsonResult GetLeaderboardGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData)
         {
-            PlayerDetailsTabViewModel tabVM = null;
-            try
-            {
-                tabVM = _gameService.GetPlayerSpeedRunTabsAndData(playerID);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "GetPlayerSpeedRunTabsAndData PlayerID: {@PlayerID}", playerID);
-            }
+            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, showAllData);
 
-            return Json(tabVM);
+            return Json(results);
         }
+
+        [HttpGet]
+        public JsonResult GetLeaderboardChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
+        {
+            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, true);
+
+            return Json(results);
+        }        
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID)
+        {
+            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID, categoryID, levelID);
+
+            return Json(results);
+        }
+        
 
         [HttpGet]
         public JsonResult SearchGames(string term)

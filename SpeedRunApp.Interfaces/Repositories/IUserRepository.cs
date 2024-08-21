@@ -13,9 +13,9 @@ namespace SpeedRunApp.Interfaces.Repositories
         void SaveUser(User user);
         IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate);
         void SaveUserSetting(UserSetting userSetting);
-        IEnumerable<UserSpeedRunListCategory> GetUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate);
-        void SaveUserSpeedRunListCategories(IEnumerable<UserSpeedRunListCategory> userSpeedRunListCategories);
-        void DeleteUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate);
+        IEnumerable<UserSpeedRunSummaryList> GetUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate);
+        void SaveUserSpeedRunSummaryLists(IEnumerable<UserSpeedRunSummaryList> userSpeedRunSummaryLists);
+        void DeleteUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate);
     }
 }
 

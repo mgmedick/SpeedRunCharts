@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div>
-                <speedrun-list :categoryid="categoryid" :defaulttopamt="defaulttopamt" :categorytypeid="categorytypeid"></speedrun-list>
+                <speedrun-summary-list :categoryid="categoryid" :defaulttopamt="defaulttopamt" :categorytypeid="categorytypeid"></speedrun-summary-list>
             </div>
         </div>
     </div>    
@@ -40,15 +40,15 @@
     import axios from 'axios';
 
     export default {
-        name: 'SpeedRunListTab',
+        name: 'SpeedRunSummaryListTabs',
         props: {
             defaulttopamt: Number
         },
         data: function () {
             return {
                 items: [],
-                categoryid: sessionStorage.getItem("speedrunlistcategoryid") ?? null,
-                categorytypeid: sessionStorage.getItem("speedrunlistcategorytypeid") ?? null,
+                categoryid: sessionStorage.getItem("speedrunsummarylistid") ?? null,
+                categorytypeid: sessionStorage.getItem("categorytypeid") ?? null,
                 loading: true
             }
         },
@@ -67,12 +67,12 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetSpeedRunListCategories')
+                axios.get('/SpeedRun/GetSpeedRunSummaryLists')
                     .then(res => {
                         that.items = res.data;                   
                         if (!that.categoryid) {
                             that.categoryid = res.data[0]?.id;
-                            sessionStorage.setItem("speedrunlistcategoryid", that.categoryid);                            
+                            sessionStorage.setItem("speedrunsummarylistid", that.categoryid);                            
                         }
                         that.loading = false;
                         return res;
@@ -81,9 +81,9 @@
             },
             resetParams: function() {
                 this.categoryid = null;
-                sessionStorage.removeItem("speedrunlistcategoryid");
+                sessionStorage.removeItem("speedrunsummarylistid");
                 this.categorytypeid = null;
-                sessionStorage.removeItem("speedrunlistcategorytypeid");                
+                sessionStorage.removeItem("categorytypeid");                
             },            
             getIconClass: function (id) {
                 var iconClass = '';
@@ -125,12 +125,12 @@
             onCategoryChange: function (event) {
                 Array.from(document.querySelectorAll('.category.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");
-                sessionStorage.setItem("speedrunlistcategoryid", this.categoryid); 
+                sessionStorage.setItem("speedrunsummarylistid", this.categoryid); 
             },                            
             onCategoryTypeChange: function (event) {
                 Array.from(document.querySelectorAll('.categorytype.active')).forEach((el) => el.classList.remove('active'));
                 event.target.parentElement.classList.add("active");
-                sessionStorage.setItem("speedrunlistcategorytypeid", this.categorytypeid); 
+                sessionStorage.setItem("categorytypeid", this.categorytypeid); 
             }                          
         }
     };

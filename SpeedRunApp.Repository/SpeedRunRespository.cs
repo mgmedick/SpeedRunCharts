@@ -14,21 +14,21 @@ namespace SpeedRunApp.Repository
 {
     public class SpeedRunRespository : BaseRepository, ISpeedRunRepository
     {
-        public IEnumerable<SpeedRunSummaryView> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        public IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryResults(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SpeedRunSummaryView>("CALL GetLatestSpeedRuns (@0, @1, @2, @3);", category, topAmount, orderValueOffset, categoryTypeID).ToList();
+                var results = db.Query<SpeedRunSummaryView>("CALL GetSpeedRunSummaryResults (@0, @1, @2, @3);", category, topAmount, orderValueOffset, categoryTypeID).ToList();
 
                 return results;
             }
         }
         
-        public IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(Expression<Func<SpeedRunListCategory, bool>> predicate = null)
+        public IEnumerable<SpeedRunSummaryList> GetSpeedRunSummaryLists(Expression<Func<SpeedRunSummaryList, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SpeedRunListCategory>().Where(predicate ?? (x => true)).ToList();
+                var results = db.Query<SpeedRunSummaryList>().Where(predicate ?? (x => true)).ToList();
                 return results;
             }
         }
@@ -86,11 +86,11 @@ namespace SpeedRunApp.Repository
             }
         }           
 
-        public int? GetSpeedRunID(string speedRunComID)
+        public int? GetSpeedRunID(string code)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<int?>("SELECT Id FROM tbl_SpeedRun WHERE Code = @0;", speedRunComID).FirstOrDefault();
+                return db.Query<int?>("SELECT Id FROM tbl_SpeedRun WHERE Code = @0;", code).FirstOrDefault();
             }
         }               
     }

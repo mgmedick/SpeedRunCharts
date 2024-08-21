@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpeedRunApp.Interfaces.Services;
+using SpeedRunApp.Model.ViewModels;
 using System.Collections.Generic;
 using System;
 using Serilog;
@@ -22,6 +23,22 @@ namespace SpeedRunApp.MVC.Controllers
             var playerDetailsVM = _playerService.GetPlayerDetails(ID, speedRunCode);
             
             return View(playerDetailsVM);
+        }
+
+        [HttpGet]
+        public JsonResult GetPlayerSpeedRunTabsAndData(int playerID)
+        {
+            PlayerDetailsTabViewModel tabVM = null;
+            try
+            {
+                tabVM = _playerService.GetPlayerSpeedRunTabsAndData(playerID);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetPlayerSpeedRunTabsAndData PlayerID: {@PlayerID}", playerID);
+            }
+
+            return Json(tabVM);
         }
 
         [HttpGet]

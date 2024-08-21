@@ -22,17 +22,17 @@
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                        <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
+                        <a :href="'/Game/GameDetails/' + item.game.abbr + '?speedRunID=' + item.code" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeMillisecondsString }}</span></a>
                     </div>
                     <div class="text-secondary font-weight-semibold" style="font-size: 14px;">
                         <template v-for="(player, index) in item.players">                               
                             <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                 <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
-                                    <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID" class="text-primary">{{ player.name }}</a>
+                                    <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.code" class="text-primary">{{ player.name }}</a>
                                 </span>
                             </span>
                             <span v-else class="username-text">
-                                <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.speedRunComID">{{ player.name }}</a>
+                                <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunID=' + item.code">{{ player.name }}</a>
                             </span>
                             <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
                         </template>

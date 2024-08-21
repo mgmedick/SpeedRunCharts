@@ -40,7 +40,7 @@
                     </div>                   
                 </div>
             </div>
-            <player-tabs :id="playervm.id.toString()" :speedruncode="playervm.speedRunCode"></player-tabs>
+            <player-details-tabs :id="playervm.id.toString()" :speedruncode="playervm.speedRunCode"></player-details-tabs>
         </div>        
     </div>
 </template>

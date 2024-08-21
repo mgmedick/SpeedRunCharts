@@ -133,7 +133,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input type="text" name="primaryTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.primaryTimeString" />
+                                            <input type="text" name="primaryTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.primaryTimeMillisecondsString" />
                                         </td>
                                         <td>
                                             <input type="text" name="realTime" class="form-control time" style="width:125px" v-model="item.speedRunVM.realTimeString" />

@@ -24,18 +24,18 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSpeedRunListCategories()
+        public JsonResult GetSpeedRunSummaryLists()
         {
             var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var runListCategories = _speedRunService.GetSpeedRunListCategories(currUserID);
+            var runListCategories = _speedRunService.GetSpeedRunSummaryLists(currUserID);
 
             return Json(runListCategories);
         }
 
         [HttpGet]
-        public JsonResult GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        public JsonResult GetSpeedRunSummaryResults(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
-            var results = _speedRunService.GetLatestSpeedRuns(category, topAmount, orderValueOffset, categoryTypeID);
+            var results = _speedRunService.GetSpeedRunSummaryResults(category, topAmount, orderValueOffset, categoryTypeID);
 
             return Json(results);
         }

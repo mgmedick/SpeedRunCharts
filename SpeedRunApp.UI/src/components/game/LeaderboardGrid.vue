@@ -40,7 +40,7 @@
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
-                <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
+                <leaderboard-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-charts>
                 <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                     <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
                         <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
@@ -128,11 +128,11 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
+                axios.get('/Game/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
                     .then(res => {
                         that.tableData = res.data;
                         if (that.istimerasc) {
-                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTimeTicks - a?.primaryTimeTicks });
+                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds });
                         }
                                                                         
                         that.initGrid(res.data); 
@@ -169,8 +169,8 @@
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
-                    { title: "Time", field: "primaryTimeTicks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125                    
+                    { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" },                    
+                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100                    
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
@@ -222,7 +222,7 @@
                         return html;
                     },                    
                     initialSort: [
-                        { column: "primaryTimeTicks", dir: that.istimerasc ? "desc" : "asc" },
+                        { column: "primaryTimeMilliseconds", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {
@@ -334,7 +334,7 @@
             },                        
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
-                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
+                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeMillisecondsString" : "primaryTimeSecondsString";
                 var value = cell.getRow().getCell(primaryTimeColumn).getValue();
 
                 if (value) {

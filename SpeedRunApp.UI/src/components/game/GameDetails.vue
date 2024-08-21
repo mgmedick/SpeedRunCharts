@@ -15,7 +15,7 @@
             </div>
         </div>
         <div>          
-            <game-tabs :id="gamevm.id.toString()" :speedruncode="gamevm.speedRunCode"></game-tabs>
+            <game-detail-tabs :id="gamevm.id.toString()" :speedruncode="gamevm.speedRunCode"></game-detail-tabs>
         </div>          
     </div>
 </template>

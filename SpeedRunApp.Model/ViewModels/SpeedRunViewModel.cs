@@ -187,7 +187,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string PrimaryTimeString
+        public string PrimaryTimeMillisecondsString
         {
             get
             {
@@ -224,14 +224,6 @@ namespace SpeedRunApp.Model.ViewModels
             get
             {
                 return DateSubmitted?.ToString("MM/dd/yyyy");
-            }
-        }
-
-        public string MonthYearSubmitted
-        {
-            get
-            {
-                return DateSubmitted?.ToString("MM/yyyy");
             }
         }
 

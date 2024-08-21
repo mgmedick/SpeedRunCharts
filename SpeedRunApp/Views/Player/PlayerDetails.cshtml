@@ -13,7 +13,7 @@
     }
     else
     {
-        <playerdetails :playervm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></playerdetails>
+        <player-details :playervm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>
     }
 </div>
 

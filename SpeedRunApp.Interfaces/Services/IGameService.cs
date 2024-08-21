@@ -8,12 +8,12 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IGameService
     {
-        GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunComID);
+        GameDetailsViewModel GetGameDetails(string gameAbbr, string code);
         // EditSpeedRunViewModel GetEditSpeedRun(int gamID, int? speedRunID);
         IEnumerable<SearchResult> SearchGames(string searchText);
         GameDetailsTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null);
         GameDetailsTabViewModel GetWorldRecordTabs(int gameID);
         GameDetailsTabViewModel GetGameChartTabs(int gameID);
-        PlayerDetailsTabViewModel GetPlayerSpeedRunTabsAndData(int playerID);
+        IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false);
     }
 }

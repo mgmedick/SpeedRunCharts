@@ -14,7 +14,7 @@
     import axios from 'axios'
 
     export default {
-        name: 'SpeedRunList',
+        name: 'SpeedRunSummaryList',
         props: {
             categoryid: Number,
             defaulttopamt: Number,            
@@ -69,7 +69,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetLatestSpeedRuns', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset, categoryTypeID: this.categorytypeid } })
+                var prms = axios.get('/SpeedRun/GetSpeedRunSummaryResults', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.items = that.items.concat(res.data);    
                         that.loading = false;

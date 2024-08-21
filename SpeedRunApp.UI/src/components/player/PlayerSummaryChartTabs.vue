@@ -28,7 +28,7 @@
         </div>            
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <player-chart-container :playerid="id" :categorytypeid="categoryType.id.toString()" :items="items" :tabledata="tableData.filter(item => (categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID))"></player-chart-container>
+                <player-summary-charts :playerid="id" :categorytypeid="categoryType.id.toString()" :items="items" :tabledata="tableData.filter(item => (categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID))"></player-summary-charts>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
     import axios from 'axios';
 
     export default {
-        name: "UserChartTabs",
+        name: "PlayerSummaryChartsTabs",
         props: {
             id: String
         },
@@ -62,7 +62,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetPlayerSpeedRunTabsAndData?playerID=' + this.id;
+                var url = '/Player/GetPlayerSpeedRunTabsAndData?playerID=' + this.id;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

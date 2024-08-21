@@ -5,7 +5,7 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class PlayerDetailsTabViewModel
     {
-        public PlayerDetailsTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> categoryTypes, IEnumerable<SpeedRunGridPlayerViewModel> tableData)
+        public PlayerDetailsTabViewModel(IEnumerable<GameTabViewModel> tabItems, IEnumerable<IDNamePair> categoryTypes, IEnumerable<SpeedRunGridViewModel> tableData)
         {
             TabItems = tabItems;
             CategoryTypes = categoryTypes;
@@ -14,6 +14,6 @@ namespace SpeedRunApp.Model.ViewModels
 
         public IEnumerable<GameTabViewModel> TabItems { get; set; }
         public IEnumerable<IDNamePair> CategoryTypes { get; set; }               
-        public IEnumerable<SpeedRunGridPlayerViewModel> TableData { get; set; }
+        public IEnumerable<SpeedRunGridViewModel> TableData { get; set; }
     }
 }

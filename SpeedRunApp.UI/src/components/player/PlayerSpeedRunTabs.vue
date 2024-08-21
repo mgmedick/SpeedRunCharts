@@ -81,7 +81,7 @@
         name: "PlayerSpeedRunTabs",
         props: {
             id: String,
-            speedrunid: String
+            speedruncode: String
         },
         data() {
             return {
@@ -108,7 +108,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetPlayerSpeedRunTabsAndData?playerID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Player/GetPlayerSpeedRunTabsAndData?playerID=' + this.id + '&speedRunCode=' + this.speedruncode;
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

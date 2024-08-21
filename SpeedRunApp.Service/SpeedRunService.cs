@@ -38,30 +38,30 @@ namespace SpeedRunApp.Service
             return runListVM;
         }
 
-        public IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(int currUserID)
+        public IEnumerable<SpeedRunSummaryList> GetSpeedRunSummaryLists(int currUserID)
         {
-            var allSpeedRunListCategories = _speedRunRepo.GetSpeedRunListCategories().ToList();
-            var speedRunListCategories = allSpeedRunListCategories.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
+            var allSpeedRunSummaryLists = _speedRunRepo.GetSpeedRunSummaryLists().ToList();
+            var speedRunSummaryLists = allSpeedRunSummaryLists.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
 
             if(currUserID > 0)
             {
-                var userSpeedRunListCategories = _userRepo.GetUserSpeedRunListCategories(i => i.UserID == currUserID);
-                if(userSpeedRunListCategories.Any())
+                var userSpeedRunSummaryLists = _userRepo.GetUserSpeedRunSummaryLists(i => i.UserID == currUserID);
+                if(userSpeedRunSummaryLists.Any())
                 {
-                    speedRunListCategories = (from c in speedRunListCategories
-                                join uc in userSpeedRunListCategories
-                                on c.ID equals uc.SpeedRunListCategoryID
+                    speedRunSummaryLists = (from c in speedRunSummaryLists
+                                join uc in userSpeedRunSummaryLists
+                                on c.ID equals uc.SpeedRunSummaryListID
                                 orderby uc.ID
                                 select c).ToList();
                 }
             }
             
-            return speedRunListCategories;
+            return speedRunSummaryLists;
         }
 
-        public IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        public IEnumerable<SpeedRunSummaryViewModel> GetSpeedRunSummaryResults(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
-            var runs = _speedRunRepo.GetLatestSpeedRuns(category, topAmount, orderValueOffset, categoryTypeID);
+            var runs = _speedRunRepo.GetSpeedRunSummaryResults(category, topAmount, orderValueOffset, categoryTypeID);
             IEnumerable<SpeedRunSummaryViewModel> runVMs = runs.Select(i => new SpeedRunSummaryViewModel(i));
 
             return runVMs;

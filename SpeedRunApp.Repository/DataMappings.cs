@@ -56,9 +56,9 @@ namespace SpeedRunApp.Repository
             });                  
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");
-            For<UserSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_User_SpeedRunListCategory");
+            For<UserSpeedRunSummaryList>().PrimaryKey("ID").TableName("tbl_User_SpeedRunSummaryList");
             For<UserView>().TableName("vw_User");   
-            For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
+            For<SpeedRunSummaryList>().PrimaryKey("ID").TableName("tbl_SpeedRunSummaryList");
             For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }
     }

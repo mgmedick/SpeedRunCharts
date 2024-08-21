@@ -132,9 +132,9 @@
 
                         groupedObj[monthDayYear] = groupedObj[monthDayYear] || [];
                         if(that.showmilliseconds){
-                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeMilliseconds, primaryTimeString: item.primaryTimeString, playerNames: playerNames });                        
+                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeMilliseconds, primaryTimeMillisecondsString: item.primaryTimeMillisecondsString, playerNames: playerNames });                        
                         } else {
-                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeSeconds, primaryTimeString: item.primaryTimeSecondsString, playerNames: playerNames });                        
+                            groupedObj[monthDayYear].push({ primaryTime: item.primaryTimeSeconds, primaryTimeMillisecondsString: item.primaryTimeSecondsString, playerNames: playerNames });                        
                         }
                     });
 
@@ -149,7 +149,7 @@
                                 minItem = groupedObj[key].sort((a, b) => { return a?.primaryTime - b?.primaryTime })[0];
                             }
 
-                            chartDataObj[key] = { value: minItem.primaryTime, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeString };                                                  
+                            chartDataObj[key] = { value: minItem.primaryTime, tooltext: key + "{br}" + minItem.playerNames + "{br}" + minItem.primaryTimeMillisecondsString };                                                  
                         }
 
                         _timePeriods.forEach(timePeriod => {

@@ -78,7 +78,7 @@
     import axios from 'axios';
     
     export default {
-        name: "GameChartContainer",
+        name: "GameSummaryCharts",
         props: {
             gameid: String,
             categorytypeid: String,

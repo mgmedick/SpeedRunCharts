@@ -57,13 +57,13 @@
             <worldrecord-tabs :id="id" :showmisc="showMisc"></worldrecord-tabs>   
         </div>
         <div v-else>
-            <game-chart-tabs :id="id"></game-chart-tabs>
+            <game-summary-chart-tabs :id="id"></game-summary-chart-tabs>
         </div>        
     </div>
 </template>
 <script>
     export default {
-        name: "GameTabs",
+        name: "GameDetailTabs",
         props: {
             id: String,
             speedruncode: String           

@@ -29,7 +29,7 @@
         <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-if="categoryTypeID == 0">
-                    <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :categories="game.categories" :levels="game.levels" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-chart-container>
+                    <game-summary-charts :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :categories="game.categories" :levels="game.levels" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-summary-charts>
                 </div>
                 <div v-else>
                     <div class="row no-gutters pr-1 pt-1 pb-0">
@@ -53,7 +53,7 @@
                     </div>                           
                     <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
                         <div v-if="categoryID == category.id">                                
-                            <game-chart-container :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :categories="game.categories" :levels="game.levels.filter(lvl => lvl.categoryID == category.id)" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-chart-container>                        
+                            <game-summary-charts :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :categories="game.categories" :levels="game.levels.filter(lvl => lvl.categoryID == category.id)" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs" :showmilliseconds="game.showMilliseconds" :subcaption="subCaption"></game-summary-charts>                        
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
     import axios from 'axios';
 
     export default {
-        name: "GameChartTabs",
+        name: "GameSummaryChartTabs",
         props: {       
             id: String
         },

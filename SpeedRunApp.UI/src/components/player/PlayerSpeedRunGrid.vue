@@ -31,11 +31,11 @@
                             </div>                                
                         </td>
                         <td style="width: 25%; vertical-align: middle;">
-                            <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunID=' + item.speedRunComID" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
-                            <div><span style="font-size: 13px;">{{ showmilliseconds ? item.primaryTimeString : item.primaryTimeSecondsString }}</span></div>               
+                            <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunID=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div><span style="font-size: 13px;">{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
                         <td class="show-md" style="width: auto; vertical-align: middle;">
-                            <div><span>{{ item.platform?.name }}</span></div>  
+                            <div><span>{{ item.platformName }}</span></div>  
                             <div><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
                         </td>
                     </tr>
@@ -55,7 +55,7 @@
                 User Charts
             </template>
             <div class="container p-0">
-                <player-speedrun-chart-container :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-chart-container>
+                <player-speedrun-charts :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>
             </div>
         </modal>            
     </div>   

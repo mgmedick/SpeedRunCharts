@@ -18,6 +18,7 @@ namespace SpeedRunApp.Model.Data
         public int? LevelID { get; set; }
         public string LevelName { get; set; }       
         public string SubCategoryVariableValueIDs { get; set; }
+        public string SubCategoryVariableValues { get; set; }
         public int? PlatformID { get; set; }  
         public string PlatformName { get; set; }      
         public int? Rank { get; set; }
@@ -27,7 +28,7 @@ namespace SpeedRunApp.Model.Data
         public string SrcUrl { get; set; }
         public string PlayersJson { get; set; }
         public string VariableValuesJson { get; set; }
-        public string VideosJson{ get; set; }
+        public string VideosJson { get; set; }
         public bool IsPersonalBest { get; set; }        
 
         private List<PlayerView> _players = null;
@@ -43,14 +44,14 @@ namespace SpeedRunApp.Model.Data
                 return _players;
             }
         }           
-        private List<VariableValue> _variableValues = null;
-        public List<VariableValue> VariableValues
+        private Dictionary<int, int> _variableValues = null;
+        public Dictionary<int, int> VariableValues
         { 
             get
             {
                 if (!string.IsNullOrWhiteSpace(VariableValuesJson))
                 {
-                    _variableValues = JsonSerializer.Deserialize<List<VariableValue>>(VariableValuesJson);
+                    _variableValues = JsonSerializer.Deserialize<Dictionary<int, int>>(VariableValuesJson);
                 }
 
                 return _variableValues;

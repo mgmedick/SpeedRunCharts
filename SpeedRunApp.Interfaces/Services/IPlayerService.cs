@@ -7,7 +7,8 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface IPlayerService
     {
-        PlayerDetailsViewModel GetPlayerDetails(string playerName, string speedRunCode);        
+        PlayerDetailsViewModel GetPlayerDetails(string playerName, string speedRunCode); 
+        PlayerDetailsTabViewModel GetPlayerSpeedRunTabsAndData(int playerID);       
         IEnumerable<SearchResult> SearchPlayers(string searchText);
     }
 }

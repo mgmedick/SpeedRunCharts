@@ -11,19 +11,13 @@ namespace SpeedRunApp.Service
 {
     public class GamesService : IGameService
     {
-        private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IGameRepository _gameRepo = null;
-        private readonly ICacheService _cacheService = null;
-        private readonly ISettingRepository _settingRepo = null;
-        private readonly ISpeedRunService _speedRunService = null;
+        private readonly ISpeedRunRepository _speedRunRepo = null;
 
         public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService, ISettingRepository settingRepo, ISpeedRunService speedRunService)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
-            _cacheService = cacheService;
-            _settingRepo = settingRepo;
-            _speedRunService = speedRunService;
         }
 
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunCode) {
@@ -31,11 +25,6 @@ namespace SpeedRunApp.Service
             var gameDetailsVM = new GameDetailsViewModel(gameVW, speedRunCode);
 
             return gameDetailsVM;
-        }
-
-        public IEnumerable<SearchResult> SearchGames(string searchText)
-        {
-            return _gameRepo.SearchGames(searchText);
         }
 
         /*
@@ -95,22 +84,14 @@ namespace SpeedRunApp.Service
             var tabVM = new GameDetailsTabViewModel(tabItems);
 
             return tabVM;
-        }        
-
-        public PlayerDetailsTabViewModel GetPlayerSpeedRunTabsAndData(int playerID)
-        {
-            var runVMs = _speedRunService.GetPlayerSpeedRunGridData(playerID).ToList();            
-            var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
-            var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
-            var runTabs = runVMs.Select(i=> new SpeedRun() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
-            var tabItems = GetGameTabs(games, runTabs, true).ToList();
-            var categoryTypes = tabItems.SelectMany(i=>i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
-            var tabVM = new PlayerDetailsTabViewModel(tabItems, categoryTypes, runVMs);
-                       
-            return tabVM;
         }
-        
-        private IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false)
+
+        public IEnumerable<SearchResult> SearchGames(string searchText)
+        {
+            return _gameRepo.SearchGames(searchText);
+        }
+
+        public IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false)
         {
             var gameTabs = new List<GameTabViewModel>();
 
@@ -259,7 +240,7 @@ namespace SpeedRunApp.Service
                     }
                 }                 
             } 
-        }     
+        }           
     }
 }
 

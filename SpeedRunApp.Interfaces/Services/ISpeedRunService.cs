@@ -8,14 +8,14 @@ namespace SpeedRunApp.Interfaces.Services
     public interface ISpeedRunService
     {
         SpeedRunListViewModel GetSpeedRunList();
-        IEnumerable<SpeedRunListCategory> GetSpeedRunListCategories(int currUserID);
-        IEnumerable<SpeedRunSummaryViewModel> GetLatestSpeedRuns(int category, int topAmount, int? orderValueOffset, int? categoryTypeID);
+        IEnumerable<SpeedRunSummaryList> GetSpeedRunSummaryLists(int currUserID);
+        IEnumerable<SpeedRunSummaryViewModel> GetSpeedRunSummaryResults(int category, int topAmount, int? orderValueOffset, int? categoryTypeID);
         SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID);
         IEnumerable<SpeedRunGridViewModel> GetLeaderboardGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData);
         IEnumerable<SpeedRunGridViewModel> GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID);
         IEnumerable<SpeedRunGridViewModel> GetGameSummaryChartData(int gameID, int categoryTypeID);  
-        IEnumerable<SpeedRunGridPlayerViewModel> GetPlayerSpeedRunGridData(int playerID);
-        IEnumerable<SpeedRunGridPlayerViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID);  
+        IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunGridData(int playerID);
+        IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID);  
         ImportStatusViewModel GetImportStatus();
     }
 }

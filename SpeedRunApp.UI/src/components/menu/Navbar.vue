@@ -178,7 +178,7 @@
                 if (window.location.pathname == '/') {
                     window.location.reload(true);
                 } else {
-                    sessionStorage.removeItem("speedrunlistcategoryid");
+                    sessionStorage.removeItem("speedrunsummarylistid");
                     sessionStorage.removeItem("topamt");
                     sessionStorage.removeItem("offset");
                     sessionStorage.removeItem("scrolltop");

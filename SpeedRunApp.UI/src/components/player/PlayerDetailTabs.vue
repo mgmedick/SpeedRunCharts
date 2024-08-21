@@ -16,13 +16,13 @@
             <player-speedrun-tabs :id="id" :speedrunid="speedrunid"></player-speedrun-tabs>
         </div>
         <div v-else>
-            <player-chart-tabs :id="id"></player-chart-tabs>
+            <player-summary-chart-tabs :id="id"></player-summary-chart-tabs>
         </div>           
     </div>
 </template>
 <script>
     export default {
-        name: "PlayerTabs",
+        name: "PlayerDetailTabs",
         props: {
             id: String,
             speedrunid: String           

@@ -57,23 +57,23 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<UserSpeedRunListCategory> GetUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate)
+        public IEnumerable<UserSpeedRunSummaryList> GetUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<UserSpeedRunListCategory>().Where(predicate).ToList();
+                return db.Query<UserSpeedRunSummaryList>().Where(predicate).ToList();
             }
         }
 
-        public void SaveUserSpeedRunListCategories(IEnumerable<UserSpeedRunListCategory> userSpeedRunListCategories)
+        public void SaveUserSpeedRunSummaryLists(IEnumerable<UserSpeedRunSummaryList> userSpeedRunSummaryLists)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 using (var tran = db.GetTransaction())
                 {
-                    foreach (var userSpeedRunListCategory in userSpeedRunListCategories)
+                    foreach (var userSpeedRunSummaryList in userSpeedRunSummaryLists)
                     {
-                        db.Save<UserSpeedRunListCategory>(userSpeedRunListCategory);
+                        db.Save<UserSpeedRunSummaryList>(userSpeedRunSummaryList);
                     }
 
                     tran.Complete();
@@ -81,13 +81,13 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public void DeleteUserSpeedRunListCategories(Expression<Func<UserSpeedRunListCategory, bool>> predicate)
+        public void DeleteUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 using (var tran = db.GetTransaction())
                 {
-                    db.DeleteMany<UserSpeedRunListCategory>().Where(predicate).Execute();
+                    db.DeleteMany<UserSpeedRunSummaryList>().Where(predicate).Execute();
                     tran.Complete();
                 }
             }

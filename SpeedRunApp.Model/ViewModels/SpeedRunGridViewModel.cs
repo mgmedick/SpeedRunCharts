@@ -19,20 +19,15 @@ namespace SpeedRunApp.Model.ViewModels
             LevelID = run.LevelID;
             LevelName = run.LevelName;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
+            SubCategoryVariableValues = run.SubCategoryVariableValues;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;  
-            PrimaryTime = new TimeSpan(run.PrimaryTime);      
-            VariableValues = run.VariableValues?.ToDictionary(i => i.ID, i => i.VariableID);
-            SubCategoryVariableValues = run.VariableValues != null ? string.Join(", ", run.VariableValues.Select(i => i.Name).ToList()) : null;
+            PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);      
+            VariableValues = run.VariableValues;
             VideoLinks = run.Videos;
             Players = run.Players;
-
-            if (run.PlatformID.HasValue)
-            {
-                Platform = new IDNamePair { ID = run.PlatformID.Value, Name = run.PlatformName };
-                PlatformName = run.PlatformName;
-            }
+            PlatformName = run.PlatformName;
         }
 
         public int ID { get; set; }
@@ -45,7 +40,6 @@ namespace SpeedRunApp.Model.ViewModels
         public bool IsMiscellaneous { get; set; }        
         public int? LevelID { get; set; }
         public string LevelName { get; set; }
-        public IDNamePair Platform { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
         public string SubCategoryVariableValues { get; set; }
@@ -60,14 +54,6 @@ namespace SpeedRunApp.Model.ViewModels
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
         public bool IsPersonalBest { get; set; }
-
-        public PlayerView Player
-        {
-            get
-            {
-                return Players?.FirstOrDefault();
-            }
-        }
 
         public string PlayerNames
         {
@@ -109,14 +95,6 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public double PrimaryTimeTicks
-        {
-            get
-            {
-                return PrimaryTime.Ticks;
-            }
-        }        
-
         public double PrimaryTimeSeconds
         {
             get
@@ -125,7 +103,7 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public string PrimaryTimeString
+        public string PrimaryTimeMillisecondsString
         {
             get
             {
@@ -140,22 +118,6 @@ namespace SpeedRunApp.Model.ViewModels
                 return PrimaryTime.ToShortString(true);
             }
         }        
-
-        public string DateSubmittedString
-        {
-            get
-            {
-                return DateSubmitted?.ToString("MM/dd/yyyy");
-            }
-        }
-
-        public string MonthYearSubmitted
-        {
-            get
-            {
-                return DateSubmitted?.ToString("MM/yyyy");
-            }
-        }
 
         public string RelativeDateSubmittedString
         {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon.Extensions;
+using SpeedRunApp.Model.JSON;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -44,7 +45,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string SubCategoryVariableValueIDs { get; set; }
         public string SubCategoryVariableValues { get; set; }
         public Dictionary<int, int> VariableValues { get; set; }
-        public List<PlayerView> Players { get; set; }
+        public List<PlayerResult> Players { get; set; }
         public List<string> VideoLinks { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }

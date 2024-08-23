@@ -5,13 +5,15 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunListViewModel
+    public class IndexViewModel
     {
-        public SpeedRunListViewModel(int defaultTopAmount)
+        public IndexViewModel(int defaultTopAmount, List<SummaryList> summaryLists)
         {
             DefaultTopAmount = defaultTopAmount;
+            SummaryLists = summaryLists;
         }
 
         public int DefaultTopAmount { get; set; }
+        public List<SummaryList> SummaryLists { get; set; }
     }
 }

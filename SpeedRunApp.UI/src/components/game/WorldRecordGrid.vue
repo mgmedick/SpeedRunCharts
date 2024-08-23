@@ -33,7 +33,7 @@
                         </li>                    
                     </ul>
                 </div>
-                <div class="grid" style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
         <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">

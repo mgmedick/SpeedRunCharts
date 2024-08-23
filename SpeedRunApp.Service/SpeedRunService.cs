@@ -14,43 +14,31 @@ namespace SpeedRunApp.Service
     public class SpeedRunService : ISpeedRunService
     {
         private readonly IConfiguration _config = null;
-        private readonly IPlayerService _playerService = null;
-        private readonly ICacheService _cacheService = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
         private readonly IUserRepository _userRepo = null;
         private readonly ISettingRepository _settingRepo = null;
 
-        public SpeedRunService(IConfiguration config, IPlayerService playerService, ICacheService cacheService, ISpeedRunRepository speedRunRepo, IUserRepository userRepo, ISettingRepository settingRepo)
+        public SpeedRunService(IConfiguration config, ISpeedRunRepository speedRunRepo, IUserRepository userRepo, ISettingRepository settingRepo)
         {
             _config = config;
-            _playerService = playerService;
-            _cacheService = cacheService;
             _speedRunRepo = speedRunRepo;
             _userRepo = userRepo;
             _settingRepo = settingRepo;
         }
 
-        public SpeedRunListViewModel GetSpeedRunList()
+        public IEnumerable<SummaryList> GetSummaryLists(int currUserID)
         {
-            var defaultTopAmount = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("DefaultTopAmount").Value);
-            var runListVM = new SpeedRunListViewModel(defaultTopAmount);
-
-            return runListVM;
-        }
-
-        public IEnumerable<SpeedRunSummaryList> GetSpeedRunSummaryLists(int currUserID)
-        {
-            var allSpeedRunSummaryLists = _speedRunRepo.GetSpeedRunSummaryLists().ToList();
+            var allSpeedRunSummaryLists = _speedRunRepo.GetSummaryLists().ToList();
             var speedRunSummaryLists = allSpeedRunSummaryLists.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
 
-            if(currUserID > 0)
+            if (currUserID > 0)
             {
-                var userSpeedRunSummaryLists = _userRepo.GetUserSpeedRunSummaryLists(i => i.UserID == currUserID);
-                if(userSpeedRunSummaryLists.Any())
+                var userSummaryLists = _userRepo.GetUserSummaryLists(i => i.UserID == currUserID);
+                if(userSummaryLists.Any())
                 {
                     speedRunSummaryLists = (from c in speedRunSummaryLists
-                                join uc in userSpeedRunSummaryLists
-                                on c.ID equals uc.SpeedRunSummaryListID
+                                join uc in userSummaryLists
+                                on c.ID equals uc.SummaryListID
                                 orderby uc.ID
                                 select c).ToList();
                 }
@@ -59,20 +47,12 @@ namespace SpeedRunApp.Service
             return speedRunSummaryLists;
         }
 
-        public IEnumerable<SpeedRunSummaryViewModel> GetSpeedRunSummaryResults(int category, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        public IEnumerable<SpeedRunSummaryViewModel> GetSummaryListResults(int summaryListID, int topAmount, int? orderValueOffset, int? categoryTypeID)
         {
-            var runs = _speedRunRepo.GetSpeedRunSummaryResults(category, topAmount, orderValueOffset, categoryTypeID);
+            var runs = _speedRunRepo.GetSummaryListResults(summaryListID, topAmount, orderValueOffset, categoryTypeID);
             IEnumerable<SpeedRunSummaryViewModel> runVMs = runs.Select(i => new SpeedRunSummaryViewModel(i));
 
             return runVMs;
-        }
-
-        public SpeedRunSummaryViewModel GetSpeedRunSummary(int speedRunID)
-        {
-            var run = _speedRunRepo.GetSpeedRunSummaryViews(i => i.ID == speedRunID).FirstOrDefault();
-            var runVM = new SpeedRunSummaryViewModel(run);
-
-            return runVM;
         }
 
         public IEnumerable<SpeedRunGridViewModel> GetLeaderboardGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData)
@@ -124,14 +104,6 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID)
-        {
-            var runs = _speedRunRepo.GetSpeedRunGridPlayerViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.PlayerID == playerID).OrderByDescending(i => i.ID).ToList();     
-            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
-
-            return runVMs;
-        }
-
         public IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunGridData(int playerID)
         {
             var runs = _speedRunRepo.GetSpeedRunGridPlayerViews(i => i.PlayerID == playerID).ToList();            
@@ -157,17 +129,12 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public ImportStatusViewModel GetImportStatus()
+        public IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID)
         {
-            var importSettings = new List<string>() { "ImportLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
-            var results = _settingRepo.GetSettings(i => importSettings.Contains(i.Name)).ToList();
-            var ImportLastRunDate = results.FirstOrDefault(i => i.Name == "ImportLastRunDate")?.Dte;
-            var ImportLastUpdateSpeedRunsDate = results.FirstOrDefault(i => i.Name == "ImportLastUpdateSpeedRunsDate")?.Dte;
-            var ImportLastBulkReloadDate = results.FirstOrDefault(i => i.Name == "ImportLastBulkReloadDate")?.Dte;
+            var runs = _speedRunRepo.GetSpeedRunGridPlayerViews(i => i.GameID == gameID && i.CategoryTypeID == categoryTypeID && i.CategoryID == categoryID && i.LevelID == levelID && i.SubCategoryVariableValueIDs == subCategoryVariableValueIDs && i.PlayerID == playerID).OrderByDescending(i => i.ID).ToList();     
+            var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
 
-            var importStatusVM = new ImportStatusViewModel(ImportLastRunDate, ImportLastUpdateSpeedRunsDate, ImportLastBulkReloadDate);
-
-            return importStatusVM;
-        }        
+            return runVMs;
+        }     
     }
 }

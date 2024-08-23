@@ -18,7 +18,7 @@
     FusionCharts.addDep(Column2D, CandyTheme);
 
     export default {
-        name: "PlayerSpeedRunCountBarChart",
+        name: "PlayerSummaryBarChart",
         emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,

@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class UserSpeedRunSummaryList
+    public class UserSummaryList
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public int SpeedRunSummaryListID { get; set; }
+        public int SummaryListID { get; set; }
     }
 } 

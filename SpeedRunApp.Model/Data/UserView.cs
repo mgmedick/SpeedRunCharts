@@ -17,7 +17,7 @@ namespace SpeedRunApp.Model.Data
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public bool IsDarkTheme { get; set; }
-        public string SpeedRunSummaryListIDs { get; set; }
+        public string SummaryListIDs { get; set; }
 
         public User ConvertToUser()
         {

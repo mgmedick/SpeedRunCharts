@@ -18,7 +18,7 @@
     FusionCharts.addDep(MultiLevelPie, CandyTheme);
 
     export default {
-        name: "GameSpeedRunCountDonutChart",
+        name: "GameSummaryDonutChart",
         emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,

@@ -10,11 +10,13 @@ namespace SpeedRunApp.MVC.Controllers
     public class PlayerController : Controller
     {
         private readonly IPlayerService _playerService = null;
+        private readonly ISpeedRunService _speedRunService = null;
         private readonly ILogger _logger = null;
 
-        public PlayerController(IPlayerService playerService, ILogger logger)
+        public PlayerController(IPlayerService playerService, ISpeedRunService speedRunService, ILogger logger)
         {
             _playerService = playerService;
+            _speedRunService = speedRunService;
             _logger = logger;
         }
 
@@ -40,6 +42,14 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(tabVM);
         }
+
+         [HttpGet]
+        public JsonResult GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID)
+        {
+            var results = _speedRunService.GetPlayerSpeedRunChartData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, playerID);
+
+            return Json(results);
+        }          
 
         [HttpGet]
         public JsonResult SearchPlayers(string term)

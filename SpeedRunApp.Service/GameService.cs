@@ -14,7 +14,7 @@ namespace SpeedRunApp.Service
         private readonly IGameRepository _gameRepo = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
 
-        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService, ISettingRepository settingRepo, ISpeedRunService speedRunService)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
@@ -26,25 +26,6 @@ namespace SpeedRunApp.Service
 
             return gameDetailsVM;
         }
-
-        /*
-        public EditSpeedRunViewModel GetEditSpeedRun(int gameID, int? speedRunID)
-        {
-            var gameVW = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var statusTypes = _cacheService.GetRunStatusTypes();
-            
-            SpeedRunViewModel runVM = null;
-            if (speedRunID.HasValue)
-            {
-                var run = _speedRunRepo.GetSpeedRunViews(i => i.ID == speedRunID.Value).FirstOrDefault();
-                runVM = new SpeedRunViewModel(run);
-            }
-
-            var editSpeedRunVM = new EditSpeedRunViewModel(statusTypes, gameVM.CategoryTypes, gameVM.Categories, gameVM.Levels, gameVM.Platforms, gameVM.Variables, gameVM.SubCategoryVariables, runVM);
-
-            return editSpeedRunVM;
-        }        
-        */
 
         public GameDetailsTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null)
         {

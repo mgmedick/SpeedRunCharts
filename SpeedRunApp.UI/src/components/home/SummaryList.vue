@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <speedrun-summary v-for="(item, index) in items" :item="item" :index="index" :key="item.id"></speedrun-summary>
+        <summary-item v-for="(item, index) in items" :item="item" :index="index" :key="item.id"></summary-item>
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
@@ -14,9 +14,9 @@
     import axios from 'axios'
 
     export default {
-        name: 'SpeedRunSummaryList',
+        name: 'SummaryList',
         props: {
-            categoryid: Number,
+            summarylistid: Number,
             defaulttopamt: Number,            
             categorytypeid: Number            
         },
@@ -47,7 +47,7 @@
             window.addEventListener('beforeunload', this.onBeforeUnload);          
         },             
         watch: {                   
-            categoryid: function (val, oldVal) {
+            summarylistid: function (val, oldVal) {
                 this.resetParams();        
                 this.loadData();
             },
@@ -69,7 +69,7 @@
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/SpeedRun/GetSpeedRunSummaryResults', { params: { category: this.categoryid, topAmount: this.topamt, orderValueOffset: this.offset, categoryTypeID: this.categorytypeid } })
+                var prms = axios.get('/Home/GetSummaryListResults', { params: { summaryListID: this.summarylistid, topAmount: this.topamt, orderValueOffset: this.offset, categoryTypeID: this.categorytypeid } })
                     .then(res => {
                         that.items = that.items.concat(res.data);    
                         that.loading = false;

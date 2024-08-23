@@ -1,9 +1,11 @@
 ﻿using SpeedRunApp.Model.Data;
+using SpeedRunApp.Model.JSON;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon.Extensions;
 using System.Net;
+using System.Data;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -13,105 +15,44 @@ namespace SpeedRunApp.Model.ViewModels
         {
             ID = run.ID;
             Code = run.Code;
-            Game = new IDNameAbbrPair { ID = run.GameID, Name = run.GameName, Abbr = run.GameAbbr };
+            SortOrder = run.SortOrder;
+            GameName = run.GameName;
+            GameAbbr = run.GameAbbr;
             GameCoverImageLink = run.GameCoverImageUrl;
-            ShowMilliseconds = run.ShowMilliseconds;
-            CategoryType = new IDNamePair { ID = run.CategoryTypeID, Name = run.CategoryTypeName };
-            Category = new IDNamePair { ID = run.CategoryID, Name = run.CategoryName };
-            DateSubmitted = run.DateSubmitted;
+            CategoryTypeName = run.CategoryTypeName;
+            CategoryName = run.CategoryName;
+            LevelName = run.LevelName;
+            SubCategoryVariableValues = run.SubCategoryVariableValues;
             VerifyDate = run.VerifyDate;
-            ImportedDate = run.ImportedDate;
             Rank = run.Rank;
-
-            if(run.LevelID.HasValue) {
-                Level = new IDNamePair { ID = run.LevelID.Value, Name = run.LevelName };                            
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.SubCategoryVariableValues))
-            {
-                SubCategoryVariableValueNames = new List<string>();
-                foreach (var value in run.SubCategoryVariableValues.Split("^^"))
-                {
-                    SubCategoryVariableValueNames.Add(value);
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.Players))
-            {
-                Players = new List<UserNameViewModel>();
-                foreach (var player in run.Players.Split("^^"))
-                {
-                    var playerValue = player.Split("¦", 7);
-                    int playerID;
-                    int.TryParse(playerValue[0], out playerID);
-                    Players.Add(new UserNameViewModel { ID = playerID, Name = playerValue[1], Abbr = playerValue[2], ColorLight = playerValue[3], ColorToLight = playerValue[4], ColorDark = playerValue[5], ColorToDark = playerValue[6] });
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(run.EmbeddedVideoLinks))
-            {
-                EmbeddedVideoLinks = new List<string>();
-                VideoThumbnailLinks = new List<string>();
-                ViewCountStrings = new List<string>();
-
-                foreach (var embeddedVideoLink in run.EmbeddedVideoLinks.Split("^^"))
-                {
-                    var embeddedVideoLinkValue = embeddedVideoLink.Split("|", 3);
-                    if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[0]))
-                    {
-                        EmbeddedVideoLinks.Add(embeddedVideoLinkValue[0]);
-
-                        if (!string.IsNullOrWhiteSpace(embeddedVideoLinkValue[1]))
-                        {
-                            VideoThumbnailLinks.Add(embeddedVideoLinkValue[1]);
-                        }
-
-                        long viewCount;
-                        if (Int64.TryParse(embeddedVideoLinkValue[2], out viewCount) && viewCount > 0)
-                        {                     
-                            ViewCountStrings.Add(viewCount.ToShortString());
-                        }                        
-                    }                    
-                }
-            }
-
-            if (run.PrimaryTime.HasValue)
-            {
-                PrimaryTime = new TimeSpan(run.PrimaryTime.Value);
-            }
+            PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);
+            ShowMilliseconds = run.ShowMilliseconds;
+            Players = run.Players;
+            VideoLinks = run.Videos;
         }
 
         public int ID { get; set; }
         public string Code { get; set; }
-        public IDNameAbbrPair Game { get; set; }
+        public int SortOrder { get; set; }
+        public string GameName { get; set; }
+        public string GameAbbr { get; set; }
         public string GameCoverImageLink { get; set; }
+        public string CategoryTypeName { get; set; }    
+        public string CategoryName { get; set; }    
+        public string LevelName { get; set; }
+        public List<string> SubCategoryVariableValues { get; set; }
+        public List<PlayerResult> Players { get; set; }
+        public List<VideoLinkResult> VideoLinks { get; set; }
         public bool ShowMilliseconds { get; set; }
-        public IDNamePair CategoryType { get; set; }
-        public IDNamePair Category { get; set; }
-        public IDNamePair Level { get; set; } 
-        public List<string> SubCategoryVariableValueNames { get; set; }
-        public List<PlayerView> Players { get; set; }
-        public List<string> EmbeddedVideoLinks { get; set; }
-        public List<string> VideoThumbnailLinks { get; set; }    
-        public List<string> ViewCountStrings { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
-        public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-        public DateTime ImportedDate { get; set; }        
+
         public string VideoLink
         {
             get
             {
-                return EmbeddedVideoLinks?.FirstOrDefault();
-            }
-        }
-
-        public string VideoLinkAutoplay
-        {
-            get
-            {
-                return EmbeddedVideoLinks?.FirstOrDefault()?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
+                return VideoLinks?.Select(x => x.EmbeddedVideoLinkUrl).FirstOrDefault();
             }
         }
 
@@ -119,7 +60,15 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return VideoThumbnailLinks?.FirstOrDefault();
+                return VideoLinks?.Select(x => x.ThumbnailLinkUrl).FirstOrDefault();
+            }
+        }
+
+        public string VideoLinkAutoplay
+        {
+            get
+            {
+                return VideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
             }
         }
 
@@ -127,17 +76,9 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return (VideoThumbnailLinks.FirstOrDefault() ?? string.Empty).EndsWith("hqdefault.jpg");
+                return (VideoThumbnailLink ?? string.Empty).EndsWith("hqdefault.jpg");
             }
         }          
-
-        public string ViewCountString
-        {
-            get
-            {
-                return ViewCountStrings?.FirstOrDefault();
-            }
-        }                 
 
         public string RankString
         {
@@ -147,27 +88,11 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
-        public double PrimaryTimeMilliseconds
+        public string PrimaryTimeString
         {
             get
             {
-                return PrimaryTime.TotalMilliseconds;
-            }
-        }
-
-        public string PrimaryTimeMillisecondsString
-        {
-            get
-            {
-                return PrimaryTime.ToShortString(!ShowMilliseconds); 
-            }
-        }
-
-        public string RelativeDateSubmittedString
-        {
-            get
-            {
-                return DateSubmitted?.ToRealtiveDateString();
+                return PrimaryTime.ToShortString(!ShowMilliseconds);
             }
         }
 
@@ -175,24 +100,8 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return VerifyDate?.ToRealtiveDateString();
-            }
-        }
-
-        public string RelativeVerifyDateStringShort
-        {
-            get
-            {
                 return VerifyDate?.ToRealtiveDateString(true);
             }
-        }
-
-        public string RelativeImportedDateStringShort
-        {
-            get
-            {
-                return ImportedDate.ToRealtiveDateString(true);
-            }
-        }                
+        }             
     }
 }

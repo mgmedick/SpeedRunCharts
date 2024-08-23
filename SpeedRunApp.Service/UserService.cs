@@ -38,7 +38,7 @@ namespace SpeedRunApp.Service
         public UserSettingsViewModel GetUserSettings(int userID)
         {
             var userView = _userRepo.GetUserViews(i => i.UserID == userID).FirstOrDefault();
-            var userSettingsVM = new UserSettingsViewModel(userView, _speedRunRepo.GetSpeedRunSummaryLists().ToList());
+            var userSettingsVM = new UserSettingsViewModel(userView, _speedRunRepo.GetSummaryLists().ToList());
 
             return userSettingsVM;
         }
@@ -55,10 +55,10 @@ namespace SpeedRunApp.Service
                     IsDarkTheme = userSettingsVM.IsDarkTheme
                 };
 
-                var userSpeedRunSummaryLists = userSettingsVM.SpeedRunSummaryListIDs?.Select(i => new UserSpeedRunSummaryList() { UserID = user.ID, SpeedRunSummaryListID = i });
+                var userSummaryLists = userSettingsVM.SummaryListIDs?.Select(i => new UserSummaryList() { UserID = user.ID, SummaryListID = i });
 
                 _userRepo.SaveUserSetting(userSetting);
-                SaveUserSpeedRunSummaryLists(user.ID, userSpeedRunSummaryLists);
+                SaveUserSummaryLists(user.ID, userSummaryLists);
 
                 user.ModifiedDate = DateTime.UtcNow;
                 user.ModifiedBy = currUserID;
@@ -176,13 +176,13 @@ namespace SpeedRunApp.Service
             _userRepo.SaveUser(user);
         }
 
-        public void SaveUserSpeedRunSummaryLists(int userID, IEnumerable<UserSpeedRunSummaryList> userSpeedRunSummaryLists)
+        public void SaveUserSummaryLists(int userID, IEnumerable<UserSummaryList> userSummaryLists)
         {
-            _userRepo.DeleteUserSpeedRunSummaryLists(i => i.UserID == userID);
+            _userRepo.DeleteUserSummaryLists(i => i.UserID == userID);
 
-            if (userSpeedRunSummaryLists != null && userSpeedRunSummaryLists.Any())
+            if (userSummaryLists != null && userSummaryLists.Any())
             {
-                _userRepo.SaveUserSpeedRunSummaryLists(userSpeedRunSummaryLists);
+                _userRepo.SaveUserSummaryLists(userSummaryLists);
             }
         }
 

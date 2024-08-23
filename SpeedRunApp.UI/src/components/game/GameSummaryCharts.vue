@@ -10,7 +10,7 @@
                             </div>
                         </div>
                         <div v-else style="height:100%;">
-                            <game-speedrun-count-bar-chart chartconainerid="divGameChart1" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 1)"></game-speedrun-count-bar-chart>                                                 
+                            <game-summary-bar-chart chartconainerid="divGameChart1" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 1)"></game-summary-bar-chart>                                                 
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div v-else style="width:100%; height:100%;"> 
-                            <game-speedrun-count-line-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 2)"></game-speedrun-count-line-chart>                                      
+                            <game-summary-line-chart chartconainerid="divGameChart2" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 2)"></game-summary-line-chart>                                      
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div v-else style="height:100%;">
-                            <game-speedrun-count-doughnut-chart chartconainerid="divGameChart3" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 3)"></game-speedrun-count-doughnut-chart>                                        
+                            <game-summary-doughnut-chart chartconainerid="divGameChart3" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" @onexpandchartclick="onExpandChartClick($event, 3)"></game-summary-doughnut-chart>                                        
                         </div>
                     </div>                        
                 </div>
@@ -53,21 +53,21 @@
             <div v-if="selectedChartID == 1">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">   
-                        <game-speedrun-count-bar-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-bar-chart>  
+                        <game-summary-bar-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-bar-chart>  
                     </div>
                 </div>                                 
             </div>
             <div v-else-if="selectedChartID == 2">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">  
-                        <game-speedrun-count-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-line-chart>                
+                        <game-summary-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-line-chart>                
                     </div>
                 </div> 
             </div>     
             <div v-else-if="selectedChartID == 3">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">  
-                        <game-speedrun-count-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-speedrun-count-doughnut-chart>                
+                        <game-summary-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-doughnut-chart>                
                     </div>
                 </div>                 
             </div>                      
@@ -125,7 +125,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetGameSummaryChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid } })
+                axios.get('/Game/GetGameSummaryChartData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid } })
                     .then(res => {
                         that.tabledata = res.data;                                             
                         that.loading = false;  

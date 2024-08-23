@@ -18,15 +18,6 @@ namespace SpeedRunApp.Model.ViewModels
 
         public IEnumerable<GameTabViewModel> TabItems { get; set; }
         public IEnumerable<IDNamePair> ExportTypes { get; set; }  
-        public SpeedRunGridView RunVW { get; set; }        
-        /*
-        public int? GameID { get; set; }
-        public int? CategoryTypeID { get; set; }
-        public int? CategoryID { get; set; }
-        public int? LevelID { get; set; }
-        public Dictionary<string, string> SubCategoryVariableValueIDs { get; set; }
-        public bool? ShowAllData { get; set; }
-        public bool? ShowMisc { get; set; }
-        */
+        public SpeedRunGridView RunVW { get; set; }
     }
 }

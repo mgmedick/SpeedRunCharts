@@ -21,7 +21,7 @@
     FusionCharts.addDep(MSLine, InverseMSLine, CandyTheme);
 
     export default {
-        name: "GameSpeedRunCountLineChart",
+        name: "GameSummaryLineChart",
         emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,

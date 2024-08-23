@@ -35,10 +35,21 @@ namespace SpeedRunApp.MVC.Controllers
 
         public ViewResult Index()
         {
-            var runListVM = _speedRunService.GetSpeedRunList();
+            var defaultTopAmount = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("DefaultTopAmount").Value);
+            var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var summaryLists = _speedRunService.GetSummaryLists(currUserID).ToList();
+            var indexVM = new IndexViewModel(defaultTopAmount, summaryLists);
 
-            return View(runListVM);
+            return View(indexVM);
         }
+
+        [HttpGet]
+        public JsonResult GetSummaryListResults(int summaryListID, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        {
+            var results = _speedRunService.GetSummaryListResults(summaryListID, topAmount, orderValueOffset, categoryTypeID);
+
+            return Json(results);
+        }               
 
         public ViewResult Error()
         {
@@ -98,56 +109,6 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(new { success = success, errorMessages = errorMessages });
         }
-
-        /*
-        [HttpGet]
-        public ActionResult Login()
-        {
-            var loginVM = new LoginViewModel();
-
-            return PartialView("_Login", loginVM);
-        }
-
-        [HttpPost]
-        public JsonResult Login(LoginViewModel loginVM)
-        {
-            var success = false;
-            List<string> errorMessages = null;
-
-            try
-            {
-                if (!_userService.UsernameExists(loginVM.Username, true))
-                {
-                    ModelState.AddModelError("Login", "Invalid username");
-                }
-
-                if (!_userService.PasswordMatches(loginVM.Password, loginVM.Username))
-                {
-                    ModelState.AddModelError("Login", "Invalid password");
-                }
-
-                if(ModelState.IsValid)
-                {
-                    var userVW = _userService.GetUserViews(i => i.Username == loginVM.Username).FirstOrDefault();
-                    LoginUser(userVW);
-                    success = true;
-                }
-                else
-                {
-                    success = false;
-                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
-                }
-            }
-            catch(Exception ex)
-            {
-                _logger.Error(ex, "Login");
-                success = false;
-                errorMessages = new List<string>() { "Error logging user in." };
-            }
-
-            return Json(new { success = success, errorMessages = errorMessages });
-        }
-        */
 
         [HttpGet]
         public async Task<ActionResult> Logout()
@@ -330,15 +291,14 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string email)
         {
-            var resetPassVM = new ResetPasswordViewModel();
-
-            return PartialView("_ResetPassword", resetPassVM);
+            var resetPassVM = new ResetPasswordViewModel() { Email = email };
+            return View(resetPassVM);
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult ResetPassword(ResetPasswordViewModel resetPassVM)
         {
             var success = false;
@@ -346,14 +306,14 @@ namespace SpeedRunApp.MVC.Controllers
 
             try
             {
-                if (!_userService.UsernameExists(resetPassVM.Username, true))
+                if (!_userService.EmailExists(resetPassVM.Email, true))
                 {
-                    ModelState.AddModelError("ResetPassword", "Username not found");
+                    ModelState.AddModelError("ResetPassword", "Email not found");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _ = _userService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    _ = _userService.SendResetPasswordEmail(resetPassVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
                 }
                 else

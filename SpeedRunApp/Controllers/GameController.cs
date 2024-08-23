@@ -28,17 +28,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return View(gameDetailsVM);
         }
-
-        /*
-        [HttpGet]
-        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
-        {
-            var results = _gameService.GetEditSpeedRun(gameID, speedRunID);
-
-            return Json(results);
-        }
-        */
-
+        
         [HttpGet]
         public JsonResult GetLeaderboardTabs(int gameID, string speedRunCode)
         {
@@ -95,6 +85,13 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(results);
         }
         
+        [HttpGet]
+        public JsonResult GetGameSummaryChartData(int gameID, int categoryTypeID)
+        {
+            var results = _speedRunService.GetGameSummaryChartData(gameID, categoryTypeID);
+
+            return Json(results);
+        }    
 
         [HttpGet]
         public JsonResult SearchGames(string term)

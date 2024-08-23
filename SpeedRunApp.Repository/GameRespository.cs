@@ -39,23 +39,7 @@ namespace SpeedRunApp.Repository
                 
                 return results;
             }
-        }
-
-        public IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs()
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_Game;").ToList();
-            }
-        }
-
-        public void UpdateGameIsChanged(Game game)
-        {
-            using (IDatabase db = DBFactory.GetDatabase())
-            {
-                db.Update<Game>(game, i => new { i.IsChanged });
-            }
-        }        
+        }      
     }
 }
 

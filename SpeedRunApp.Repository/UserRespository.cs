@@ -57,23 +57,23 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<UserSpeedRunSummaryList> GetUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate)
+        public IEnumerable<UserSummaryList> GetUserSummaryLists(Expression<Func<UserSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<UserSpeedRunSummaryList>().Where(predicate).ToList();
+                return db.Query<UserSummaryList>().Where(predicate).ToList();
             }
         }
 
-        public void SaveUserSpeedRunSummaryLists(IEnumerable<UserSpeedRunSummaryList> userSpeedRunSummaryLists)
+        public void SaveUserSummaryLists(IEnumerable<UserSummaryList> userSummaryLists)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 using (var tran = db.GetTransaction())
                 {
-                    foreach (var userSpeedRunSummaryList in userSpeedRunSummaryLists)
+                    foreach (var userSummaryList in userSummaryLists)
                     {
-                        db.Save<UserSpeedRunSummaryList>(userSpeedRunSummaryList);
+                        db.Save<UserSummaryList>(userSummaryList);
                     }
 
                     tran.Complete();
@@ -81,13 +81,13 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public void DeleteUserSpeedRunSummaryLists(Expression<Func<UserSpeedRunSummaryList, bool>> predicate)
+        public void DeleteUserSummaryLists(Expression<Func<UserSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
                 using (var tran = db.GetTransaction())
                 {
-                    db.DeleteMany<UserSpeedRunSummaryList>().Where(predicate).Execute();
+                    db.DeleteMany<UserSummaryList>().Where(predicate).Execute();
                     tran.Complete();
                 }
             }

@@ -3,9 +3,9 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace SpeedRunApp.Model.ViewModels
+namespace SpeedRunApp.Model.JSON
 {
-    public class UserNameViewModel
+    public class PlayerResult
     {
         public int ID { get; set; }
         public string Name { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using SpeedRunApp.Model.JSON;
 
 namespace SpeedRunApp.Model.Data
 {
@@ -31,14 +32,14 @@ namespace SpeedRunApp.Model.Data
         public string VideosJson { get; set; }
         public bool IsPersonalBest { get; set; }        
 
-        private List<PlayerView> _players = null;
-        public List<PlayerView> Players
+        private List<PlayerResult> _players = null;
+        public List<PlayerResult> Players
         { 
             get
             {
                 if (!string.IsNullOrWhiteSpace(PlayersJson))
                 {
-                    _players = JsonSerializer.Deserialize<List<PlayerView>>(PlayersJson);
+                    _players = JsonSerializer.Deserialize<List<PlayerResult>>(PlayersJson);
                 }
 
                 return _players;

@@ -7,22 +7,22 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class UserSettingsViewModel
     {
-        public UserSettingsViewModel(UserView userVW, List<SpeedRunSummaryList> speedRunSummaryLists)
+        public UserSettingsViewModel(UserView userVW, List<SummaryList> summaryLists)
         {
             UserID = userVW.UserID;
             Username = userVW.Username;
             Email = userVW.Email;
             IsDarkTheme = userVW.IsDarkTheme;
-            SpeedRunSummaryListIDs = userVW.SpeedRunSummaryListIDs?.Split(',').Select(i=>Convert.ToInt32(i)).ToList() ?? new List<int>();
-            SpeedRunSummaryLists = speedRunSummaryLists;
+            SummaryListIDs = userVW.SummaryListIDs?.Split(',').Select(i=>Convert.ToInt32(i)).ToList() ?? new List<int>();
+            SummaryLists = summaryLists;
         }
 
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public bool IsDarkTheme { get; set; }
-        public List<int> SpeedRunSummaryListIDs { get; set; }
-        public List<SpeedRunSummaryList> SpeedRunSummaryLists { get; set; }
+        public List<int> SummaryListIDs { get; set; }
+        public List<SummaryList> SummaryLists { get; set; }
     }
 }
 

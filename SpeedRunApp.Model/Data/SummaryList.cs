@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class SpeedRunSummaryList
+    public class SummaryList
     {
         public int ID { get; set; }
         public string Name { get; set; }

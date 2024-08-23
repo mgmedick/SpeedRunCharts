@@ -1,45 +1,10 @@
-﻿@using System.Text.Json;
+﻿@using SpeedRunCommon.Extensions;
+@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
 @model SpeedRunApp.Model.ViewModels.PlayerDetailsViewModel
 
-<div class="container-lg p-0">
-    @if (Model.ID == 0)
-    {
-        <div class="mx-auto" style="max-width:500px;">
-            <div style="text-align:center;">
-                <i class="fa fa-search fa-lg"></i>
-                <div><span>Player not found, please search for the user by name and try again</span></div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <player-details :playervm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>
-    }
-</div>
+@{ ViewBag.Title = "Player Details"; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<player-details :indexvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>

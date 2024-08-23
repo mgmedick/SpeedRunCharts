@@ -13,11 +13,13 @@ namespace SpeedRunApp.Service
     {
         private readonly IGameService _gamesService = null;
         private readonly IPlayerService _playerService = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public MenuService(IGameService gamesService, IPlayerService playerService)
+        public MenuService(IGameService gamesService, IPlayerService playerService, ISettingRepository settingRepo)
         {
             _gamesService = gamesService;
             _playerService = playerService;
+            _settingRepo = settingRepo;
         }
 
         public IEnumerable<SearchResult> Search(string searchText)
@@ -42,5 +44,18 @@ namespace SpeedRunApp.Service
 
             return results;
         }
+
+        public ImportStatusViewModel GetImportStatus()
+        {
+            var importSettings = new List<string>() { "ImportLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
+            var results = _settingRepo.GetSettings(i => importSettings.Contains(i.Name)).ToList();
+            var ImportLastRunDate = results.FirstOrDefault(i => i.Name == "ImportLastRunDate")?.Dte;
+            var ImportLastUpdateSpeedRunsDate = results.FirstOrDefault(i => i.Name == "ImportLastUpdateSpeedRunsDate")?.Dte;
+            var ImportLastBulkReloadDate = results.FirstOrDefault(i => i.Name == "ImportLastBulkReloadDate")?.Dte;
+
+            var importStatusVM = new ImportStatusViewModel(ImportLastRunDate, ImportLastUpdateSpeedRunsDate, ImportLastBulkReloadDate);
+
+            return importStatusVM;
+        }           
     }
 }

@@ -20,7 +20,7 @@
     FusionCharts.addDep(StackedColumn2DLine, CandyTheme);
 
     export default {
-        name: "PlayerSpeedRunCountLineChart",
+        name: "PlayerSummaryLineChart",
         emits: ["onexpandchartclick"],
         props: {  
             tabledata: Array,

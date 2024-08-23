@@ -4,8 +4,8 @@
             <div class="col-lg-6">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">
-                        <div style="height:100%; weight:100%;">
-                            <player-speedrun-count-bar-chart chartconainerid="divUserChart1" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 1)" :ismodal="false"></player-speedrun-count-bar-chart>                                                 
+                        <div style="height:100%;">
+                            <player-summary-bar-chart chartconainerid="divUserChart1" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 1)" :ismodal="false"></player-summary-bar-chart>                                                 
                         </div>
                     </div>
                 </div>
@@ -13,8 +13,8 @@
             <div class="col-lg-6">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">
-                        <div style="height:100%; weight:100%;">
-                            <player-speedrun-count-line-chart chartconainerid="divUserChart2" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 2)" :ismodal="false"></player-speedrun-count-line-chart>                                                 
+                        <div style="height:100%;">
+                            <player-summary-line-chart chartconainerid="divUserChart2" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 2)" :ismodal="false"></player-summary-line-chart>                                                 
                         </div>
                     </div>
                 </div>                
@@ -24,8 +24,8 @@
             <div class="col-lg-12">
                 <div class="embed-responsive embed-responsive-4by3">
                     <div class="embed-responsive-item">
-                        <div style="height:100%; weight:100%;">
-                            <player-speedrun-count-donut-chart chartconainerid="divUserChart3" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 3)" :ismodal="false"></player-speedrun-count-donut-chart>                                                 
+                        <div style="height:100%;">
+                            <player-summary-donut-chart chartconainerid="divUserChart3" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 3)" :ismodal="false"></player-summary-donut-chart>                                                 
                         </div>
                     </div>                        
                 </div>

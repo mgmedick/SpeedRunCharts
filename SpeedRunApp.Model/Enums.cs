@@ -9,12 +9,7 @@ namespace SpeedRunApp.Model
         [EnumMember(Value = "Level")]
         Level
     }
-
-    public enum RunStatusType
-    {
-        New, Verified, Rejected
-    }
-
+    
     //Variables
     public enum VariableScopeType
     {

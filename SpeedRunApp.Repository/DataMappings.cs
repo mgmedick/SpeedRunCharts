@@ -11,8 +11,6 @@ namespace SpeedRunApp.Repository
         public DataMappings()
         {
             For<SpeedRun>().TableName("tbl_SpeedRun");
-            For<SpeedRunView>().TableName("vw_SpeedRun");
-            For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
             For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>
             {
                 i.Column(g => g.Players).Ignore();
@@ -20,7 +18,6 @@ namespace SpeedRunApp.Repository
                 i.Column(g => g.Videos).Ignore();
             }); 
             For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer");  
-
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
             
             For<GameView>().TableName("vw_Game").Columns(i =>
@@ -53,12 +50,13 @@ namespace SpeedRunApp.Repository
             {
                 i.Column(g => g.HasData).Ignore();
                 i.Column(g => g.SubVariables).Ignore();
-            });                  
+            });            
+
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");
-            For<UserSpeedRunSummaryList>().PrimaryKey("ID").TableName("tbl_User_SpeedRunSummaryList");
+            For<UserSummaryList>().PrimaryKey("ID").TableName("tbl_User_SummaryList");
             For<UserView>().TableName("vw_User");   
-            For<SpeedRunSummaryList>().PrimaryKey("ID").TableName("tbl_SpeedRunSummaryList");
+            For<SummaryList>().PrimaryKey("ID").TableName("tbl_SummaryList");
             For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }
     }

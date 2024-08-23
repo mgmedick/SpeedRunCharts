@@ -8,5 +8,6 @@ namespace SpeedRunApp.Interfaces.Services
     public interface IMenuService
     {
         IEnumerable<SearchResult> Search(string searchText);
+        ImportStatusViewModel GetImportStatus();
     }
 }

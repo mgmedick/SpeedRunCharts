@@ -13,7 +13,7 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    import { getDateDiffList } from '../../js/common.js';
+    import { getDateDiffList } from '../../../js/common.js';
     import FusionCharts from 'fusioncharts/core';
     import MSLine from 'fusioncharts/viz/msline';    
     import InverseMSLine from 'fusioncharts/viz/inversemsline';    

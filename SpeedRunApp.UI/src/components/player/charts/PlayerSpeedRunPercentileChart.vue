@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-    import { formatTime } from '../../js/common.js';
+    import { formatTime } from '../../../js/common.js';
     import FusionCharts from 'fusioncharts/core';
     import Pie2D from 'fusioncharts/viz/pie2d';  
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";

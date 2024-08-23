@@ -19,7 +19,7 @@ namespace SpeedRunApp.Repository
             }); 
             For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer");  
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
-            
+          
             For<GameView>().TableName("vw_Game").Columns(i =>
             {
                 i.Column(g => g.GameCategoryTypes).Ignore();

@@ -9,17 +9,17 @@ import modal from './shared/Modal.vue';
 import navbar from './menu/Navbar.vue';
 import importStatus from './menu/ImportStatus.vue';
 
+import index from './home/Index.vue';
 import signUp from './home/SignUp.vue';
 import activate from './home/Activate.vue';
 import login from './home/Login.vue';
 import resetPassword from './home/ResetPassword.vue';
 import changePassword from './home/ChangePassword.vue';
+import summaryListTabs from './home/SummaryListTabs.vue';
+import summaryList from './home/SummaryList.vue';
+import summaryItem from './home/SummaryItem.vue';
 
 import userSettings from './user/UserSettings.vue';
-
-import summaryListTabs from './speedrun/SummaryListTabs.vue';
-import summaryList from './speedrun/SummaryList.vue';
-import summaryItem from './speedrun/SummaryItem.vue';
 
 import gameDetails from './game/GameDetails.vue';
 import gameDetailTabs from './game/GameDetailTabs.vue';
@@ -28,7 +28,7 @@ import gameSummaryCharts from './game/GameSummaryCharts.vue';
 import leaderboardGrid from './game/LeaderboardGrid.vue';
 import leaderboardTabs from './game/LeaderboardTabs.vue';
 import leaderboardTabsVariable from './game/LeaderboardTabsVariable.vue';
-import leaderboardCharts from './game/LeaderboardChart.vue';
+import leaderboardCharts from './game/LeaderboardCharts.vue';
 import worldRecordTabs from './game/WorldRecordTabs.vue';
 import worldRecordGrid from './game/WorldRecordGrid.vue';
 
@@ -41,26 +41,26 @@ import leaderboardTopLineChart from './game/charts/LeaderboardTopLineChart.vue';
 import leaderboardWorldRecordChart from './game/charts/LeaderboardWorldRecordChart.vue';
 
 import playerDetails from './player/PlayerDetails.vue';
-import playerDetailTabs from './player/PlayerDetialTabs.vue';
+import playerDetailTabs from './player/PlayerDetailTabs.vue';
 import playerSpeedRunTabs from './player/PlayerSpeedRunTabs.vue';
 import playerSpeedRunGrid from './player/PlayerSpeedRunGrid.vue';
 import playerSpeedRunCharts from './player/PlayerSpeedRunCharts.vue';
 import playerSummaryChartTabs from './player/PlayerSummaryChartTabs.vue';
 import playerSummaryCharts from './player/PlayerSummaryCharts.vue';
 
-import playerSummaryDonutChart from './charts/PlayerSummaryDonutChart.vue';
-import playerSummaryBarChart from './charts/PlayerSummaryBarChart.vue';
-import playerSummaryLineChart from './charts/PlayerSummaryLineChart.vue';
-import playerSpeedRunPercentileChart from './charts/PlayerSpeedRunPercentileChart.vue';
-import playerSpeedRunTopChart from './charts/PlayerSpeedRunTopChart.vue';
-import playerSpeedRunPersonalBestChart from './charts/PlayerSpeedRunPersonalBestChart.vue';
+import playerSummaryDonutChart from './player/charts/PlayerSummaryDonutChart.vue';
+import playerSummaryBarChart from './player/charts/PlayerSummaryBarChart.vue';
+import playerSummaryLineChart from './player/charts/PlayerSummaryLineChart.vue';
+import playerSpeedRunPercentileChart from './player/charts/PlayerSpeedRunPercentileChart.vue';
+import playerSpeedRunTopChart from './player/charts/PlayerSpeedRunTopChart.vue';
+import playerSpeedRunPersonalBestChart from './player/charts/PlayerSpeedRunPersonalBestChart.vue';
 
 export default {
     loadComponents() {
         const app = createApp({
-            components: {
-                'summary-list-tabs': summaryListTabs
-            }
+            // components: {
+            //     'summary-list-tabs': summaryListTabs
+            // }
         })
         .use(VueTippy, { defaultProps: { allowHTML: true } });
         
@@ -70,11 +70,13 @@ export default {
         app.component('multiselect', multiselect);
         app.component('modal', modal);  
 
+        app.component('index', index);        
         app.component("activate", activate);   
         app.component("change-password", changePassword);
         app.component("login", login);
         app.component("reset-password", resetPassword);
         app.component("signup", signUp);
+        app.component("summary-list-tabs", summaryListTabs);
         app.component("summary-list", summaryList);
         app.component("summary-item", summaryItem);
 

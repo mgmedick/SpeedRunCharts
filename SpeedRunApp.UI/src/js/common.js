@@ -128,7 +128,21 @@ const getCookie = (key) => {
     return keyValue ? keyValue[2] : null;
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie }
+const successToast = (successMsg) => {
+    var el = document.getElementById('successtoast').cloneNode(true);
+    el.querySelector('.msg-text').innerHTML = successMsg;
+    document.getElementById('toastcontainer').appendChild(el);
+    new Toast(el).show(); 
+}
+
+const errorToast = (errorMsg) => {
+    var el = document.getElementById('errortoast').cloneNode(true);
+    el.querySelector('.msg-text').innerHTML = errorMsg;
+    document.getElementById('toastcontainer').appendChild(el);
+    new Toast(el).show();
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, successToast, errorToast }
 
 
 

@@ -13,7 +13,7 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    import { getDateDiffList } from '../../js/common.js';
+    import { getDateDiffList } from '../../../js/common.js';
     import FusionCharts from 'fusioncharts/core';
     import StackedColumn2DLine from 'fusioncharts/viz/stackedcolumn2dline';
     import CandyTheme from "fusioncharts/themes/es/fusioncharts.theme.candy";

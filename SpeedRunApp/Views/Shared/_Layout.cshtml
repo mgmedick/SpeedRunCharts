@@ -15,12 +15,10 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/dist/vendor.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/dist/style.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/dist/master.min.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/dist/vendor.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/dist/style.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/dist/master.min.css" asp-append-version="true" />
     </environment>
     @RenderSection("Styles", required: false)
 </head>

@@ -64,6 +64,7 @@ export default {
         })
         .use(VueTippy, { defaultProps: { allowHTML: true } });
         
+        app.component("summary-list-tabs", summaryListTabs);
         app.component("button-dropdown", buttonDropdown);
         app.component("navbar", navbar);
         app.component('autocomplete', autocomplete);
@@ -76,7 +77,6 @@ export default {
         app.component("login", login);
         app.component("reset-password", resetPassword);
         app.component("signup", signUp);
-        app.component("summary-list-tabs", summaryListTabs);
         app.component("summary-list", summaryList);
         app.component("summary-item", summaryItem);
 

@@ -47,7 +47,6 @@
                 Details
             </template>
             <div class="container p-0">
-                <speedrun-edit :gameid="selectedSpeedRun.gameID.toString()" :speedrunid="selectedSpeedRun.id.toString()" :readonly="true" />
             </div>
         </modal>   
         <modal v-if="showChartModal" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">

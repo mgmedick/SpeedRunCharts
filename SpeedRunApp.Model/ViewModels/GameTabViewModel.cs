@@ -45,7 +45,7 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 foreach(var variable in Variables)
                 {
-                    variable.VariableValues = game.VariableValues?.Where(i => i.VariableID == i.ID).ToList();
+                    variable.VariableValues = game.VariableValues?.Where(i => i.VariableID == variable.ID).ToList();
                 }
 
                 Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
@@ -207,7 +207,6 @@ namespace SpeedRunApp.Model.ViewModels
         public List<Level> GameLevels { get; set; }
         public List<Level> Levels { get; set; }
         public List<Variable> Variables { get; set; }
-        public List<VariableValue> VariableValues { get; set; }
         public List<Variable> SubCategoryVariables { get; set; }
         public List<Variable> SubCategoryVariablesTabs { get; set; }
     }

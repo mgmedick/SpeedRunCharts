@@ -27,10 +27,14 @@ namespace SpeedRunApp.Service
 
         public PlayerDetailsViewModel GetPlayerDetails(string playerName, string speedRunCode)
         {
+            var playerDetailsVM = new PlayerDetailsViewModel();
             var playerVW = _playerRepo.GetPlayerViews(i => i.Name == playerName).FirstOrDefault();
-            var playerRunCounts = _playerRepo.GetPlayerSpeedRunCounts(playerVW.ID);
-            var playerDetailsVM = new PlayerDetailsViewModel(playerVW, playerRunCounts, speedRunCode);
-
+            if(playerVW != null)
+            {
+                var playerRunCounts = _playerRepo.GetPlayerSpeedRunCounts(playerVW.ID);
+                playerDetailsVM = new PlayerDetailsViewModel(playerVW, playerRunCounts, speedRunCode);
+            }
+            
             return playerDetailsVM;
         }
 

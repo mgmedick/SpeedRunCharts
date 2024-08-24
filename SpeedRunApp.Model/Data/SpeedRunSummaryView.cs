@@ -59,14 +59,14 @@ namespace SpeedRunApp.Model.Data
             }
         }
 
-        private List<VideoLinkResult> _videos = null;
-        public List<VideoLinkResult> Videos
+        private List<VideoResult> _videos = null;
+        public List<VideoResult> Videos
         { 
             get
             {
                 if (!string.IsNullOrWhiteSpace(VideosJson))
                 {
-                    _videos = JsonSerializer.Deserialize<List<VideoLinkResult>>(VideosJson);
+                    _videos = JsonSerializer.Deserialize<List<VideoResult>>(VideosJson);
                 }
 
                 return _videos;

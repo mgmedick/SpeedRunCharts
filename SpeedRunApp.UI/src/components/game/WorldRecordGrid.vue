@@ -41,7 +41,6 @@
                 Details
             </template>
             <div class="container p-0">
-                <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
             </div>
         </modal>    
     </div>   

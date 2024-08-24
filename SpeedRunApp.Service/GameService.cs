@@ -21,8 +21,12 @@ namespace SpeedRunApp.Service
         }
 
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunCode) {
+            var gameDetailsVM = new GameDetailsViewModel();
             var gameVW = _gameRepo.GetGameViews(i => i.Abbr == gameAbbr).FirstOrDefault();
-            var gameDetailsVM = new GameDetailsViewModel(gameVW, speedRunCode);
+            if (gameVW != null)
+            {
+                gameDetailsVM = new GameDetailsViewModel(gameVW, speedRunCode);
+            }
 
             return gameDetailsVM;
         }

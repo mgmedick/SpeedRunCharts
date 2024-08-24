@@ -7,6 +7,10 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class PlayerDetailsViewModel
     {
+        public PlayerDetailsViewModel()
+        {
+        }
+        
         public PlayerDetailsViewModel(PlayerView playerVW, PlayerSpeedRunCountResult playerRunCounts, string speedRunCode)
         {
             ID = playerVW.ID;

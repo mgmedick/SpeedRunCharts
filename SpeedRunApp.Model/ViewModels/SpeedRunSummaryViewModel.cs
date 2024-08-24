@@ -42,7 +42,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public List<string> SubCategoryVariableValues { get; set; }
         public List<PlayerResult> Players { get; set; }
-        public List<VideoLinkResult> VideoLinks { get; set; }
+        public List<VideoResult> VideoLinks { get; set; }
         public bool ShowMilliseconds { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }

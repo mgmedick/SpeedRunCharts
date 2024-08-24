@@ -49,7 +49,8 @@
                 this.resetParams();                   
             }
 
-            sessionStorage.setItem("summarylistid", that.summarylistid);            
+            // this.summarylistid = this.summarylists[0]?.id;
+            sessionStorage.setItem("summarylistid", this.summarylistid);            
         },
         methods: {
             resetParams: function() {

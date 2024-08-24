@@ -13,11 +13,18 @@ namespace SpeedRunApp.Repository
             For<SpeedRun>().TableName("tbl_SpeedRun");
             For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>
             {
+                i.Column(g => g.IsPersonalBest).Ignore();
                 i.Column(g => g.Players).Ignore();
                 i.Column(g => g.VariableValues).Ignore();
                 i.Column(g => g.Videos).Ignore();
             }); 
-            For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer");  
+            For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer").Columns(i =>
+            {
+                i.Column(g => g.IsPersonalBest).Ignore();
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
             For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
           
             For<GameView>().TableName("vw_Game").Columns(i =>
@@ -51,6 +58,7 @@ namespace SpeedRunApp.Repository
                 i.Column(g => g.HasData).Ignore();
                 i.Column(g => g.SubVariables).Ignore();
             });            
+            For<PlayerView>().PrimaryKey("ID").TableName("vw_Player");
 
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");

@@ -7,6 +7,10 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameDetailsViewModel
     {
+        public GameDetailsViewModel()
+        {
+        }
+
         public GameDetailsViewModel(GameView gameVW, string speedRunCode = null)
         {
             ID = gameVW.ID;
@@ -29,7 +33,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return Name + ReleaseDate != null ? " (" + ReleaseDate.Value.Year + ")" : string.Empty;
+                return Name + (ReleaseDate != null ? " (" + ReleaseDate.Value.Year + ")" : string.Empty);
             }
         }
     }       

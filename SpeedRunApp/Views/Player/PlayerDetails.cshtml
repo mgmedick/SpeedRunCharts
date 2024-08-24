@@ -7,4 +7,4 @@
 
 @{ ViewBag.Title = "Player Details"; }
 
-<player-details :indexvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>
+<player-details :playerdetailsvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>

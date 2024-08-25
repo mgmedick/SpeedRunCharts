@@ -83,7 +83,7 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,
-            speedrunid: String,
+            speedruncode: String,
             playerid: String,
             showcharts: Boolean,          
             showalldata: Boolean,
@@ -99,7 +99,7 @@
                 tableData: [],
                 groups: [],
                 loading: true,
-                speedRunID: this.speedrunid,
+                speedRunCode: this.speedruncode,
                 selectedSpeedRunID: '',
                 showAllData: this.showalldata,
                 showDetailModal: false,
@@ -136,10 +136,10 @@
                                                                         
                         that.initGrid(res.data); 
                         that.loading = false;
-                        if (that.speedRunID) {
-                            var index = that.tableData.findIndex(i => i.id == that.speedRunID);
+                        if (that.speedRunCode) {
+                            var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
                             if (index > -1) {
-                                that.table.selectRow(that.speedRunID);
+                                that.table.selectRow(that.tableData[index].id);
                                 var page = Math.ceil(index / that.pageSize);
                                 if(page > 1) {
                                     that.table.setPage(page);
@@ -174,7 +174,8 @@
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
                     { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
-                    { title: "playersObj", field: "players", visible: false }
+                    { title: "playersObj", field: "players", visible: false },
+                    { title: "code", field: "code", visible: false },
                 ];
 
                 tableData.forEach(item => {

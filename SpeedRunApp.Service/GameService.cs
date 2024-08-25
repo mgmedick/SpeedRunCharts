@@ -35,16 +35,15 @@ namespace SpeedRunApp.Service
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
-            var tabItems = new List<GameTabViewModel>() { new GameTabViewModel(gamevw, runs) };
+            var gameVM = new GameTabViewModel(gamevw, runs);
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };
-
-            var gridTabVM = new GameDetailsTabViewModel(tabItems, exportTypes);
+            var gridTabVM = new GameDetailsTabViewModel(new List<GameTabViewModel>() { gameVM }, exportTypes);
 
             if (!string.IsNullOrWhiteSpace(speedRunCode)) {
                 var runVW = _speedRunRepo.GetSpeedRunGridViews(i => i.Code == speedRunCode).FirstOrDefault();
                 var subCategoryVariableValueIDs = !string.IsNullOrWhiteSpace(runVW.SubCategoryVariableValueIDs) ? runVW.SubCategoryVariableValueIDs.Split(",").Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
-                runVW.SubCategoryVariableValues = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, gamevw.Variables);
+                runVW.SubCategoryVariableValues = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, gameVM.SubCategoryVariables);
                 gridTabVM.RunVW = runVW;
             }
 
@@ -55,10 +54,10 @@ namespace SpeedRunApp.Service
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
-            var tabItems = new List<GameTabViewModel>() { new GameTabViewModel(gamevw, runs, true) };
+            var gameVM = new GameTabViewModel(gamevw, runs, true);
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            
-            var tabVM = new GameDetailsTabViewModel(tabItems, exportTypes);
+            var tabVM = new GameDetailsTabViewModel(new List<GameTabViewModel>() { gameVM }, exportTypes);
 
             return tabVM;
         }
@@ -67,15 +66,10 @@ namespace SpeedRunApp.Service
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
             var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
-            var tabItems = new List<GameTabViewModel>() { new GameTabViewModel(gamevw, runs, true) };
-            var tabVM = new GameDetailsTabViewModel(tabItems);
+            var gameVM = new GameTabViewModel(gamevw, runs, true);
+            var tabVM = new GameDetailsTabViewModel(new List<GameTabViewModel>() { gameVM });
 
             return tabVM;
-        }
-
-        public IEnumerable<SearchResult> SearchGames(string searchText)
-        {
-            return _gameRepo.SearchGames(searchText);
         }
 
         private Dictionary<string, string> GetSubCategoryVariableValueNames(List<int> runSubCategoryVariableValueIDs, List<Variable> gameSubCategoryVariables)
@@ -97,7 +91,12 @@ namespace SpeedRunApp.Service
             }
 
             return SubCategoryVariableValueNames;
-        }        
+        }
+        
+        public IEnumerable<SearchResult> SearchGames(string searchText)
+        {
+            return _gameRepo.SearchGames(searchText);
+        }               
     }
 }
 

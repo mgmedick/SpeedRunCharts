@@ -49,30 +49,29 @@ namespace SpeedRunApp.Model.ViewModels
                 }
 
                 Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
-                
-                var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetAdjustedVariables(subVariables, runs);
-                SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
-
                 if (runs != null)
                 {
-                    SetGameTabHasData(runs);
-
-                    if (hasDataOnly)
-                    {
-                        FilterGameTabByHasData(true);
-                    }
+                    Variables.RemoveAll(i => (i.VariableScopeTypeID == (int)VariableScopeType.Global || i.VariableScopeTypeID == (int)VariableScopeType.FullGame|| i.VariableScopeTypeID == (int)VariableScopeType.AllLevels) && !runs.Any(x => !string.IsNullOrWhiteSpace(x.SubCategoryVariableValueIDs) && x.SubCategoryVariableValueIDs.Split(",").Intersect(i.VariableValues.Select(g => g.ID.ToString())).Any()));
                 }
-            }           
-        }
-    
-        private List<Variable> GetAdjustedVariables(List<Variable> variables, IEnumerable<SpeedRun> runs = null)
-        {       
+
+                var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
+                SubCategoryVariables = GetAdjustedVariables(subVariables);
+                SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
+            }
+
             if (runs != null)
             {
-                Variables.RemoveAll(i => i.VariableScopeTypeID == (int)VariableScopeType.Global && !runs.Any(x => !string.IsNullOrWhiteSpace(x.SubCategoryVariableValueIDs) && x.SubCategoryVariableValueIDs.Split(",").Intersect(i.VariableValues.Select(g => g.ID.ToString())).Any()));
-            }
-            
+                SetGameTabHasData(runs);
+
+                if (hasDataOnly)
+                {
+                    FilterGameTabByHasData(true);
+                }
+            }                      
+        }
+        
+        private List<Variable> GetAdjustedVariables(List<Variable> variables)
+        {       
             var categoryVariables = variables.Where(i => (i.VariableScopeTypeID == (int)VariableScopeType.Global || i.VariableScopeTypeID == (int)VariableScopeType.FullGame) && i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
             foreach (var categoryVariable in categoryVariables)
             {

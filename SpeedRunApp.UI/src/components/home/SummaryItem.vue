@@ -19,7 +19,7 @@
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                        <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunC=' + item.code" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
+                        <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                     </div>
                     <div class="text-secondary font-weight-semibold" style="font-size: 14px;">
                         <template v-for="(player, index) in item.players">                               

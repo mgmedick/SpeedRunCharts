@@ -47,7 +47,7 @@ namespace SpeedRunApp.Service
 
         public ImportStatusViewModel GetImportStatus()
         {
-            var importSettings = new List<string>() { "ImportLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
+            var importSettings = new List<string>() { "ImporvtLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
             var results = _settingRepo.GetSettings(i => importSettings.Contains(i.Name)).ToList();
             var ImportLastRunDate = results.FirstOrDefault(i => i.Name == "ImportLastRunDate")?.Dte;
             var ImportLastUpdateSpeedRunsDate = results.FirstOrDefault(i => i.Name == "ImportLastUpdateSpeedRunsDate")?.Dte;

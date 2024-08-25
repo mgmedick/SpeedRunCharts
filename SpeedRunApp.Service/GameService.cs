@@ -43,6 +43,8 @@ namespace SpeedRunApp.Service
 
             if (!string.IsNullOrWhiteSpace(speedRunCode)) {
                 var runVW = _speedRunRepo.GetSpeedRunGridViews(i => i.Code == speedRunCode).FirstOrDefault();
+                var subCategoryVariableValueIDs = !string.IsNullOrWhiteSpace(runVW.SubCategoryVariableValueIDs) ? runVW.SubCategoryVariableValueIDs.Split(",").Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
+                runVW.SubCategoryVariableValues = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, gamevw.Variables);
                 gridTabVM.RunVW = runVW;
             }
 
@@ -75,6 +77,27 @@ namespace SpeedRunApp.Service
         {
             return _gameRepo.SearchGames(searchText);
         }
+
+        private Dictionary<string, string> GetSubCategoryVariableValueNames(List<int> runSubCategoryVariableValueIDs, List<Variable> gameSubCategoryVariables)
+        {                
+            var SubCategoryVariableValueNames = new Dictionary<string, string>();
+
+            var variableCount = 0;
+            if (runSubCategoryVariableValueIDs != null) {
+                foreach (var runSubCategoryVariableValueID in runSubCategoryVariableValueIDs) {
+                    var variable = gameSubCategoryVariables.FirstOrDefault(i => i.VariableValues.Any(g => g.ID == runSubCategoryVariableValueID));
+                    var variableValue = variable?.VariableValues?.FirstOrDefault(i => i.ID == runSubCategoryVariableValueID);
+                    
+                    if (variable != null && variableValue != null) {
+                        SubCategoryVariableValueNames.Add(variable.Name + variableCount, variableValue.Name);
+                    }
+
+                    variableCount++;
+                }
+            }
+
+            return SubCategoryVariableValueNames;
+        }        
     }
 }
 

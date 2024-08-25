@@ -242,7 +242,7 @@
                 var field = fieldName.replace(/./g,'_');
                 return field;
             },
-            getVariableGroupByList(subCategoryVariableValues, tableData, variableValueIDs, index) {
+            getVariableGroupByList(subCategoryVariableValueNames, tableData, variableValueIDs, index) {
                 var that = this;
 
                 if (!variableValueIDs) {
@@ -254,7 +254,7 @@
                 }
 
                 if (index < 3) {
-                    subCategoryVariableValues?.forEach(variable => {
+                    subCategoryVariableValueNames?.forEach(variable => {
                         var variableData = [];
                         variable.variableValues.forEach(variableValue => {
                             var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');

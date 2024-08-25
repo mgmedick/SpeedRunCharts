@@ -27,21 +27,21 @@ namespace SpeedRunApp.Model.Data
         public long PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
-         public string SubCategoryVariableValuesJson { get; set; }       
+        public string SubCategoryVariableValueNamesJson { get; set; }       
         public string PlayersJson { get; set; }
         public string VideosJson { get; set; }
 
-        private List<string> _subCategoryVariableValues = null;
-        public List<string> SubCategoryVariableValues
+        private List<string> _subCategoryVariableValueNames = null;
+        public List<string> SubCategoryVariableValueNames
         { 
             get
             {
-                if (!string.IsNullOrWhiteSpace(SubCategoryVariableValuesJson))
+                if (!string.IsNullOrWhiteSpace(SubCategoryVariableValueNamesJson))
                 {
-                    _subCategoryVariableValues = JsonSerializer.Deserialize<List<string>>(SubCategoryVariableValuesJson);
+                    _subCategoryVariableValueNames = JsonSerializer.Deserialize<List<string>>(SubCategoryVariableValueNamesJson);
                 }
 
-                return _subCategoryVariableValues;
+                return _subCategoryVariableValueNames;
             }
         }  
 

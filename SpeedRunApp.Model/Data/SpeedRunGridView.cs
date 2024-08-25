@@ -19,7 +19,7 @@ namespace SpeedRunApp.Model.Data
         public int? LevelID { get; set; }
         public string LevelName { get; set; }       
         public string SubCategoryVariableValueIDs { get; set; }
-        public string SubCategoryVariableValues { get; set; }
+        public string SubCategoryVariableValueNames { get; set; }
         public int? PlatformID { get; set; }  
         public string PlatformName { get; set; }      
         public int? Rank { get; set; }
@@ -31,6 +31,7 @@ namespace SpeedRunApp.Model.Data
         public string VariableValuesJson { get; set; }
         public string VideosJson { get; set; }
         public bool IsPersonalBest { get; set; }        
+        public Dictionary<string, string> SubCategoryVariableValues { get; set; }        
 
         private List<PlayerResult> _players = null;
         public List<PlayerResult> Players

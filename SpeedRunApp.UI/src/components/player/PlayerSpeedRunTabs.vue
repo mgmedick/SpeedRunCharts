@@ -108,7 +108,7 @@
                 var that = this;
                 this.loading = true;
 
-                var url = '/Player/GetPlayerSpeedRunTabsAndData?playerID=' + this.id + '&speedRunCode=' + this.speedruncode;
+                var url = '/Player/GetPlayerSpeedRunTabsAndData?playerID=' + this.id + (this.speedruncode ? '&speedRunCode=' + this.speedruncode : '');
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.items = res.data.tabItems;

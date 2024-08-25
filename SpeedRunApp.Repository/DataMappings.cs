@@ -14,6 +14,7 @@ namespace SpeedRunApp.Repository
             For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>
             {
                 i.Column(g => g.IsPersonalBest).Ignore();
+                i.Column(g => g.SubCategoryVariableValues).Ignore();
                 i.Column(g => g.Players).Ignore();
                 i.Column(g => g.VariableValues).Ignore();
                 i.Column(g => g.Videos).Ignore();
@@ -21,6 +22,7 @@ namespace SpeedRunApp.Repository
             For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer").Columns(i =>
             {
                 i.Column(g => g.IsPersonalBest).Ignore();
+                i.Column(g => g.SubCategoryVariableValues).Ignore();
                 i.Column(g => g.Players).Ignore();
                 i.Column(g => g.VariableValues).Ignore();
                 i.Column(g => g.Videos).Ignore();

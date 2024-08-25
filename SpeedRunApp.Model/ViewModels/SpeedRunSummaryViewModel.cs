@@ -22,7 +22,7 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryTypeName = run.CategoryTypeName;
             CategoryName = run.CategoryName;
             LevelName = run.LevelName;
-            SubCategoryVariableValues = run.SubCategoryVariableValues;
+            SubCategoryVariableValueNames = run.SubCategoryVariableValueNames;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;
             PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);
@@ -40,7 +40,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string CategoryTypeName { get; set; }    
         public string CategoryName { get; set; }    
         public string LevelName { get; set; }
-        public List<string> SubCategoryVariableValues { get; set; }
+        public List<string> SubCategoryVariableValueNames { get; set; }
         public List<PlayerResult> Players { get; set; }
         public List<VideoResult> VideoLinks { get; set; }
         public bool ShowMilliseconds { get; set; }

@@ -20,7 +20,7 @@ namespace SpeedRunApp.Model.ViewModels
             LevelID = run.LevelID;
             LevelName = run.LevelName;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;
-            SubCategoryVariableValues = run.SubCategoryVariableValues;
+            SubCategoryVariableValueNames = run.SubCategoryVariableValueNames;
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;  
@@ -43,7 +43,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public string SubCategoryVariableValues { get; set; }
+        public string SubCategoryVariableValueNames { get; set; }
         public Dictionary<int, int> VariableValues { get; set; }
         public List<PlayerResult> Players { get; set; }
         public List<string> VideoLinks { get; set; }

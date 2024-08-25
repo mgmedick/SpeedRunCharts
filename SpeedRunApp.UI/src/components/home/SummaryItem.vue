@@ -39,7 +39,7 @@
                     <span v-if="item.categoryTypeName" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.categoryTypeName }}</span>
                     <span v-if="item.categoryName" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.categoryName }}</span>
                     <span v-if="item.levelName" class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ item.levelName }}</span>
-                    <template v-for="(subCategoryVariableValue, index) in item.subCategoryVariableValues">
+                    <template v-for="(subCategoryVariableValue, index) in item.subCategoryVariableValueNames">
                         <span class="badge badge-secondary font-weight-normal mr-1 mt-1 text-secondary" style="white-space:normal; text-align:left;">{{ subCategoryVariableValue }}</span>
                     </template>
                 </div>                      

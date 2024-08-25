@@ -26,8 +26,8 @@
                         <td style="width: 50%; vertical-align: middle;">
                             <div><span class="font-weight-semibold">{{ item.categoryName }}</span></div>
                             <div v-if="item.levelName"><span class="font-weight-semibold" style="font-style: italic;">{{ item.levelName }}</span></div>
-                            <div v-if="item.subCategoryVariableValues">
-                                <span style="font-size: 13px;">{{ item.subCategoryVariableValues }}</span>
+                            <div v-if="item.subCategoryVariableValueNames">
+                                <span style="font-size: 13px;">{{ item.subCategoryVariableValueNames }}</span>
                             </div>                                
                         </td>
                         <td style="width: 25%; vertical-align: middle;">
@@ -90,7 +90,7 @@
         computed: {
             title: function () {
                 var result = '';
-                result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValues].join(' - ');
+                result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValueNames].join(' - ');
                 result = result.replace(/^[ -]+|[ -]+$/g, '');
                 
                 return result;

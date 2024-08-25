@@ -14,21 +14,19 @@ namespace SpeedRunApp.Service
     {
         private readonly IPlayerRepository _playerRepo = null;
         private readonly IGameRepository _gameRepo = null;
-        private readonly IGameService _gameService = null;
         private readonly ISpeedRunService _speedRunService = null;
 
-        public PlayerService(IPlayerRepository playerRepo, IGameRepository gameRepo, IGameService gameService, ISpeedRunService speedRunService)
+        public PlayerService(IPlayerRepository playerRepo, IGameRepository gameRepo, ISpeedRunService speedRunService)
         {
             _playerRepo = playerRepo;
             _gameRepo = gameRepo;
-            _gameService = gameService;
             _speedRunService = speedRunService;
         }
 
-        public PlayerDetailsViewModel GetPlayerDetails(string playerName, string speedRunCode)
+        public PlayerDetailsViewModel GetPlayerDetails(string playerAbbr, string speedRunCode)
         {
             var playerDetailsVM = new PlayerDetailsViewModel();
-            var playerVW = _playerRepo.GetPlayerViews(i => i.Name == playerName).FirstOrDefault();
+            var playerVW = _playerRepo.GetPlayerViews(i => i.Abbr == playerAbbr).FirstOrDefault();
             if(playerVW != null)
             {
                 var playerRunCounts = _playerRepo.GetPlayerSpeedRunCounts(playerVW.ID);
@@ -44,7 +42,13 @@ namespace SpeedRunApp.Service
             var gameIDs = runVMs.Select(i => i.GameID).Distinct().ToList();
             var games = _gameRepo.GetGameViews(i => gameIDs.Contains(i.ID));
             var runs = runVMs.Select(i=> new SpeedRun() { ID = i.ID, GameID = i.GameID, CategoryID = i.CategoryID, LevelID = i.LevelID, SubCategoryVariableValueIDs = i.SubCategoryVariableValueIDs, Rank = i.Rank }).ToList();
-            var tabItems = _gameService.GetGameTabs(games, runs, true).ToList();
+            var tabItems = new List<GameTabViewModel>();
+            foreach(var game in games)
+            {
+                var gameTab = new GameTabViewModel(game, runs, true);
+                tabItems.Add(gameTab);
+            }
+
             var categoryTypes = tabItems.SelectMany(i => i.CategoryTypes).GroupBy(g => new {g.ID}).Select(i=>i.First()).OrderBy(i=>i.ID).ToList();                                  
             var tabVM = new PlayerDetailsTabViewModel(tabItems, categoryTypes, runVMs);
                        

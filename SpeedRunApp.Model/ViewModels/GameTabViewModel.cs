@@ -7,7 +7,7 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class GameTabViewModel
     {
-        public GameTabViewModel(GameView game)
+        public GameTabViewModel(GameView game, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false)
         {            
             ID = game.ID;
             Name = game.Name;
@@ -49,15 +49,30 @@ namespace SpeedRunApp.Model.ViewModels
                 }
 
                 Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
-
+                
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();
-                SubCategoryVariables = GetAdjustedVariables(subVariables);
+                SubCategoryVariables = GetAdjustedVariables(subVariables, runs);
                 SubCategoryVariablesTabs = GetNestedVariables(SubCategoryVariables);
+
+                if (runs != null)
+                {
+                    SetGameTabHasData(runs);
+
+                    if (hasDataOnly)
+                    {
+                        FilterGameTabByHasData(true);
+                    }
+                }
             }           
         }
     
-        private List<Variable> GetAdjustedVariables(List<Variable> variables)
+        private List<Variable> GetAdjustedVariables(List<Variable> variables, IEnumerable<SpeedRun> runs = null)
         {       
+            if (runs != null)
+            {
+                Variables.RemoveAll(i => i.VariableScopeTypeID == (int)VariableScopeType.Global && !runs.Any(x => !string.IsNullOrWhiteSpace(x.SubCategoryVariableValueIDs) && x.SubCategoryVariableValueIDs.Split(",").Intersect(i.VariableValues.Select(g => g.ID.ToString())).Any()));
+            }
+            
             var categoryVariables = variables.Where(i => (i.VariableScopeTypeID == (int)VariableScopeType.Global || i.VariableScopeTypeID == (int)VariableScopeType.FullGame) && i.CategoryID.HasValue && !i.LevelID.HasValue).ToList();
             foreach (var categoryVariable in categoryVariables)
             {
@@ -196,6 +211,132 @@ namespace SpeedRunApp.Model.ViewModels
 
             return results;
         }
+
+        private void SetGameTabHasData(IEnumerable<SpeedRun> runs)
+        {
+            if (Categories != null)
+            {
+                foreach(var category in Categories)
+                {
+                    category.HasData = runs.Any(i => i.CategoryID == category.ID);
+
+                    if (!category.HasData) {
+                        category.Name += " (empty)";
+                    }                    
+                }
+            }
+
+            if (CategoryTypes != null)
+            {
+                var categoryTypeIDsToRemove = new List<int>();
+                foreach (var categoryType in CategoryTypes)
+                {                    
+                    if (!Categories.Any(i => i.CategoryTypeID == categoryType.ID && i.HasData))
+                    {
+                        categoryTypeIDsToRemove.Add(categoryType.ID);
+                    }
+                }
+
+                CategoryTypes.RemoveAll(i => categoryTypeIDsToRemove.Contains(i.ID));
+            }
+
+            if (Levels != null)
+            {
+                foreach (var level in Levels)
+                {
+                    level.HasData = runs.Any(i => i.CategoryID == level.CategoryID && i.LevelID == level.ID);
+
+                    if (!level.HasData) {
+                        level.Name += " (empty)";
+                    }
+                }
+            }
+
+            if (SubCategoryVariablesTabs != null)
+            {
+                SetGameTabVariablesHasValue(SubCategoryVariablesTabs, SubCategoryVariablesTabs, runs.ToList());
+            }
+        }
+
+        private void SetGameTabVariablesHasValue(List<Variable> allVariables, List<Variable> variables, List<SpeedRun> runs, string parentVariableValues = null)
+        {
+           foreach (var variable in variables)
+           {
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    var variableValues = string.IsNullOrWhiteSpace(parentVariableValues) ? variableValue.ID.ToString() : parentVariableValues + "," + variableValue.ID.ToString();                                                            
+                    variableValue.HasData = runs.Any(i => i.CategoryID == variable.CategoryID
+                                        && i.LevelID == variable.LevelID
+                                        && !string.IsNullOrWhiteSpace(i.SubCategoryVariableValueIDs)
+                                        && i.SubCategoryVariableValueIDs.StartsWith(variableValues));
+
+                    if (!variableValue.HasData) {
+                        variableValue.Name += " (empty)";
+                    }
+
+                    var subvars = allVariables.Where(i => i.CategoryID == variable.CategoryID && i.LevelID == variable.LevelID).ToList();
+                    foreach(var subvar in subvars)
+                    {
+                        foreach(var va in subvar.VariableValues)
+                        {
+                            if (va.ID == variableValue.ID)
+                            {
+                                va.HasData = variableValue.HasData;
+                            }
+                        }
+                    }
+
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        SetGameTabVariablesHasValue(allVariables, variableValue.SubVariables.ToList(), runs, variableValues);
+                    }
+                }
+
+                parentVariableValues = null;    
+           }
+        }        
+
+        private void FilterGameTabByHasData(bool hasData)
+        {
+            Categories = Categories?.Where(i => i.HasData == hasData).ToList();
+            Levels = Levels?.Where(i => i.HasData == hasData).ToList();
+
+            if(SubCategoryVariablesTabs != null && SubCategoryVariablesTabs.Any())
+            {
+                FilterGameTabSubCategoryVariableValuesByHasData(SubCategoryVariablesTabs, hasData);
+            }
+        }
+
+        private List<Variable> FilterGameTabSubCategoryVariablesByHasData(List<Variable> variables, bool hasData)
+        {
+            variables = variables.Where(x => x.HasData == hasData).ToList();
+ 
+            foreach (var variable in variables)
+            {
+                foreach (var variableValue in variable.VariableValues)
+                {
+                    if (variableValue.SubVariables != null && variableValue.SubVariables.Any())
+                    {
+                        variableValue.SubVariables = FilterGameTabSubCategoryVariablesByHasData(variableValue.SubVariables.ToList(), hasData);
+                    }                    
+                }
+            }
+
+            return variables;
+        }
+
+        private void FilterGameTabSubCategoryVariableValuesByHasData(List<Variable> variables, bool hasData)
+        {
+            foreach(var variable in variables) {
+                variable.VariableValues = variable.VariableValues.Where(i => i.HasData == hasData).ToList();
+
+                foreach (var variableValue in variable.VariableValues) {
+                    if(variableValue.SubVariables != null && variableValue.SubVariables.Any()) {
+                        FilterGameTabSubCategoryVariableValuesByHasData(variableValue.SubVariables.ToList(), hasData);
+                    }
+                }                 
+            } 
+        }     
 
         public int ID { get; set; }
         public string Name { get; set; }

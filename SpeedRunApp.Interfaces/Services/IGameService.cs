@@ -13,6 +13,5 @@ namespace SpeedRunApp.Interfaces.Services
         GameDetailsTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null);
         GameDetailsTabViewModel GetWorldRecordTabs(int gameID);
         GameDetailsTabViewModel GetGameChartTabs(int gameID);
-        IEnumerable<GameTabViewModel> GetGameTabs(IEnumerable<GameView> games, IEnumerable<SpeedRun> runs = null, bool hasDataOnly = false);
     }
 }

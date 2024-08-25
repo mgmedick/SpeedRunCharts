@@ -8,7 +8,7 @@
             </div>
             <div class="col-auto pl-2 pr-0 align-self-end">
                 <div class="nowrap-elipsis align-self-start" style="font-size: 14px; font-weight: 500;">
-                    <a :href="'/Game/GameDetails/' + item.gameAbbr" class="text-primary">{{ item.gameName }}</a>
+                    <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr)" class="text-primary">{{ item.gameName }}</a>
                 </div>
                 <div class="align-self-end" style="line-height: 12px;">
                     <small class="text-secondary">{{ item.relativeVerifyDateString }}</small><span v-if="item.viewCountString">&nbsp;&middot;&nbsp;<small class="text-secondary">{{ item.viewCountString + " views" }}</small></span>
@@ -19,17 +19,17 @@
             <div class="col p-0 align-self-end" style="overflow:hidden;">
                 <div>   
                     <div class="text-secondary nowrap-elipsis" style="font-size: 14px;">
-                        <a :href="'/Game/GameDetails/' + item.gameAbbr + '?speedRunC=' + item.code" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
+                        <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunC=' + item.code" class="text-primary"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span style="font-weight: 500;">{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                     </div>
                     <div class="text-secondary font-weight-semibold" style="font-size: 14px;">
                         <template v-for="(player, index) in item.players">                               
                             <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                 <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
-                                    <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
+                                    <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
                                 </span>
                             </span>
                             <span v-else class="username-text">
-                                <a :href="'/Player/PlayerDetails/' + player.abbr + '?speedRunCode=' + item.code">{{ player.name }}</a>
+                                <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
                             </span>
                             <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
                         </template>

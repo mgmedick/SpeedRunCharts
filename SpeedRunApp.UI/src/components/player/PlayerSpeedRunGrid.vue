@@ -31,7 +31,7 @@
                             </div>                                
                         </td>
                         <td style="width: 25%; vertical-align: middle;">
-                            <div><a :href="'/Game/GameDetails/' + gameabbr + '?speedRunCode=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
                             <div><span style="font-size: 13px;">{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
                         <td class="show-md" style="width: auto; vertical-align: middle;">

@@ -314,10 +314,10 @@
                         if (el.colorLight && el.colorDark) {
                             html += "<span class='username-text username-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
                             html += "<span class='username-text username-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/Player/PlayerDetails/" + el.name + "' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + el.name + "' class='username-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='username-text' draggable='false'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;

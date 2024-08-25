@@ -9,6 +9,7 @@ namespace SpeedRunApp.Model.Data
         public int ID { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
+        public string Abbr { get; set; }
         public int PlayerTypeID { get; set; }
         public int PlayerLinkID { get; set; }        
         public string SrcUrl { get; set; }

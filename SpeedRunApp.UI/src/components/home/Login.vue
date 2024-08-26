@@ -16,8 +16,8 @@
                     <div class="d-flex">
                         <input id="txtPassword" :type="isShowPassword ? 'text' : 'password'" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch" aria-describedby="spnPasswordErrors">
                         <div class="align-self-center text-muted" style="margin-left: -35px;" role="button" @click="isShowPassword = !isShowPassword">
-                            <font-awesome-icon v-if="isShowPassword" icon="fa-solid fa-eye-slash"/>
-                            <font-awesome-icon v-else icon="fa-solid fa-eye"/>
+                            <i v-if="isShowPassword" class="fas a-eye-slash"></i>
+                            <i v-else class="fas fa-eye"></i>
                         </div>
                     </div>                     
                     <div>
@@ -28,14 +28,14 @@
                     </div>
                 </div>   
                 <div class="row g-2 justify-content-center mx-auto">
-                    <button id="btnLogin" type="submit" class="btn btn-primary">Log In</button>
+                    <button id="btnLogin" type="submit" class="btn btn-primary w-100">Log In</button>
                     <div class="text-center"><small class="fw-bold">OR</small></div>
                     <div class="fb-login-button" data-width="100%" data-size="large" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-scope="public_profile,email" onlogin="checkFBLoginState();"></div>
-                    <div ref="googleLoginBtn" class="p-0"></div>
+                    <div ref="googleLoginBtn" class="p-0 w-100"></div>
                 </div>
                 <div ref="loadingmodal" class="modal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered justify-content-center" style="color: #fff;">
-                        <font-awesome-icon icon="fa-solid fa-spinner" spin size="2xl" />
+                        <i class="fas fa-spinner fa-spin fa-lg"></i>
                     </div>
                 </div>                               
             </form>
@@ -107,11 +107,8 @@
                     });          
                 });      
             });             
-
-            //window.addEventListener('resize', this.onResize); 
         },  
         destroyed() {
-            //window.removeEventListener('resize', this.onResize);     
         },                     
         methods: {
             async onSubmit() {
@@ -182,13 +179,6 @@
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },        
-            onResize() {
-                var that = this;
-                if (that.width != document.documentElement.clientWidth) {  
-                    that.width = document.documentElement.clientWidth;         
-                    that.renderGoogleButton();
-                }                 
-            },   
             createFBLoginScript() {
                 return new Promise((resolve, reject) => {
                     let scriptHTML = document.createElement('script');

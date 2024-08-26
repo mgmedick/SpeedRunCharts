@@ -17,12 +17,12 @@
                     <div v-if="loading">
                         <div class="d-flex m-3">
                             <div class="mx-auto">
-                                <font-awesome-icon icon="fa-solid fa-spinner" spin size="2xl" />
+                                <i class="fas fa-spinner fa-spin fa-lg"></i>
                             </div>
                         </div>
                     </div>
                     <div v-else-if="showSuccess">
-                        <div class="p-3 alert alert-light">
+                        <div class="p-3 bg-dark">
                             <div class="mx-auto">
                                 <div><span>To Reset your password click the link in the email we just sent you.</span></div>
                                 <br />

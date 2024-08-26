@@ -44,7 +44,7 @@
                         <a class="nav-link" href="/Home/Login">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Login">Sign Up</a>
+                        <a class="nav-link" href="/Home/SignUp">Sign Up</a>
                     </li>
                     <li class="nav-item">
                         <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">

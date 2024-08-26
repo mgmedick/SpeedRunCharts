@@ -19,8 +19,8 @@
                     <div class="d-flex">
                         <input id="txtPassword" :type="isShowPassword ? 'text' : 'password'" class="form-control" autocomplete="off" v-model.lazy="form.Password" @blur="v$.form.Password.$touch" aria-describedby="spnPasswordErrors">
                         <div class="align-self-center text-muted" style="margin-left: -35px;" role="button" @click="isShowPassword = !isShowPassword">
-                            <font-awesome-icon v-if="isShowPassword" icon="fa-solid fa-eye-slash"/>
-                            <font-awesome-icon v-else icon="fa-solid fa-eye"/>
+                            <i v-if="isShowPassword" class="fas a-eye-slash"></i>
+                            <i v-else class="fas fa-eye"></i>
                         </div>
                     </div>
                     <div>
@@ -32,8 +32,8 @@
                     <div class="d-flex">
                         <input id="txtConfirmPassword" :type="isShowConfirmPassword ? 'text' : 'password'" class="form-control" autocomplete="off" v-model.lazy="form.ConfirmPassword" @blur="v$.form.ConfirmPassword.$touch" aria-describedby="spnConfirmPasswordErrors">
                         <div class="align-self-center text-muted" style="margin-left: -35px;" role="button" @click="isShowConfirmPassword = !isShowConfirmPassword">
-                            <font-awesome-icon v-if="isShowConfirmPassword" icon="fa-solid fa-eye-slash"/>
-                            <font-awesome-icon v-else icon="fa-solid fa-eye"/>
+                            <i v-if="isShowConfirmPassword" class="fas a-eye-slash"></i>
+                            <i v-else class="fas fa-eye"></i>
                         </div>
                     </div>                    
                     <div>
@@ -41,17 +41,17 @@
                     </div>
                 </div>
                 <div class="row g-2 justify-content-center mb-3 mx-auto">
-                    <button type="submit" class="btn btn-primary d-flex justify-content-center align-items-center">Submit</button>
+                    <button type="submit" class="btn btn-primary d-flex justify-content-center align-items-center w-100">Submit</button>
                 </div> 
                 <div ref="loadingmodal" class="modal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered justify-content-center" style="color: #fff;">
-                        <font-awesome-icon icon="fa-solid fa-spinner" spin size="2xl" />
+                        <i class="fas fa-spinner fa-spin fa-lg"></i>
                     </div>
                 </div>                                    
             </form>
             <div v-else class="text-center">
                 <div class="m-3">
-                    <font-awesome-icon icon="fa-solid fa-hourglass-end" size="2xl" />
+                    <i class="fas fa-hourglass-end fa-lg"></i>
                 </div>
                 <div>
                     <span>Activation link has expired, please try again.</span>

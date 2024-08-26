@@ -87,10 +87,11 @@ namespace SpeedRunApp.Service
             var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
             var strToHash = string.Format("email={0}&expirationTime={1}", email, expirationTime);
             var hash = strToHash.GetHMACSHA256Hash(hashKey);
-            var expirationDate = new DateTime(expirationTime);
+            var expireDate = new DateTime(expirationTime);
             var emailExists = _userRepo.GetUsers(i => i.Email == email).Any();
-            var isValid = (hash == token) && expirationDate > DateTime.UtcNow && !emailExists;
-            var activateUserVM = new ActivateViewModel() { IsValid = isValid };
+            var isValid = (hash == token) && expireDate > DateTime.UtcNow && !emailExists;
+            var emailToken = email.GetHMACSHA256Hash(hashKey);
+            var activateUserVM = new ActivateViewModel() { Email = email, EmailToken = emailToken, IsValid = isValid };
 
             return activateUserVM;
         }

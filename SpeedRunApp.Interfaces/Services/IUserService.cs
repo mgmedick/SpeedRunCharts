@@ -12,6 +12,7 @@ namespace SpeedRunApp.Interfaces.Services
     {
         UserSettingsViewModel GetUserSettings(int userID);
         void SaveUserSettings(UserSettingsViewModel userSettingsVM, int currUserID);
+        void SaveUserSummaryLists(int userID, List<int> summaryListIDs);
         Task SendActivationEmail(string email);
         ActivateViewModel GetActivateUser(string email, long expirationTime, string token);
         int CreateUser(string email, string username, string pass);

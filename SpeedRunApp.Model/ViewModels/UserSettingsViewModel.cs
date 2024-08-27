@@ -7,6 +7,10 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class UserSettingsViewModel
     {
+        public UserSettingsViewModel()
+        {
+        }
+                
         public UserSettingsViewModel(UserView userVW, List<SummaryList> summaryLists)
         {
             UserID = userVW.UserID;

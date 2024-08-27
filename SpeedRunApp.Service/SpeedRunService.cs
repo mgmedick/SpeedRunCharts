@@ -28,15 +28,14 @@ namespace SpeedRunApp.Service
 
         public IEnumerable<SummaryList> GetSummaryLists(int currUserID)
         {
-            var allSpeedRunSummaryLists = _speedRunRepo.GetSummaryLists().ToList();
-            var speedRunSummaryLists = allSpeedRunSummaryLists.Where(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
+            var summaryLists = _speedRunRepo.GetSummaryLists(i => i.IsDefault).OrderBy(i => i.DefaultSortOrder).ToList();
 
             if (currUserID > 0)
             {
                 var userSummaryLists = _userRepo.GetUserSummaryLists(i => i.UserID == currUserID);
                 if(userSummaryLists.Any())
                 {
-                    speedRunSummaryLists = (from c in speedRunSummaryLists
+                    summaryLists = (from c in summaryLists
                                 join uc in userSummaryLists
                                 on c.ID equals uc.SummaryListID
                                 orderby uc.ID
@@ -44,7 +43,7 @@ namespace SpeedRunApp.Service
                 }
             }
             
-            return speedRunSummaryLists;
+            return summaryLists;
         }
 
         public IEnumerable<SpeedRunSummaryViewModel> GetSummaryListResults(int summaryListID, int topAmount, int? orderValueOffset, int? categoryTypeID)

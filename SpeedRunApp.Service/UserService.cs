@@ -46,25 +46,42 @@ namespace SpeedRunApp.Service
         public void SaveUserSettings(UserSettingsViewModel userSettingsVM, int currUserID)
         {
             var user = _userRepo.GetUsers(i => i.ID == userSettingsVM.UserID).FirstOrDefault();
+            var userSetting = _userRepo.GetUserSettings(i=> i.UserID == user.ID).FirstOrDefault();
 
-            if (user != null)
-            {
-                var userSetting = new UserSetting()
+            if (userSetting.ID == 0) 
+            {            
+                userSetting = new UserSetting()
                 {
                     UserID = userSettingsVM.UserID,
                     IsDarkTheme = userSettingsVM.IsDarkTheme
                 };
-
-                var userSummaryLists = userSettingsVM.SummaryListIDs?.Select(i => new UserSummaryList() { UserID = user.ID, SummaryListID = i });
-
-                _userRepo.SaveUserSetting(userSetting);
-                SaveUserSummaryLists(user.ID, userSummaryLists);
-
-                user.ModifiedDate = DateTime.UtcNow;
-                user.ModifiedBy = currUserID;
-                _userRepo.SaveUser(user);
             }
+            else
+            {
+                userSetting.UserID = userSettingsVM.UserID;
+                userSetting.IsDarkTheme = userSettingsVM.IsDarkTheme;              
+            }
+
+            _userRepo.SaveUserSetting(userSetting);
+
+            var userSummaryLists = userSettingsVM.SummaryListIDs?.Select(i => new UserSummaryList() { UserID = user.ID, SummaryListID = i });
+            SaveUserSummaryLists(user.ID, userSummaryLists);
+
+            user.ModifiedDate = DateTime.UtcNow;
+            user.ModifiedBy = currUserID;
+            _userRepo.SaveUser(user);
         }
+
+         public void SaveUserSummaryLists(int userID, List<int> summaryListIDs)
+        {
+            var user = _userRepo.GetUsers(i => i.ID == userID).FirstOrDefault();
+            var userSummaryLists = summaryListIDs?.Select(i => new UserSummaryList() { UserID = user.ID, SummaryListID = i });
+            SaveUserSummaryLists(user.ID, userSummaryLists);
+
+            user.ModifiedDate = DateTime.UtcNow;
+            user.ModifiedBy = userID;
+            _userRepo.SaveUser(user);
+        }       
 
         public async Task SendActivationEmail(string email)
         {

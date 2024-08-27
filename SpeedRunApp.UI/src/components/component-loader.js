@@ -116,6 +116,9 @@ export default {
         app.component("player-speedrun-personalbest-chart", playerSpeedRunPersonalBestChart);
         app.component("player-speedrun-percentile-chart", playerSpeedRunPercentileChart);
         app.component("player-speedrun-top-chart", playerSpeedRunTopChart);
+        app.config.globalProperties.getCsrfToken = () => { 
+            return document.getElementsByName("__RequestVerificationToken")[0].value; 
+        }
 
         app.mount('#vue-app');
         app.provide('app', 'Vue3');

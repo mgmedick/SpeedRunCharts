@@ -44,6 +44,14 @@ namespace SpeedRunApp.Repository
             }
         }
 
+        public IEnumerable<UserSetting> GetUserSettings(Expression<Func<UserSetting, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<UserSetting>().Where(predicate).ToList();
+            }
+        }        
+
         public void SaveUserSetting(UserSetting userSetting)
         {
             using (IDatabase db = DBFactory.GetDatabase())

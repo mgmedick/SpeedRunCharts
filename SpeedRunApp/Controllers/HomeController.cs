@@ -59,7 +59,12 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            var loginVM = new LoginViewModel();
+            var loginVM = new LoginViewModel() {
+                GClientID = _config.GetSection("Auth").GetSection("Google").GetSection("ClientID").Value,
+                FBClientID = _config.GetSection("Auth").GetSection("Facebook").GetSection("ClientID").Value,
+                FBApiVer = _config.GetSection("Auth").GetSection("Facebook").GetSection("ApiVersion").Value,
+                RecaptchaKey = _config.GetSection("Auth").GetSection("Google").GetSection("RecaptchaKey").Value
+            };
 
             return View(loginVM);
         }

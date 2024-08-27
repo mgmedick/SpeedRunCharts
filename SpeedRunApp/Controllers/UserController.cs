@@ -37,18 +37,15 @@ namespace SpeedRunApp.MVC.Controllers
         }
 
         [HttpPost]
-        public JsonResult UserSettings(UserSettingsViewModel userSettingsVM)
+        [ValidateAntiForgeryToken]
+        public JsonResult SaveUserSummaryLists(List<int> summaryListIDs)
         {
             var success = false;
 
             try
             {
-                var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                _userService.SaveUserSettings(userSettingsVM, currUserID);
-
-                if (userSettingsVM.UserID == currUserID) {
-                    UpdateUserIdentity(currUserID);
-                }
+                var userID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                _userService.SaveUserSummaryLists(userID, summaryListIDs);
 
                 success = true;
             }
@@ -60,7 +57,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(new { success = success });
         }
-
+        
         [HttpPost]
         public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
         {

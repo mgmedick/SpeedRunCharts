@@ -1,43 +1,43 @@
 ﻿<template>
     <div class="mt-3">
-        <div v-if="gridID == 0 || gridID == 1" class="row no-gutters pr-1">
+        <div v-if="gridID == 0 || gridID == 1" class="row no-gutters pe-1">
             <div class="col">
                 <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-left'">
                     <template v-slot:text>
                         <span>
-                            <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                            <i class="fa fa-filter"></i><span class="ps-2">...</span>
                         </span>
                     </template>
                     <template v-slot:options>
                         <div v-if="gridID == 0 || gridID == 1" class="dropdown-item">
                             <div class="custom-control custom-switch">
                                 <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                                <label class="custom-control-label pl-1" for="chkShowMisc"><span class="pl-2">Show Misc</span></label>
+                                <label class="custom-control-label ps-1" for="chkShowMisc"><span class="ps-2">Show Misc</span></label>
                             </div>                    
                         </div>
                         <div v-if="gridID == 0" class="dropdown-item">
                             <div class="custom-control custom-switch">
                                 <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty">
-                                <label class="custom-control-label pl-1" for="chkHideEmpty"><span class="pl-2">Hide Empty</span></label>
+                                <label class="custom-control-label ps-1" for="chkHideEmpty"><span class="ps-2">Hide Empty</span></label>
                             </div>                    
                         </div>                        
                     </template>
                 </button-dropdown>
             </div>
         </div>                               
-        <div id="divGameTabContainer" class="row no-gutters pr-1 pt-1">
+        <div id="divGameTabContainer" class="row no-gutters pe-1 pt-1">
             <div class="col tab-list">                
                 <ul class="nav nav-pills">
-                    <li class="nav-item py-1 pr-1">
+                    <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>
                     </li>
-                    <li class="nav-item py-1 pr-1">
+                    <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
                     </li>
-                    <li class="nav-item py-1 pr-1">
+                    <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>            
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>

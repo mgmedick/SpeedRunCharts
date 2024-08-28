@@ -34,7 +34,7 @@
                                 <br />
                                 <div>
                                     <span>If your email has still not arrived try these steps:</span>
-                                    <ul class="pl-4">
+                                    <ul class="ps-4">
                                         <li>Check your spam folder</li>
                                         <li>Try Sign Up again</li>
                                         <li>Use Sign In with Google/Facebook</li>

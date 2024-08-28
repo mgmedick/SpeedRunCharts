@@ -28,7 +28,7 @@
                                 <br />
                                 <div>
                                     <span>If your email has not arrived try these steps:</span>
-                                    <ul class="pl-4">
+                                    <ul class="ps-4">
                                         <li>Wait 30 mins</li>
                                         <li>Check your spam folder</li>
                                         <li>Try Reset Password again</li>

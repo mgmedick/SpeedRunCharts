@@ -1,13 +1,13 @@
 ﻿<template>
     <div v-for="variable in items" :key="variable.id">
         <div v-if="subcategoryvariablevalues[variable.name + variableindex]">
-            <div class="variablerow row no-gutters pr-1">
+            <div class="variablerow row no-gutters pe-1">
                 <div class="col tab-list">
                     <ul class="nav nav-pills">
-                        <li class="variableValue nav-item py-1 pr-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
+                        <li class="variableValue nav-item py-1 pe-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
                             <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
-                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                        <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                             <template v-slot:text>
                                 <span>More...</span>
                             </template>

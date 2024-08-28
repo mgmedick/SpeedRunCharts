@@ -1,12 +1,12 @@
 ﻿<template>
     <div class="mt-4">
-        <div class="row no-gutters pr-1 pt-1 pb-0">
+        <div class="row no-gutters pe-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="nav-item py-1 pr-1">
+                    <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Runs" }}</a>
                     </li>
-                    <li class="nav-item py-1 pr-1">
+                    <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>
                     </li>                    
                 </ul>

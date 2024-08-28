@@ -1,5 +1,4 @@
 import { createApp } from "vue";
-import VueTippy from "vue-tippy";
 
 import buttonDropdown from './shared/ButtonDropdown.vue';
 import autocomplete from './shared/Autocomplete.vue';
@@ -61,8 +60,7 @@ export default {
             // components: {
             //     'summary-list-tabs': summaryListTabs
             // }
-        })
-        .use(VueTippy, { defaultProps: { allowHTML: true } });
+        });
         
         app.component("summary-list-tabs", summaryListTabs);
         app.component("button-dropdown", buttonDropdown);

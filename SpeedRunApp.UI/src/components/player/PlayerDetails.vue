@@ -9,25 +9,25 @@
         <div v-else>
             <div class="d-flex">
                 <div class="col-auto p-0 align-self-end">
-                    <h5 class="m-0 font-weight-bold text-primary">{{ playerdetailsvm.name }}</h5>
+                    <h5 class="m-0 fw-bold text-primary">{{ playerdetailsvm.name }}</h5>
                 </div>
-                <div class="col-sm-2 pl-1 align-self-end">
-                    <a v-if="playerdetailsvm.twitterProfile" :href="playerdetailsvm.twitterProfile" class="pl-1" draggable="false"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
-                    <a v-if="playerdetailsvm.twitchProfile" :href="playerdetailsvm.twitchProfile" class="pl-1" draggable="false"><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
-                    <a v-if="playerdetailsvm.youtubeProfile" :href="playerdetailsvm.youtubeProfile" class="pl-1" draggable="false"><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
+                <div class="col-sm-2 ps-1 align-self-end">
+                    <a v-if="playerdetailsvm.twitterProfile" :href="playerdetailsvm.twitterProfile" class="ps-1" draggable="false"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
+                    <a v-if="playerdetailsvm.twitchProfile" :href="playerdetailsvm.twitchProfile" class="ps-1" draggable="false"><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
+                    <a v-if="playerdetailsvm.youtubeProfile" :href="playerdetailsvm.youtubeProfile" class="ps-1" draggable="false"><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
                 </div>
             </div>
             <div>
                 <div class="mt-4">
-                    <h5 class="font-weight-bold mb-1">Details</h5>
+                    <h5 class="fw-bold mb-1">Details</h5>
                     <div class="row no-gutters">
                         <div class="col">
                             <table>
                                 <thead>
                                     <tr>
-                                        <th class="font-weight-normal" style="font-size:14px; width:100px;">Total Runs</th>
-                                        <th class="font-weight-normal" style="font-size:14px; width:100px;">WRs</th>
-                                        <th class="font-weight-normal" style="font-size:14px; width:100px;">PBs</th>
+                                        <th class="fw-normal" style="font-size:14px; width:100px;">Total Runs</th>
+                                        <th class="fw-normal" style="font-size:14px; width:100px;">WRs</th>
+                                        <th class="fw-normal" style="font-size:14px; width:100px;">PBs</th>
                                     </tr>
                                 </thead>
                                 <tbody>

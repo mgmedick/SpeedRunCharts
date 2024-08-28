@@ -8,19 +8,19 @@
             </div>
         </div>
         <div class="mt-2">
-            <div class="row no-gutters pr-1">
-                <div class="col-auto ml-auto pr-1">
+            <div class="row no-gutters pe-1">
+                <div class="col-auto ms-auto pe-1">
                     <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>
-                                <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                                <i class="fa fa-filter"></i><span class="ps-2">...</span>
                             </span>
                         </template>
                         <template v-slot:options>
                             <div class="dropdown-item">
                                 <div class="custom-control custom-switch">
                                     <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                    <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
+                                    <label class="custom-control-label ps-1" for="chkShowAllData"><span class="ps-2">Show Obsolete</span></label>
                                 </div>                    
                             </div>                      
                         </template>
@@ -69,8 +69,8 @@
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import tippy from 'tippy.js'
-    import 'tippy.js/dist/tippy.css'
+    // import tippy from 'tippy.js'
+    // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
@@ -238,12 +238,12 @@
                             var value = el.getAttribute('data-content');
                             var cellElement = el.closest('.tabulator-cell');
 
-                            tippy(cellElement, {
-                                content: escapeHtml(value),
-                                allowHTML: true,
-                                arrow:false,
-                                placement:'bottom'
-                            })
+                            // tippy(cellElement, {
+                            //     content: escapeHtml(value),
+                            //     allowHTML: true,
+                            //     arrow:false,
+                            //     placement:'bottom'
+                            // })
                         });
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
@@ -287,7 +287,7 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
+                html += "<div class='d-table-cell ps-1 ' style='border:none; padding:0px; width:30px;'>";
                 html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";

@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-sm px-1 align-self-end">
-                    <h5 class="m-0 font-weight-bold text-primary">
+                    <h5 class="m-0 fw-bold text-primary">
                         {{ gamedetailsvm.displayName }}
                     </h5>
                 </div>

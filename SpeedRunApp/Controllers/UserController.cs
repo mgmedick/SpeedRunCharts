@@ -41,6 +41,7 @@ namespace SpeedRunApp.MVC.Controllers
         public JsonResult SaveUserSummaryLists(List<int> summaryListIDs)
         {
             var success = false;
+            List<string> errorMessages = null;
 
             try
             {
@@ -49,38 +50,44 @@ namespace SpeedRunApp.MVC.Controllers
 
                 success = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _logger.Error(ex, "Login");
+                _logger.Error(ex, "SaveUserSummaryLists");
                 success = false;
+                errorMessages = new List<string>() { "Error saving user summary lists" };
             }
 
-            return Json(new { success = success });
+            return Json(new { success = success, errorMessages = errorMessages });
         }
-        
+
+        /*
         [HttpPost]
         public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
         {
             var success = false;
+            List<string> errorMessages = null;
 
             try
             {
-                var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                _userService.UpdateIsDarkTheme(currUserID, isDarkTheme);
+                var userID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                _userService.UpdateIsDarkTheme(userID, isDarkTheme);
 
-                UpdateUserIdentity(currUserID);
-
+                var userVW = _userService.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+                LoginUser(userVW);
                 success = true;
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, "UpdateIsDarkTheme");
                 success = false;
+                errorMessages = new List<string>() { "Error updating isDarkTheme" };
             }
 
-            return Json(new { success = success });
+            return Json(new { success = success, errorMessages = errorMessages });
         }
-
+        */
+        
+        /*
         private async void UpdateUserIdentity(int currUserID) {
             var userVW = _userService.GetUserViews(i => i.UserID == currUserID).FirstOrDefault();
             var identity = (ClaimsIdentity)HttpContext.User.Identity;
@@ -92,6 +99,7 @@ namespace SpeedRunApp.MVC.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
             }
         }
+        */
     }
 }
 

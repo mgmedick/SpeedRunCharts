@@ -17,21 +17,21 @@
                                     <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
                                         <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div>
-                                    <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell pl-2" style="border:none; padding:0px; vertical-align: bottom;">
+                                    <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
                                         <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
                                     </div>                                        
                                 </div>
                             </div>
                         </td>                        
                         <td style="width: 50%; vertical-align: middle;">
-                            <div><span class="font-weight-semibold">{{ item.categoryName }}</span></div>
-                            <div v-if="item.levelName"><span class="font-weight-semibold" style="font-style: italic;">{{ item.levelName }}</span></div>
+                            <div><span class="fw-bold">{{ item.categoryName }}</span></div>
+                            <div v-if="item.levelName"><span class="fw-bold" style="font-style: italic;">{{ item.levelName }}</span></div>
                             <div v-if="item.subCategoryVariableValueNames">
                                 <span style="font-size: 13px;">{{ item.subCategoryVariableValueNames }}</span>
                             </div>                                
                         </td>
                         <td style="width: 25%; vertical-align: middle;">
-                            <div><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pr-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
                             <div><span style="font-size: 13px;">{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
                         <td class="show-md" style="width: auto; vertical-align: middle;">

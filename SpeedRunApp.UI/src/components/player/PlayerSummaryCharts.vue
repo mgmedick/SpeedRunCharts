@@ -2,33 +2,27 @@
     <div class="card mt-2" style="border: none; border-radius: 0px;">
         <div class="row no-gutters">
             <div class="col-lg-6">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">
-                        <div style="height:100%;">
-                            <player-summary-bar-chart chartconainerid="divUserChart1" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 1)" :ismodal="false"></player-summary-bar-chart>                                                 
-                        </div>
+                <div class="ratio ratio-4x3">
+                    <div style="height:100%;">
+                        <player-summary-bar-chart chartconainerid="divUserChart1" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 1)" :ismodal="false"></player-summary-bar-chart>                                                 
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">
-                        <div style="height:100%;">
-                            <player-summary-line-chart chartconainerid="divUserChart2" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 2)" :ismodal="false"></player-summary-line-chart>                                                 
-                        </div>
+                <div class="ratio ratio-4x3">
+                    <div style="height:100%;">
+                        <player-summary-line-chart chartconainerid="divUserChart2" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 2)" :ismodal="false"></player-summary-line-chart>                                                 
                     </div>
-                </div>                
+                </div>            
             </div>
         </div>
         <div class="row no-gutters">
             <div class="col-lg-12">
-                <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">
-                        <div style="height:100%;">
-                            <player-summary-donut-chart chartconainerid="divUserChart3" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 3)" :ismodal="false"></player-summary-donut-chart>                                                 
-                        </div>
-                    </div>                        
-                </div>
+                <div class="ratio ratio-4x3">
+                    <div style="height:100%;">
+                        <player-summary-donut-chart chartconainerid="divUserChart3" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" @onexpandchartclick="onExpandChartClick($event, 3)" :ismodal="false"></player-summary-donut-chart>                                                 
+                    </div>
+                </div>                        
             </div>               
         </div>           
         <div class="row no-gutters">
@@ -41,21 +35,21 @@
             </template>
             <div v-if="selectedChartID == 1">
                 <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">   
+                    <div class="ratio ratio-4x3">   
                         <player-speedrun-count-bar-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-bar-chart>                                                 
                     </div>
                 </div>                                 
             </div>
             <div v-else-if="selectedChartID == 2">
                 <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">  
+                    <div class="ratio ratio-4x3">  
                         <player-speedrun-count-line-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-line-chart>                                                 
                     </div>
                 </div> 
             </div>     
             <div v-else-if="selectedChartID == 3">
                 <div class="embed-responsive embed-responsive-4by3">
-                    <div class="embed-responsive-item">  
+                    <div class="ratio ratio-4x3">  
                         <player-speedrun-count-donut-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-donut-chart>                                                 
                     </div>
                 </div>                 

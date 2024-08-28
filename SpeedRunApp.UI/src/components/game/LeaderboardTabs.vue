@@ -7,13 +7,13 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">       
-        <div class="row no-gutters pr-1">
+        <div class="row no-gutters pe-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                    <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -28,13 +28,13 @@
         </div>
         <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <div class="row no-gutters pr-1">
+                <div class="row no-gutters pe-1">
                     <div class="col tab-list">
                         <ul class="nav nav-pills">
-                            <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
+                            <li class="category nav-item py-1 pe-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                            <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                                 <template v-slot:text>
                                     <span>More...</span>
                                 </template>
@@ -58,13 +58,13 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div class="row no-gutters pr-1">
+                            <div class="row no-gutters pe-1">
                                 <div class="col tab-list">
                                     <ul class="nav nav-pills">
-                                        <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
+                                        <li class="level nav-item py-1 pe-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
                                             <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                         </li>
-                                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                                        <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                                             <template v-slot:text>
                                                 <span>More...</span>
                                             </template>

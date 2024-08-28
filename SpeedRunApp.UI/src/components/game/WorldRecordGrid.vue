@@ -8,8 +8,8 @@
             </div>
         </div>  
         <div>  
-            <div class="row no-gutters pr-1">
-                <div class="col-auto ml-auto">
+            <div class="row no-gutters pe-1">
+                <div class="col-auto ms-auto">
                     <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>Export</span>
@@ -51,8 +51,8 @@
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import tippy from 'tippy.js'
-    import 'tippy.js/dist/tippy.css'
+    // import tippy from 'tippy.js'
+    // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
 
@@ -209,12 +209,12 @@
                             var value = el.getAttribute('data-content');
                             var cellElement = el.closest('.tabulator-cell');
 
-                            tippy(cellElement, {
-                                content: escapeHtml(value),
-                                allowHTML: true,
-                                arrow:false,
-                                placement: 'bottom'
-                            })
+                            // tippy(cellElement, {
+                            //     content: escapeHtml(value),
+                            //     allowHTML: true,
+                            //     arrow:false,
+                            //     placement: 'bottom'
+                            // })
                         });
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
@@ -308,7 +308,7 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
+                html += "<div class='d-table-cell ps-1 ' style='border:none; padding:0px; width:30px;'>";
                 html += "<a href=\"javascript:window.gameWorldRecordGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";

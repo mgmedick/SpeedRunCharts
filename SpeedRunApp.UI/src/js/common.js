@@ -1,4 +1,5 @@
-﻿const dayjs = require('dayjs');
+﻿import { Toast } from 'bootstrap';
+const dayjs = require('dayjs');
 
 const getFormData = object => Object.keys(object).reduce((formData, key) => {
     if (Array.isArray(object[key])) {

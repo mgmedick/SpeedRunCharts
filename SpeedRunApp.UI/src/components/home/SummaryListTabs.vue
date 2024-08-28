@@ -2,28 +2,22 @@
     <div>
         <div>
             <div style="margin-bottom:10px;">
-                <div class="btn-group btn-group-toggle">
-                    <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : !categorytypeid }">
-                        <input type="radio" autocomplete="off" value="" v-model="categorytypeid" @change="onCategoryTypeChange">All
-                    </label>
-                    <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categorytypeid == 0 }">
-                        <input type="radio" autocomplete="off" value="0" v-model="categorytypeid" @change="onCategoryTypeChange">Full Game
-                    </label>
-                    <label class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categorytypeid == 1 }">
-                        <input type="radio" autocomplete="off" value="1" v-model="categorytypeid" @change="onCategoryTypeChange">Level
-                    </label>                                                
-                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : !categoryTypeID }" @click="onCategoryTypeClick(null)">All</button>
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 0 }" @click="onCategoryTypeClick(1)">Full Game</button>
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 1 }" @click="onCategoryTypeClick(2)">Level</button>
+                </div>                
             </div>                
             <div style="margin-bottom:20px;">
-                <div class="btn-group btn-group-toggle" style="display: block">
-                    <label v-for="(item, itemIndex) in summarylists" class="btn btn-primary btn-sm summary-list" :class="{ 'active' : summarylistid == item.id }" v-tippy="item.description">
-                        <input type="radio" autocomplete="off" :value="item.id" v-model="summarylistid" @change="onSummaryListChange"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName.replace(/ /g, '\u00a0') }}
-                    </label>
-                </div>
+                <div class="btn-group" role="group">
+                    <template v-for="(item, itemIndex) in summarylists" class="btn btn-primary btn-sm summary-list" :class="{ 'active' : summaryListID == item.id }">
+                        <button type="button" class="btn btn-primary btn-sm summary-list" :class="{ 'active' : summaryListID == item.id }" @click="onSummaryListClick(item.id)"><i :class="getIconClass(item.id)"></i>&nbsp;{{ item.displayName.replace(/ /g, '\u00a0') }}</button>
+                    </template>
+                </div>                  
             </div>
         </div>
         <div>
-            <summary-list :summarylistid="summarylistid" :defaulttopamt="defaulttopamt" :categorytypeid="categorytypeid"></summary-list>
+            <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="defaulttopamt"></summary-list>
         </div>
     </div>  
 </template>
@@ -37,8 +31,8 @@
         data: function () {
             return {
                 items: [],
-                summarylistid: sessionStorage.getItem("summarylistid") ?? this.summarylists[0]?.id,
-                categorytypeid: sessionStorage.getItem("categorytypeid") ?? null
+                summaryListID: sessionStorage.getItem("summarylistid") ?? this.summarylists[0]?.id,
+                categoryTypeID: sessionStorage.getItem("categorytypeid") ?? null
             }
         },
         created() {
@@ -49,13 +43,13 @@
                 this.resetParams();                   
             }
 
-            sessionStorage.setItem("summarylistid", this.summarylistid);            
+            sessionStorage.setItem("summarylistid", this.summaryListID);            
         },
         methods: {
             resetParams: function() {
-                this.summarylistid = null;
+                this.summaryListID = this.summarylists[0]?.id;
                 sessionStorage.removeItem("summarylistid");
-                this.categorytypeid = null;
+                this.categoryTypeID = null;
                 sessionStorage.removeItem("categorytypeid");                
             },            
             getIconClass: function (id) {
@@ -95,15 +89,17 @@
 
                 return iconClass;
             },                    
-            onSummaryListChange: function (event) {
-                Array.from(document.querySelectorAll('.summary-list.active')).forEach((el) => el.classList.remove('active'));
-                event.target.parentElement.classList.add("active");
-                sessionStorage.setItem("summarylistid", this.summarylistid); 
+            onSummaryListClick: function (summaryListID) {
+                // Array.from(document.querySelectorAll('.summary-list.active')).forEach((el) => el.classList.remove('active'));
+                // event.target.parentElement.classList.add("active");
+                this.summaryListID = summaryListID;
+                sessionStorage.setItem("summarylistid", this.summaryListID); 
             },                            
-            onCategoryTypeChange: function (event) {
-                Array.from(document.querySelectorAll('.categorytype.active')).forEach((el) => el.classList.remove('active'));
-                event.target.parentElement.classList.add("active");
-                sessionStorage.setItem("categorytypeid", this.categorytypeid); 
+            onCategoryTypeClick: function (categoryTypeID) {
+                // Array.from(document.querySelectorAll('.categorytype.active')).forEach((el) => el.classList.remove('active'));
+                // event.target.parentElement.classList.add("active");
+                this.categoryTypeID = categoryTypeID;
+                sessionStorage.setItem("categorytypeid", this.categoryTypeID); 
             }                          
         }
     };

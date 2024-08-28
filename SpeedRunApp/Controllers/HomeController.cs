@@ -386,6 +386,31 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(new { success = success, errorMessages = errorMessages });
         }
 
+        [HttpPost]
+        public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
+        {
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
+            {
+                var userID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                _userService.UpdateIsDarkTheme(userID, isDarkTheme);
+
+                var userVW = _userService.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+                LoginUser(userVW);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "UpdateIsDarkTheme");
+                success = false;
+                errorMessages = new List<string>() { "Error updating isDarkTheme" };
+            }
+
+            return Json(new { success = success, errorMessages = errorMessages });
+        }
+
         private async void LoginUser(UserView userVW)
         {
             var claims = new List<Claim>

@@ -7,13 +7,13 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div class="row no-gutters pr-1">
+        <div class="row no-gutters pe-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
+                    <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
+                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
                         <template v-slot:text>
                             <span>More...</span>
                         </template>
@@ -27,26 +27,26 @@
             </div>                    
         </div>
         <div class="row no-gutters">
-            <div class="col-auto ml-auto">
+            <div class="col-auto ms-auto">
                 <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                     <template v-slot:text>
                         <span>
-                            <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                            <i class="fa fa-filter"></i><span class="ps-2">...</span>
                         </span>
                     </template>
                     <template v-slot:options>
                         <div class="dropdown-item">
                             <div class="custom-control custom-switch">
                                 <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
+                                <label class="custom-control-label ps-1" for="chkShowAllData"><span class="ps-2">Show Obsolete</span></label>
                             </div>
                             <div class="custom-control custom-switch">
                                 <input id="chkShowWR" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showWR">
-                                <label class="custom-control-label pl-1" for="chkShowWR"><span class="pl-2">Show WRs Only</span></label>
+                                <label class="custom-control-label ps-1" for="chkShowWR"><span class="ps-2">Show WRs Only</span></label>
                             </div>
                             <div class="custom-control custom-switch">
                                 <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                                <label class="custom-control-label pl-1" for="chkShowMisc"><span class="pl-2">Show Misc</span></label>
+                                <label class="custom-control-label ps-1" for="chkShowMisc"><span class="ps-2">Show Misc</span></label>
                             </div>                    
                         </div>
                     </template>
@@ -63,8 +63,8 @@
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
                                 </div>
                             </div>                            
-                            <div class="col-11 pl-2 align-self-end">
-                                <h6 class="font-weight-semibold mb-0"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-primary">{{ game.name }}</a></h6>
+                            <div class="col-11 ps-2 align-self-end">
+                                <h6 class="fw-bold mb-0"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-primary">{{ game.name }}</a></h6>
                             </div>
                         </div>
                         <player-speedrun-grid :playerid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc" :showwr="showWR"></player-speedrun-grid>

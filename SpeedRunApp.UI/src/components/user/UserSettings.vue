@@ -12,10 +12,6 @@
                 <div class="form-group row no-gutters">
                     <label class="col-3 col-form-label">Night Mode</label>
                     <div class="col-auto">
-                        <!-- <div class="custom-control custom-switch pt-2">
-                            <input id="chkNightMode1" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isDarkTheme" @change="onUpdateIsDarkTheme">
-                            <label class="custom-control-label ps-1" for="chkNightMode1"><span class="ps-2"></span></label>
-                        </div>   -->
                         <div class="form-check form-switch pt-2">
                             <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme" @change="onUpdateIsDarkTheme">
                             <label class="form-check-label" for="chkNightMode"><span class="ps-2"></span></label>

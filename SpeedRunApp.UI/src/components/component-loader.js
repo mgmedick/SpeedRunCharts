@@ -3,7 +3,6 @@ import { createApp } from "vue";
 import buttonDropdown from './shared/ButtonDropdown.vue';
 import autocomplete from './shared/Autocomplete.vue';
 import multiselect from './shared/Multiselect.vue';
-import modal from './shared/Modal.vue';
 
 import navbar from './menu/Navbar.vue';
 import importStatus from './menu/ImportStatus.vue';
@@ -67,7 +66,6 @@ export default {
         app.component("navbar", navbar);
         app.component('autocomplete', autocomplete);
         app.component('multiselect', multiselect);
-        app.component('modal', modal);  
 
         app.component('index', index);        
         app.component("activate", activate);   

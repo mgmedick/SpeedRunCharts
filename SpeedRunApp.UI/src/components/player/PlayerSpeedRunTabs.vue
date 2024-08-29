@@ -36,18 +36,18 @@
                     </template>
                     <template v-slot:options>
                         <div class="dropdown-item">
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                <label class="custom-control-label ps-1" for="chkShowAllData"><span class="ps-2">Show Obsolete</span></label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowWR" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showWR">
-                                <label class="custom-control-label ps-1" for="chkShowWR"><span class="ps-2">Show WRs Only</span></label>
-                            </div>
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                                <label class="custom-control-label ps-1" for="chkShowMisc"><span class="ps-2">Show Misc</span></label>
-                            </div>                    
+                            <div class="form-check form-switch">
+                                <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
+                                <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
+                            </div>     
+                            <div class="form-check form-switch">
+                                <input id="chkShowWR" class="form-check-input" type="checkbox" v-model="showWR">
+                                <label class="form-check-label" for="chkShowWR"><span>Show WRs Only</span></label>
+                            </div> 
+                            <div class="form-check form-switch">
+                                <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
+                                <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
+                            </div>                                                                                  
                         </div>
                     </template>
                 </button-dropdown>
@@ -57,13 +57,13 @@
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
                     <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous) && (!showWR || item.rank == 1)).length > 0">
-                        <div class="row no-gutters">
+                        <div class="row g-2">
                             <div class="col-1 p-0" style="max-width:37px;">
                                 <div class="img-round">
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
                                 </div>
                             </div>                            
-                            <div class="col-11 ps-2 align-self-end">
+                            <div class="col-11 align-self-end">
                                 <h6 class="fw-bold mb-0"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-primary">{{ game.name }}</a></h6>
                             </div>
                         </div>

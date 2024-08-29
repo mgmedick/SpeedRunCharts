@@ -8,8 +8,8 @@
             </div>
         </div>
         <div class="mt-2">
-            <div class="row no-gutters pe-1">
-                <div class="col-auto ms-auto pe-1">
+            <div class="row g-1">
+                <div class="col-auto ms-auto">
                     <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
                         <template v-slot:text>
                             <span>
@@ -18,10 +18,10 @@
                         </template>
                         <template v-slot:options>
                             <div class="dropdown-item">
-                                <div class="custom-control custom-switch">
-                                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                    <label class="custom-control-label ps-1" for="chkShowAllData"><span class="ps-2">Show Obsolete</span></label>
-                                </div>                    
+                                <div class="form-check form-switch">
+                                    <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
+                                    <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
+                                </div>                                                     
                             </div>                      
                         </template>
                     </button-dropdown>
@@ -54,13 +54,20 @@
                 <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
-        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
-            <template v-slot:title>
-                Details
-            </template>
-            <div class="container p-0">
+        <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">                         
+                    </div>
+                </div>
             </div>
-        </modal>    
+        </div>            
     </div>   
 </template>
 <script>
@@ -102,16 +109,12 @@
                 speedRunCode: this.speedruncode,
                 selectedSpeedRunID: '',
                 showAllData: this.showalldata,
-                showDetailModal: false,
                 pageSize: 100
             }
         },  
         watch: {
-            showalldata: function (val, oldVal) {
-                this.loadData();
-            },
             showAllData: function (val, oldVal) {
-                this.$emit('update:showalldata', val); 
+                this.loadData();
             }              
         },                     
         mounted: function() {
@@ -466,7 +469,7 @@
             },                                    
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
-                this.showDetailModal = true;
+                new Modal(this.$refs.detailmodal).show();
             }                              
         }             
     };

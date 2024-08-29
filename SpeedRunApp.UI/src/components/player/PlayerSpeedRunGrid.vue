@@ -42,21 +42,35 @@
                 </tbody>
             </table> 
         </div>
-        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
-            <template v-slot:title>
-                Details
-            </template>
-            <div class="container p-0">
+        <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">                         
+                    </div>
+                </div>
             </div>
-        </modal>   
-        <modal v-if="showChartModal" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
-            <template v-slot:title>
-                User Charts
-            </template>
-            <div class="container p-0">
-                <player-speedrun-charts :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>
+        </div>  
+        <div ref="chartmodal" class="modal modal-xl" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">User Charts</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">
+                        <player-speedrun-charts :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         
+                    </div>
+                </div>
             </div>
-        </modal>            
+        </div>           
     </div>   
 </template>
 <script>
@@ -82,8 +96,6 @@
                 tableData: [],          
                 loading: true,
                 selectedSpeedRun: {},
-                showDetailModal: false,
-                showChartModal: false,
                 pageSize: 100
             }
         },
@@ -159,12 +171,12 @@
             showSpeedRunDetails(event) {
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
-                this.showDetailModal = true;
+                new Modal(this.$refs.detailmodal).show();
             },
             showSpeedRunCharts(event) {
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
-                this.showChartModal = true;
+                new Modal(this.$refs.chartmodal).show();
             }
         }             
     };

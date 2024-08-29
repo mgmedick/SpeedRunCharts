@@ -64,31 +64,40 @@
                 </div>                
             </div>          
         </div>
-        <modal v-if="showChartModal && !loading" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
-            <template v-slot:title>
-                {{ chartModalTitle }}
-            </template>
-            <div v-if="selectedChartID == 1">    
-                <div class="ratio ratio-4x3">        
-                    <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
+        <div ref="chartmodal" class="modal modal-xl" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ chartModalTitle }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="selectedChartID == 1">
+                            <div class="ratio ratio-4x3">   
+                                <leaderboard-worldrecord-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-worldrecord-chart>                
+                            </div>
+                        </div>
+                        <div v-else-if="selectedChartID == 2">
+                            <div class="ratio ratio-4x3">  
+                                <leaderboard-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-percentile-chart>                
+                            </div>
+                        </div>     
+                        <div v-else-if="selectedChartID == 3">
+                            <div class="ratio ratio-4x3">  
+                                <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
+                            </div>                
+                        </div>  
+                        <div v-else-if="selectedChartID == 4">
+                            <div class="ratio ratio-4x3">  
+                                <leaderboard-top-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-line-chart>                
+                            </div>                
+                        </div>                          
+                    </div>
                 </div>
             </div>
-            <div v-else-if="selectedChartID == 2">
-                <div class="ratio ratio-4x3">  
-                    <leaderboard-percentile-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-percentile-chart>                
-                </div>
-            </div>
-            <div v-else-if="selectedChartID == 3">
-                <div class="ratio ratio-4x3">                 
-                    <leaderboard-top-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-chart>                
-                </div>       
-            </div>   
-            <div v-else-if="selectedChartID == 4">
-                <div class="ratio ratio-4x3">                 
-                    <leaderboard-top-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" :ismodal="true"></leaderboard-top-line-chart>                
-                </div>    
-            </div>                        
-        </modal>              
+        </div>         
     </div>
 </template>
 <script>
@@ -112,7 +121,6 @@
             return {
                 tabledata: [],
                 loading: true,
-                showChartModal: false,
                 selectedChartID: 0
             }
         },
@@ -155,7 +163,7 @@
             },  
             onExpandChartClick(event, chartID) {
                 this.selectedChartID = chartID;                 
-                this.showChartModal = true;
+                new Modal(this.$refs.chartmodal).show();
             }                        
         }
     }

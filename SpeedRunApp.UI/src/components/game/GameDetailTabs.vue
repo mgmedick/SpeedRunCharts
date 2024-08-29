@@ -10,16 +10,16 @@
                     </template>
                     <template v-slot:options>
                         <div v-if="gridID == 0 || gridID == 1" class="dropdown-item">
-                            <div class="custom-control custom-switch">
-                                <input id="chkShowMisc" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showMisc">
-                                <label class="custom-control-label ps-1" for="chkShowMisc"><span class="ps-2">Show Misc</span></label>
-                            </div>                    
+                            <div class="form-check form-switch">
+                                <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
+                                <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
+                            </div>                                               
                         </div>
                         <div v-if="gridID == 0" class="dropdown-item">
-                            <div class="custom-control custom-switch">
-                                <input id="chkHideEmpty" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="hideEmpty">
-                                <label class="custom-control-label ps-1" for="chkHideEmpty"><span class="ps-2">Hide Empty</span></label>
-                            </div>                    
+                            <div class="form-check form-switch">
+                                <input id="chkHideEmpty" class="form-check-input" type="checkbox" v-model="hideEmpty">
+                                <label class="form-check-label" for="chkHideEmpty"><span>Hide Empty</span></label>
+                            </div>                                                
                         </div>                        
                     </template>
                 </button-dropdown>

@@ -56,9 +56,9 @@
                             </template>
                             <template v-slot:options>
                                 <div class="dropdown-item">
-                                    <div class="custom-control custom-switch">
-                                        <input id="chkNightMode" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="isDarkTheme">
-                                        <label class="custom-control-label ps-1" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
+                                    <div class="form-check form-switch">
+                                        <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
+                                        <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
                                     </div>
                                 </div>
                                 <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="ps-2">Import Status</span></a>

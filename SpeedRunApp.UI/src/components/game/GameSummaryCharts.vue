@@ -39,31 +39,41 @@
                     </div>
                 </div>                        
             </div>               
-        </div>                       
-        <modal v-if="showChartModal && !loading" contentclass="cmv-modal-xl" bodyclass="p-0" @close="showChartModal = false">
-            <template v-slot:title>
-                {{ chartModalTitle }}
-            </template>
-            <div v-if="selectedChartID == 1">
-                <div class="ratio ratio-4x3">   
-                    <game-summary-bar-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-bar-chart>  
+        </div>
+        <div ref="chartmodal" class="modal modal-xl" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ chartModalTitle }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">
+                        <div v-if="selectedChartID == 1">
+                            <div class="ratio ratio-4x3">   
+                                <game-summary-bar-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-bar-chart>  
+                            </div>
+                        </div>
+                        <div v-else-if="selectedChartID == 2">
+                            <div class="ratio ratio-4x3">  
+                                <game-summary-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-line-chart>                
+                            </div>
+                        </div>     
+                        <div v-else-if="selectedChartID == 3">
+                            <div class="ratio ratio-4x3">  
+                                <game-summary-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-doughnut-chart>                
+                            </div>                
+                        </div>  
+                    </div>
                 </div>
             </div>
-            <div v-else-if="selectedChartID == 2">
-                <div class="ratio ratio-4x3">  
-                    <game-summary-line-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :variables="variables" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-line-chart>                
-                </div>
-            </div>     
-            <div v-else-if="selectedChartID == 3">
-                <div class="ratio ratio-4x3">  
-                    <game-summary-doughnut-chart chartconainerid="divChartModal" :tabledata="tabledata" :categorytypeid="categorytypeid" :categoryid="categoryid" :categories="categories" :levels="levels" :subcategoryvariablevaluetabs="subcategoryvariablevaluetabs" :showmilliseconds="showmilliseconds" :subcaption="subcaption" :ismodal="true"></game-summary-doughnut-chart>                
-                </div>                
-            </div>                      
-        </modal>
+        </div>                            
     </div>
 </template>
 <script>
     import axios from 'axios';
+    import { Modal } from 'bootstrap';
     
     export default {
         name: "GameSummaryCharts",
@@ -82,7 +92,6 @@
             return {
                 tabledata: [],
                 loading: true,
-                showChartModal: false,
                 selectedChartID: 0
             }
         },
@@ -122,7 +131,7 @@
             },       
             onExpandChartClick(event, chartID) {
                 this.selectedChartID = chartID;                 
-                this.showChartModal = true;
+                new Modal(this.$refs.chartmodal).show();
             }                          
         }
     }

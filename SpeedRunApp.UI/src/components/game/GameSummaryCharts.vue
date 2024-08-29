@@ -101,13 +101,13 @@
 
                 switch(this.selectedChartID) {
                     case 1:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts Chart';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts Chart';
                         break;
                     case 2:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts (Last 12 Months) Chart';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts (Last 12 Months) Chart';
                         break;
                     case 3:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Distribution Chart';
+                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Distribution Chart';
                         break;                        
                 }
 

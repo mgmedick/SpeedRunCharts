@@ -44,7 +44,7 @@
     import axios from 'axios';
     
     export default {
-        name: "PlayerSpeedRunChartContainer",
+        name: "PlayerSpeedRunCharts",
         props: {
             gameid: String,
             categorytypeid: String,
@@ -60,7 +60,6 @@
             return {
                 tabledata: [],
                 loading: true,
-                showChartModal: false,
                 selectedChartID: 0
             }
         },
@@ -100,7 +99,6 @@
             },  
             onExpandChartClick(event, chartID) {
                 this.selectedChartID = chartID;                 
-                this.showChartModal = true;
             }                                       
         }
     }

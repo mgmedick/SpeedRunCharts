@@ -10,33 +10,35 @@
         <div class="mt-2">
             <div class="row g-1">
                 <div class="col-auto ms-auto">
-                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                        <template v-slot:text>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
                                 <i class="fa fa-filter"></i><span class="ps-2">...</span>
                             </span>
-                        </template>
-                        <template v-slot:options>
-                            <div class="dropdown-item">
-                                <div class="form-check form-switch">
-                                    <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
-                                    <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
-                                </div>                                                     
-                            </div>                      
-                        </template>
-                    </button-dropdown>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li>
+                                <div class="dropdown-item">
+                                    <div class="form-check form-switch">
+                                        <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
+                                        <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
+                                    </div>                                                     
+                                </div>
+                            </li> 
+                        </ul>
+                    </div>   
                 </div>
                 <div class="col-auto">
-                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                        <template v-slot:text>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>Export</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(exporttype, i) in exporttypes" :key="i">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(exporttype, i) in exporttypes" :key="i">
                                 <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>
+                            </li>
+                        </ul>
+                    </div>                     
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
@@ -80,6 +82,7 @@
     // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    import { Modal } from 'bootstrap';
 
     export default {
         name: "LeaderboardGrid",

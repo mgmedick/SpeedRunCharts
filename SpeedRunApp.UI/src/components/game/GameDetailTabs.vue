@@ -2,27 +2,31 @@
     <div class="mt-3">
         <div v-if="gridID == 0 || gridID == 1" class="row no-gutters pe-1">
             <div class="col">
-                <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-left'">
-                    <template v-slot:text>
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
                             <i class="fa fa-filter"></i><span class="ps-2">...</span>
                         </span>
-                    </template>
-                    <template v-slot:options>
-                        <div v-if="gridID == 0 || gridID == 1" class="dropdown-item">
-                            <div class="form-check form-switch">
-                                <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
-                                <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
-                            </div>                                               
-                        </div>
-                        <div v-if="gridID == 0" class="dropdown-item">
-                            <div class="form-check form-switch">
-                                <input id="chkHideEmpty" class="form-check-input" type="checkbox" v-model="hideEmpty">
-                                <label class="form-check-label" for="chkHideEmpty"><span>Hide Empty</span></label>
-                            </div>                                                
-                        </div>                        
-                    </template>
-                </button-dropdown>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li v-if="gridID == 0 || gridID == 1">
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
+                                    <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
+                                </div>                                               
+                            </div>
+                        </li>
+                        <li v-if="gridID == 0">
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input id="chkHideEmpty" class="form-check-input" type="checkbox" v-model="hideEmpty">
+                                    <label class="form-check-label" for="chkHideEmpty"><span>Hide Empty</span></label>
+                                </div>                                                
+                            </div> 
+                        </li>
+                    </ul>
+                </div>                
             </div>
         </div>                               
         <div id="divGameTabContainer" class="row no-gutters pe-1 pt-1">
@@ -37,16 +41,22 @@
                     <li class="nav-item py-1 pe-1">
                         <a class="nav-link p-2" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>            
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
+                    <div class="dropdown more py-1 pe-1" v-show="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <a class="dropdown-item d-none" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>            
-                            <a class="dropdown-item d-none" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
-                            <a class="dropdown-item d-none" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>                          
-                        </template>
-                    </button-dropdown>                                          
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>            
+                            </li>
+                            <li class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
+                            </li>
+                            <li class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>                          
+                            </li>
+                        </ul>
+                    </div>                                                            
                 </ul>
             </div>
         </div>
@@ -62,6 +72,8 @@
     </div>
 </template>
 <script>
+    import { resizeTabs } from '../../js/common.js';
+
     export default {
         name: "GameDetailTabs",
         props: {
@@ -76,82 +88,25 @@
             }
         },      
         mounted: function () {
-            this.resizeGMTabs();
-            window.addEventListener('resize', this.resizeGMTabs);
+            window.addEventListener('resize', this.onResize);
         },
+        destroyed() {
+            window.removeEventListener('resize', this.onResize);     
+        },                  
         updated: function () {
-            this.resizeGMTabs();
-        },                 
+            this.onResize();
+        },              
         methods: {
             onTabClick: function (event) {
                 var value = event.target.getAttribute('data-value');
                 this.gridID = value;              
             },
-            resizeGMTabs: function () {
-                var rows = document.querySelectorAll('#divGameTabContainer .tab-list');
-
-                for (var g = 0; g < rows.length; g++) {
-                    var totalWidth = 0;
-                    var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morediv =  rows[g].querySelector('.more');
-                    var morebtn =  morediv.querySelector('.btn');
-                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
-                    var moredrp = morediv.querySelector('.dropdown-menu');
-
-                    for (var i = 0; i < tabitems.length; i++) {
-                        tabitems[i].style.left = "-10000px";
-                        tabitems[i].classList.remove('d-none');
-                        totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                            tabitems[i].classList.add('d-none');
-                            moreItems[i].classList.remove('d-none');
-                        } else {
-                            tabitems[i].classList.remove('d-none');
-                            moreItems[i].classList.add('d-none');                     
-                        }
-                    }
-
-                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
-                    if (items.length > 0) {
-                        var item = items.find(i=>i.classList.contains('active'));
-                        if (item) {
-                            morebtn.innerHTML = item.innerHTML;
-                            morebtn.classList.add('active');
-                        } else {
-                            morebtn.innerHTML = 'More...';
-                            morebtn.classList.remove('active');
-                        }
-                        
-                        morediv.style.display = 'block';
-                    } else {
-                        morediv.style.display = 'none';                       
-                    }
-
-                    var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morediv);
-                    if (pos.x > (ww / 2)) {
-                        moredrp.classList.remove('dropdown-menu-left');
-                        moredrp.classList.add('dropdown-menu-right');
-                    } else {
-                        moredrp.classList.remove('dropdown-menu-right');
-                        moredrp.classList.add('dropdown-menu-left');
-                    }
-               }
-            },
-            getPosition: function (element) {
-                var xPosition = 0;
-                var yPosition = 0;
-
-                while (element) {
-                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                    element = element.offsetParent;
-                }
-                return {
-                    x: xPosition,
-                    y: yPosition
-                };
-            }                        
+            onResize() {
+                var that = this;
+                if (that.width != document.documentElement.clientWidth) {  
+                    resizeTabs(document.getElementById('divGameTabContainer'));
+                }                 
+            }                                     
         }       
     };
 </script>

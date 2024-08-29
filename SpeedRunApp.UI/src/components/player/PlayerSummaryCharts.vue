@@ -41,17 +41,17 @@
                     <div class="modal-body">
                         <div v-if="selectedChartID == 1">
                             <div class="ratio ratio-4x3">   
-                                <player-speedrun-count-bar-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-bar-chart>                                                 
+                                <player-summary-bar-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-summary-bar-chart>                                                 
                             </div>
                         </div>
                         <div v-else-if="selectedChartID == 2">
                             <div class="ratio ratio-4x3">  
-                                <player-speedrun-count-line-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-line-chart>                                                 
+                                <player-summary-line-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-summary-line-chart>                                                 
                             </div>
                         </div>     
                         <div v-else-if="selectedChartID == 3">
                             <div class="ratio ratio-4x3">  
-                                <player-speedrun-count-donut-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-speedrun-count-donut-chart>                                                 
+                                <player-summary-donut-chart chartconainerid="divChartModal" :categorytypeid="categorytypeid" :games="items" :tabledata="tabledata" :ismodal="true"></player-summary-donut-chart>                                                 
                             </div>                
                         </div>                           
                     </div>
@@ -61,6 +61,8 @@
     </div>
 </template>
 <script>    
+    import { Modal } from 'bootstrap';
+
     export default {
         name: "PlayerSummaryCharts",
         props: {
@@ -79,12 +81,14 @@
 
                 switch(this.selectedChartID) {
                     case 1:
-                        title = (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Counts Chart';
+                        title = (this.categorytypeid == 0 ? 'Game' : 'Level') + ' Run Counts Chart';
                         break;
                     case 2:
+                        title = (this.categorytypeid == 0 ? 'Game' : 'Level') + ' Run Counts (Last 12 Months) Chart';
                         break;
                     case 3:
-                        break;                        
+                        title = (this.categorytypeid == 0 ? 'Game' : 'Level') + ' Runs Distribution Chart';
+                        break;                       
                 }
 
                 return title;

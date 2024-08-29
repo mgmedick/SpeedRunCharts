@@ -44,7 +44,7 @@
                 return this.$el.clientWidth > 992;
             },    
             caption: function () {
-                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Category Runs Distribution';
+                return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Runs Distribution';
             },                            
             captionFontSize: function () {
                 return this.isMediaLarge ? 14 : 12;
@@ -87,7 +87,10 @@
         mounted: function () {
             this.loadChart();
             window.addEventListener('resize', this.resizeChart); 
-        },        
+        },    
+        destroyed() {
+            window.removeEventListener('resize', this.resizeChart);     
+        },               
         methods: {                      
             loadChart() {
                 var that = this;

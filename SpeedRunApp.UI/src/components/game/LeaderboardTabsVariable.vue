@@ -7,16 +7,16 @@
                         <li class="variableValue nav-item py-1 pe-1" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
                             <a class="nav-link p-2" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
-                        <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
-                            <template v-slot:text>
+                        <div class="dropdown more py-1 pe-1" v-show="false">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span>More...</span>
-                            </template>
-                            <template v-slot:options>
-                                <template v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
-                                    <a class="dropdown-item d-none" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
-                                </template>
-                            </template>
-                        </button-dropdown>                  
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                <li v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id" class="d-none">
+                                    <a class="dropdown-item" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                                </li>
+                            </ul>
+                        </div>                          
                     </ul>
                 </div>
             </div>

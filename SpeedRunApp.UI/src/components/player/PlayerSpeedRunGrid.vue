@@ -66,7 +66,7 @@
                         </button>  
                     </div>
                     <div class="modal-body">
-                        <player-speedrun-charts :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         
+                        <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedSpeedRun" :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         
                     </div>
                 </div>
             </div>
@@ -78,6 +78,7 @@
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    import { Modal } from 'bootstrap';
 
     export default {
         name: "PlayerSpeedRunGrid",
@@ -95,24 +96,32 @@
             return {   
                 tableData: [],          
                 loading: true,
-                selectedSpeedRun: {},
+                selectedSpeedRun: null,
                 pageSize: 100
             }
         },
         computed: {
             title: function () {
                 var result = '';
-                result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValueNames].join(' - ');
-                result = result.replace(/^[ -]+|[ -]+$/g, '');
-                
+                if (this.selectedSpeedRun) {
+                    result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValueNames].join(' - ');                
+                    result = result.replace(/^[ -]+|[ -]+$/g, '');
+                }  
                 return result;
             }
         },                  
         mounted: function() {
+            var that = this;
+            
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             });            
             this.loadData();
+
+            that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
+                that.$refs.playerspeedruncharts.loadData();
+            }); 
+
             window.speedRunGridVue = this;
             window.addEventListener( 'touchmove', function() {}, {passive: false});
         },
@@ -176,7 +185,10 @@
             showSpeedRunCharts(event) {
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
-                new Modal(this.$refs.chartmodal).show();
+
+                this.$nextTick(function() {
+                    new Modal(this.$refs.chartmodal).show();
+                });
             }
         }             
     };

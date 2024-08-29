@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 
-import buttonDropdown from './shared/ButtonDropdown.vue';
 import autocomplete from './shared/Autocomplete.vue';
 import multiselect from './shared/Multiselect.vue';
 
@@ -62,7 +61,6 @@ export default {
         });
         
         app.component("summary-list-tabs", summaryListTabs);
-        app.component("button-dropdown", buttonDropdown);
         app.component("navbar", navbar);
         app.component('autocomplete', autocomplete);
         app.component('multiselect', multiselect);

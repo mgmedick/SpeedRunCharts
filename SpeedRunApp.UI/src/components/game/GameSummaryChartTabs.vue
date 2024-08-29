@@ -12,17 +12,17 @@
                 <ul class="nav nav-pills">
                     <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
-                    </li>
-                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
+                    </li>  
+                    <div class="dropdown more py-1 pe-1" v-show="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>                       
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </li>
+                        </ul>
+                    </div>                                          
                 </ul>
             </div>                    
         </div>
@@ -38,16 +38,16 @@
                                 <li class="category nav-item py-1 pe-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
                                     <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                 </li>
-                                <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
-                                    <template v-slot:text>
+                                <div class="dropdown more py-1 pe-1" v-show="false">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span>More...</span>
-                                    </template>
-                                    <template v-slot:options>
-                                        <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                        <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id" class="d-none">
                                             <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
-                                        </template>
-                                    </template>
-                                </button-dropdown>    
+                                        </li>
+                                    </ul>
+                                </div>                                     
                             </ul>
                         </div>
                     </div>                           
@@ -63,6 +63,7 @@
 </template>
 <script>
     import axios from 'axios';
+    import { resizeTabs } from '../../js/common.js';
 
     export default {
         name: "GameSummaryChartTabs",
@@ -93,10 +94,13 @@
         },          
         mounted: function () {
             this.loadData();
-            window.addEventListener('resize', this.resizeGCTabs);
+            window.addEventListener('resize', this.onResize);
         },
+        destroyed() {
+            window.removeEventListener('resize', this.onResize);     
+        },          
         updated: function () {
-            this.resizeGCTabs();
+            this.onResize();
         },   
         methods: {
             loadData() {
@@ -157,72 +161,13 @@
                 } else {
                     this.categoryID = '';
                 }       
-            },  
-            resizeGCTabs: function () {
-                var rows = document.querySelectorAll('#divGameChartTabContainer .tab-list');
-
-                for (var g = 0; g < rows.length; g++) {
-                    var totalWidth = 0;
-                    var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morediv =  rows[g].querySelector('.more');
-                    var morebtn =  morediv.querySelector('.btn');
-                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
-                    var moredrp = morediv.querySelector('.dropdown-menu');
-
-                    for (var i = 0; i < tabitems.length; i++) {
-                        tabitems[i].style.left = "-10000px";
-                        tabitems[i].classList.remove('d-none');
-                        totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                            tabitems[i].classList.add('d-none');
-                            moreItems[i].classList.remove('d-none');
-                        } else {
-                            tabitems[i].classList.remove('d-none');
-                            moreItems[i].classList.add('d-none');                     
-                        }
-                    }
-
-                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
-                    if (items.length > 0) {
-                        var item = items.find(i=>i.classList.contains('active'));
-                        if (item) {
-                            morebtn.innerHTML = item.innerHTML;
-                            morebtn.classList.add('active');
-                        } else {
-                            morebtn.innerHTML = 'More...';
-                            morebtn.classList.remove('active');
-                        }
-                        
-                        morediv.style.display = 'block';
-                    } else {
-                        morediv.style.display = 'none';                       
-                    }
-
-                    var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morediv);
-                    if (pos.x > (ww / 2)) {
-                        moredrp.classList.remove('dropdown-menu-left');
-                        moredrp.classList.add('dropdown-menu-right');
-                    } else {
-                        moredrp.classList.remove('dropdown-menu-right');
-                        moredrp.classList.add('dropdown-menu-left');
-                    }
-               }
-            },            
-            getPosition: function (element) {
-                var xPosition = 0;
-                var yPosition = 0;
-
-                while (element) {
-                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                    element = element.offsetParent;
-                }
-                return {
-                    x: xPosition,
-                    y: yPosition
-                };
-            }                          
+            },   
+            onResize() {
+                var that = this;
+                if (that.width != document.documentElement.clientWidth) {  
+                    resizeTabs(document.getElementById('divGameChartTabContainer'));
+                }                 
+            }          
         }       
     };
 </script>

@@ -13,44 +13,54 @@
                     <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pe-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
+                    <div class="dropdown more py-1 pe-1" v-show="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>                       
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id" class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </li>
+                        </ul>
+                    </div>                                            
                 </ul>
             </div>                    
         </div>
         <div class="row no-gutters">
             <div class="col-auto ms-auto">
-                <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                    <template v-slot:text>
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
                             <i class="fa fa-filter"></i><span class="ps-2">...</span>
                         </span>
-                    </template>
-                    <template v-slot:options>
-                        <div class="dropdown-item">
-                            <div class="form-check form-switch">
-                                <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
-                                <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
-                            </div>     
-                            <div class="form-check form-switch">
-                                <input id="chkShowWR" class="form-check-input" type="checkbox" v-model="showWR">
-                                <label class="form-check-label" for="chkShowWR"><span>Show WRs Only</span></label>
-                            </div> 
-                            <div class="form-check form-switch">
-                                <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
-                                <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
-                            </div>                                                                                  
-                        </div>
-                    </template>
-                </button-dropdown>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
+                                    <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
+                                </div>                                                     
+                            </div>
+                        </li> 
+                        <li>
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input id="chkShowWR" class="form-check-input" type="checkbox" v-model="showWR">
+                                    <label class="form-check-label" for="chkShowWR"><span>Show WRs Only</span></label>
+                                </div>                                                   
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown-item">
+                                <div class="form-check form-switch">
+                                    <input id="chkShowMisc" class="form-check-input" type="checkbox" v-model="showMisc">
+                                    <label class="form-check-label" for="chkShowMisc"><span>Show Misc</span></label>
+                                </div>                                                    
+                            </div>
+                        </li>                                                           
+                    </ul>
+                </div>                 
             </div>
         </div>             
         <div v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
@@ -76,6 +86,7 @@
 </template>
 <script>
     import axios from 'axios';
+    import { resizeTabs } from '../../js/common.js';
 
     export default {
         name: "PlayerSpeedRunTabs",
@@ -92,17 +103,19 @@
                 showAllData: false,
                 showMisc: true,
                 showWR: false,
-                showDetailModal: false,
                 loading: true
             }
         },   
         mounted: function () {
             this.loadData();
-            window.addEventListener('resize', this.resizeSRTabs);
-        },       
-        updated: function () {
-            this.resizeSRTabs();
+            window.addEventListener('resize', this.onResize);
         },
+        destroyed() {
+            window.removeEventListener('resize', this.onResize);     
+        },                  
+        updated: function () {
+            this.onResize();
+        },                  
         methods: {
             loadData() {
                 var that = this;
@@ -134,72 +147,13 @@
                         this.categoryTypeID = value;
                         break;                                                                                                                                                                                            
                 }
-            },                 
-            resizeSRTabs: function () {
-                var rows = document.querySelectorAll('#divSpeedRunGridTabContainer .tab-list');
-
-                for (var g = 0; g < rows.length; g++) {
-                    var totalWidth = 0;
-                    var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morediv =  rows[g].querySelector('.more');
-                    var morebtn =  morediv.querySelector('.btn');
-                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
-                    var moredrp = morediv.querySelector('.dropdown-menu');
-
-                    for (var i = 0; i < tabitems.length; i++) {
-                        tabitems[i].style.left = "-10000px";
-                        tabitems[i].classList.remove('d-none');
-                        totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                            tabitems[i].classList.add('d-none');
-                            moreItems[i].classList.remove('d-none');
-                        } else {
-                            tabitems[i].classList.remove('d-none');
-                            moreItems[i].classList.add('d-none');                     
-                        }
-                    }
-
-                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
-                    if (items.length > 0) {
-                        var item = items.find(i=>i.classList.contains('active'));
-                        if (item) {
-                            morebtn.innerHTML = item.innerHTML;
-                            morebtn.classList.add('active');
-                        } else {
-                            morebtn.innerHTML = 'More...';
-                            morebtn.classList.remove('active');
-                        }
-                        
-                        morediv.style.display = 'block';
-                    } else {
-                        morediv.style.display = 'none';                       
-                    }
-
-                    var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morediv);
-                    if (pos.x > (ww / 2)) {
-                        moredrp.classList.remove('dropdown-menu-left');
-                        moredrp.classList.add('dropdown-menu-right');
-                    } else {
-                        moredrp.classList.remove('dropdown-menu-right');
-                        moredrp.classList.add('dropdown-menu-left');
-                    }
-               }
             },
-            getPosition: function (element) {
-                var xPosition = 0;
-                var yPosition = 0;
-
-                while (element) {
-                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                    element = element.offsetParent;
-                }
-                return {
-                    x: xPosition,
-                    y: yPosition
-                };
-            }                      
+            onResize() {
+                var that = this;
+                if (that.width != document.documentElement.clientWidth) {  
+                    resizeTabs(document.getElementById('divSpeedRunGridTabContainer'));
+                }                 
+            }                                   
         }
     };
 </script>

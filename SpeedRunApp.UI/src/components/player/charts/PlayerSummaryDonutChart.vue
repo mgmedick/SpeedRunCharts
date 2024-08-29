@@ -76,7 +76,10 @@
         mounted: function () {
             this.loadChart();
             window.addEventListener('resize', this.resizeChart); 
-        },        
+        }, 
+        destroyed() {
+            window.removeEventListener('resize', this.resizeChart);     
+        },                    
         methods: {                      
             loadChart() {
                 var that = this;

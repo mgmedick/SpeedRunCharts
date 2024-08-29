@@ -76,7 +76,6 @@
                 },
                 isShowPassword: false,
                 isShowConfirmPassword: false,
-                showResetModal: false,
                 showSuccess: false
             }
         },

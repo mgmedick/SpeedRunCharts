@@ -17,28 +17,31 @@
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <form class="form-inline mb-2 mb-lg-0 me-2">
-                    <!-- <autocomplete v-model="searchText" @change="onChange" @search="onSearch" @selected="onSearchSelected" :options="searchResults" labelby="label" valueby="label" :isasync="true" :loading="searchLoading" :placeholder="'Search games, users'" style="width:100%"/>                 -->
-                    <autocomplete v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="false" :loading="searchLoading" :placeholder="'Search games, users'" style="width:300px;"/>    
-                </form>
+                <autocomplete v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="false" :loading="searchLoading" :placeholder="'Search games, users'" style="min-width:300px;" class="mb-2 mb-lg-0 me-2"/>    
                 <div v-if="isauth">
-                    <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
-                        <template v-slot:text>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
-                                <i class="fa fa-user"></i><span class="ps-2">{{ username }}</span>
+                                <i class="fa fa-user"></i>
                             </span>
-                        </template>
-                        <template v-slot:options>
-                            <div class="dropdown-item">
-                                <div class="form-check form-switch">
-                                    <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
-                                    <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <div class="dropdown-item">
+                                    <div class="form-check form-switch">
+                                        <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
+                                        <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
+                                    </div>
                                 </div>
-                            </div>
-                            <a href="/User/UserSettings" class="dropdown-item"><i class="fa fa-cog"></i><span class="ps-2">Settings</span></a>
-                            <a href="/Home/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="ps-2">Log out</span></a>
-                        </template>
-                    </button-dropdown>
+                            </li>
+                            <li>
+                                <a href="/User/UserSettings" class="dropdown-item"><i class="fa fa-cog"></i><span class="ps-2">Settings</span></a>
+                            </li>
+                            <li>
+                                <a href="/Home/Logout" class="dropdown-item"><i class="fa fa-sign-out-alt"></i><span class="ps-2">Log out</span></a>
+                            </li>
+                        </ul>
+                    </div>                     
                 </div>
                 <ul v-else class="navbar-nav">
                     <li class="nav-item">
@@ -47,26 +50,49 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Home/SignUp">Sign Up</a>
                     </li>
-                    <li class="nav-item">
-                        <button-dropdown :btnclasses="'btn-secondary'" :listclasses="'dropdown-menu-sm-right'">
-                            <template v-slot:text>
-                                <span>
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </template>
-                            <template v-slot:options>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
                                 <div class="dropdown-item">
                                     <div class="form-check form-switch">
                                         <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
                                         <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
                                     </div>
                                 </div>
-                                <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="ps-2">Import Status</span></a>
-                                <a class="dropdown-item" href="/Home/Login"><i class="fa fa-user"></i><span class="ps-2">Log In</span></a>
-                                <a class="dropdown-item" href="/Home/SignUp"><i class="fa fa-clipboard"></i><span class="ps-2">Sign Up</span></a>
-                            </template>
-                        </button-dropdown> 
-                    </li>                   
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span>
+                                    <i class="fa fa-user"></i><span class="ps-2">{{ username }}</span>
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <div class="dropdown-item">
+                                        <div class="form-check form-switch">
+                                            <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
+                                            <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="ps-2">Import Status</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Home/Login"><i class="fa fa-user"></i><span class="ps-2">Log In</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Home/SignUp"><i class="fa fa-clipboard"></i><span class="ps-2">Sign Up</span></a>
+                                </li>
+                            </ul>
+                        </div>                          
+                    </li>                    -->
                 </ul>
             </div>
         </div>                        

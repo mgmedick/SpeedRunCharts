@@ -131,13 +131,9 @@
         }, 
         mounted: function () {
             this.loadData();            
-            window.addEventListener('resize', this.onResize);
-        },
-        destroyed() {
-            window.removeEventListener('resize', this.onResize);     
-        },                  
+        },                
         updated: function () {
-            this.onResize();
+            resizeTabs();
         },      
         methods: {
             loadData() {
@@ -216,13 +212,7 @@
                 }
 
                 this.resetSelected();                
-            },
-            onResize() {
-                var that = this;
-                if (that.width != document.documentElement.clientWidth) {  
-                    resizeTabs(document.getElementById('divWorldRecorGridTabContainer'));
-                }                 
-            }                   
+            }              
         }
     };
 </script>

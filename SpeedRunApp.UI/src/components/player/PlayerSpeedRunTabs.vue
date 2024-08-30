@@ -108,14 +108,10 @@
         },   
         mounted: function () {
             this.loadData();
-            window.addEventListener('resize', this.onResize);
-        },
-        destroyed() {
-            window.removeEventListener('resize', this.onResize);     
-        },                  
+        },              
         updated: function () {
-            this.onResize();
-        },                  
+            resizeTabs();
+        },                
         methods: {
             loadData() {
                 var that = this;
@@ -147,13 +143,7 @@
                         this.categoryTypeID = value;
                         break;                                                                                                                                                                                            
                 }
-            },
-            onResize() {
-                var that = this;
-                if (that.width != document.documentElement.clientWidth) {  
-                    resizeTabs(document.getElementById('divSpeedRunGridTabContainer'));
-                }                 
-            }                                   
+            }                                
         }
     };
 </script>

@@ -76,6 +76,10 @@
         mounted: function () {
             this.loadChart();
         },
+        // destroyed() {
+        //     chartref = FusionCharts('game-summary-bar-chart-fusion');
+        //     chartref.dispose();
+        // },             
         methods: {                      
             loadChart() {
                 var that = this;

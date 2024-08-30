@@ -143,45 +143,43 @@ const errorToast = (errorMsg) => {
     new Toast(el).show();
 }
 
-const resizeTabs = (el) => {
-    if (el) {
-        var rows = el.querySelectorAll('.tab-list');
+const resizeTabs = () => {
+    var rows = document.querySelectorAll('.tab-list');
 
-        for (var g = 0; g < rows.length; g++) {
-            var totalWidth = 0;
-            var tabitems = rows[g].querySelectorAll('li.nav-item');
-            var morediv =  rows[g].querySelector('.more');
-            var morebtn =  morediv.querySelector('.btn');
-            var moreItems = morediv.querySelectorAll('li');
+    for (var g = 0; g < rows.length; g++) {
+        var totalWidth = 0;
+        var tabitems = rows[g].querySelectorAll('li.nav-item');
+        var morediv =  rows[g].querySelector('.more');
+        var morebtn =  morediv.querySelector('.btn');
+        var moreItems = morediv.querySelectorAll('li');
 
-            for (var i = 0; i < tabitems.length; i++) {
-                tabitems[i].style.left = "-10000px";
-                tabitems[i].classList.remove('d-none');
-                totalWidth += tabitems[i].offsetWidth;
-                if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                    tabitems[i].classList.add('d-none');
-                    moreItems[i].classList.remove('d-none');
-                } else {
-                    tabitems[i].classList.remove('d-none');
-                    moreItems[i].classList.add('d-none');                     
-                }
-            }
-
-            var items = Array.from(morediv.querySelectorAll('li:not(.d-none) a'));
-            if (items.length > 0) {
-                var item = items.find(i=>i.classList.contains('active'));
-                if (item) {
-                    morebtn.innerHTML = item.innerHTML;
-                    morebtn.classList.add('active');
-                } else {
-                    morebtn.innerHTML = 'More...';
-                    morebtn.classList.remove('active');
-                }
-                
-                morediv.style.display = 'block';
+        for (var i = 0; i < tabitems.length; i++) {
+            tabitems[i].style.left = "-10000px";
+            tabitems[i].classList.remove('d-none');
+            totalWidth += tabitems[i].offsetWidth;
+            if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
+                tabitems[i].classList.add('d-none');
+                moreItems[i].classList.remove('d-none');
             } else {
-                morediv.style.display = 'none';                       
+                tabitems[i].classList.remove('d-none');
+                moreItems[i].classList.add('d-none');                     
             }
+        }
+
+        var items = Array.from(morediv.querySelectorAll('li:not(.d-none) a'));
+        if (items.length > 0) {
+            var item = items.find(i=>i.classList.contains('active'));
+            if (item) {
+                morebtn.innerHTML = item.innerHTML;
+                morebtn.classList.add('active');
+            } else {
+                morebtn.innerHTML = 'More...';
+                morebtn.classList.remove('active');
+            }
+            
+            morediv.style.display = 'block';
+        } else {
+            morediv.style.display = 'none';                       
         }
     }
 }

@@ -92,10 +92,7 @@
         },
         destroyed() {
             window.removeEventListener('resize', this.onResize);     
-        },                  
-        updated: function () {
-            this.onResize();
-        },              
+        },                             
         methods: {
             onTabClick: function (event) {
                 var value = event.target.getAttribute('data-value');
@@ -104,7 +101,7 @@
             onResize() {
                 var that = this;
                 if (that.width != document.documentElement.clientWidth) {  
-                    resizeTabs(document.getElementById('divGameTabContainer'));
+                    resizeTabs();
                 }                 
             }                                     
         }       

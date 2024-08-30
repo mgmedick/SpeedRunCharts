@@ -88,7 +88,7 @@
             this.loadChart();
             window.addEventListener('resize', this.resizeChart); 
         },    
-        destroyed() {
+        destroyed: function () {
             window.removeEventListener('resize', this.resizeChart);     
         },               
         methods: {                      
@@ -257,7 +257,8 @@
             },
             resizeChart() {
                 var that = this;
-                if (that.width != document.documentElement.clientWidth || that.height != document.documentElement.clientHeight) {     
+                var el = document.getElementById(this.chartconainerid);
+                if (el && (that.width != document.documentElement.clientWidth || that.height != document.documentElement.clientHeight)) {     
                     that.width = document.documentElement.clientWidth;
                     that.height = document.documentElement.clientHeight;             
                     that.loadChart();

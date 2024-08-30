@@ -94,13 +94,9 @@
         },          
         mounted: function () {
             this.loadData();
-            window.addEventListener('resize', this.onResize);
-        },
-        destroyed() {
-            window.removeEventListener('resize', this.onResize);     
-        },          
+        },     
         updated: function () {
-            this.onResize();
+            resizeTabs();
         },   
         methods: {
             loadData() {
@@ -161,13 +157,7 @@
                 } else {
                     this.categoryID = '';
                 }       
-            },   
-            onResize() {
-                var that = this;
-                if (that.width != document.documentElement.clientWidth) {  
-                    resizeTabs(document.getElementById('divGameChartTabContainer'));
-                }                 
-            }          
+            }       
         }       
     };
 </script>

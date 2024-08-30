@@ -156,13 +156,9 @@
             }
 
             this.loadData();
-            window.addEventListener('resize', this.onResize);
-        },
-        destroyed() {
-            window.removeEventListener('resize', this.onResize);     
-        },                  
+        },               
         updated: function () {
-            this.onResize();
+            resizeTabs();
         },
         methods: {
             loadData() {
@@ -306,13 +302,7 @@
             },               
             onShowChartsClick: function (event) {
                 this.showCharts = !this.showCharts;
-            },
-            onResize() {
-                var that = this;
-                if (that.width != document.documentElement.clientWidth) {  
-                    resizeTabs(document.getElementById('divSpeedRunGridTabContainer'));
-                }                 
-            }             
+            }          
         }
     };
 </script>

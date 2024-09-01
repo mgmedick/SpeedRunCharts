@@ -66,6 +66,15 @@ namespace SpeedRunApp.Repository
             {
                 return db.Query<SpeedRunSummaryView>().Where(predicate).ToList();
             }
-        }            
+        }
+        
+        public IEnumerable<SpeedRunDetailView> GetSpeedRunDetailViews(Expression<Func<SpeedRunDetailView, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                var results = db.Query<SpeedRunDetailView>().Where(predicate).ToList();
+                return results;
+            }
+        }                  
     }
 }

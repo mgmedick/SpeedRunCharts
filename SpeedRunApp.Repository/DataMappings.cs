@@ -27,8 +27,19 @@ namespace SpeedRunApp.Repository
                 i.Column(g => g.VariableValues).Ignore();
                 i.Column(g => g.Videos).Ignore();
             }); 
-            For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
-          
+            For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary").Columns(i =>
+            {
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.SubCategoryVariableValueNames).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+            For<SpeedRunDetailView>().TableName("vw_SpeedRunDetail").Columns(i =>
+            {
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+
             For<GameView>().TableName("vw_Game").Columns(i =>
             {
                 i.Column(g => g.GameCategoryTypes).Ignore();

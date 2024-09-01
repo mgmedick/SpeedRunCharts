@@ -93,6 +93,12 @@ const getDateTimeLocalString = (value) => {
     return result;
 }
 
+const getDateLocalString = (value) => {
+    var result = dayjs(value).format("YYYY-MM-DD");
+    
+    return result;
+}
+
 const isValidDate = (date, format) => {
     return dayjs(date, format).format(format) === date;
 }
@@ -184,7 +190,7 @@ const resizeTabs = () => {
     }
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, successToast, errorToast, resizeTabs }
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, getDateLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, successToast, errorToast, resizeTabs }
 
 
 

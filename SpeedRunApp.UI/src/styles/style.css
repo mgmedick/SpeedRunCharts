@@ -142,10 +142,10 @@ h6, .h6 {
     font-weight: 600;
 }
 
-input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
+/* input:not(.btn):not([type=checkbox]):not([type=radio]):not(.ui-pg-input),
 select:not(.ui-pg-selbox) {
     height: 32px;
-}
+} */
 
 input.date {
     font-size: 20px !important;
@@ -491,6 +491,11 @@ select.form-control:focus::-ms-value {
     background-color: var(--bs-background-color12);
 }
 
+.card-dark {
+    color: var(--bs-text-color1) !important;
+    background-color: var(--bs-background-color20) !important;
+}
+  
 .card-header {
     background-color: var(--bs-background-color12);
     border-bottom: 2px solid var(--bs-border-color10);

@@ -15,6 +15,7 @@ namespace SpeedRunApp.Interfaces.Repositories
         IEnumerable<SpeedRun> GetSpeedRuns(Expression<Func<SpeedRun, bool>> predicate);
         IEnumerable<SpeedRunGridPlayerView> GetSpeedRunGridPlayerViews(Expression<Func<SpeedRunGridPlayerView, bool>> predicate);
         IEnumerable<SpeedRunSummaryView> GetSpeedRunSummaryViews(Expression<Func<SpeedRunSummaryView, bool>> predicate);
+        IEnumerable<SpeedRunDetailView> GetSpeedRunDetailViews(Expression<Func<SpeedRunDetailView, bool>> predicate);
     }
 }
 

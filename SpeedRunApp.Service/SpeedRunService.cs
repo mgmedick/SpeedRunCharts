@@ -134,6 +134,14 @@ namespace SpeedRunApp.Service
             var runVMs = runs.Select(i => new SpeedRunGridViewModel(i)).ToList();
 
             return runVMs;
-        }     
+        }
+
+        public SpeedRunDetailViewModel GetSpeedRunDetails(int speedRunID)
+        {
+            var run = _speedRunRepo.GetSpeedRunDetailViews(i => i.ID == speedRunID).FirstOrDefault();     
+            var runVM = new SpeedRunDetailViewModel(run);
+
+            return runVM;
+        }             
     }
 }

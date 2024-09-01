@@ -49,7 +49,15 @@ namespace SpeedRunApp.MVC.Controllers
             var results = _speedRunService.GetSummaryListResults(summaryListID, topAmount, orderValueOffset, categoryTypeID);
 
             return Json(results);
-        }               
+        }
+        
+        [HttpGet]
+        public JsonResult GetSpeedRunDetails(int speedRunID)
+        {
+            var results = _speedRunService.GetSpeedRunDetails(speedRunID);
+
+            return Json(results);
+        }                     
 
         public ViewResult Error()
         {

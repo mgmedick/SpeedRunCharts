@@ -14,7 +14,8 @@ import resetPassword from './home/ResetPassword.vue';
 import changePassword from './home/ChangePassword.vue';
 import summaryListTabs from './home/SummaryListTabs.vue';
 import summaryList from './home/SummaryList.vue';
-import summaryItem from './home/SummaryItem.vue';
+import speedRunSummary from './home/SpeedRunSummary.vue';
+import speedRunDetails from './home/SpeedRunDetails.vue';
 
 import userSettings from './user/UserSettings.vue';
 
@@ -72,7 +73,8 @@ export default {
         app.component("reset-password", resetPassword);
         app.component("signup", signUp);
         app.component("summary-list", summaryList);
-        app.component("summary-item", summaryItem);
+        app.component("speedrun-summary", speedRunSummary);
+        app.component("speedrun-details", speedRunDetails);
 
         app.component("import-status", importStatus); 
         app.component("user-settings", userSettings);

@@ -65,7 +65,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>  
                     </div>
-                    <div class="modal-body">                         
+                    <div class="modal-body">    
+                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRunID" :speedrunid="selectedSpeedRunID" />                     
                     </div>
                 </div>
             </div>
@@ -124,6 +125,11 @@
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             });
+
+            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+                this.$refs.speedrundetails.loadData();
+            }); 
+
             this.loadData();
             window.speedRunGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
@@ -472,7 +478,10 @@
             },                                    
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
-                new Modal(this.$refs.detailmodal).show();
+
+                this.$nextTick(function() {
+                    new Modal(this.$refs.detailmodal).show();
+                });                
             }                              
         }             
     };

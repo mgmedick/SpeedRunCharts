@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <summary-item v-for="(item, index) in items" :item="item" :index="index" :key="item.id"></summary-item>
+        <speedrun-summary v-for="(item, index) in items" :item="item" :index="index" :key="item.id"></speedrun-summary>
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">

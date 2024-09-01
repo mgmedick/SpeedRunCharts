@@ -48,11 +48,19 @@ namespace SpeedRunApp.Model.ViewModels
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? VerifyDate { get; set; }
 
-        public string VideoLink
+        public VideoResult EmbeddedVideo
         {
             get
             {
-                return VideoLinks?.Select(x => x.EmbeddedVideoLinkUrl).FirstOrDefault();
+                return VideoLinks?.Where(x => !string.IsNullOrWhiteSpace(x.EmbeddedVideoLinkUrl)).FirstOrDefault();
+            }
+        }        
+
+        public string EmbeddedVideoLink
+        {
+            get
+            {
+                return EmbeddedVideo?.EmbeddedVideoLinkUrl;
             }
         }
 
@@ -60,15 +68,15 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return VideoLinks?.Select(x => x.ThumbnailLinkUrl).FirstOrDefault();
+                return EmbeddedVideo?.ThumbnailLinkUrl;
             }
         }
 
-        public string VideoLinkAutoplay
+        public string EmbeddedVideoLinkAutoplay
         {
             get
             {
-                return VideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
+                return EmbeddedVideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
             }
         }
 

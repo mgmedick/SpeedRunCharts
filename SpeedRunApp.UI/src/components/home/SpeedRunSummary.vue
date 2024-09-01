@@ -71,7 +71,7 @@
                 </div>                                                     
             </div>
             <div v-else class="ratio ratio-16x9">                    
-                <iframe :src="item.videoLinkAutoplay"
+                <iframe :src="item.embeddedVideoLinkAutoplay"
                     frameborder="0"
                     scrolling="no"
                     width="100%"
@@ -80,7 +80,7 @@
             </div>                
         </div>            
         <div v-if="showVideo" class="body p-0 ratio ratio-16x9 show-sm">
-            <iframe :src="item.videoLink"
+            <iframe :src="item.embeddedVideoLink"
                     frameborder="0"
                     scrolling="no"
                     width="100%"

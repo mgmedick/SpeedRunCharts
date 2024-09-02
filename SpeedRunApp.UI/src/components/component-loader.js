@@ -4,7 +4,7 @@ import autocomplete from './shared/Autocomplete.vue';
 import multiselect from './shared/Multiselect.vue';
 
 import navbar from './menu/Navbar.vue';
-import importStatus from './menu/ImportStatus.vue';
+import about from './menu/About.vue';
 
 import index from './home/Index.vue';
 import signUp from './home/SignUp.vue';
@@ -63,6 +63,7 @@ export default {
         
         app.component("summary-list-tabs", summaryListTabs);
         app.component("navbar", navbar);
+        app.component("about", about);
         app.component('autocomplete', autocomplete);
         app.component('multiselect', multiselect);
 
@@ -76,7 +77,6 @@ export default {
         app.component("speedrun-summary", speedRunSummary);
         app.component("speedrun-details", speedRunDetails);
 
-        app.component("import-status", importStatus); 
         app.component("user-settings", userSettings);
 
         app.component('game-details', gameDetails); 

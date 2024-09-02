@@ -841,34 +841,28 @@ button.bg-dark:focus {
     color: #262626;
 }
 
-/** Tippy Overrides **/
-.tippy-box {
-    color: var(--bs-text-color1) !important;
-    background-color: var(--bs-secondary);
-    border: 1px solid var(--bs-background-color16) !important;
-    overflow-wrap: break-word;
-}
+/** Tooltip Overrides **/
 
-.username-text {
+.playername-text {
     font-weight: 500;
     color: var(--bs-text-color2);
 }
 
-.username-color-light {
+.playername-color-light {
     -webkit-text-fill-color: transparent !important;
     -webkit-background-clip: text !important;   
 }
 
-.username-color-dark {
+.playername-color-dark {
     -webkit-text-fill-color: transparent !important;
     -webkit-background-clip: text !important;   
 }
 
-.theme-dark .username-color-light {
+.theme-dark .playername-color-light {
     background: none !important; 
 }
 
-.theme-light .username-color-dark {
+.theme-light .playername-color-dark {
     background: none !important;
 }
 

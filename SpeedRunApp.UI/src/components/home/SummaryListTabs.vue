@@ -3,9 +3,9 @@
         <div>
             <div style="margin-bottom:10px;">
                 <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : !categoryTypeID }" @click="onCategoryTypeClick(null)">All</button>
-                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 0 }" @click="onCategoryTypeClick(1)">Full Game</button>
-                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 1 }" @click="onCategoryTypeClick(2)">Level</button>
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == null }" @click="onCategoryTypeClick(null)">All</button>
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 0 }" @click="onCategoryTypeClick(0)">Full Game</button>
+                    <button type="button" class="btn btn-primary btn-sm categorytype" :class="{ 'active' : categoryTypeID == 1 }" @click="onCategoryTypeClick(1)">Level</button>
                 </div>                
             </div>                
             <div style="margin-bottom:20px;">
@@ -31,8 +31,8 @@
         data: function () {
             return {
                 items: [],
-                summaryListID: sessionStorage.getItem("summarylistid") ?? this.summarylists[0]?.id,
-                categoryTypeID: sessionStorage.getItem("categorytypeid") ?? null
+                summaryListID: sessionStorage.getItem("summarylistid") ? parseInt(sessionStorage.getItem("summarylistid")) : this.summarylists[0]?.id,
+                categoryTypeID: sessionStorage.getItem("categorytypeid") ? parseInt(sessionStorage.getItem("categorytypeid")) : null
             }
         },
         created() {

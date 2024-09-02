@@ -20,7 +20,7 @@
                 <autocomplete v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="false" :loading="searchLoading" :placeholder="'Search games, users'" style="min-width:300px;" class="mb-2 mb-lg-0 me-2"/>    
                 <div v-if="isauth">
                     <div class="btn-group">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
                                 <i class="fa fa-user"></i>
                             </span>
@@ -65,34 +65,6 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- <li class="nav-item">
-                        <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span>
-                                    <i class="fa fa-user"></i><span class="ps-2">{{ username }}</span>
-                                </span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <div class="dropdown-item">
-                                        <div class="form-check form-switch">
-                                            <input id="chkNightMode" class="form-check-input" type="checkbox" v-model="isDarkTheme">
-                                            <label class="form-check-label" for="chkNightMode"><i class="fa fa-moon"></i><span class="ps-2">Night Mode</span></label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" @click="showImportStatusModal = true"><i class="fa fa-calendar-check"></i><span class="ps-2">Import Status</span></a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/Home/Login"><i class="fa fa-user"></i><span class="ps-2">Log In</span></a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/Home/SignUp"><i class="fa fa-clipboard"></i><span class="ps-2">Sign Up</span></a>
-                                </li>
-                            </ul>
-                        </div>                          
-                    </li>                    -->
                 </ul>
             </div>
         </div>                        
@@ -185,54 +157,12 @@
                     controller = "Game";
                     action = "GameDetails"
                 } else {
-                    controller = "User";
+                    controller = "Player";
                     action = "PlayerDetails"
                 }
 
                 location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
-            },           
-            // onSearch: function() {
-            //     var that = this;
-            //     this.searchLoading = true;
-                               
-            //     axios.get('/Menu/Search', { params: { term: this.searchText } })
-            //             .then(res => {
-            //                 that.searchResults = res.data.reduce((flat, groupheader) => {
-            //                     return flat
-            //                         .concat({
-            //                             label: groupheader.label,
-            //                             value: groupheader.subItems.map(method => method.value),
-            //                             isGroupHeader: true,
-            //                             disabled: true
-            //                         })
-            //                         .concat(groupheader.subItems.map(method => ({ label: method.label, value: method.value, category: groupheader.label })))
-            //                 }, []);
-
-            //                 if(that.searchResults.length == 0)
-            //                 {
-            //                     var noResult = { value: "", label: "No results found", category: null, disabled: true };
-            //                     that.searchResults.push(noResult);
-            //                 }
-
-            //                 that.searchLoading = false;
-            //                 return res;
-            //             })
-            //             .catch(err => { console.error(err); return Promise.reject(err); });
-            // },              
-            // onSearchSelected: function (result) {
-            //     var controller;
-            //     var action;
-
-            //     if (result.category == 'Games') {
-            //         controller = "Game";
-            //         action = "GameDetails"
-            //     } else {
-            //         controller = "User";
-            //         action = "PlayerDetails"
-            //     }
-
-            //     location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
-            // },
+            },
             onHomeClick: function() {
                 if (window.location.pathname == '/') {
                     window.location.reload(true);

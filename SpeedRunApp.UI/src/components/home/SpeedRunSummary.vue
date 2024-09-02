@@ -23,12 +23,12 @@
                     </div>
                     <div class="text-secondary fw-bold" style="font-size: 14px;">
                         <template v-for="(player, index) in item.players">                               
-                            <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
-                                <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
+                            <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
+                                <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
                                     <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
                                 </span>
                             </span>
-                            <span v-else class="username-text">
+                            <span v-else class="playername-text">
                                 <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
                             </span>
                             <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>

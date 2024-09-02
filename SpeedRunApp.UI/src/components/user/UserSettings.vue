@@ -24,7 +24,7 @@
                         <div style="width:300px;">
                             <multiselect v-model="summaryListIDs" :options="summaryLists" valueby="id" labelby="displayName">
                                 <template #tag="{ index, option, remove }">
-                                    <span v-tippy="option.description">{{ option.displayName }}</span>&nbsp;
+                                    <span data-bs-toggle="tooltip" :data-bs-title="option.description">{{ option.displayName }}</span>&nbsp;
                                     <span class="fas fa-times fa-sm" @click.stop="remove(index)" style="cursor:pointer;"></span>
                                 </template>
                             </multiselect>
@@ -38,6 +38,7 @@
 <script>
     import axios from 'axios';
     import { getFormData, successToast, errorToast } from '../../js/common.js';
+    import { Tooltip } from 'bootstrap';
 
     export default {
         name: "UserSettings",
@@ -75,6 +76,11 @@
             }
         },           
         created: function () {
+        },
+        mounted: function () {
+            this.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                new Tooltip(el);                        
+            });
         },
         methods: {
             onUpdateIsDarkTheme(e) {

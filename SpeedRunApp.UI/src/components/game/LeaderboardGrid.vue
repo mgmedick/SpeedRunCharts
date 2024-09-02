@@ -83,7 +83,7 @@
     // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
-    import { Modal } from 'bootstrap';
+    import { Tooltip, Modal } from 'bootstrap';
 
     export default {
         name: "LeaderboardGrid",
@@ -139,7 +139,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/Game/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
+                axios.get('/Game/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showAllData } })
                     .then(res => {
                         that.tableData = res.data;
                         if (that.istimerasc) {
@@ -246,16 +246,8 @@
                             });
                         });
 
-                        Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
-                            var value = el.getAttribute('data-content');
-                            var cellElement = el.closest('.tabulator-cell');
-
-                            // tippy(cellElement, {
-                            //     content: escapeHtml(value),
-                            //     allowHTML: true,
-                            //     arrow:false,
-                            //     placement:'bottom'
-                            // })
+                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                            new Tooltip(el);                        
                         });
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
@@ -325,12 +317,12 @@
                 value?.forEach(el => {
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
-                            html += "<span class='username-text username-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='username-text username-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                            html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
+                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
                             html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='username-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;
@@ -357,7 +349,7 @@
             },         
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
-                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
+                var html = tooltip ? '<span data-bs-toggle="tooltip" data-bs-title="' + escapeHtml(tooltip) + '">' : '<span>'
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
@@ -379,16 +371,6 @@
                 
                 return html;
             },             
-            commentFormatter(cell, formatterParams, onRendered) {
-                var html = '';
-                var value = cell.getValue();
-
-                if (value != null) {
-                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + value + '"></i>'
-                }
-
-                return html;
-            },
             commentDownloadAccessor(value, data, type, params, column) {
                 return value ?? '';
             },  

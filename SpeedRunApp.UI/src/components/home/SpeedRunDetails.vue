@@ -97,16 +97,17 @@
                             <div class="card-body p-2">
                                 <label class="fw-bold">Players</label>
                                 <div style="width: 200px;">
-                                    <div v-for="(player, index) in item.players">                               
-                                        <span v-if="player.colorLight && player.colorDark" class='username-text username-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
-                                            <span class='username-text username-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
+                                    <template v-for="(player, index) in item.players">                               
+                                        <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
+                                            <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
                                                 <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
                                             </span>
                                         </span>
-                                        <span v-else class="username-text">
+                                        <span v-else class="playername-text">
                                             <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
                                         </span>
-                                    </div>
+                                        <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +127,7 @@
                             <div class="card-body p-2">
                                 <label class="fw-bold">Submitted</label>
                                 <div style="width: 200px;">
-                                    <span>{{ item.relativeDateSubmittedString }}</span>
+                                    <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeDateSubmittedString }}</span>
                                 </div>
                             </div>
                         </div>
@@ -136,7 +137,7 @@
                             <div class="card-body p-2">
                                 <label class="fw-bold">Verified</label>
                                 <div style="width: 200px;">
-                                    <span>{{ item.relativeVerifyDateString }}</span>
+                                    <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateString }}</span>
                                 </div>
                             </div>
                         </div>
@@ -149,6 +150,7 @@
 <script>
     import axios from 'axios'
     const dayjs = require('dayjs');
+    import { Tooltip } from 'bootstrap';
 
     export default {
         name: 'SpeedRunDetails',
@@ -176,6 +178,10 @@
                     .then(res => {
                         that.item = res.data;
                         that.loading = false;
+
+                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                            new Tooltip(el);                        
+                        });
 
                         return res;
                     })

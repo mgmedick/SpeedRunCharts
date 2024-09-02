@@ -1,0 +1,9 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
+@model SpeedRunApp.Model.ViewModels.UserSettingsViewModel
+
+@{ ViewBag.Title = "User Settings"; }
+
+<user-settings :usersettingsvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></user-settings>

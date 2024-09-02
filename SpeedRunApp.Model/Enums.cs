@@ -9,12 +9,7 @@ namespace SpeedRunApp.Model
         [EnumMember(Value = "Level")]
         Level
     }
-
-    public enum RunStatusType
-    {
-        New, Verified, Rejected
-    }
-
+    
     //Variables
     public enum VariableScopeType
     {
@@ -33,4 +28,10 @@ namespace SpeedRunApp.Model
         csv = 0,
         json = 1
     }      
+
+    public enum SocialAccountType
+    {
+        Google = 1,
+        Facebook = 2
+    }        
 }

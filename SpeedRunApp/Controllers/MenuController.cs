@@ -33,7 +33,7 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult GetImportStatus()
         {
-            var result = _speedRunService.GetImportStatus();
+            var result = _menuService.GetImportStatus();
             return Json(result);
         }        
     }

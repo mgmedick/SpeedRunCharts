@@ -34,28 +34,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="src\components\UserAccountVue.vue" />
-    <Content Include="src\components\SpeedRunGridChartVue.vue" />
-    <Content Include="src\components\SpeedRunGridTabVariableVue.vue" />
-    <Content Include="src\components\WorldRecordGridTabVue.vue" />
-    <Content Include="src\components\WorldRecordGridVue.vue" />
-    <Content Include="src\components\SpeedRunGridVue.vue" />
-    <Content Include="src\components\SpeedRunGridTabVue.vue" />
-    <Content Include="src\components\ActivateVue.vue" />
-    <Content Include="src\components\ButtonDropdownVue.vue" />
     <Content Include="src\components\component-loader.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\CustomModalVue.vue" />
-    <Content Include="src\components\LoginVue.vue" />
-    <Content Include="src\components\NavbarVue.vue" />
-    <Content Include="src\components\ChangePasswordVue.vue" />
-    <Content Include="src\components\ResetPasswordVue.vue" />
-    <Content Include="src\components\SignUpVue.vue" />
-    <Content Include="src\components\SpeedRunEditVue.vue" />
-    <Content Include="src\components\SpeedRunListCategoryVue.vue" />
-    <Content Include="src\components\SpeedRunListVue.vue" />
-    <Content Include="src\components\SpeedRunSummaryVue.vue" />
     <Content Include="src\fonts\banner1.svg" />
     <Content Include="src\fonts\banner2.svg" />
     <Content Include="src\fonts\banner3.svg" />

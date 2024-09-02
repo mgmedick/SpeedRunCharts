@@ -12,12 +12,14 @@ namespace SpeedRunApp.Service
     public class MenuService : IMenuService
     {
         private readonly IGameService _gamesService = null;
-        private readonly IUserService _userService = null;
+        private readonly IPlayerService _playerService = null;
+        private readonly ISettingRepository _settingRepo = null;
 
-        public MenuService(IGameService gamesService, IUserService userService)
+        public MenuService(IGameService gamesService, IPlayerService playerService, ISettingRepository settingRepo)
         {
             _gamesService = gamesService;
-            _userService = userService;
+            _playerService = playerService;
+            _settingRepo = settingRepo;
         }
 
         public IEnumerable<SearchResult> Search(string searchText)
@@ -33,14 +35,27 @@ namespace SpeedRunApp.Service
                     results.Add(gamesGroup);
                 }
                 
-                var users = _userService.SearchUsers(searchText);
-                if (users.Any()){
-                    var usersGroup = new SearchResult { Value = "0", Label = "Users", SubItems = users };
-                    results.Add(usersGroup);
+                var players = _playerService.SearchPlayers(searchText);
+                if (players.Any()){
+                    var playersGroup = new SearchResult { Value = "0", Label = "Players", SubItems = players };
+                    results.Add(playersGroup);
                 }
             }
 
             return results;
         }
+
+        public ImportStatusViewModel GetImportStatus()
+        {
+            var importSettings = new List<string>() { "ImporvtLastRunDate", "ImportLastUpdateSpeedRunsDate", "ImportLastBulkReloadDate" };
+            var results = _settingRepo.GetSettings(i => importSettings.Contains(i.Name)).ToList();
+            var ImportLastRunDate = results.FirstOrDefault(i => i.Name == "ImportLastRunDate")?.Dte;
+            var ImportLastUpdateSpeedRunsDate = results.FirstOrDefault(i => i.Name == "ImportLastUpdateSpeedRunsDate")?.Dte;
+            var ImportLastBulkReloadDate = results.FirstOrDefault(i => i.Name == "ImportLastBulkReloadDate")?.Dte;
+
+            var importStatusVM = new ImportStatusViewModel(ImportLastRunDate, ImportLastUpdateSpeedRunsDate, ImportLastBulkReloadDate);
+
+            return importStatusVM;
+        }           
     }
 }

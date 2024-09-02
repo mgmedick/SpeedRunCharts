@@ -9,13 +9,17 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Username required")]
-        //[Remote(action: "ActiveUsernameExists", controller: "SpeedRun", ErrorMessage = "Invalid Username")]
-        public string Username { get; set; }
+        public string GClientID { get; set; }
+        public string FBClientID { get; set; }
+        public string FBApiVer { get; set; }     
+        public string RecaptchaKey { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email required")]
+        public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Password required")]
-        //[Remote(action: "PasswordMatches", controller: "SpeedRun", AdditionalFields = nameof(Username), ErrorMessage = "Invalid Password")]
         public string Password { get; set; }
+        public string Token { get; set; }
     }
 }
 

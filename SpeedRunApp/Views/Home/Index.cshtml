@@ -1,10 +1,9 @@
-﻿@model SpeedRunApp.Model.ViewModels.SpeedRunListViewModel
-@{ ViewBag.Title = "SpeedRunList"; }
+﻿@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
 
-<div class="container-lg mx-auto p-0" style="max-width:598px;">
-    <speedrun-list-tab :defaulttopamt="@Json.Serialize(Model.DefaultTopAmount)"></speedrun-list-tab>
-</div>
+@model SpeedRunApp.Model.ViewModels.IndexViewModel
 
+@{ ViewBag.Title = "Home"; }
 
-
-
+<index :indexvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></index>

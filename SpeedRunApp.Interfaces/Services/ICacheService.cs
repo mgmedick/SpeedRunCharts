@@ -9,9 +9,5 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface ICacheService
     {
-        IEnumerable<User> GetUsers();
-        IEnumerable<IDNameAbbrPair> GetGameIDNameAbbrs();
-        IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs();
-        IEnumerable<IDNamePair> GetRunStatusTypes();
     }
 }

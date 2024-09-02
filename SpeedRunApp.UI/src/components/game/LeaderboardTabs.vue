@@ -7,83 +7,83 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">       
-        <div class="row no-gutters pr-1">
+        <div class="row no-gutters pe-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="categoryType nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                    <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
+                    <div class="dropdown more py-1 pe-1" v-show="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>                       
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </li>
+                        </ul>
+                    </div>                                           
                 </ul>
             </div>                    
         </div>
         <div v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
             <div v-if="categoryTypeID == categoryType.id">
-                <div class="row no-gutters pr-1">
+                <div class="row no-gutters pe-1">
                     <div class="col tab-list">
                         <ul class="nav nav-pills">
-                            <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
+                            <li class="category nav-item py-1 pe-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
                                 <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                             </li>
-                            <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                <template v-slot:text>
+                            <div class="dropdown more py-1 pe-1" v-show="false">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span>More...</span>
-                                </template>
-                                <template v-slot:options>
-                                    <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
-                                        <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
-                                    </template>
-                                </template>
-                            </button-dropdown>    
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                    <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id" class="d-none">
+                                        <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>                               
                         </ul>
                     </div>                           
                 </div>
                 <div v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
                     <div v-if="categoryID == category.id">                                
                         <div v-if="categoryTypeID == 0">
-                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1')).length > 0">
-                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                            <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1')).length > 0">
+                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                             </div>
                             <div v-else>                              
-                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
                             </div>
                         </div>
                         <div v-else>
-                            <div class="row no-gutters pr-1">
+                            <div class="row no-gutters pe-1">
                                 <div class="col tab-list">
                                     <ul class="nav nav-pills">
-                                        <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
+                                        <li class="level nav-item py-1 pe-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
                                             <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                         </li>
-                                        <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                            <template v-slot:text>
+                                        <div class="dropdown more py-1 pe-1" v-show="false">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <span>More...</span>
-                                            </template>
-                                            <template v-slot:options>
-                                                <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
-                                                    <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
-                                                </template>
-                                            </template>
-                                        </button-dropdown>   
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                                <li v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id" class="d-none">
+                                                    <a class="dropdown-item" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                                </li>
+                                            </ul>
+                                        </div>                                         
                                     </ul>
                                 </div>                                      
                             </div>
                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                 <div v-if="levelID == level.id">
-                                    <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3')).length > 0">
-                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalueids="subCategoryVariableValueIDs" :speedrunid="speedRunID" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                                    <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3')).length > 0">
+                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                                     </div>
                                     <div v-else>
-                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedrunid="speedRunID" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
                                     </div>
                                 </div>
                             </div>
@@ -96,12 +96,13 @@
 </template>
 <script>
     import axios from 'axios';
+    import { resizeTabs } from '../../js/common.js';
 
     export default {
         name: "LeaderboardTabs",
         props: {
             id: String,
-            speedrunid: String,
+            speedruncode: String,
             hideempty: Boolean,
             showmisc: Boolean
         },
@@ -111,9 +112,9 @@
                 categoryTypeID: '',
                 categoryID: '',
                 levelID: '',
-                subCategoryVariableValueIDs: {},
+                subCategoryVariableValues: {},
                 variableIndex: 0,
-                speedRunID: this.speedrunid,
+                speedRunCode: this.speedruncode,
                 showCharts: true,
                 showMisc: this.showmisc,
                 showAllData: false,               
@@ -128,7 +129,7 @@
                 var gameName = game.name;
                 var categoryName = game.categories.filter(i=>i.id == this.categoryID)[0]?.name;
                 var levelName = game.levels?.filter(i=>i.id == this.levelID)[0]?.name;
-                var variableValueNames = Object.keys(this.subCategoryVariableValueIDs).map(i => this.subCategoryVariableValueIDs[i]).join(' - ');              
+                var variableValueNames = Object.keys(this.subCategoryVariableValues).map(i => this.subCategoryVariableValues[i]).join(' - ');              
                 
                 result = [gameName, categoryName, levelName, variableValueNames].join(' - ');
                 result = result.replace(/^[ -]+|[ -]+$/g, '');
@@ -155,27 +156,29 @@
             }
 
             this.loadData();
-            window.addEventListener('resize', this.resizeSRTabs);
-        },       
+        },               
         updated: function () {
-            this.resizeSRTabs();
+            resizeTabs();
         },
         methods: {
             loadData() {
                 var that = this;
                 this.loading = true;
 
-                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id + '&speedRunID=' + this.speedrunid;
+                var url = '/Game/GetLeaderboardTabs?gameID=' + this.id + (this.speedruncode ? '&speedRunCode=' + this.speedruncode : '');
                 var prms = axios.get(url)
                                 .then(res => {
                                     that.game = res.data.tabItems[0];
-                                    that.exportTypes = res.data.exportTypes,
-                                    that.categoryTypeID = res.data.categoryTypeID;
-                                    that.categoryID = res.data.categoryID;
-                                    that.levelID = res.data.levelID;
-                                    that.subCategoryVariableValueIDs = res.data.subCategoryVariableValueIDs;
-                                    that.showAllData = res.data.showAllData;   
-                                    that.showMisc = res.data.showMisc;                                                                     
+                                    that.exportTypes = res.data.exportTypes;
+                                    if (res.data.runVW) {
+                                        var run = res.data.runVW;
+                                        that.categoryTypeID = run.categoryTypeID;
+                                        that.categoryID = run.categoryID;
+                                        that.levelID = run.levelID;
+                                        that.subCategoryVariableValues = run.subCategoryVariableValues;
+                                        that.showAllData = !(!!run.rank);   
+                                        that.showMisc = run.isMiscellaneous;    
+                                    }                                                                 
                                     that.initSelected();
                                     that.loading = false;
                                     return res;
@@ -198,28 +201,28 @@
                     this.levelID = '';
                 }
 
-                if (!this.subCategoryVariableValueIDs) {
+                if (Object.keys(this.subCategoryVariableValues).length == 0) {
                     var eligibleVariables = [];
                     if (this.categoryTypeID == 0) {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'));
+                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
                     } else {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'));
+                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
                     }
 
-                    this.subCategoryVariableValueIDs = {};
-                    this.setSubCategoryVariableValueIDs(eligibleVariables, 0);
+                    this.subCategoryVariableValues = {};
+                    this.setSubCategoryVariableValues(eligibleVariables, 0);
                 }
             },
-            setSubCategoryVariableValueIDs: function(variables, count) {
+            setSubCategoryVariableValues: function(variables, count) {
                 var that = this;
                 variables?.forEach(variable => {
-                    if(!that.subCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
+                    if(!that.subCategoryVariableValues.hasOwnProperty(variable.name + count)) {
                         if(variable.variableValues && variable.variableValues.length > 0) {
                             var va = variable.variableValues.filter(va => (!that.hideempty || va.hasData))[0];
-                            that.subCategoryVariableValueIDs[variable.name + count] = va.name;
+                            that.subCategoryVariableValues[variable.name + count] = va.name;
                         
                             if (va.subVariables && va.subVariables.length > 0) {
-                                that.setSubCategoryVariableValueIDs(va.subVariables, count + 1);
+                                that.setSubCategoryVariableValues(va.subVariables, count + 1);
                             }
                         }
                     } 
@@ -247,26 +250,26 @@
 
                 var eligibleVariables = [];
                 if (this.categoryTypeID == 0) {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'));
+                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
                 } else {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'));
+                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
                 }
 
-                var newSubCategoryVariableValueIDs = {};
-                this.resetSubCategoryVariableValueIDs(eligibleVariables, newSubCategoryVariableValueIDs, 0);
-                this.subCategoryVariableValueIDs = newSubCategoryVariableValueIDs;
-                this.speedRunID = '';
+                var newSubCategoryVariableValues = {};
+                this.resetSubCategoryVariableValues(eligibleVariables, newSubCategoryVariableValues, 0);
+                this.subCategoryVariableValues = newSubCategoryVariableValues;
+                this.speedRunCode = '';
             },
-            resetSubCategoryVariableValueIDs: function (variables, newSubCategoryVariableValueIDs, count) {
+            resetSubCategoryVariableValues: function (variables, newSubCategoryVariableValues, count) {
                 var that = this;                                                                               
                 variables?.forEach(variable => {
-                    if (!newSubCategoryVariableValueIDs.hasOwnProperty(variable.name + count)) {
+                    if (!newSubCategoryVariableValues.hasOwnProperty(variable.name + count)) {
                         if(variable.variableValues && variable.variableValues.length > 0) {
-                            var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValueIDs).map(key => that.subCategoryVariableValueIDs[key]).filter(x => x == va.name).length > 0 && (!that.hideempty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideempty || va.hasData))[0];
-                            newSubCategoryVariableValueIDs[variable.name + count] = va.name;
+                            var va = variable.variableValues.filter(va => Object.keys(that.subCategoryVariableValues).map(key => that.subCategoryVariableValues[key]).filter(x => x == va.name).length > 0 && (!that.hideempty || va.hasData))[0] ?? variable.variableValues.filter(va => (!that.hideempty || va.hasData))[0];
+                            newSubCategoryVariableValues[variable.name + count] = va.name;
 
                             if (va.subVariables && va.subVariables.length > 0) {
-                                that.resetSubCategoryVariableValueIDs(va.subVariables, newSubCategoryVariableValueIDs, count + 1);
+                                that.resetSubCategoryVariableValues(va.subVariables, newSubCategoryVariableValues, count + 1);
                             }
                         }
                     }
@@ -288,7 +291,7 @@
                         this.levelID = value;
                         break;
                     case 'variableValue':
-                        this.subCategoryVariableValueIDs[variableName] = value;
+                        this.subCategoryVariableValues[variableName] = value;
                         break;                                                                                                   
                 }
                                 
@@ -299,72 +302,7 @@
             },               
             onShowChartsClick: function (event) {
                 this.showCharts = !this.showCharts;
-            },                     
-            resizeSRTabs: function () {
-                var rows = document.querySelectorAll('#divSpeedRunGridTabContainer .tab-list');
-
-                for (var g = 0; g < rows.length; g++) {
-                    var totalWidth = 0;
-                    var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morediv =  rows[g].querySelector('.more');
-                    var morebtn =  morediv.querySelector('.btn');
-                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
-                    var moredrp = morediv.querySelector('.dropdown-menu');
-
-                    for (var i = 0; i < tabitems.length; i++) {
-                        tabitems[i].style.left = "-10000px";
-                        tabitems[i].classList.remove('d-none');
-                        totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                            tabitems[i].classList.add('d-none');
-                            moreItems[i].classList.remove('d-none');
-                        } else {
-                            tabitems[i].classList.remove('d-none');
-                            moreItems[i].classList.add('d-none');                     
-                        }
-                    }
-
-                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
-                    if (items.length > 0) {
-                        var item = items.find(i=>i.classList.contains('active'));
-                        if (item) {
-                            morebtn.innerHTML = item.innerHTML;
-                            morebtn.classList.add('active');
-                        } else {
-                            morebtn.innerHTML = 'More...';
-                            morebtn.classList.remove('active');
-                        }
-                        
-                        morediv.style.display = 'block';
-                    } else {
-                        morediv.style.display = 'none';                       
-                    }
-
-                    var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morediv);
-                    if (pos.x > (ww / 2)) {
-                        moredrp.classList.remove('dropdown-menu-left');
-                        moredrp.classList.add('dropdown-menu-right');
-                    } else {
-                        moredrp.classList.remove('dropdown-menu-right');
-                        moredrp.classList.add('dropdown-menu-left');
-                    }
-               }
-            },
-            getPosition: function (element) {
-                var xPosition = 0;
-                var yPosition = 0;
-
-                while (element) {
-                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                    element = element.offsetParent;
-                }
-                return {
-                    x: xPosition,
-                    y: yPosition
-                };
-            }
+            }          
         }
     };
 </script>

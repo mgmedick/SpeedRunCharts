@@ -4,22 +4,28 @@ using System.Linq;
 
 namespace SpeedRunApp.Model.Data
 {
-    public class Variable : ICloneable
+    public class Variable
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public bool IsSubCategory { get; set; }
-        public int ScopeTypeID { get; set; }
+        public string Code { get; set; }
+        public int GameID { get; set; }
+        public int VariableScopeTypeID { get; set; }
         public int? CategoryID { get; set; }
         public int? LevelID { get; set; }
-        public IEnumerable<VariableValue> VariableValues { get; set; }        
-        public bool IsSingleCategory { get; set; }
+        public bool IsSubCategory { get; set; }
+        public int SortOrder { get; set; }
+        public bool Deleted { get; set; }
+
+        //Transient
         public bool HasData {
             get
             {
                 return !VariableValues.All(x => !x.HasData);
             }
-        }
+        }        
+        public IEnumerable<VariableValue> VariableValues { get; set; }        
+        public bool IsSingleCategory { get; set; }
         public object Clone()
         {
             Variable variable = (Variable)this.MemberwiseClone();
@@ -35,7 +41,7 @@ namespace SpeedRunApp.Model.Data
             }
             
             return variable;
-        }
+        }           
     }
 }
 

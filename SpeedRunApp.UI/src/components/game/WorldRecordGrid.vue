@@ -7,19 +7,19 @@
                 </div>
             </div>
         </div>  
-        <div>  
-            <div class="row no-gutters pr-1">
-                <div class="col-auto ml-auto">
-                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                        <template v-slot:text>
+        <div class="mt-2">  
+            <div class="row g-1">
+                <div class="col-auto ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>Export</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(exporttype, i) in exporttypes" :key="i">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(exporttype, i) in exporttypes" :key="i">
                                 <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>
+                            </li>
+                        </ul>
+                    </div>                     
                 </div>                                                                
             </div>                 
             <div class="mt-2 grid-container" style="min-height:150px;">
@@ -33,17 +33,24 @@
                         </li>                    
                     </ul>
                 </div>
-                <div class="grid" style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
-        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
-            <template v-slot:title>
-                Details
-            </template>
-            <div class="container p-0">
-                <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+        <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">    
+                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRunID" :speedrunid="selectedSpeedRunID" />                     
+                    </div>
+                </div>
             </div>
-        </modal>    
+        </div>    
     </div>   
 </template>
 <script>
@@ -52,10 +59,11 @@
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import tippy from 'tippy.js'
-    import 'tippy.js/dist/tippy.css'
+    // import tippy from 'tippy.js'
+    // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    import { Tooltip, Modal } from 'bootstrap';
 
     export default {
         name: "WorldRecordGrid",
@@ -80,14 +88,19 @@
                 tableData: [],
                 groups: [],
                 loading: true,
-                showDetailModal: false,
+                selectedSpeedRunID: '',
                 pageSize: 100
             }
         },
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });            
+            });
+ 
+            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+                this.$refs.speedrundetails.loadData();
+            }); 
+
             this.loadData();
             window.gameWorldRecordGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
@@ -97,7 +110,7 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid } })
+                axios.get('/Game/GetWorldRecordGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid } })
                     .then(res => {
                         that.tableData = res.data;
                         that.initGrid(res.data);                                              
@@ -130,7 +143,7 @@
                     { title: "#", field: "rank", formatter: that.rankFormatter, headerSort: false, width: 20 }, //minWidth:40, maxWidth:75                    
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
                     { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
-                    { title: "primaryTimeString", field: "primaryTimeString", visible: false },
+                    { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false },
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
                     { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
@@ -162,12 +175,11 @@
                 });
 
                 columns.push({ title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:1 });
-                columns.push({ title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" });                   
-                columns.push({ title: "Time", field: "primaryTimeTicks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" });
+                columns.push({ title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" });                   
+                columns.push({ title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ms)" });
                 columns.push({ title: "Submitted", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams: { outputFormat: "MM/DD/YYYY", tooltipFieldName: "relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });
                 columns.push({ title: "Verified", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth: 120 });                                                                        
                 columns.push({ title: "VideoLinks", field: "videoLinks", accessorDownload: that.videoLinksDownloadAccessor, visible: false, download: true, titleDownload: "Videos" });                
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, hozAlign: "center", headerSort: false, width: 50, download:false });
 
                 if (that.subcategoryvariablevaluetabs && that.subcategoryvariablevaluetabs.length > 0) {
                     that.getVariableGroupByList(that.subcategoryvariablevaluetabs, tableData);
@@ -206,17 +218,9 @@
                             });
                         });
 
-                        Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
-                            var value = el.getAttribute('data-content');
-                            var cellElement = el.closest('.tabulator-cell');
-
-                            tippy(cellElement, {
-                                content: escapeHtml(value),
-                                allowHTML: true,
-                                arrow:false,
-                                placement: 'bottom'
-                            })
-                        });
+                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                            new Tooltip(el);                        
+                        });                        
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
                     },
@@ -243,7 +247,7 @@
                 var field = fieldName.replace(/./g,'_');
                 return field;
             },
-            getVariableGroupByList(subCategoryVariableValues, tableData, variableValueIDs, index) {
+            getVariableGroupByList(subCategoryVariableValueNames, tableData, variableValueIDs, index) {
                 var that = this;
 
                 if (!variableValueIDs) {
@@ -255,7 +259,7 @@
                 }
 
                 if (index < 3) {
-                    subCategoryVariableValues?.forEach(variable => {
+                    subCategoryVariableValueNames?.forEach(variable => {
                         var variableData = [];
                         variable.variableValues.forEach(variableValue => {
                             var currVariableValueIDs = (variableValueIDs + "," + variableValue.id).replace(/(^,)|(,$)/g, '');
@@ -309,7 +313,7 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
+                html += "<div class='d-table-cell ps-1 ' style='border:none; padding:0px; width:30px;'>";
                 html += "<a href=\"javascript:window.gameWorldRecordGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
@@ -335,12 +339,12 @@
                 value?.forEach(el => {
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
-                            html += "<span class='username-text username-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='username-text username-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/User/UserDetails/" + el.abbr + "' draggable='false'>" + el.name + "</a>"
+                            html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
+                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' draggable='false'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/User/UserDetails/" + el.abbr + "' class='username-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' class='playername-text' draggable='false'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;
@@ -353,7 +357,7 @@
             },  
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
-                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
+                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeMillisecondsString" : "primaryTimeSecondsString";
                 var value = cell.getRow().getCell(primaryTimeColumn).getValue();
 
                 if (value) {
@@ -366,7 +370,7 @@
                 var value = cell.getValue();
                 var html = '';
                 if (value) {
-                    html += '<span class="tippy-tooltip" data-content="' + escapeHtml(value) + '">';
+                    html += '<span data-bs-toggle="tooltip" data-bs-title="' + escapeHtml(value) + '">';
                     html += value;
                     html += '</span>';
                 }
@@ -375,7 +379,7 @@
             },
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
-                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
+                var html = tooltip ? '<span data-bs-toggle="tooltip" data-bs-title="' + escapeHtml(tooltip) + '">' : '<span>';
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
@@ -397,16 +401,6 @@
                 
                 return html;
             },            
-            commentFormatter(cell, formatterParams, onRendered) {
-                var html = '';
-                var value = cell.getValue();
-
-                if (value != null) {
-                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + value + '"></i>'
-                }
-                
-                return html;
-            },
             videoLinksDownloadAccessor(value, data, type, params, column) {
                 return value?.join('\r\n');
             },
@@ -493,8 +487,11 @@
             },                                                         
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
-                this.showDetailModal = true;
-            }
+
+                this.$nextTick(function() {
+                    new Modal(this.$refs.detailmodal).show();
+                });                
+            }  
         }
     };
 </script>

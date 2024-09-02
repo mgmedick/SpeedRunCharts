@@ -1,4 +1,5 @@
-﻿const dayjs = require('dayjs');
+﻿import { Toast } from 'bootstrap';
+const dayjs = require('dayjs');
 
 const getFormData = object => Object.keys(object).reduce((formData, key) => {
     if (Array.isArray(object[key])) {
@@ -92,6 +93,12 @@ const getDateTimeLocalString = (value) => {
     return result;
 }
 
+const getDateLocalString = (value) => {
+    var result = dayjs(value).format("YYYY-MM-DD");
+    
+    return result;
+}
+
 const isValidDate = (date, format) => {
     return dayjs(date, format).format(format) === date;
 }
@@ -128,7 +135,62 @@ const getCookie = (key) => {
     return keyValue ? keyValue[2] : null;
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie }
+const successToast = (successMsg) => {
+    var el = document.getElementById('successtoast').cloneNode(true);
+    el.querySelector('.msg-text').innerHTML = successMsg;
+    document.getElementById('toastcontainer').appendChild(el);
+    new Toast(el).show(); 
+}
+
+const errorToast = (errorMsg) => {
+    var el = document.getElementById('errortoast').cloneNode(true);
+    el.querySelector('.msg-text').innerHTML = errorMsg;
+    document.getElementById('toastcontainer').appendChild(el);
+    new Toast(el).show();
+}
+
+const resizeTabs = () => {
+    var rows = document.querySelectorAll('.tab-list');
+
+    for (var g = 0; g < rows.length; g++) {
+        var totalWidth = 0;
+        var tabitems = rows[g].querySelectorAll('li.nav-item');
+        var morediv =  rows[g].querySelector('.more');
+        var morebtn =  morediv.querySelector('.btn');
+        var moreItems = morediv.querySelectorAll('li');
+
+        for (var i = 0; i < tabitems.length; i++) {
+            tabitems[i].style.left = "-10000px";
+            tabitems[i].classList.remove('d-none');
+            totalWidth += tabitems[i].offsetWidth;
+            if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
+                tabitems[i].classList.add('d-none');
+                moreItems[i].classList.remove('d-none');
+            } else {
+                tabitems[i].classList.remove('d-none');
+                moreItems[i].classList.add('d-none');                     
+            }
+        }
+
+        var items = Array.from(morediv.querySelectorAll('li:not(.d-none) a'));
+        if (items.length > 0) {
+            var item = items.find(i=>i.classList.contains('active'));
+            if (item) {
+                morebtn.innerHTML = item.innerHTML;
+                morebtn.classList.add('active');
+            } else {
+                morebtn.innerHTML = 'More...';
+                morebtn.classList.remove('active');
+            }
+            
+            morediv.style.display = 'block';
+        } else {
+            morediv.style.display = 'none';                       
+        }
+    }
+}
+
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, getDateLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, successToast, errorToast, resizeTabs }
 
 
 

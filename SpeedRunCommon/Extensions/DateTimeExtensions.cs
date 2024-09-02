@@ -104,7 +104,7 @@ namespace SpeedRunCommon.Extensions
 
             if (Ts.Milliseconds > 0d && !excludeMilliseconds)
             {
-                result = (string.Format("{0} {1}ms", result, Ts.Milliseconds).Trim());
+                result = string.Format("{0} {1}ms", result, Ts.Milliseconds).Trim();
             }
 
             return result;

@@ -12,8 +12,8 @@ const stylePath = path.resolve(srcPath, './styles');
 const bldPath = path.resolve('../SpeedRunApp/wwwroot/dist');
 
 module.exports = {
-    //devtool: 'source-map',
-    devtool: false,
+    devtool: 'source-map',
+    //devtool: false,
     entry: {
         master: path.resolve(srcPath, 'index.js'),
         style: `${stylePath}/style.css`
@@ -23,10 +23,10 @@ module.exports = {
             'vue': 'vue/dist/vue.esm-bundler.js'
         }
     },     
-    //mode: 'development',
-    mode: 'production',
-    //watch: true,
-    watch: false,
+    mode: 'development',
+    //mode: 'production',
+    watch: true,
+    //watch: false,
     module: {
         rules: [                     
             {
@@ -34,9 +34,9 @@ module.exports = {
                 include: srcPath,
                 test: /\.js$/,
                 use: [{ loader: 'babel-loader' }]
-            },
+            },                   
             {
-                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(svg)(\?v=\d+\.\d+\.\d+)?$/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -48,15 +48,7 @@ module.exports = {
                         }
                     }
                 ]
-            },            
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
-            },
-            {
-                test: /\.vue$/,
-                loader: 'vue-loader'
-            },
+            }, 
             {
                 test: /\.(png|jpg|jpeg|gif)$/,
                 use: [
@@ -70,6 +62,14 @@ module.exports = {
                         }
                     }
                 ]
+            },                         
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
             }
         ]
     },
@@ -106,8 +106,8 @@ module.exports = {
         }),
         new BundleAnalyzerPlugin(),
         new webpack.DefinePlugin({
-            //PRODUCTION: JSON.stringify(false),
-            PRODUCTION: JSON.stringify(true),
+            PRODUCTION: JSON.stringify(false),
+            //PRODUCTION: JSON.stringify(true),
             __VUE_OPTIONS_API__: true,
             __VUE_PROD_DEVTOOLS__: false
         }),

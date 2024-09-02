@@ -9,9 +9,8 @@ namespace SpeedRunApp.Model.ViewModels
 {
     public class ResetPasswordViewModel
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the Username")]
-        //[Remote(action: "ActiveUsernameExists", controller: "SpeedRun", ErrorMessage = "Username not found")]
-        public string Username { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Please enter the Email")]
+        public string Email { get; set; }
     }
 }
 

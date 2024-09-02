@@ -10,23 +10,74 @@ namespace SpeedRunApp.Repository
     {
         public DataMappings()
         {
-            For<SpeedRunView>().TableName("vw_SpeedRun");
-            For<SpeedRunGridView>().TableName("vw_SpeedRunGrid");
-            For<SpeedRunGridUserView>().TableName("vw_SpeedRunGridUser");
-            For<WorldRecordGridView>().TableName("vw_WorldRecordGrid");        
-            For<SpeedRunGridTabView>().TableName("vw_SpeedRunGridTab");
-            For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary");
-            For<SpeedRunChartView>().TableName("vw_SpeedRunChart");
-            For<SpeedRunChartUserView>().TableName("vw_SpeedRunChartUser");
-            For<GameView>().TableName("vw_Game");
+            For<SpeedRun>().TableName("tbl_SpeedRun");
+            For<SpeedRunGridView>().TableName("vw_SpeedRunGrid").Columns(i =>
+            {
+                i.Column(g => g.IsPersonalBest).Ignore();
+                i.Column(g => g.SubCategoryVariableValues).Ignore();
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+            For<SpeedRunGridPlayerView>().TableName("vw_SpeedRunGridPlayer").Columns(i =>
+            {
+                i.Column(g => g.IsPersonalBest).Ignore();
+                i.Column(g => g.SubCategoryVariableValues).Ignore();
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+            For<SpeedRunSummaryView>().TableName("vw_SpeedRunSummary").Columns(i =>
+            {
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.SubCategoryVariableValueNames).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+            For<SpeedRunDetailView>().TableName("vw_SpeedRunDetail").Columns(i =>
+            {
+                i.Column(g => g.Players).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.Videos).Ignore();
+            }); 
+
+            For<GameView>().TableName("vw_Game").Columns(i =>
+            {
+                i.Column(g => g.GameCategoryTypes).Ignore();
+                i.Column(g => g.Categories).Ignore();
+                i.Column(g => g.Levels).Ignore();
+                i.Column(g => g.Variables).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+                i.Column(g => g.GamePlatforms).Ignore();
+            }); 
             For<Game>().PrimaryKey("ID").TableName("tbl_Game");
-            For<UserView>().TableName("vw_User");
+            For<GameCategoryType>().PrimaryKey("ID").TableName("tbl_Game_CategoryType");
+            For<GamePlatform>().PrimaryKey("ID").TableName("tbl_Game_Platform");
+            For<Category>().PrimaryKey("ID").TableName("tbl_Category").Columns(i =>
+            {
+                i.Column(g => g.HasData).Ignore();
+            });           
+            For<Level>().PrimaryKey("ID").TableName("tbl_Level").Columns(i =>
+            {
+                i.Column(g => g.HasData).Ignore();
+            });                   
+            For<Variable>().PrimaryKey("ID").TableName("tbl_Variable").Columns(i =>
+            {
+                i.Column(g => g.HasData).Ignore();  
+                i.Column(g => g.IsSingleCategory).Ignore();
+                i.Column(g => g.VariableValues).Ignore();
+            });                 
+            For<VariableValue>().PrimaryKey("ID").TableName("tbl_VariableValue").Columns(i =>
+            {
+                i.Column(g => g.HasData).Ignore();
+                i.Column(g => g.SubVariables).Ignore();
+            });            
+            For<PlayerView>().PrimaryKey("ID").TableName("vw_Player");
+
             For<User>().PrimaryKey("ID").TableName("tbl_User");
-            For<UserAccount>().PrimaryKey("ID").TableName("tbl_UserAccount");
-            For<UserAccountSetting>().PrimaryKey("UserAccountID", false).TableName("tbl_UserAccount_Setting");
-            For<UserAccountView>().TableName("vw_UserAccount");
-            For<UserAccountSpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_UserAccount_SpeedRunListCategory");
-            For<SpeedRunListCategory>().PrimaryKey("ID").TableName("tbl_SpeedRunListCategory");
+            For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");
+            For<UserSummaryList>().PrimaryKey("ID").TableName("tbl_User_SummaryList");
+            For<UserView>().TableName("vw_User");   
+            For<SummaryList>().PrimaryKey("ID").TableName("tbl_SummaryList");
             For<Setting>().PrimaryKey("ID").TableName("tbl_Setting");
         }
     }

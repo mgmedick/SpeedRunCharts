@@ -1,0 +1,21 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
+@model SpeedRunApp.Model.ViewModels.LoginViewModel
+
+@{ ViewBag.Title = "Login"; }
+
+<login :loginvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"/>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,22 +7,22 @@
         </div>
     </div>
     <div v-else id="divWorldRecorGridTabContainer">
-        <div class="row no-gutters pr-1">
+        <div class="row no-gutters pe-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
-                    <li class="nav-item py-1 pr-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
+                    <li class="nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
                         <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                        <template v-slot:text>
+                    <div class="dropdown more py-1 pe-1" v-show="false">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>More...</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                                <a class="dropdown-item d-none" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>                                
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                            </li>
+                        </ul>
+                    </div>                                                      
                 </ul>
             </div>
         </div>
@@ -32,22 +32,22 @@
                     <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="''" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID && !variable.levelID)" :showcategories="true" :showlevels="false" :showmisc="showmisc" :title="title" :exporttypes="exportTypes"></worldrecord-grid>                              
                 </div>                    
                 <div v-else>
-                    <div class="row no-gutters pr-1">
+                    <div class="row no-gutters pe-1">
                         <div class="col tab-list">
                             <ul class="nav nav-pills">
-                                <li class="category nav-item py-1 pr-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (showmisc || !ctg.isMisc))" :key="category.id">
+                                <li class="category nav-item py-1 pe-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (showmisc || !ctg.isMisc))" :key="category.id">
                                     <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                 </li>
-                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                    <template v-slot:text>
+                                <div class="dropdown more py-1 pe-1" v-show="false">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span>More...</span>
-                                    </template>
-                                    <template v-slot:options>
-                                        <template v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id">
-                                            <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
-                                        </template>
-                                    </template>
-                                </button-dropdown>    
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                        <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id" class="d-none">
+                                            <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                        </li>
+                                    </ul>
+                                </div>                                     
                             </ul>
                         </div>                           
                     </div>
@@ -57,26 +57,26 @@
                                 <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs.filter(variable => variable.categoryID == category.id && !variable.levelID)" :showcategories="false" :showlevels="false" :showmisc="showmisc" :title="title" :exporttypes="exportTypes"></worldrecord-grid>
                             </div>
                             <div v-else>
-                                <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.scopeTypeID == '3').length == 0">
+                                <div v-if="!game.subCategoryVariables || game.subCategoryVariables.filter(variable => variable.categoryID == categoryID && variable.levelID && variable.variableScopeTypeID == '3').length == 0">
                                     <worldrecord-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :subcategoryvariablevaluetabs="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID)" :showcategories="false" :showlevels="true" :showmisc="showmisc" :title="title" :exporttypes="exportTypes"></worldrecord-grid>                              
                                 </div>
                                 <div v-else>
-                                    <div class="row no-gutters pr-1">
+                                    <div class="row no-gutters pe-1">
                                         <div class="col tab-list">
                                             <ul class="nav nav-pills">
-                                                <li class="level nav-item py-1 pr-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
+                                                <li class="level nav-item py-1 pe-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                                     <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <button-dropdown v-show="false" class="more py-1 pr-1" :btnclasses="'btn-secondary'">
-                                                    <template v-slot:text>
+                                                <div class="dropdown more py-1 pe-1" v-show="false">
+                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span>More...</span>
-                                                    </template>
-                                                    <template v-slot:options>
-                                                        <template v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                            <a class="dropdown-item d-none" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
-                                                        </template>
-                                                    </template>
-                                                </button-dropdown>   
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                                                        <li v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id" class="d-none">
+                                                            <a class="dropdown-item" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>                                                     
                                             </ul>
                                         </div>                                      
                                     </div>
@@ -96,6 +96,7 @@
 </template>
 <script>
     import axios from 'axios';
+    import { resizeTabs } from '../../js/common.js';
 
     export default {
         name: "WorldRecordTabs",
@@ -130,11 +131,10 @@
         }, 
         mounted: function () {
             this.loadData();            
-            window.addEventListener('resize', this.resizeWRTabs);
-        },
+        },                
         updated: function () {
-            this.resizeWRTabs();
-        },        
+            resizeTabs();
+        },      
         methods: {
             loadData() {
                 var that = this;
@@ -190,9 +190,9 @@
 
                 var eligibleVariables = [];
                 if (this.categoryTypeID == 0) {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '1'));
+                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
                 } else {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.scopeTypeID == '0' || variable.scopeTypeID == '2' || variable.scopeTypeID == '3'));
+                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
                 }          
             },           
             onTabClick: function (event) {
@@ -212,72 +212,7 @@
                 }
 
                 this.resetSelected();                
-            },
-            resizeWRTabs: function () {
-                var rows = document.querySelectorAll('#divWorldRecorGridTabContainer .tab-list');
-
-                for (var g = 0; g < rows.length; g++) {
-                    var totalWidth = 0;
-                    var tabitems = rows[g].querySelectorAll('li:not(.dropdown-item)');
-                    var morediv =  rows[g].querySelector('.more');
-                    var morebtn =  morediv.querySelector('.btn');
-                    var moreItems = morediv.querySelectorAll('a.dropdown-item');
-                    var moredrp = morediv.querySelector('.dropdown-menu');
-
-                    for (var i = 0; i < tabitems.length; i++) {
-                        tabitems[i].style.left = "-10000px";
-                        tabitems[i].classList.remove('d-none');
-                        totalWidth += tabitems[i].offsetWidth;
-                        if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
-                            tabitems[i].classList.add('d-none');
-                            moreItems[i].classList.remove('d-none');
-                        } else {
-                            tabitems[i].classList.remove('d-none');
-                            moreItems[i].classList.add('d-none');                     
-                        }
-                    }
-
-                    var items = Array.from(morediv.querySelectorAll('a:not(.d-none)'));
-                    if (items.length > 0) {
-                        var item = items.find(i=>i.classList.contains('active'));
-                        if (item) {
-                            morebtn.innerHTML = item.innerHTML;
-                            morebtn.classList.add('active');
-                        } else {
-                            morebtn.innerHTML = 'More...';
-                            morebtn.classList.remove('active');
-                        }
-                        
-                        morediv.style.display = 'block';
-                    } else {
-                        morediv.style.display = 'none';                       
-                    }
-
-                    var ww = document.documentElement.clientWidth;
-                    var pos = this.getPosition(morediv);
-                    if (pos.x > (ww / 2)) {
-                        moredrp.classList.remove('dropdown-menu-left');
-                        moredrp.classList.add('dropdown-menu-right');
-                    } else {
-                        moredrp.classList.remove('dropdown-menu-right');
-                        moredrp.classList.add('dropdown-menu-left');
-                    }
-               }
-            },            
-            getPosition: function (element) {
-                var xPosition = 0;
-                var yPosition = 0;
-
-                while (element) {
-                    xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-                    yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
-                    element = element.offsetParent;
-                }
-                return {
-                    x: xPosition,
-                    y: yPosition
-                };
-            }                                    
+            }              
         }
     };
 </script>

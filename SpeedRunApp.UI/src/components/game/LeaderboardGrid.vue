@@ -8,39 +8,41 @@
             </div>
         </div>
         <div class="mt-2">
-            <div class="row no-gutters pr-1">
-                <div class="col-auto ml-auto pr-1">
-                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                        <template v-slot:text>
+            <div class="row g-1">
+                <div class="col-auto ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
-                                <i class="fa fa-filter"></i><span class="pl-2">...</span>
+                                <i class="fa fa-filter"></i><span class="ps-2">...</span>
                             </span>
-                        </template>
-                        <template v-slot:options>
-                            <div class="dropdown-item">
-                                <div class="custom-control custom-switch">
-                                    <input id="chkShowAllData" type="checkbox" class="custom-control-input" data-toggle="toggle" v-model="showAllData">
-                                    <label class="custom-control-label pl-1" for="chkShowAllData"><span class="pl-2">Show Obsolete</span></label>
-                                </div>                    
-                            </div>                      
-                        </template>
-                    </button-dropdown>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li>
+                                <div class="dropdown-item">
+                                    <div class="form-check form-switch">
+                                        <input id="chkShowAllData" class="form-check-input" type="checkbox" v-model="showAllData">
+                                        <label class="form-check-label" for="chkShowAllData"><span>Show Obsolete</span></label>
+                                    </div>                                                     
+                                </div>
+                            </li> 
+                        </ul>
+                    </div>   
                 </div>
                 <div class="col-auto">
-                    <button-dropdown :btnclasses="'btn-secondary btn-sm'" :listclasses="'dropdown-menu-right'">
-                        <template v-slot:text>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>Export</span>
-                        </template>
-                        <template v-slot:options>
-                            <template v-for="(exporttype, i) in exporttypes" :key="i">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                            <li v-for="(exporttype, i) in exporttypes" :key="i">
                                 <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
-                            </template>
-                        </template>
-                    </button-dropdown>
+                            </li>
+                        </ul>
+                    </div>                     
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
-                <leaderboard-chart-container v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :userid="userid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-chart-container>
+                <leaderboard-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-charts>
                 <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
                     <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
                         <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
@@ -54,14 +56,21 @@
                 <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
-        <modal v-if="showDetailModal" contentclass="cmv-modal-lg" @close="showDetailModal = false">
-            <template v-slot:title>
-                Details
-            </template>
-            <div class="container p-0">
-                <speedrun-edit :gameid="gameid" :speedrunid="selectedSpeedRunID" :readonly="true" />
+        <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>  
+                    </div>
+                    <div class="modal-body">    
+                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRunID" :speedrunid="selectedSpeedRunID" />                     
+                    </div>
+                </div>
             </div>
-        </modal>    
+        </div>            
     </div>   
 </template>
 <script>
@@ -70,10 +79,11 @@
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
     import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import tippy from 'tippy.js'
-    import 'tippy.js/dist/tippy.css'
+    // import tippy from 'tippy.js'
+    // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    import { Tooltip, Modal } from 'bootstrap';
 
     export default {
         name: "LeaderboardGrid",
@@ -84,8 +94,8 @@
             categoryid: String,
             levelid: String,
             variablevalues: String,
-            speedrunid: String,
-            userid: String,
+            speedruncode: String,
+            playerid: String,
             showcharts: Boolean,          
             showalldata: Boolean,
             showmilliseconds: Boolean,
@@ -100,25 +110,26 @@
                 tableData: [],
                 groups: [],
                 loading: true,
-                speedRunID: this.speedrunid,
+                speedRunCode: this.speedruncode,
                 selectedSpeedRunID: '',
                 showAllData: this.showalldata,
-                showDetailModal: false,
                 pageSize: 100
             }
         },  
         watch: {
-            showalldata: function (val, oldVal) {
-                this.loadData();
-            },
             showAllData: function (val, oldVal) {
-                this.$emit('update:showalldata', val); 
+                this.loadData();
             }              
         },                     
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             });
+
+            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+                this.$refs.speedrundetails.loadData();
+            }); 
+
             this.loadData();
             window.speedRunGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
@@ -128,19 +139,19 @@
                 var that = this;
                 this.loading = true;
 
-                axios.get('/SpeedRun/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showalldata } })
+                axios.get('/Game/GetLeaderboardGridData', { params: { gameID: this.gameid, categoryTypeID: this.categorytypeid, categoryID: this.categoryid, levelID: this.levelid, subCategoryVariableValueIDs: this.variablevalues, showAllData: this.showAllData } })
                     .then(res => {
                         that.tableData = res.data;
                         if (that.istimerasc) {
-                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTimeTicks - a?.primaryTimeTicks });
+                            that.tableData = that.tableData.sort((a, b) => { return b?.primaryTimeMilliseconds - a?.primaryTimeMilliseconds });
                         }
                                                                         
                         that.initGrid(res.data); 
                         that.loading = false;
-                        if (that.speedRunID) {
-                            var index = that.tableData.findIndex(i => i.id == that.speedRunID);
+                        if (that.speedRunCode) {
+                            var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
                             if (index > -1) {
-                                that.table.selectRow(that.speedRunID);
+                                that.table.selectRow(that.tableData[index].id);
                                 var page = Math.ceil(index / that.pageSize);
                                 if(page > 1) {
                                     that.table.setPage(page);
@@ -169,13 +180,14 @@
                     { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
-                    { title: "primaryTimeString", field: "primaryTimeString", visible: false, download: true, titleDownload: "Time" },                    
-                    { title: "Time", field: "primaryTimeTicks", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ticks)" }, //minWidth:100, maxWidth:125                    
+                    { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" },                    
+                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100                    
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
                     { title: "primaryTimeSecondsString", field: "primaryTimeSecondsString", visible: false },
-                    { title: "playersObj", field: "players", visible: false }
+                    { title: "playersObj", field: "players", visible: false },
+                    { title: "code", field: "code", visible: false },
                 ];
 
                 tableData.forEach(item => {
@@ -222,7 +234,7 @@
                         return html;
                     },                    
                     initialSort: [
-                        { column: "primaryTimeTicks", dir: that.istimerasc ? "desc" : "asc" },
+                        { column: "primaryTimeMilliseconds", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
                     renderComplete:function() {
@@ -234,16 +246,8 @@
                             });
                         });
 
-                        Array.from(that.$el.querySelectorAll('.tippy-tooltip')).forEach(el => {
-                            var value = el.getAttribute('data-content');
-                            var cellElement = el.closest('.tabulator-cell');
-
-                            tippy(cellElement, {
-                                content: escapeHtml(value),
-                                allowHTML: true,
-                                arrow:false,
-                                placement:'bottom'
-                            })
+                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                            new Tooltip(el);                        
                         });
 
                         that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
@@ -287,7 +291,7 @@
                 var html = "<div>"
                 html += "<div class='d-table' style='border:none; border-collapse:collapse; border-spacing:0; margin:auto;'>";
                 html += "<div class='d-table-row'>";
-                html += "<div class='d-table-cell pl-1 ' style='border:none; padding:0px; width:30px;'>";
+                html += "<div class='d-table-cell ps-1 ' style='border:none; padding:0px; width:30px;'>";
                 html += "<a href=\"javascript:window.speedRunGridVue.showSpeedRunDetails('" + value + "');\" draggable='false'><i class='fas fa-play-circle fa-lg'></i></a>";
                 html += "</div>";
                 html += "</div>";
@@ -313,12 +317,12 @@
                 value?.forEach(el => {
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
-                            html += "<span class='username-text username-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='username-text username-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/User/UserDetails/" + el.abbr + "' draggable='false'>" + el.name + "</a>"
+                            html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
+                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/User/UserDetails/" + el.abbr + "' class='username-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;
@@ -334,7 +338,7 @@
             },                        
             primaryTimeFormatter(cell, formatterParams, onRendered) {
                 var html = '';
-                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeString" : "primaryTimeSecondsString";
+                var primaryTimeColumn = this.showmilliseconds ? "primaryTimeMillisecondsString" : "primaryTimeSecondsString";
                 var value = cell.getRow().getCell(primaryTimeColumn).getValue();
 
                 if (value) {
@@ -345,7 +349,7 @@
             },         
             dateFormatter(cell, formatterParams, onRendered) {
                 var tooltip = formatterParams.tooltipFieldName ? cell.getRow().getCell(formatterParams.tooltipFieldName).getValue() : '';
-                var html = tooltip ? '<span class="tippy-tooltip" data-content="' + escapeHtml(tooltip) + '">' : '<span>'
+                var html = tooltip ? '<span data-bs-toggle="tooltip" data-bs-title="' + escapeHtml(tooltip) + '">' : '<span>'
                 var value = cell.getValue();
                 var formatString = formatterParams.outputFormat;
 
@@ -367,16 +371,6 @@
                 
                 return html;
             },             
-            commentFormatter(cell, formatterParams, onRendered) {
-                var html = '';
-                var value = cell.getValue();
-
-                if (value != null) {
-                    html = '<i class="fas fa-comment tippy-tooltip" data-content="' + value + '"></i>'
-                }
-
-                return html;
-            },
             commentDownloadAccessor(value, data, type, params, column) {
                 return value ?? '';
             },  
@@ -466,7 +460,10 @@
             },                                    
             showSpeedRunDetails(id) {
                 this.selectedSpeedRunID = id;
-                this.showDetailModal = true;
+
+                this.$nextTick(function() {
+                    new Modal(this.$refs.detailmodal).show();
+                });                
             }                              
         }             
     };

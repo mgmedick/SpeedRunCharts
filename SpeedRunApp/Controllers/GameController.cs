@@ -12,42 +12,34 @@ namespace SpeedRunApp.MVC.Controllers
     public class GameController : Controller
     {
         private readonly IGameService _gameService = null;
-        private readonly ISpeedRunService _speedRunsService = null;
+        private readonly ISpeedRunService _speedRunService = null;
         private readonly ILogger _logger = null;
 
-        public GameController(IGameService gameService, ISpeedRunService speedRunsService, ILogger logger)
+        public GameController(IGameService gameService, ISpeedRunService speedRunService, ILogger logger)
         {
             _gameService = gameService;
-            _speedRunsService = speedRunsService;
+            _speedRunService = speedRunService;
             _logger = logger;
         }
         
-        public ViewResult GameDetails(string ID, string speedRunID)
+        public ViewResult GameDetails(string ID, string speedRunCode)
         {
-            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunID);
+            var gameDetailsVM = _gameService.GetGameDetails(ID, speedRunCode);
 
             return View(gameDetailsVM);
         }
-
+        
         [HttpGet]
-        public JsonResult GetEditSpeedRun(int gameID, int? speedRunID = null)
+        public JsonResult GetLeaderboardTabs(int gameID, string speedRunCode)
         {
-            var results = _gameService.GetEditSpeedRun(gameID, speedRunID);
-
-            return Json(results);
-        }
-
-        [HttpGet]
-        public JsonResult GetLeaderboardTabs(int gameID, int? speedRunID)
-        {
-            LeaderboardTabViewModel gridTabVM = null;
+            GameDetailsTabViewModel gridTabVM = null;
             try
             {
-                gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunID);
+                gridTabVM = _gameService.GetLeaderboardTabs(gameID, speedRunCode);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetLeaderboardTabs GameID: {@GameID}, SpeedRunID: {@SpeedRunID}", gameID, speedRunID);
+                _logger.Error(ex, "GetLeaderboardTabs GameID: {@GameID}, SpeedRunCode: {@SpeedRunCode}", gameID, speedRunCode);
             }
 
             return Json(gridTabVM);
@@ -68,59 +60,38 @@ namespace SpeedRunApp.MVC.Controllers
 
            return Json(tabVM);
         }
- 
 
         [HttpGet]
-        public JsonResult GetUserSpeedRunTabsAndData(int userID, int? speedRunID)
+        public JsonResult GetLeaderboardGridData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, bool showAllData)
         {
-            UserSpeedRunTabViewModel tabVM = null;
-            try
-            {
-                tabVM = _gameService.GetUserSpeedRunTabsAndData(userID, speedRunID);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "GetUserSpeedRunTabsAndData UserID: {@UserID}, SpeedRunID: {@SpeedRunID}", userID, speedRunID);
-            }
+            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, showAllData);
 
-            return Json(tabVM);
+            return Json(results);
         }
 
         [HttpGet]
-        public JsonResult GetUserChartTabsAndData(int userID)
+        public JsonResult GetLeaderboardChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs)
         {
-            UserChartTabViewModel tabVM = null;
-            try
-            {
-                tabVM = _gameService.GetUserChartTabsAndData(userID);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "GetUserChartTabsAndData UserID: {@UserID}", userID);
-            }
+            var results = _speedRunService.GetLeaderboardGridData(gameID, categoryTypeID, categoryID, levelID, subCategoryVariableValueIDs, true);
 
-            return Json(tabVM);
+            return Json(results);
         }        
-        
-       [HttpPost]
-        public JsonResult SetGameIsChanged(int gameID)
+
+        [HttpGet]
+        public JsonResult GetWorldRecordGridData(int gameID, int categoryTypeID, int? categoryID, int? levelID)
         {
-            var success = false;
-            List<string> errorMessages = null;
+            var results = _speedRunService.GetWorldRecordGridData(gameID, categoryTypeID, categoryID, levelID);
 
-            try
-            {
-                errorMessages = _gameService.SetGameIsChanged(gameID);
-                success = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "SetGameIsChanged GameID: {@GameID}", gameID);
-                success = false;
-            }
-
-            return Json(new { success = success, errorMessages = errorMessages });
+            return Json(results);
         }
+        
+        [HttpGet]
+        public JsonResult GetGameSummaryChartData(int gameID, int categoryTypeID)
+        {
+            var results = _speedRunService.GetGameSummaryChartData(gameID, categoryTypeID);
+
+            return Json(results);
+        }    
 
         [HttpGet]
         public JsonResult SearchGames(string term)

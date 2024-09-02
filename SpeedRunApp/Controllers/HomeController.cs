@@ -19,22 +19,45 @@ namespace SpeedRunApp.MVC.Controllers
     public class HomeController : Controller
     {
         private readonly ISpeedRunService _speedRunService = null;
-        private readonly IUserAccountService _userAcctService = null;
+        private readonly IUserService _userService = null;
+        private readonly IAuthService _authService = null;
+        private readonly IConfiguration _config = null;
         private readonly ILogger _logger = null;
 
-        public HomeController(ISpeedRunService speedRunService, IUserAccountService userAcctService, ILogger logger)
+        public HomeController(ISpeedRunService speedRunService, IUserService userService, IAuthService authService, IConfiguration config, ILogger logger)
         {
             _speedRunService = speedRunService;
-            _userAcctService = userAcctService;
+            _userService = userService;
+            _authService = authService;
+            _config = config;
             _logger = logger;
         }
 
         public ViewResult Index()
         {
-            var runListVM = _speedRunService.GetSpeedRunList();
+            var defaultTopAmount = Convert.ToInt32(_config.GetSection("SiteSettings").GetSection("DefaultTopAmount").Value);
+            var currUserID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var summaryLists = _speedRunService.GetSummaryLists(currUserID).ToList();
+            var indexVM = new IndexViewModel(defaultTopAmount, summaryLists);
 
-            return View(runListVM);
+            return View(indexVM);
         }
+
+        [HttpGet]
+        public JsonResult GetSummaryListResults(int summaryListID, int topAmount, int? orderValueOffset, int? categoryTypeID)
+        {
+            var results = _speedRunService.GetSummaryListResults(summaryListID, topAmount, orderValueOffset, categoryTypeID);
+
+            return Json(results);
+        }
+        
+        [HttpGet]
+        public JsonResult GetSpeedRunDetails(int speedRunID)
+        {
+            var results = _speedRunService.GetSpeedRunDetails(speedRunID);
+
+            return Json(results);
+        }                     
 
         public ViewResult Error()
         {
@@ -44,33 +67,44 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            var loginVM = new LoginViewModel();
+            var loginVM = new LoginViewModel() {
+                GClientID = _config.GetSection("Auth").GetSection("Google").GetSection("ClientID").Value,
+                FBClientID = _config.GetSection("Auth").GetSection("Facebook").GetSection("ClientID").Value,
+                FBApiVer = _config.GetSection("Auth").GetSection("Facebook").GetSection("ApiVersion").Value,
+                RecaptchaKey = _config.GetSection("Auth").GetSection("Google").GetSection("RecaptchaKey").Value
+            };
 
-            return PartialView("_Login", loginVM);
+            return View(loginVM);
         }
 
         [HttpPost]
-        public JsonResult Login(LoginViewModel loginVM)
+        public async Task<JsonResult> Login(LoginViewModel loginVM)
         {
             var success = false;
             List<string> errorMessages = null;
 
             try
             {
-                if (!_userAcctService.UsernameExists(loginVM.Username, true))
+                var result = await _authService.ValidateGoogleRecaptcha(loginVM.Token);
+                if (!result)
                 {
-                    ModelState.AddModelError("Login", "Invalid username");
+                     ModelState.AddModelError("Login", "Invalid recaptcha");                   
                 }
 
-                if (!_userAcctService.PasswordMatches(loginVM.Password, loginVM.Username))
+                if (!_userService.EmailExists(loginVM.Email, true))
+                {
+                    ModelState.AddModelError("Login", "Email not found");
+                }
+
+                if (!_userService.PasswordMatches(loginVM.Password, loginVM.Email))
                 {
                     ModelState.AddModelError("Login", "Invalid password");
                 }
 
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
-                    var userAcctVW = _userAcctService.GetUserAccountViews(i => i.Username == loginVM.Username).FirstOrDefault();
-                    LoginUserAccount(userAcctVW);
+                    var userVW = _userService.GetUserViews(i => i.Email == loginVM.Email).FirstOrDefault();
+                    LoginUser(userVW);
                     success = true;
                 }
                 else
@@ -79,7 +113,7 @@ namespace SpeedRunApp.MVC.Controllers
                     errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "Login");
                 success = false;
@@ -93,6 +127,7 @@ namespace SpeedRunApp.MVC.Controllers
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             var baseUrl = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
             var refUrl = Request.Headers["Referer"].ToString();
             var url = !string.IsNullOrWhiteSpace(refUrl) ? refUrl : baseUrl;
@@ -103,27 +138,38 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public ActionResult SignUp()
         {
-            var signUpVM = new SignUpViewModel();
+            var signUpVM = new SignUpViewModel() {
+                GClientID = _config.GetSection("Auth").GetSection("Google").GetSection("ClientID").Value,
+                FBClientID = _config.GetSection("Auth").GetSection("Facebook").GetSection("ClientID").Value,
+                FBApiVer = _config.GetSection("Auth").GetSection("Facebook").GetSection("ApiVersion").Value,
+                RecaptchaKey = _config.GetSection("Auth").GetSection("Google").GetSection("RecaptchaKey").Value
+            };
 
-            return PartialView("_SignUp", signUpVM);
+            return View(signUpVM);
         }
 
         [HttpPost]
-        public JsonResult SignUp(SignUpViewModel signUpVM)
+        public async Task<JsonResult> SignUp(SignUpViewModel signUpVM)
         {
             var success = false;
             List<string> errorMessages = null;
 
             try
             {
-                if (_userAcctService.EmailExists(signUpVM.Email))
+                var result = await _authService.ValidateGoogleRecaptcha(signUpVM.Token);
+                if (!result)
+                {
+                     ModelState.AddModelError("SignUp", "Invalid recaptcha");                   
+                }
+
+                if (_userService.EmailExists(signUpVM.Email, false))
                 {
                     ModelState.AddModelError("SignUp", "Email already exists for another user");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _ = _userAcctService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    _ = _userService.SendActivationEmail(signUpVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendActivationEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
                 }
                 else
@@ -135,41 +181,116 @@ namespace SpeedRunApp.MVC.Controllers
             catch (Exception ex)
             {
                 _logger.Error(ex, "SignUp");
-                return Json(new { success = false, message = "Error signing up user." });
+                success = false;
+                errorMessages = new List<string>() { "Error signing up user" };
             }
 
             return Json(new { success = success, errorMessages = errorMessages });
         }
 
+        [HttpPost]
+        public async Task<JsonResult> LoginOrSignUpWithSocial(string accessToken, int socialAccountTypeID)
+        {
+            var success = false;
+            var isNewUser = false;
+            List<string> errorMessages = null;
+ 
+            try
+            {
+                var result = await _authService.ValidateSocialToken(accessToken, socialAccountTypeID);
+
+                if (result == null)
+                {
+                    ModelState.AddModelError("LoginOrSignUpWithSocial", "Invalid Token");
+                }
+
+                var userVW = _userService.GetUserViews(i => i.Email == result.Email && i.Active).FirstOrDefault();              
+                if (_userService.EmailExists(result.Email, false) && userVW == null)
+                {
+                    ModelState.AddModelError("LoginOrSignUpWithSocial", "Email not found");
+                }
+
+                if (ModelState.IsValid)           
+                {
+                    if (userVW != null)
+                    {
+                        LoginUser(userVW);
+                        success = true;
+                    }
+                    else
+                    {
+                        var username = result.Email.Split('@')[0];
+                        if (_userService.UsernameExists(username, false))
+                        {
+                            username += '_' + ((String)result.Email).GetHashCode();
+                        }
+                        var pass = StringExtensions.GeneratePassword(15, 2);
+                        var userID = _userService.CreateUser(result.Email, username, pass);
+                        userVW = _userService.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+                        LoginUser(userVW);
+                        _ = _userService.SendConfirmRegistrationEmail(userVW.Email, userVW.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                        isNewUser = true;
+                        success = true;
+                        TempData.Add("ShowWelcome", true);                    
+                    }
+                }
+                else
+                {
+                    success = false;
+                    errorMessages = ModelState.Values.SelectMany(i => i.Errors).Select(i => i.ErrorMessage).ToList();
+                }                
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "LoginOrSignUpByGoogle");
+                success = false;
+                errorMessages = new List<string>() { "Error logging in with Google" };
+            }
+
+            return Json(new { success = success, isnewuser = isNewUser, errorMessages = errorMessages });
+        }
+
         [HttpGet]
         public ViewResult Activate(string email, long expirationTime, string token)
         {
-            var activateUserAcctVM = _userAcctService.GetActivateUserAccount(email, expirationTime, token);
+            var activateUserVM = _userService.GetActivateUser(email, expirationTime, token);
             HttpContext.Session.Set<string>("Email", email);
 
-            return View(activateUserAcctVM);
+            return View(activateUserVM);
         }
 
         [HttpPost]
-        public JsonResult Activate(ActivateViewModel activateUserAcctVM)
+        public JsonResult Activate(ActivateViewModel activateUserVM)
         {
             var success = false;
             List<string> errorMessages = null;
 
             try
             {
-                if (_userAcctService.UsernameExists(activateUserAcctVM.Username, false))
+                var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value;
+                if (activateUserVM.Email.GetHMACSHA256Hash(hashKey) != activateUserVM.EmailToken)
+                {
+                    ModelState.AddModelError("Activate", "Email does not match registration");
+                }
+
+                if (_userService.EmailExists(activateUserVM.Email, false))
+                {
+                    ModelState.AddModelError("Activate", "Email already exists for another user");
+                }
+
+                if (_userService.UsernameExists(activateUserVM.Username, false))
                 {
                     ModelState.AddModelError("Activate", "Username already exists for another user");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _userAcctService.CreateUserAccount(activateUserAcctVM.Username, activateUserAcctVM.Password);
-                    var userAcctVW = _userAcctService.GetUserAccountViews(i => i.Username == activateUserAcctVM.Username).FirstOrDefault();
-                    LoginUserAccount(userAcctVW);
-                    _ = _userAcctService.SendConfirmRegistrationEmail(userAcctVW.Email, userAcctVW.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    var userID = _userService.CreateUser(activateUserVM.Email, activateUserVM.Username, activateUserVM.Password);
+                    var userVW = _userService.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+                    LoginUser(userVW);
+                    _ = _userService.SendConfirmRegistrationEmail(userVW.Email, userVW.Username).ContinueWith(t => _logger.Error(t.Exception, "SendConfirmRegistrationEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
+                    TempData.Add("ShowWelcome", true);                    
                 }
                 else
                 {
@@ -179,24 +300,23 @@ namespace SpeedRunApp.MVC.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "ResetPassword");
+                _logger.Error(ex, "Activate");
                 success = false;
-                errorMessages = new List<string>() { "Error resetting password" };
+                errorMessages = new List<string>() { "Error creating user" };
             }
 
             return Json(new { success = success, errorMessages = errorMessages });
         }
 
         [HttpGet]
-        public ActionResult ResetPassword()
+        public ActionResult ResetPassword(string email)
         {
-            var resetPassVM = new ResetPasswordViewModel();
-
-            return PartialView("_ResetPassword", resetPassVM);
+            var resetPassVM = new ResetPasswordViewModel() { Email = email };
+            return View(resetPassVM);
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult ResetPassword(ResetPasswordViewModel resetPassVM)
         {
             var success = false;
@@ -204,14 +324,14 @@ namespace SpeedRunApp.MVC.Controllers
 
             try
             {
-                if (!_userAcctService.UsernameExists(resetPassVM.Username, true))
+                if (!_userService.EmailExists(resetPassVM.Email, true))
                 {
-                    ModelState.AddModelError("ResetPassword", "Username not found");
+                    ModelState.AddModelError("ResetPassword", "Email not found");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _ = _userAcctService.SendResetPasswordEmail(resetPassVM.Username).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
+                    _ = _userService.SendResetPasswordEmail(resetPassVM.Email).ContinueWith(t => _logger.Error(t.Exception, "SendResetPasswordEmail"), TaskContinuationOptions.OnlyOnFaulted);
                     success = true;
                 }
                 else
@@ -233,7 +353,7 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public ViewResult ChangePassword(string username, string email, long expirationTime, string token)
         {
-            var changePassVM = _userAcctService.GetChangePassword(username, email, expirationTime, token);
+            var changePassVM = _userService.GetChangePassword(username, email, expirationTime, token);
             HttpContext.Session.Set<string>("Username", username);
 
             return View(changePassVM);
@@ -248,14 +368,14 @@ namespace SpeedRunApp.MVC.Controllers
             try
             {
                 var username = HttpContext.Session.Get<string>("Username");
-                if (_userAcctService.PasswordMatches(changePassVM.Password, username))
+                if (_userService.PasswordMatches(changePassVM.Password, username))
                 {
                     ModelState.AddModelError("ChangePassword", "Password must differ from previous password");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    _userAcctService.ChangeUserAcctPassword(username, changePassVM.Password);
+                    _userService.ChangeUserPassword(username, changePassVM.Password);
                     success = true;
                 }
                 else
@@ -274,14 +394,39 @@ namespace SpeedRunApp.MVC.Controllers
             return Json(new { success = success, errorMessages = errorMessages });
         }
 
-        private async void LoginUserAccount(UserAccountView userAcctVW)
+        [HttpPost]
+        public JsonResult UpdateIsDarkTheme(bool isDarkTheme)
+        {
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
+            {
+                var userID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                _userService.UpdateIsDarkTheme(userID, isDarkTheme);
+
+                var userVW = _userService.GetUserViews(i => i.UserID == userID).FirstOrDefault();
+                LoginUser(userVW);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "UpdateIsDarkTheme");
+                success = false;
+                errorMessages = new List<string>() { "Error updating isDarkTheme" };
+            }
+
+            return Json(new { success = success, errorMessages = errorMessages });
+        }
+
+        private async void LoginUser(UserView userVW)
         {
             var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.NameIdentifier, userAcctVW.UserAccountID.ToString()),
-                            new Claim(ClaimTypes.Email, userAcctVW.Email),
-                            new Claim(ClaimTypes.Name, userAcctVW.Username),
-                            new Claim("theme", userAcctVW.IsDarkTheme ? "theme-dark" : "theme-light")
+                            new Claim(ClaimTypes.NameIdentifier, userVW.UserID.ToString()),
+                            new Claim(ClaimTypes.Email, userVW.Email),
+                            new Claim(ClaimTypes.Name, userVW.Username),
+                            new Claim("theme", userVW.IsDarkTheme ? "theme-dark" : "theme-light")
                         };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -293,18 +438,9 @@ namespace SpeedRunApp.MVC.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult UsernameExists(string username)
+        public IActionResult ActiveEmailExists(string email)
         {
-            var result = _userAcctService.UsernameExists(username, false);
-
-            return Json(result);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult ActiveUsernameExists(string username)
-        {
-            var result = _userAcctService.UsernameExists(username, true);
+            var result = _userService.EmailExists(email, true);
 
             return Json(result);
         }
@@ -313,26 +449,16 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public IActionResult UsernameNotExists(string username)
         {
-            var result = !_userAcctService.UsernameExists(username, false);
+            var result = !_userService.UsernameExists(username, false);
 
             return Json(result);
         }
-
+     
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult PasswordNotMatches(string password)
+        public IActionResult PasswordNotMatches(string password, string email)
         {
-            var username = HttpContext.Session.Get<string>("Username");
-            var result = !_userAcctService.PasswordMatches(password, username);
-
-            return Json(result);
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public IActionResult PasswordMatches(string password, string username)
-        {
-            var result = _userAcctService.PasswordMatches(password, username);
+            var result = !_userService.PasswordMatches(password, email);
 
             return Json(result);
         }
@@ -341,9 +467,9 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public IActionResult EmailNotExists(string email)
         {
-            var result = !_userAcctService.EmailExists(email);
+            var result = !_userService.EmailExists(email, false);
 
             return Json(result);
-        }
+        } 
     }
 }

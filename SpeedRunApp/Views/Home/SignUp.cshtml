@@ -1,0 +1,18 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
+@model SpeedRunApp.Model.ViewModels.SignUpViewModel
+
+@{ ViewBag.Title = "Sign Up"; }
+
+<signup :signupvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"/>
+
+
+        
+
+
+
+
+
+

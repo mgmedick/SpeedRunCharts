@@ -9,11 +9,33 @@ using SpeedRunApp.Model.Data;
 using SpeedRunApp.Interfaces.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
+using System.Collections;
 
 namespace SpeedRunApp.Repository
 {
     public class UserRespository : BaseRepository, IUserRepository
     {
+        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                return db.Query<User>().Where(predicate).ToList();
+            }
+        }
+
+        public void SaveUser(User user)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                using (var tran = db.GetTransaction())
+                {
+                    db.Save<User>(user);
+
+                    tran.Complete();
+                }
+            }
+        }
+
         public IEnumerable<UserView> GetUserViews(Expression<Func<UserView, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
@@ -22,39 +44,62 @@ namespace SpeedRunApp.Repository
             }
         }
 
-        public IEnumerable<SearchResult> SearchUsers(string searchText)
+        public IEnumerable<UserSetting> GetUserSettings(Expression<Func<UserSetting, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                var results = db.Query<SearchResult>("SELECT Abbr AS `Value`, Name AS Label FROM tbl_User WHERE Name LIKE CONCAT('%', @0, '%') LIMIT 10;", searchText).ToList();
+                return db.Query<UserSetting>().Where(predicate).ToList();
+            }
+        }        
 
-                return results;
+        public void SaveUserSetting(UserSetting userSetting)
+        {
+            using (IDatabase db = DBFactory.GetDatabase())
+            {
+                using (var tran = db.GetTransaction())
+                {
+                    db.Save<UserSetting>(userSetting);
+
+                    tran.Complete();
+                }
             }
         }
 
-        public IEnumerable<User> GetUsers(Expression<Func<User, bool>> predicate = null)
+        public IEnumerable<UserSummaryList> GetUserSummaryLists(Expression<Func<UserSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<User>().Where(predicate ?? (x => true)).ToList();
+                return db.Query<UserSummaryList>().Where(predicate).ToList();
             }
         }
 
-        public IEnumerable<IDNameAbbrPair> GetUserIDNameAbbrs()
+        public void SaveUserSummaryLists(IEnumerable<UserSummaryList> userSummaryLists)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<IDNameAbbrPair>("SELECT ID, Name, Abbr FROM tbl_User;").ToList();
+                using (var tran = db.GetTransaction())
+                {
+                    foreach (var userSummaryList in userSummaryLists)
+                    {
+                        db.Save<UserSummaryList>(userSummaryList);
+                    }
+
+                    tran.Complete();
+                }
             }
         }
 
-        public void UpdateUserIsChanged(User user)
+        public void DeleteUserSummaryLists(Expression<Func<UserSummaryList, bool>> predicate)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                db.Update<User>(user, i => new { i.IsChanged });
+                using (var tran = db.GetTransaction())
+                {
+                    db.DeleteMany<UserSummaryList>().Where(predicate).Execute();
+                    tran.Complete();
+                }
             }
-        }          
+        }
     }
 }
 

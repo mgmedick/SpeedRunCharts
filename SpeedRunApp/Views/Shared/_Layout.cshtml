@@ -8,31 +8,46 @@
 <head>
     <meta charset="utf-8" />
     @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />    
     <title>@ViewData["Title"] - SpeedRunCharts</title>
     <link rel="shortcut icon" type="image/x-icon" href="@Url.Content("~/dist/fonts/pie-chart.svg")" />
 
     <environment include="Development">
         <link rel="stylesheet" href="~/dist/vendor.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/dist/style.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/dist/master.min.css" asp-append-version="true" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/dist/vendor.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/dist/style.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/dist/master.min.css" asp-append-version="true" />
     </environment>
     @RenderSection("Styles", required: false)
 </head>
 <body class="@(User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value)">
     <div id="vue-app">
-        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirst(ClaimTypes.NameIdentifier)?.Value'" :username="'@User.FindFirst(ClaimTypes.Name)?.Value'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark")"></navbar>
+        @Html.AntiForgeryToken()
+        <header>
+            <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirstValue(ClaimTypes.NameIdentifier)'" :username="'@User.FindFirstValue(ClaimTypes.Name)'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark")"></navbar>        
+            <div id="toastcontainer" class="toast-container position-fixed p-3 bottom-0 end-0"> 
+                <div id="successtoast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <span class="msg-text"></span>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>   
+                <div id="errortoast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <span class="msg-text"></span>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>                                    
+            </div>   
+        </header>
         <div class="container-fluid body-content">
             @RenderBody()
-            <hr />
-            <footer class="footer">
-                <p>&copy; 2023 - SpeedRunCharts</p>
-            </footer>
         </div>
     </div>
     <environment include="Development">

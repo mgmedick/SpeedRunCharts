@@ -1,0 +1,10 @@
+﻿@using SpeedRunCommon.Extensions;
+@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
+@model SpeedRunApp.Model.ViewModels.PlayerDetailsViewModel
+
+@{ ViewBag.Title = "Player Details"; }
+
+<player-details :playerdetailsvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></player-details>

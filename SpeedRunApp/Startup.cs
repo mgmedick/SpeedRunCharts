@@ -37,6 +37,7 @@ namespace SpeedRunApp
                      options.HtmlHelperOptions.ClientValidationEnabled = true;
                  }
              });
+            services.AddAntiforgery();
 
             services.Configure<CookieTempDataProviderOptions>(options =>
             {
@@ -82,10 +83,21 @@ namespace SpeedRunApp
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
-
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("UserSettings", "UserSettings", new { controller = "User", action = "UserSettings" });
+
+                endpoints.MapControllerRoute("About", "About", new { controller = "Menu", action = "About" });                
+
+                endpoints.MapControllerRoute("Activate", "Activate", new { controller = "Home", action = "Activate" });
+                endpoints.MapControllerRoute("ChangePassword", "ChangePassword", new { controller = "Home", action = "ChangePassword" });
+                endpoints.MapControllerRoute("Login", "Login", new { controller = "Home", action = "Login" });
+                endpoints.MapControllerRoute("Logout", "Logout", new { controller = "Home", action = "Logout" });
+                endpoints.MapControllerRoute("ResetPassword", "ResetPassword", new { controller = "Home", action = "ResetPassword" });
+                endpoints.MapControllerRoute("SignUp", "SignUp", new { controller = "Home", action = "SignUp" });
+                endpoints.MapControllerRoute("default", "{controller}/{action}/{id}", new { controller = "Home", action = "Index", id = "" });
             });
         }
     }

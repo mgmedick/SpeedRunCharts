@@ -51,11 +51,12 @@
                             <span aria-hidden="true">&times;</span>
                         </button>  
                     </div>
-                    <div class="modal-body">                         
+                    <div class="modal-body">    
+                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRun" :speedrunid="selectedSpeedRun.id" />                     
                     </div>
                 </div>
             </div>
-        </div>  
+        </div> 
         <div ref="chartmodal" class="modal modal-xl" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -116,11 +117,16 @@
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             });            
-            this.loadData();
+
+            that.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+                that.$refs.speedrundetails.loadData();
+            }); 
 
             that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
                 that.$refs.playerspeedruncharts.loadData();
             }); 
+
+            this.loadData();
 
             window.speedRunGridVue = this;
             window.addEventListener( 'touchmove', function() {}, {passive: false});
@@ -180,7 +186,10 @@
             showSpeedRunDetails(event) {
                 var id = event.target.getAttribute('data-id');             
                 this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
-                new Modal(this.$refs.detailmodal).show();
+                
+                this.$nextTick(function() {
+                    new Modal(this.$refs.detailmodal).show();
+                });
             },
             showSpeedRunCharts(event) {
                 var id = event.target.getAttribute('data-id');             

@@ -45,7 +45,7 @@ namespace SpeedRunApp.Model.ViewModels
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
         public string SubCategoryVariableValueNames { get; set; }
-        public Dictionary<string, string> VariableValues { get; set; }
+        public List<VariableValueResult> VariableValues { get; set; }
         public List<PlayerResult> Players { get; set; }
         public List<VideoResult> VideoLinks { get; set; }
         public int? Rank { get; set; }

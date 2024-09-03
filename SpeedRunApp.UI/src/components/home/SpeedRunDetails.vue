@@ -20,7 +20,7 @@
                         <i class="fas fa-exclamation-circle pe-2"></i><span>No Embedded Video Available</span>
                     </div>                                           
                 </div>
-                <div v-for="(video, index) in item.videoLinks">
+                <div v-if="item.videoLinks" v-for="(video, index) in item.videoLinks">
                     <a class="link-offset-2 link-underline link-underline-opacity-0" :href="video.videoLink">{{ video.videoLink }}</a>
                 </div>                   
             </div>         
@@ -57,12 +57,12 @@
                             </div>
                         </div>
                     </div> 
-                    <div v-if="item.variableValues" class="col-auto" v-for="(key, variableIndex) in Object.keys(item.variableValues)">
+                    <div v-if="item.variableValues" class="col-auto" v-for="(variableValue, index) in item.variableValues">
                         <div class="card card-dark">
                             <div class="card-body p-2">
-                                <label class="fw-bold">{{ key }}</label>
+                                <label class="fw-bold">{{ variableValue.variableName }}</label>
                                 <div style="width: 200px;">
-                                    <span>{{ item.variableValues[key] }}</span>
+                                    <span>{{ variableValue.name }}</span>
                                 </div>
                             </div>
                         </div>

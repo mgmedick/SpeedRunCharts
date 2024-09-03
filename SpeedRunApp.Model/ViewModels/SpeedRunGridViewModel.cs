@@ -25,7 +25,7 @@ namespace SpeedRunApp.Model.ViewModels
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;  
             PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);      
-            VariableValues = run.VariableValues;
+            VariableValues = run.VariableValues?.ToDictionary(i => i.VariableID, i => i.ID);
             VideoLinks = run.Videos;
             Players = run.Players;
             PlatformName = run.PlatformName;

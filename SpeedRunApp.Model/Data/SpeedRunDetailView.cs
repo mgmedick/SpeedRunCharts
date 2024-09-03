@@ -44,14 +44,14 @@ namespace SpeedRunApp.Model.Data
                 return _players;
             }
         }           
-        private Dictionary<string, string> _variableValues = null;
-        public Dictionary<string, string> VariableValues
+        private List<VariableValueResult> _variableValues = null;
+        public List<VariableValueResult> VariableValues
         { 
             get
             {
                 if (!string.IsNullOrWhiteSpace(VariableValuesJson))
                 {
-                    _variableValues = JsonSerializer.Deserialize<Dictionary<string, string>>(VariableValuesJson);
+                    _variableValues = JsonSerializer.Deserialize<List<VariableValueResult>>(VariableValuesJson);
                 }
 
                 return _variableValues;

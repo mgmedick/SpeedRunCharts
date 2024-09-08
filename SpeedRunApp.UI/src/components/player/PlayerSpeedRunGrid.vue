@@ -17,7 +17,7 @@
                                     <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
                                         <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div>
-                                    <div v-if="item.isPersonalBest && tabledata.filter(i => i.gameID == item.gameID && i.categoryID == item.categoryID && i.levelID == item.levelID && i.subCategoryVariableValueIDs == item.subCategoryVariableValueIDs).length > 1" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
+                                    <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
                                         <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
                                     </div>                                        
                                 </div>
@@ -125,6 +125,10 @@
             that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
                 that.$refs.playerspeedruncharts.loadData();
             }); 
+
+            that.$refs.chartmodal.addEventListener('hidden.bs.modal', event => {
+                that.selectedSpeedRun = null;
+            });                        
 
             this.loadData();
 

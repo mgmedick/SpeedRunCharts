@@ -156,7 +156,7 @@
         name: 'SpeedRunDetails',
         props: {
             gameid: String,
-            speedrunid: String
+            speedrunid: Number
         },
         data: function () {
             return {

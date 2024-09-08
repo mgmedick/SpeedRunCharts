@@ -6,7 +6,7 @@
             </div>
         </div>
         <div :id="chartconainerid" style="height:100%;"></div>
-        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)">
+        <div v-if="!loading && !ismodal" style="cursor:pointer !important;" @click="$emit('onexpandchartclick', $event)" >
             <i class="fas fa-expand" style="position:absolute; bottom:20px; right:20px;"></i>
         </div>         
     </div>
@@ -60,7 +60,7 @@
         },              
         mounted: function () {
             this.loadChart();
-        },
+        },      
         methods: {          
             loadChart() {
                 var that = this;

@@ -130,8 +130,11 @@
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },       
             onExpandChartClick(event, chartID) {
-                this.selectedChartID = chartID;                 
-                new Modal(this.$refs.chartmodal).show();
+                this.selectedChartID = chartID; 
+                
+                this.$nextTick(function() {
+                    new Modal(this.$refs.chartmodal).show();
+                });                
             }                          
         }
     }

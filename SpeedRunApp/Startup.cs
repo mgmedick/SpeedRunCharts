@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 //using SpeedRunApp.Interfaces.Helpers;
 using SpeedRunApp.Repository.Configuration;
 using System;
+using System.Text.Json.Serialization;
 
 namespace SpeedRunApp
 {
@@ -36,7 +37,9 @@ namespace SpeedRunApp
                  {
                      options.HtmlHelperOptions.ClientValidationEnabled = true;
                  }
-             });
+             }).AddJsonOptions(options => {
+                options.JsonSerializerOptions.MaxDepth = 64;
+            });
             services.AddAntiforgery();
 
             services.Configure<CookieTempDataProviderOptions>(options =>

@@ -9,7 +9,7 @@
                         </div>
                     </div>
                     <div v-else style="height:100%;">
-                        <player-speedrun-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 3)"></player-speedrun-top-chart>                   
+                        <player-speedrun-top-chart chartconainerid="divChart3" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 3)" :ismodal="true"></player-speedrun-top-chart>                   
                     </div>
                 </div>               
             </div>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div v-else style="height:100%;">
-                        <player-speedrun-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 2)"></player-speedrun-percentile-chart>                
+                        <player-speedrun-percentile-chart chartconainerid="divChart2" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 2)" :ismodal="true"></player-speedrun-percentile-chart>                
                     </div>
                 </div>                          
             </div>
@@ -33,11 +33,11 @@
                         </div>
                     </div>
                     <div v-else style="height:100%;">
-                        <player-speedrun-personalbest-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 1)"></player-speedrun-personalbest-chart>                
+                        <player-speedrun-personalbest-chart chartconainerid="divChart1" :tabledata="tabledata" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="istimerasc" @onexpandchartclick="onExpandChartClick($event, 1)" :ismodal="true"></player-speedrun-personalbest-chart>                
                     </div>
                 </div>
             </div>
-        </div>            
+        </div>                    
     </div>           
 </template>
 <script>
@@ -98,8 +98,8 @@
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
             onExpandChartClick(event, chartID) {
-                this.selectedChartID = chartID;                 
-            }                                       
+                this.selectedChartID = chartID;              
+            }                                   
         }
     }
 </script>

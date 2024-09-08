@@ -204,20 +204,30 @@ namespace SpeedRunApp.Service
             }
         }
 
-        public void UpdateIsDarkTheme(int currUserID, bool isDarkTheme)
+        public void UpdateIsDarkTheme(int userID, bool isDarkTheme)
         {
-            var user = _userRepo.GetUsers(i => i.ID == currUserID).FirstOrDefault();
+            var user = _userRepo.GetUsers(i => i.ID == userID).FirstOrDefault();
+            var userSetting = _userRepo.GetUserSettings(i=> i.UserID == user.ID).FirstOrDefault();
 
-            if (user != null)
-            {
-                var userSetting = new UserSetting()
+            if (userSetting.ID == 0) 
+            {            
+                userSetting = new UserSetting()
                 {
-                    UserID = user.ID,
+                    UserID = userID,
                     IsDarkTheme = isDarkTheme
                 };
-
-                _userRepo.SaveUserSetting(userSetting);
             }
+            else
+            {
+                userSetting.UserID = userID;
+                userSetting.IsDarkTheme = isDarkTheme;              
+            }
+
+            _userRepo.SaveUserSetting(userSetting);
+
+            user.ModifiedDate = DateTime.UtcNow;
+            user.ModifiedBy = userID;
+            _userRepo.SaveUser(user);
         }
 
         //jqvalidate

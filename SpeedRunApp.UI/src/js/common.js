@@ -135,6 +135,15 @@ const getCookie = (key) => {
     return keyValue ? keyValue[2] : null;
 }
 
+const deleteCookie = (key) => {
+    if (get_cookie(key)) {
+        document.cookie = key + "=" +
+        ((path) ? ";path="+path:"") +
+        ((domain)?";domain="+domain:"") +
+        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+}
+
 const successToast = (successMsg) => {
     var el = document.getElementById('successtoast').cloneNode(true);
     el.querySelector('.msg-text').innerHTML = successMsg;
@@ -190,7 +199,7 @@ const resizeTabs = () => {
     }
 }
 
-export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, getDateLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, successToast, errorToast, resizeTabs }
+export { getFormData, getIntOrdinalString, getDateDiffList, formatTime, getDateTimeLocalString, getDateLocalString, isValidDate, escapeHtml, formatFileName, setCookie, getCookie, deleteCookie, successToast, errorToast, resizeTabs }
 
 
 

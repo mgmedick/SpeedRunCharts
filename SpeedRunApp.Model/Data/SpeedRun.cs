@@ -8,6 +8,7 @@ namespace SpeedRunApp.Model.Data
     public class SpeedRun
     {
         public int ID { get; set; }
+        public string Code { get; set; }
         public int GameID { get; set; }
         public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
@@ -18,6 +19,7 @@ namespace SpeedRunApp.Model.Data
         public long PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public bool Deleted { get; set; }
         public DateTime CreatedDate { get; set; }   
         public DateTime ModifiedDate { get; set; }        
     }

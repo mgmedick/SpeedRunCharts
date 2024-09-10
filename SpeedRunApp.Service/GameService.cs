@@ -37,7 +37,7 @@ namespace SpeedRunApp.Service
         public GameDetailsTabViewModel GetLeaderboardTabs(int gameID, string speedRunCode = null)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1 && !i.Deleted).ToList();
             var gameVM = new GameTabViewModel(gamevw, runs);
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };
@@ -56,7 +56,7 @@ namespace SpeedRunApp.Service
         public GameDetailsTabViewModel GetWorldRecordTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1 && !i.Deleted).ToList();
             var gameVM = new GameTabViewModel(gamevw, runs, true);
             var exportTypes = new List<IDNamePair>() { new IDNamePair() { ID = (int)ExportType.csv, Name = ExportType.csv.ToString() },
                                                        new IDNamePair() { ID = (int)ExportType.json, Name = ExportType.json.ToString() } };                            
@@ -68,7 +68,7 @@ namespace SpeedRunApp.Service
         public GameDetailsTabViewModel GetGameChartTabs(int gameID)
         {
             var gamevw = _gameRepo.GetGameViews(i => i.ID == gameID).FirstOrDefault();
-            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1).ToList();
+            var runs = _speedRunRepo.GetSpeedRuns(i => i.GameID == gameID && i.Rank == 1 && !i.Deleted).ToList();
             var gameVM = new GameTabViewModel(gamevw, runs, true);
             var tabVM = new GameDetailsTabViewModel(new List<GameTabViewModel>() { gameVM });
 

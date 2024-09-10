@@ -8,12 +8,13 @@ namespace SpeedRunApp.Model.Data
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public bool IsRomHack { get; set; }
-        public int? YearOfRelease { get; set; }
+        public string Code { get; set; }
         public string Abbr { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public DateTime ImportedDate { get; set; }
+        public bool ShowMilliseconds { get; set; }
+        public DateTime? ReleaseDate { get; set; }
+        public DateTime? SrcCreatedDate { get; set; }
+        public bool Deleted { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
-        public bool? IsChanged { get; set; }
     }
 } 

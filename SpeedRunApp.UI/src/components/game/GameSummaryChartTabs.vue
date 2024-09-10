@@ -6,7 +6,7 @@
             </div>
         </div>
     </div> 
-    <div v-else id="divGameChartTabContainer">
+    <div v-else-if="game.categoryTypes" id="divGameChartTabContainer">
         <div class="row no-gutters pe-1 pt-1 pb-0">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
@@ -59,7 +59,10 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div> 
+    <div v-else class="text-center mt-2">
+        <span class="fw-bold text-secondary">No categories</span>
+    </div>       
 </template>
 <script>
     import axios from 'axios';
@@ -134,29 +137,33 @@
                 var that = this;
                 var game = this.game;
 
-                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
-                
-                if (this.categoryTypeID == 1) {
-                    this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID)?.id;
-                } else {
-                    this.categoryID = '';
-                }                     
+                if (game.categoryTypes) {
+                    this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
+                    
+                    if (this.categoryTypeID == 1) {
+                        this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID)?.id;
+                    } else {
+                        this.categoryID = '';
+                    }   
+                }                  
             },                      
             resetSelected: function () {
                 var that = this;
                 var game = this.game;
 
-                if (game.categoryTypes.filter(i => i.id == that.categoryTypeID).length == 0) {
-                    this.categoryTypeID = game.categoryTypes[0].id;
-                }
+                if (game.categoryTypes) {
+                    if (game.categoryTypes.filter(i => i.id == that.categoryTypeID).length == 0) {
+                        this.categoryTypeID = game.categoryTypes[0].id;
+                    }
 
-                if (this.categoryTypeID == 1) {
-                    if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID).length == 0) {
-                        this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID)[0]?.id;
-                    }  
-                } else {
-                    this.categoryID = '';
-                }       
+                    if (this.categoryTypeID == 1) {
+                        if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID).length == 0) {
+                            this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID)[0]?.id;
+                        }  
+                    } else {
+                        this.categoryID = '';
+                    } 
+                }      
             }       
         }       
     };

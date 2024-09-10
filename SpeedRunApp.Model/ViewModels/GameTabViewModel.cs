@@ -14,7 +14,7 @@ namespace SpeedRunApp.Model.ViewModels
             Abbr = game.Abbr;
             CoverImageUri = game.CoverImageUrl;
             ShowMilliseconds = game.ShowMilliseconds;
-            CategoryTypes = game.GameCategoryTypes.Select(i => new IDNamePair() { ID = i.CategoryTypeID, Name = ((CategoryType)i.CategoryTypeID).ToString() }).ToList();
+            CategoryTypes = game.GameCategoryTypes?.Select(i => new IDNamePair() { ID = i.CategoryTypeID, Name = ((CategoryType)i.CategoryTypeID).ToString() }).ToList();
             Categories = game.Categories;
             GameLevels = game.Levels;
             Variables = game.Variables;

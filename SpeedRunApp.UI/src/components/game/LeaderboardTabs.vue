@@ -6,7 +6,7 @@
             </div>
         </div>
     </div> 
-    <div v-else id="divSpeedRunGridTabContainer">       
+    <div v-else-if="game.categoryTypes" id="divSpeedRunGridTabContainer">       
         <div class="row no-gutters pe-1">
             <div class="col tab-list">
                 <ul class="nav nav-pills">
@@ -92,6 +92,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else class="text-center mt-2">
+        <span class="fw-bold text-secondary">No categories</span>
     </div>
 </template>
 <script>
@@ -191,26 +194,28 @@
                 var that = this;
                 var game = this.game;
 
-                this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
+                if (game.categoryTypes) {
+                    this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
 
-                this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID && (!that.hideempty || category.hasData) && (that.showmisc || !category.isMisc))?.id;
+                    this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID && (!that.hideempty || category.hasData) && (that.showmisc || !category.isMisc))?.id;
 
-                if (this.categoryTypeID == 1) {
-                    this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideempty || lvl.hasData))[0]?.id : '');
-                } else {
-                    this.levelID = '';
-                }
-
-                if (Object.keys(this.subCategoryVariableValues).length == 0) {
-                    var eligibleVariables = [];
-                    if (this.categoryTypeID == 0) {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
+                    if (this.categoryTypeID == 1) {
+                        this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideempty || lvl.hasData))[0]?.id : '');
                     } else {
-                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
+                        this.levelID = '';
                     }
 
-                    this.subCategoryVariableValues = {};
-                    this.setSubCategoryVariableValues(eligibleVariables, 0);
+                    if (Object.keys(this.subCategoryVariableValues).length == 0) {
+                        var eligibleVariables = [];
+                        if (this.categoryTypeID == 0) {
+                            eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
+                        } else {
+                            eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
+                        }
+
+                        this.subCategoryVariableValues = {};
+                        this.setSubCategoryVariableValues(eligibleVariables, 0);
+                    }
                 }
             },
             setSubCategoryVariableValues: function(variables, count) {
@@ -232,33 +237,35 @@
                 var that = this;
                 var game = this.game;
 
-                if (game.categoryTypes.filter(i => i.id == that.categoryTypeID).length == 0) {
-                    this.categoryTypeID = game.categoryTypes[0]?.id;
-                }
-
-                if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID && (!that.hideempty || i.hasData) && (that.showmisc || !i.isMisc)).length == 0) {
-                    this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID && (!that.hideempty || ctg.hasData) && (that.showmisc || !ctg.isMisc))[0]?.id;
-                }
-
-                if (this.categoryTypeID == 1) {
-                    if(game.levels?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideempty || i.hasData)).length == 0) {
-                        this.levelID = game.levels?.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideempty || lvl.hasData))[0]?.id;
+                if (game.categoryTypes) {
+                    if (game.categoryTypes.filter(i => i.id == that.categoryTypeID).length == 0) {
+                        this.categoryTypeID = game.categoryTypes[0].id;
                     }
-                } else {
-                    this.levelID = '';
-                }
 
-                var eligibleVariables = [];
-                if (this.categoryTypeID == 0) {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
-                } else {
-                    eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
-                }
+                    if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID && (!that.hideempty || i.hasData) && (that.showmisc || !i.isMisc)).length == 0) {
+                        this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID && (!that.hideempty || ctg.hasData) && (that.showmisc || !ctg.isMisc))[0]?.id;
+                    }
 
-                var newSubCategoryVariableValues = {};
-                this.resetSubCategoryVariableValues(eligibleVariables, newSubCategoryVariableValues, 0);
-                this.subCategoryVariableValues = newSubCategoryVariableValues;
-                this.speedRunCode = '';
+                    if (this.categoryTypeID == 1) {
+                        if(game.levels?.filter(i => i.categoryID == that.categoryID && i.id == that.levelID && (!that.hideempty || i.hasData)).length == 0) {
+                            this.levelID = game.levels?.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideempty || lvl.hasData))[0]?.id;
+                        }
+                    } else {
+                        this.levelID = '';
+                    }
+
+                    var eligibleVariables = [];
+                    if (this.categoryTypeID == 0) {
+                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'));
+                    } else {
+                        eligibleVariables = game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == that.categoryID && variable.levelID == that.levelID && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'));
+                    }
+
+                    var newSubCategoryVariableValues = {};
+                    this.resetSubCategoryVariableValues(eligibleVariables, newSubCategoryVariableValues, 0);
+                    this.subCategoryVariableValues = newSubCategoryVariableValues;
+                    this.speedRunCode = '';
+                }
             },
             resetSubCategoryVariableValues: function (variables, newSubCategoryVariableValues, count) {
                 var that = this;                                                                               

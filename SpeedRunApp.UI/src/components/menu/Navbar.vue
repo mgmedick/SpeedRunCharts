@@ -17,7 +17,7 @@
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <input type="search" class="form-control w-auto" placeholder="Search games, users" @click="onSearchClick">
+                <input type="search" class="form-control" style="max-width: 300px;" placeholder="Search games, users" @click="onSearchClick" readonly>
                 <div v-if="isauth">
                     <div class="btn-group">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -160,10 +160,11 @@
             }, 
             onSearchTypeClick: function (searchTypeID) {
                 this.searchTypeID = searchTypeID;
+                this.searchLoading = true;
 
                 this.$nextTick(function() {
-                    this.$refs.searchautocomplete.clear();
-                });                  
+                    this.$refs.searchautocomplete.reload(this.searchText);
+                });  
             },             
             onSearch: function() {
                 var that = this;

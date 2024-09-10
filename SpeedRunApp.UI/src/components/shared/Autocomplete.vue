@@ -174,7 +174,7 @@
                         that.resizeColumns();
                     });
                 }
-            },                       
+            },                   
             filterResults() {
                 var that = this;
 
@@ -189,6 +189,13 @@
                     this.arrowCounter = -1;
                 }
             },
+            reload (value) {
+                this.clear();
+
+                this.$nextTick(function() {
+                    this.model = value;
+                });                  
+            },               
             clear() {
                 this.model = "";
                 this.results = [];

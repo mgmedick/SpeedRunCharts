@@ -17,7 +17,7 @@
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <autocomplete v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="false" :loading="searchLoading" :placeholder="'Search games, users'" style="min-width:300px;" class="mb-2 mb-lg-0 me-2"/>    
+                <input type="search" class="form-control w-auto" placeholder="Search games, users" @click="onSearchClick">
                 <div v-if="isauth">
                     <div class="btn-group">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,12 +67,34 @@
                     </li>
                 </ul>
             </div>
-        </div>                        
+        </div>
+        <div ref="searchmodal" class="modal modal-lg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Search</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> 
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <button type="button" class="btn btn-primary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
+                            <button type="button" class="btn btn-primary btn-sm ms-1" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
+                        </div>
+                        <div class="mt-3">
+                            <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>                                 
     </nav>           
 </template>
 <script>
     import axios from 'axios'
     import { setCookie } from '../../js/common';
+    import { Modal } from 'bootstrap';
 
     export default {
         name: "Navbar",
@@ -90,7 +112,8 @@
                 showImportStatusModal: false,
                 showDropdown: false,
                 toggleNavbar: false,
-                isDarkTheme: this.isdarktheme
+                isDarkTheme: this.isdarktheme,
+                searchTypeID: 0
             }
         },
         computed: {
@@ -119,50 +142,55 @@
             }
         },
         created: function () {
-        },        
+        },      
+        mounted: function() {
+            var that = this;
+
+            that.$refs.searchmodal.addEventListener('hidden.bs.modal', event => {
+                that.$refs.searchautocomplete.clear();
+            });                  
+        },
         methods: {
-            onInput: function(e){
-                this.searchText = e;
-            },
-            onChange: function() {
-                var a = this.searchText;
-            },
+            onSearchClick(e){
+                this.searchText = null;
+
+                this.$nextTick(function() {
+                    new Modal(this.$refs.searchmodal).show();
+                });  
+            }, 
+            onSearchTypeClick: function (searchTypeID) {
+                this.searchTypeID = searchTypeID;
+
+                this.$nextTick(function() {
+                    this.$refs.searchautocomplete.clear();
+                });                  
+            },             
             onSearch: function() {
                 var that = this;
                 this.searchLoading = true;
                                
-                axios.get('/Menu/Search', { params: { term: this.searchText } })
+                var loc = this.searchTypeID == 0 ? '/Game/SearchGames' : '/Player/SearchPlayers'
+                axios.get(loc, { params: { term: this.searchText } })
                         .then(res => {
                             that.searchResults = res.data.reduce((flat, groupheader) => {
                                 return flat
                                     .concat({
                                         label: groupheader.label,
-                                        value: groupheader.subItems.map(method => method.value),
-                                        isGroupHeader: true,
-                                        disabled: true
+                                        value: groupheader.value,
+                                        isGroupHeader: true
                                     })
-                                    .concat(groupheader.subItems.map(method => ({ label: method.label, value: method.value, category: groupheader.label })))
+                                    .concat(groupheader.subItems)
                             }, []);
                             that.searchLoading = false;
 
                             return res;
                         })
                         .catch(err => { console.error(err); return Promise.reject(err); });
-            },              
+            },    
             onSearchSelected: function (result) {
-                var controller;
-                var action;
-
-                if (result.category == 'Games') {
-                    controller = "Game";
-                    action = "GameDetails"
-                } else {
-                    controller = "Player";
-                    action = "PlayerDetails"
-                }
-
-                location.href = encodeURI('/' + controller + "/" + action + "/" + result.value);
-            },
+                var loc = this.searchTypeID == 0 ? '/Game/GameDetails/' : '/Player/PlayerDetails/'
+                location.href = encodeURI(loc + result.value);
+            },                                                                
             onHomeClick: function() {
                 if (window.location.pathname == '/') {
                     window.location.reload(true);

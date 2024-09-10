@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using SpeedRunApp.Repository.Configuration;
 using System;
 using System.Text.Json.Serialization;
+using SpeedRunApp.Service;
 
 namespace SpeedRunApp
 {
@@ -87,7 +88,10 @@ namespace SpeedRunApp
             app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
+            var _cacheService = app.ApplicationServices.GetRequiredService<CacheService>();
+            _ =_cacheService.RefreshCache();      
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("UserSettings", "UserSettings", new { controller = "User", action = "UserSettings" });

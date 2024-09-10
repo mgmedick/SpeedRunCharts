@@ -9,5 +9,8 @@ namespace SpeedRunApp.Interfaces.Services
 {
     public interface ICacheService
     {
+        Task RefreshCache();
+        IEnumerable<GameView> GetGameViews(bool refresh = false);  
+        IEnumerable<PlayerView> GetPlayerViews(bool refresh = false);      
     }
 }

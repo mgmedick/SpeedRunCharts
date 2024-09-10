@@ -842,7 +842,6 @@ button.bg-dark:focus {
 }
 
 /** Tooltip Overrides **/
-
 .playername-text {
     font-weight: 500;
     color: var(--bs-text-color2);
@@ -864,6 +863,11 @@ button.bg-dark:focus {
 
 .theme-light .playername-color-dark {
     background: none !important;
+}
+
+.text-xs {
+    font-size: .75rem;
+    line-height: 1rem;
 }
 
 /********** Custom Components (No Style Dependancy)**********/
@@ -1391,7 +1395,7 @@ input[readonly] {
 /** SpeedRunSummaryVue, GameDetails **/
 .img-round {
     position: relative;
-    height: 0;
+    height: auto !important;
     padding-bottom: 100%;
     overflow: hidden;
     border-radius: 50%;

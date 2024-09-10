@@ -12,6 +12,7 @@ namespace SpeedRunApp.Model.Data
         public string Abbr { get; set; }
         public int PlayerTypeID { get; set; }
         public int PlayerLinkID { get; set; }        
+        public string ProfileImageUrl { get; set; }
         public string SrcUrl { get; set; }
         public string TwitchUrl { get; set; }
         public string HitboxUrl { get; set; }
@@ -23,5 +24,7 @@ namespace SpeedRunApp.Model.Data
         public string ColorDark { get; set; }
         public string ColorToLight { get; set; }
         public string ColorToDark { get; set; }
+        public string SantizedName { get; set; }
+        public string SantizedNameNoSpace { get; set; }        
     }
 } 

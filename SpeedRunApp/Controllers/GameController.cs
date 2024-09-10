@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using SpeedRunApp.Interfaces.Services;
 using SpeedRunApp.Model.ViewModels;
+using SpeedRunApp.Model;
 using SpeedRunCommon.Extensions;
 using System.Collections.Generic;
 using System;
 using Serilog;
+using System.Linq;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -96,7 +98,13 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult SearchGames(string term)
         {
-            var results = _gameService.SearchGames(term);
+            var results = new List<SearchResult>();
+
+            var games = _gameService.SearchGames(term).ToList();
+            if (games.Any()) {
+                var gamesGroup = new SearchResult { Value = "0", Label = "Games", SubItems = games };
+                results.Add(gamesGroup);
+            }
 
             return Json(results);
         }                          

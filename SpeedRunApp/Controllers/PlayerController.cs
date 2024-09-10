@@ -4,6 +4,8 @@ using SpeedRunApp.Model.ViewModels;
 using System.Collections.Generic;
 using System;
 using Serilog;
+using SpeedRunApp.Model;
+using System.Linq;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -54,10 +56,16 @@ namespace SpeedRunApp.MVC.Controllers
         [HttpGet]
         public JsonResult SearchPlayers(string term)
         {
-            var results = _playerService.SearchPlayers(term);
+            var results = new List<SearchResult>();
+
+            var players = _playerService.SearchPlayers(term).ToList();;
+            if (players.Any()) {
+                var playersGroup = new SearchResult { Value = "0", Label = "Players", SubItems = players };
+                results.Add(playersGroup);
+            }
 
             return Json(results);
-        }
+        }          
     }
 }
 

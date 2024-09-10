@@ -3,7 +3,7 @@
         <div>
             <input type="search" class="form-control" :value="model" @input="model = $event.target.value" @click="onClick" @focus="onFocus" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter($event)" :placeholder="placeholder" />
         </div>
-        <div v-if="isimgresults" class="container p-0">           
+        <div v-if="isimgresults" class="container p-0">       
             <div class="row g-3 mt-3">
                 <div class="col-lg-2 col-md-3 col-4 d-none">
                     <div class="position-relative default-image-container" role="button">               
@@ -12,17 +12,22 @@
                         </svg>                        
                     </div>
                 </div>
-                <div v-if="results.length > 0" v-for="(result, i) in results" class="col-lg-2 col-md-3 col-4" :class="{ 'highlighted': i === arrowCounter }">
-                    <div @click="onSearchSelected(result)" role="button" class="position-relative image-container rounded d-flex" style="overflow: hidden; background: linear-gradient(45deg,#dbdde3,#fff);">
-                        <img v-if="result.imagePath" :src="result.imagePath" class="img-fluid align-self-center" :style="[ result.imagePath?.indexOf('nocover.png') > -1 ? { opacity:'0.5' } : null ]" alt="Responsive image">
+                <template v-if="results.length > 0" v-for="(result, i) in results">
+                    <div v-if="result.isGroupHeader">
+                        <span class="fw-bold text-secondary">{{ result.label }}</span>
                     </div>
-                    <div class="text-xs">
-                        <span> {{ result.label }}</span>
-                        <div v-if="result.labelSecondary" class="text-muted">
-                            <span>{{ result.labelSecondary }}</span>
+                    <div v-else class="col-lg-2 col-md-3 col-4" :class="{ 'highlighted': i === arrowCounter }">
+                        <div @click="onSearchSelected(result)" role="button" class="position-relative image-container d-flex" :class="isimgcircle ? 'img-round' : 'rounded'" style="overflow: hidden; background: linear-gradient(45deg,#dbdde3,#fff);">
+                            <img v-if="result.imagePath" :src="result.imagePath" class="img-fluid" :class="{ 'align-self-center' : !isimgcircle }" :style="[ result.imagePath?.indexOf('nocover.png') > -1 ? { opacity:'0.5' } : null ]" alt="Responsive image">
+                        </div>
+                        <div class="text-xs text-center">
+                            <span>{{ result.label }}</span>
+                            <div v-if="result.labelSecondary" class="text-muted">
+                                <span>{{ result.labelSecondary }}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
                 <div v-else-if="model && model.length >= minlength && !loading && results.length == 0">
                     <span>No results found</span>
                 </div>
@@ -53,6 +58,7 @@
                 default: 0
             }, 
             isimgresults: Boolean,
+            isimgcircle: Boolean,
             isasync: Boolean,               
             loading: Boolean,
             placeholder: String

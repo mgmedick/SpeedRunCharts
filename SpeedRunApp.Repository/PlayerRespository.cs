@@ -14,11 +14,11 @@ namespace SpeedRunApp.Repository
 {
     public class PlayerRespository : BaseRepository, IPlayerRepository
     {
-        public IEnumerable<PlayerView> GetPlayerViews(Expression<Func<PlayerView, bool>> predicate)
+        public IEnumerable<PlayerView> GetPlayerViews(Expression<Func<PlayerView, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<PlayerView>().Where(predicate).ToList();
+                return db.Query<PlayerView>().Where(predicate ?? (x => true)).ToList();
             }
         }        
 

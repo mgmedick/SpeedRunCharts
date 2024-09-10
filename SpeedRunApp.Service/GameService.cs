@@ -6,6 +6,7 @@ using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using SpeedRunCommon.Extensions;
 
 namespace SpeedRunApp.Service
 {
@@ -13,11 +14,13 @@ namespace SpeedRunApp.Service
     {
         private readonly IGameRepository _gameRepo = null;
         private readonly ISpeedRunRepository _speedRunRepo = null;
+        private readonly ICacheService _cacheService = null;
 
-        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo)
+        public GamesService(IGameRepository gameRepo, ISpeedRunRepository speedRunRepo, ICacheService cacheService)
         {
             _gameRepo = gameRepo;
             _speedRunRepo = speedRunRepo;
+            _cacheService = cacheService;
         }
 
         public GameDetailsViewModel GetGameDetails(string gameAbbr, string speedRunCode) {
@@ -92,11 +95,35 @@ namespace SpeedRunApp.Service
 
             return SubCategoryVariableValueNames;
         }
-        
+
         public IEnumerable<SearchResult> SearchGames(string searchText)
         {
-            return _gameRepo.SearchGames(searchText);
-        }               
+            var results = new List<SearchResult>();
+
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                searchText = searchText.SanatizeName();
+                var searchItems = searchText.Split(' ');
+                results = _cacheService.GetGameViews()
+                               .Where(i => searchItems.Any(g => i.SantizedName.Contains(g, StringComparison.OrdinalIgnoreCase)))
+                               .GroupBy(g => new { g.Name, g.ReleaseDate?.Year })
+                               .Select(i => i.First())
+                               .Select(i => new { i.ID, i.Name, i.Abbr, i.ReleaseDate, i.CoverImageUrl, 
+                                    ContainsPriority = searchItems.Count() - searchItems.Count(g => i.SantizedName.Contains(g, StringComparison.OrdinalIgnoreCase)),
+                                    MatchPriority = searchItems.Count() - searchItems.Intersect(i.SantizedName.Split(' '), StringComparer.OrdinalIgnoreCase).Count(),
+                                    RemainderPriority = i.SantizedNameNoSpace.Replace(searchItems, string.Empty, StringComparison.OrdinalIgnoreCase).Length
+                               })
+                               .OrderBy(i => i.ContainsPriority)
+                               .ThenBy(i => i.MatchPriority)
+                               .ThenBy(i => i.RemainderPriority)
+                               .ThenByDescending(i => i.ReleaseDate)
+                               .Take(20)       
+                               .Select(i => new SearchResult() { Value = i.Abbr, Label = i.Name, LabelSecondary = i.ReleaseDate?.Year.ToString(), ImagePath = i.CoverImageUrl })
+                               .ToList();
+            }
+            
+            return results;
+        }                   
     }
 }
 

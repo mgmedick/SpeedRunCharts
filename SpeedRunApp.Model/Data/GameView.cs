@@ -24,7 +24,9 @@ namespace SpeedRunApp.Model.Data
         public string VariablesJson { get; set; }
         public string VariableValuesJson { get; set; }
         public string GamePlatformsJson { get; set; }
-
+        public string SantizedName { get; set; }
+        public string SantizedNameNoSpace { get; set; }
+        
         private List<GameCategoryType> _gameCategoryTypes = null;
         public List<GameCategoryType> GameCategoryTypes
         { 

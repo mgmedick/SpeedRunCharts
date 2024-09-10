@@ -9,7 +9,7 @@ namespace SpeedRunApp.Interfaces.Repositories
 {
     public interface IPlayerRepository
     {
-        IEnumerable<PlayerView> GetPlayerViews(Expression<Func<PlayerView, bool>> predicate);
+        IEnumerable<PlayerView> GetPlayerViews(Expression<Func<PlayerView, bool>> predicate = null);
         PlayerSpeedRunCountResult GetPlayerSpeedRunCounts(int playerID);
         IEnumerable<SearchResult> SearchPlayers(string searchText);
     }

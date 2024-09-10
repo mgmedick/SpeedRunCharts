@@ -48,6 +48,8 @@ namespace SpeedRunApp.Repository
                 i.Column(g => g.Variables).Ignore();
                 i.Column(g => g.VariableValues).Ignore();
                 i.Column(g => g.GamePlatforms).Ignore();
+                i.Column(g => g.SantizedName).Ignore();
+                i.Column(g => g.SantizedNameNoSpace).Ignore();
             }); 
             For<Game>().PrimaryKey("ID").TableName("tbl_Game");
             For<GameCategoryType>().PrimaryKey("ID").TableName("tbl_Game_CategoryType");
@@ -71,7 +73,11 @@ namespace SpeedRunApp.Repository
                 i.Column(g => g.HasData).Ignore();
                 i.Column(g => g.SubVariables).Ignore();
             });            
-            For<PlayerView>().PrimaryKey("ID").TableName("vw_Player");
+            For<PlayerView>().PrimaryKey("ID").TableName("vw_Player").Columns(i =>
+            {
+                i.Column(g => g.SantizedName).Ignore();
+                i.Column(g => g.SantizedNameNoSpace).Ignore();
+            }); 
 
             For<User>().PrimaryKey("ID").TableName("tbl_User");
             For<UserSetting>().PrimaryKey("ID").TableName("tbl_User_Setting");

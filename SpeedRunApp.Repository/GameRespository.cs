@@ -14,11 +14,11 @@ namespace SpeedRunApp.Repository
 {
     public class GameRespository : BaseRepository, IGameRepository
     {
-        public IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate)
+        public IEnumerable<GameView> GetGameViews(Expression<Func<GameView, bool>> predicate = null)
         {
             using (IDatabase db = DBFactory.GetDatabase())
             {
-                return db.Query<GameView>().Where(predicate).ToList();
+                return db.Query<GameView>().Where(predicate ?? (x => true)).ToList();
             }
         }
 

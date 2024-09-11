@@ -51,7 +51,7 @@ namespace SpeedRunApp.Model.ViewModels
                 Variables.RemoveAll(i => i.VariableValues == null || !i.VariableValues.Any());
                 if (runs != null)
                 {
-                    Variables.RemoveAll(i => (i.VariableScopeTypeID == (int)VariableScopeType.Global || i.VariableScopeTypeID == (int)VariableScopeType.FullGame|| i.VariableScopeTypeID == (int)VariableScopeType.AllLevels) && !runs.Any(x => !string.IsNullOrWhiteSpace(x.SubCategoryVariableValueIDs) && x.SubCategoryVariableValueIDs.Split(",").Intersect(i.VariableValues.Select(g => g.ID.ToString())).Any()));
+                    Variables.RemoveAll(i => (i.VariableScopeTypeID == (int)VariableScopeType.Global || i.VariableScopeTypeID == (int)VariableScopeType.FullGame|| i.VariableScopeTypeID == (int)VariableScopeType.AllLevels) && i.IsSubCategory && !runs.Any(x => !string.IsNullOrWhiteSpace(x.SubCategoryVariableValueIDs) && x.SubCategoryVariableValueIDs.Split(",").Intersect(i.VariableValues.Select(g => g.ID.ToString())).Any()));
                 }
 
                 var subVariables = Variables.Where(i => i.IsSubCategory).ToList();

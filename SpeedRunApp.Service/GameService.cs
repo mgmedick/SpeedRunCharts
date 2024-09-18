@@ -45,9 +45,11 @@ namespace SpeedRunApp.Service
 
             if (!string.IsNullOrWhiteSpace(speedRunCode)) {
                 var runVW = _speedRunRepo.GetSpeedRunGridViews(i => i.Code == speedRunCode).FirstOrDefault();
-                var subCategoryVariableValueIDs = !string.IsNullOrWhiteSpace(runVW.SubCategoryVariableValueIDs) ? runVW.SubCategoryVariableValueIDs.Split(",").Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
-                runVW.SubCategoryVariableValues = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, gameVM.SubCategoryVariables);
-                gridTabVM.RunVW = runVW;
+                if(runVW != null) {
+                    var subCategoryVariableValueIDs = !string.IsNullOrWhiteSpace(runVW.SubCategoryVariableValueIDs) ? runVW.SubCategoryVariableValueIDs.Split(",").Select(x => Convert.ToInt32(x)).ToList() : new List<int>();
+                    runVW.SubCategoryVariableValues = GetSubCategoryVariableValueNames(subCategoryVariableValueIDs, gameVM.SubCategoryVariables);
+                    gridTabVM.RunVW = runVW;
+                }
             }
 
             return gridTabVM;

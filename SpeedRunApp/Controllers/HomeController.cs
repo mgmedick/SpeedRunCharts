@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Serilog;
 using Microsoft.AspNetCore.Authorization;
+using System.Web;
+using System.Data.SqlTypes;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -21,14 +23,18 @@ namespace SpeedRunApp.MVC.Controllers
         private readonly ISpeedRunService _speedRunService = null;
         private readonly IUserService _userService = null;
         private readonly IAuthService _authService = null;
+        private readonly ISettingService _settingService = null;
+        private readonly ICacheService _cacheService = null;
         private readonly IConfiguration _config = null;
         private readonly ILogger _logger = null;
 
-        public HomeController(ISpeedRunService speedRunService, IUserService userService, IAuthService authService, IConfiguration config, ILogger logger)
+        public HomeController(ISpeedRunService speedRunService, IUserService userService, IAuthService authService, ISettingService settingService, ICacheService cacheService, IConfiguration config, ILogger logger)
         {
             _speedRunService = speedRunService;
             _userService = userService;
             _authService = authService;
+            _settingService = settingService;
+            _cacheService = cacheService;
             _config = config;
             _logger = logger;
         }
@@ -63,6 +69,39 @@ namespace SpeedRunApp.MVC.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult RefreshCache()
+        {
+            var success = false;
+            List<string> errorMessages = null;
+
+            try
+            {       
+                var token = (string)HttpContext.Request.Form["token"];
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    token = HttpUtility.UrlDecode(token);
+                    var hashKey = _config.GetSection("SiteSettings").GetSection("HashKey").Value; 
+                    var lastImportDateUtcString = (_settingService.GetSetting("LastImportDate")?.Dte ?? (DateTime)SqlDateTime.MinValue).ToString();
+                    
+                    if (lastImportDateUtcString.GetHMACSHA256Hash(hashKey) == token)
+                    {
+                        _cacheService.RefreshCache();
+                        success = true;
+                    }              
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "RefreshCache");
+                success = false;
+                errorMessages = new List<string>() { "Error refreshing cache" };
+            }
+
+            return Json(new { success = success, errorMessages = errorMessages });
+        }        
 
         [HttpGet]
         public ActionResult Login()

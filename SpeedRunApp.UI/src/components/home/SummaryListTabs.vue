@@ -60,29 +60,11 @@
                         iconClass = 'fa fa-certificate';
                         break;
                     case 1:
-                        iconClass = 'fa fa-percentage';
-                        break;
-                    case 2:
                         iconClass = 'fa fa-award';
                         break;
-                    case 3:
+                    case 2:
                         iconClass = 'fa fa-cubes';
-                        break;
-                    case 4:
-                        iconClass = 'fa fa-star';
-                        break;
-                    case 5:
-                        iconClass = 'fa fa-fire';
-                        break;
-                    case 7:
-                        iconClass = 'fa fa-gamepad';
-                        break;       
-                    case 8:
-                        iconClass = 'fa fa-lightbulb';
-                        break;    
-                    case 9:
-                        iconClass = 'fa fa-chart-line';
-                        break;                                                                                               
+                        break;                                                                                            
                 }
 
                 iconClass += " fa-sm";

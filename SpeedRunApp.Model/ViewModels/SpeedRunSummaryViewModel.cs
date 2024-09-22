@@ -84,7 +84,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return (VideoThumbnailLink ?? string.Empty).EndsWith("hqdefault.jpg");
+                return (VideoThumbnailLink ?? string.Empty).EndsWith("hqdefault.jpg") || (VideoThumbnailLink ?? string.Empty).EndsWith("sddefault.jpg");
             }
         }          
 

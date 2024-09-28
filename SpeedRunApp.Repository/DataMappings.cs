@@ -31,7 +31,6 @@ namespace SpeedRunApp.Repository
             {
                 i.Column(g => g.Players).Ignore();
                 i.Column(g => g.SubCategoryVariableValueNames).Ignore();
-                i.Column(g => g.Videos).Ignore();
             }); 
             For<SpeedRunDetailView>().TableName("vw_SpeedRunDetail").Columns(i =>
             {

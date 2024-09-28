@@ -27,9 +27,14 @@ namespace SpeedRunApp.Model.Data
         public long PrimaryTime { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public int SpeedRunVideoID { get; set; }
+        public string VideoLinkUrl { get; set; }
+        public string EmbeddedVideoLinkUrl { get; set; }
+        public string ThumbnailLinkUrl { get; set; }
+        public string ChannelCode { get; set; }
+        public long? ViewCount { get; set; }
         public string SubCategoryVariableValueNamesJson { get; set; }       
         public string PlayersJson { get; set; }
-        public string VideosJson { get; set; }
 
         private List<string> _subCategoryVariableValueNames = null;
         public List<string> SubCategoryVariableValueNames
@@ -57,20 +62,6 @@ namespace SpeedRunApp.Model.Data
 
                 return _players;
             }
-        }
-
-        private List<VideoResult> _videos = null;
-        public List<VideoResult> Videos
-        { 
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(VideosJson))
-                {
-                    _videos = JsonSerializer.Deserialize<List<VideoResult>>(VideosJson);
-                }
-
-                return _videos;
-            }
-        }                     
+        }                
     }
 } 

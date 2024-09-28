@@ -28,7 +28,8 @@ namespace SpeedRunApp.Model.ViewModels
             PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);
             ShowMilliseconds = run.ShowMilliseconds;
             Players = run.Players;
-            VideoLinks = run.Videos;
+            EmbeddedVideoLink = run.EmbeddedVideoLinkUrl;
+            VideoThumbnailLink = run.ThumbnailLinkUrl;
         }
 
         public int ID { get; set; }
@@ -42,35 +43,12 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public List<string> SubCategoryVariableValueNames { get; set; }
         public List<PlayerResult> Players { get; set; }
-        public List<VideoResult> VideoLinks { get; set; }
+        public string EmbeddedVideoLink { get; set; }
+        public string VideoThumbnailLink { get; set; }
         public bool ShowMilliseconds { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? VerifyDate { get; set; }
-
-        public VideoResult EmbeddedVideo
-        {
-            get
-            {
-                return VideoLinks?.Where(x => !string.IsNullOrWhiteSpace(x.EmbeddedVideoLinkUrl)).FirstOrDefault();
-            }
-        }        
-
-        public string EmbeddedVideoLink
-        {
-            get
-            {
-                return EmbeddedVideo?.EmbeddedVideoLinkUrl;
-            }
-        }
-
-        public string VideoThumbnailLink
-        {
-            get
-            {
-                return EmbeddedVideo?.ThumbnailLinkUrl;
-            }
-        }
 
         public string EmbeddedVideoLinkAutoplay
         {

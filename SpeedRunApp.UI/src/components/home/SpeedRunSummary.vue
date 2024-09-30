@@ -45,29 +45,33 @@
                 </div>                      
             </div>
             <div class="col align-self-end p-0 show-sm" @click="showVideo = !showVideo">
-                <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
+                <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }" style="position:relative">
                     <div class="ratio ratio-16x9" style="overflow: hidden;">
                         <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
+                    </div>
+                    <div class="position-absolute top-0 bottom-0 start-0 end-0">
                         <div class="d-flex" style="height: 100%;">
-                            <div class="mx-auto align-self-center">
+                            <div class="mx-auto align-self-center" style="text-align: center;">
                                 <i class="play-icon fa fa-play fa-lg"></i>
                             </div>
-                        </div>   
-                    </div>                 
+                        </div>
+                    </div>                                      
                 </div>                                                             
             </div>                    
         </div>
         <div class="body show-md">
             <div v-if="!showVideo" @click="showVideo = !showVideo;">
-                <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }">
+                <div :class="{ 'stretchy-wrapper' : item.isVideoThumbnailLowRes }" style="position:relative">
                     <div class="ratio ratio-16x9" style="overflow: hidden;">
                         <img :src="item.videoThumbnailLink" style="width: 100%; height: auto; overflow:hidden;"/>
+                    </div>
+                    <div class="position-absolute top-0 bottom-0 start-0 end-0">
                         <div class="d-flex" style="height: 100%;">
-                            <div class="mx-auto align-self-center">
+                            <div class="mx-auto align-self-center" style="text-align: center;">
                                 <i class="play-icon fa fa-play fa-5x"></i>
                             </div>
-                        </div> 
-                    </div>                   
+                        </div>
+                    </div>                                       
                 </div>                                                     
             </div>
             <div v-else class="ratio ratio-16x9">                    

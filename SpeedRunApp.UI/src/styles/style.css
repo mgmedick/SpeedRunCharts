@@ -236,7 +236,7 @@ a.text-secondary:focus, a.text-secondary:hover {
 .form-control:disabled, .form-control[readonly] {
     color: var(--bs-grey);
     -webkit-text-fill-color: var(--bs-grey);
-    background-color: var(--bs-border-color10) !important;
+    /* background-color: var(--bs-border-color10) !important; */
 }
 
 /* 
@@ -453,6 +453,10 @@ select.form-control:focus::-ms-value {
     padding-top: 0.32421875rem;
     padding-bottom: 0.32421875rem;
     font-size: 1.171875rem;
+    color: var(--bs-text-color2);
+}
+
+.navbar-brand:hover {
     color: var(--bs-text-color2);
 }
 

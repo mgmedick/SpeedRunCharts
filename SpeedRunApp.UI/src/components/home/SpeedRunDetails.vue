@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div v-else id="divSpeedRunEdit">
+        <div v-else>
             <div class="mb-3">
                 <div class="ratio ratio-16x9">                    
                     <iframe v-if="item.embeddedVideoLink" :src="item.embeddedVideoLink"
@@ -23,126 +23,128 @@
                 <div v-if="item.videoLinks" v-for="(video, index) in item.videoLinks">
                     <a class="link-offset-2 link-underline link-underline-opacity-0" :href="video.videoLink">{{ video.videoLink }}</a>
                 </div>                   
-            </div>         
-            <div class="mb-3">
-                <h6>Leaderboard</h6>    
-                <div class="row g-3">
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Game</label>
-                                <div style="width: 200px;">
-                                    <span>{{ item.gameName }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>       
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Category</label>
-                                <div style="width: 200px;">
-                                    <span>{{ item.categoryName }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>     
-                    <div v-if="item.levelName" class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Level</label>
-                                <div style="width: 200px;">
-                                    <span>{{ item.levelName }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                    <div v-if="item.variableValues" class="col-auto" v-for="(variableValue, index) in item.variableValues">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">{{ variableValue.variableName }}</label>
-                                <div style="width: 200px;">
-                                    <span>{{ variableValue.name }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>               
             </div>
-            <div class="mb-2">
-                <h6>Details</h6>     
-                <div class="row g-3">
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Rank</label>
-                                <div style="width: 200px;">
-                                    <i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-2" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? ' - ' }}</span>
+            <div>        
+                <div class="mb-3">
+                    <h6>Leaderboard</h6>    
+                    <div class="row g-3">
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Game</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ item.gameName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>       
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Category</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ item.categoryName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+                        <div v-if="item.levelName" class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Level</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ item.levelName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <div v-if="item.variableValues" class="col-auto" v-for="(variableValue, index) in item.variableValues">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">{{ variableValue.variableName }}</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ variableValue.name }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                    
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Time</label>
-                                <div style="width: 200px;">
-                                    <span>{{ item.showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span>
+                    </div>               
+                </div>
+                <div class="mb-2">
+                    <h6>Details</h6>     
+                    <div class="row g-3">
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Rank</label>
+                                    <div style="width: 200px;">
+                                        <i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-2" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? ' - ' }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>                   
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Players</label>
-                                <div style="width: 200px;">
-                                    <template v-for="(player, index) in item.players">                               
-                                        <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
-                                            <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
-                                                <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
+                        </div>                    
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Time</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ item.showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                   
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Players</label>
+                                    <div style="width: 200px;">
+                                        <template v-for="(player, index) in item.players">                               
+                                            <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
+                                                <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
+                                                    <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code" class="text-primary">{{ player.name }}</a>
+                                                </span>
                                             </span>
-                                        </span>
-                                        <span v-else class="playername-text">
-                                            <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
-                                        </span>
-                                        <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
-                                    </template>
+                                            <span v-else class="playername-text">
+                                                <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
+                                            </span>
+                                            <span class="text-primary">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div v-if="item.platformName" class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Platform</label>
-                                <div style="width: 200px;">
-                                    <span>{{ item.platformName }}</span>
+                        <div v-if="item.platformName" class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Platform</label>
+                                    <div style="width: 200px;">
+                                        <span>{{ item.platformName }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                     
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Submitted</label>
+                                    <div style="width: 200px;">
+                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeDateSubmittedString }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                        <div class="col-auto">
+                            <div class="card card-dark">
+                                <div class="card-body p-2">
+                                    <label class="fw-bold">Verified</label>
+                                    <div style="width: 200px;">
+                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateString }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                     
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Submitted</label>
-                                <div style="width: 200px;">
-                                    <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeDateSubmittedString }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                    <div class="col-auto">
-                        <div class="card card-dark">
-                            <div class="card-body p-2">
-                                <label class="fw-bold">Verified</label>
-                                <div style="width: 200px;">
-                                    <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateString }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>                                                                                                                                                                                      
+                    </div>                                                                                                                                                                                      
+                </div>
             </div>
         </div>
     </div>   

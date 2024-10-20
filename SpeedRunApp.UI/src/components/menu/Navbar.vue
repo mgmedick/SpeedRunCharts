@@ -1,5 +1,5 @@
 ﻿<template>
-    <nav class="navbar navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-expand-lg bg-body">
         <div class="container-fluid">
             <a class="navbar-brand" href="#/" draggable="false" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pe-1" alt="">
@@ -10,9 +10,6 @@
             </button>
             <div id="navbarNav" class="navbar-collapse" :style="[ toggleNavbar ? null : { display:'none' } ]">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item active pt-1 pb-1">
-                        <a href="https://github.com/speedruncomorg/api" class="badge badge-primary p-2">Powered by speedrun.com API</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    

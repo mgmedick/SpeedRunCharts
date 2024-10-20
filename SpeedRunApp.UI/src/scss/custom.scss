@@ -1,4 +1,18 @@
-﻿.img-round {
+@import "../../node_modules/bootswatch/dist/zephyr/variables";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/bootswatch/dist/zephyr/bootswatch";
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+// @import "../../node_modules/bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+// $body-bg: #000;
+// $body-color: #111;
+// $primary: #ff4136;
+
+// @import "../../node_modules/bootstrap/scss/bootstrap";
+
+.img-round {
     position: relative;
     height: auto !important;
     padding-bottom: 100%;
@@ -82,5 +96,7 @@ div.stretchy-wrapper > div:first-child {
         margin-right: -0.75rem;
     }
 }
+
+
 
 

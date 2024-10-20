@@ -12,7 +12,6 @@ import activate from './home/Activate.vue';
 import login from './home/Login.vue';
 import resetPassword from './home/ResetPassword.vue';
 import changePassword from './home/ChangePassword.vue';
-import summaryListTabs from './home/SummaryListTabs.vue';
 import summaryList from './home/SummaryList.vue';
 import speedRunSummary from './home/SpeedRunSummary.vue';
 import speedRunDetails from './home/SpeedRunDetails.vue';
@@ -61,7 +60,6 @@ export default {
             // }
         });
         
-        app.component("summary-list-tabs", summaryListTabs);
         app.component("navbar", navbar);
         app.component("about", about);
         app.component('autocomplete', autocomplete);

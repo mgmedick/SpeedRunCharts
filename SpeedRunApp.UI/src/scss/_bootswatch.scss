@@ -65,27 +65,27 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
 
 // Buttons
 
-[data-bs-theme="light"] {
-  .btn-secondary,
-  .btn-outline-secondary {
-    &:hover {
-      background-color: shade-color($secondary, 10%);
-      border-color: shade-color($secondary, 10%);
-    }
+// [data-bs-theme="light"] {
+//   .btn-secondary,
+//   .btn-outline-secondary {
+//     &:hover {
+//       background-color: shade-color($secondary, 10%);
+//       border-color: shade-color($secondary, 10%);
+//     }
 
-    &:active,
-    &.active {
-      color: $white;
-      background-color: $dark;
-      border-color: $dark;
-    }
+//     &:active,
+//     &.active {
+//       color: $white;
+//       background-color: $dark;
+//       border-color: $dark;
+//     }
 
-    // &:disabled,
-    // &.disabled {
-    //   border: 1px solid shade-color($secondary, 10%);
-    // } 
-  }
-}
+//     // &:disabled,
+//     // &.disabled {
+//     //   border: 1px solid shade-color($secondary, 10%);
+//     // } 
+//   }
+// }
 
 // [data-bs-theme="dark"] {
 //   .btn-secondary,

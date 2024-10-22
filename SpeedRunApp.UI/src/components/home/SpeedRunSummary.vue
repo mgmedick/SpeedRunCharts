@@ -52,16 +52,16 @@
                 </div>                       
                 <div class="row g-1 mb-1">                    
                     <div v-if="item.categoryTypeName" class="col-auto">
-                        <span class="badge rounded-pill text-bg-secondary fw-normal">{{ item.categoryTypeName }}</span>
+                        <span class="badge rounded-pill text-bg-secondary fw-500">{{ item.categoryTypeName }}</span>
                     </div>
                     <div v-if="item.categoryName" class="col-auto">
-                        <span v-if="item.categoryName" class="badge rounded-pill text-bg-secondary fw-normal">{{ item.categoryName }}</span>
+                        <span v-if="item.categoryName" class="badge rounded-pill text-bg-secondary fw-500">{{ item.categoryName }}</span>
                     </div>
                     <div v-if="item.levelName" class="col-auto">
-                        <span v-if="item.levelName" class="badge rounded-pill text-bg-secondary fw-normal">{{ item.levelName }}</span>
+                        <span v-if="item.levelName" class="badge rounded-pill text-bg-secondary fw-500">{{ item.levelName }}</span>
                     </div>
                     <div v-for="(subCategoryVariableValue, index) in item.subCategoryVariableValueNames" class="col-auto">
-                        <span class="badge rounded-pill text-bg-secondary fw-normal">{{ subCategoryVariableValue }}</span>
+                        <span class="badge rounded-pill text-bg-secondary fw-500">{{ subCategoryVariableValue }}</span>
                     </div>                
                 </div>
             </div>

@@ -1,5 +1,5 @@
 ﻿<template>
-    <nav class="navbar navbar-expand-lg bg-body">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#/" draggable="false" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pe-1" alt="">
@@ -133,7 +133,7 @@
                         .catch(err => { console.error(err); return Promise.reject(err); });        
                 } else {
                     this.updateTheme(val);
-                    var theme = val ? "theme-dark" : "theme-light";
+                    var theme = val ? "dark" : "light";
                     setCookie("theme", theme);                  
                 }
             }
@@ -204,11 +204,9 @@
                 var el = document.body;
 
                 if (val){
-                    el.classList.remove("theme-light");
-                    el.classList.add("theme-dark");
+                    el.dataset.bsTheme = "dark";
                 } else {
-                    el.classList.remove("theme-dark");
-                    el.classList.add("theme-light");
+                    el.dataset.bsTheme = "light";
                 }
             }
         }

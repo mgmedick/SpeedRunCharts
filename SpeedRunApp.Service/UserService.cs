@@ -173,7 +173,7 @@ namespace SpeedRunApp.Service
 
             _userRepo.SaveUser(user);
 
-            var isdarktheme = (_context.HttpContext.Request.Cookies["theme"] ?? _config.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "theme-dark";
+            var isdarktheme = (_context.HttpContext.Request.Cookies["theme"] ?? _config.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "dark";
             var userSetting = new UserSetting() {
                 UserID = user.ID,
                 IsDarkTheme = isdarktheme

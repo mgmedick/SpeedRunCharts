@@ -102,11 +102,9 @@
                 var el = document.body;
 
                 if (val){
-                    el.classList.remove("theme-light");
-                    el.classList.add("theme-dark");
+                    el.dataset.bsTheme = "dark";
                 } else {
-                    el.classList.remove("theme-dark");
-                    el.classList.add("theme-light");
+                    el.dataset.bsTheme = "light";
                 }
             }
         }

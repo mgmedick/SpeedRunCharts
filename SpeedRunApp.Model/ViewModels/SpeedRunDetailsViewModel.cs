@@ -7,9 +7,13 @@ using SpeedRunApp.Model.JSON;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunDetailViewModel
+    public class SpeedRunDetailsViewModel
     {
-        public SpeedRunDetailViewModel(SpeedRunDetailView run)
+        public SpeedRunDetailsViewModel()
+        {
+        }
+        
+        public SpeedRunDetailsViewModel(SpeedRunDetailView run)
         {
             ID = run.ID;
             Code = run.Code;

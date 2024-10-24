@@ -75,7 +75,7 @@
     import { resizeTabs } from '../../js/common.js';
 
     export default {
-        name: "GameDetailTabs",
+        name: "GameDetailsTabs",
         props: {
             id: String,
             speedruncode: String           

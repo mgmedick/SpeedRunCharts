@@ -47,9 +47,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">    
                         <speedrun-details ref="speedrundetails" v-if="selectedSpeedRun" :speedrunid="selectedSpeedRun.id" />                     
@@ -62,9 +60,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">User Charts</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">
                         <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedSpeedRun" :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         

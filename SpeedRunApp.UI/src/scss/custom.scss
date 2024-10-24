@@ -68,6 +68,21 @@ div.stretchy-wrapper > div:first-child {
     font-weight: 500 !important;
 }
 
+.iframe-wrapper{
+    //display:inline-block;
+    position:relative;
+}
+
+.iframe-wrapper::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
 .mx-n3 {
     margin-left: -0.75rem;
     margin-right: -0.75rem;

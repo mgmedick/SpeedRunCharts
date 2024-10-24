@@ -19,7 +19,7 @@ import speedRunDetails from './home/SpeedRunDetails.vue';
 import userSettings from './user/UserSettings.vue';
 
 import gameDetails from './game/GameDetails.vue';
-import gameDetailTabs from './game/GameDetailTabs.vue';
+import gameDetailsTabs from './game/GameDetailsTabs.vue';
 import gameSummaryChartTabs from './game/GameSummaryChartTabs.vue';
 import gameSummaryCharts from './game/GameSummaryCharts.vue';
 import leaderboardGrid from './game/LeaderboardGrid.vue';
@@ -38,7 +38,7 @@ import leaderboardTopLineChart from './game/charts/LeaderboardTopLineChart.vue';
 import leaderboardWorldRecordChart from './game/charts/LeaderboardWorldRecordChart.vue';
 
 import playerDetails from './player/PlayerDetails.vue';
-import playerDetailTabs from './player/PlayerDetailTabs.vue';
+import playerDetailsTabs from './player/PlayerDetailsTabs.vue';
 import playerSpeedRunTabs from './player/PlayerSpeedRunTabs.vue';
 import playerSpeedRunGrid from './player/PlayerSpeedRunGrid.vue';
 import playerSpeedRunCharts from './player/PlayerSpeedRunCharts.vue';
@@ -78,7 +78,7 @@ export default {
         app.component("user-settings", userSettings);
 
         app.component('game-details', gameDetails); 
-        app.component("game-detail-tabs", gameDetailTabs);         
+        app.component("game-details-tabs", gameDetailsTabs);         
         app.component("game-summary-chart-tabs", gameSummaryChartTabs);
         app.component("game-summary-charts", gameSummaryCharts);
         app.component("leaderboard-tabs", leaderboardTabs);
@@ -97,7 +97,7 @@ export default {
         app.component("leaderboard-top-line-chart", leaderboardTopLineChart);
 
         app.component('player-details', playerDetails); 
-        app.component("player-detail-tabs", playerDetailTabs);
+        app.component("player-details-tabs", playerDetailsTabs);
         app.component("player-speedrun-grid", playerSpeedRunGrid);
         app.component("player-speedrun-tabs", playerSpeedRunTabs);
         app.component("player-speedrun-charts", playerSpeedRunCharts);

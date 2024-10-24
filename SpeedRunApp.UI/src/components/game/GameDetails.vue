@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div>          
-                <game-detail-tabs :id="gamedetailsvm.id.toString()" :speedruncode="gamedetailsvm.speedRunCode"></game-detail-tabs>
+                <game-details-tabs :id="gamedetailsvm.id.toString()" :speedruncode="gamedetailsvm.speedRunCode"></game-details-tabs>
             </div>          
         </div>
     </div>

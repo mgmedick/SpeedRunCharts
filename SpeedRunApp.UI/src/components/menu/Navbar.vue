@@ -1,5 +1,5 @@
 ﻿<template>
-    <nav class="navbar navbar-expand-lg bg-body">
+    <nav class="navbar navbar-expand-lg bg-body sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#/" draggable="false" @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pe-1" alt="">
@@ -64,29 +64,27 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div ref="searchmodal" class="modal modal-lg" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Search</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> 
+        </div>                                
+    </nav> 
+    <div ref="searchmodal" class="modal modal-lg" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Search</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <button type="button" class="btn btn-primary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
+                        <button type="button" class="btn btn-primary btn-sm ms-1" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <button type="button" class="btn btn-primary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
-                            <button type="button" class="btn btn-primary btn-sm ms-1" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
-                        </div>
-                        <div class="mt-3">
-                            <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        
-                        </div>
+                    <div class="mt-3">
+                        <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        
                     </div>
                 </div>
             </div>
-        </div>                                 
-    </nav>           
+        </div>
+    </div>               
 </template>
 <script>
     import axios from 'axios'
@@ -149,11 +147,13 @@
         },
         methods: {
             onSearchClick(e){
-                this.searchText = null;
+                new Modal(this.$refs.searchmodal).show();
 
-                this.$nextTick(function() {
-                    new Modal(this.$refs.searchmodal).show();
-                });  
+                // this.searchText = null;
+
+                // this.$nextTick(function() {
+                //     new Modal(this.$refs.searchmodal).show();
+                // });  
             }, 
             onSearchTypeClick: function (searchTypeID) {
                 this.searchTypeID = searchTypeID;

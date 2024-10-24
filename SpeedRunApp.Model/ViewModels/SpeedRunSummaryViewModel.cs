@@ -54,7 +54,7 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return EmbeddedVideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
+                return EmbeddedVideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1") + "&controls=0";
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="container p-3">
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
@@ -157,8 +157,8 @@
     export default {
         name: 'SpeedRunDetails',
         props: {
-            gameid: String,
-            speedrunid: Number
+            speedrunid: Number,
+            speedrundetailsvm: Object            
         },
         data: function () {
             return {
@@ -169,14 +169,18 @@
         computed: {                                            
         },
         created: function () {
-            this.loadData();
+            if (this.speedrundetailsvm) {
+                this.item = this.speedrundetailsvm;
+            } else {
+                this.loadData();
+            }
         },
         methods: {
             loadData: function () {
                 var that = this;
                 this.loading = true;
 
-                var prms = axios.get('/Home/GetSpeedRunDetails', { params: { speedRunID: this.speedrunid } })
+                var prms = axios.get('/SpeedRun/GetSpeedRunDetails', { params: { speedRunID: this.speedrunid } })
                     .then(res => {
                         that.item = res.data;
                         that.loading = false;

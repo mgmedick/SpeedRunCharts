@@ -56,15 +56,7 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(results);
         }
-        
-        [HttpGet]
-        public JsonResult GetSpeedRunDetails(int speedRunID)
-        {
-            var results = _speedRunService.GetSpeedRunDetails(speedRunID);
-
-            return Json(results);
-        }                     
-
+                
         public ViewResult Error()
         {
             return View();

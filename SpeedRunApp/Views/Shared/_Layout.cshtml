@@ -25,8 +25,7 @@
 <body data-bs-theme="@(User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? (Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value))">
     <div id="vue-app">
         @Html.AntiForgeryToken()
-        <header class="sticky-top">
-            <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirstValue(ClaimTypes.NameIdentifier)'" :username="'@User.FindFirstValue(ClaimTypes.Name)'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "dark")"></navbar>        
+        <header>
             <div id="toastcontainer" class="toast-container position-fixed p-3 bottom-0 end-0"> 
                 <div id="successtoast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
@@ -46,6 +45,7 @@
                 </div>                                    
             </div>   
         </header>
+        <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirstValue(ClaimTypes.NameIdentifier)'" :username="'@User.FindFirstValue(ClaimTypes.Name)'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "dark")"></navbar>        
         <div class="container-fluid px-lg-5 px-md-4">
             @RenderBody()
         </div>

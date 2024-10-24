@@ -44,30 +44,18 @@ $dark:          $gray-900 !default;
         --bs-btn-active-color: #{$white};
         --bs-btn-active-bg: #{$gray-800};
         --bs-btn-active-border-color: #{$gray-800};
-    //   &:hover {
-    //     background-color: shade-color($secondary, 10%);
-    //     border-color: shade-color($secondary, 10%);
-    //   }
-  
-    //   &:active,
-    //   &.active {
-    //     color: $white;
-    //     background-color: $dark;
-    //     border-color: $dark;
-    //   }
     }
   }
 
 [data-bs-theme=dark] {
-    // color-scheme: dark;
     --bs-secondary: #{$gray-800};
     --bs-secondary-rgb: 52, 58, 64;
 
-    // .btn-light {
-    //     --bs-btn-color: #{$white};
-    //     --bs-btn-bg: #{$gray-600};
-    //     --bs-btn-border-color: #{$gray-600};
-    // }
+    .btn-light {
+        --bs-btn-color: #{$white};
+        --bs-btn-bg: #{$gray-600};
+        --bs-btn-border-color: #{$gray-600};
+    }
 
     .btn-secondary {
         --bs-btn-color: #{$white};
@@ -75,40 +63,16 @@ $dark:          $gray-900 !default;
         --bs-btn-border-color: #{$gray-800};
     }
 
-    // .btn-dark {
-    //     --bs-btn-color: #{$white};
-    //     --bs-btn-bg: #{$black};
-    //     --bs-btn-border-color: #{$black};
-    // } 
+    .btn-dark {
+        --bs-btn-color: #{$white};
+        --bs-btn-bg: #{$black};
+        --bs-btn-border-color: #{$black};
+    } 
 
     .text-bg-secondary {
         color: #{$white} !important;
     }     
 }
-
-// [data-bs-theme="dark"] { 
-//     // .btn-light {
-//     //     --bs-btn-color: #{$white};
-//     //     --bs-btn-bg: #{$gray-600};
-//     //     --bs-btn-border-color: #{$gray-600};
-//     // }
-
-//     .btn-secondary {
-//         --bs-btn-color: #{$white};
-//         --bs-btn-bg: #{$gray-800};
-//         --bs-btn-border-color: #{$gray-800};
-//     }
-    
-//     .border-dark {
-//         --bs-border-color: #{$white};
-//     }
-
-//     // .btn-dark {
-//     //     --bs-btn-color: #{$white};
-//     //     --bs-btn-bg: #{$black};
-//     //     --bs-btn-border-color: #{$black};
-//     // }      
-// }
 
 //$min-contrast-ratio:   4.5 !default;
 $min-contrast-ratio:   4.5 !default;

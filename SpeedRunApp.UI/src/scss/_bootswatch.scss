@@ -9,10 +9,6 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
   @import url($web-font-path);
 }
 
-// :root {
-//   color-scheme: light;
-// }
-
 // Navbar
 
 .navbar {
@@ -62,92 +58,6 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
 .navbar-nav {
   --bs-nav-link-padding-x: .5rem;
 }
-
-// Buttons
-
-// [data-bs-theme="light"] {
-//   .btn-secondary,
-//   .btn-outline-secondary {
-//     &:hover {
-//       background-color: shade-color($secondary, 10%);
-//       border-color: shade-color($secondary, 10%);
-//     }
-
-//     &:active,
-//     &.active {
-//       color: $white;
-//       background-color: $dark;
-//       border-color: $dark;
-//     }
-
-//     // &:disabled,
-//     // &.disabled {
-//     //   border: 1px solid shade-color($secondary, 10%);
-//     // } 
-//   }
-// }
-
-// [data-bs-theme="dark"] {
-//   .btn-secondary,
-//   .btn-outline-secondary {
-//     &:hover,
-//     &:active,
-//     &.active {
-//       color: $black !important;
-//       background-color: $white !important;
-//       border-color: $white !important;
-//     }    
-//   }
-// }
-
-// .btn-secondary,
-// .btn-light,
-// .btn-outline-secondary,
-// .btn-outline-light {
-//   color: $gray-900;
-
-//   &:disabled,
-//   &.disabled {
-//     border: 1px solid shade-color($secondary, 10%);
-//   }
-// }
-
-// [data-bs-theme="dark"] {
-//   .btn.bg-body-secondary {
-//     &:hover,
-//     &:active,
-//     &.active {
-//       color: #000;
-//       background-color: #fff;
-//     }
-//   }
-// }
-
-// .btn-secondary,
-// .btn-outline-secondary {
-//   //color: $gray-900;
-//   border-color: shade-color($secondary, 10%);
-
-//   &:hover,
-//   &:active,
-//   &.active {
-//     background-color: shade-color($secondary, 10%);
-//     border-color: shade-color($secondary, 10%);
-//   }
-// }
-
-// .btn-light,
-// .btn-outline-light {
-//   //border-color: shade-color($light, 10%);
-
-//   &:hover,
-//   &:active,
-//   &.active {
-//     background-color: shade-color($light, 15%);
-//     //background-color: $white;
-//     border-color: shade-color($light, 15%);
-//   }
-// }
 
 // Tables
 

@@ -48,6 +48,9 @@ $dark:          $gray-900 !default;
   }
 
 [data-bs-theme=dark] {
+    --bs-light: #{$gray-600};
+    --bs-light-rgb: 108, 117, 125; 
+    
     --bs-secondary: #{$gray-800};
     --bs-secondary-rgb: 52, 58, 64;
 
@@ -86,6 +89,7 @@ $body-color:                $gray-700 !default;
 
 $headings-color:              $gray-900 !default;
 
+$enable-negative-margins: true;
 
 // Fonts
 

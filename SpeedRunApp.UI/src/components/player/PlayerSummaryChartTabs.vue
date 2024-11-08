@@ -7,10 +7,10 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div class="row no-gutters pe-1">
+        <div class="row mb-2">
             <div class="col tab-list">
                 <ul class="nav nav-underline">
-                    <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
+                    <li class="categoryType nav-item" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
                         <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
                     <li class="nav-item dropdown more" v-show="false">

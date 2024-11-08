@@ -9,7 +9,7 @@
                         <li class="text-danger small fw-bold" v-for="errorMessage in errorMessages">{{ errorMessage }}</li>
                     </ul>
                 </div>
-                <div class="form-group row no-gutters">
+                <div class="form-group row">
                     <label class="col-3 col-form-label">Night Mode</label>
                     <div class="col-auto">
                         <div class="form-check form-switch pt-2">
@@ -18,7 +18,7 @@
                         </div>                                     
                     </div>
                 </div>
-                <div class="form-group row no-gutters mb-2">
+                <div class="form-group row mb-2">
                     <label class="col-2 col-form-label">Lists</label>
                     <div class="col-auto">
                         <div style="width:300px;">

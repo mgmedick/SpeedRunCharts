@@ -90,7 +90,7 @@ namespace SpeedRunApp.Model.ViewModels
                 var result = EmbeddedVideoLink;
 
                 if (!string.IsNullOrWhiteSpace(EmbeddedVideoLink)) {
-                    result = new Uri(EmbeddedVideoLink).ToParameterizedURI(true, false, true).ToString();
+                    result = new Uri(EmbeddedVideoLink).ToParameterizedURI(true, true, true).ToString();
                 }
 
                 return result;

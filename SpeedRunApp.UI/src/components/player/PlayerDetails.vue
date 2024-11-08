@@ -20,7 +20,7 @@
             <div>
                 <div class="mt-4">
                     <h5 class="fw-bold mb-1">Details</h5>
-                    <div class="row no-gutters">
+                    <div class="row mb-2">
                         <div class="col">
                             <table>
                                 <thead>

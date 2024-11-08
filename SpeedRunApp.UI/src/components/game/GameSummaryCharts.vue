@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="card mt-2" style="border: none; border-radius: 0px;">
-        <div class="row no-gutters">
+        <div class="row mb-2">
             <div class="col-lg-6">
                 <div class="ratio ratio-4x3">
                     <div v-if="loading" class="d-flex" style="height:100%;">
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>   
-        <div class="row no-gutters">
+        <div class="row mb-2">
             <div class="col-lg-12">
                 <div class="ratio ratio-4x3">
                     <div v-if="loading" class="d-flex" style="height:100%;">

@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="container-lg p-0">
+    <div class="container">
         <div v-if="gamedetailsvm.id == 0" class="mx-auto p-0" style="max-width:500px;">
             <div style="text-align:center;">
                 <i class="fa fa-search fa-lg"></i>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-sm px-1 align-self-end">
-                    <h5 class="m-0 fw-bold text-primary">
+                    <h5 class="mb-0 fw-bold">
                         {{ gamedetailsvm.displayName }}
                     </h5>
                 </div>

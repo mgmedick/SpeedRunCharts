@@ -49,10 +49,10 @@ $dark:          $gray-900 !default;
 
 [data-bs-theme=dark] {
     --bs-light: #{$gray-600};
-    --bs-light-rgb: 108, 117, 125; 
+    --bs-light-rgb: 108, 117, 125 !important;; 
     
     --bs-secondary: #{$gray-800};
-    --bs-secondary-rgb: 52, 58, 64;
+    --bs-secondary-rgb: 52, 58, 64 !important;
 
     .btn-light {
         --bs-btn-color: #{$white};
@@ -74,12 +74,16 @@ $dark:          $gray-900 !default;
 
     .text-bg-secondary {
         color: #{$white} !important;
-    }     
+    }
+    
+    .nav-link {
+        --bs-nav-link-color: #{--bs-body-color};
+        --bs-nav-link-hover-color: #{--bs-body-color};       
+    }
 }
 
 //$min-contrast-ratio:   4.5 !default;
 $min-contrast-ratio:   4.5 !default;
-
 
 $enable-shadows:              true !default;
 
@@ -140,8 +144,8 @@ $input-group-addon-bg:                  $gray-100 !default;
 $nav-link-color:                    $body-color !default;
 $nav-link-hover-color:              $body-color !default;
 
-$nav-tabs-border-radius:            0 !default;
-$nav-tabs-link-active-color:        $primary !default;
+// $nav-tabs-border-radius:            0 !default;
+// $nav-tabs-link-active-color:        $primary !default;
 
 
 // Navbar
@@ -187,8 +191,8 @@ $toast-header-color:                $headings-color !default;
 
 // Modals
 
-$modal-content-border-color:        $gray-300 !default;
-$modal-header-border-width:         0 !default;
+// $modal-content-border-color:        $gray-300 !default;
+// $modal-header-border-width:         0 !default;
 
 // List group
 

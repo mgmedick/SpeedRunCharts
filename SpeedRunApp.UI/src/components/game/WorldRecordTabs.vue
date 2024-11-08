@@ -9,20 +9,18 @@
     <div v-else-if="game.categoryTypes" id="divWorldRecorGridTabContainer">
         <div class="row no-gutters pe-1">
             <div class="col tab-list">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-underline">
                     <li class="nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                        <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                        <a class="nav-link text-reset" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <div class="dropdown more py-1 pe-1" v-show="false">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>More...</span>
-                        </button>
+                    <li class="nav-item dropdown more" v-show="false">
+                        <a class="nav-link dropdown-toggle text-reset" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
                                 <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
-                    </div>                                                      
+                    </li>                     
                 </ul>
             </div>
         </div>
@@ -34,20 +32,18 @@
                 <div v-else>
                     <div class="row no-gutters pe-1">
                         <div class="col tab-list">
-                            <ul class="nav nav-pills">
+                            <ul class="nav nav-underline">
                                 <li class="category nav-item py-1 pe-1" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (showmisc || !ctg.isMisc))" :key="category.id">
-                                    <a class="nav-link p-2" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                    <a class="nav-link text-reset" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                 </li>
-                                <div class="dropdown more py-1 pe-1" v-show="false">
-                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span>More...</span>
-                                    </button>
+                                <li class="nav-item dropdown more" v-show="false">
+                                    <a class="nav-link dropdown-toggle text-reset" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                         <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id)" :key="category.id" class="d-none">
                                             <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
                                         </li>
                                     </ul>
-                                </div>                                     
+                                </li>                                   
                             </ul>
                         </div>                           
                     </div>
@@ -63,20 +59,18 @@
                                 <div v-else>
                                     <div class="row no-gutters pe-1">
                                         <div class="col tab-list">
-                                            <ul class="nav nav-pills">
+                                            <ul class="nav nav-underline">
                                                 <li class="level nav-item py-1 pe-1" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
-                                                    <a class="nav-link p-2" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                                    <a class="nav-link text-reset" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                                 </li>
-                                                <div class="dropdown more py-1 pe-1" v-show="false">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span>More...</span>
-                                                    </button>
+                                                <li class="nav-item dropdown more" v-show="false">
+                                                    <a class="nav-link dropdown-toggle text-reset" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                                         <li v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id" class="d-none">
                                                             <a class="dropdown-item" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
                                                         </li>
                                                     </ul>
-                                                </div>                                                     
+                                                </li>                                                 
                                             </ul>
                                         </div>                                      
                                     </div>

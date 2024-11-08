@@ -54,9 +54,15 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return EmbeddedVideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1") + "&controls=0";
+                var result = EmbeddedVideoLink;
+
+                if (!string.IsNullOrWhiteSpace(EmbeddedVideoLink)) {
+                    result = new Uri(EmbeddedVideoLink).ToParameterizedURI(true, true, false).ToString();
+                }
+
+                return result;
             }
-        }
+        } 
 
         public bool IsVideoThumbnailLowRes
         {

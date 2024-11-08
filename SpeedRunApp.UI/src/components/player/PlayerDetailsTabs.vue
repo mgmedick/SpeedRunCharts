@@ -2,17 +2,15 @@
     <div class="mt-4">
         <div class="row no-gutters pe-1 pt-1 pb-0">
             <div class="col tab-list">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-underline">
                     <li class="nav-item py-1 pe-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Runs" }}</a>
+                        <a class="nav-link" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Runs" }}</a>
                     </li>
                     <li class="nav-item py-1 pe-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>
+                        <a class="nav-link" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>
                     </li>
-                    <div class="dropdown more py-1 pe-1" v-show="false">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>More...</span>
-                        </button>
+                    <li class="nav-item dropdown more" v-show="false">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li class="d-none">
                                 <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Runs" }}</a>            
@@ -21,7 +19,7 @@
                                 <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>            
                             </li>
                         </ul>
-                    </div>                                        
+                    </li>                        
                 </ul>
             </div>
         </div>

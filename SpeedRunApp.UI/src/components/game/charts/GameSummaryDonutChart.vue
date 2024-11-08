@@ -71,10 +71,10 @@
                 return this.isMediaLarge ? .8 : .5;
             },                                                                    
             bgColor: function () {
-                return document.body.classList.contains('theme-dark') ? "#303030" : "#f8f9fa";
+                return document.documentElement.dataset.bsTheme == 'dark' ? "#303030" : "#f8f9fa";
             },
             fontColor: function () {
-                return document.body.classList.contains('theme-dark') ? "#fff" : "#000";
+                return document.documentElement.dataset.bsTheme == 'dark' ? "#fff" : "#000";
             },
             autoRotateLabels: function () {
                 return this.isMediaLarge ? 0 : 1;

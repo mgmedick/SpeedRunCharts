@@ -4,7 +4,7 @@
 @inject IConfiguration Configuration
 
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="@(User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? (Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value))">
 <head>
     <meta charset="utf-8" />
     @*<meta name="viewport" content="width=device-width, initial-scale=1.0" />*@
@@ -22,7 +22,7 @@
     </environment>
     @RenderSection("Styles", required: false)
 </head>
-<body data-bs-theme="@(User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? (Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value))">
+<body>
     <div id="vue-app">
         @Html.AntiForgeryToken()
         <header>
@@ -46,7 +46,7 @@
             </div>   
         </header>
         <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirstValue(ClaimTypes.NameIdentifier)'" :username="'@User.FindFirstValue(ClaimTypes.Name)'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "dark")"></navbar>        
-        <div>
+        <div class="container-fluid px-lg-4 px-md-3 px-sm-2 px-0">
             @RenderBody()
         </div>
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-5">

@@ -3,10 +3,10 @@
         <div class="card-header">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link d-flex align-items-end fw-bold" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Charts</a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Hide Charts</span></a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link d-flex align-items-end fw-bold" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Show Charts</a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Show Charts</span></a>
                 </div>
             </h5>
         </div>

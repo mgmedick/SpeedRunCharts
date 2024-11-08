@@ -8,7 +8,7 @@
             </div>
         </div>  
         <div class="mt-2">  
-            <div class="row g-1">
+            <div class="row g-2 mb-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,15 +23,12 @@
                 </div>                                                                
             </div>                 
             <div class="mt-2 grid-container" style="min-height:150px;">
-                <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
-                    <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                        <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
-                        <li v-if="groups.length > 0" class="group-label">Group By:</li>
-                        <li v-for="(group, i) in groups" :key="i" class="group-tag">
-                            <span>{{ group.title }}</span>&nbsp;
-                            <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
-                        </li>                    
-                    </ul>
+                <div class="card" :style="[ loading ? { display:'none' } : null ]" style="border-radius: 0px; border-style: dashed;">
+                    <div class="card-header"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
+                        <div v-if="groups.length == 0" class="text-muted fw-500 text-center"><small>Drag column headers here to group</small></div>
+                        <span v-if="groups.length > 0" class="fw-bold me-2"><small>Group By:</small></span>
+                        <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
+                    </div>
                 </div>
                 <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>

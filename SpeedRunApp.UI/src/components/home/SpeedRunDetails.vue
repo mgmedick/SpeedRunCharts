@@ -33,10 +33,10 @@
                             </div>                 
                         </div>
                         <div class="nowrap-elipsis mb-1">  
-                            <span class="text-body me-1">
-                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-body text-decoration-none"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
+                            <span class="me-1">
+                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                             </span>&nbsp;-&nbsp;
-                            <span class="text-body fw-bold">
+                            <span class="fw-bold">
                                 <template v-for="(player, index) in item.players">                               
                                     <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                         <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">
@@ -46,7 +46,7 @@
                                     <span v-else class="playername-text">
                                         <a :href="'/Player/PlayerDetails/' + encodeURIComponent(player.abbr) + '?speedRunCode=' + item.code">{{ player.name }}</a>
                                     </span>
-                                    <span class="text-body text-decoration-none">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
+                                    <span class="text-decoration-none">{{ (item.players.length -1 == index) ? '' : ', ' }}</span>
                                 </template>
                             </span>
                         </div>
@@ -64,8 +64,8 @@
             </div>
             <div class="px-3 px-sm-0">  
                 <div class="mb-4">
-                    <h6 class="text-body lead">Leaderboard</h6>    
-                    <div class="row row-cols-lg-5 row-cols-sm-2 row-cols-1 g-3">
+                    <h6 class="lead">Leaderboard</h6>    
+                    <div class="row row-cols-lg-4 row-cols-sm-2 row-cols-1 g-3">
                         <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
@@ -109,7 +109,7 @@
                     </div>               
                 </div>
                 <div>
-                    <h6 class="text-body lead">Run</h6>     
+                    <h6 class="lead">Run</h6>     
                     <div class="row row-cols-lg-6 row-cols-sm-2 row-cols-1  g-3">
                         <div class="col">
                             <div class="card text-bg-secondary">

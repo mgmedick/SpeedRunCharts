@@ -1,6 +1,6 @@
 ﻿<template>
     <div>
-        <div class="sticky-top bg-body d-flex pb-3 px-lg-4 px-md-3 px-2" style="top: 67px; z-index: 1019;">        
+        <div class="sticky-top bg-body d-flex pb-3 px-sm-0 px-2" style="top: 67px; z-index: 1019;">        
             <div v-for="(item, itemIndex) in indexvm.summaryLists" :key="item.id" class="me-2">
                 <button type="button" class="btn btn-secondary btn-sm summary-list" :class="{ 'active' : summaryListID == item.id }" @click="onSummaryListClick(item.id)">{{ item.displayName }}</button>            
             </div>
@@ -11,19 +11,19 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                         <li>
-                            <a class="dropdown-item" href="#/" :data-value="null" data-toggle="pill" draggable="false">All</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" draggable="false">All</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#/" :data-value="null" data-toggle="pill" draggable="false">Full Game</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 0 }" href="#/" :data-value="null" data-toggle="pill" draggable="false">Full Game</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#/" :data-value="null" data-toggle="pill" draggable="false">Level</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 1 }" href="#/" :data-value="null" data-toggle="pill" draggable="false">Level</a>
                         </li>                                                                
                     </ul>
                 </div>  
             </div>                  
         </div>
-        <div class="px-lg-4 px-md-3 px-sm-2 px-0">
+        <div>
             <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="indexvm.defaultTopAmount"></summary-list>
         </div>
     </div>  

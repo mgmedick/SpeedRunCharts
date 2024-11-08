@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon.Extensions;
 using SpeedRunApp.Model.JSON;
+using Org.BouncyCastle.Asn1.Icao;
+using System.Linq.Expressions;
 
 namespace SpeedRunApp.Model.ViewModels
 {
@@ -85,7 +87,13 @@ namespace SpeedRunApp.Model.ViewModels
         {
             get
             {
-                return EmbeddedVideoLink?.Replace("autoplay=false","autoplay=true").Replace("autoplay=0","autoplay=1");
+                var result = EmbeddedVideoLink;
+
+                if (!string.IsNullOrWhiteSpace(EmbeddedVideoLink)) {
+                    result = new Uri(EmbeddedVideoLink).ToParameterizedURI(true, false, true).ToString();
+                }
+
+                return result;
             }
         }        
         

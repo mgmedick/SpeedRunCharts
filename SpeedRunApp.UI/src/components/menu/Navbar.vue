@@ -201,7 +201,7 @@
                 }               
             },
             updateTheme: function(val){
-                var el = document.body;
+                var el = document.documentElement;
 
                 if (val){
                     el.dataset.bsTheme = "dark";

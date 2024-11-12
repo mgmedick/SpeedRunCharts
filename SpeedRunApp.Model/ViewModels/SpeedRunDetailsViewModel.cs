@@ -105,6 +105,14 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }
 
+        public string RelativeVerifyDateStringShort
+        {
+            get
+            {
+                return VerifyDate?.ToRealtiveDateString(true);
+            }
+        }
+
         public string RankString
         {
             get

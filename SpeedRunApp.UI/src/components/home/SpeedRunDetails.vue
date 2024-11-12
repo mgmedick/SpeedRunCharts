@@ -166,7 +166,7 @@
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Submitted</label>
                                     <div>
-                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeDateSubmittedString }}</span>
+                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeDateSubmittedStringShort }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Verified</label>
                                     <div>
-                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateString }}</span>
+                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateStringShort }}</span>
                                     </div>
                                 </div>
                             </div>

@@ -1,17 +1,17 @@
 ﻿<template>
-    <div class="card" style="border: none; border-radius: 0px;">
+    <div class="card" style="border: none; border-radius: 0px; cursor: pointer;" @click="$emit('onshowchartsclick', $event)">
         <div class="card-header">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Hide Charts</span></a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false"><i class="fa fa-chevron-down align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Hide Charts</span></a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Show Charts</span></a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false"><i class="fa fa-chevron-right align-self-center"></i><i class="fa fa-chart-simple"></i><span class="ms-2">Show Charts</span></a>
                 </div>
             </h5>
         </div>
         <div v-if="showcharts">
-            <div class="row mb-2">
+            <div class="row g-3 mb-3">
                 <div class="col-lg-6">
                     <div class="ratio ratio-4x3">
                         <div v-if="loading" class="d-flex" style="height:100%;">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-2">
+            <div class="row g-3">
                 <div class="col-lg-6">
                     <div class="ratio ratio-4x3">
                         <div v-if="loading" class="d-flex" style="height:100%;">

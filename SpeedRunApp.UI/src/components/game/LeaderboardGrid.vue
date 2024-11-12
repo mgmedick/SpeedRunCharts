@@ -44,7 +44,7 @@
             <div class="mt-1 grid-container" style="min-height:150px;">             
                 <leaderboard-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-charts>
                 <div class="card" :style="[ loading ? { display:'none' } : null ]" style="border-radius: 0px; border-style: dashed;">
-                    <div class="card-header"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
+                    <div class="card-header border-0 bg-body"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
                         <div v-if="groups.length == 0" class="text-muted fw-500 text-center"><small>Drag column headers here to group</small></div>
                         <span v-if="groups.length > 0" class="fw-bold me-2"><small>Group By:</small></span>
                         <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
@@ -177,11 +177,11 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
+                    // { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
+                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 155, widthGrow:2 }, //minWidth:125
                     { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" },                    
-                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
+                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 165, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100                    
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
@@ -209,10 +209,9 @@
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
                 });
 
-                columns.push({ title: "Submitted Date", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
-                columns.push({ title: "Verified Date", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
+                columns.push({ title: "Submitted", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
+                columns.push({ title: "Verified", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
                 columns.push({ title: "VideoLinks", field: "videoLinks", accessorDownload: that.videoLinksDownloadAccessor, visible: false, download: true, titleDownload: "Videos" });
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, accessorDownload: that.commentDownloadAccessor, hozAlign: "center", headerSort: false, width: 50, widthShrink:2, download:false });
 
                 var el = this.$el.querySelector('.grid');          
                 this.table = new Tabulator(el, {
@@ -237,22 +236,55 @@
                         { column: "primaryTimeMilliseconds", dir: that.istimerasc ? "desc" : "asc" },
                     ],
                     columns: columns,
-                    renderComplete:function() {
-                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                            el.setAttribute('draggable', true);
-                            el.addEventListener("dragstart", function(event) {
-                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                            });
-                        });
+                    // renderComplete:function() {
+                    //     that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                    //         el.setAttribute('draggable', true);
+                    //         el.addEventListener("dragstart", function(event) {
+                    //             event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                    //             event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                    //         });
+                    //     });
 
-                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                            new Tooltip(el);                        
-                        });
+                    //     that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                    //         new Tooltip(el);                        
+                    //     });
 
-                        that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    }
+                    //     that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
+                    // }
                 });
+                // this.table.on("renderComplete", function() {
+                //     that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                //         el.setAttribute('draggable', true);
+                //         el.addEventListener("dragstart", function(event) {
+                //             event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                //             event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                //         });
+                //     });
+
+                //     that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                //         new Tooltip(el);                        
+                //     });
+
+                //     that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
+                // });
+                this.table.on("renderComplete", that.onRenderComplete);
+            },
+            onRenderComplete() {
+                var that = this;
+
+                that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                    el.setAttribute('draggable', true);
+                    el.addEventListener("dragstart", function(event) {
+                        event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                        event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                    });
+                });
+
+                that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                    new Tooltip(el);                        
+                });
+
+                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
             },
             onGroupAdd(event) {
                 event.preventDefault();
@@ -322,7 +354,7 @@
                             html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a><br/>"
                         }
                     } else {
                         html += el.name;

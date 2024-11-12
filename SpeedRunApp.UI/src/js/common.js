@@ -175,7 +175,7 @@ const resizeTabs = () => {
             tabitems[i].classList.remove('d-none');
             totalWidth += tabitems[i].offsetWidth;
 
-            if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - maxWidth)) {
+            if (totalWidth > (rows[g].offsetWidth - tabitems[i].offsetWidth - maxWidth - 30)) {
                 tabitems[i].classList.add('d-none');
                 moreItems[i].classList.remove('d-none');
             } else {

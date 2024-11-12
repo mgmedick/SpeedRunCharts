@@ -50,7 +50,7 @@
                         <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
                     </div>
                 </div>
-                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :class="tableClass" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
         <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
@@ -72,8 +72,8 @@
     const dayjs = require('dayjs');
     import axios from 'axios';    
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
-    import Tabulator from 'tabulator-tables';
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
+    import {TabulatorFull as Tabulator} from 'tabulator-tables';
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";
@@ -115,7 +115,12 @@
             showAllData: function (val, oldVal) {
                 this.loadData();
             }              
-        },                     
+        },  
+        computed: {                                                           
+            tableClass: function () {
+                return document.documentElement.dataset.bsTheme == 'dark' ? "table-dark" : "";                
+            }                                                                              
+        },                             
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride

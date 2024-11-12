@@ -72,7 +72,7 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
     import { polyfill } from "mobile-drag-drop";
     import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Modal } from 'bootstrap';

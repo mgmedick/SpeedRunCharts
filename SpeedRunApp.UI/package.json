@@ -22,7 +22,7 @@
     "fusioncharts": "^3.19.0",
     "mobile-drag-drop": "^3.0.0-rc.0",
     "source-map-loader": "^3.0.2",
-    "tabulator-tables": "^4.9.3",
+    "tabulator-tables": "^6.3.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {

@@ -1,4 +1,6 @@
-﻿.img-round {
+﻿@import "tabulator_bootstrap5.css";
+
+.img-round {
     position: relative;
     height: auto !important;
     padding-bottom: 100%;

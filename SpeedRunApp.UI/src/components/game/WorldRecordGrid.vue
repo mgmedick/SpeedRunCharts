@@ -53,7 +53,7 @@
     import axios from 'axios';    
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
     import Tabulator from 'tabulator-tables';
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
     import { polyfill } from "mobile-drag-drop";

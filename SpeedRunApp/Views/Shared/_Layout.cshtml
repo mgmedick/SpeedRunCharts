@@ -46,10 +46,10 @@
             </div>   
         </header>
         <navbar :isauth="@Json.Serialize(User.Identity.IsAuthenticated)" :userid="'@User.FindFirstValue(ClaimTypes.NameIdentifier)'" :username="'@User.FindFirstValue(ClaimTypes.Name)'" :isdarktheme="@Json.Serialize((User.Identity.IsAuthenticated ? User.FindFirst("theme")?.Value : Context.Request.Cookies["theme"] ?? Configuration.GetSection("SiteSettings").GetSection("DefaultTheme").Value) == "dark")"></navbar>        
-        <div class="container-fluid px-lg-4 px-md-3 px-sm-2 px-0">
+        <div class="container-fluid px-lg-4 px-md-3 px-sm-2 px-0 d-flex flex-column min-vh-100">
             @RenderBody()
         </div>
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-5">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-auto">
             <div class="col-md-4 d-flex align-items-center">
                 <span class="mb-3 mb-md-0 text-body-secondary px-3">© 2024 Company, Inc</span>
             </div>

@@ -177,8 +177,8 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 
                 var columns = [
-                    // { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
-                    { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
+                    { title: "", field: "id", visible: false }, //, minWidth:30, maxWidth:50
+                    { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, hozAlign: "center", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
                     { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 155, widthGrow:2 }, //minWidth:125
                     { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" },                    
                     { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 165, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
@@ -209,8 +209,8 @@
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
                 });
 
-                columns.push({ title: "Submitted", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
-                columns.push({ title: "Verified", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
+                columns.push({ title: "Submitted", field: "dateSubmitted", sorter: that.dateSorter, formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
+                columns.push({ title: "Verified", field: "verifyDate", sorter: that.dateSorter, formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
                 columns.push({ title: "VideoLinks", field: "videoLinks", accessorDownload: that.videoLinksDownloadAccessor, visible: false, download: true, titleDownload: "Videos" });
 
                 var el = this.$el.querySelector('.grid');          
@@ -235,39 +235,10 @@
                     initialSort: [
                         { column: "primaryTimeMilliseconds", dir: that.istimerasc ? "desc" : "asc" },
                     ],
-                    columns: columns,
-                    // renderComplete:function() {
-                    //     that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                    //         el.setAttribute('draggable', true);
-                    //         el.addEventListener("dragstart", function(event) {
-                    //             event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                    //             event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                    //         });
-                    //     });
-
-                    //     that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                    //         new Tooltip(el);                        
-                    //     });
-
-                    //     that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    // }
+                    columns: columns
                 });
-                // this.table.on("renderComplete", function() {
-                //     that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                //         el.setAttribute('draggable', true);
-                //         el.addEventListener("dragstart", function(event) {
-                //             event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                //             event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                //         });
-                //     });
-
-                //     that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                //         new Tooltip(el);                        
-                //     });
-
-                //     that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                // });
                 this.table.on("renderComplete", that.onRenderComplete);
+                this.table.on("rowClick", that.onRowClick);
             },
             onRenderComplete() {
                 var that = this;
@@ -286,6 +257,10 @@
 
                 that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
             },
+            onRowClick(e, row) {
+                var id = row.getCell("id").getValue();
+                this.showSpeedRunDetails(id);
+            },            
             onGroupAdd(event) {
                 event.preventDefault();
                 var field = event.dataTransfer.getData("field");  

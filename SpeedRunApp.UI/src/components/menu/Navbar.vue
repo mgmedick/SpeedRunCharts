@@ -208,6 +208,8 @@
                 } else {
                     el.dataset.bsTheme = "light";
                 }
+
+                window.dispatchEvent(new CustomEvent('themeUpdate'));
             }
         }
     };

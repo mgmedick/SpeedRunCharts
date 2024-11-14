@@ -113,8 +113,12 @@
             }                                                  
         },                                     
         mounted: function () {
-            this.loadData();          
+            this.loadData();     
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },      
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },              
         methods: {                        
             loadData() {
                 var that = this;
@@ -133,7 +137,11 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.chartmodal).show();
                 });                
-            }                          
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }                                         
         }
     }
 </script>

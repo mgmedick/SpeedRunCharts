@@ -14,8 +14,8 @@
                 <div class="row g-2 justify-content-center mb-3 mx-auto">
                     <button id="btnSignUp" type="submit" class="btn btn-primary w-100" :disabled="loading">Sign Up</button>
                     <div class="text-center"><small class="fw-bold">OR</small></div>
-                    <div class="fb-login-button" data-width="100%" data-size="large" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-scope="public_profile,email" onlogin="checkFBLoginState();"></div>
-                    <div ref="googleLoginBtn" class="p-0 w-100"></div>
+                    <div class="fb-login-button" data-width="100%" data-size="large" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-scope="public_profile,email" onlogin="checkFBLoginState();" style="color-scheme: light"></div>
+                    <div ref="googleLoginBtn" class="p-0 w-100" style="color-scheme: light"></div>
                 </div>        
                 <div>
                     <div v-if="loading">

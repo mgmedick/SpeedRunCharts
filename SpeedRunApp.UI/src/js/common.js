@@ -159,7 +159,7 @@ const errorToast = (errorMsg) => {
 }
 
 const resizeTabs = () => {
-    var rows = document.querySelectorAll('.tab-list');
+    var rows = document.querySelectorAll('.tab-list > .nav');
 
     for (var g = 0; g < rows.length; g++) {
         var totalWidth = 0;
@@ -168,14 +168,16 @@ const resizeTabs = () => {
         var morebtn =  morediv.querySelector('.nav-link');
         var moredrp =  morediv.querySelector('.dropdown-menu');
         var moreItems = moredrp.querySelectorAll('li');
-        var maxWidth = Math.max(...Array.from(tabitems).map(el => el.offsetWidth));
+        var maxItemWidth = Math.max(...Array.from(tabitems).map(el => el.offsetWidth));
+        var computedStyle = getComputedStyle(rows[g]);
+        var rowGap = parseFloat(computedStyle.rowGap);
 
         for (var i = 0; i < tabitems.length; i++) {
             tabitems[i].style.left = "-10000px";
             tabitems[i].classList.remove('d-none');
-            totalWidth += tabitems[i].offsetWidth;
+            totalWidth += tabitems[i].offsetWidth + 16;
 
-            if (totalWidth > (rows[g].offsetWidth - tabitems[i].offsetWidth - maxWidth - 30)) {
+            if (totalWidth > (rows[g].offsetWidth - (rowGap + maxItemWidth))) {
                 tabitems[i].classList.add('d-none');
                 moreItems[i].classList.remove('d-none');
             } else {

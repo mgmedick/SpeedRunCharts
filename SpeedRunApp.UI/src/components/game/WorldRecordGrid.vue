@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>  
-        <div class="mt-2">  
+        <div class="pt-2">  
             <div class="row g-2 mb-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
@@ -30,7 +30,7 @@
                         <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
                     </div>
                 </div>
-                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :class="tableClass" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
         <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
@@ -52,7 +52,7 @@
     const dayjs = require('dayjs');
     import axios from 'axios';    
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
-    import Tabulator from 'tabulator-tables';
+    import {TabulatorFull as Tabulator} from 'tabulator-tables';
     // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
@@ -84,9 +84,15 @@
                 groups: [],
                 loading: true,
                 selectedSpeedRunID: '',
-                pageSize: 100
+                pageSize: 100,
+                theme: document.documentElement.dataset.bsTheme
             }
         },
+        computed: {                                                           
+            tableClass: function() {
+                return this.theme == 'dark' ? "table-dark" : ""; 
+            }                                                                              
+        },           
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
@@ -99,7 +105,11 @@
             this.loadData();
             window.gameWorldRecordGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },           
         methods: {
             loadData() {
                 var that = this;
@@ -134,7 +144,7 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20, download:false }, //, width: 50, widthShrink: 2
+                    { title: "", field: "id", visible: false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", formatter: that.rankFormatter, headerSort: false, width: 20 }, //minWidth:40, maxWidth:75                    
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
                     { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
@@ -203,24 +213,32 @@
                     groupHeader: function(value, count, data, group) {
                         var html = that.getGroupText(group._group, count);
                         return html;
-                    },
-                    renderComplete:function() {
-                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                            el.setAttribute('draggable', true);
-                            el.addEventListener("dragstart", function(event) {
-                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                            });
-                        });
-
-                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                            new Tooltip(el);                        
-                        });                        
-
-                        that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    },
-                });                
+                    }
+                });       
+                this.table.on("renderComplete", that.onRenderComplete);
+                this.table.on("rowClick", that.onRowClick);                         
             },
+            onRenderComplete() {
+                var that = this;
+
+                that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                    el.setAttribute('draggable', true);
+                    el.addEventListener("dragstart", function(event) {
+                        event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                        event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                    });
+                });
+
+                that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                    new Tooltip(el);                        
+                });                        
+
+                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
+            }, 
+            onRowClick(e, row) {
+                var id = row.getCell("id").getValue();
+                this.showSpeedRunDetails(id);
+            },                         
             onGroupAdd(event) {
                 event.preventDefault();
                 var field = event.dataTransfer.getData("field");  
@@ -486,7 +504,11 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });                
-            }  
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }                     
         }
     };
 </script>

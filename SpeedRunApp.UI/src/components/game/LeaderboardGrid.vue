@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2">
+        <div class="pt-2">
             <div class="row g-2 mb-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
@@ -108,7 +108,8 @@
                 speedRunCode: this.speedruncode,
                 selectedSpeedRunID: '',
                 showAllData: this.showalldata,
-                pageSize: 100
+                pageSize: 100,
+                theme: document.documentElement.dataset.bsTheme
             }
         },  
         watch: {
@@ -117,10 +118,10 @@
             }              
         },  
         computed: {                                                           
-            tableClass: function () {
-                return document.documentElement.dataset.bsTheme == 'dark' ? "table-dark" : "";                
+            tableClass: function() {
+                return this.theme == 'dark' ? "table-dark" : ""; 
             }                                                                              
-        },                             
+        },                                       
         mounted: function() {
             polyfill({
                 dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
@@ -133,7 +134,11 @@
             this.loadData();
             window.speedRunGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },         
         methods: {
             loadData() {
                 var that = this;
@@ -326,7 +331,7 @@
                         if (el.colorLight && el.colorDark) {
                             html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
                             html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false' onclick='event.stopPropagation()'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
                             html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a><br/>"
@@ -471,7 +476,11 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });                
-            }                              
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }                             
         }             
     };
 </script>

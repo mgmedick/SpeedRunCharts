@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="container-lg p-0">
+    <div class="container">
         <div v-if="playerdetailsvm.id == 0" class="mx-auto" style="max-width:500px;">
             <div style="text-align:center;">
                 <i class="fa fa-search fa-lg"></i>
@@ -9,7 +9,7 @@
         <div v-else>
             <div class="d-flex">
                 <div class="col-auto p-0 align-self-end">
-                    <h5 class="m-0 fw-bold text-primary">{{ playerdetailsvm.name }}</h5>
+                    <h5 class="m-0 fw-bold">{{ playerdetailsvm.name }}</h5>
                 </div>
                 <div class="col-sm-2 ps-1 align-self-end">
                     <a v-if="playerdetailsvm.twitterProfile" :href="playerdetailsvm.twitterProfile" class="ps-1" draggable="false"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>

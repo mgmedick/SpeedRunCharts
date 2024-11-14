@@ -9,6 +9,57 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
   @import url($web-font-path);
 }
 
+[data-bs-theme="light"] {
+  .btn-secondary {
+      --bs-btn-active-color: #{$white};
+      --bs-btn-active-bg: #{$gray-800};
+      --bs-btn-active-border-color: #{$gray-800};
+  }
+
+  a.text-reset:hover > *:not(.gold):not(.silver):not(.bronze) {
+      filter: brightness(25%);
+  }    
+}
+
+[data-bs-theme=dark] {
+  --bs-light: #{$gray-600};
+  --bs-light-rgb: 108, 117, 125 !important;; 
+  
+  --bs-secondary: #{$gray-800};
+  --bs-secondary-rgb: 52, 58, 64 !important;
+
+  .btn-light {
+      --bs-btn-color: #{$white};
+      --bs-btn-bg: #{$gray-600};
+      --bs-btn-border-color: #{$gray-600};
+  }
+
+  .btn-secondary {
+      --bs-btn-color: #{$white};
+      --bs-btn-bg: #{$gray-800};
+      --bs-btn-border-color: #{$gray-800};
+  }
+
+  .btn-dark {
+      --bs-btn-color: #{$white};
+      --bs-btn-bg: #{$black};
+      --bs-btn-border-color: #{$black};
+  } 
+
+  .text-bg-secondary {
+      color: #{$white} !important;
+  }
+  
+  .nav-link {
+      --bs-nav-link-color: #{--bs-body-color};
+      --bs-nav-link-hover-color: #{--bs-body-color};       
+  }
+
+  a.text-reset:hover > *:not(.gold):not(.silver):not(.bronze) {
+      filter: brightness(175%);
+  }       
+}
+
 // Navbar
 
 .navbar {
@@ -62,14 +113,14 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
 // Tables
 
 .table {
-  font-size: $font-size-sm;
+  // font-size: $font-size-sm;
   box-shadow: $box-shadow-lg;
 }
 
-thead th {
-  font-size: $font-size-sm;
-  text-transform: uppercase;
-}
+// thead th {
+//   font-size: $font-size-sm;
+//   text-transform: uppercase;
+// }
 
 // Forms
 
@@ -99,7 +150,7 @@ thead th {
 }
 
 .pagination {
-  font-size: $font-size-sm;
+  // font-size: $font-size-sm;
   font-weight: 500;
 
   .page-link {
@@ -108,7 +159,7 @@ thead th {
 }
 
 .breadcrumb {
-  font-size: $font-size-sm;
+  // font-size: $font-size-sm;
   font-weight: 500;
   border: 1px solid $gray-300;
   border-radius: $border-radius;

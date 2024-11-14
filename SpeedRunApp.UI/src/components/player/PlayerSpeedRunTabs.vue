@@ -65,15 +65,13 @@
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
                     <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous) && (!showWR || item.rank == 1)).length > 0">
-                        <div class="row g-2">
-                            <div class="col-1 p-0" style="max-width:37px;">
+                        <div class="d-flex align-items-end g-2 py-2 px-sm-0 px-2">
+                            <div style="width: 50px; flex: none;">
                                 <div class="img-round">
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
                                 </div>
-                            </div>                            
-                            <div class="col-11 align-self-end">
-                                <h6 class="fw-bold mb-0"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-primary">{{ game.name }}</a></h6>
-                            </div>
+                            </div>                       
+                            <h6 class="fw-bold px-2 nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-decoration-none text-reset">{{ game.name }}</a></h6>
                         </div>
                         <player-speedrun-grid :playerid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc" :showwr="showWR"></player-speedrun-grid>
                     </div>

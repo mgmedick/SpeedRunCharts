@@ -5,13 +5,13 @@
                 <div class="col tab-list">
                     <ul class="nav nav-underline">
                         <li class="variableValue nav-item" v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id">
-                            <a class="nav-link" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                            <a class="nav-link" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill"  @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                         </li>
                         <li class="nav-item dropdown more" v-show="false">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                 <li v-for="(variableValue, variableValueIndex) in variable.variableValues.filter(va => (!hideempty || va.hasData))" :key="variableValue.id" class="d-none">
-                                    <a class="dropdown-item" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill" draggable="false" @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
+                                    <a class="dropdown-item" :class="{ 'active' : subcategoryvariablevalues[variable.name + variableindex] == variableValue.name }" href="#/" data-type="variableValue" :data-variable="variable.name + variableindex" :data-value="variableValue.name" data-toggle="pill"  @click="$emit('ontabclick', $event)">{{ variableValue.name }}</a>
                                 </li>
                             </ul>
                         </li>                          
@@ -23,7 +23,8 @@
                     <leaderboard-tabs-variable :items="variableValue.subVariables" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :subcategoryvariablevalues="subcategoryvariablevalues" :speedruncode="speedruncode" :prevdata="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :variableindex="variableindex + 1" :hideempty="hideempty" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @ontabclick="$emit('ontabclick', $event)" @onshowchartsclick2="$emit('onshowchartsclick2', $event)" @update:showalldata="$emit('update:showalldata', $event)"></leaderboard-tabs-variable>
                 </div>
                 <div v-else-if="subcategoryvariablevalues[variable.name + variableindex] == variableValue.name">
-                    <leaderboard-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedruncode="speedruncode" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @onshowchartsclick1="$emit('onshowchartsclick2', $event)" @update:showalldata="$emit('update:showalldata', $event)"></leaderboard-grid>
+                    <leaderboard-charts :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick2', $event)"></leaderboard-charts>
+                    <leaderboard-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedruncode="speedruncode" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @update:showalldata="$emit('update:showalldata', $event)"></leaderboard-grid>
                 </div>
             </div>
         </div>

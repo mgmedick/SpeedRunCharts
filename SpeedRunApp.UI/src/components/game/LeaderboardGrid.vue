@@ -7,8 +7,8 @@
                 </div>
             </div>
         </div>
-        <div class="pt-2">
-            <div class="row g-2 mb-2">
+        <div>
+            <div class="row g-2 my-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,14 +35,13 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(exporttype, i) in exporttypes" :key="i">
-                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
+                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill"  @click="onExportClick">{{ exporttype.name }}</a>
                             </li>
                         </ul>
                     </div>                     
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
-                <leaderboard-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-charts>
                 <div class="card" :style="[ loading ? { display:'none' } : null ]" style="border-radius: 0px; border-style: dashed;">
                     <div class="card-header border-0 bg-body"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
                         <div v-if="groups.length == 0" class="text-muted fw-500 text-center"><small>Drag column headers here to group</small></div>
@@ -76,8 +75,8 @@
     // import 'tabulator-tables/dist/css/tabulator_bootstrap5.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
-    import { polyfill } from "mobile-drag-drop";
-    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    // import { polyfill } from "mobile-drag-drop";
+    // import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Tooltip, Modal } from 'bootstrap';
 
     export default {
@@ -90,7 +89,6 @@
             levelid: String,
             variablevalues: String,
             speedruncode: String,
-            playerid: String,
             showcharts: Boolean,          
             showalldata: Boolean,
             showmilliseconds: Boolean,
@@ -123,9 +121,9 @@
             }                                                                              
         },                                       
         mounted: function() {
-            polyfill({
-                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });
+            // polyfill({
+            //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            // });
 
             this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
                 this.$refs.speedrundetails.loadData();

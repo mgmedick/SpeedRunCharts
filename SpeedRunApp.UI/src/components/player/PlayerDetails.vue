@@ -12,9 +12,9 @@
                     <h5 class="m-0 fw-bold">{{ playerdetailsvm.name }}</h5>
                 </div>
                 <div class="col-sm-2 ps-1 align-self-end">
-                    <a v-if="playerdetailsvm.twitterProfile" :href="playerdetailsvm.twitterProfile" class="ps-1" draggable="false"><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
-                    <a v-if="playerdetailsvm.twitchProfile" :href="playerdetailsvm.twitchProfile" class="ps-1" draggable="false"><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
-                    <a v-if="playerdetailsvm.youtubeProfile" :href="playerdetailsvm.youtubeProfile" class="ps-1" draggable="false"><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
+                    <a v-if="playerdetailsvm.twitterProfile" :href="playerdetailsvm.twitterProfile" class="ps-1" ><i class="fab fa-twitter fa-lg" style="color: #1D9BF0;"></i></a>
+                    <a v-if="playerdetailsvm.twitchProfile" :href="playerdetailsvm.twitchProfile" class="ps-1" ><i class="fab fa-twitch fa-lg" style="color: #6441a5;"></i></a>
+                    <a v-if="playerdetailsvm.youtubeProfile" :href="playerdetailsvm.youtubeProfile" class="ps-1" ><i class="fab fa-youtube fa-lg" style="color: #FF0000;"></i></a>
                 </div>
             </div>
             <div>
@@ -25,21 +25,21 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th class="fw-normal" style="font-size:14px; width:100px;">Total Runs</th>
-                                        <th class="fw-normal" style="font-size:14px; width:100px;">WRs</th>
-                                        <th class="fw-normal" style="font-size:14px; width:100px;">PBs</th>
+                                        <th class="fw-bold" style="width:100px;">Total Runs</th>
+                                        <th class="fw-bold" style="width:100px;">WRs</th>
+                                        <th class="fw-bold" style="width:100px;">PBs</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <span id="spnTotalSpeedRuns" class="form-control p-0" style="border:none; background:none;">{{ playerdetailsvm.totalSpeedRuns }}</span>
+                                            <span style="border:none; background:none;">{{ playerdetailsvm.totalSpeedRuns }}</span>
                                         </td>
                                         <td>
-                                            <span id="spnTotalWorldRecords" class="form-control p-0" style="border:none; background:none;">{{ playerdetailsvm.totalWorldRecords }}</span>
+                                            <span style="border:none; background:none;">{{ playerdetailsvm.totalWorldRecords }}</span>
                                         </td>
                                         <td>
-                                            <span id="spnTotalPersonalBests" class="form-control p-0" style="border:none; background:none;">{{ playerdetailsvm.totalPersonalBests }}</span>
+                                            <span style="border:none; background:none;">{{ playerdetailsvm.totalPersonalBests }}</span>
                                         </td>
                                     </tr>
                                 </tbody>

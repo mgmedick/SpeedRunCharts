@@ -11,13 +11,13 @@
             <div class="col tab-list">
                 <ul class="nav nav-underline">
                     <li class="categoryType nav-item" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                        <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                        <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
                     <li class="nav-item dropdown more" v-show="false">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
                     </li>                                           
@@ -30,13 +30,13 @@
                     <div class="col tab-list">
                         <ul class="nav nav-underline">
                             <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
-                                <a class="nav-link" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                <a class="nav-link" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                             </li>
                             <li class="nav-item dropdown more" v-show="false">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                     <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id" class="d-none">
-                                        <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                        <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                                     </li>
                                 </ul>
                             </li>                             
@@ -49,8 +49,9 @@
                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1')).length > 0">
                                 <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                             </div>
-                            <div v-else>                              
-                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                            <div v-else>     
+                                <leaderboard-charts :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :title="title" :istimerasc="istimerasc" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>                         
+                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
                             </div>
                         </div>
                         <div v-else>
@@ -58,13 +59,13 @@
                                 <div class="col tab-list">
                                     <ul class="nav nav-underline">
                                         <li class="level nav-item" v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id">
-                                            <a class="nav-link" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                            <a class="nav-link" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill"  @click="onTabClick">{{ level.name }}</a>
                                         </li>
                                         <li class="nav-item dropdown more" v-show="false">
                                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                                 <li v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id && (!hideempty || lvl.hasData))" :key="level.id" class="d-none">
-                                                    <a class="dropdown-item" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ level.name }}</a>
+                                                    <a class="dropdown-item" :class="{ 'active' : levelID == level.id }" href="#/" data-type="level" :data-value="level.id" data-toggle="pill"  @click="onTabClick">{{ level.name }}</a>
                                                 </li>
                                             </ul>
                                         </li>                                         
@@ -77,7 +78,8 @@
                                         <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                                     </div>
                                     <div v-else>
-                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @onshowchartsclick1="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                        <leaderboard-charts :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>
+                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +114,7 @@
                 subCategoryVariableValues: {},
                 variableIndex: 0,
                 speedRunCode: this.speedruncode,
-                showCharts: true,
+                showCharts: false,
                 showMisc: this.showmisc,
                 showAllData: false,               
                 exportTypes: [],
@@ -146,12 +148,6 @@
             }               
         },           
         mounted: function () {
-            if (window.innerWidth > 992) {
-                this.showCharts = true;
-            } else {
-                this.showCharts = false;
-            }
-
             this.loadData();
         },               
         updated: function () {

@@ -30,10 +30,10 @@
                             <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
                                 <div class="d-table-row">
                                     <!-- <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
-                                        <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
+                                        <span><a href="#/" ><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div> -->
                                     <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                        <span><a href="#/" draggable="false"><i class="fas fa-chart-simple fa-lg" @click="showSpeedRunCharts(item.id)"></i></a></span>                                
+                                        <span><a href="#/"  class="text-decoration-none text-reset" onclick="event.stopPropagation()"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts(item.id)"></a></span>                                
                                     </div>                                        
                                 </div>
                             </div>

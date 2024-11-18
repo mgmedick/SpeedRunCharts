@@ -33,25 +33,25 @@
             <div class="col tab-list">                
                 <ul class="nav nav-underline">
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>
+                        <a class="nav-link" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0"  @click="onTabClick">{{ "Leaderboards" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
+                        <a class="nav-link" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1"  @click="onTabClick">{{ "World Recs" }}</a>            
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>            
+                        <a class="nav-link" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2"  @click="onTabClick">{{ "Summary Charts" }}</a>            
                     </li>
                     <li class="nav-item dropdown more" v-show="false">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>            
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0"  @click="onTabClick">{{ "Leaderboards" }}</a>            
                             </li>
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1"  @click="onTabClick">{{ "World Recs" }}</a>            
                             </li>
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>                          
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2"  @click="onTabClick">{{ "Summary Charts" }}</a>                          
                             </li>
                         </ul>
                     </li>                                                            

@@ -1,12 +1,12 @@
 ﻿<template>
-    <div class="card" style="border: none; border-radius: 0px; cursor: pointer;" @click="$emit('onshowchartsclick', $event)">
+    <div class="card mt-4" style="border: none; border-radius: 0px; cursor: pointer;" @click="$emit('onshowchartsclick', $event)">
         <div class="card-header">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false"><i class="fa fa-chevron-down align-self-center"></i><span class="ms-2">Hide Charts</span></a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" ><i class="fa fa-chevron-down align-self-center"></i><span class="ms-2">Hide Charts</span></a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" draggable="false"><i class="fa fa-chevron-right align-self-center"></i><span class="ms-2">Show Charts</span></a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" ><i class="fa fa-chevron-right align-self-center"></i><span class="ms-2">Show Charts</span></a>
                 </div>
             </h5>
         </div>

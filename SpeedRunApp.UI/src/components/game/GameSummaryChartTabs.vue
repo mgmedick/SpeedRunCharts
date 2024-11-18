@@ -11,13 +11,13 @@
             <div class="col tab-list">
                 <ul class="nav nav-underline">
                     <li class="categoryType nav-item" v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id">
-                        <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                        <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
                     <li class="nav-item dropdown more" v-show="false">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(categoryType, categoryTypeIndex) in game.categoryTypes" :key="categoryType.id" class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
                     </li>                        
@@ -34,13 +34,13 @@
                         <div class="col tab-list">
                             <ul class="nav nav-underline">
                                 <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id">
-                                    <a class="nav-link" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                    <a class="nav-link" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                                 </li>
                                 <li class="nav-item dropdown more" v-show="false">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                                         <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && ctg.hasData)" :key="category.id" class="d-none">
-                                            <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ category.name }}</a>
+                                            <a class="dropdown-item d-none" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                                         </li>
                                     </ul>
                                 </li>                                  

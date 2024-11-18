@@ -7,7 +7,7 @@
                 </div>
             </div>
         </div>  
-        <div class="pt-2">  
+        <div class="mt-4">  
             <div class="row g-2 mb-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
@@ -16,7 +16,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(exporttype, i) in exporttypes" :key="i">
-                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
+                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill"  @click="onExportClick">{{ exporttype.name }}</a>
                             </li>
                         </ul>
                     </div>                     
@@ -56,8 +56,8 @@
     // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
-    import { polyfill } from "mobile-drag-drop";
-    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    // import { polyfill } from "mobile-drag-drop";
+    // import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Tooltip, Modal } from 'bootstrap';
 
     export default {
@@ -94,9 +94,9 @@
             }                                                                              
         },           
         mounted: function() {
-            polyfill({
-                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });
+            // polyfill({
+            //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            // });
  
             this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
                 this.$refs.speedrundetails.loadData();

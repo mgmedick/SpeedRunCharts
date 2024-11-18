@@ -11,13 +11,13 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" draggable="false">All</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" >All</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 0 }" href="#/" :data-value="null" data-toggle="pill" draggable="false">Full Game</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 0 }" href="#/" :data-value="null" data-toggle="pill" >Full Game</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 1 }" href="#/" :data-value="null" data-toggle="pill" draggable="false">Level</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 1 }" href="#/" :data-value="null" data-toggle="pill" >Level</a>
                         </li>                                                                
                     </ul>
                 </div>  

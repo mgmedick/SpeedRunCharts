@@ -24,7 +24,7 @@
                 </div>
                 <div v-else-if="subcategoryvariablevalues[variable.name + variableindex] == variableValue.name">
                     <leaderboard-charts :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick2', $event)"></leaderboard-charts>
-                    <leaderboard-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedruncode="speedruncode" :showcharts="showcharts" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @update:showalldata="$emit('update:showalldata', $event)"></leaderboard-grid>
+                    <leaderboard-grid :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="(prevdata + ',' + variableValue.id).replace(/(^,)|(,$)/g, '')" :speedruncode="speedruncode" :showalldata="showalldata" :showmilliseconds="showmilliseconds" :variables="variables" :exporttypes="exporttypes" :title="title" :istimerasc="istimerasc" @update:showalldata="$emit('update:showalldata', $event)"></leaderboard-grid>
                 </div>
             </div>
         </div>

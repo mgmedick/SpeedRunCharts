@@ -81,7 +81,6 @@
 
     export default {
         name: "LeaderboardGrid",
-        emits: ["onshowchartsclick1"],
         props: {
             gameid: String,
             categorytypeid: String,
@@ -89,7 +88,6 @@
             levelid: String,
             variablevalues: String,
             speedruncode: String,
-            showcharts: Boolean,          
             showalldata: Boolean,
             showmilliseconds: Boolean,
             variables: Array,
@@ -151,16 +149,16 @@
                                                                         
                         that.initGrid(res.data); 
                         that.loading = false;
-                        if (that.speedRunCode) {
-                            var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
-                            if (index > -1) {
-                                that.table.selectRow(that.tableData[index].id);
-                                var page = Math.ceil(index / that.pageSize);
-                                if(page > 1) {
-                                    that.table.setPage(page);
-                                }
-                            }
-                        }
+                        // if (that.speedRunCode) {
+                        //     var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
+                        //     if (index > -1) {
+                        //         that.table.selectRow(that.tableData[index].id);
+                        //         var page = Math.ceil(index / that.pageSize);
+                        //         if(page > 1) {
+                        //             that.table.setPage(page);
+                        //         }
+                        //     }
+                        // }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
@@ -222,7 +220,6 @@
                     layout: "fitColumns",
                     reactiveData:true,
                     //responsiveLayout: false,
-                    selectable: false,
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
@@ -241,7 +238,22 @@
                     columns: columns
                 });
                 this.table.on("renderComplete", that.onRenderComplete);
+                this.table.on("tableBuilt", that.onTableBuilt);
                 this.table.on("rowClick", that.onRowClick);
+            },
+            onTableBuilt() {
+                var that = this;
+
+                if (that.speedRunCode) {
+                    var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
+                    if (index > -1) {
+                        that.table.selectRow(that.tableData[index].id);
+                        var page = Math.ceil(index / that.pageSize);
+                        if(page > 1) {
+                            that.table.setPage(page);
+                        }
+                    }
+                }  
             },
             onRenderComplete() {
                 var that = this;
@@ -258,7 +270,7 @@
                     new Tooltip(el);                        
                 });
 
-                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
+                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });              
             },
             onRowClick(e, row) {
                 var id = row.getCell("id").getValue();

@@ -19,7 +19,7 @@
                             </div>                                
                         </td>
                         <td style="vertical-align: middle;">
-                            <div class="nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset pe-auto"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div class="nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
                             <div class="nowrap-elipsis"><span>{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
                         <td class="show-md" style="width: auto; vertical-align: middle;">
@@ -33,7 +33,7 @@
                                         <span><a href="#/" ><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div> -->
                                     <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                        <span><a href="#/"  class="text-decoration-none text-reset pe-auto" onclick="event.stopPropagation()"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts(item.id)"></a></span>                                
+                                        <span><a href="#/"  class="text-decoration-none text-reset" onclick="event.stopPropagation()"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts(item.id)"></a></span>                                
                                     </div>                                        
                                 </div>
                             </div>

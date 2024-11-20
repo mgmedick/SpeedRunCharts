@@ -14,10 +14,10 @@
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <input type="search" class="form-control" style="max-width: 300px;" placeholder="Search games, users" @click="onSearchClick" readonly>
+                <input type="search" class="form-control me-2" style="max-width: 300px;" placeholder="Search games, users" @click="onSearchClick" readonly>
                 <div v-if="isauth">
-                    <div class="btn-group">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
                                 <i class="fa fa-user"></i>
                             </span>
@@ -116,13 +116,12 @@
         watch: {
             isDarkTheme: function (val, oldVal) {
                 var that = this;
+                this.updateTheme(val);
 
                 if (this.isauth) {
                     axios.post('/Home/UpdateIsDarkTheme', null,{ params: { isDarkTheme: val } })
                         .then((res) => {
-                            if (res.data.success) {
-                                that.updateTheme(this.isDarkTheme);
-                            } else {
+                            if (!res.data.success) {
                                 res.data.errorMessages.forEach(errorMsg => {
                                     errorToast(errorMsg);                           
                                 });                                
@@ -130,7 +129,6 @@
                         })
                         .catch(err => { console.error(err); return Promise.reject(err); });        
                 } else {
-                    this.updateTheme(val);
                     var theme = val ? "dark" : "light";
                     setCookie("theme", theme);                  
                 }

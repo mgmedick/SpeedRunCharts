@@ -16,7 +16,7 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
       --bs-btn-active-border-color: #{$gray-800};
   }
 
-  a.text-reset:hover > *:not(.gold):not(.silver):not(.bronze) {
+  a.text-reset:hover > *:not(i):not(img) {
       filter: brightness(25%);
   }    
 }
@@ -55,10 +55,14 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
       --bs-nav-link-hover-color: #{--bs-body-color};       
   }
 
-  a.text-reset:hover > *:not(.gold):not(.silver):not(.bronze) {
+  a.text-reset:hover > *:not(i):not(img)  {
       filter: brightness(175%);
   }       
 }
+
+// a.text-reset {
+//   cursor: pointer;
+// }
 
 // Navbar
 

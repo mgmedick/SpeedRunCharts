@@ -29,12 +29,12 @@
                     <div class="px-2" style="overflow: hidden;">       
                         <div class="mb-1">
                             <div class="nowrap-elipsis align-self-start">
-                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr)" class="text-decoration-none text-reset pe-auto" style="font-weight: 500;">{{ item.gameName }}</a>
+                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr)" class="text-decoration-none text-reset" style="font-weight: 500;">{{ item.gameName }}</a>
                             </div>                 
                         </div>
                         <div class="nowrap-elipsis mb-1">  
                             <span class="me-1">
-                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset pe-auto"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
+                                <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                             </span>&nbsp;-&nbsp;
                             <span class="fw-bold">
                                 <template v-for="(player, index) in item.players">                               

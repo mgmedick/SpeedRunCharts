@@ -11,13 +11,13 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" >All</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" @click="onCategoryTypeClick(null)">All</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 0 }" href="#/" :data-value="null" data-toggle="pill" >Full Game</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 0 }" href="#/" :data-value="null" data-toggle="pill" @click="onCategoryTypeClick(0)">Full Game</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 1 }" href="#/" :data-value="null" data-toggle="pill" >Level</a>
+                            <a class="dropdown-item" :class="{ 'active' : categoryTypeID == 1 }" href="#/" :data-value="null" data-toggle="pill" @click="onCategoryTypeClick(1)">Level</a>
                         </li>                                                                
                     </ul>
                 </div>  
@@ -76,7 +76,7 @@
                 iconClass += " fa-sm";
 
                 return iconClass;
-            },                    
+            },               
             onSummaryListClick: function (summaryListID) {
                 // Array.from(document.querySelectorAll('.summary-list.active')).forEach((el) => el.classList.remove('active'));
                 // event.target.parentElement.classList.add("active");

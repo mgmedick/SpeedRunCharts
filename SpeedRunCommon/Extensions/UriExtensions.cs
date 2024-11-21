@@ -25,7 +25,7 @@ namespace SpeedRunCommon.Extensions
                 }                
                 else if (domain.Contains("vimeo.com") || domain.Contains("medal.tv"))
                 {
-                    uriString = string.Format("{0}?autoplay={0}&muted={1}", autoplay ? 1 : 0, muted ? 1 : 0); 
+                    uriString = string.Format("{0}?autoplay={1}&muted={2}", uri, autoplay ? 1 : 0, muted ? 1 : 0); 
                 }
 
                 if (!string.IsNullOrWhiteSpace(uriString))

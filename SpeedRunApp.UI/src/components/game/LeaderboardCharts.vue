@@ -147,7 +147,11 @@
         },                                     
         mounted: function () {
             this.loadData();
-        },      
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
+        },     
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },             
         methods: {                        
             loadData() {
                 var that = this;
@@ -166,7 +170,10 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.chartmodal).show();
                 });                 
-            }                        
+            },
+            onThemeUpdate() {
+                this.loadData();
+            }                                     
         }
     }
 </script>

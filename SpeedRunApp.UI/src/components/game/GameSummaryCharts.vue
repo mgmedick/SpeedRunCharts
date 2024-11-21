@@ -139,7 +139,6 @@
                 });                
             },
             onThemeUpdate() {
-                this.theme = document.documentElement.dataset.bsTheme;
                 this.loadData();
             }                                         
         }

@@ -14,7 +14,7 @@
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <input type="search" class="form-control me-2" style="max-width: 300px;" placeholder="Search games, users" @click="onSearchClick" readonly>
+                <input type="search" class="form-control me-2" style="max-width: 300px;" placeholder="Search games, players" @click="onSearchClick" readonly>
                 <div v-if="isauth">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,8 +75,8 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <button type="button" class="btn btn-primary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
-                        <button type="button" class="btn btn-primary btn-sm ms-1" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
+                        <button type="button" class="btn btn-secondary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
                     </div>
                     <div class="mt-3">
                         <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        

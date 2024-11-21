@@ -66,7 +66,7 @@
                 <div class="mb-4">
                     <h6 class="lead">Leaderboard</h6>    
                     <div class="row g-3">
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Game</label>
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>       
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Category</label>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         </div>     
-                        <div v-if="item.levelName" class="col-auto">
+                        <div v-if="item.levelName" class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Level</label>
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                         </div> 
-                        <div v-if="item.variableValues" class="col-auto" v-for="(variableValue, index) in item.variableValues">
+                        <div v-if="item.variableValues" class="col" v-for="(variableValue, index) in item.variableValues">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">{{ variableValue.variableName }}</label>
@@ -111,7 +111,7 @@
                 <div>
                     <h6 class="lead">Run</h6>     
                     <div class="row g-3">
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Rank</label>
@@ -121,7 +121,7 @@
                                 </div>
                             </div>
                         </div>                    
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Time</label>
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                         </div>                   
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Players</label>
@@ -151,7 +151,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="item.platformName" class="col-auto">
+                        <div v-if="item.platformName" class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Platform</label>
@@ -161,7 +161,7 @@
                                 </div>
                             </div>
                         </div>                     
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Submitted</label>
@@ -171,7 +171,7 @@
                                 </div>
                             </div>
                         </div>                    
-                        <div class="col-auto">
+                        <div class="col">
                             <div class="card text-bg-secondary">
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Verified</label>

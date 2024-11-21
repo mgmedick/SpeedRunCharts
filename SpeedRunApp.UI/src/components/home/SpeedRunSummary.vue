@@ -27,7 +27,7 @@
             <div class="px-2" style="overflow: hidden;">       
                 <div class="mb-1">
                     <div class="nowrap-elipsis align-self-start">
-                        <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr)" class="text-decoration-none text-reset" style="font-weight: 500;">{{ item.gameName }}</a>
+                        <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset" style="font-weight: 500;">{{ item.gameName }}</a>
                     </div>
                     <div class="align-self-end" style="line-height: 12px;">
                         <small class="text-muted">{{ item.relativeVerifyDateString }}</small><span v-if="item.viewCountString">&nbsp;&middot;&nbsp;<small class="text-muted">{{ item.viewCountString + " views" }}</small></span>
@@ -37,7 +37,7 @@
                     <span class="me-1">
                         <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset"><template v-if="item.rankString"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString }}</span>&nbsp;-&nbsp;</template><span style="font-size: 13px;">{{ item.primaryTimeString }}</span></a>
                     </span>&nbsp;-&nbsp;
-                    <span class="fw-bold">
+                    <span>
                         <template v-for="(player, index) in item.players">                               
                             <span v-if="player.colorLight && player.colorDark" class='playername-text playername-color-light' :style="'background: linear-gradient(to right,' + player.colorLight + ',' + (player.colorToLight || player.colorLight) + ');'">
                                 <span class='playername-text playername-color-dark' :style="'background: linear-gradient(to right,' + player.colorDark + ',' + (player.colorToDark || player.colorDark) + ');'">

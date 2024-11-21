@@ -59,7 +59,9 @@
             
             this.loadData().then(function() {                               
                 if (sessionStorage.scrolltop) {
+                    document.documentElement.style.scrollBehavior = 'auto';
                     document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
+                    document.documentElement.style.scrollBehavior = 'smooth';
                 }
             });
             window.addEventListener('scroll', this.onWindowScroll);

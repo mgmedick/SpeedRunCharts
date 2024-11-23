@@ -1,22 +1,20 @@
 ﻿<template>
     <div>
-        <a :href="'/SpeedRun/SpeedRunDetails/' + encodeURIComponent(item.code)">
-            <div @mouseover="onMouseOver" @mouseleave="onMouseLeave">
-                    <div v-if="showVideo" class="ratio ratio-16x9 iframe-wrapper" style="overflow: hidden;">
-                        <iframe ref="frame" 
-                                    :src="item.embeddedVideoLinkAutoplay"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    width="100%"
-                                    height="100%"
-                                    allowfullscreen="true"></iframe>
-                    </div>
-                    <div v-else class="stretchy-wrapper rounded" style="position:relative">
-                        <div class="ratio ratio-16x9" style="overflow: hidden;">
-                            <img :src="item.videoThumbnailLink" class="align-self-center" style="height:100%; width:100%; overflow:hidden;"/>
-                        </div>
-                    </div>                
+        <a :href="'/SpeedRun/SpeedRunDetails/' + encodeURIComponent(item.code)" @mouseover="onMouseOver" @mouseleave="onMouseLeave" @touchstart="onVideoTouchStart">
+            <div v-if="showVideo" class="ratio ratio-16x9 iframe-wrapper" style="overflow: hidden;">
+                <iframe ref="frame" 
+                            :src="item.embeddedVideoLinkAutoplay"
+                            frameborder="0"
+                            scrolling="no"
+                            width="100%"
+                            height="100%"
+                            allowfullscreen="true"></iframe>
             </div>
+            <div v-else class="stretchy-wrapper rounded" style="position:relative">
+                <div class="ratio ratio-16x9" style="overflow: hidden;">
+                    <img :src="item.videoThumbnailLink" class="align-self-center" style="height:100%; width:100%; overflow:hidden;"/>
+                </div>
+            </div>                
         </a>
         <div class="d-flex g-2 py-2 px-sm-0 px-2">
             <div class="align-self-start" style="width: 40px; flex: none;">
@@ -72,6 +70,7 @@
             return {
                 showVideo: false,
                 mouseOver: false,
+                touchStart: false,
                 throttleTimer: null,
                 throttleDelay: 300                
             }
@@ -94,29 +93,27 @@
 
                 return iconClass;
             },
-            onVideoClick() {
-                location.href = '/SpeedRun/SpeedRunDetails/' + encodeURIComponent(this.item.code);
-            },
+            onVideoTouchStart(event) {
+                var that = this;
+                that.touchStart = true;                  
+            },                  
             onMouseOver() {
                 var that = this;
-                that.mouseOver = true;
+                if (!that.touchStart) {
+                    that.mouseOver = true;
 
-                clearTimeout(that.throttleTimer);
-                that.throttleTimer = setTimeout(function () {
-                    if (that.mouseOver) {
-                        that.showVideo = true;
-
-                        // that.$nextTick(function() {
-                        //     that.$refs.frame.contentWindow.document.addEventListener('click', e => {
-                        //         console.log('clicked', e.target);
-                        //     });
-                        // });
-                    }
-                }, that.throttleDelay);                
+                    clearTimeout(that.throttleTimer);
+                    that.throttleTimer = setTimeout(function () {
+                        if (that.mouseOver) {
+                            that.showVideo = true;
+                        }
+                    }, that.throttleDelay);    
+                }            
             },            
             onMouseLeave() {
                 this.mouseOver = false;
                 this.showVideo = false;
+                this.touchStart = false;
             }
         }       
     };

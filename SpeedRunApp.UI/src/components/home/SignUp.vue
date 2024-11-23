@@ -1,5 +1,5 @@
 ﻿<template>
-    <div class="mx-auto">
+    <div class="container">
         <h2 class="text-center mb-3">Welcome to speedruncharts.com</h2>
         <div class="mx-auto" style="max-width:400px;">
             <form @submit.prevent="onSubmit">
@@ -11,11 +11,11 @@
                         <div id="spnEmailErrors" class="form-text text-danger" v-for="error of v$.form.Email.$errors">{{ error.$message }}</div>
                     </div>
                 </div>
-                <div class="row g-2 justify-content-center mb-3 mx-auto">
+                <div class="row g-3 justify-content-center mb-3 mx-auto">
                     <button id="btnSignUp" type="submit" class="btn btn-primary w-100" :disabled="loading">Sign Up</button>
-                    <div class="text-center"><small class="fw-bold">OR</small></div>
+                    <div class="text-center p-0"><small class="fw-bold">OR</small></div>
                     <div class="fb-login-button" data-width="100%" data-size="large" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-scope="public_profile,email" onlogin="checkFBLoginState();" style="color-scheme: light"></div>
-                    <div ref="googleLoginBtn" class="p-0 w-100" style="color-scheme: light"></div>
+                    <div ref="googleLoginBtn" style="color-scheme: light"></div>
                 </div>        
                 <div>
                     <div v-if="loading">
@@ -237,7 +237,7 @@
                     text: 'signin_with',
                     size: 'large',
                     logo_alignment: 'left',
-                    width: btnwidth
+                    width: btnwidth - 10
                 }
 
                 window.google.accounts.id.renderButton(this.$refs.googleLoginBtn, options);

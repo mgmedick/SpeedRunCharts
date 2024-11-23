@@ -23,7 +23,7 @@
                 </div>  
             </div>                  
         </div>
-        <div>
+        <div style="overflow: hidden;">
             <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="indexvm.defaultTopAmount"></summary-list>
         </div>
     </div>  

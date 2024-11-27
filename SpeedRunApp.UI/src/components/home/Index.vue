@@ -1,15 +1,12 @@
 ﻿<template>
     <div>
-        <div class="sticky-top bg-body d-flex pb-3 px-sm-0 px-2" style="top: 67px; z-index: 1019;">        
-            <div v-for="(item, itemIndex) in indexvm.summaryLists" :key="item.id" class="me-2">
-                <button type="button" class="btn btn-secondary btn-sm summary-list" :class="{ 'active' : summaryListID == item.id }" @click="onSummaryListClick(item.id)">{{ item.displayName }}</button>            
-            </div>
-            <div class="ms-auto btn-group me-1">
-                <div class="dropdown">
+        <div class="sticky-top bg-body d-flex pb-3 px-sm-0 px-2" style="top: 67px; z-index: 1019;">
+            <div class="btn-group me-2">
+                <div class="dropdown" style="overflow: initial;">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-filter"></i>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                    <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item" :class="{ 'active' : categoryTypeID == null }"  href="#/" :data-value="null" data-toggle="pill" @click="onCategoryTypeClick(null)">All</a>
                         </li>
@@ -21,7 +18,12 @@
                         </li>                                                                
                     </ul>
                 </div>  
-            </div>                  
+            </div>
+            <div class="d-flex" style="overflow: auto;">
+                <div v-for="(item, itemIndex) in indexvm.summaryLists" :key="item.id" class="me-2">
+                    <button type="button" class="btn btn-secondary btn-sm summary-list nowrap-elipsis" :class="{ 'active' : summaryListID == item.id }" @click="onSummaryListClick(item.id)">{{ item.displayName }}</button>            
+                </div>
+            </div>
         </div>
         <div style="overflow: hidden;">
             <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="indexvm.defaultTopAmount"></summary-list>

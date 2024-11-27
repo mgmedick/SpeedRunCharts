@@ -54,18 +54,16 @@
                         window.performance.getEntriesByType('navigation').map((nav) => nav.type).includes('reload'));
 
             if (isPageReloaded) {
-                this.resetParams();                   
+                this.resetParams();                                  
             }
             
             this.loadData().then(function() {                               
-                if (sessionStorage.scrolltop) {
-                    document.documentElement.style.scrollBehavior = 'auto';
-                    document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
-                    document.documentElement.style.scrollBehavior = 'smooth';
-                }
+                document.documentElement.style.scrollBehavior = 'auto';
+                document.documentElement.scrollTop = sessionStorage.scrolltop ?? 0;
+                document.documentElement.style.scrollBehavior = 'smooth';
             });
             window.addEventListener('scroll', this.onWindowScroll);
-            window.addEventListener('beforeunload', this.onBeforeUnload);          
+            window.addEventListener('visibilitychange', this.onBeforeUnload);          
         },         
         methods: {
             reLoadData: function () {
@@ -116,7 +114,7 @@
                 if (this.items.length > this.topamt) {
                     sessionStorage.setItem("topamt", this.items.length);
                 }
-            }                    
+            }                
         }
     };
 </script>

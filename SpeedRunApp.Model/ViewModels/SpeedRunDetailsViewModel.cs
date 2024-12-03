@@ -66,6 +66,8 @@ namespace SpeedRunApp.Model.ViewModels
         public string SplitsLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public long? ViewCount { get; set; }
+
 
          public List<string> SubCategoryVariableValueNames
         {
@@ -95,17 +97,18 @@ namespace SpeedRunApp.Model.ViewModels
 
                 return result;
             }
-        }        
-        
-        public string RelativeVerifyDateString
+        }
+
+        public string ViewCountString
         {
             get
             {
-                return VerifyDate?.ToRealtiveDateString();
+                var viewCount = VideoLinks?.Select(x => x.ViewCount).FirstOrDefault();
+                return viewCount > 0 ? viewCount.Value.ToShortString() : string.Empty;
             }
-        }
-
-        public string RelativeVerifyDateStringShort
+        }                
+        
+        public string RelativeVerifyDateString
         {
             get
             {
@@ -175,6 +178,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return DateSubmitted?.ToRealtiveDateString(true);
             }
-        }             
+        }                    
     }
 }

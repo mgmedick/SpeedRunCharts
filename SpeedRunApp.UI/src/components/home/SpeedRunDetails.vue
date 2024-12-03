@@ -30,7 +30,10 @@
                         <div class="mb-1">
                             <div class="nowrap-elipsis align-self-start">
                                 <a :href="'/Game/GameDetails/' + encodeURIComponent(item.gameAbbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset" style="font-weight: 500;">{{ item.gameName }}</a>
-                            </div>                 
+                            </div>
+                            <div class="align-self-end" style="line-height: 12px;">
+                                <small class="text-muted">{{ item.relativeVerifyDateString }}</small><span v-if="item.viewCountString">&nbsp;&middot;&nbsp;<small class="text-muted">{{ item.viewCountString + " views" }}</small></span>
+                            </div>                                            
                         </div>
                         <div class="nowrap-elipsis mb-1">  
                             <span class="me-1">
@@ -176,7 +179,7 @@
                                 <div class="card-body p-2">
                                     <label class="fw-bold">Verified</label>
                                     <div class="nowrap-elipsis">
-                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateStringShort }}</span>
+                                        <span data-bs-toggle="tooltip" :data-bs-title="getFormattedDateString(item.dateSubmitted)">{{ item.relativeVerifyDateString }}</span>
                                     </div>
                                 </div>
                             </div>

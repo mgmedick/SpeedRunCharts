@@ -30,6 +30,7 @@ namespace SpeedRunApp.Model.ViewModels
             Players = run.Players;
             EmbeddedVideoLink = run.EmbeddedVideoLinkUrl;
             VideoThumbnailLink = run.ThumbnailLinkUrl;
+            ViewCount = run.ViewCount;
         }
 
         public int ID { get; set; }
@@ -49,6 +50,7 @@ namespace SpeedRunApp.Model.ViewModels
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public long? ViewCount { get; set; }
 
         public string EmbeddedVideoLinkAutoplay
         {
@@ -94,6 +96,14 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return VerifyDate?.ToRealtiveDateString(true);
             }
-        }             
+        }      
+
+        public string ViewCountString
+        {
+            get
+            {
+                return ViewCount > 0 ? ViewCount.Value.ToShortString() : string.Empty;
+            }
+        }                
     }
 }

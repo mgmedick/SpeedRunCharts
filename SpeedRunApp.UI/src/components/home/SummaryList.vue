@@ -1,6 +1,6 @@
 ﻿<template>
-    <div>
-        <div class="row row-cols-lg-5 row-cols-sm-2 row-cols-1 g-3 gy-5">
+    <div style="overflow: hidden;">
+        <div class="row row-cols-lg-5 row-cols-sm-2 row-cols-1 gx-3">
             <div v-for="(item, index) in items" class="col" :key="item.id">
                 <speedrun-summary :item="item" :index="index"></speedrun-summary>
                 <input type="hidden" class="orderValue" :value="item.sortOrder" /> 

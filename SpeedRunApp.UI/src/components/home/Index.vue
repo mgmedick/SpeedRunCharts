@@ -25,9 +25,7 @@
                 </div>
             </div>
         </div>
-        <div style="overflow: hidden;">
-            <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="indexvm.defaultTopAmount"></summary-list>
-        </div>
+        <summary-list :summarylistid="summaryListID" :categorytypeid="categoryTypeID" :defaulttopamt="indexvm.defaultTopAmount"></summary-list>
     </div>  
 </template>
 <script>
@@ -42,16 +40,6 @@
                 summaryListID: sessionStorage.getItem("summarylistid") ? parseInt(sessionStorage.getItem("summarylistid")) : this.indexvm.summaryLists[0]?.id,
                 categoryTypeID: sessionStorage.getItem("categorytypeid") ? parseInt(sessionStorage.getItem("categorytypeid")) : null
             }
-        },
-        created() {
-            var isPageReloaded = ((window.performance.navigation && window.performance.navigation.type === 1) ||
-                        window.performance.getEntriesByType('navigation').map((nav) => nav.type).includes('reload'));
-
-            if (isPageReloaded) {
-                this.resetParams();                   
-            }
-
-            sessionStorage.setItem("summarylistid", this.summaryListID);            
         },
         methods: {
             resetParams: function() {
@@ -83,13 +71,23 @@
                 // Array.from(document.querySelectorAll('.summary-list.active')).forEach((el) => el.classList.remove('active'));
                 // event.target.parentElement.classList.add("active");
                 this.summaryListID = summaryListID;
-                sessionStorage.setItem("summarylistid", this.summaryListID); 
+
+                if (this.summaryListID) {
+                    sessionStorage.setItem("summarylistid", this.summaryListID); 
+                } else {
+                    sessionStorage.removeItem("summarylistid");               
+                }                
             },                            
             onCategoryTypeClick: function (categoryTypeID) {
                 // Array.from(document.querySelectorAll('.categorytype.active')).forEach((el) => el.classList.remove('active'));
                 // event.target.parentElement.classList.add("active");
                 this.categoryTypeID = categoryTypeID;
-                sessionStorage.setItem("categorytypeid", this.categoryTypeID); 
+                
+                if (this.categoryTypeID) {
+                    sessionStorage.setItem("categorytypeid", this.categoryTypeID);
+                } else {
+                    sessionStorage.removeItem("categorytypeid");               
+                }
             }                          
         }
     };

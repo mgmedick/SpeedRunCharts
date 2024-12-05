@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="mb-lg-5">
         <a :href="'/SpeedRun/SpeedRunDetails/' + encodeURIComponent(item.code)" @mouseover="onMouseOver" @mouseleave="onMouseLeave" @touchstart="onVideoTouchStart">
             <div v-if="showVideo" class="ratio ratio-16x9 iframe-wrapper" style="overflow: hidden;">
                 <iframe ref="frame" 

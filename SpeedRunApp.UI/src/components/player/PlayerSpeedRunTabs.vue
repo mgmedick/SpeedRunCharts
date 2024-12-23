@@ -29,7 +29,7 @@
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
-                            <i class="fa fa-filter"></i><span class="ps-2">...</span>
+                            <i class="fa fa-filter"></i>
                         </span>
                     </button>
                     <ul class="dropdown-menu">

@@ -83,7 +83,7 @@
                 tableData: [],
                 groups: [],
                 loading: true,
-                selectedSpeedRunID: '',
+                selectedSpeedRunID: null,
                 pageSize: 100,
                 theme: document.documentElement.dataset.bsTheme
             }
@@ -98,9 +98,13 @@
             //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             // });
  
-            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                this.$refs.speedrundetails.loadData();
-            }); 
+            // this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     this.$refs.speedrundetails.loadData();
+            // }); 
+
+            this.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                this.selectedSpeedRunID = null;
+            });               
 
             this.loadData();
             window.gameWorldRecordGridVue = this;

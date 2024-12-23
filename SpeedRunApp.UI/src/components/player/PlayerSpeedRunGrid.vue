@@ -33,7 +33,7 @@
                                         <span><a href="#/" ><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
                                     </div> -->
                                     <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                        <span><a href="#/"  class="text-decoration-none text-reset" onclick="event.stopPropagation()"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts(item.id)"></a></span>                                
+                                        <span><a href="#/" class="text-decoration-none text-reset"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts($event, item.id)"></a></span>                                
                                     </div>                                        
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">    
-                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRun" :speedrunid="selectedSpeedRun.id" />                     
+                        <speedrun-details ref="speedrundetails" v-if="selectedDetailSpeedRun" :speedrunid="selectedDetailSpeedRun.id" />                     
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">
-                        <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedSpeedRun" :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         
+                        <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedChartSpeedRun" :gameid="selectedChartSpeedRun.gameID.toString()" :categorytypeid="selectedChartSpeedRun.categoryTypeID.toString()" :categoryid="selectedChartSpeedRun.categoryID.toString()" :levelid="selectedChartSpeedRun.levelID?.toString()" :variablevalues="selectedChartSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedChartSpeedRun.isTimerAscending"></player-speedrun-charts>                         
                     </div>
                 </div>
             </div>
@@ -93,7 +93,8 @@
             return {   
                 tableData: [],          
                 loading: true,
-                selectedSpeedRun: null,
+                selectedDetailSpeedRun: null,
+                selectedChartSpeedRun: null,
                 pageSize: 100,
                 theme: document.documentElement.dataset.bsTheme
             }
@@ -101,12 +102,12 @@
         computed: {
             title: function () {
                 var result = '';
-                if (this.selectedSpeedRun) {
-                    result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValueNames].join(' - ');                
+                if (this.selectedChartSpeedRun) {
+                    result = [this.selectedChartSpeedRun.gameName, this.selectedChartSpeedRun.categoryName, this.selectedChartSpeedRun.levelName, this.selectedChartSpeedRun.subCategoryVariableValueNames].join(' - ');                
                     result = result.replace(/^[ -]+|[ -]+$/g, '');
                 }  
                 return result;
-            },
+            },            
             tableClass: function() {
                 return this.theme == 'dark' ? "table-dark" : ""; 
             }              
@@ -118,16 +119,20 @@
             //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             // });            
 
-            that.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                that.$refs.speedrundetails.loadData();
-            }); 
+            // that.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     that.$refs.speedrundetails.loadData();
+            // }); 
+
+            that.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                that.selectedDetailSpeedRun = null;
+            });                    
             
-            that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
-                that.$refs.playerspeedruncharts.loadData();
-            }); 
+            // that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
+            //     that.$refs.playerspeedruncharts.loadData();
+            // }); 
 
             that.$refs.chartmodal.addEventListener('hidden.bs.modal', event => {
-                that.selectedSpeedRun = null;
+                that.selectedChartSpeedRun = null;
             });                        
 
             this.loadData();
@@ -192,14 +197,16 @@
                 return iconClass;
             },                                   
             showSpeedRunDetails(id) {
-                this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
+                this.selectedDetailSpeedRun = this.tabledata.find(i => i.id == id);
                 
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });
             },
-            showSpeedRunCharts(id) {
-                this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
+            showSpeedRunCharts(event, id) {
+                event.stopPropagation();
+                event.target.blur();
+                this.selectedChartSpeedRun = this.tabledata.find(i => i.id == id);
 
                 this.$nextTick(function() {
                     new Modal(this.$refs.chartmodal).show();
@@ -208,7 +215,7 @@
             onThemeUpdate() {
                 this.theme = document.documentElement.dataset.bsTheme;
                 this.loadData();
-            }                 
+            }               
         }             
     };
 </script>

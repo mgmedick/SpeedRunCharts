@@ -13,7 +13,7 @@
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
-                                <i class="fa fa-filter"></i><span class="ps-2">...</span>
+                                <i class="fa fa-filter"></i>
                             </span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
@@ -102,7 +102,7 @@
                 groups: [],
                 loading: true,
                 speedRunCode: this.speedruncode,
-                selectedSpeedRunID: '',
+                selectedSpeedRunID: null,
                 showAllData: this.showalldata,
                 pageSize: 100,
                 theme: document.documentElement.dataset.bsTheme
@@ -123,9 +123,13 @@
             //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
             // });
 
-            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                this.$refs.speedrundetails.loadData();
-            }); 
+            // this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     this.$refs.speedrundetails.loadData();
+            // }); 
+
+            this.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                this.selectedSpeedRunID = null;
+            });      
 
             this.loadData();
             window.speedRunGridVue = this;

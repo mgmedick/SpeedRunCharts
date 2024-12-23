@@ -22,12 +22,14 @@ $sortArrowInactive: #bbb !default;
 
 //row theming
 $rowBackgroundColor:$backgroundColor !default; //table row background color
-$rowAltBackgroundColor: $table-striped-bg !default; //table row background color
+// $rowAltBackgroundColor: $table-striped-bg !default; //table row background color
+$rowAltBackgroundColor: $backgroundColor !default; //table row background color
 $rowBorderColor:$table-border-color !default; //table border color
 $rowHoverBackground:$table-hover-bg !default; //row background color on hover
 
-$rowSelectedBackground: tint-color($primary, 75%) !default; //#9ABCEA !default; //row background color when selected
-$rowSelectedBackgroundHover: tint-color($primary, 55%) !default;//#769BCC !default;//row background color when selected and hovered
+// $rowSelectedBackground: tint-color($gray-600, 75%) !default; //#9ABCEA !default; //row background color when selected
+$rowSelectedBackground: rgba(0,0,0, 0.1) !default;
+$rowSelectedBackgroundHover: tint-color($rowSelectedBackground, 55%) !default; //#769BCC !default;//row background color when selected and hovered
 
 $editBoxColor:#1D68CD !default; //border color for edit boxes
 $errorColor:#dd0000 !default; //error indication
@@ -396,7 +398,7 @@ $table-cell-padding-sm: 5px;
 			}
 
 			&.tabulator-selected{
-				background-color: shade-color($primary, 50%);
+				background-color: #393b3f;
 			}
 
 			&.tabulator-group{

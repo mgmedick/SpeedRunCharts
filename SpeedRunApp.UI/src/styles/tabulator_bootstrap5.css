@@ -295,7 +295,7 @@
 }
 .tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-calcs {
   font-weight: bold;
-  background: rgb(218.2368421053, 223.25, 228.2631578947) !important;
+  background: rgb(242.25, 242.25, 242.25) !important;
 }
 .tabulator .tabulator-tableholder .tabulator-table .tabulator-row.tabulator-calcs.tabulator-calcs-top {
   border-bottom: 2px solid #dee2e6;
@@ -509,7 +509,7 @@
   background-color: #fff;
 }
 .tabulator-row.tabulator-row-even {
-  background-color: #e9ecef;
+  background-color: #fff;
 }
 @media (hover: hover) and (pointer: fine) {
   .tabulator-row.tabulator-selectable:hover {
@@ -518,11 +518,11 @@
   }
 }
 .tabulator-row.tabulator-selected {
-  background-color: rgb(216.75, 195.25, 251.75);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 @media (hover: hover) and (pointer: fine) {
   .tabulator-row.tabulator-selected:hover {
-    background-color: rgb(186.15, 147.45, 249.15);
+    background-color: rgba(244.4724770642, 244.4724770642, 244.4724770642, 0.595);
     cursor: pointer;
   }
 }
@@ -650,7 +650,7 @@
   background: #666;
 }
 .tabulator-row .tabulator-cell.tabulator-range-selected:not(.tabulator-range-only-cell-selected):not(.tabulator-range-row-header) {
-  background-color: rgb(216.75, 195.25, 251.75);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .tabulator-row .tabulator-cell .tabulator-data-tree-branch-empty {
   display: inline-block;
@@ -870,7 +870,7 @@
 @media (hover: hover) and (pointer: fine) {
   .tabulator-menu .tabulator-menu-item:not(.tabulator-menu-item-disabled):hover {
     cursor: pointer;
-    background: #e9ecef;
+    background: #fff;
   }
 }
 .tabulator-menu .tabulator-menu-item.tabulator-menu-item-submenu {
@@ -1279,7 +1279,7 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
   }
 }
 .tabulator.table .tabulator-row.tabulator-selected {
-  background-color: rgb(216.75, 195.25, 251.75);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .tabulator.table .tabulator-footer {
   border-color: #dee2e6 !important;
@@ -1294,10 +1294,10 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
   color: #495057 !important;
 }
 .tabulator.table-striped:not(.table) .tabulator-row.tabulator-row-even {
-  background-color: #e9ecef;
+  background-color: #fff;
 }
 .tabulator.table-striped:not(.table) .tabulator-row.tabulator-row-even.tabulator-selected {
-  background-color: rgb(216.75, 195.25, 251.75);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 @media (hover: hover) and (pointer: fine) {
   .tabulator.table-striped:not(.table) .tabulator-row.tabulator-row-even.tabulator-selectable:hover {
@@ -1305,7 +1305,7 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
     cursor: pointer;
   }
   .tabulator.table-striped:not(.table) .tabulator-row.tabulator-row-even.tabulator-selected:hover {
-    background-color: rgb(186.15, 147.45, 249.15);
+    background-color: rgba(244.4724770642, 244.4724770642, 244.4724770642, 0.595);
     cursor: pointer;
   }
 }
@@ -1391,7 +1391,7 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
   }
 }
 .tabulator.table-dark .tabulator-row.tabulator-selected {
-  background-color: #330879;
+  background-color: #393b3f;
 }
 .tabulator.table-dark .tabulator-row.tabulator-group {
   border-bottom: 1px solid #343a40;
@@ -1421,10 +1421,10 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
   color: #fff;
 }
 .tabulator.table-striped:not(.table-dark) .tabulator-row.tabulator-row-even {
-  background-color: #e9ecef;
+  background-color: #fff;
 }
 .tabulator.table-striped:not(.table-dark) .tabulator-row.tabulator-row-even.tabulator-selected {
-  background-color: rgb(216.75, 195.25, 251.75);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 @media (hover: hover) and (pointer: fine) {
   .tabulator.table-striped:not(.table-dark) .tabulator-row.tabulator-row-even.tabulator-selectable:hover {
@@ -1432,7 +1432,7 @@ body.tabulator-print-fullscreen-hide > *:not(.tabulator-print-fullscreen) {
     cursor: pointer;
   }
   .tabulator.table-striped:not(.table-dark) .tabulator-row.tabulator-row-even.tabulator-selected:hover {
-    background-color: rgb(186.15, 147.45, 249.15);
+    background-color: rgba(244.4724770642, 244.4724770642, 244.4724770642, 0.595);
     cursor: pointer;
   }
 }

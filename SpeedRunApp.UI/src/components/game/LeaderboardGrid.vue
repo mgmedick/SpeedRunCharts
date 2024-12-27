@@ -81,6 +81,7 @@
 
     export default {
         name: "LeaderboardGrid",
+        emits: ["update:showalldata"],
         props: {
             gameid: String,
             categorytypeid: String,
@@ -110,6 +111,7 @@
         },  
         watch: {
             showAllData: function (val, oldVal) {
+                this.$emit('update:showalldata', val); 
                 this.loadData();
             }              
         },  

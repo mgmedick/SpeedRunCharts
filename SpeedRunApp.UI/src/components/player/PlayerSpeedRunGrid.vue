@@ -22,21 +22,14 @@
                             <div class="nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
                             <div class="nowrap-elipsis"><span>{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
-                        <td class="show-md" style="width: auto; vertical-align: middle;">
+                        <td style="width: auto; vertical-align: middle;">
                             <div class="nowrap-elipsis"><span>{{ item.platformName }}</span></div>  
                             <div class="nowrap-elipsis"><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
                         </td>
-                        <td style="width: 5%; vertical-align: middle;">
-                            <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
-                                <div class="d-table-row">
-                                    <!-- <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
-                                        <span><a href="#/" ><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
-                                    </div> -->
-                                    <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                        <span><a href="#/" class="text-decoration-none text-reset"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" alt="Responsive image" @click="showSpeedRunCharts($event, item.id)"></a></span>                                
-                                    </div>                                        
-                                </div>
-                            </div>
+                        <td style="width: 5%; vertical-align: bottom;">
+                            <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="padding-bottom: 5px;">
+                                <span><a href="#/" class="text-decoration-none text-reset"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" style="min-width: 25px;" alt="Responsive image" @click="showSpeedRunCharts($event, item.id)"></a></span>                                
+                            </div>                                        
                         </td>                             
                     </tr>
                 </tbody>

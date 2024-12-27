@@ -33,7 +33,7 @@
                     <div class="row mb-2">
                         <div class="col tab-list">
                             <ul class="nav nav-underline">
-                                <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (showmisc || !ctg.isMisc))" :key="category.id">
+                                <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (showmisc || !ctg.isMiscellaneous))" :key="category.id">
                                     <a class="nav-link text-reset" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                                 </li>
                                 <li class="nav-item dropdown more" v-show="false">

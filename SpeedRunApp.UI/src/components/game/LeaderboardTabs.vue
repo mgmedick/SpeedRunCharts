@@ -29,13 +29,13 @@
                 <div class="row mb-2">
                     <div class="col tab-list">
                         <ul class="nav nav-underline">
-                            <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id">
+                            <li class="category nav-item" v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMiscellaneous))" :key="category.id">
                                 <a class="nav-link" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                             </li>
                             <li class="nav-item dropdown more" v-show="false">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-                                    <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMisc))" :key="category.id" class="d-none">
+                                    <li v-for="(category, categoryIndex) in game.categories.filter(ctg => ctg.categoryTypeID == categoryType.id && (!hideempty || ctg.hasData) && (showmisc || !ctg.isMiscellaneous))" :key="category.id" class="d-none">
                                         <a class="dropdown-item" :class="{ 'active' : categoryID == category.id }" href="#/" data-type="category" :data-value="category.id" data-toggle="pill"  @click="onTabClick">{{ category.name }}</a>
                                     </li>
                                 </ul>
@@ -47,11 +47,11 @@
                     <div v-if="categoryID == category.id">                                
                         <div v-if="categoryTypeID == 0">
                             <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1')).length > 0">
-                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                                <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '1'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAscending" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                             </div>
                             <div v-else>     
-                                <leaderboard-charts :showcharts="showCharts" :showmilliseconds="showmilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>                         
-                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                <leaderboard-charts :showcharts="showCharts" :showmilliseconds="game.showMilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :title="title" :istimerasc="category.isTimerAscending" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>                         
+                                <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="''" :variablevalues="''" :speedruncode="speedRunCode" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAscending" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
                             </div>
                         </div>
                         <div v-else>
@@ -75,11 +75,11 @@
                             <div v-for="(level, levelIndex) in game.levels.filter(lvl => lvl.categoryID == category.id)" :key="level.id">
                                 <div v-if="levelID == level.id">
                                     <div v-if="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3')).length > 0">
-                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAsc" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
+                                        <leaderboard-tabs-variable :items="game.subCategoryVariablesTabs?.filter(variable => variable.categoryID == category.id && variable.levelID == level.id && (variable.variableScopeTypeID == '0' || variable.variableScopeTypeID == '2' || variable.variableScopeTypeID == '3'))" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :subcategoryvariablevalues="subCategoryVariableValues" :speedruncode="speedRunCode" :prevdata="''" :variableindex="variableIndex" :hideempty="hideempty" :showcharts="showCharts" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :exporttypes="exportTypes" :title="title" :istimerasc="category.isTimerAscending" @ontabclick="onTabClick" @onshowchartsclick2="onShowChartsClick" @update:showalldata="showAllData = $event"></leaderboard-tabs-variable>
                                     </div>
                                     <div v-else>
-                                        <leaderboard-charts :showcharts="showCharts" :showmilliseconds="showmilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :title="title" :istimerasc="category.isTimerAsc" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>
-                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAsc" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
+                                        <leaderboard-charts :showcharts="showCharts" :showmilliseconds="game.showMilliseconds" :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :title="title" :istimerasc="category.isTimerAscending" @onshowchartsclick="onShowChartsClick"></leaderboard-charts>
+                                        <leaderboard-grid :gameid="game.id.toString()" :categorytypeid="categoryType.id.toString()" :categoryid="category.id.toString()" :levelid="level.id.toString()" :variablevalues="''" :speedruncode="speedRunCode" :showalldata="showAllData" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :title="title" :istimerasc="category.isTimerAscending" :exporttypes="exportTypes" @update:showalldata="showAllData = $event"></leaderboard-grid>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                 if (game.categoryTypes) {
                     this.categoryTypeID = this.categoryTypeID || game.categoryTypes[0].id;
 
-                    this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID && (!that.hideempty || category.hasData) && (that.showmisc || !category.isMisc))?.id;
+                    this.categoryID = this.categoryID || game.categories.find(category => category.categoryTypeID == that.categoryTypeID && (!that.hideempty || category.hasData) && (that.showmisc || !category.isMiscellaneous))?.id;
 
                     if (this.categoryTypeID == 1) {
                         this.levelID = this.levelID || (game.levels ? game.levels.filter(lvl => lvl.categoryID == that.categoryID && (!that.hideempty || lvl.hasData))[0]?.id : '');
@@ -232,8 +232,8 @@
                         this.categoryTypeID = game.categoryTypes[0].id;
                     }
 
-                    if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID && (!that.hideempty || i.hasData) && (that.showmisc || !i.isMisc)).length == 0) {
-                        this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID && (!that.hideempty || ctg.hasData) && (that.showmisc || !ctg.isMisc))[0]?.id;
+                    if (game.categories.filter(i => i.categoryTypeID == that.categoryTypeID && i.id == that.categoryID && (!that.hideempty || i.hasData) && (that.showmisc || !i.isMiscellaneous)).length == 0) {
+                        this.categoryID = game.categories.filter(ctg => ctg.categoryTypeID == that.categoryTypeID && (!that.hideempty || ctg.hasData) && (that.showmisc || !ctg.isMiscellaneous))[0]?.id;
                     }
 
                     if (this.categoryTypeID == 1) {

@@ -47,7 +47,7 @@
             chartType: function () {
                 var that = this;
                 var filteredCategories = this.categories.filter(i => i.categoryTypeID == that.categorytypeid);
-                return filteredCategories.filter(i => i.isTimerAsc).length == filteredCategories.length ? 'inversemsline' : 'msline'
+                return filteredCategories.filter(i => i.isTimerAscending).length == filteredCategories.length ? 'inversemsline' : 'msline'
             },   
             caption: function () {
                 return (this.categorytypeid == 0 ? 'Category' : 'Level') + ' Run Counts (Last 12 months)';

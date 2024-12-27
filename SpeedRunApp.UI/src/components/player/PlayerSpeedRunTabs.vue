@@ -96,7 +96,7 @@
                 categoryTypes: [],
                 tableData: [],
                 categoryTypeID: '',
-                showAllData: false,
+                showAllData: true,
                 showMisc: true,
                 showWR: false,
                 loading: true

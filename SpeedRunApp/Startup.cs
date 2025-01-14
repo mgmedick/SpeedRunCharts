@@ -105,6 +105,7 @@ namespace SpeedRunApp
                 endpoints.MapControllerRoute("ResetPassword", "ResetPassword", new { controller = "Home", action = "ResetPassword" });
                 endpoints.MapControllerRoute("SignUp", "SignUp", new { controller = "Home", action = "SignUp" });
                 endpoints.MapControllerRoute("default", "{controller}/{action}/{id}", new { controller = "Home", action = "Index", id = "" });
+                endpoints.MapControllerRoute("Sitemap", "sitemap.xml", new { controller = "Home", action = "SitemapXml" });
             });
         }
     }

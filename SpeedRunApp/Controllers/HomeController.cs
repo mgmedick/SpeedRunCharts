@@ -15,6 +15,8 @@ using Serilog;
 using Microsoft.AspNetCore.Authorization;
 using System.Web;
 using System.Data.SqlTypes;
+using System.Xml;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace SpeedRunApp.MVC.Controllers
 {
@@ -64,14 +66,14 @@ namespace SpeedRunApp.MVC.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult RefreshCache()
+        public JsonResult RefreshCache(string token)
         {
             var success = false;
             List<string> errorMessages = null;
 
             try
             {       
-                var token = (string)HttpContext.Request.Form["token"];
+                // var token = (string)HttpContext.Request.Form["token"];
                 if (!string.IsNullOrWhiteSpace(token))
                 {
                     token = HttpUtility.UrlDecode(token);
@@ -449,6 +451,48 @@ namespace SpeedRunApp.MVC.Controllers
 
             return Json(new { success = success, errorMessages = errorMessages });
         }
+
+        public void SitemapXml()
+        {
+            var host = string.Format("{0}://{1}{2}", Request.Scheme, Request.Host, Request.PathBase);
+
+            Response.ContentType = "application/xml";
+
+            var syncIOFeature = HttpContext.Features.Get<IHttpBodyControlFeature>();
+            if (syncIOFeature != null)
+            {
+                syncIOFeature.AllowSynchronousIO = true;
+            }
+
+            using (var xml = XmlWriter.Create(Response.Body, new XmlWriterSettings { Indent = true }))
+            {
+                xml.WriteStartDocument();
+                xml.WriteStartElement("urlset", "http://www.sitemaps.org/schemas/sitemap/0.9");
+
+                xml.WriteStartElement("url");
+                xml.WriteElementString("loc", host);
+                xml.WriteElementString("changefreq", "monthly");
+                xml.WriteEndElement();
+
+                xml.WriteStartElement("url");
+                xml.WriteElementString("loc", Url.Action("About", "Menu", null, Request.Scheme));
+                xml.WriteElementString("changefreq", "monthly");
+                xml.WriteEndElement();
+
+                var games = _cacheService.GetGameViews();
+                foreach (var game in games)
+                {
+                    xml.WriteStartElement("url");
+                    xml.WriteElementString("loc", Url.Action("GameDetails", "Game", new { ID = game.Abbr }, Request.Scheme));
+                    var modifiedDate = game.SrcCreatedDate ?? DateTime.MinValue;
+                    xml.WriteElementString("lastmod", modifiedDate.ToString("yyyy-MM-dd"));
+                    xml.WriteElementString("changefreq", "monthly");
+                    xml.WriteEndElement();
+                }                
+
+                xml.WriteEndElement();
+            }
+        }        
 
         private async void LoginUser(UserView userVW)
         {

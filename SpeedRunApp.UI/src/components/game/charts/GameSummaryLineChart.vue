@@ -240,6 +240,7 @@
                             palettecolors: this.paletteColors.join(','),                                                       
                             bgColor: this.bgColor,
                             baseFontColor: this.fontColor,
+                            labelFontColor: this.fontColor,
                             outCnvBaseFontColor: this.fontColor
                         },
                         categories: categories,

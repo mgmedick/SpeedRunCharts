@@ -41,10 +41,12 @@
         },
         watch: {                   
             summarylistid: function (val, oldVal) {
+                window.scrollTo(0, 0); 
                 this.resetParams();        
                 this.loadData();
             },
             categorytypeid: function (val, oldVal) {
+                window.scrollTo(0, 0); 
                 this.resetParams();        
                 this.loadData();
             }                 

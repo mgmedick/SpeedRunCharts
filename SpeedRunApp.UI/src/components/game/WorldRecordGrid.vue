@@ -357,11 +357,11 @@
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
                             html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "'>" + el.name + "</a>"
-                            html += "</span></span><br/>";                           
+                            html += "<span class='playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                                html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' onclick='event.stopPropagation()'>" + el.name + "</a>"
+                                html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' class='playername-text'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' onclick='event.stopPropagation()' class='playername-text'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;

@@ -17,6 +17,7 @@ namespace SpeedRunApp.Model.ViewModels
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
+            IsMiscellaneous = run.IsMiscellaneous;
             LevelID = run.LevelID;
             LevelName = run.LevelName;
             SubCategoryVariableValueIDs = run.SubCategoryVariableValueIDs;

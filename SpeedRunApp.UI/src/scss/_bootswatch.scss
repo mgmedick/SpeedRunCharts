@@ -17,12 +17,16 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
   }
 
   a.text-reset:hover > *:not(i):not(img) {
-      filter: brightness(25%);
+      filter: brightness(75%);
   }
+
+  .playername-text:hover {
+      filter: brightness(75%);
+  } 
 
   .playername-color-dark {
       background: none !important; 
-  } 
+  }
 }
 
 [data-bs-theme=dark] {
@@ -62,6 +66,10 @@ $web-font-path: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700
   a.text-reset:hover > *:not(i):not(img)  {
       filter: brightness(175%);
   }
+
+  .playername-text:hover {
+      filter: brightness(175%);
+  } 
 
   .playername-color-light {
       background: none !important;

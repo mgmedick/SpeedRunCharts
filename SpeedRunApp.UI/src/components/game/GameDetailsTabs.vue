@@ -1,11 +1,11 @@
 ﻿<template>
     <div class="mt-3">
-        <div v-if="gridID == 0 || gridID == 1" class="row no-gutters pe-1">
+        <div v-if="gridID == 0 || gridID == 1" class="row mb-2">
             <div class="col">
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
-                            <i class="fa fa-filter"></i><span class="ps-2">...</span>
+                            <i class="fa fa-filter"></i>
                         </span>
                     </button>
                     <ul class="dropdown-menu">
@@ -29,34 +29,32 @@
                 </div>                
             </div>
         </div>                               
-        <div id="divGameTabContainer" class="row no-gutters pe-1 pt-1">
+        <div id="divGameTabContainer" class="row mb-2">
             <div class="col tab-list">                
-                <ul class="nav nav-pills">
-                    <li class="nav-item py-1 pe-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>
+                <ul class="nav nav-underline">
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0"  @click="onTabClick">{{ "Leaderboards" }}</a>
                     </li>
-                    <li class="nav-item py-1 pe-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1"  @click="onTabClick">{{ "World Recs" }}</a>            
                     </li>
-                    <li class="nav-item py-1 pe-1">
-                        <a class="nav-link p-2" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>            
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2"  @click="onTabClick">{{ "Summary Charts" }}</a>            
                     </li>
-                    <div class="dropdown more py-1 pe-1" v-show="false">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>More...</span>
-                        </button>
+                    <li class="nav-item dropdown more" v-show="false">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0" draggable="false" @click="onTabClick">{{ "Leaderboards" }}</a>            
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 0 }" href="#/" data-value="0"  @click="onTabClick">{{ "Leaderboards" }}</a>            
                             </li>
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1" draggable="false" @click="onTabClick">{{ "World Recs" }}</a>            
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 1 }" href="#/" data-value="1"  @click="onTabClick">{{ "World Recs" }}</a>            
                             </li>
                             <li class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2" draggable="false" @click="onTabClick">{{ "Summary Charts" }}</a>                          
+                                <a class="dropdown-item" :class="{ 'active' : gridID == 2 }" href="#/" data-value="2"  @click="onTabClick">{{ "Summary Charts" }}</a>                          
                             </li>
                         </ul>
-                    </div>                                                            
+                    </li>                                                            
                 </ul>
             </div>
         </div>
@@ -75,7 +73,7 @@
     import { resizeTabs } from '../../js/common.js';
 
     export default {
-        name: "GameDetailTabs",
+        name: "GameDetailsTabs",
         props: {
             id: String,
             speedruncode: String           

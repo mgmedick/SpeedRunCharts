@@ -13,6 +13,7 @@ namespace SpeedRunApp.Model.Data
         public string Abbr { get; set; }
         public bool ShowMilliseconds { get; set; }
         public DateTime? ReleaseDate { get; set; }
+        public DateTime? SrcCreatedDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public int GameLinkID { get; set; }    

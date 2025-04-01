@@ -1,6 +1,6 @@
 ﻿<template>
     <div class="card mt-2" style="border: none; border-radius: 0px;">
-        <div class="row no-gutters">
+        <div class="row g-3 mb-3">
             <div class="col-lg-6">
                 <div class="ratio ratio-4x3">
                     <div style="height:100%;">
@@ -16,7 +16,7 @@
                 </div>            
             </div>
         </div>
-        <div class="row no-gutters">
+        <div class="row g-3">
             <div class="col-lg-12">
                 <div class="ratio ratio-4x3">
                     <div style="height:100%;">
@@ -25,18 +25,12 @@
                 </div>                        
             </div>               
         </div>           
-        <div class="row no-gutters">
-            <div class="col-lg-12">
-            </div>               
-        </div>
         <div ref="chartmodal" class="modal modal-xl" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ chartModalTitle }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div v-if="selectedChartID == 1">

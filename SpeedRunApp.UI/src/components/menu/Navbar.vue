@@ -1,7 +1,7 @@
 ﻿<template>
-    <nav class="navbar navbar-expand-lg bg-dark">
+    <nav class="navbar navbar-expand-lg bg-body sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#/" draggable="false" @click="onHomeClick">
+            <a class="navbar-brand" href="#/"  @click="onHomeClick">
                 <img src="/dist/fonts/pie-chart.svg" width="30" height="30" class="d-inline-block align-top pe-1" alt="">
                 SpeedRunCharts
             </a>
@@ -10,17 +10,14 @@
             </button>
             <div id="navbarNav" class="navbar-collapse" :style="[ toggleNavbar ? null : { display:'none' } ]">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item active pt-1 pb-1">
-                        <a href="https://github.com/speedruncomorg/api" class="badge badge-primary p-2">Powered by speedrun.com API</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Menu/About">About</a>
                     </li>                    
                 </ul>
-                <input type="search" class="form-control" style="max-width: 300px;" placeholder="Search games, users" @click="onSearchClick" readonly>
+                <input type="search" class="form-control me-2" style="max-width: 300px;" placeholder="Search games, players" @click="onSearchClick" readonly>
                 <div v-if="isauth">
-                    <div class="btn-group">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
                                 <i class="fa fa-user"></i>
                             </span>
@@ -67,29 +64,27 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div ref="searchmodal" class="modal modal-lg" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Search</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button> 
+        </div>                                
+    </nav> 
+    <div ref="searchmodal" class="modal modal-lg" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Search</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <button type="button" class="btn btn-secondary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <button type="button" class="btn btn-primary btn-sm" :class="{ 'active' : searchTypeID == 0 }" @click="onSearchTypeClick(0)">Games</button>
-                            <button type="button" class="btn btn-primary btn-sm ms-1" :class="{ 'active' : searchTypeID == 1 }" @click="onSearchTypeClick(1)">Players</button>                            
-                        </div>
-                        <div class="mt-3">
-                            <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        
-                        </div>
+                    <div class="mt-3">
+                        <autocomplete ref="searchautocomplete" v-model="searchText" @search="onSearch" @selected="onSearchSelected" :options="searchResults" :isasync="true" :isimgresults="true" :isimgcircle="searchTypeID == 1" :loading="searchLoading" :placeholder="searchTypeID == 0 ? 'Search games' : 'Search players'" />                        
                     </div>
                 </div>
             </div>
-        </div>                                 
-    </nav>           
+        </div>
+    </div>               
 </template>
 <script>
     import axios from 'axios'
@@ -121,13 +116,12 @@
         watch: {
             isDarkTheme: function (val, oldVal) {
                 var that = this;
+                this.updateTheme(val);
 
                 if (this.isauth) {
                     axios.post('/Home/UpdateIsDarkTheme', null,{ params: { isDarkTheme: val } })
                         .then((res) => {
-                            if (res.data.success) {
-                                that.updateTheme(this.isDarkTheme);
-                            } else {
+                            if (!res.data.success) {
                                 res.data.errorMessages.forEach(errorMsg => {
                                     errorToast(errorMsg);                           
                                 });                                
@@ -135,8 +129,7 @@
                         })
                         .catch(err => { console.error(err); return Promise.reject(err); });        
                 } else {
-                    this.updateTheme(val);
-                    var theme = val ? "theme-dark" : "theme-light";
+                    var theme = val ? "dark" : "light";
                     setCookie("theme", theme);                  
                 }
             }
@@ -152,11 +145,13 @@
         },
         methods: {
             onSearchClick(e){
-                this.searchText = null;
+                new Modal(this.$refs.searchmodal).show();
 
-                this.$nextTick(function() {
-                    new Modal(this.$refs.searchmodal).show();
-                });  
+                // this.searchText = null;
+
+                // this.$nextTick(function() {
+                //     new Modal(this.$refs.searchmodal).show();
+                // });  
             }, 
             onSearchTypeClick: function (searchTypeID) {
                 this.searchTypeID = searchTypeID;
@@ -204,15 +199,15 @@
                 }               
             },
             updateTheme: function(val){
-                var el = document.body;
+                var el = document.documentElement;
 
                 if (val){
-                    el.classList.remove("theme-light");
-                    el.classList.add("theme-dark");
+                    el.dataset.bsTheme = "dark";
                 } else {
-                    el.classList.remove("theme-dark");
-                    el.classList.add("theme-light");
+                    el.dataset.bsTheme = "light";
                 }
+
+                window.dispatchEvent(new CustomEvent('themeUpdate'));
             }
         }
     };

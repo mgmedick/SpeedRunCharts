@@ -7,8 +7,8 @@
                 </div>
             </div>
         </div>  
-        <div class="mt-2">  
-            <div class="row g-1">
+        <div class="mt-4">  
+            <div class="row g-2 mb-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,24 +16,21 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(exporttype, i) in exporttypes" :key="i">
-                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
+                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill"  @click="onExportClick">{{ exporttype.name }}</a>
                             </li>
                         </ul>
                     </div>                     
                 </div>                                                                
             </div>                 
             <div class="mt-2 grid-container" style="min-height:150px;">
-                <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
-                    <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                        <li v-if="groups.length == 0" class="group-placeholder">Drag columns here to group</li>
-                        <li v-if="groups.length > 0" class="group-label">Group By:</li>
-                        <li v-for="(group, i) in groups" :key="i" class="group-tag">
-                            <span>{{ group.title }}</span>&nbsp;
-                            <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
-                        </li>                    
-                    </ul>
+                <div class="card" :style="[ loading ? { display:'none' } : null ]" style="border-radius: 0px; border-style: dashed;">
+                    <div class="card-header"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
+                        <div v-if="groups.length == 0" class="text-muted fw-500 text-center"><small>Drag column headers here to group</small></div>
+                        <span v-if="groups.length > 0" class="fw-bold me-2"><small>Group By:</small></span>
+                        <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
+                    </div>
                 </div>
-                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :class="tableClass" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
         <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
@@ -41,9 +38,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">    
                         <speedrun-details ref="speedrundetails" v-if="selectedSpeedRunID" :speedrunid="selectedSpeedRunID" />                     
@@ -57,12 +52,12 @@
     const dayjs = require('dayjs');
     import axios from 'axios';    
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
-    import Tabulator from 'tabulator-tables';
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
+    import {TabulatorFull as Tabulator} from 'tabulator-tables';
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
-    import { polyfill } from "mobile-drag-drop";
-    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    // import { polyfill } from "mobile-drag-drop";
+    // import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Tooltip, Modal } from 'bootstrap';
 
     export default {
@@ -88,23 +83,37 @@
                 tableData: [],
                 groups: [],
                 loading: true,
-                selectedSpeedRunID: '',
-                pageSize: 100
+                selectedSpeedRunID: null,
+                pageSize: 100,
+                theme: document.documentElement.dataset.bsTheme
             }
         },
+        computed: {                                                           
+            tableClass: function() {
+                return this.theme == 'dark' ? "table-dark" : ""; 
+            }                                                                              
+        },           
         mounted: function() {
-            polyfill({
-                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });
+            // polyfill({
+            //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            // });
  
-            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                this.$refs.speedrundetails.loadData();
-            }); 
+            // this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     this.$refs.speedrundetails.loadData();
+            // }); 
+
+            this.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                this.selectedSpeedRunID = null;
+            });               
 
             this.loadData();
             window.gameWorldRecordGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },           
         methods: {
             loadData() {
                 var that = this;
@@ -139,7 +148,7 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width: 20, download:false }, //, width: 50, widthShrink: 2
+                    { title: "", field: "id", visible: false }, //, minWidth:30, maxWidth:50
                     { title: "#", field: "rank", formatter: that.rankFormatter, headerSort: false, width: 20 }, //minWidth:40, maxWidth:75                    
                     { title: "Category", field: "categoryName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showcategories }, //, minWidth: 100, widthGrow: 1                    
                     { title: "Level", field: "levelName", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, minWidth: 150, widthGrow: 2, visible: that.showlevels }, //, minWidth: 100, widthGrow: 1                   
@@ -208,24 +217,32 @@
                     groupHeader: function(value, count, data, group) {
                         var html = that.getGroupText(group._group, count);
                         return html;
-                    },
-                    renderComplete:function() {
-                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                            el.setAttribute('draggable', true);
-                            el.addEventListener("dragstart", function(event) {
-                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                            });
-                        });
-
-                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                            new Tooltip(el);                        
-                        });                        
-
-                        that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    },
-                });                
+                    }
+                });       
+                this.table.on("renderComplete", that.onRenderComplete);
+                this.table.on("rowClick", that.onRowClick);                         
             },
+            onRenderComplete() {
+                var that = this;
+
+                that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                    el.setAttribute('draggable', true);
+                    el.addEventListener("dragstart", function(event) {
+                        event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                        event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                    });
+                });
+
+                that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                    new Tooltip(el);                        
+                });                        
+
+                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
+            }, 
+            onRowClick(e, row) {
+                var id = row.getCell("id").getValue();
+                this.showSpeedRunDetails(id);
+            },                         
             onGroupAdd(event) {
                 event.preventDefault();
                 var field = event.dataTransfer.getData("field");  
@@ -340,11 +357,11 @@
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
                             html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' draggable='false'>" + el.name + "</a>"
-                            html += "</span></span><br/>";                           
+                            html += "<span class='playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                                html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' onclick='event.stopPropagation()'>" + el.name + "</a>"
+                                html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' class='playername-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + el.abbr + "' onclick='event.stopPropagation()' class='playername-text'>" + el.name + "</a>"
                         }
                     } else {
                         html += el.name;
@@ -491,7 +508,11 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });                
-            }  
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }                     
         }
     };
 </script>

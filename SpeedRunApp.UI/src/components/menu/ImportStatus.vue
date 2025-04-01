@@ -8,19 +8,19 @@
             </div>
         </div>
         <div v-else>
-            <div class="form-group row no-gutters mb-2">
+            <div class="form-group row mb-2">
                 <label class="col-sm-4 col-form-label">Last Import</label>
                 <div class="col-sm-8">
                     <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastRunDate)"/>
                 </div>
             </div>
-            <div class="form-group row no-gutters mb-2">
+            <div class="form-group row mb-2">
                 <label class="col-sm-4 col-form-label">Last Nightly Update</label>
                 <div class="col-sm-8">
                     <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastUpdateSpeedRunsDate)"/>
                 </div>
             </div>         
-            <div class="form-group row no-gutters mb-2">
+            <div class="form-group row mb-2">
                 <label class="col-sm-4 col-form-label">Last Full Import</label>
                 <div class="col-sm-8">
                     <input type="datetime-local" disabled class="form-control" style="width:240px;" :value="getFormattedDateString(item.importLastBulkReloadDate)"/>

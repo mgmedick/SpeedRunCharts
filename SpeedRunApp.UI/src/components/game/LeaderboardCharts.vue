@@ -1,17 +1,17 @@
 ﻿<template>
-    <div class="card" style="border: none; border-radius: 0px;">
+    <div class="card mt-4" style="border: none; border-radius: 0px; cursor: pointer;" @click="$emit('onshowchartsclick', $event)">
         <div class="card-header">
             <h5 class="mb-0">
                 <div v-if="showcharts">
-                    <a class="btn btn-link d-flex align-items-end fw-bold" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-down align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Hide Charts</a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" ><i class="fa fa-chevron-down align-self-center"></i><span class="ms-2">Hide Charts</span></a>
                 </div>
                 <div v-else>
-                    <a class="btn btn-link d-flex align-items-end fw-bold" style="line-height: 15px;" href="#/" draggable="false" @click="$emit('onshowchartsclick', $event)"><i class="fa fa-chevron-right align-self-center"></i><img src="/dist/fonts/bar-chart.svg" class="img-fluid brand-logo align-self-center mx-2" alt="Responsive image">Show Charts</a>
+                    <a class="btn btn-link fw-bold text-decoration-none text-reset px-0" style="line-height: 15px;" href="#/" ><i class="fa fa-chevron-right align-self-center"></i><span class="ms-2">Show Charts</span></a>
                 </div>
             </h5>
         </div>
         <div v-if="showcharts">
-            <div class="row no-gutters">
+            <div class="row g-3 mb-3">
                 <div class="col-lg-6">
                     <div class="ratio ratio-4x3">
                         <div v-if="loading" class="d-flex" style="height:100%;">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row no-gutters">
+            <div class="row g-3">
                 <div class="col-lg-6">
                     <div class="ratio ratio-4x3">
                         <div v-if="loading" class="d-flex" style="height:100%;">
@@ -69,9 +69,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ chartModalTitle }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div v-if="selectedChartID == 1">
@@ -149,7 +147,11 @@
         },                                     
         mounted: function () {
             this.loadData();
-        },      
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
+        },     
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },             
         methods: {                        
             loadData() {
                 var that = this;
@@ -168,7 +170,10 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.chartmodal).show();
                 });                 
-            }                        
+            },
+            onThemeUpdate() {
+                this.loadData();
+            }                                     
         }
     }
 </script>

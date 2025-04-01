@@ -4,17 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using SpeedRunCommon.Extensions;
 using SpeedRunApp.Model.JSON;
+using Org.BouncyCastle.Asn1.Icao;
+using System.Linq.Expressions;
 
 namespace SpeedRunApp.Model.ViewModels
 {
-    public class SpeedRunDetailViewModel
+    public class SpeedRunDetailsViewModel
     {
-        public SpeedRunDetailViewModel(SpeedRunDetailView run)
+        public SpeedRunDetailsViewModel()
+        {
+        }
+        
+        public SpeedRunDetailsViewModel(SpeedRunDetailView run)
         {
             ID = run.ID;
             Code = run.Code;
             GameID = run.GameID;
             GameName = run.GameName;
+            GameAbbr = run.GameAbbr;
+            GameCoverImageLink = run.GameCoverImageUrl;
             CategoryTypeID = run.CategoryTypeID;
             CategoryID = run.CategoryID;
             CategoryName = run.CategoryName;
@@ -24,7 +32,8 @@ namespace SpeedRunApp.Model.ViewModels
             DateSubmitted = run.DateSubmitted;
             VerifyDate = run.VerifyDate;
             Rank = run.Rank;  
-            PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime);      
+            PrimaryTime = TimeSpan.FromMilliseconds(run.PrimaryTime); 
+            ShowMilliseconds = run.ShowMilliseconds;      
             VariableValues = run.VariableValues;
             VideoLinks = run.Videos;
             Players = run.Players;
@@ -35,6 +44,8 @@ namespace SpeedRunApp.Model.ViewModels
         public string Code { get; set; }
         public int GameID { get; set; }
         public string GameName { get; set; }
+        public string GameAbbr { get; set; }
+        public string GameCoverImageLink { get; set; }
         public int CategoryTypeID { get; set; }
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
@@ -44,10 +55,10 @@ namespace SpeedRunApp.Model.ViewModels
         public string LevelName { get; set; }
         public string PlatformName { get; set; }
         public string SubCategoryVariableValueIDs { get; set; }
-        public string SubCategoryVariableValueNames { get; set; }
         public List<VariableValueResult> VariableValues { get; set; }
         public List<PlayerResult> Players { get; set; }
         public List<VideoResult> VideoLinks { get; set; }
+        public bool ShowMilliseconds { get; set; }
         public int? Rank { get; set; }
         public TimeSpan PrimaryTime { get; set; }
         public string Comment { get; set; }
@@ -55,6 +66,16 @@ namespace SpeedRunApp.Model.ViewModels
         public string SplitsLink { get; set; }
         public DateTime? DateSubmitted { get; set; }
         public DateTime? VerifyDate { get; set; }
+        public long? ViewCount { get; set; }
+
+
+         public List<string> SubCategoryVariableValueNames
+        {
+            get
+            {
+                return VariableValues?.Select(x => x.Name).ToList();
+            }
+        }
 
         public string EmbeddedVideoLink
         {
@@ -63,12 +84,35 @@ namespace SpeedRunApp.Model.ViewModels
                 return VideoLinks?.Select(x => x.EmbeddedVideoLinkUrl).FirstOrDefault();
             }
         }
+
+        public string EmbeddedVideoLinkAutoplay
+        {
+            get
+            {
+                var result = EmbeddedVideoLink;
+
+                if (!string.IsNullOrWhiteSpace(EmbeddedVideoLink)) {
+                    result = new Uri(EmbeddedVideoLink).ToParameterizedURI(true, true, true).ToString();
+                }
+
+                return result;
+            }
+        }
+
+        public string ViewCountString
+        {
+            get
+            {
+                var viewCount = VideoLinks?.Select(x => x.ViewCount).FirstOrDefault();
+                return viewCount > 0 ? viewCount.Value.ToShortString() : string.Empty;
+            }
+        }                
         
         public string RelativeVerifyDateString
         {
             get
             {
-                return VerifyDate?.ToRealtiveDateString();
+                return VerifyDate?.ToRealtiveDateString(true);
             }
         }
 
@@ -112,6 +156,14 @@ namespace SpeedRunApp.Model.ViewModels
             }
         }        
 
+        public string PrimaryTimeString
+        {
+            get
+            {
+                return PrimaryTime.ToShortString(!ShowMilliseconds);
+            }
+        }        
+
         public string RelativeDateSubmittedString
         {
             get
@@ -126,6 +178,6 @@ namespace SpeedRunApp.Model.ViewModels
             {
                 return DateSubmitted?.ToRealtiveDateString(true);
             }
-        }             
+        }                    
     }
 }

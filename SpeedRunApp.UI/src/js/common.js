@@ -159,20 +159,25 @@ const errorToast = (errorMsg) => {
 }
 
 const resizeTabs = () => {
-    var rows = document.querySelectorAll('.tab-list');
+    var rows = document.querySelectorAll('.tab-list > .nav');
 
     for (var g = 0; g < rows.length; g++) {
         var totalWidth = 0;
-        var tabitems = rows[g].querySelectorAll('li.nav-item');
+        var tabitems = rows[g].querySelectorAll('li.nav-item:not(.more)');
         var morediv =  rows[g].querySelector('.more');
-        var morebtn =  morediv.querySelector('.btn');
-        var moreItems = morediv.querySelectorAll('li');
+        var morebtn =  morediv.querySelector('.nav-link');
+        var moredrp =  morediv.querySelector('.dropdown-menu');
+        var moreItems = moredrp.querySelectorAll('li');
+        var maxItemWidth = Math.max(...Array.from(tabitems).map(el => el.offsetWidth));
+        var computedStyle = getComputedStyle(rows[g]);
+        var rowGap = parseFloat(computedStyle.rowGap);
 
         for (var i = 0; i < tabitems.length; i++) {
             tabitems[i].style.left = "-10000px";
             tabitems[i].classList.remove('d-none');
-            totalWidth += tabitems[i].offsetWidth;
-            if (totalWidth > ((rows[g].offsetWidth - tabitems[i].offsetWidth) - 30)) {
+            totalWidth += tabitems[i].offsetWidth + 16;
+
+            if (totalWidth > (rows[g].offsetWidth - (rowGap + maxItemWidth))) {
                 tabitems[i].classList.add('d-none');
                 moreItems[i].classList.remove('d-none');
             } else {
@@ -180,8 +185,8 @@ const resizeTabs = () => {
                 moreItems[i].classList.add('d-none');                     
             }
         }
-
-        var items = Array.from(morediv.querySelectorAll('li:not(.d-none) a'));
+ 
+        var items = Array.from(moredrp.querySelectorAll('li:not(.d-none) > a'));
         if (items.length > 0) {
             var item = items.find(i=>i.classList.contains('active'));
             if (item) {

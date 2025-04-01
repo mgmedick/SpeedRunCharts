@@ -7,13 +7,13 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2">
-            <div class="row g-1">
+        <div>
+            <div class="row g-2 my-2">
                 <div class="col-auto ms-auto">
                     <div class="dropdown">
                         <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span>
-                                <i class="fa fa-filter"></i><span class="ps-2">...</span>
+                                <i class="fa fa-filter"></i>
                             </span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
@@ -35,25 +35,21 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(exporttype, i) in exporttypes" :key="i">
-                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill" draggable="false" @click="onExportClick">{{ exporttype.name }}</a>
+                                <a class="dropdown-item" href="#/" :data-value="exporttype.id" data-toggle="pill"  @click="onExportClick">{{ exporttype.name }}</a>
                             </li>
                         </ul>
                     </div>                     
                 </div>                                                                
             </div>    
             <div class="mt-1 grid-container" style="min-height:150px;">             
-                <leaderboard-charts v-if="!loading" :showcharts="showcharts" :showmilliseconds="showmilliseconds" :gameid="gameid" :categorytypeid="categorytypeid" :categoryid="categoryid" :levelid="levelid" :variablevalues="variablevalues" :playerid="playerid" :title="title" :istimerasc="istimerasc" @onshowchartsclick="$emit('onshowchartsclick1', $event)"></leaderboard-charts>
-                <div class="grid-group" :style="[ loading ? { display:'none' } : null ]">
-                    <ul @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>                    
-                        <li v-if="groups.length == 0" class="group-placeholder">Drag column headers here to group</li>
-                        <li v-if="groups.length > 0" class="group-label">Group By:</li>
-                        <li v-for="(group, i) in groups" :key="i" class="group-tag">
-                            <span>{{ group.title }}</span>&nbsp;
-                            <span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span>
-                        </li>                    
-                    </ul>
+                <div class="card" :style="[ loading ? { display:'none' } : null ]" style="border-radius: 0px; border-style: dashed;">
+                    <div class="card-header border-0 bg-body"  @drop.prevent="onGroupAdd" @dragenter.prevent @dragover.prevent>
+                        <div v-if="groups.length == 0" class="text-muted fw-500 text-center"><small>Drag column headers here to group</small></div>
+                        <span v-if="groups.length > 0" class="fw-bold me-2"><small>Group By:</small></span>
+                        <span v-for="(group, i) in groups" :key="i" class="fs-5"><span class="badge text-bg-secondary me-1 fw-normal">{{ group.title }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onGroupRemove(group.field)" style="cursor:pointer"></span></span></span>                 
+                    </div>
                 </div>
-                <div class="grid" :style="[ loading ? { display:'none' } : null ]"></div>
+                <div class="grid" :class="tableClass" :style="[ loading ? { display:'none' } : null ]"></div>
             </div>
         </div>
         <div ref="detailmodal" class="modal modal-lg" tabindex="-1">
@@ -61,9 +57,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">    
                         <speedrun-details ref="speedrundetails" v-if="selectedSpeedRunID" :speedrunid="selectedSpeedRunID" />                     
@@ -77,17 +71,17 @@
     const dayjs = require('dayjs');
     import axios from 'axios';    
     import { escapeHtml, formatFileName, isValidDate } from '../../js/common.js';
-    import Tabulator from 'tabulator-tables';
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
+    import {TabulatorFull as Tabulator} from 'tabulator-tables';
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.css'
     // import tippy from 'tippy.js'
     // import 'tippy.js/dist/tippy.css'
-    import { polyfill } from "mobile-drag-drop";
-    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    // import { polyfill } from "mobile-drag-drop";
+    // import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Tooltip, Modal } from 'bootstrap';
 
     export default {
         name: "LeaderboardGrid",
-        emits: ["onshowchartsclick1"],
+        emits: ["update:showalldata"],
         props: {
             gameid: String,
             categorytypeid: String,
@@ -95,8 +89,6 @@
             levelid: String,
             variablevalues: String,
             speedruncode: String,
-            playerid: String,
-            showcharts: Boolean,          
             showalldata: Boolean,
             showmilliseconds: Boolean,
             variables: Array,
@@ -111,29 +103,44 @@
                 groups: [],
                 loading: true,
                 speedRunCode: this.speedruncode,
-                selectedSpeedRunID: '',
+                selectedSpeedRunID: null,
                 showAllData: this.showalldata,
-                pageSize: 100
+                pageSize: 100,
+                theme: document.documentElement.dataset.bsTheme
             }
         },  
         watch: {
             showAllData: function (val, oldVal) {
+                this.$emit('update:showalldata', val); 
                 this.loadData();
             }              
-        },                     
+        },  
+        computed: {                                                           
+            tableClass: function() {
+                return this.theme == 'dark' ? "table-dark" : ""; 
+            }                                                                              
+        },                                       
         mounted: function() {
-            polyfill({
-                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });
+            // polyfill({
+            //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            // });
 
-            this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                this.$refs.speedrundetails.loadData();
-            }); 
+            // this.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     this.$refs.speedrundetails.loadData();
+            // }); 
+
+            this.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                this.selectedSpeedRunID = null;
+            });      
 
             this.loadData();
             window.speedRunGridVue = this;
             //window.addEventListener( 'touchmove', function() {}, { passive: false });
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },         
         methods: {
             loadData() {
                 var that = this;
@@ -148,16 +155,16 @@
                                                                         
                         that.initGrid(res.data); 
                         that.loading = false;
-                        if (that.speedRunCode) {
-                            var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
-                            if (index > -1) {
-                                that.table.selectRow(that.tableData[index].id);
-                                var page = Math.ceil(index / that.pageSize);
-                                if(page > 1) {
-                                    that.table.setPage(page);
-                                }
-                            }
-                        }
+                        // if (that.speedRunCode) {
+                        //     var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
+                        //     if (index > -1) {
+                        //         that.table.selectRow(that.tableData[index].id);
+                        //         var page = Math.ceil(index / that.pageSize);
+                        //         if(page > 1) {
+                        //             that.table.setPage(page);
+                        //         }
+                        //     }
+                        // }
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
             },  
@@ -177,11 +184,11 @@
                 var players = [...new Set(tableData.flatMap(el => el.players?.map(el1 => el1.name)))].sort((a, b) => { return a?.toLowerCase().localeCompare(b?.toLowerCase()) });
                 
                 var columns = [
-                    { title: "", field: "id", formatter: that.optionsFormatter, hozAlign: "center", headerSort: false, width:50, widthShrink:2, download:false }, //, minWidth:30, maxWidth:50
-                    { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
-                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth:135, widthGrow:2 }, //minWidth:125
+                    { title: "", field: "id", visible: false }, //, minWidth:30, maxWidth:50
+                    { title: "#", field: "rank", sorter: "number", formatter: that.rankFormatter, hozAlign: "center", headerFilter: "select", headerFilterParams: { values: true, multiselect: true }, headerFilterFunc: that.rankHeaderFilter, width: 60 }, //minWidth:40, maxWidth:75
+                    { title: "Players", field: "playerNames", formatter: that.playerFormatter, headerFilter: "select", headerFilterParams:{ values:players, multiselect:true }, headerFilterFunc: that.playerHeaderFilter, minWidth: 155, widthGrow:2 }, //minWidth:125
                     { title: "primaryTimeMillisecondsString", field: "primaryTimeMillisecondsString", visible: false, download: true, titleDownload: "Time" },                    
-                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 135, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
+                    { title: "Time", field: "primaryTimeMilliseconds", formatter: that.primaryTimeFormatter, sorter: "number", width: 165, titleDownload: "Time (ms)" }, //minWidth:100, maxWidth:125                    
                     { title: "Platform", field: "platformName", headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:100, widthGrow:1 }, //minWidth:100                    
                     { title: "relativeDateSubmittedString", field: "relativeDateSubmittedString", visible: false },
                     { title: "relativeVerifyDateString", field: "relativeVerifyDateString", visible: false },
@@ -209,10 +216,9 @@
                     columns.push({ title: variable.name, field: variable.id.toString(), headerFilter:"select", headerFilterParams:{ values:true, multiselect:true }, headerFilterFunc:"in", minWidth:140, widthGrow:1 },)
                 });
 
-                columns.push({ title: "Submitted Date", field: "dateSubmitted", sorter: "date", formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
-                columns.push({ title: "Verified Date", field: "verifyDate", sorter: "date", formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
+                columns.push({ title: "Submitted", field: "dateSubmitted", sorter: that.dateSorter, formatter: that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeDateSubmittedString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });
+                columns.push({ title: "Verified", field: "verifyDate", sorter: that.dateSorter, formatter:that.dateFormatter, formatterParams:{ outputFormat:"MM/DD/YYYY", tooltipFieldName:"relativeVerifyDateString" }, accessorDownload: that.dateDownloadAccessor, accessorDownloadParams: { outputFormat:"MM/DD/YYYY" }, headerFilter: that.dateEditor, headerFilterFunc: that.dateHeaderFilter, minWidth:150 });                                                        
                 columns.push({ title: "VideoLinks", field: "videoLinks", accessorDownload: that.videoLinksDownloadAccessor, visible: false, download: true, titleDownload: "Videos" });
-                columns.push({ title: "", field: "comment", formatter: that.commentFormatter, accessorDownload: that.commentDownloadAccessor, hozAlign: "center", headerSort: false, width: 50, widthShrink:2, download:false });
 
                 var el = this.$el.querySelector('.grid');          
                 this.table = new Tabulator(el, {
@@ -220,7 +226,6 @@
                     layout: "fitColumns",
                     reactiveData:true,
                     //responsiveLayout: false,
-                    selectable: false,
                     tooltips: false,
                     tooltipsHeader:false,
                     pagination: "local",
@@ -236,24 +241,47 @@
                     initialSort: [
                         { column: "primaryTimeMilliseconds", dir: that.istimerasc ? "desc" : "asc" },
                     ],
-                    columns: columns,
-                    renderComplete:function() {
-                        that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
-                            el.setAttribute('draggable', true);
-                            el.addEventListener("dragstart", function(event) {
-                                event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
-                                event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
-                            });
-                        });
-
-                        that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                            new Tooltip(el);                        
-                        });
-
-                        that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });
-                    }
+                    columns: columns
                 });
+                this.table.on("renderComplete", that.onRenderComplete);
+                this.table.on("tableBuilt", that.onTableBuilt);
+                this.table.on("rowClick", that.onRowClick);
             },
+            onTableBuilt() {
+                var that = this;
+
+                if (that.speedRunCode) {
+                    var index = that.tableData.findIndex(i => i.code == that.speedRunCode);
+                    if (index > -1) {
+                        that.table.selectRow(that.tableData[index].id);
+                        var page = Math.ceil(index / that.pageSize);
+                        if(page > 1) {
+                            that.table.setPage(page);
+                        }
+                    }
+                }  
+            },
+            onRenderComplete() {
+                var that = this;
+
+                that.$el.querySelectorAll('.tabulator-header .tabulator-col').forEach(el => {
+                    el.setAttribute('draggable', true);
+                    el.addEventListener("dragstart", function(event) {
+                        event.dataTransfer.setData("field", event.target.getAttribute('tabulator-field'));
+                        event.dataTransfer.setData("title", event.target.querySelector('.tabulator-col-title').innerHTML);
+                    });
+                });
+
+                that.$el.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                    new Tooltip(el);                        
+                });
+
+                that.$el.querySelectorAll('.tabulator-header-filter input[type=search]').forEach(el => { el.addEventListener("keydown", that.onSearchKeyDown); });              
+            },
+            onRowClick(e, row) {
+                var id = row.getCell("id").getValue();
+                this.showSpeedRunDetails(id);
+            },            
             onGroupAdd(event) {
                 event.preventDefault();
                 var field = event.dataTransfer.getData("field");  
@@ -318,11 +346,11 @@
                     if (el.id > 0) {
                         if (el.colorLight && el.colorDark) {
                             html += "<span class='playername-text playername-color-light' style='background: linear-gradient(to right," + el.colorLight + "," + (el.colorToLight || el.colorLight) + ");'>"
-                            html += "<span class='playername-text playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
-                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' draggable='false'>" + el.name + "</a>"
+                            html += "<span class='playername-color-dark' style='background: linear-gradient(to right," + el.colorDark + "," + (el.colorToDark || el.colorDark) + ");'>";
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' onclick='event.stopPropagation()'>" + el.name + "</a>"
                             html += "</span></span><br/>";                           
                         } else {
-                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' class='playername-text' draggable='false'>" + el.name + "</a>"
+                            html += "<a href='/Player/PlayerDetails/" + encodeURIComponent(el.abbr) + "' onclick='event.stopPropagation()' class='playername-text'>" + el.name + "</a><br/>"
                         }
                     } else {
                         html += el.name;
@@ -464,7 +492,11 @@
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });                
-            }                              
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }                             
         }             
     };
 </script>

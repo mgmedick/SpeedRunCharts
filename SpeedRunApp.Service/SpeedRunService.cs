@@ -136,12 +136,25 @@ namespace SpeedRunApp.Service
             return runVMs;
         }
 
-        public SpeedRunDetailViewModel GetSpeedRunDetails(int speedRunID)
+        public SpeedRunDetailsViewModel GetSpeedRunDetails(string speedRunCode)
         {
-            var run = _speedRunRepo.GetSpeedRunDetailViews(i => i.ID == speedRunID).FirstOrDefault();     
-            var runVM = new SpeedRunDetailViewModel(run);
+            var runVM = new SpeedRunDetailsViewModel();
+            var runVW = _speedRunRepo.GetSpeedRunDetailViews(i => i.Code == speedRunCode).FirstOrDefault();
+            
+            if (runVW != null)
+            {     
+                runVM = new SpeedRunDetailsViewModel(runVW);
+            }
 
             return runVM;
-        }             
+        }
+
+        public SpeedRunDetailsViewModel GetSpeedRunDetails(int speedRunID)
+        {
+            var run = _speedRunRepo.GetSpeedRunDetailViews(i => i.ID == speedRunID).FirstOrDefault();     
+            var runVM = new SpeedRunDetailsViewModel(run);
+
+            return runVM;
+        }                      
     }
 }

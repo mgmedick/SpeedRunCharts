@@ -8,7 +8,7 @@
         public string GameID { get; set; }              
         public int CategoryTypeID { get; set; }         
         public bool IsMiscellaneous { get; set; }
-        public bool isTimerAscending { get; set; }
+        public bool IsTimerAscending { get; set; }
         public bool Deleted { get; set; }     
 
         //Transient

@@ -13,6 +13,7 @@ namespace SpeedRunApp.Model.Data
         public int VariableID { get; set; }
         public bool IsMiscellaneous { get; set; }
         public bool Deleted { get; set; }
+        public int SortOrder { get; set; }
 
         //Transient
         public bool HasData { get; set; }

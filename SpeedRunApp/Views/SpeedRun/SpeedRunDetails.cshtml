@@ -1,0 +1,10 @@
+﻿@using SpeedRunCommon.Extensions;
+@using Microsoft.Extensions.Configuration;
+@using System.Text.Json;
+@inject IConfiguration Configuration;
+
+@model SpeedRunApp.Model.ViewModels.SpeedRunDetailsViewModel
+
+@{ ViewBag.Title = "Run Details"; }
+
+<speedrun-details :speedrundetailsvm="@JsonSerializer.Serialize(Model, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase})"></speedrun-details>

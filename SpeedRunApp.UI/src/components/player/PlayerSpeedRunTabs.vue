@@ -7,31 +7,29 @@
         </div>
     </div> 
     <div v-else id="divSpeedRunGridTabContainer">
-        <div class="row no-gutters pe-1">
+        <div class="row mb-2">
             <div class="col tab-list">
-                <ul class="nav nav-pills">
-                    <li class="categoryType nav-item py-1 pe-1" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
-                        <a class="nav-link p-2" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                <ul class="nav nav-underline">
+                    <li class="categoryType nav-item" v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id">
+                        <a class="nav-link" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                     </li>
-                    <div class="dropdown more py-1 pe-1" v-show="false">
-                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span>More...</span>
-                        </button>
+                    <li class="nav-item dropdown more" v-show="false">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">More...</a>                        
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                             <li v-for="(categoryType, categoryTypeIndex) in categoryTypes" :key="categoryType.id" class="d-none">
-                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill" draggable="false" @click="onTabClick">{{ categoryType.name }}</a>
+                                <a class="dropdown-item" :class="{ 'active' : categoryTypeID == categoryType.id }" href="#/" data-type="categoryType" :data-value="categoryType.id" data-toggle="pill"  @click="onTabClick">{{ categoryType.name }}</a>
                             </li>
                         </ul>
-                    </div>                                            
+                    </li>                       
                 </ul>
             </div>                    
         </div>
-        <div class="row no-gutters">
+        <div class="row mb-2">
             <div class="col-auto ms-auto">
                 <div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span>
-                            <i class="fa fa-filter"></i><span class="ps-2">...</span>
+                            <i class="fa fa-filter"></i>
                         </span>
                     </button>
                     <ul class="dropdown-menu">
@@ -67,15 +65,13 @@
             <div v-if="categoryTypeID == categoryType.id">
                 <div v-for="(game, gameIndex) in items.filter(item => item.categoryTypes.filter(i => i.id == categoryType.id).length > 0)" :key="game.id" class="mt-4">
                     <div v-if="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)) && (showMisc || !item.isMiscellaneous) && (!showWR || item.rank == 1)).length > 0">
-                        <div class="row g-2">
-                            <div class="col-1 p-0" style="max-width:37px;">
+                        <div class="d-flex align-items-end g-2 py-2 px-sm-0 px-2">
+                            <div style="width: 50px; flex: none;">
                                 <div class="img-round">
                                     <img :src="game.coverImageUri" class="img-fluid" alt="Responsive image">
                                 </div>
-                            </div>                            
-                            <div class="col-11 align-self-end">
-                                <h6 class="fw-bold mb-0"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-primary">{{ game.name }}</a></h6>
-                            </div>
+                            </div>                       
+                            <h6 class="fw-bold px-2 nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(game.abbr)" class="text-decoration-none text-reset">{{ game.name }}</a></h6>
                         </div>
                         <player-speedrun-grid :playerid="id" :gameabbr="game.abbr" :tabledata="tableData.filter(item => item.gameID == game.id && ((categoryType.id == 0 && !item.levelID) || (categoryType.id == 1 && item.levelID)))" :showmilliseconds="game.showMilliseconds" :variables="game.variables" :showalldata="showAllData" :showmisc="showMisc" :showwr="showWR"></player-speedrun-grid>
                     </div>
@@ -100,7 +96,7 @@
                 categoryTypes: [],
                 tableData: [],
                 categoryTypeID: '',
-                showAllData: false,
+                showAllData: true,
                 showMisc: true,
                 showWR: false,
                 loading: true

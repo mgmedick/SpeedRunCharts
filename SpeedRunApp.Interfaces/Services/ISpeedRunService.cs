@@ -1,6 +1,7 @@
 ﻿using SpeedRunApp.Model;
 using SpeedRunApp.Model.Data;
 using SpeedRunApp.Model.ViewModels;
+using System;
 using System.Collections.Generic;
 
 namespace SpeedRunApp.Interfaces.Services
@@ -14,7 +15,8 @@ namespace SpeedRunApp.Interfaces.Services
         IEnumerable<SpeedRunGridViewModel> GetGameSummaryChartData(int gameID, int categoryTypeID);  
         IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunGridData(int playerID);
         IEnumerable<SpeedRunGridViewModel> GetPlayerSpeedRunChartData(int gameID, int categoryTypeID, int categoryID, int? levelID, string subCategoryVariableValueIDs, int playerID);
-        SpeedRunDetailViewModel GetSpeedRunDetails(int speedRunID);
+        SpeedRunDetailsViewModel GetSpeedRunDetails(string speedRunCode);
+        SpeedRunDetailsViewModel GetSpeedRunDetails(int speedRunID);
     }
 }
 

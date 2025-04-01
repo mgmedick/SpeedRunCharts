@@ -25,7 +25,6 @@ namespace SpeedRunApp.Service
 {
     public class AuthService : IAuthService
     {
-        private readonly ITemplateService _templateService = null;
         private readonly IConfiguration _config = null;
 
         public AuthService(IConfiguration config)

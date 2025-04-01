@@ -8,36 +8,29 @@
             </div>
         </div>        
         <div class="table-responsive mt-2">
-            <table class="table table-sm table-dark">
+            <table class="table" :class="tableClass">
                 <tbody>
-                    <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest) && (showmisc || !i.isMiscellaneous) && (!showwr || i.rank == 1))" :key="item.id">
-                        <td style="width: 5%; vertical-align: middle;">
-                            <div class="d-table" style="border:none; border-collapse:collapse; border-spacing:0;">
-                                <div class="d-table-row">
-                                    <div class="d-table-cell" style="border:none; padding:0px; vertical-align: middle;">
-                                        <span><a href="#/" draggable="false"><i class="fas fa-play-circle fa-lg" :data-id="item.id" @click="showSpeedRunDetails"></i></a></span>
-                                    </div>
-                                    <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="border:none; padding:0px; vertical-align: bottom;">
-                                        <span><a href="#/" draggable="false"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center" alt="Responsive image" style="min-width:18px;" :data-id="item.id" @click="showSpeedRunCharts"></a></span>                                
-                                    </div>                                        
-                                </div>
-                            </div>
-                        </td>                        
-                        <td style="width: 50%; vertical-align: middle;">
-                            <div><span class="fw-bold">{{ item.categoryName }}</span></div>
-                            <div v-if="item.levelName"><span class="fw-bold" style="font-style: italic;">{{ item.levelName }}</span></div>
-                            <div v-if="item.subCategoryVariableValueNames">
-                                <span style="font-size: 13px;">{{ item.subCategoryVariableValueNames }}</span>
+                    <tr v-for="item in tabledata.filter(i => (showalldata || i.isPersonalBest) && (showmisc || !i.isMiscellaneous) && (!showwr || i.rank == 1))" :key="item.id" @click="showSpeedRunDetails(item.id)" style="cursor: pointer;">                   
+                        <td style="vertical-align: middle;">
+                            <div class="nowrap-elipsis"><span class="fw-bold">{{ item.categoryName }}</span></div>
+                            <div v-if="item.levelName" class="nowrap-elipsis"><span class="fw-bold" style="font-style: italic;">{{ item.levelName }}</span></div>
+                            <div v-if="item.subCategoryVariableValueNames" class="nowrap-elipsis">
+                                <span>{{ item.subCategoryVariableValueNames }}</span>
                             </div>                                
                         </td>
-                        <td style="width: 25%; vertical-align: middle;">
-                            <div><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-primary"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
-                            <div><span style="font-size: 13px;">{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
+                        <td style="vertical-align: middle;">
+                            <div class="nowrap-elipsis"><a :href="'/Game/GameDetails/' + encodeURIComponent(gameabbr) + '?speedRunCode=' + item.code" class="text-decoration-none text-reset"><i v-if="getIconClass(item.rank)" class="fa fa-trophy pe-1" :class="getIconClass(item.rank)"></i><span>{{ item.rankString ?? '-' }}</span></a></div>                                
+                            <div class="nowrap-elipsis"><span>{{ showmilliseconds ? item.primaryTimeMillisecondsString : item.primaryTimeSecondsString }}</span></div>               
                         </td>
-                        <td class="show-md" style="width: auto; vertical-align: middle;">
-                            <div><span>{{ item.platformName }}</span></div>  
-                            <div><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
+                        <td style="width: auto; vertical-align: middle;">
+                            <div class="nowrap-elipsis"><span>{{ item.platformName }}</span></div>  
+                            <div class="nowrap-elipsis"><span>{{ item.relativeDateSubmittedStringShort }}</span></div>               
                         </td>
+                        <td style="width: 5%; vertical-align: bottom;">
+                            <div v-if="item.isPersonalBest" class="d-table-cell ps-2" style="padding-bottom: 5px;">
+                                <span><a href="#/" class="text-decoration-none text-reset"><img src="/dist/fonts/bar-chart.svg" class="img-fluid align-self-center w-100" style="min-width: 25px;" alt="Responsive image" @click="showSpeedRunCharts($event, item.id)"></a></span>                                
+                            </div>                                        
+                        </td>                             
                     </tr>
                 </tbody>
             </table> 
@@ -47,12 +40,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">    
-                        <speedrun-details ref="speedrundetails" v-if="selectedSpeedRun" :speedrunid="selectedSpeedRun.id" />                     
+                        <speedrun-details ref="speedrundetails" v-if="selectedDetailSpeedRun" :speedrunid="selectedDetailSpeedRun.id" />                     
                     </div>
                 </div>
             </div>
@@ -61,13 +52,11 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">User Charts</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>  
+                        <h5 class="modal-title">Player Charts</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">
-                        <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedSpeedRun" :gameid="selectedSpeedRun.gameID.toString()" :categorytypeid="selectedSpeedRun.categoryTypeID.toString()" :categoryid="selectedSpeedRun.categoryID.toString()" :levelid="selectedSpeedRun.levelID?.toString()" :variablevalues="selectedSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedSpeedRun.isTimerAscending"></player-speedrun-charts>                         
+                        <player-speedrun-charts ref="playerspeedruncharts" v-if="selectedChartSpeedRun" :gameid="selectedChartSpeedRun.gameID.toString()" :categorytypeid="selectedChartSpeedRun.categoryTypeID.toString()" :categoryid="selectedChartSpeedRun.categoryID.toString()" :levelid="selectedChartSpeedRun.levelID?.toString()" :variablevalues="selectedChartSpeedRun.subCategoryVariableValueIDs" :playerid="playerid" :title="title" :showmilliseconds="showmilliseconds" :istimerasc="selectedChartSpeedRun.isTimerAscending"></player-speedrun-charts>                         
                     </div>
                 </div>
             </div>
@@ -76,9 +65,9 @@
 </template>
 <script>
     const dayjs = require('dayjs');
-    import 'tabulator-tables/dist/css/bootstrap/tabulator_bootstrap.min.css'
-    import { polyfill } from "mobile-drag-drop";
-    import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
+    // import 'tabulator-tables/dist/css/tabulator_bootstrap5.min.css'
+    // import { polyfill } from "mobile-drag-drop";
+    // import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
     import { Modal } from 'bootstrap';
 
     export default {
@@ -97,44 +86,57 @@
             return {   
                 tableData: [],          
                 loading: true,
-                selectedSpeedRun: null,
-                pageSize: 100
+                selectedDetailSpeedRun: null,
+                selectedChartSpeedRun: null,
+                pageSize: 100,
+                theme: document.documentElement.dataset.bsTheme
             }
         },
         computed: {
             title: function () {
                 var result = '';
-                if (this.selectedSpeedRun) {
-                    result = [this.selectedSpeedRun.gameName, this.selectedSpeedRun.categoryName, this.selectedSpeedRun.levelName, this.selectedSpeedRun.subCategoryVariableValueNames].join(' - ');                
+                if (this.selectedChartSpeedRun) {
+                    result = [this.selectedChartSpeedRun.gameName, this.selectedChartSpeedRun.categoryName, this.selectedChartSpeedRun.levelName, this.selectedChartSpeedRun.subCategoryVariableValueNames].join(' - ');                
                     result = result.replace(/^[ -]+|[ -]+$/g, '');
                 }  
                 return result;
-            }
-        },                  
+            },            
+            tableClass: function() {
+                return this.theme == 'dark' ? "table-dark" : ""; 
+            }              
+        },              
         mounted: function() {
             var that = this;
             
-            polyfill({
-                dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
-            });            
+            // polyfill({
+            //     dragImageTranslateOverride: scrollBehaviourDragImageTranslateOverride
+            // });            
 
-            that.$refs.detailmodal.addEventListener('show.bs.modal', event => {
-                that.$refs.speedrundetails.loadData();
-            }); 
+            // that.$refs.detailmodal.addEventListener('show.bs.modal', event => {
+            //     that.$refs.speedrundetails.loadData();
+            // }); 
 
-            that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
-                that.$refs.playerspeedruncharts.loadData();
-            }); 
+            that.$refs.detailmodal.addEventListener('hidden.bs.modal', event => {
+                that.selectedDetailSpeedRun = null;
+            });                    
+            
+            // that.$refs.chartmodal.addEventListener('show.bs.modal', event => {
+            //     that.$refs.playerspeedruncharts.loadData();
+            // }); 
 
             that.$refs.chartmodal.addEventListener('hidden.bs.modal', event => {
-                that.selectedSpeedRun = null;
+                that.selectedChartSpeedRun = null;
             });                        
 
             this.loadData();
 
             window.speedRunGridVue = this;
-            window.addEventListener( 'touchmove', function() {}, {passive: false});
+            window.addEventListener('touchmove', function() {}, {passive: false});
+            window.addEventListener('themeUpdate', this.onThemeUpdate);
         },
+        destroyed() {
+            window.removeEventListener('themeUpdate', this.onThemeUpdate);
+        },          
         methods: {
             loadData() {
                 var that = this;
@@ -187,22 +189,26 @@
 
                 return iconClass;
             },                                   
-            showSpeedRunDetails(event) {
-                var id = event.target.getAttribute('data-id');             
-                this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
+            showSpeedRunDetails(id) {
+                this.selectedDetailSpeedRun = this.tabledata.find(i => i.id == id);
                 
                 this.$nextTick(function() {
                     new Modal(this.$refs.detailmodal).show();
                 });
             },
-            showSpeedRunCharts(event) {
-                var id = event.target.getAttribute('data-id');             
-                this.selectedSpeedRun = this.tabledata.find(i => i.id == id);
+            showSpeedRunCharts(event, id) {
+                event.stopPropagation();
+                event.target.blur();
+                this.selectedChartSpeedRun = this.tabledata.find(i => i.id == id);
 
                 this.$nextTick(function() {
                     new Modal(this.$refs.chartmodal).show();
                 });
-            }
+            },
+            onThemeUpdate() {
+                this.theme = document.documentElement.dataset.bsTheme;
+                this.loadData();
+            }               
         }             
     };
 </script>

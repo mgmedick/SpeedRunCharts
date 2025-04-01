@@ -1,14 +1,19 @@
 ﻿<template>
-    <div>
-        <speedrun-summary v-for="(item, index) in items" :item="item" :index="index" :key="item.id"></speedrun-summary>
+    <div style="overflow: hidden;">
+        <div class="row row-cols-lg-5 row-cols-sm-2 row-cols-1 gx-3">
+            <div v-for="(item, index) in items" class="col" :key="item.id">
+                <speedrun-summary :item="item" :index="index"></speedrun-summary>
+                <input type="hidden" class="orderValue" :value="item.sortOrder" /> 
+            </div>
+        </div>
         <div v-if="loading">
             <div class="d-flex">
                 <div class="mx-auto">
                     <i class="fas fa-spinner fa-spin fa-lg"></i>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>           
+    </div> 
 </template>
 <script>
     import axios from 'axios'
@@ -26,36 +31,42 @@
                 loading: true,
                 throttleTimer: null,
                 throttleDelay: 500,
+                width: document.documentElement.clientWidth,
+                height: document.documentElement.clientHeight,
+                imgWidth: 365,
+                imgHeight: 205,
                 topamt: sessionStorage.getItem("topamt") ?? this.defaulttopamt,
                 offset: sessionStorage.getItem("offset") ?? null
             }
         },
+        watch: {                   
+            summarylistid: function (val, oldVal) {
+                window.scrollTo(0, 0); 
+                this.resetParams();        
+                this.loadData();
+            },
+            categorytypeid: function (val, oldVal) {
+                window.scrollTo(0, 0); 
+                this.resetParams();        
+                this.loadData();
+            }                 
+        },        
         created() {
             var isPageReloaded = ((window.performance.navigation && window.performance.navigation.type === 1) ||
                         window.performance.getEntriesByType('navigation').map((nav) => nav.type).includes('reload'));
 
             if (isPageReloaded) {
-                this.resetParams();                   
+                this.resetParams();                                  
             }
             
             this.loadData().then(function() {                               
-                if (sessionStorage.scrolltop) {
-                    document.documentElement.scrollTop = sessionStorage.getItem("scrolltop");
-                }
+                document.documentElement.style.scrollBehavior = 'auto';
+                document.documentElement.scrollTop = sessionStorage.scrolltop ?? 0;
+                document.documentElement.style.scrollBehavior = 'smooth';
             });
             window.addEventListener('scroll', this.onWindowScroll);
-            window.addEventListener('beforeunload', this.onBeforeUnload);          
-        },             
-        watch: {                   
-            summarylistid: function (val, oldVal) {
-                this.resetParams();        
-                this.loadData();
-            },
-            categorytypeid: function (val, oldVal) {
-                this.resetParams();        
-                this.loadData();
-            }                 
-        },
+            window.addEventListener('visibilitychange', this.onBeforeUnload);          
+        },         
         methods: {
             reLoadData: function () {
                 var that = this;
@@ -73,6 +84,7 @@
                     .then(res => {
                         that.items = that.items.concat(res.data);    
                         that.loading = false;
+
                         return res;
                     })
                     .catch(err => { console.error(err); return Promise.reject(err); });
@@ -104,7 +116,7 @@
                 if (this.items.length > this.topamt) {
                     sessionStorage.setItem("topamt", this.items.length);
                 }
-            }
+            }                
         }
     };
 </script>

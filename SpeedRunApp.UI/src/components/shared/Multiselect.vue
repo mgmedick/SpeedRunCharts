@@ -1,20 +1,13 @@
 ﻿<template>
-    <div class="vue-select direction-bottom" :data-disabled="disabled.toString()" :aria-disabled="disabled.toString()" >
-        <div class="vue-select-header" tabIndex="-1" @click="onClick" @focus="onFocus">
-            <ul class="vue-tags">
-                <li v-for="(value, i) in model.filter(val => options.some(g => g[valueby] == val))" :key="i" class="vue-tag selected">
-                    <slot name="tag" :index="i" :option="options.find(item => item.id == value)" :remove="onRemove">           
-                        <span>{{ options.find(item => item.id == value)[labelby] }}</span>&nbsp;
-                        <span class="fas fa-times fa-sm" @click.stop="onRemove(i)" style="cursor:pointer;"></span>
-                    </slot>
-                </li>
-            </ul>
-            <span v-if="loading" class="icon loading"><div></div></span>
-            <span v-else class="icon arrow-downward" :class="{ 'active' : isFocus }"></span>            
+    <div class="dropdown" :data-disabled="disabled.toString()" :aria-disabled="disabled.toString()">
+        <div class="form-control" @click="onClick" style="min-height:48px;">
+            <span v-for="(value, i) in model.filter(val => options.some(g => g[valueby] == val))" :key="i" class="fs-5">
+                <span class="badge text-bg-secondary me-1 fw-normal">{{ options.find(item => item.id == value)[labelby] }}&nbsp;&nbsp;<span class="fas fa-times fa-sm" @click.stop="onRemove(i)" style="cursor:pointer"></span></span>
+            </span>          
         </div>
-        <ul v-show="isOpen" class="vue-dropdown">
-            <li v-for="(option, i) in options" :key="i" class="vue-dropdown-item" :class="{ 'selected' : model.some(g => g == option[valueby]), 'highlighted': i === arrowCounter }" @click="onSelect(option)">
-                <span>{{ option[labelby] }}</span>                
+        <ul class="dropdown-menu" style="width: 100%;" :style="[ isOpen ? { display:'block' } : { display:'none' } ]">
+            <li v-for="(option, i) in options" :key="i">
+                <a href="#/" class="dropdown-item" :class="{ 'active' : model.some(g => g == option[valueby]) }" @click="onSelect(option)">{{ option[labelby] }}</a>                
             </li>
         </ul>
   </div>    
@@ -42,16 +35,13 @@
             },
             minlength: Number,
             placeholder: String,
-            loading: Boolean,
             disabled: Boolean
         },
         data() {
             return {
                 model: this.modelValue,
                 results: [],
-                isOpen: false,
-                isFocus: false,
-                arrowCounter: -1,
+                isOpen: false
             }
         },     
         watch: {
@@ -70,36 +60,12 @@
                 if (!this.disabled) {
                     this.isOpen = true;
                 }
-            },               
-            onFocus() {
-                if (!this.disabled) {
-                    this.isFocus = true;
-                }
             },                  
-            onArrowDown() {
-                if (this.arrowCounter < this.options.length) {
-                    this.arrowCounter = this.arrowCounter + 1;
-                }
-            },
-            onArrowUp() {
-                if (this.arrowCounter > 0) {
-                    this.arrowCounter = this.arrowCounter - 1;
-                }
-            },
-            onEnter(e) {
-                e.preventDefault();
-                var option = this.options[this.arrowCounter];
-                if (option) {
-                    this.onSelect(option);
-                }
-            },    
             onSelect: function (option) {                   
                 if (option.disabled) {
                     return false;
                 } else {
                     var that = this;
-                    this.arrowCounter = -1;
-
                     var index = this.model.findIndex(g => g == option[that.valueby]);
                     if (index > -1) {
                         this.model.splice(index, 1);
@@ -112,14 +78,10 @@
                 if (!this.disabled && this.model.length > index) {
                     this.model.splice(index, 1);
                 }
-
-                //this.$emit('selected', option);
             },                                  
             handleClickOutside(event) {
                 if (!(this.$el == event.target || this.$el.contains(event.target))) {
                     this.isOpen = false;
-                    this.isFocus = false;
-                    this.arrowCounter = -1;
                 }
             },
         }
